@@ -1,6 +1,10 @@
 # Glimesh.tv
 ![Elixir CI](https://github.com/glimesh/glimesh.tv/workflows/Elixir%20CI/badge.svg)
 
+## Installation
+
+To install a local copy of Glimesh.tv, run `git clone --recursive https://github.com/Glimesh/glimesh.tv.git`. This will clone the repository, as well as the css submodule if you have access to it.
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
