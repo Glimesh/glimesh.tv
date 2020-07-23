@@ -3,7 +3,7 @@
 
 ## Installation
 
-To install a local copy of Glimesh.tv, run `git clone --recursive https://github.com/Glimesh/glimesh.tv.git`. This will clone the repository, as well as the css submodule if you have access to it.
+To install a local copy of Glimesh.tv, run `git clone --recursive git@github.com:Glimesh/glimesh.tv.git`. This will clone the repository, as well as the css submodule if you have access to it.
 
 To start your Phoenix server:
 
