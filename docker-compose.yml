@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  app:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - LIVE_VIEW_SIGNING_SALT=${LIVE_VIEW_SIGNING_SALT}
+      - URL_HOST=${URL_HOST}
+      - URL_PORT=${URL_PORT}
+      - HTTP_PORT=${HTTP_PORT}
+      - HTTPS_PORT=${HTTPS_PORT}
+      - HTTPS_KEY_FILE=${HTTPS_KEY_FILE}
+      - HTTPS_CERT_FILE=${HTTPS_CERT_FILE}
+      - MAILGUN_DOMAIN=${MAILGUN_DOMAIN}
+      - MAILGUN_API_KEY=${MAILGUN_API_KEY}
+    ports:
+      - 80:8080
+      - 443:8443
+      - 4000:4000
+    volumes:
+      - ./certs:/certs
+      - ./uploads:/app/uploads

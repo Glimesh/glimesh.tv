@@ -1,0 +1,70 @@
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="jumbotron">
+              <h2 class="display-4 mb-5  mt-4">Hi, welcome to Glimesh!</h2>
+              <p class="lead mt-3 mb-4">We just got finished with our charity stream and now we're working on our plan to make the site available to more streamers. Our very next step is to update the site a bit to explain our goals, and how we're going to get there, but for now... sleep!</p>
+              <p class="lead">
+                <a class="btn btn-primary" href="https://discord.gg/glimesh" role="button">Join our Discord to help build the future</a>
+              </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% if false do %>
+<div class="layout-px-spacing">
+<%= if @show_banner do %>
+    <div class="row layout-top-spacing">
+
+        <div class="col-md-9 layout-spacing">
+            <div class="widget widget-chart-one">
+                <div class="widget-header">
+                    <h3>Featured Stream: IKAROS's Charity Stream for The Trevor Project</h3>
+                </div>
+                <div class="widget-content">
+                    <%= live_redirect to: Routes.user_stream_path(@socket, :index, "clone1018") do %>
+                    <img src="/images/website-lander.jpg" alt="" class="img-fluid">
+                    <% end %>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="infobox-1">
+                <h5 class="info-heading">Welcome to Glimesh</h5>
+                <p class="info-text">People first streaming, with discoverability as a primary feature. Let's build the next generation of streaming.</p>
+                <a class="info-link" href="">Learn More</a>
+            </div>
+        </div>
+
+    </div>
+<% else %>
+    <h2><%= @category %></h2>
+<% end %>
+
+
+    <div class="row layout-top-spacing">
+        <%= for stream <- @streams do %>
+
+        <div class="col-md-3 layout-spacing">
+            <%= live_redirect to: Routes.user_stream_path(@socket, :index, stream.username) do %>
+                <div class="widget widget-chart-one">
+                    <div class="widget-heading">
+                        <h5 class=""><span class="badge badge-danger">Live!</span> <%= stream.username %></h5>
+                    </div>
+
+                    <div class="widget-content">
+                        <img src="/images/website-lander.jpg" alt="" class="img-fluid">
+                    </div>
+                </div>
+            <% end %>
+        </div>
+
+        <% end %>
+
+    </div>
+
+</div>
+<% end %>

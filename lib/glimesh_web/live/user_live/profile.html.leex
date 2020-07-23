@@ -1,0 +1,64 @@
+
+<div class="container">
+    <h2><%= @user.username %>'s Profile</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <img src="<%= Glimesh.Avatar.url({@user.avatar, @user}, :original) %>" alt="Your Profile Picture"
+                         class="img-responsive mb-4 img-avatar">
+
+                    <ul class="list-inline">
+                      <%= if @user.social_twitter do %>
+                       <li rel="ugc" class="list-inline-item">
+                           <a href="https://twitter.com/<%= @user.social_twitter %>" class="social-icon">
+                               <i class="fab fa-twitter"></i>
+                           </a>
+                       </li>
+                       <%  end %>
+                       <%= if @user.social_youtube do %>
+                       <li rel="ugc" class="list-inline-item">
+                           <a href="https://youtube.com/<%= @user.social_youtube %>" class="social-icon">
+                               <i class="fab fa-youtube"></i>
+                           </a>
+                       </li>
+                       <%  end %>
+                       <%= if @user.social_instagram do %>
+                       <li class="list-inline-item">
+                           <a rel="ugc" href="https://instagram.com/<%= @user.social_instagram %>" class="social-icon">
+                               <i class="fab fa-instagram"></i>
+                           </a>
+                       </li>
+                       <%  end %>
+                       <%= if @user.social_discord do %>
+                       <li class="list-inline-item">
+                           <a rel="ugc" href="https://youtube.com/<%= @user.social_discord %>" class="social-icon">
+                               <i class="fab fa-discord"></i>
+                           </a>
+                       </li>
+                       <%  end %>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="card text-center mt-4">
+                <div class="card-header">
+                    <h5>Achievements</h5>
+                </div>
+                <div class="card-body">
+                    <p>Found the achievements achievement!</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+
+            <div class="card">
+                <div class="card-body">
+                    Hi, this is a profile!
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,42 @@
+
+<div class="chat-system">
+
+      <div class="chat-box">
+            <a target="_blank" href="https://donate.tiltify.com/@glimesh/glimesh-and-ikaros-launch-stream" class="btn btn-lg btn-trevor btn-block mb-2">Donate to The Trevor Project!</a>
+
+          <div class="chat-box-inner">
+              <div class="chat-conversation-box">
+                  <div id="chat-conversation-box-scroll" class="chat-conversation-box-scroll">
+                      <div id="chat-messages" class="chat active-chat" phx-update="<%= @update_action %>">
+                        <div class="conversation-start">
+                            <span>Welcome to chat! Follow the rules.</span>
+                        </div>
+                          <%= for chat_message <- @chat_messages do %>
+                            <div id="<%= chat_message.id %>" class="bubble you">
+                                <%= if @can_moderate and Glimesh.Chat.can_moderate?(@streamer, chat_message.user) === false do %>
+                                <i class="fas fa-times-circle" phx-click="timeout_user" phx-value-user="<%= chat_message.user.username %>"></i>
+                                <% end %>
+                                <%= Glimesh.Chat.render_global_badge(chat_message.user) %>
+                                <%= Glimesh.Chat.render_stream_badge(@streamer, chat_message.user) %>
+                                <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>" class="img-chat-avatar" /> <%= chat_message.user.username %>:<br>
+
+                                <%= chat_message.message %>
+                            </div>
+                          <% end %>
+                      </div>
+                  </div>
+              </div>
+              <div class="chat-footer chat-active">
+                  <div class="chat-input">
+                      <%= live_component @socket, GlimeshWeb.ChatLive.MessageForm,
+                          id: :new,
+                          action: :new,
+                          chat_message: @chat_message,
+                          streamer: @streamer,
+                          user: @user
+                      %>
+                  </div>
+              </div>
+          </div>
+      </div>
+</div>

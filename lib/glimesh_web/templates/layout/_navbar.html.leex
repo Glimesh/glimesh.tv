@@ -1,0 +1,54 @@
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <%= live_redirect class: "navbar-brand", to: Routes.page_path(@conn, :index) do %>
+    <img src="/images/logos/logo-with-side-text.png" class="d-inline-block align-top" alt="">
+  <% end %>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#primaryNav" aria-controls="primaryNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="primaryNav">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <%= live_redirect "Gaming", class: "nav-link", to: Routes.page_path(@conn, :index, "gaming") %>
+        </li>
+        <li class="nav-item">
+            <%= live_redirect "Art", class: "nav-link", to: Routes.page_path(@conn, :index, "art") %>
+        </li>
+        <li class="nav-item">
+            <%= live_redirect "Music", class: "nav-link", to: Routes.page_path(@conn, :index, "music") %>
+        </li>
+        <li class="nav-item">
+            <%= live_redirect "Tech", class: "nav-link", to: Routes.page_path(@conn, :index, "tech") %>
+        </li>
+        <li class="nav-item">
+            <%= live_redirect "IRL", class: "nav-link", to: Routes.page_path(@conn, :index, "irl") %>
+        </li>
+    </ul>
+     <ul class="navbar-nav">
+          <%= if assigns[:current_user] do %>
+          <li class="nav-item dropdown user-profile-dropdown">
+              <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <%= @current_user.username %>
+                  <img src="<%= Glimesh.Avatar.url({@current_user.avatar, @current_user}, :original) %>" alt="avatar" class="img-avatar">
+              </a>
+              <div class="dropdown-menu" aria-labelledby="userProfileDropdown">
+                  <%= link class: "dropdown-item", to: Routes.user_settings_path(@conn, :edit) do %>
+                      <i class="fas fa-user"></i>
+                      My Profile
+                  <% end %>
+                  <%= link class: "dropdown-item", to: Routes.user_session_path(@conn, :delete), method: :delete do %>
+                    <i class="fas fa-door-closed"></i>
+                    Sign Out
+                  <% end %>
+              </div>
+          </li>
+          <% else %>
+          <li><%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "nav-link" %></li>
+          <li><%= link "Sign in", to: Routes.user_session_path(@conn, :new), class: "nav-link" %></li>
+          <% end %>
+      </ul>
+  </div>
+</nav>
