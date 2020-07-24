@@ -50,7 +50,7 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
       response = html_response(old_password_conn, 200)
       assert response =~ "<h2>Your Profile</h2>"
       assert response =~ "Must be at least 8 characters"
-      assert response =~ "Password doesn't match"
+      assert response =~ "Password doesn&#39;t match"
       assert response =~ "Invalid Password"
 
       assert get_session(old_password_conn, :user_token) == get_session(conn, :user_token)
