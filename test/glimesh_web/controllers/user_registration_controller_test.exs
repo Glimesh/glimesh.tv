@@ -49,7 +49,7 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
       response = html_response(conn, 200)
       assert response =~ "<h3>Register for our Alpha!</h3>"
       assert response =~ "must have the @ sign and no spaces"
-      assert response =~ "should be at least 8 character(s)"
+      assert response =~ "Must be at least 8 characters"
     end
   end
 end
