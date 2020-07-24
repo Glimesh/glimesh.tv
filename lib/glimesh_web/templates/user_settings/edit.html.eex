@@ -31,9 +31,9 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <%= label f, :username %>
-                            <%= text_input f, :username, [disabled: "true", class: "form-control mb-4"] %>
-                            <%= error_tag f, :username %>
+                            <%= label f, "Display Name" %>
+                            <%= text_input f, :displayname, [class: "form-control"]%>
+                            <%= error_tag f, :displayname %>
                         </div>
                     </div>
                     <div class="col-sm-6">

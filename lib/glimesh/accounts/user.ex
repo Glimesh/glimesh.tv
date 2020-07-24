@@ -110,6 +110,14 @@ defmodule Glimesh.Accounts.User do
     |> delete_change(:password)
   end
 
+  defp validate_displayname(changeset) do
+    username = get_field(changeset, :username)
+
+    changeset
+    |> validate_length(:displayname, min: 3, max: 50)
+    |> validate_format(:displayname, ~r/#{username}/i)
+  end
+
   @doc """
   A user changeset for changing the e-mail.
 
@@ -140,8 +148,9 @@ defmodule Glimesh.Accounts.User do
   """
   def profile_changeset(user, attrs) do
     user
-    |> cast(attrs, [:social_twitter, :social_youtube, :social_instagram, :social_discord])
+    |> cast(attrs, [:displayname, :social_twitter, :social_youtube, :social_instagram, :social_discord])
     |> cast_attachments(attrs, [:avatar])
+    |> validate_displayname()
   end
 
   @doc """
