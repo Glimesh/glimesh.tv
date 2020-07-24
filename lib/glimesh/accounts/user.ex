@@ -33,19 +33,15 @@ defmodule Glimesh.Accounts.User do
   also be very expensive to hash for certain algorithms.
   """
   def registration_changeset(user, attrs) do
+    username = if attrs["username"] do String.downcase(attrs["username"]) end
     user
     |> cast(attrs, [:username, :email, :password])
     |> put_change(:displayname, attrs["username"])
-    |> put_change(:username, lower(attrs["username"]))
+    |> put_change(:username, username)
     |> validate_username()
     |> validate_email()
     |> validate_password()
   end
-
-  def lower(str) when is_binary(str) do
-    lowerString = String.downcase(str)
-  end
-  def lower(_), do: ""
 
   defp validate_username(changeset) do
     changeset
