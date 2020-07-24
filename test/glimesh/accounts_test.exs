@@ -63,7 +63,7 @@ defmodule Glimesh.AccountsTest do
 
       assert %{
                email: ["must have the @ sign and no spaces"],
-               password: ["should be at least 8 character(s)"]
+               password: ["Must be at least 8 characters"]
              } = errors_on(changeset)
     end
 
@@ -272,7 +272,7 @@ defmodule Glimesh.AccountsTest do
         })
 
       assert %{
-               password: ["should be at least 8 character(s)"],
+               password: ["Must be at least 8 characters"],
                password_confirmation: ["does not match password"]
              } = errors_on(changeset)
     end
@@ -489,7 +489,7 @@ defmodule Glimesh.AccountsTest do
         })
 
       assert %{
-               password: ["should be at least 8 character(s)"],
+               password: ["Must be at least 8 characters"],
                password_confirmation: ["does not match password"]
              } = errors_on(changeset)
     end
