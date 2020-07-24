@@ -81,7 +81,7 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
       response = html_response(conn, 200)
       assert response =~ "<h2>Your Profile</h2>"
       assert response =~ "must have the @ sign and no spaces"
-      assert response =~ "is not valid"
+      assert response =~ "Invalid Password"
     end
   end
 

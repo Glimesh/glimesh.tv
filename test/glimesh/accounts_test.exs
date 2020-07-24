@@ -63,7 +63,7 @@ defmodule Glimesh.AccountsTest do
 
       assert %{
                email: ["must have the @ sign and no spaces"],
-               password: ["Must be at least 8 characters"]
+               password: ["should be at least 8 character(s)"]
              } = errors_on(changeset)
     end
 
@@ -143,7 +143,7 @@ defmodule Glimesh.AccountsTest do
 
     test "requires email to change", %{user: user} do
       {:error, changeset} = Accounts.apply_user_email(user, valid_user_password(), %{})
-      assert %{email: ["did not change"]} = errors_on(changeset)
+      assert %{email: ["Email is the same"]} = errors_on(changeset)
     end
 
     test "validates email", %{user: user} do
@@ -175,7 +175,7 @@ defmodule Glimesh.AccountsTest do
       {:error, changeset} =
         Accounts.apply_user_email(user, "invalid", %{email: unique_user_email()})
 
-      assert %{current_password: ["is not valid"]} = errors_on(changeset)
+      assert %{current_password: ["Invalid Password"]} = errors_on(changeset)
     end
 
     test "applies the e-mail without persisting it", %{user: user} do
@@ -272,8 +272,8 @@ defmodule Glimesh.AccountsTest do
         })
 
       assert %{
-               password: ["Must be at least 8 characters"],
-               password_confirmation: ["does not match password"]
+               password: ["should be at least 8 character(s)"],
+               password_confirmation: ["Password doesn't match"]
              } = errors_on(changeset)
     end
 
@@ -290,7 +290,7 @@ defmodule Glimesh.AccountsTest do
       {:error, changeset} =
         Accounts.update_user_password(user, "invalid", %{password: valid_user_password()})
 
-      assert %{current_password: ["is not valid"]} = errors_on(changeset)
+      assert %{current_password: ["Invalid Password"]} = errors_on(changeset)
     end
 
     test "updates the password", %{user: user} do
@@ -489,8 +489,8 @@ defmodule Glimesh.AccountsTest do
         })
 
       assert %{
-               password: ["Must be at least 8 characters"],
-               password_confirmation: ["does not match password"]
+               password: ["should be at least 8 character(s)"],
+               password_confirmation: ["Password doesn't match"]
              } = errors_on(changeset)
     end
 
