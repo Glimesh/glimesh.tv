@@ -29,11 +29,12 @@ config :glimesh, GlimeshWeb.Endpoint,
     ]
   ],
   url: [host: "glimesh.dev", port: 443],
+  http: [port: 4000],
   https: [
-   port: 443,
+   port: 4001,
    cipher_suite: :strong,
-   keyfile: "~/Code/Secure/glimesh.dev.key",
-   certfile: "~/Code/Secure/glimesh.dev",
+   keyfile: "priv/cert/selfsigned_key.pem",
+   certfile: "priv/cert/selfsigned.pem",
    transport_options: [socket_opts: [:inet6]]
   ]
 
