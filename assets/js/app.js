@@ -93,6 +93,43 @@ Hooks.LoadVideo = {
         tryVideo(this.playbackUrl())
     }
 };
+Hooks.PaymentSubscription = {
+    mounted() {
+        var stripe = Stripe('pk_test_51H879QBLNaYgaiU5sxMGp6ADReahMRXHqa9jbqRPa5aQ0ABWfvNRNqT6NlEJBYqEbfsVXDumLveBR7ZRVKqvDamd00o4bxnKAK');
+        var elements = stripe.elements();
+
+        var style = {
+            base: {
+                color: "#32325d",
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSmoothing: "antialiased",
+                fontSize: "16px",
+                "::placeholder": {
+                    color: "#aab7c4"
+                }
+            },
+            invalid: {
+                color: "#fa755a",
+                iconColor: "#fa755a"
+            }
+        };
+
+        var cardElement = elements.create("card", { style: style });
+        cardElement.mount("#card-element");
+
+
+        cardElement.on('change', showCardError);
+
+        function showCardError(event) {
+            let displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        }
+    }
+};
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}, hooks: Hooks});

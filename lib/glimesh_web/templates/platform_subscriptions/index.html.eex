@@ -1,0 +1,128 @@
+
+<div class="container">
+<div class="row">
+<div class="col-3">
+<div class="card">
+<div class="card-content">
+<form id="subscription-form" phx-hook="PaymentSubscription">
+    <div id="card-element" class="MyCardElement">
+      <!-- Elements will create input elements here -->
+    </div>
+
+    <!-- We'll put the error messages in this element -->
+    <div id="card-errors" role="alert"></div>
+    <button type="submit">Subscribe</button>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Billing Cycle  -->
+                <div class="billing-cycle-radios mt-5">
+                    <div class="radio billed-yearly-radio">
+                        <div class="d-flex justify-content-center">
+                            <span class="txt-monthly">Monthly</span>
+                            <label class="switch s-icons s-outline  s-outline-success">
+                                <input type="checkbox" id="radio-6">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="txt-yearly">Yearly <span class="badge badge-pill badge-primary">20% Off</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing Plans Container -->
+                <div class="pricing-plans-container mt-5 d-md-flex d-block">
+                    <!-- Plan -->
+                    <div class="pricing-plan mb-5">
+                        <h3>Lil Meshi</h3>
+                        <p class="margin-top-10">cPanel/WHM included. Intel Xeon E3 with guaranteed 2GB RAM.</p>
+                        <div class="pricing-plan-label billed-monthly-label"><strong>$5</strong>/ monthly</div>
+                        <div class="pricing-plan-label billed-yearly-label"><strong>$290</strong>/ yearly</div>
+                        <div class="pricing-plan-features mb-4">
+                            <strong>Cosmetic Features</strong>
+                            <ul>
+                                <li>Glimmering Meshi</li>
+                                <li>50 GB SSD</li>
+                                <li>1 TB Premium Bandwidth</li>
+                            </ul>
+                        </div>
+                        <a href="javascript:void(0);" class="button btn btn-primary btn-block margin-top-20">Subscribe</a>
+                    </div>
+                    <!-- Plan -->
+                    <div class="pricing-plan mb-5 mt-md-0 recommended">
+                        <div class="recommended-badge">Popular!</div>
+                        <h3>Glimeshi</h3>
+                        <p class="margin-top-10">cPanel/WHM included. Intel Xeon E5 with guaranteed 4GB RAM.</p>
+                        <div class="pricing-plan-label billed-monthly-label"><strong>$25</strong>/ monthly</div>
+                        <div class="pricing-plan-label billed-yearly-label"><strong>$670</strong>/ yearly</div>
+                        <div class="pricing-plan-features mb-4">
+                            <strong>Features</strong>
+                            <ul>
+                                <li>5 Domains</li>
+                                <li>Animated Mehsi Ring</li>
+                                <li>2 TB Premium Bandwidth</li>
+                            </ul>
+                        </div>
+                        <a href="javascript:void(0);" class="button btn btn-default btn-block margin-top-20">Subscribe</a>
+                    </div>
+                    <!-- Plan -->
+                    <div class="pricing-plan mb-5">
+                        <h3>Glim Glammer</h3>
+                        <p class="margin-top-10">cPanel/WHM included. Intel Xeon E5 with guaranteed 8GB RAM.</p>
+                        <div class="pricing-plan-label billed-monthly-label"><strong>$50</strong>/ monthly</div>
+                        <div class="pricing-plan-label billed-yearly-label"><strong>$1100</strong>/ yearly</div>
+                        <div class="pricing-plan-features mb-4">
+                            <strong>Premium Features</strong>
+                            <ul>
+                                <li>Animated Mehsi Ring</li>
+                                <li>Customized Chat Background</li>
+                                <li>Something Cool</li>
+                            </ul>
+                        </div>
+                        <a href="javascript:void(0);" class="button btn btn-primary btn-block margin-top-20">Subscribe</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+<h1>Listing Platform subscriptions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Stripe product</th>
+      <th>Started at</th>
+      <th>Ended at</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for platform_subscriptions <- @platform_subscriptions do %>
+    <tr>
+      <td><%= platform_subscriptions.stripe_product_id %></td>
+      <td><%= platform_subscriptions.started_at %></td>
+      <td><%= platform_subscriptions.ended_at %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.platform_subscriptions_path(@conn, :show, platform_subscriptions) %></span>
+        <span><%= link "Edit", to: Routes.platform_subscriptions_path(@conn, :edit, platform_subscriptions) %></span>
+        <span><%= link "Delete", to: Routes.platform_subscriptions_path(@conn, :delete, platform_subscriptions), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Platform subscriptions", to: Routes.platform_subscriptions_path(@conn, :new) %></span>

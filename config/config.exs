@@ -40,6 +40,8 @@ config :phoenix, :json_library, Jason
 config :phoenix, :template_engines,
        md: PhoenixMarkdown.Engine
 
+config :stripity_stripe, api_key: "YOUR SECRET KEY"
+
 import_config "badwords.exs"
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
