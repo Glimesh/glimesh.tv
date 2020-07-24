@@ -35,10 +35,17 @@ defmodule Glimesh.Accounts.User do
   def registration_changeset(user, attrs) do
     user
     |> cast(attrs, [:username, :email, :password])
+    |> put_change(:displayname, attrs["username"])
+    |> put_change(:username, lower(attrs["username"]))
     |> validate_username()
     |> validate_email()
     |> validate_password()
   end
+
+  def lower(str) when is_binary(str) do
+    lowerString = String.downcase(str)
+  end
+  def lower(_), do: ""
 
   defp validate_username(changeset) do
     changeset
