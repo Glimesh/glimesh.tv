@@ -273,7 +273,7 @@ defmodule Glimesh.AccountsTest do
 
       assert %{
                password: ["should be at least 8 character(s)"],
-               password_confirmation: ["Password doesn't match"]
+               password_confirmation: ["Password does not match"]
              } = errors_on(changeset)
     end
 
@@ -490,7 +490,7 @@ defmodule Glimesh.AccountsTest do
 
       assert %{
                password: ["should be at least 8 character(s)"],
-               password_confirmation: ["Password doesn't match"]
+               password_confirmation: ["Password does not match"]
              } = errors_on(changeset)
     end
 

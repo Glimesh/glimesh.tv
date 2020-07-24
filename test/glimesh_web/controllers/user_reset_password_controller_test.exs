@@ -101,7 +101,7 @@ defmodule GlimeshWeb.UserResetPasswordControllerTest do
       response = html_response(conn, 200)
       assert response =~ "<h1>Reset password</h1>"
       assert response =~ "Must be at least 8 characters"
-      assert response =~ "Password doesn&#39;t match"
+      assert response =~ "Password does not match"
     end
 
     test "does not reset password with invalid token", %{conn: conn} do

@@ -130,7 +130,7 @@ defmodule Glimesh.Accounts.User do
   def password_changeset(user, attrs) do
     user
     |> cast(attrs, [:password])
-    |> validate_confirmation(:password, message: "Password doesn\'t match")
+    |> validate_confirmation(:password, message: "Password does not match")
     |> validate_password()
   end
 
