@@ -28,7 +28,7 @@ config :glimesh, GlimeshWeb.Endpoint,
       cd: Path.expand("../assets", __DIR__)
     ]
   ],
-  url: [host: "glimesh.dev", port: 443],
+  url: [host: "localhost", port: 4001],
   http: [port: 4000],
   https: [
    port: 4001,
@@ -85,3 +85,7 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+if File.exists?("config/local.exs") do
+  import_config "local.exs"
+end
