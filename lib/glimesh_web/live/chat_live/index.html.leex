@@ -18,7 +18,7 @@
                                 <% end %>
                                 <%= Glimesh.Chat.render_global_badge(chat_message.user) %>
                                 <%= Glimesh.Chat.render_stream_badge(@streamer, chat_message.user) %>
-                                <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>" class="img-chat-avatar" /> <%= chat_message.user.username %>:<br>
+                                <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>" class="img-chat-avatar" /> <%= chat_message.user.displayname %>:<br>
 
                                 <%= chat_message.message %>
                             </div>
