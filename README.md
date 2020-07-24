@@ -17,6 +17,17 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
+### Customizing your local environment
+You can create a `config/local.exs` config file to change any local settings to make development 
+easier. This file is ignored from git, so you don't have to worry about committing any secrets.
+
+```elixir
+use Mix.Config
+
+config :glimesh, GlimeshWeb.Endpoint,
+  url: [host: "glimesh.dev", port: 443]
+```
+
 ## Learn more
 
   * Official website: https://www.phoenixframework.org/
