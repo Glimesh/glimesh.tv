@@ -59,7 +59,7 @@ defmodule Glimesh.AccountsTest do
     end
 
     test "validates email and password when given" do
-      {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "bad"})
+      {:error, changeset} = Accounts.register_user(%{"email" => "not valid", "password" => "bad"})
 
       assert %{
                email: ["must have the @ sign and no spaces"],
@@ -69,25 +69,25 @@ defmodule Glimesh.AccountsTest do
 
     test "validates maximum values for e-mail and password for security" do
       too_long = String.duplicate("db", 100)
-      {:error, changeset} = Accounts.register_user(%{email: too_long, password: too_long})
+      {:error, changeset} = Accounts.register_user(%{"email" => too_long, "password" => too_long})
       assert "should be at most 160 character(s)" in errors_on(changeset).email
       assert "should be at most 80 character(s)" in errors_on(changeset).password
     end
 
     test "validates e-mail uniqueness" do
       %{email: email} = user_fixture()
-      {:error, changeset} = Accounts.register_user(%{email: email})
+      {:error, changeset} = Accounts.register_user(%{"email" => email})
       assert "has already been taken" in errors_on(changeset).email
 
       # Now try with the upper cased e-mail too, to check that email case is ignored.
-      {:error, changeset} = Accounts.register_user(%{email: String.upcase(email)})
+      {:error, changeset} = Accounts.register_user(%{"email" => String.upcase(email)})
       assert "has already been taken" in errors_on(changeset).email
     end
 
     test "registers users with a hashed password" do
       email = unique_user_email()
       username = unique_user_username()
-      {:ok, user} = Accounts.register_user(%{email: email, username: username, password: valid_user_password()})
+      {:ok, user} = Accounts.register_user(%{"email" => email, "username" => username, "password" => valid_user_password()})
       assert user.email == email
       assert user.username == username
       assert is_binary(user.hashed_password)
@@ -97,25 +97,25 @@ defmodule Glimesh.AccountsTest do
 
     test "validates and accepts reserved word inside username" do
       username = "FOOadminFOO"
-      {:ok, user} = Accounts.register_user(%{email: unique_user_email(), username: username, password: valid_user_password()})
+      {:ok, user} = Accounts.register_user(%{"email" => unique_user_email(), "username" => username, "password" => valid_user_password()})
 
-      assert user.username == username
+      assert user.displayname == username
     end
 
     test "validates and rejects reserved word list for username" do
-      {:error, changeset} = Accounts.register_user(%{email: unique_user_email(), username: "admin", password: valid_user_password()})
+      {:error, changeset} = Accounts.register_user(%{"email" => unique_user_email(), "username" => "admin", "password" => valid_user_password()})
 
       assert %{username: ["This username is reserved"]} = errors_on(changeset)
     end
 
     test "validates and rejects bad word list for username" do
-      {:error, changeset} = Accounts.register_user(%{email: unique_user_email(), username: "ass", password: valid_user_password()})
+      {:error, changeset} = Accounts.register_user(%{"email" => unique_user_email(), "username" => "ass", "password" => valid_user_password()})
 
       assert %{username: ["This username contains a bad word"]} = errors_on(changeset)
     end
 
 #    test "validates and rejects bad word inside username" do
-#      {:error, changeset} = Accounts.register_user(%{email: unique_user_email(), username: "FOOassFOO", password: valid_user_password()})
+#      {:error, changeset} = Accounts.register_user(%{"email" => unique_user_email(), username: "FOOassFOO", password: valid_user_password()})
 #
 #      assert %{username: ["This username contains a bad word"]} = errors_on(changeset)
 #    end

@@ -94,6 +94,8 @@ defmodule Glimesh.Accounts do
 
   """
   def register_user(attrs) do
+    gottenUsername = if attrs["username"], do: String.downcase(attrs["username"]), else: nil
+    attrs = Map.merge(attrs, %{"displayname" => attrs["username"], "username" => gottenUsername})
     %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
