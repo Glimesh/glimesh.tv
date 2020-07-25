@@ -4,12 +4,21 @@ defmodule GlimeshWeb.UserLive.FollowButton do
   @impl true
   def render(assigns) do
     ~L"""
+      <%= if @user do %>
         <%= if @following do %>
           <button class="btn btn-primary" phx-click="unfollow">Unfollow</button>
         <% else %>
           <button class="btn btn-primary" phx-click="follow">Follow</button>
         <% end %>
+      <% else %>
+        <%= link "Follow", to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-small" %>
+      <% end %>
       """
+  end
+
+  @impl true
+  def mount(_params, %{"streamer" => streamer, "user" => nil}, socket) do
+    {:ok, socket |> assign(:streamer, streamer) |> assign(:user, nil) |> assign(:following, false)}
   end
 
   @impl true

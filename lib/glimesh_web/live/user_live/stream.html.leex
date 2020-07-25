@@ -12,8 +12,8 @@
                         <h5 class=""><span class="badge badge-danger">Live!</span> <%= @streamer.username %>'s Live Charity Stream</h5>
                       </div>
                       <div class="col-4">
-                        <div class="">
-                            <div class="ml-4" style="">
+                        <div class="float-right">
+                            <div class="stream-info ml-4">
                                 <%= live_render(@socket, GlimeshWeb.UserLive.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                                 <%= live_render(@socket, GlimeshWeb.UserLive.ViewerCount, id: "viewer-count", session: %{"user" => @user, "streamer" => @streamer.username}) %>
                             </div>
