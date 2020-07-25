@@ -1,0 +1,12 @@
+FROM elixir:1.10.4-alpine
+
+# Install package dependencies
+RUN apk add --no-cache build-base npm git python postgresql-client inotify-tools
+
+# install hex + rebar
+RUN mix local.hex --force
+RUN mix local.rebar --force
+
+# prepare build dir
+WORKDIR /app
+EXPOSE 4000
