@@ -1,21 +1,22 @@
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="jumbotron">
-              <h2 class="display-4 mb-5  mt-4">Hi, welcome to Glimesh!</h2>
-              <p class="lead mt-3 mb-4">We just got finished with our charity stream and now we're working on our plan to make the site available to more streamers. Our very next step is to update the site a bit to explain our goals, and how we're going to get there, but for now... sleep!</p>
-              <p class="lead">
-                <a class="btn btn-primary" href="https://discord.gg/glimesh" role="button">Join our Discord to help build the future</a>
-              </p>
+
+<div class="layout-px-spacing">
+<%= if @show_banner do %>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="jumbotron">
+                  <h2 class="display-4 mb-5  mt-4">Hi, welcome to Glimesh!</h2>
+                  <p class="lead mt-3 mb-4">We just got finished with our charity stream and now we're working on our plan to make the site available to more streamers. Our very next step is to update the site a bit to explain our goals, and how we're going to get there, but for now... sleep!</p>
+                  <p class="lead">
+                    <a class="btn btn-primary" href="https://discord.gg/glimesh" role="button">Join our Discord to help build the future</a>
+                  </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<% if false do %>
-<div class="layout-px-spacing">
-<%= if @show_banner do %>
     <div class="row layout-top-spacing">
 
         <div class="col-md-9 layout-spacing">
@@ -67,4 +68,3 @@
     </div>
 
 </div>
-<% end %>
