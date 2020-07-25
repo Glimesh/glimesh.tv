@@ -7,8 +7,129 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="jumbotron">
-                  <h2 class="display-4 mb-5  mt-4">Hi, welcome to Glimesh!</h2>
-                  <p class="lead mt-3 mb-4">We just got finished with our charity stream and now we're working on our plan to make the site available to more streamers. Our very next step is to update the site a bit to explain our goals, and how we're going to get there, but for now... sleep!</p>
+                  <h2 class="display-4 mb-2">Hi, welcome to Glimesh!</h2>
+                  <p class="lead">Glimesh is a next generation streaming platform built by the community, for the community. Our platform focuses on increasing discoverability for content creators and implementing the latest in streaming technology to level the playing field. We understand the importance of interaction between content creators and their fans and we’re dedicated to innovating new ways to bring communities closer together.</p>
+
+                  <hr>
+
+                  <h3 class="mt-4">Public Launch Progress</h3>
+                  <p>With our charity stream launch finished successfully, it's time to put our sights on launching this thing for real! We've got a couple of milestones to hit before that, and you can stay up to date here or on our various social media platforms.</p>
+                  <div class="row mt-2">
+                    <div class="col-md-8">
+                      <h4>Business</h4>
+                      <div class="progress br-30" style="height: 32px">
+                          <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+                      </div>
+
+                      <h4>Development</h4>
+                      <div class="progress br-30" style="height: 32px">
+                          <div class="progress-bar bg-info" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">20%</div>
+                      </div>
+
+                      <h4>Design</h4>
+                      <div class="progress br-30" style="height: 32px">
+                          <div class="progress-bar bg-secondary" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">20%</div>
+                      </div>
+
+                      <h4>Marketing</h4>
+                      <div class="progress br-30" style="height: 32px">
+                          <div class="progress-bar bg-primary" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+
+                      <div class="mt-container mx-auto">
+                          <div class="timeline-line">
+
+                              <div class="item-timeline">
+                                  <div class="t-dot t-dot-success">
+                                  </div>
+                                  <div class="t-text">
+                                      <p>Become Glimesh, Inc.</p>
+                                  </div>
+                              </div>
+
+                              <div class="item-timeline">
+                                  <div class="t-dot t-dot-success">
+                                  </div>
+                                  <div class="t-text">
+                                      <p>Negotiate Payments</p>
+                                  </div>
+                              </div>
+
+                              <div class="item-timeline">
+                                  <div class="t-dot t-dot-info">
+                                  </div>
+                                  <div class="t-text">
+                                      <p>Integrate with our payment provider</p>
+                                  </div>
+                              </div>
+
+                              <div class="item-timeline">
+                                  <div class="t-dot t-dot-info">
+                                  </div>
+                                  <div class="t-text">
+                                      <p>Setup autoscaling infrastructure</p>
+                                  </div>
+                              </div>
+
+                              <div class="item-timeline">
+                                  <div class="t-dot t-dot-info">
+                                  </div>
+                                  <div class="t-text">
+                                      <p>Finish <a target="_blank" href="https://github.com/Glimesh/glimesh.tv/milestone/1">Release Milestone</a></p>
+                                  </div>
+                              </div>
+
+                              <div class="item-timeline">
+                                  <div class="t-dot t-dot-secondary">
+                                  </div>
+                                  <div class="t-text">
+                                      <p>Finalize channel layouts</p>
+                                  </div>
+                              </div>
+
+                              <div class="item-timeline">
+                                  <div class="t-dot t-dot-secondary">
+                                  </div>
+                                  <div class="t-text">
+                                      <p>Design promotional launch materials</p>
+                                  </div>
+                              </div>
+
+                              <div class="item-timeline">
+                                  <div class="t-dot t-dot-primary">
+                                  </div>
+                                  <div class="t-text">
+                                      <p>Plan launch event</p>
+                                  </div>
+                              </div>
+
+                              <div class="item-timeline">
+                                  <div class="t-dot t-dot-primary">
+                                  </div>
+                                  <div class="t-text">
+                                      <p>Get 250 streamers committed</p>
+                                  </div>
+                              </div>
+
+                              <div class="item-timeline">
+                                  <div class="t-dot t-dot-primary">
+                                  </div>
+                                  <div class="t-text">
+                                      <p>Launch!</p>
+                                  </div>
+                              </div>
+
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <h2>How you can help!</h2>
+                  <p class="lead">At Glimesh, we're an open company! That means we operate in the public eye, without your traditional deceit. It also means that you can contribute to our project, and help it launch!</p>
+                  <p class="lead">If you are interested, come work with us!</p>
                   <p class="lead">
                     <a class="btn btn-primary" href="https://discord.gg/glimesh" role="button">Join our Discord to help build the future</a>
                   </p>
@@ -22,11 +143,11 @@
         <div class="col-md-9 layout-spacing">
             <div class="widget widget-chart-one">
                 <div class="widget-header">
-                    <h3>Featured Stream: IKAROS's Charity Stream for The Trevor Project</h3>
+                    <h3>Featured Stream: IKAROS's Shaves His Head for The Trevor Project</h3>
                 </div>
                 <div class="widget-content">
                     <%= live_redirect to: Routes.user_stream_path(@socket, :index, "clone1018") do %>
-                    <img src="/images/website-lander.jpg" alt="" class="img-fluid">
+                    <img src="/images/stream-not-started.jpg" alt="" class="img-fluid">
                     <% end %>
                 </div>
             </div>
@@ -57,7 +178,7 @@
                     </div>
 
                     <div class="widget-content">
-                        <img src="/images/website-lander.jpg" alt="" class="img-fluid">
+                        <img src="/images/stream-not-started.jpg" alt="" class="img-fluid">
                     </div>
                 </div>
             <% end %>
