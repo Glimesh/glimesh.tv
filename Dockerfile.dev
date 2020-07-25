@@ -1,11 +1,16 @@
-FROM elixir:1.10.4-alpine
+FROM elixir:1.10.4
 
 # Install package dependencies
-RUN apk add --no-cache build-base npm git python postgresql-client inotify-tools
+RUN apt-get update
+RUN apt-get install -y build-essential postgresql-client inotify-tools imagemagick-6.q16
 
 # install hex + rebar
 RUN mix local.hex --force
 RUN mix local.rebar --force
+
+# install node
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt-get install -y nodejs
 
 # prepare build dir
 WORKDIR /app
