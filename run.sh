@@ -24,6 +24,7 @@ fi
 #mkdir css
 #cd css
 #wget https://glimesh.tv/css/app.css
+#cd ../../..
 # ==== End region ====
 
 # start server
