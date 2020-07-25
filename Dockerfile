@@ -1,4 +1,4 @@
-FROM elixir:1.10.4-alpine as build
+FROM elixir:1.10.4-alpine AS build
 
 # install build dependencies
 RUN apk add --no-cache build-base npm git python
