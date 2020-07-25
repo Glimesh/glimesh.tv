@@ -36,8 +36,12 @@ npm-debug.log
 # Don't commit the SSL keys. Generate them with the mix phx.gen.cert command
 /priv/cert/
 
-glimesh.iml
-.idea/
+# Development
 .elixir_ls/
+.idea/
+glimesh.iml
+
+# App files
+config/local.exs
 uploads/
 .env
