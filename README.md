@@ -17,6 +17,14 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
+### Docker
+Glimesh.tv can also be set up for **development use only** using [docker-compose](https://docs.docker.com/compose/install/).
+
+To do so, run the following commands from the GitHub repository:
+
+1. `touch .env`
+2. `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
+
 ## Learn more
 
   * Official website: https://www.phoenixframework.org/
