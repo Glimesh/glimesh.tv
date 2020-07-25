@@ -60,4 +60,32 @@ defmodule Glimesh.Streams do
     {:ok, chat_message}
   end
 
+
+  alias Glimesh.Streams.Followers
+
+  def list_followed_streams(user) do
+    Repo.all(from f in Followers, where: f.user_id == ^user.id, join: streamer in assoc(f, :streamer), select: streamer)
+  end
+
+  def follow(streamer, user, live_notifications \\ false) do
+    attrs = %{
+      has_live_notifications: live_notifications
+    }
+
+    %Followers{
+      streamer: streamer,
+      user: user
+    }
+      |> Followers.changeset(attrs)
+      |> Repo.insert()
+  end
+
+  def unfollow(streamer, user) do
+    Repo.get_by(Followers, streamer_id: streamer.id, user_id: user.id) |> Repo.delete()
+  end
+
+  def is_following?(streamer, user) do
+    Repo.exists?(from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id)
+  end
+
 end
