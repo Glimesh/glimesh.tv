@@ -8,7 +8,7 @@ defmodule GlimeshWeb.UserLive.FollowButton do
         <%= if @following do %>
           <button class="btn btn-primary" phx-click="unfollow">Unfollow</button>
         <% else %>
-          <button class="btn btn-primary" phx-click="follow">Follow</button>
+          <button class="btn btn-primary" phx-click="follow" phx-throttle="5000">Follow</button>
         <% end %>
       <% else %>
         <%= link "Follow", to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-small" %>

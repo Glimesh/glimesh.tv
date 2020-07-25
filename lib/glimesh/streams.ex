@@ -72,12 +72,15 @@ defmodule Glimesh.Streams do
       has_live_notifications: live_notifications
     }
 
-    %Followers{
+    results = %Followers{
       streamer: streamer,
       user: user
-    }
-      |> Followers.changeset(attrs)
+    } |> Followers.changeset(attrs)
       |> Repo.insert()
+
+    Glimesh.Chat.create_chat_message(streamer, user, %{message: "just followed the stream!"})
+
+    results
   end
 
   def unfollow(streamer, user) do
