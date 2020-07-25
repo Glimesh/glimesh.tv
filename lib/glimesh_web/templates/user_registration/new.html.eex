@@ -295,6 +295,6 @@
     </div>
     <div class="coming-soon-image" id="large-header">
         <canvas id="demo-canvas"></canvas>
-        <img src="/images/soft-launch-no-bg.png" alt="Glimesh Logo" />
+        <img src="/images/logos/logo-no-text.png" alt="Glimesh Logo" />
     </div>
 </div>

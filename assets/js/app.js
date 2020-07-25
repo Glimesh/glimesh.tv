@@ -49,7 +49,7 @@ function tryVideo(url) {
 
             let player = OvenPlayer.create("player", {
                 // autoStart: true,
-                image : "/images/website-lander.jpg",
+                image : "/images/stream-not-started.jpg",
                 sources: [
                     {
                         type: "webrtc",
