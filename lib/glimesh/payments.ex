@@ -6,99 +6,99 @@ defmodule Glimesh.Payments do
   import Ecto.Query, warn: false
   alias Glimesh.Repo
 
-  alias Glimesh.Payments.PlatformSubscriptions
+  alias Glimesh.Payments.PlatformSubscription
 
   @doc """
-  Returns the list of platform_subscriptions.
+  Returns the list of platform_subscription.
 
   ## Examples
 
-      iex> list_platform_subscriptions()
-      [%PlatformSubscriptions{}, ...]
+      iex> list_platform_subscription()
+      [%PlatformSubscription{}, ...]
 
   """
   def list_platform_subscriptions do
-    Repo.all(PlatformSubscriptions)
+    Repo.all(PlatformSubscription)
   end
 
   @doc """
-  Gets a single platform_subscriptions.
+  Gets a single platform_subscription.
 
   Raises `Ecto.NoResultsError` if the Platform subscriptions does not exist.
 
   ## Examples
 
-      iex> get_platform_subscriptions!(123)
-      %PlatformSubscriptions{}
+      iex> get_platform_subscription!(123)
+      %PlatformSubscription{}
 
-      iex> get_platform_subscriptions!(456)
+      iex> get_platform_subscription!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_platform_subscriptions!(id), do: Repo.get!(PlatformSubscriptions, id)
+  def get_platform_subscription!(id), do: Repo.get!(PlatformSubscription, id)
 
   @doc """
-  Creates a platform_subscriptions.
+  Creates a platform_subscription.
 
   ## Examples
 
-      iex> create_platform_subscriptions(%{field: value})
-      {:ok, %PlatformSubscriptions{}}
+      iex> create_platform_subscription(%{field: value})
+      {:ok, %PlatformSubscription{}}
 
-      iex> create_platform_subscriptions(%{field: bad_value})
+      iex> create_platform_subscription(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_platform_subscriptions(attrs \\ %{}) do
-    %PlatformSubscriptions{}
-    |> PlatformSubscriptions.changeset(attrs)
+  def create_platform_subscription(attrs \\ %{}) do
+    %PlatformSubscription{}
+    |> PlatformSubscription.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a platform_subscriptions.
+  Updates a platform_subscription.
 
   ## Examples
 
-      iex> update_platform_subscriptions(platform_subscriptions, %{field: new_value})
-      {:ok, %PlatformSubscriptions{}}
+      iex> update_platform_subscription(platform_subscription, %{field: new_value})
+      {:ok, %PlatformSubscription{}}
 
-      iex> update_platform_subscriptions(platform_subscriptions, %{field: bad_value})
+      iex> update_platform_subscription(platform_subscription, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_platform_subscriptions(%PlatformSubscriptions{} = platform_subscriptions, attrs) do
-    platform_subscriptions
-    |> PlatformSubscriptions.changeset(attrs)
+  def update_platform_subscription(%PlatformSubscription{} = platform_subscription, attrs) do
+    platform_subscription
+    |> PlatformSubscription.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a platform_subscriptions.
+  Deletes a platform_subscription.
 
   ## Examples
 
-      iex> delete_platform_subscriptions(platform_subscriptions)
-      {:ok, %PlatformSubscriptions{}}
+      iex> delete_platform_subscription(platform_subscription)
+      {:ok, %PlatformSubscription{}}
 
-      iex> delete_platform_subscriptions(platform_subscriptions)
+      iex> delete_platform_subscription(platform_subscription)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_platform_subscriptions(%PlatformSubscriptions{} = platform_subscriptions) do
-    Repo.delete(platform_subscriptions)
+  def delete_platform_subscription(%PlatformSubscription{} = platform_subscription) do
+    Repo.delete(platform_subscription)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking platform_subscriptions changes.
+  Returns an `%Ecto.Changeset{}` for tracking platform_subscription changes.
 
   ## Examples
 
-      iex> change_platform_subscriptions(platform_subscriptions)
-      %Ecto.Changeset{data: %PlatformSubscriptions{}}
+      iex> change_platform_subscription(platform_subscription)
+      %Ecto.Changeset{data: %PlatformSubscription{}}
 
   """
-  def change_platform_subscriptions(%PlatformSubscriptions{} = platform_subscriptions, attrs \\ %{}) do
-    PlatformSubscriptions.changeset(platform_subscriptions, attrs)
+  def change_platform_subscription(%PlatformSubscription{} = platform_subscription, attrs \\ %{}) do
+    PlatformSubscription.changeset(platform_subscription, attrs)
   end
 end

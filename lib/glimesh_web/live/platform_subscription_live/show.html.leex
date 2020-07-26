@@ -1,0 +1,32 @@
+<h1>Show Platform subscription</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, GlimeshWeb.PlatformSubscriptionLive.FormComponent,
+    id: @platform_subscription.id,
+    title: @page_title,
+    action: @live_action,
+    platform_subscription: @platform_subscription,
+    return_to: Routes.platform_subscription_show_path(@socket, :show, @platform_subscription) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Stripe product:</strong>
+    <%= @platform_subscription.stripe_product_id %>
+  </li>
+
+  <li>
+    <strong>Started at:</strong>
+    <%= @platform_subscription.started_at %>
+  </li>
+
+  <li>
+    <strong>Ended at:</strong>
+    <%= @platform_subscription.ended_at %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.platform_subscription_show_path(@socket, :edit, @platform_subscription), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.platform_subscription_index_path(@socket, :index) %></span>

@@ -1,24 +1,36 @@
 
+
 <div class="container">
-<div class="row">
-<div class="col-3">
-<div class="card">
-<div class="card-content">
-<form id="subscription-form" phx-hook="PaymentSubscription">
-    <div id="card-element" class="MyCardElement">
-      <!-- Elements will create input elements here -->
+  <h2>Glimesh Funding Progress</h2>
+  <div class="progress progress-bar-stack mb-4 br-30" style="height: 32px">
+      <div class="progress-bar bg-success" role="progressbar" style="width: 5%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">Platform Subs</div>
+      <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">Streamer Subs</div>
+      <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">Donations</div>
+  </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <form id="subscription-form" phx-hook="PaymentSubscription">
+                <div id="card-element" class="MyCardElement">
+                  <!-- Elements will create input elements here -->
+                </div>
+
+                <!-- We'll put the error messages in this element -->
+                <div id="card-errors" role="alert"></div>
+                <button type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- We'll put the error messages in this element -->
-    <div id="card-errors" role="alert"></div>
-    <button type="submit">Subscribe</button>
-</form>
-</div>
-</div>
-</div>
-</div>
-</div>
 
+</div>
 
     <div class="container">
         <div class="row">
@@ -94,9 +106,15 @@
     </div>
 
 
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, GlimeshWeb.PlatformSubscriptionLive.FormComponent,
+    id: @platform_subscription.id || :new,
+    title: @page_title,
+    action: @live_action,
+    platform_subscription: @platform_subscription,
+    return_to: Routes.platform_subscription_index_path(@socket, :index) %>
+<% end %>
 
-
-<h1>Listing Platform subscriptions</h1>
 
 <table>
   <thead>
@@ -108,21 +126,21 @@
       <th></th>
     </tr>
   </thead>
-  <tbody>
-<%= for platform_subscriptions <- @platform_subscriptions do %>
-    <tr>
-      <td><%= platform_subscriptions.stripe_product_id %></td>
-      <td><%= platform_subscriptions.started_at %></td>
-      <td><%= platform_subscriptions.ended_at %></td>
+  <tbody id="platform_subscriptions">
+    <%= for platform_subscription <- @platform_subscriptions do %>
+      <tr id="platform_subscription-<%= platform_subscription.id %>">
+        <td><%= platform_subscription.stripe_product_id %></td>
+        <td><%= platform_subscription.started_at %></td>
+        <td><%= platform_subscription.ended_at %></td>
 
-      <td>
-        <span><%= link "Show", to: Routes.platform_subscriptions_path(@conn, :show, platform_subscriptions) %></span>
-        <span><%= link "Edit", to: Routes.platform_subscriptions_path(@conn, :edit, platform_subscriptions) %></span>
-        <span><%= link "Delete", to: Routes.platform_subscriptions_path(@conn, :delete, platform_subscriptions), method: :delete, data: [confirm: "Are you sure?"] %></span>
-      </td>
-    </tr>
-<% end %>
+        <td>
+          <span><%= live_redirect "Show", to: Routes.platform_subscription_show_path(@socket, :show, platform_subscription) %></span>
+          <span><%= live_patch "Edit", to: Routes.platform_subscription_index_path(@socket, :edit, platform_subscription) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: platform_subscription.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
 
-<span><%= link "New Platform subscriptions", to: Routes.platform_subscriptions_path(@conn, :new) %></span>
+<span><%= live_patch "New Platform subscription", to: Routes.platform_subscription_index_path(@socket, :new) %></span>

@@ -60,7 +60,12 @@ defmodule GlimeshWeb.Router do
   scope "/", GlimeshWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    resources "/platform_subscriptions", PlatformSubscriptionsController
+    live "/platform_subscriptions", PlatformSubscriptionLive.Index, :index
+    live "/platform_subscriptions/new", PlatformSubscriptionLive.Index, :new
+    live "/platform_subscriptions/:id/edit", PlatformSubscriptionLive.Index, :edit
+
+    live "/platform_subscriptions/:id", PlatformSubscriptionLive.Show, :show
+    live "/platform_subscriptions/:id/show/edit", PlatformSubscriptionLive.Show, :edit
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings/update_profile", UserSettingsController, :update_profile

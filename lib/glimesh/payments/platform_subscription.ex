@@ -1,4 +1,4 @@
-defmodule Glimesh.Payments.PlatformSubscriptions do
+defmodule Glimesh.Payments.PlatformSubscription do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -15,8 +15,8 @@ defmodule Glimesh.Payments.PlatformSubscriptions do
   end
 
   @doc false
-  def changeset(platform_subscriptions, attrs) do
-    platform_subscriptions
+  def changeset(platform_subscription, attrs) do
+    platform_subscription
     |> cast(attrs, [:stripe_product_id, :started_at, :ended_at])
     |> validate_required([:user, :stripe_product_id, :started_at, :ended_at])
   end

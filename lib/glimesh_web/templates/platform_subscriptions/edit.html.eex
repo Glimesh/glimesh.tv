@@ -1,5 +1,0 @@
-<h1>Edit Platform subscriptions</h1>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.platform_subscriptions_path(@conn, :update, @platform_subscriptions)) %>
-
-<span><%= link "Back", to: Routes.platform_subscriptions_path(@conn, :index) %></span>
