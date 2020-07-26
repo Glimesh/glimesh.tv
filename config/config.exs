@@ -9,11 +9,7 @@ use Mix.Config
 
 config :glimesh,
   ecto_repos: [Glimesh.Repo],
-  environment: Mix.env(),
-  username: "KEKW",
-  password: "KEKW",
-  port: "KEKW",
-  hostname: "KEKW"
+  environment: Mix.env()
 
 config :waffle,
   storage: Waffle.Storage.Local,

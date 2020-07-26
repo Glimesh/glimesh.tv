@@ -2,11 +2,10 @@ use Mix.Config
 
 # Configure your database
 config :glimesh, Glimesh.Repo,
-  database: "KEKW",
-  username: "KEKW",
-  password: "KEKW",
-  port: "KEKW",
-  hostname: "KEKW",
+  username: "postgres",
+  password: "postgres",
+  database: "glimesh_dev",
+  hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
