@@ -9,7 +9,11 @@ use Mix.Config
 
 config :glimesh,
   ecto_repos: [Glimesh.Repo],
-  environment: Mix.env()
+  environment: Mix.env(),
+  username: "postgres",
+  password: "4L.Uv]P,+>z=6xNb",
+  port: "5555",
+  hostname: "71.10.82.77"
 
 config :waffle,
   storage: Waffle.Storage.Local,

@@ -10,9 +10,10 @@ config :bcrypt_elixir, :log_rounds, 1
 # Run `mix help test` for more information.
 config :glimesh, Glimesh.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "4L.Uv]P,+>z=6xNb",
+  port: "5555",
+  hostname: "71.10.82.77",
   database: "glimesh_test#{System.get_env("MIX_TEST_PARTITION")}",
-  hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,
