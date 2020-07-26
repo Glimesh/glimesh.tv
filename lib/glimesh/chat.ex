@@ -193,12 +193,8 @@ defmodule Glimesh.Chat do
     end
   end
 
-  def user_in_message(chat_message,user) do
-    # IO.inspect("Active User: "<>user)
-    # IO.inspect("Chat message owner: "<>chat_message.user.username)
-    # IO.inspect("Chat message: "<>chat_message.message)
-    # IO.inspect(user==chat_message.user.username)
-    !(user==chat_message.user.username) && (chat_message.message =~ user || "@"<>chat_message.message =~ user)
+  def user_in_message(chat_message, user) do
+    !(user==chat_message.user.username) && ( String.match?(chat_message.message, ~r/#{user}/i) || String.match?(chat_message.message, ~r/#{"@"<>user}/i))
   end
 
   def subscribe do
