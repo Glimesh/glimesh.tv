@@ -20,6 +20,8 @@ defmodule Glimesh.Accounts.User do
     field :social_instagram, :string
     field :social_discord, :string
 
+    field :stripe_customer_id, :string
+
     timestamps()
   end
 
@@ -141,6 +143,15 @@ defmodule Glimesh.Accounts.User do
     user
     |> cast(attrs, [:social_twitter, :social_youtube, :social_instagram, :social_discord])
     |> cast_attachments(attrs, [:avatar])
+  end
+
+  @doc """
+  A user changeset for changing the stripe customer id.
+  """
+  def stripe_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:stripe_customer_id])
+    |> validate_required([:stripe_customer_id])
   end
 
   @doc """

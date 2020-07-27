@@ -8,6 +8,51 @@ defmodule Glimesh.Payments do
 
   alias Glimesh.Payments.PlatformSubscription
 
+  def set_payment_method(user, payment_method_id) do
+    customer_id = Glimesh.Accounts.get_stripe_customer_id(user)
+
+    {:ok, _} = Stripe.PaymentMethod.attach(%{
+      customer: customer_id,
+      payment_method: payment_method_id
+    })
+
+    {:ok, _} = Stripe.Customer.update(customer_id, %{
+      invoice_settings: %{
+        default_payment_method: payment_method_id
+      }
+    })
+
+    :ok
+  end
+
+  def subscribe(:platform, user, product_id, price_id) do
+    customer_id = Glimesh.Accounts.get_stripe_customer_id(user)
+
+    {:ok, sub} = Stripe.Subscription.create(%{
+      customer: customer_id,
+      items: [%{
+        price: price_id
+      }]
+    }, expand: ["latest_invoice.payment_intent"])
+
+    {:ok, _sub} = create_platform_subscription(
+      %{
+        user: user,
+
+        stripe_subscription_id: sub.id,
+        stripe_product_id: product_id,
+        stripe_price_id: price_id,
+        stripe_current_period_end: sub.current_period_end,
+
+        is_active: true,
+        started_at: NaiveDateTime.utc_now(),
+        ended_at: NaiveDateTime.utc_now(),
+      }
+    )
+
+    :ok
+  end
+
   @doc """
   Returns the list of platform_subscription.
 

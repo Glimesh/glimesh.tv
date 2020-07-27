@@ -96,9 +96,12 @@ Hooks.LoadVideo = {
     }
 };
 Hooks.PaymentSubscription = {
+    customerId() { return this.el.dataset.stripe_customer_id },
     mounted() {
+        let backend = this;
+
         console.log("mountie");
-        var stripe = Stripe('pk_test_51H879QBLNaYgaiU5sxMGp6ADReahMRXHqa9jbqRPa5aQ0ABWfvNRNqT6NlEJBYqEbfsVXDumLveBR7ZRVKqvDamd00o4bxnKAK');
+        var stripe = Stripe('');
         var elements = stripe.elements();
 
         var style = {
@@ -117,10 +120,10 @@ Hooks.PaymentSubscription = {
             }
         };
 
-        var cardElement = elements.create("card", {
+        var card = elements.create("card", {
             style: style
         });
-        cardElement.mount("#card-element");
+        card.mount("#card-element");
 
         var form = document.getElementById('subscription-form');
 
@@ -140,6 +143,7 @@ Hooks.PaymentSubscription = {
                     invoiceId,
                 });
             } else {
+                console.log(card)
                 // create new payment method & create subscription
                 createPaymentMethod({
                     card
@@ -148,60 +152,70 @@ Hooks.PaymentSubscription = {
         });
 
         function createSubscription({ customerId, paymentMethodId, priceId }) {
-            return (
-                fetch('/create-subscription', {
-                    method: 'post',
-                    headers: {
-                        'Content-type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        customerId: customerId,
-                        paymentMethodId: paymentMethodId,
-                        priceId: priceId,
-                    }),
-                })
-                    .then((response) => {
-                        return response.json();
-                    })
-                    // If the card is declined, display an error to the user.
-                    .then((result) => {
-                        if (result.error) {
-                            // The card had an error when trying to attach it to a customer.
-                            throw result;
-                        }
-                        return result;
-                    })
-                    // Normalize the result to contain the object returned by Stripe.
-                    // Add the additional details we need.
-                    .then((result) => {
-                        return {
-                            paymentMethodId: paymentMethodId,
-                            priceId: priceId,
-                            subscription: result,
-                        };
-                    })
-                    // Some payment methods require a customer to be on session
-                    // to complete the payment process. Check the status of the
-                    // payment intent to handle these actions.
-                    .then(handlePaymentThatRequiresCustomerAction)
-                    // If attaching this card to a Customer object succeeds,
-                    // but attempts to charge the customer fail, you
-                    // get a requires_payment_method error.
-                    .then(handleRequiresPaymentMethod)
-                    // No more actions required. Provision your service for the user.
-                    .then(onSubscriptionComplete)
-                    .catch((error) => {
-                        // An error has happened. Display the failure to the user here.
-                        // We utilize the HTML element we created.
-                        showCardError(error);
-                    })
-            );
+            backend.pushEvent("stripe-create-subscription", {
+                customerId: customerId,
+                paymentMethodId: paymentMethodId,
+                priceId: priceId,
+            }, function(done) {
+                console.log("done")
+            });
+            //
+            // return (
+            //     fetch('/create-subscription', {
+            //         method: 'post',
+            //         headers: {
+            //             'Content-type': 'application/json',
+            //         },
+            //         body: JSON.stringify({
+            //             customerId: customerId,
+            //             paymentMethodId: paymentMethodId,
+            //             priceId: priceId,
+            //         }),
+            //     })
+            //         .then((response) => {
+            //             return response.json();
+            //         })
+            //         // If the card is declined, display an error to the user.
+            //         .then((result) => {
+            //             if (result.error) {
+            //                 // The card had an error when trying to attach it to a customer.
+            //                 throw result;
+            //             }
+            //             return result;
+            //         })
+            //         // Normalize the result to contain the object returned by Stripe.
+            //         // Add the additional details we need.
+            //         .then((result) => {
+            //             return {
+            //                 paymentMethodId: paymentMethodId,
+            //                 priceId: priceId,
+            //                 subscription: result,
+            //             };
+            //         })
+            //         // Some payment methods require a customer to be on session
+            //         // to complete the payment process. Check the status of the
+            //         // payment intent to handle these actions.
+            //         .then(handlePaymentThatRequiresCustomerAction)
+            //         // If attaching this card to a Customer object succeeds,
+            //         // but attempts to charge the customer fail, you
+            //         // get a requires_payment_method error.
+            //         .then(handleRequiresPaymentMethod)
+            //         // No more actions required. Provision your service for the user.
+            //         .then(onSubscriptionComplete)
+            //         .catch((error) => {
+            //             // An error has happened. Display the failure to the user here.
+            //             // We utilize the HTML element we created.
+            //             showCardError(error);
+            //         })
+            // );
         }
 
 
         function createPaymentMethod({ card, isPaymentRetry, invoiceId }) {
+            console.log(card);
+
             // Set up payment method for recurring usage
-            let billingName = document.querySelector('#name').value;
+            let billingName = "Luke Strickland";
             stripe
                 .createPaymentMethod({
                     type: 'card',
@@ -217,25 +231,29 @@ Hooks.PaymentSubscription = {
                         if (isPaymentRetry) {
                             // Update the payment method and retry invoice payment
                             retryInvoiceWithNewPaymentMethod({
-                                customerId: customerId,
+                                customerId: backend.customerId(),
                                 paymentMethodId: result.paymentMethod.id,
                                 invoiceId: invoiceId,
-                                priceId: priceId,
+                                priceId: "price_1H8TwGBLNaYgaiU5uwYJO2Vb",
                             });
                         } else {
                             // Create the subscription
                             createSubscription({
-                                customerId: customerId,
+                                customerId: backend.customerId(),
                                 paymentMethodId: result.paymentMethod.id,
-                                priceId: priceId,
+                                priceId: "price_1H8TwGBLNaYgaiU5uwYJO2Vb",
                             });
                         }
                     }
                 });
         }
 
+        function displayError(err) {
+            console.error(err);
+        }
 
-        cardElement.on('change', showCardError);
+
+        card.on('change', showCardError);
 
         function showCardError(event) {
             let displayError = document.getElementById('card-errors');
@@ -263,7 +281,6 @@ window.addEventListener("phx:page-loading-stop", info => {
         document.getElementById("primaryNav").classList.remove('show');
     }
 });
-// tryVideo();
 
 // connect if there are any LiveViews on the page
 liveSocket.connect();

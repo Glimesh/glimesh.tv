@@ -2,11 +2,17 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Payments
+  alias Glimesh.Accounts
   alias Glimesh.Payments.PlatformSubscription
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, :platform_subscriptions, list_platform_subscriptions())}
+  def mount(_params, session, socket) do
+    user = Accounts.get_user_by_session_token(session["user_token"])
+
+    {:ok, socket
+        |> assign(:user, user)
+        |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
+        |> assign(:platform_subscriptions, list_platform_subscriptions())}
   end
 
   @impl true
@@ -38,6 +44,14 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
     {:ok, _} = Payments.delete_platform_subscription(platform_subscription)
 
     {:noreply, assign(socket, :platform_subscriptions, list_platform_subscriptions())}
+  end
+
+  @impl true
+  def handle_event("stripe-create-subscription", %{"paymentMethodId" => payment_method, "priceId" => price_id}, socket) do
+    :ok = Glimesh.Payments.set_payment_method(socket.assigns.user, payment_method)
+    :ok = Glimesh.Payments.subscribe(:platform, socket.assigns.user, "prod_HhtjnDMhfliLrf", price_id)
+
+    {:reply, socket}
   end
 
   defp list_platform_subscriptions do

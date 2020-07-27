@@ -263,6 +263,28 @@ defmodule Glimesh.Accounts do
       |> Repo.update()
   end
 
+  @doc """
+  Gets or creates the user's stripe_customer_id.
+  """
+  def get_stripe_customer_id(user) do
+    case user.stripe_customer_id do
+      nil ->
+        new_customer = %{
+          email: user.email,
+          description: user.username
+        }
+
+        {:ok, stripe_customer} = Stripe.Customer.create(new_customer)
+        {:ok, _} = user
+                   |> User.stripe_changeset(%{stripe_customer_id: stripe_customer.id})
+                   |> Repo.update()
+
+        stripe_customer.id
+
+      stripe_customer_id -> stripe_customer_id
+    end
+  end
+
   ## Session
 
   @doc """
