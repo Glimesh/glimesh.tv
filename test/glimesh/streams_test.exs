@@ -48,7 +48,7 @@ defmodule Glimesh.StreamsTest do
     @update_attrs %{has_live_notifications: false}
     @invalid_attrs %{has_live_notifications: nil}
 
-    def followers_fixture(attrs \\ %{}) do
+    def followers_fixture() do
       streamer = user_fixture()
       user = user_fixture()
 
