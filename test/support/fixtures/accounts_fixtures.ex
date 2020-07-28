@@ -12,9 +12,9 @@ defmodule Glimesh.AccountsFixtures do
     {:ok, user} =
       attrs
       |> Enum.into(%{
-        "username" => unique_user_username(),
-        "email" => unique_user_email(),
-        "password" => valid_user_password()
+        username: unique_user_username(),
+        email: unique_user_email(),
+        password: valid_user_password()
       })
       |> Glimesh.Accounts.register_user()
 
