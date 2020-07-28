@@ -5,7 +5,7 @@ config :glimesh, Glimesh.Repo,
   username: "postgres",
   password: "postgres",
   database: "glimesh_dev",
-  hostname: "localhost",
+  hostname: System.get_env("DATABASE_URL") || "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
