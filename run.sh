@@ -9,7 +9,7 @@ mix deps.get
 mix ecto.setup
 
 # install nodejs stuff
-cd assets && npm install
+cd assets && npm ci
 cd ..
 
 FILE=./priv/cert/selfsigned.pem
