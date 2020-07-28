@@ -193,6 +193,9 @@ defmodule Glimesh.Chat do
     end
   end
 
+  def user_in_message(username, chat_message) do
+    !(username==chat_message.user.username) && ( String.match?(chat_message.message, ~r/#{username}/i) || String.match?(chat_message.message, ~r/#{"@"<>username}/i))
+  end
 
   def subscribe do
     Phoenix.PubSub.subscribe(Glimesh.PubSub, "chats")
