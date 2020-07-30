@@ -11,6 +11,8 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
 
     {:ok, socket
         |> assign(:user, user)
+        |> assign(:stripe_error, nil)
+        |> assign(:stripe_public_key, Application.get_env(:stripity_stripe, :public_api_key))
         |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
         |> assign(:platform_subscriptions, list_platform_subscriptions())}
   end
@@ -48,10 +50,14 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
 
   @impl true
   def handle_event("stripe-create-subscription", %{"paymentMethodId" => payment_method, "priceId" => price_id}, socket) do
-    :ok = Glimesh.Payments.set_payment_method(socket.assigns.user, payment_method)
-    :ok = Glimesh.Payments.subscribe(:platform, socket.assigns.user, "prod_HhtjnDMhfliLrf", price_id)
-
-    {:reply, socket}
+    # Basically, need to handle the error logic here, we need to rely on server side programming instead of client side crap
+    with {:ok, _} <- Glimesh.Payments.set_payment_method(socket.assigns.user, payment_method),
+         {:ok, subscription} <- Glimesh.Payments.subscribe(:platform, socket.assigns.user, "prod_HhtjnDMhfliLrf", price_id)
+      do
+        {:reply, subscription, socket}
+      else
+        {:error, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
+    end
   end
 
   defp list_platform_subscriptions do

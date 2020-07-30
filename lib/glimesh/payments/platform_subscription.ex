@@ -2,6 +2,15 @@ defmodule Glimesh.Payments.PlatformSubscription do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [
+    :stripe_subscription_id,
+    :stripe_product_id,
+    :stripe_price_id,
+    :stripe_current_period_end,
+    :is_active,
+    :started_at,
+    :ended_at
+  ]}
   schema "platform_subscriptions" do
     belongs_to :user, Glimesh.Accounts.User
 

@@ -3,144 +3,79 @@
 <div class="container">
   <h2>Glimesh Funding Progress</h2>
   <div class="progress progress-bar-stack mb-4 br-30" style="height: 32px">
-      <div class="progress-bar bg-success" role="progressbar" style="width: 5%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">Platform Subs</div>
+      <div class="progress-bar bg-success" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">Platform Subs</div>
       <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">Streamer Subs</div>
-      <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">Donations</div>
   </div>
 </div>
 
 
-<div class="container">
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <form id="subscription-form" phx-hook="PaymentSubscription" data-stripe-customer-id="<%= @stripe_customer_id %>">
-                <div id="card-element" class="MyCardElement">
-                  <!-- Elements will create input elements here -->
-                </div>
-
-                <!-- We'll put the error messages in this element -->
-                <div id="card-errors" role="alert"></div>
-                <button type="submit">Subscribe</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-</div>
-
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <!-- Billing Cycle  -->
-                <div class="billing-cycle-radios mt-5">
-                    <div class="radio billed-yearly-radio">
-                        <div class="d-flex justify-content-center">
-                            <span class="txt-monthly">Monthly</span>
-                            <label class="switch s-icons s-outline  s-outline-success">
-                                <input type="checkbox" id="radio-6">
-                                <span class="slider round"></span>
-                            </label>
-                            <span class="txt-yearly">Yearly <span class="badge badge-pill badge-primary">20% Off</span></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pricing Plans Container -->
+            <div class="col-lg-8">
                 <div class="pricing-plans-container mt-5 d-md-flex d-block">
                     <!-- Plan -->
                     <div class="pricing-plan mb-5">
                         <h3>Lil Meshi</h3>
-                        <p class="margin-top-10">cPanel/WHM included. Intel Xeon E3 with guaranteed 2GB RAM.</p>
+                        <p class="margin-top-10">Help us fund the platform & grow!</p>
                         <div class="pricing-plan-label billed-monthly-label"><strong>$5</strong>/ monthly</div>
                         <div class="pricing-plan-label billed-yearly-label"><strong>$290</strong>/ yearly</div>
                         <div class="pricing-plan-features mb-4">
                             <strong>Cosmetic Features</strong>
                             <ul>
-                                <li>Glimmering Meshi</li>
-                                <li>50 GB SSD</li>
-                                <li>1 TB Premium Bandwidth</li>
+                                <li>Colored Avatar Ring</li>
+                                <li>Animated Emotes</li>
                             </ul>
                         </div>
-                        <a href="javascript:void(0);" class="button btn btn-primary btn-block margin-top-20">Subscribe</a>
+                        <a href="javascript:void(0);" class="button btn btn-default btn-block margin-top-20">Select</a>
                     </div>
                     <!-- Plan -->
                     <div class="pricing-plan mb-5 mt-md-0 recommended">
                         <div class="recommended-badge">Popular!</div>
-                        <h3>Glimeshi</h3>
-                        <p class="margin-top-10">cPanel/WHM included. Intel Xeon E5 with guaranteed 4GB RAM.</p>
+                        <h3>Founder</h3>
+                        <p class="margin-top-10">Support Glimesh's future with your wallet! Get special perks to show off.</p>
                         <div class="pricing-plan-label billed-monthly-label"><strong>$25</strong>/ monthly</div>
                         <div class="pricing-plan-label billed-yearly-label"><strong>$670</strong>/ yearly</div>
                         <div class="pricing-plan-features mb-4">
-                            <strong>Features</strong>
+                            <strong>Cosmetic Features</strong>
                             <ul>
-                                <li>5 Domains</li>
-                                <li>Animated Mehsi Ring</li>
-                                <li>2 TB Premium Bandwidth</li>
+                                <li>Founder Badge</li>
+                                <li>Animated Avatar Ring</li>
+                                <li>5 Custom Emotes</li>
                             </ul>
                         </div>
-                        <a href="javascript:void(0);" class="button btn btn-default btn-block margin-top-20">Subscribe</a>
+                        <a href="javascript:void(0);" class="button btn btn-default btn-block margin-top-20">Selected</a>
                     </div>
-                    <!-- Plan -->
-                    <div class="pricing-plan mb-5">
-                        <h3>Glim Glammer</h3>
-                        <p class="margin-top-10">cPanel/WHM included. Intel Xeon E5 with guaranteed 8GB RAM.</p>
-                        <div class="pricing-plan-label billed-monthly-label"><strong>$50</strong>/ monthly</div>
-                        <div class="pricing-plan-label billed-yearly-label"><strong>$1100</strong>/ yearly</div>
-                        <div class="pricing-plan-features mb-4">
-                            <strong>Premium Features</strong>
-                            <ul>
-                                <li>Animated Mehsi Ring</li>
-                                <li>Customized Chat Background</li>
-                                <li>Something Cool</li>
-                            </ul>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                  <div class="card-body">
+                    <form id="subscription-form" phx-hook="PlatformSubscription" data-stripe-public-key="<%= @stripe_public_key %>" data-stripe-customer-id="<%= @stripe_customer_id %>">
+                        <h4>Billing Information</h4>
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input id="name" name="name" placeholder="Jenny Rosen" required class="form-control">
                         </div>
-                        <a href="javascript:void(0);" class="button btn btn-primary btn-block margin-top-20">Subscribe</a>
-                    </div>
+                        <h4>Payment Information</h4>
+                        <div class="form-group">
+                            <div id="card-element" class="form-control">
+                              <!-- Elements will create input elements here -->
+                            </div>
+                        </div>
+
+                        <%= if @stripe_error do %>
+                            <p><%= @stripe_error %></p>
+                        <% end %>
+
+                        <h4>Total Charge</h4>
+                        <div class="pricing-plan-label billed-monthly-label"><strong>$25</strong>/ monthly</div>
+
+                        <!-- We'll put the error messages in this element -->
+                        <div id="card-errors" role="alert"></div>
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">Subscribe</button>
+                    </form>
+                  </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-<%= if @live_action in [:new, :edit] do %>
-  <%= live_modal @socket, GlimeshWeb.PlatformSubscriptionLive.FormComponent,
-    id: @platform_subscription.id || :new,
-    title: @page_title,
-    action: @live_action,
-    platform_subscription: @platform_subscription,
-    return_to: Routes.platform_subscription_index_path(@socket, :index) %>
-<% end %>
-
-
-<table>
-  <thead>
-    <tr>
-      <th>Stripe product</th>
-      <th>Started at</th>
-      <th>Ended at</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="platform_subscriptions">
-    <%= for platform_subscription <- @platform_subscriptions do %>
-      <tr id="platform_subscription-<%= platform_subscription.id %>">
-        <td><%= platform_subscription.stripe_product_id %></td>
-        <td><%= platform_subscription.started_at %></td>
-        <td><%= platform_subscription.ended_at %></td>
-
-        <td>
-          <span><%= live_redirect "Show", to: Routes.platform_subscription_show_path(@socket, :show, platform_subscription) %></span>
-          <span><%= live_patch "Edit", to: Routes.platform_subscription_index_path(@socket, :edit, platform_subscription) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: platform_subscription.id, data: [confirm: "Are you sure?"] %></span>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<span><%= live_patch "New Platform subscription", to: Routes.platform_subscription_index_path(@socket, :new) %></span>

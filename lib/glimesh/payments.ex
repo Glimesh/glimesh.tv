@@ -11,46 +11,44 @@ defmodule Glimesh.Payments do
   def set_payment_method(user, payment_method_id) do
     customer_id = Glimesh.Accounts.get_stripe_customer_id(user)
 
-    {:ok, _} = Stripe.PaymentMethod.attach(%{
-      customer: customer_id,
-      payment_method: payment_method_id
-    })
-
-    {:ok, _} = Stripe.Customer.update(customer_id, %{
-      invoice_settings: %{
-        default_payment_method: payment_method_id
-      }
-    })
-
-    :ok
+    with {:ok, _} <- Stripe.PaymentMethod.attach(%{customer: customer_id, payment_method: payment_method_id}),
+         {:ok, _} = Stripe.Customer.update(
+           customer_id,
+           %{invoice_settings: %{default_payment_method: payment_method_id}}
+         )
+      do
+      {:ok, "Successfully saved and set payment method as default."}
+    else
+      {:error, %Stripe.Error{user_message: user_message}} -> {:error, user_message}
+    end
   end
 
   def subscribe(:platform, user, product_id, price_id) do
     customer_id = Glimesh.Accounts.get_stripe_customer_id(user)
 
-    {:ok, sub} = Stripe.Subscription.create(%{
-      customer: customer_id,
-      items: [%{
-        price: price_id
-      }]
-    }, expand: ["latest_invoice.payment_intent"])
+    stripe_input = %{ customer: customer_id, items: [%{ price: price_id }] }
 
-    {:ok, _sub} = create_platform_subscription(
-      %{
-        user: user,
+    with {:ok, sub} <- Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"]),
+         {:ok, platform_sub} <- create_platform_subscription(
+           %{
+             user: user,
 
-        stripe_subscription_id: sub.id,
-        stripe_product_id: product_id,
-        stripe_price_id: price_id,
-        stripe_current_period_end: sub.current_period_end,
+             stripe_subscription_id: sub.id,
+             stripe_product_id: product_id,
+             stripe_price_id: price_id,
+             stripe_current_period_end: sub.current_period_end,
 
-        is_active: true,
-        started_at: NaiveDateTime.utc_now(),
-        ended_at: NaiveDateTime.utc_now(),
-      }
-    )
-
-    :ok
+             is_active: true,
+             started_at: NaiveDateTime.utc_now(),
+             ended_at: NaiveDateTime.utc_now(),
+           }
+         )
+    do
+      {:ok, platform_sub}
+    else
+      {:error, %Stripe.Error{user_message: user_message}} -> {:error, user_message}
+      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
+    end
   end
 
   @doc """
