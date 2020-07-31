@@ -18,21 +18,21 @@
                        <%  end %>
                        <%= if @user.social_youtube do %>
                        <li rel="ugc" class="list-inline-item">
-                           <a href="https://youtube.com/<%= @user.social_youtube %>" class="social-icon">
+                           <a href="https://youtube.com/<%= @user.social_youtube %>" _target="blank" class="social-icon">
                                <i class="fab fa-youtube"></i>
                            </a>
                        </li>
                        <%  end %>
                        <%= if @user.social_instagram do %>
                        <li class="list-inline-item">
-                           <a rel="ugc" href="https://instagram.com/<%= @user.social_instagram %>" class="social-icon">
+                           <a rel="ugc" href="https://instagram.com/<%= @user.social_instagram %>" _target="blank" class="social-icon">
                                <i class="fab fa-instagram"></i>
                            </a>
                        </li>
                        <%  end %>
                        <%= if @user.social_discord do %>
                        <li class="list-inline-item">
-                           <a rel="ugc" href="https://discord.gg/<%= @user.social_discord %>" class="social-icon">
+                           <a rel="ugc" href="https://discord.gg/<%= @user.social_discord %>" _target="blank" class="social-icon">
                                <i class="fab fa-discord"></i>
                            </a>
                        </li>
