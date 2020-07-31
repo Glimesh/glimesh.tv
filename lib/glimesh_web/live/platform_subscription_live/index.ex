@@ -14,7 +14,7 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
         |> assign(:stripe_error, nil)
         |> assign(:stripe_public_key, Application.get_env(:stripity_stripe, :public_api_key))
         |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
-        |> assign(:platform_subscriptions, list_platform_subscriptions())}
+        |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
   end
 
   @impl true
@@ -49,13 +49,29 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
   end
 
   @impl true
-  def handle_event("stripe-create-subscription", %{"paymentMethodId" => payment_method, "priceId" => price_id}, socket) do
+  def handle_event("cancel-subscription", %{}, socket) do
+    user = socket.assigns.user
+
     # Basically, need to handle the error logic here, we need to rely on server side programming instead of client side crap
-    with {:ok, _} <- Glimesh.Payments.set_payment_method(socket.assigns.user, payment_method),
-         {:ok, subscription} <- Glimesh.Payments.subscribe(:platform, socket.assigns.user, "prod_HhtjnDMhfliLrf", price_id)
+    with {:ok, _} <- Glimesh.Payments.cancel_subscription(:platform, user)
       do
-        {:reply, subscription, socket}
+      {:noreply, socket |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
+    else
+      {:error, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
+    end
+  end
+
+  @impl true
+  def handle_event("stripe-create-subscription", %{"paymentMethodId" => payment_method, "priceId" => price_id}, socket) do
+    user = socket.assigns.user
+    # Basically, need to handle the error logic here, we need to rely on server side programming instead of client side crap
+    with {:ok, _} <- Glimesh.Payments.set_payment_method(user, payment_method),
+         {:ok, subscription} <- Glimesh.Payments.subscribe(:platform, user, "prod_HhtjnDMhfliLrf", price_id)
+      do
+        {:reply, subscription, socket |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
       else
+        {:pending_requires_action, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
+        {:pending_requires_payment_method, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
         {:error, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
     end
   end

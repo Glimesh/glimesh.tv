@@ -27,10 +27,17 @@ defmodule Glimesh.Payments.PlatformSubscription do
   end
 
   @doc false
-  def changeset(platform_subscription, attrs) do
+  def create_changeset(platform_subscription, attrs) do
     platform_subscription
-    |> cast(attrs, [:stripe_subscription_id, :stripe_product_id, :stripe_price_id, :stripe_current_period_end, :started_at, :ended_at])
+    |> cast(attrs, [:stripe_subscription_id, :stripe_product_id, :stripe_price_id, :stripe_current_period_end, :started_at, :ended_at, :is_active])
     |> put_assoc(:user, attrs.user)
     |> validate_required([:user, :stripe_subscription_id, :stripe_product_id, :stripe_price_id, :stripe_current_period_end, :started_at, :ended_at])
+  end
+
+  @doc false
+  def update_changeset(platform_subscription, attrs) do
+    platform_subscription
+    |> cast(attrs, [:stripe_current_period_end, :ended_at, :is_active])
+    |> validate_required([:stripe_current_period_end, :ended_at, :is_active])
   end
 end

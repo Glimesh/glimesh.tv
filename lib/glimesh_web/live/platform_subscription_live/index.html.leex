@@ -1,13 +1,12 @@
 
 
-<div class="container">
-  <h2>Glimesh Funding Progress</h2>
-  <div class="progress progress-bar-stack mb-4 br-30" style="height: 32px">
-      <div class="progress-bar bg-success" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">Platform Subs</div>
-      <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">Streamer Subs</div>
-  </div>
-</div>
-
+    <div class="container">
+        <h2>Glimesh Funding Progress</h2>
+        <div class="progress progress-bar-stack mb-4 br-30" style="height: 32px">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">Platform Subs</div>
+            <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">Streamer Subs</div>
+        </div>
+    </div>
 
     <div class="container">
         <div class="row">
@@ -50,6 +49,20 @@
             <div class="col-lg-4">
                 <div class="card">
                   <div class="card-body">
+                    <%= if @has_platform_subscription do %>
+                    <h4>You're already subscribed!</h4>
+
+                    <div class="text-center mt-4 mb-4">
+                        <img src="/images/glimcons/GlimberryPie.png" alt="" class="img-fluid">
+                    </div>
+
+                    <%= if @stripe_error do %>
+                        <p><%= @stripe_error %></p>
+                    <% end %>
+
+                    <button class="btn btn-danger btn-block" phx-click="cancel-subscription" phx-throttle="1000">Cancel Subscription</button>
+
+                    <% else %>
                     <form id="subscription-form" phx-hook="PlatformSubscription" data-stripe-public-key="<%= @stripe_public_key %>" data-stripe-customer-id="<%= @stripe_customer_id %>">
                         <h4>Billing Information</h4>
                         <div class="form-group">
@@ -74,6 +87,9 @@
                         <div id="card-errors" role="alert"></div>
                         <button type="submit" class="btn btn-primary btn-block btn-lg">Subscribe</button>
                     </form>
+
+                    <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider." class="img-fluid mt-4">
+                    <% end %>
                   </div>
                 </div>
             </div>

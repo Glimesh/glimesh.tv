@@ -51,6 +51,27 @@ defmodule Glimesh.Payments do
     end
   end
 
+  def cancel_subscription(:platform, user) do
+    platform_subscription = get_platform_subscription(user)
+
+    with {:ok, sub} <- Stripe.Subscription.delete(platform_subscription.stripe_subscription_id),
+         {:ok, platform_sub} <- update_platform_subscription(platform_subscription, %{is_active: false})
+      do
+      {:ok, platform_sub}
+    else
+      {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
+      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
+    end
+  end
+
+  def get_platform_subscription(user) do
+    Repo.get_by!(PlatformSubscription, user_id: user.id, is_active: true) |> Repo.preload(:user)
+  end
+
+  def has_platform_subscription?(user) do
+    Repo.exists?(from s in PlatformSubscription, where: s.user_id == ^user.id and s.is_active == true)
+  end
+
   @doc """
   Returns the list of platform_subscription.
 
@@ -63,22 +84,6 @@ defmodule Glimesh.Payments do
   def list_platform_subscriptions do
     Repo.all(PlatformSubscription)
   end
-
-  @doc """
-  Gets a single platform_subscription.
-
-  Raises `Ecto.NoResultsError` if the Platform subscriptions does not exist.
-
-  ## Examples
-
-      iex> get_platform_subscription!(123)
-      %PlatformSubscription{}
-
-      iex> get_platform_subscription!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_platform_subscription!(id), do: Repo.get!(PlatformSubscription, id)
 
   @doc """
   Creates a platform_subscription.
@@ -94,7 +99,7 @@ defmodule Glimesh.Payments do
   """
   def create_platform_subscription(attrs \\ %{}) do
     %PlatformSubscription{}
-    |> PlatformSubscription.changeset(attrs)
+    |> PlatformSubscription.create_changeset(attrs)
     |> Repo.insert()
   end
 
@@ -112,7 +117,7 @@ defmodule Glimesh.Payments do
   """
   def update_platform_subscription(%PlatformSubscription{} = platform_subscription, attrs) do
     platform_subscription
-    |> PlatformSubscription.changeset(attrs)
+    |> PlatformSubscription.update_changeset(attrs)
     |> Repo.update()
   end
 
