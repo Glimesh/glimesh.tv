@@ -1,0 +1,83 @@
+<div class="container">
+    <h2>Your Payment Portal</h2>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value">$ 0</h6>
+                            <p class="">Received</p>
+                        </div>
+                        <div class="">
+                            <div class="w-icon">
+                                <i class="fas fa-chevron-up"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value">$ 50.00</h6>
+                            <p class="">Spent</p>
+                        </div>
+                        <div class="">
+                            <div class="w-icon">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="widget widget-account-invoice-two">
+                <div class="widget-content">
+                    <div class="account-box">
+                        <div class="info">
+                            <h5 class="">Streamer</h5>
+                            <!--<p class="inv-balance">$10,344</p>-->
+                        </div>
+                        <div class="acc-action">
+                            <div class="">
+                            </div>
+                            <a href="<%= @stripe_oauth_url %>" class="btn btn-light-default">Enable Subscriptions</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5>Your Financial Details</h5>
+        </div>
+        <div class="card-body">
+
+        </div>
+    </div>
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5>Income History</h5>
+        </div>
+        <div class="card-body">
+
+        </div>
+    </div>
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5>Payment History</h5>
+        </div>
+        <div class="card-body">
+
+        </div>
+    </div>
+</div>
+
