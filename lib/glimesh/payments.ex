@@ -72,6 +72,28 @@ defmodule Glimesh.Payments do
     Repo.exists?(from s in PlatformSubscription, where: s.user_id == ^user.id and s.is_active == true)
   end
 
+  def get_oauth_connect_url(user) do
+    connect_opts = %{
+      state: "2686e7a93156ff5af76a83262ac653",
+      stripe_user: %{
+        "email" => user.email,
+      }
+    }
+
+    Stripe.Connect.OAuth.authorize_url(connect_opts)
+  end
+
+  def oauth_connect(user, code) do
+    with {:ok, resp} <- Stripe.Connect.OAuth.token(code) |> IO.inspect(),
+         {:ok, _} <- Glimesh.Accounts.set_stripe_user_id(user, resp.stripe_user_id)
+    do
+      {:ok, "Successfully updated Stripe oauth user."}
+    else
+      {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
+      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
+    end
+  end
+
   @doc """
   Returns the list of platform_subscription.
 

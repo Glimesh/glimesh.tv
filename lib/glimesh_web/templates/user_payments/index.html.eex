@@ -40,6 +40,17 @@
             <div class="widget widget-account-invoice-two">
                 <div class="widget-content">
                     <div class="account-box">
+                        <%= if @is_verified_streamer do %>
+                        <div class="info">
+                            <h5 class="">Verified Streamer</h5>
+                            <!--<p class="inv-balance">$10,344</p>-->
+                        </div>
+                        <div class="acc-action">
+                            <div class="">
+                            <h6>Welcome to the sub club!</h6>
+                            </div>
+                        </div>
+                        <% else %>
                         <div class="info">
                             <h5 class="">Streamer</h5>
                             <!--<p class="inv-balance">$10,344</p>-->
@@ -49,6 +60,7 @@
                             </div>
                             <a href="<%= @stripe_oauth_url %>" class="btn btn-light-default">Enable Subscriptions</a>
                         </div>
+                        <% end %>
                     </div>
                 </div>
             </div>

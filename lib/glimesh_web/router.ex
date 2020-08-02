@@ -68,6 +68,7 @@ defmodule GlimeshWeb.Router do
     live "/platform_subscriptions/:id/show/edit", PlatformSubscriptionLive.Show, :edit
 
     get "/users/payments", UserPaymentsController, :index
+    get "/users/payments/connect", UserPaymentsController, :connect
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings/update_profile", UserSettingsController, :update_profile

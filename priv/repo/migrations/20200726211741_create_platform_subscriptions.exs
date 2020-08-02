@@ -17,6 +17,7 @@ defmodule Glimesh.Repo.Migrations.CreatePlatformSubscriptions do
     end
 
     alter table(:users) do
+      add :stripe_user_id, :string
       add :stripe_customer_id, :string
     end
 

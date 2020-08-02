@@ -285,6 +285,12 @@ defmodule Glimesh.Accounts do
     end
   end
 
+  def set_stripe_user_id(user, user_id) do
+    user
+    |> User.stripe_changeset(%{stripe_user_id: user_id})
+    |> Repo.update()
+  end
+
   ## Session
 
   @doc """

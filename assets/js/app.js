@@ -87,9 +87,11 @@ function tryVideo(url) {
 }
 
 import PlatformSubscription from './hooks/PlatformSubscription';
+import ProcessPayment from './hooks/ProcessPayment';
 
 let Hooks = {};
 Hooks.PlatformSubscription = PlatformSubscription;
+Hooks.ProcessPayment = ProcessPayment;
 Hooks.LoadVideo = {
     playbackUrl() {
         return this.el.dataset.playbackUrl
