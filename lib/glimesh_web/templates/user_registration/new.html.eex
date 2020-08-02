@@ -265,7 +265,8 @@
                                     <i class="fas fa-lock"></i>
 
                                     <%= password_input f, :password, class: "form-control", placeholder: "Password", required: true %>
-
+                                    <script src="https://hcaptcha.com/1/api.js" async defer></script>
+                                    <div class="h-captcha" data-sitekey="46f3bf93-0bd9-4129-94c2-61171a88ed80"></div>
                                     <%= submit "Register", class: "btn btn-success" %>
                                 </div>
                                 <%= error_tag f, :password %>
