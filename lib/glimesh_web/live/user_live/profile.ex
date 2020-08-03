@@ -4,7 +4,7 @@ defmodule GlimeshWeb.UserLive.Profile do
   alias Glimesh.Accounts
 
   def mount(%{"username" => username}, _session, socket) do
-    case Accounts.get_by_username(String.downcase(username)) do
+    case Accounts.get_by_username(username) do
       %Glimesh.Accounts.User{} = user ->
         {:ok, socket
               |> assign(:page_title, "#{user.displayname}'s Profile")

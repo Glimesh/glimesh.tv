@@ -4,9 +4,9 @@ defmodule Glimesh.Repo.Migrations.AddDisplaynameToUserAuthTable do
   def change do
     alter table(:users) do
       add :displayname, :string, default: nil
+      modify :username, :citext
     end
     execute "UPDATE users SET displayname = username"
-    execute "UPDATE users SET username = lower(username)"
   end
 
   def down do
@@ -14,6 +14,7 @@ defmodule Glimesh.Repo.Migrations.AddDisplaynameToUserAuthTable do
     execute "UPDATE users SET displayname = NULL"
     alter table(:users) do
       remove :displayname
+      modify :username, :string
     end
   end
 end

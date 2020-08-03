@@ -94,15 +94,11 @@ defmodule Glimesh.Accounts do
 
   """
   def register_user(attrs) do
-    gottenUsername = if attrs["username"], do: String.downcase(attrs["username"]), else: nil # Looks to see if the user has just loaded the registration page. Without it the page will always crash.
     # Check to see if the register_user function was called from a test or the live site
-    cond do
-      attrs["username"] ->
-        attrs = Map.merge(attrs, %{"displayname" => attrs["username"], "username" => gottenUsername})
-      attrs[:username] ->
-        attrs = Map.merge(attrs, %{displayname: attrs["username"], username: gottenUsername})
-      true ->
-        attrs = attrs
+    attrs = cond do
+      attrs["username"] -> Map.merge(attrs, %{"displayname" => attrs["username"]})
+      attrs[:username] -> Map.merge(attrs, %{displayname: attrs[:username]})
+      true -> attrs
     end
     %User{}
     |> User.registration_changeset(attrs)
