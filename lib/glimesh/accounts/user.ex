@@ -20,6 +20,8 @@ defmodule Glimesh.Accounts.User do
     field :social_instagram, :string
     field :social_discord, :string
 
+    field :locale, :string, default: "en"
+
     timestamps()
   end
 

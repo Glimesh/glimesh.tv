@@ -1,6 +1,6 @@
 <div class="container">
-    <h2>Your Profile</h2>
-    <%= live_redirect "View Public Profile", class: "btn btn-primary mb-4", to: Routes.user_profile_path(@conn, :index, @user.username) %>
+    <h2><%= dgettext "profile", "Your Profile" %></h2>
+    <%= live_redirect dgettext("profile", "View Public Profile"), class: "btn btn-primary mb-4", to: Routes.user_profile_path(@conn, :index, @user.username) %>
 
     <%= form_for @profile_changeset, Routes.user_settings_path(@conn, :update_profile), [multipart: true, class: "form"], fn f -> %>
 
@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="text-center">
-                    <h5 class="mt-4">Profile Picture</h5>
+                    <h5 class="mt-4"><%= dgettext("profile", "Your Settings") %></h5>
                     <img src="<%= Glimesh.Avatar.url({@user.avatar, @user}, :original) %>" alt="Your Profile Picture"
                          class="img-responsive mb-4 img-avatar">
 
@@ -19,32 +19,32 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <h5 class="">Your Settings</h5>
+                <h5 class=""><%= dgettext "profile", "Your Settings" %></h5>
 
                 <%= if @profile_changeset.action do %>
                 <div class="alert alert-danger">
-                    <p>Oops, something went wrong! Please check the errors below.</p>
+                    <p><%= dgettext "errors", "Oops, something went wrong! Please check the errors below." %></p>
                 </div>
                 <% end %>
 
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <%= label f, :username %>
+                            <%= label f, dgettext("profile", "Username") %>
                             <%= text_input f, :username, [disabled: "true", class: "form-control mb-4"] %>
                             <%= error_tag f, :username %>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <%= label f, :email %>
+                            <%= label f, dgettext("profile", "Email") %>
                             <%= text_input f, :email, [disabled: "true", class: "form-control mb-4"] %>
                             <%= error_tag f, :email %>
                         </div>
                     </div>
                 </div>
                 <div class="info">
-                    <h5 class="">Social</h5>
+                    <h5 class=""><%= dgettext "profile", "Social" %></h5>
 
                     <div class="row">
                         <div class="col-md-6">
@@ -53,7 +53,7 @@
                                     <span class="input-group-text" id="tweet"><i
                                                 class="fab fa-twitter"></i></span>
                                 </div>
-                                <%= text_input f, :social_twitter, [class: "form-control", placeholder: "Twitter Username"] %>
+                                <%= text_input f, :social_twitter, [class: "form-control", placeholder: dgettext("profile", "Twitter Username")] %>
                                 <%= error_tag f, :social_twitter %>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                                         <span class="input-group-text" id="instagram"><i
                                                     class="fab fa-instagram"></i></span>
                                 </div>
-                                <%= text_input f, :social_instagram, [class: "form-control", placeholder: "Instagram Username"] %>
+                                <%= text_input f, :social_instagram, [class: "form-control", placeholder: dgettext("profile", "Instagram Username")] %>
                                 <%= error_tag f, :social_instagram %>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                                         <span class="input-group-text" id="fb"><i
                                                     class="fab fa-youtube"></i></span>
                                 </div>
-                                <%= text_input f, :social_youtube, [class: "form-control", placeholder: "YouTube Username"] %>
+                                <%= text_input f, :social_youtube, [class: "form-control", placeholder: dgettext("profile", "YouTube Username")] %>
                                 <%= error_tag f, :social_youtube %>
                             </div>
                         </div>
@@ -87,13 +87,13 @@
                                         <span class="input-group-text" id="discord"><i
                                                     class="fab fa-discord"></i></span>
                                 </div>
-                                <%= text_input f, :social_discord, [class: "form-control", placeholder: "Discord Server URL"] %>
+                                <%= text_input f, :social_discord, [class: "form-control", placeholder: dgettext("profile", "Discord Server URL")] %>
                                 <%= error_tag f, :social_discord %>
                             </div>
                         </div>
                     </div>
                 </div>
-                <input type="submit" class="btn btn-primary" value="Update Settings">
+                <button type="submit" class="btn btn-primary"><%= dgettext("profile", "Update Settings") %></button>
             </div>
         </div>
         </div>
@@ -105,26 +105,26 @@
             <div class="card mt-4">
                 <div class="card-body">
 
-                    <h3>Change e-mail</h3>
+                    <h3><%= dgettext "profile", "Change e-mail" %></h3>
 
                     <%= form_for @email_changeset, Routes.user_settings_path(@conn, :update_email), fn f -> %>
                     <%= if @email_changeset.action do %>
                     <div class="alert alert-danger">
-                        <p>Oops, something went wrong! Please check the errors below.</p>
+                        <p><%= dgettext "errors", "Oops, something went wrong! Please check the errors below." %></p>
                     </div>
                     <% end %>
 
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <%= label f, :email %>
+                                <%= label f, dgettext("profile", "Email") %>
                                 <%= email_input f, :email, required: true, class: "form-control mb-4" %>
                                 <%= error_tag f, :email %>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <%= label f, :current_password, for: "current_password_for_email" %>
+                                <%= label f, :current_password, dgettext("profile", "Current Password") %>
                                 <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email", class: "form-control mb-4" %>
                                 <%= error_tag f, :current_password %>
                             </div>
@@ -132,7 +132,7 @@
                     </div>
 
                     <div>
-                        <%= submit "Change E-mail", class: "btn btn-primary" %>
+                        <%= submit dgettext("profile", "Change E-mail"), class: "btn btn-primary" %>
                     </div>
                     <% end %>
                 </div>
@@ -140,12 +140,12 @@
             <div class="card mt-4">
                 <div class="card-body">
 
-                    <h3>Change password</h3>
+                    <h3><%= dgettext "profile", "Change password" %></h3>
 
                     <%= form_for @password_changeset, Routes.user_settings_path(@conn, :update_password), fn f -> %>
                     <%= if @password_changeset.action do %>
                     <div class="alert alert-danger">
-                        <p>Oops, something went wrong! Please check the errors below.</p>
+                        <p><%= dgettext "errors", "Oops, something went wrong! Please check the errors below." %></p>
                     </div>
                     <% end %>
 
@@ -153,12 +153,12 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <%= label f, :password, "New password" %>
+                                <%= label f, :password, dgettext("profile", "New password") %>
                                 <%= password_input f, :password, required: true, class: "form-control mb-4" %>
                                 <%= error_tag f, :password %>
                             </div>
                             <div class="form-group">
-                                <%= label f, :current_password, for: "current_password_for_password" %>
+                                <%= label f, :current_password, dgettext("profile", "Current Password") %>
                                 <%= password_input f, :current_password, required: true, name: "current_password", id:
                                 "current_password_for_password", class: "form-control mb-4" %>
                                 <%= error_tag f, :current_password %>
@@ -166,7 +166,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <%= label f, :password_confirmation, "Confirm new password" %>
+                                <%= label f, :password_confirmation, dgettext("profile", "Confirm New Password") %>
                                 <%= password_input f, :password_confirmation, required: true, class: "form-control mb-4"  %>
                                 <%= error_tag f, :password_confirmation %>
                             </div>
@@ -174,7 +174,7 @@
                     </div>
 
                     <div>
-                        <%= submit "Change Password", class: "btn btn-primary" %>
+                        <%= submit dgettext("profile", "Change Password"), class: "btn btn-primary" %>
                     </div>
                     <% end %>
                 </div>
@@ -183,4 +183,3 @@
     </div>
 
 </div>
-

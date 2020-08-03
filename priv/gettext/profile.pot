@@ -1,0 +1,104 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here as no
+## effect: edit them in PO (.po) files instead.
+msgid ""
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:135
+msgid "Change E-mail"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:127
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:161
+msgid "Current Password"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:3
+msgid "View Public Profile"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:12
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:22
+msgid "Your Settings"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:108
+msgid "Change e-mail"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:90
+msgid "Discord Server URL"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:40
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:120
+msgid "Email"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:67
+msgid "Instagram Username"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:47
+msgid "Social"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:56
+msgid "Twitter Username"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:96
+msgid "Update Settings"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:33
+msgid "Username"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:79
+msgid "YouTube Username"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:2
+msgid "Your Profile"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:177
+msgid "Change Password"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:143
+msgid "Change password"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:169
+msgid "Confirm new password"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:156
+msgid "New password"
+msgstr ""
