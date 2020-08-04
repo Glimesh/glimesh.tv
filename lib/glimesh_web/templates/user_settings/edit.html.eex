@@ -1,5 +1,5 @@
 <div class="container">
-    <h2 style="margin-top: 8px;">Your Profile</h2>
+    <h2 class="mt-4">Your Profile</h2>
     <%= live_redirect "View Public Profile", class: "btn btn-primary mb-4", to: Routes.user_profile_path(@conn, :index, @user.username) %>
 
     <%= form_for @profile_changeset, Routes.user_settings_path(@conn, :update_profile), [multipart: true, class: "form"], fn f -> %>

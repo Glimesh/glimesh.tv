@@ -31,11 +31,7 @@
           <li class="nav-item dropdown user-profile-dropdown">
               <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown"
                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  <%= if @current_user.displayname do %>
-                    <%= @current_user.displayname %>
-                  <% else %>
-                    <%= @current_user.username %>
-                  <% end %>
+                  <%= @current_user.displayname %>
                   <img src="<%= Glimesh.Avatar.url({@current_user.avatar, @current_user}, :original) %>" alt="avatar" class="img-avatar">
               </a>
               <div class="dropdown-menu" aria-labelledby="userProfileDropdown">
