@@ -29,7 +29,7 @@ defmodule GlimeshWeb.UserLive.SubscribeButton do
      payment_method_types: ["card"],
      amount: 500,
      currency: "usd",
-     application_fee_amount: 240,
+     application_fee_amount: 250,
      transfer_data: %{
        destination: streamer.stripe_user_id,
      }

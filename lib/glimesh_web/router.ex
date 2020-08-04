@@ -37,9 +37,11 @@ defmodule GlimeshWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", GlimeshWeb do
-  #   pipe_through :api
-  # end
+   scope "/api", GlimeshWeb do
+     pipe_through :api
+
+     post "/webhook/stripe", WebhookController, :stripe
+   end
 
 
   ## Authentication routes

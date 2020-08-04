@@ -43,7 +43,8 @@ config :phoenix, :template_engines,
 config :stripity_stripe,
        api_key: "YOUR SECRET KEY",
        public_api_key: "YOUR PUBLIC KEY",
-       connect_client_id: "YOUR CLIENT ID"
+       connect_client_id: "YOUR CLIENT ID",
+       webhook_secret: "YOUR WEBHOOK SECRET"
 
 import_config "badwords.exs"
 # Import environment specific config. This must remain at the bottom

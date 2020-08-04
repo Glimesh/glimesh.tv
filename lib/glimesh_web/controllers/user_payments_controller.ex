@@ -12,13 +12,12 @@ defmodule GlimeshWeb.UserPaymentsController do
       "state" => Plug.CSRFProtection.get_csrf_token(),
       "suggested_capabilities" => ["transfers", "card_payments"],
       "stripe_user" => %{
-        "email" => user.email
+        "email" => user.email,
+        "url" => Routes.user_stream_url(conn, :index, user.username)
       }
     })
 
     stripe_oauth_url = "https://connect.stripe.com/express/oauth/authorize?" <> params
-
-    IO.inspect(user)
 
     render(conn, "index.html",
       is_verified_streamer: !is_nil(user.stripe_user_id),
