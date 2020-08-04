@@ -40,4 +40,53 @@ defmodule Glimesh.StreamsTest do
     #    end
   end
 
+
+  describe "followers" do
+    alias Glimesh.Streams.Followers
+
+    @valid_attrs %{has_live_notifications: true}
+    @update_attrs %{has_live_notifications: false}
+    @invalid_attrs %{has_live_notifications: nil}
+
+    def followers_fixture() do
+      streamer = user_fixture()
+      user = user_fixture()
+
+      {:ok, followers} = Streams.follow(streamer, user)
+
+      followers
+    end
+
+    test "follow/2 successfully follows streamer" do
+      streamer = user_fixture()
+      user = user_fixture()
+      Streams.follow(streamer, user)
+      assert Streams.list_followed_streams(user) == [streamer]
+    end
+
+    test "unfollow/2 successfully unfollows streamer" do
+      streamer = user_fixture()
+      user = user_fixture()
+      Streams.follow(streamer, user)
+      assert Streams.list_followed_streams(user) == [streamer]
+
+      Streams.unfollow(streamer, user)
+      assert Streams.list_followed_streams(user) == []
+    end
+
+    test "is_following?/1 detects active follow" do
+      streamer = user_fixture()
+      user = user_fixture()
+      Streams.follow(streamer, user)
+      assert Streams.is_following?(streamer, user) == true
+    end
+
+    test "follow/2 twice returns error changeset" do
+      streamer = user_fixture()
+      user = user_fixture()
+
+      Streams.follow(streamer, user)
+      assert {:error, %Ecto.Changeset{}} = Streams.follow(streamer, user)
+    end
+  end
 end

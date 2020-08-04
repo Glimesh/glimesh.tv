@@ -139,6 +139,21 @@ defmodule GlimeshWeb.UserAuth do
     end
   end
 
+  @doc """
+  Used for routes that require the user to be an administrator.
+  """
+  def require_admin_user(conn, opts) do
+    if conn.assigns[:current_user] && conn.assigns[:current_user].is_admin do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must be an administrator to access this page.")
+      |> maybe_store_return_to()
+      |> redirect(to: Routes.user_session_path(conn, :new))
+      |> halt()
+    end
+  end
+
   defp maybe_store_return_to(%{method: "GET", request_path: request_path} = conn) do
     put_session(conn, :user_return_to, request_path)
   end

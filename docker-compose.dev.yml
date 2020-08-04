@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: ./run.sh
+    environment:
+      - MIX_ENV=dev
+      - DATABASE_URL=db
+    depends_on:
+      - db
+    volumes:
+      - type: bind
+        source: .
+        target: /app

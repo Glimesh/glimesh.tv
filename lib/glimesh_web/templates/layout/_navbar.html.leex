@@ -25,6 +25,11 @@
         <li class="nav-item">
             <%= live_redirect "IRL", class: "nav-link", to: Routes.page_path(@conn, :index, "irl") %>
         </li>
+        <%= if assigns[:current_user] do %>
+        <li class="nav-item">
+            <%= live_redirect "Following", class: "nav-link", to: Routes.page_path(@conn, :index, "following") %>
+        </li>
+        <% end %>
     </ul>
      <ul class="navbar-nav">
           <%= if assigns[:current_user] do %>
