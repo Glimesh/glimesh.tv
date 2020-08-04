@@ -10,7 +10,7 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
     test "renders settings page", %{conn: conn} do
       conn = get(conn, Routes.user_settings_path(conn, :edit))
       response = html_response(conn, 200)
-      assert response =~ "<h2>Your Profile</h2>"
+      assert response =~ "<h2 class=\"mt-4\">Your Profile</h2>"
     end
 
     test "redirects if user is not logged in" do
@@ -48,10 +48,10 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
         })
 
       response = html_response(old_password_conn, 200)
-      assert response =~ "<h2>Your Profile</h2>"
-      assert response =~ "should be at least 8 character(s)"
-      assert response =~ "does not match password"
-      assert response =~ "is not valid"
+      assert response =~ "<h2 class=\"mt-4\">Your Profile</h2>"
+      assert response =~ "Must be at least 8 characters"
+      assert response =~ "Password does not match"
+      assert response =~ "Invalid Password"
 
       assert get_session(old_password_conn, :user_token) == get_session(conn, :user_token)
     end
@@ -79,9 +79,9 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
         })
 
       response = html_response(conn, 200)
-      assert response =~ "<h2>Your Profile</h2>"
+      assert response =~ "<h2 class=\"mt-4\">Your Profile</h2>"
       assert response =~ "must have the @ sign and no spaces"
-      assert response =~ "is not valid"
+      assert response =~ "Invalid Password"
     end
   end
 

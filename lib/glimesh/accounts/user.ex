@@ -6,6 +6,7 @@ defmodule Glimesh.Accounts.User do
   @derive {Inspect, except: [:password]}
   schema "users" do
     field :username, :string
+    field :displayname, :string
     field :email, :string
     field :password, :string, virtual: true
     field :hashed_password, :string
@@ -33,7 +34,7 @@ defmodule Glimesh.Accounts.User do
   """
   def registration_changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :email, :password, :is_admin])
+    |> cast(attrs, [:username, :email, :password, :displayname, :is_admin])
     |> validate_username()
     |> validate_email()
     |> validate_password()
@@ -109,6 +110,14 @@ defmodule Glimesh.Accounts.User do
     |> delete_change(:password)
   end
 
+  defp validate_displayname(changeset) do
+    username = get_field(changeset, :username)
+
+    changeset
+    |> validate_length(:displayname, min: 3, max: 50)
+    |> validate_format(:displayname, ~r/#{username}/i)
+  end
+
   @doc """
   A user changeset for changing the e-mail.
 
@@ -120,7 +129,7 @@ defmodule Glimesh.Accounts.User do
     |> validate_email()
     |> case do
       %{changes: %{email: _}} = changeset -> changeset
-      %{} = changeset -> add_error(changeset, :email, "did not change")
+      %{} = changeset -> add_error(changeset, :email, "Email is the same")
     end
   end
 
@@ -130,7 +139,7 @@ defmodule Glimesh.Accounts.User do
   def password_changeset(user, attrs) do
     user
     |> cast(attrs, [:password])
-    |> validate_confirmation(:password, message: "does not match password")
+    |> validate_confirmation(:password, message: "Password does not match")
     |> validate_password()
   end
 
@@ -139,8 +148,9 @@ defmodule Glimesh.Accounts.User do
   """
   def profile_changeset(user, attrs) do
     user
-    |> cast(attrs, [:social_twitter, :social_youtube, :social_instagram, :social_discord])
+    |> cast(attrs, [:displayname, :social_twitter, :social_youtube, :social_instagram, :social_discord])
     |> cast_attachments(attrs, [:avatar])
+    |> validate_displayname()
   end
 
   @doc """
@@ -174,7 +184,7 @@ defmodule Glimesh.Accounts.User do
     if valid_password?(changeset.data, password) do
       changeset
     else
-      add_error(changeset, :current_password, "is not valid")
+      add_error(changeset, :current_password, "Invalid Password")
     end
   end
 end

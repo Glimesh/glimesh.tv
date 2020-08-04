@@ -7,7 +7,7 @@ defmodule GlimeshWeb.UserLive.Profile do
     case Accounts.get_by_username(username) do
       %Glimesh.Accounts.User{} = user ->
         {:ok, socket
-              |> assign(:page_title, "#{username}'s Profile")
+              |> assign(:page_title, "#{user.displayname}'s Profile")
               |> assign(:user, user)
         }
 

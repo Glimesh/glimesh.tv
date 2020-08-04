@@ -94,6 +94,12 @@ defmodule Glimesh.Accounts do
 
   """
   def register_user(attrs) do
+    # Check to see if the register_user function was called from a test or the live site
+    attrs = cond do
+      attrs["username"] -> Map.merge(attrs, %{"displayname" => attrs["username"]})
+      attrs[:username] -> Map.merge(attrs, %{displayname: attrs[:username]})
+      true -> attrs
+    end
     %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()

@@ -1,5 +1,5 @@
 <div class="container">
-    <h2>Your Profile</h2>
+    <h2 class="mt-4">Your Profile</h2>
     <%= live_redirect "View Public Profile", class: "btn btn-primary mb-4", to: Routes.user_profile_path(@conn, :index, @user.username) %>
 
     <%= form_for @profile_changeset, Routes.user_settings_path(@conn, :update_profile), [multipart: true, class: "form"], fn f -> %>
@@ -23,16 +23,16 @@
 
                 <%= if @profile_changeset.action do %>
                 <div class="alert alert-danger">
-                    <p>Oops, something went wrong! Please check the errors below.</p>
+                    <p style="margin-bottom: 0px;">Oops, something went wrong! Please check the errors below.</p>
                 </div>
                 <% end %>
 
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <%= label f, :username %>
-                            <%= text_input f, :username, [disabled: "true", class: "form-control mb-4"] %>
-                            <%= error_tag f, :username %>
+                            <%= label f, "Display Name" %>
+                            <%= text_input f, :displayname, [class: "form-control"]%>
+                            <%= error_tag f, :displayname %>
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -61,8 +61,8 @@
                         <div class="col-md-6">
                             <div class="input-group social-instagram mb-3">
                                 <div class="input-group-prepend">
-                                        <span class="input-group-text" id="instagram"><i
-                                                    class="fab fa-instagram"></i></span>
+                                    <span class="input-group-text" id="instagram"><i
+                                                class="fab fa-instagram"></i></span>
                                 </div>
                                 <%= text_input f, :social_instagram, [class: "form-control", placeholder: "Instagram Username"] %>
                                 <%= error_tag f, :social_instagram %>
@@ -73,8 +73,8 @@
                         <div class="col-md-6">
                             <div class="input-group social-youtube mb-3">
                                 <div class="input-group-prepend">
-                                        <span class="input-group-text" id="fb"><i
-                                                    class="fab fa-youtube"></i></span>
+                                    <span class="input-group-text" id="fb"><i
+                                                class="fab fa-youtube"></i></span>
                                 </div>
                                 <%= text_input f, :social_youtube, [class: "form-control", placeholder: "YouTube Username"] %>
                                 <%= error_tag f, :social_youtube %>
@@ -84,8 +84,8 @@
                         <div class="col-md-6">
                             <div class="input-group social-discord mb-3">
                                 <div class="input-group-prepend">
-                                        <span class="input-group-text" id="discord"><i
-                                                    class="fab fa-discord"></i></span>
+                                    <span class="input-group-text" id="discord"><i
+                                                class="fab fa-discord"></i></span>
                                 </div>
                                 <%= text_input f, :social_discord, [class: "form-control", placeholder: "Discord Server URL"] %>
                                 <%= error_tag f, :social_discord %>
@@ -110,7 +110,7 @@
                     <%= form_for @email_changeset, Routes.user_settings_path(@conn, :update_email), fn f -> %>
                     <%= if @email_changeset.action do %>
                     <div class="alert alert-danger">
-                        <p>Oops, something went wrong! Please check the errors below.</p>
+                        <p style="margin-bottom: 0px;">Oops, something went wrong! Please check the errors below.</p>
                     </div>
                     <% end %>
 
@@ -145,7 +145,7 @@
                     <%= form_for @password_changeset, Routes.user_settings_path(@conn, :update_password), fn f -> %>
                     <%= if @password_changeset.action do %>
                     <div class="alert alert-danger">
-                        <p>Oops, something went wrong! Please check the errors below.</p>
+                        <p style="margin-bottom: 0px;">Oops, something went wrong! Please check the errors below.</p>
                     </div>
                     <% end %>
 
@@ -183,4 +183,3 @@
     </div>
 
 </div>
-
