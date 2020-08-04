@@ -68,12 +68,26 @@ defmodule GlimeshWeb.Router do
   end
 
   scope "/", GlimeshWeb do
+    pipe_through [:browser, :require_admin_user]
+
+    get    "/blog/new", ArticleController, :new
+    get    "/blog/:slug/edit", ArticleController, :edit
+    post   "/blog", ArticleController, :create
+    patch  "/blog/:slug", ArticleController, :update
+    put    "/blog/:slug", ArticleController, :update
+    delete "/blog/:slug", ArticleController, :delete
+  end
+
+  scope "/", GlimeshWeb do
     pipe_through [:browser]
 
     get "/about", AboutController, :index
     get "/about/faq", AboutController, :faq
     get "/about/privacy", AboutController, :privacy
     get "/about/terms", AboutController, :terms
+
+    get "/blog", ArticleController, :index
+    get "/blog/:slug", ArticleController, :show
 
     live "/", PageLive, :index
     live "/streams", PageLive, :index
