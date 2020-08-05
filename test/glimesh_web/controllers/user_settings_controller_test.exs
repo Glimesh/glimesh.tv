@@ -20,6 +20,51 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
     end
   end
 
+  describe "PUT /users/settings/update_profile" do
+    test "updates the social media profiles", %{conn: conn, user: user} do
+      profile_conn =
+        put(conn, Routes.user_settings_path(conn, :update_profile), %{
+          "user" => %{
+            "social_twitter" => "some-fake-twitter-url"
+          }
+        })
+
+      assert redirected_to(profile_conn) == Routes.user_settings_path(conn, :edit)
+      assert get_flash(profile_conn, :info) =~ "Profile updated successfully"
+
+      response = html_response(get(conn, Routes.user_settings_path(conn, :edit)), 200)
+      assert response =~ "some-fake-twitter-url"
+    end
+
+    test "does update displayname if case changes", %{conn: conn, user: user} do
+      profile_conn =
+        put(conn, Routes.user_settings_path(conn, :update_profile), %{
+          "user" => %{
+            "displayname" => String.upcase(user.username),
+          }
+        })
+
+      assert redirected_to(profile_conn) == Routes.user_settings_path(conn, :edit)
+      assert get_flash(profile_conn, :info) =~ "Profile updated successfully"
+
+      response = html_response(get(conn, Routes.user_settings_path(conn, :edit)), 200)
+      assert response =~ String.upcase(user.username)
+    end
+
+    test "does not update displayname if it does not match username", %{conn: conn, user: user} do
+      profile_conn =
+        put(conn, Routes.user_settings_path(conn, :update_profile), %{
+          "user" => %{
+            "displayname" => user.username <> "f",
+          }
+        })
+
+      response = html_response(profile_conn, 200)
+      assert response =~ "<h2 class=\"mt-4\">Your Profile</h2>"
+      assert response =~ "Display name must match Username"
+    end
+  end
+
   describe "PUT /users/settings/update_password" do
     test "updates the user password and resets tokens", %{conn: conn, user: user} do
       new_password_conn =

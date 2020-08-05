@@ -110,12 +110,14 @@ defmodule Glimesh.Accounts.User do
     |> delete_change(:password)
   end
 
-  defp validate_displayname(changeset) do
-    username = get_field(changeset, :username)
-
-    changeset
-    |> validate_length(:displayname, min: 3, max: 50)
-    |> validate_format(:displayname, ~r/#{username}/i)
+  def validate_displayname(changeset) do
+    validate_change(changeset, :displayname, fn (current_field, value) ->
+      if String.downcase(value) !== get_field(changeset, :username) do
+        [{current_field, "Display name must match Username"}]
+        else
+        []
+      end
+    end)
   end
 
   @doc """
