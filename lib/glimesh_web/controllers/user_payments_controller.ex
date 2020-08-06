@@ -1,9 +1,6 @@
 defmodule GlimeshWeb.UserPaymentsController do
   use GlimeshWeb, :controller
 
-  alias Glimesh.Accounts
-  alias GlimeshWeb.UserAuth
-
   def index(conn, _params) do
     user = conn.assigns.current_user
 
@@ -21,7 +18,7 @@ defmodule GlimeshWeb.UserPaymentsController do
 
     render(conn, "index.html",
       is_verified_streamer: !is_nil(user.stripe_user_id),
-      stripe_oauth_url: stripe_oauth_url,
+      stripe_oauth_url: stripe_oauth_url
     )
   end
 

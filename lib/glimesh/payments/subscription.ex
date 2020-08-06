@@ -1,4 +1,4 @@
-defmodule Glimesh.Payments.PlatformSubscription do
+defmodule Glimesh.Payments.Subscription do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,8 +11,9 @@ defmodule Glimesh.Payments.PlatformSubscription do
     :started_at,
     :ended_at
   ]}
-  schema "platform_subscriptions" do
+  schema "subscriptions" do
     belongs_to :user, Glimesh.Accounts.User
+    belongs_to :streamer, Glimesh.Accounts.User
 
     field :stripe_subscription_id, :string
     field :stripe_product_id, :string
@@ -27,16 +28,17 @@ defmodule Glimesh.Payments.PlatformSubscription do
   end
 
   @doc false
-  def create_changeset(platform_subscription, attrs) do
-    platform_subscription
+  def create_changeset(subscription, attrs) do
+    subscription
     |> cast(attrs, [:stripe_subscription_id, :stripe_product_id, :stripe_price_id, :stripe_current_period_end, :started_at, :ended_at, :is_active])
     |> put_assoc(:user, attrs.user)
+    |> put_assoc(:streamer, attrs.streamer)
     |> validate_required([:user, :stripe_subscription_id, :stripe_product_id, :stripe_price_id, :stripe_current_period_end, :started_at, :ended_at])
   end
 
   @doc false
-  def update_changeset(platform_subscription, attrs) do
-    platform_subscription
+  def update_changeset(subscription, attrs) do
+    subscription
     |> cast(attrs, [:stripe_current_period_end, :ended_at, :is_active])
     |> validate_required([:stripe_current_period_end, :ended_at, :is_active])
   end

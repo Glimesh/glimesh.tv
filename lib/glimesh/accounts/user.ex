@@ -22,6 +22,7 @@ defmodule Glimesh.Accounts.User do
 
     field :stripe_user_id, :string
     field :stripe_customer_id, :string
+    field :stripe_payment_method, :string
 
     timestamps()
   end
@@ -151,7 +152,7 @@ defmodule Glimesh.Accounts.User do
   """
   def stripe_changeset(user, attrs) do
     user
-    |> cast(attrs, [:stripe_customer_id, :stripe_user_id])
+    |> cast(attrs, [:stripe_customer_id, :stripe_user_id, :stripe_payment_method])
   end
 
   @doc """

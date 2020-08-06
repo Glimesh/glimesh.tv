@@ -1,57 +1,75 @@
 
-<div id="subscription-magic"
-    phx-hook="ProcessPayment"
-    data-stripe-public-key="<%= @stripe_public_key %>"
-    data-stripe-customer-id="<%= @stripe_customer_id %>">
+<div id="subscription-magic">
     <%= if @user do %>
         <%= if @subscribed do %>
           <button class="btn btn-secondary" phx-click="unsubscribe">Unsubscribe</button>
         <% else %>
-          <button class="btn btn-secondary" phx-click="subscribe" phx-throttle="50000">Subscribe</button>
+          <button class="btn btn-secondary" phx-click="show_modal">Subscribe</button>
         <% end %>
     <% else %>
         <%= link "Subscribe", to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary" %>
     <% end %>
 
-    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="paymentModalLabel">Payment Details</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <form id="subscription-form">
-          <div class="modal-body">
-            <div class="form-group">
-                <label for="paymentName">Your Name</label>
-                <input id="paymentName" name="name" placeholder="Name on Your Card" required class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="card-element">Payment Details</label>
-                <div id="card-element" class="form-control">
-                  <!-- Elements will create input elements here -->
-                </div>
-            </div>
+        <%= if @show_subscription do %>
+        <div id="paymentModal2" class="live-modal"
+              phx-capture-click="hide_modal"
+              phx-window-keydown="hide_modal"
+              phx-key="escape"
+              phx-target="#paymentModal2"
+              phx-page-loading>
 
-            <%= if @stripe_error do %>
-                <p><%= @stripe_error %></p>
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Payment Details</h5>
+                        <button type="button" class="close" phx-click="hide_modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="subscription-form"
+                        phx-hook="ProcessPayment"
+                        data-stripe-public-key="<%= @stripe_public_key %>"
+                        data-stripe-customer-id="<%= @stripe_customer_id %>"
+                        data-stripe-payment-method="<%= @stripe_payment_method %>">
+                              <div class="modal-body">
+                                <%= if @stripe_payment_method do %>
+                                  <p>Payment method already attached!</p>
+                                <% else %>
+                                    <div class="form-group">
+                                        <label for="paymentName">Your Name</label>
+                                        <input id="paymentName" name="name" placeholder="Name on Your Card" required class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="card-element">Payment Details</label>
+                                        <div id="card-element" class="form-control">
+                                          <!-- Elements will create input elements here -->
+                                        </div>
+                                    </div>
+                                <% end %>
+
+                                <%= if @stripe_error do %>
+                                <div class="alert alert-danger" role="alert">
+                                  <%= @stripe_error %>
+                                </div>
+
+                                <% end %>
+
+                                <h4>Total Charge</h4>
+                                <div class="pricing-plan-label billed-monthly-label">
+                                    <strong>$5</strong>/ monthly
+                                </div>
+
+                                <!-- We'll put the error messages in this element -->
+                                <div id="card-errors" role="alert"></div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn-block btn-lg">Subscribe</button>
+                              </div>
+                              </form>
+                </div>
+              </div>
+            </div>
             <% end %>
 
-            <h4>Total Charge</h4>
-            <div class="pricing-plan-label billed-monthly-label">
-                <strong>$5</strong>/ monthly
-            </div>
 
-            <!-- We'll put the error messages in this element -->
-            <div id="card-errors" role="alert"></div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary btn-block btn-lg">Subscribe</button>
-          </div>
-          </form>
-        </div>
-      </div>
-    </div>
 </div>

@@ -6,20 +6,19 @@ defmodule Glimesh.Payments do
   import Ecto.Query, warn: false
   alias Glimesh.Repo
 
-  alias Glimesh.Payments.PlatformSubscription
+  alias Glimesh.Payments.Subscription
 
   def set_payment_method(user, payment_method_id) do
     customer_id = Glimesh.Accounts.get_stripe_customer_id(user)
 
     with {:ok, _} <- Stripe.PaymentMethod.attach(%{customer: customer_id, payment_method: payment_method_id}),
-         {:ok, _} = Stripe.Customer.update(
-           customer_id,
-           %{invoice_settings: %{default_payment_method: payment_method_id}}
-         )
+         {:ok, _} <- Stripe.Customer.update(customer_id, %{invoice_settings: %{default_payment_method: payment_method_id}}),
+         {:ok, _} <- Glimesh.Accounts.set_stripe_default_payment(user, payment_method_id)
       do
       {:ok, "Successfully saved and set payment method as default."}
     else
       {:error, %Stripe.Error{user_message: user_message}} -> {:error, user_message}
+      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
     end
   end
 
@@ -29,7 +28,7 @@ defmodule Glimesh.Payments do
     stripe_input = %{ customer: customer_id, items: [%{ price: price_id }] }
 
     with {:ok, sub} <- Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"]),
-         {:ok, platform_sub} <- create_platform_subscription(
+         {:ok, platform_sub} <- create_subscription(
            %{
              user: user,
 
@@ -50,12 +49,51 @@ defmodule Glimesh.Payments do
       {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
     end
   end
+  def subscribe(:channel, user, streamer, product_id, price_id) do
+    # Basically the same as subscribe(:platform) but with
+    # "transfer_data" => [
+    #    "destination" => "{{CONNECTED_STRIPE_ACCOUNT_ID}}",
+    #  ],
+    # "application_fee_percent" => 10,
+    customer_id = Glimesh.Accounts.get_stripe_customer_id(user)
 
-  def cancel_subscription(:platform, user) do
-    platform_subscription = get_platform_subscription(user)
+    stripe_input = %{
+      customer: customer_id,
+      items: [%{ price: price_id }],
+      application_fee_percent: 50,
+      transfer_data: %{ destination: streamer.stripe_user_id }
+    }
 
-    with {:ok, sub} <- Stripe.Subscription.delete(platform_subscription.stripe_subscription_id),
-         {:ok, platform_sub} <- update_platform_subscription(platform_subscription, %{is_active: false})
+    with {:ok, stripe_sub} <- Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"]),
+         {:ok, channel_sub} <- create_subscription(
+           %{
+             user: user,
+             streamer: streamer,
+
+             stripe_subscription_id: stripe_sub.id,
+             stripe_product_id: product_id,
+             stripe_price_id: price_id,
+             stripe_current_period_end: stripe_sub.current_period_end,
+
+             is_active: true,
+             started_at: NaiveDateTime.utc_now(),
+             ended_at: NaiveDateTime.utc_now(),
+           }
+         )
+      do
+      {:ok, %{
+        status: stripe_sub.status,
+        subscription: channel_sub
+      }}
+    else
+      {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
+      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
+    end
+  end
+
+  def unsubscribe(subscription) do
+    with {:ok, _} <- Stripe.Subscription.delete(subscription.stripe_subscription_id),
+         {:ok, platform_sub} <- update_subscription(subscription, %{is_active: false})
       do
       {:ok, platform_sub}
     else
@@ -64,16 +102,28 @@ defmodule Glimesh.Payments do
     end
   end
 
-  def get_platform_subscription(user) do
-    Repo.get_by!(PlatformSubscription, user_id: user.id, is_active: true) |> Repo.preload(:user)
+  def get_platform_subscription!(user) do
+    Repo.get_by!(Subscription, user_id: user.id, is_active: true, streamer_id: nil) |> Repo.preload(:user)
   end
 
   def has_platform_subscription?(user) do
-    Repo.exists?(from s in PlatformSubscription, where: s.user_id == ^user.id and s.is_active == true)
+    Repo.exists?(from s in Subscription, where: s.user_id == ^user.id and s.is_active == true and is_nil(s.streamer_id))
+  end
+
+  def get_channel_subscriptions(user) do
+    Repo.all(from s in Subscription, where: s.user_id == ^user.id and s.is_active == true and not is_nil(s.streamer_id)) |> Repo.preload(:user)
+  end
+
+  def get_channel_subscription!(user, streamer) do
+    Repo.get_by!(Subscription, user_id: user.id, is_active: true, streamer_id: streamer.id) |> Repo.preload(:user)
+  end
+
+  def has_channel_subscription?(user, streamer) do
+    Repo.exists?(from s in Subscription, where: s.user_id == ^user.id and s.is_active == true and s.streamer_id == ^streamer.id)
   end
 
   def oauth_connect(user, code) do
-    with {:ok, resp} <- Stripe.Connect.OAuth.token(code) |> IO.inspect(),
+    with {:ok, resp} <- Stripe.Connect.OAuth.token(code),
          {:ok, _} <- Glimesh.Accounts.set_stripe_user_id(user, resp.stripe_user_id)
     do
       {:ok, "Successfully updated Stripe oauth user."}
@@ -84,80 +134,80 @@ defmodule Glimesh.Payments do
   end
 
   @doc """
-  Returns the list of platform_subscription.
+  Returns the list of subscription.
 
   ## Examples
 
-      iex> list_platform_subscription()
-      [%PlatformSubscription{}, ...]
+      iex> list_subscription()
+      [%Subscription{}, ...]
 
   """
-  def list_platform_subscriptions do
-    Repo.all(PlatformSubscription)
+  def list_subscriptions do
+    Repo.all(Subscription)
   end
 
   @doc """
-  Creates a platform_subscription.
+  Creates a subscription.
 
   ## Examples
 
-      iex> create_platform_subscription(%{field: value})
-      {:ok, %PlatformSubscription{}}
+      iex> create_subscription(%{field: value})
+      {:ok, %Subscription{}}
 
-      iex> create_platform_subscription(%{field: bad_value})
+      iex> create_subscription(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_platform_subscription(attrs \\ %{}) do
-    %PlatformSubscription{}
-    |> PlatformSubscription.create_changeset(attrs)
+  def create_subscription(attrs \\ %{}) do
+    %Subscription{}
+    |> Subscription.create_changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a platform_subscription.
+  Updates a subscription.
 
   ## Examples
 
-      iex> update_platform_subscription(platform_subscription, %{field: new_value})
-      {:ok, %PlatformSubscription{}}
+      iex> update_subscription(subscription, %{field: new_value})
+      {:ok, %Subscription{}}
 
-      iex> update_platform_subscription(platform_subscription, %{field: bad_value})
+      iex> update_subscription(subscription, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_platform_subscription(%PlatformSubscription{} = platform_subscription, attrs) do
-    platform_subscription
-    |> PlatformSubscription.update_changeset(attrs)
+  def update_subscription(%Subscription{} = subscription, attrs) do
+    subscription
+    |> Subscription.update_changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a platform_subscription.
+  Deletes a subscription.
 
   ## Examples
 
-      iex> delete_platform_subscription(platform_subscription)
-      {:ok, %PlatformSubscription{}}
+      iex> delete_subscription(subscription)
+      {:ok, %Subscription{}}
 
-      iex> delete_platform_subscription(platform_subscription)
+      iex> delete_subscription(subscription)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_platform_subscription(%PlatformSubscription{} = platform_subscription) do
-    Repo.delete(platform_subscription)
+  def delete_subscription(%Subscription{} = subscription) do
+    Repo.delete(subscription)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking platform_subscription changes.
+  Returns an `%Ecto.Changeset{}` for tracking subscription changes.
 
   ## Examples
 
-      iex> change_platform_subscription(platform_subscription)
-      %Ecto.Changeset{data: %PlatformSubscription{}}
+      iex> change_subscription(subscription)
+      %Ecto.Changeset{data: %Subscription{}}
 
   """
-  def change_platform_subscription(%PlatformSubscription{} = platform_subscription, attrs \\ %{}) do
-    PlatformSubscription.changeset(platform_subscription, attrs)
+  def change_subscription(%Subscription{} = subscription, attrs \\ %{}) do
+    Subscription.create_changeset(subscription, attrs)
   end
 end

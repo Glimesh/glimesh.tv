@@ -11,11 +11,11 @@ defmodule Glimesh.Payments.Providers.Stripe do
   def handle_webhook(%{type: "payment_intent.succeeded"} = stripe_event) do
     IO.inspect(stripe_event)
   end
-  def handle_webhook(%{type: type} = stripe_event) do
+  def handle_webhook(%{type: type}) do
     {:error, "Webhook endpoint not found for #{type}"}
   end
-  def handle_webhook(unknown_event) do
-    {:error, "Webhook endpoint not found."}
+  def handle_webhook(_) do
+    {:error, "Webhook endpoint not correct type."}
   end
 
 end

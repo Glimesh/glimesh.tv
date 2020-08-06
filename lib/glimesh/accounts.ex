@@ -274,7 +274,7 @@ defmodule Glimesh.Accounts do
           description: user.username
         }
 
-        {:ok, stripe_customer} = Stripe.Customer.create(new_customer)
+        {:ok, stripe_customer} = Stripe.Customer.create(new_customer) |> IO.inspect()
         {:ok, _} = user
                    |> User.stripe_changeset(%{stripe_customer_id: stripe_customer.id})
                    |> Repo.update()
@@ -288,6 +288,12 @@ defmodule Glimesh.Accounts do
   def set_stripe_user_id(user, user_id) do
     user
     |> User.stripe_changeset(%{stripe_user_id: user_id})
+    |> Repo.update()
+  end
+
+  def set_stripe_default_payment(user, default_payment) do
+    user
+    |> User.stripe_changeset(%{stripe_payment_method: default_payment})
     |> Repo.update()
   end
 
