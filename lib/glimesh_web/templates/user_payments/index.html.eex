@@ -18,14 +18,13 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="widget widget-card-four">
+
+            <div class="widget widget-card-four mt-2">
                 <div class="widget-content">
                     <div class="w-content">
                         <div class="w-info">
-                            <h6 class="value">$ 50.00</h6>
-                            <p class="">Spent</p>
+                            <h6 class="value">$ 0</h6>
+                            <p class="">Sent</p>
                         </div>
                         <div class="">
                             <div class="w-icon">
@@ -33,6 +32,39 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <%= if @has_payment_method do %>
+
+                        <h5 class="">Saved Payment Method</h5>
+
+                        <p>You have an existing saved payment method. You can delete it by clicking the button below.</p>
+
+                        <%= form_for @default_payment_changeset, Routes.user_payments_path(@conn, :delete_default_payment), fn f -> %>
+                            <%= if @default_payment_changeset.action do %>
+                            <div class="alert alert-danger">
+                                <p>Oops, something went wrong! Please check the errors below.</p>
+                            </div>
+                            <% end %>
+                            <button type="submit" class="btn btn-block btn-danger">Delete Saved Payment</button>
+                        <% end %>
+
+                    <% else %>
+                    <div class="info">
+                        <h5 class="">Setup Payment Method</h5>
+                        <!--<p class="inv-balance">$10,344</p>-->
+                    </div>
+                    <div class="acc-action">
+                        <div class="">
+                        <p>You can link a payment method by creating a subscription to a channel, or the platform.</p>
+                        </div>
+                    </div>
+                    <% end %>
                 </div>
             </div>
         </div>
@@ -67,13 +99,19 @@
         </div>
     </div>
 
-    <div class="card mt-4">
-        <div class="card-header">
-            <h5>Your Financial Details</h5>
-        </div>
-        <div class="card-body">
-
-        </div>
+    <h4 class="mt-4">Your Subscriptions</h4>
+    <div class="row">
+        <%= for sub <- @subscriptions do %>
+            <div class="col-md-3">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title"><%= sub.streamer.username %></h5>
+                    <p class="card-text">Subscribed since <%= sub.started_at %>.</p>
+                    <%= link "Unsubscribe", to: Routes.user_stream_path(@conn, :index, sub.streamer.username), class: "btn btn-danger btn-sm" %>
+                  </div>
+                </div>
+            </div>
+        <% end %>
     </div>
     <div class="card mt-4">
         <div class="card-header">

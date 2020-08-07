@@ -291,6 +291,11 @@ defmodule Glimesh.Accounts do
     |> Repo.update()
   end
 
+
+  def change_stripe_default_payment(%User{} = user, attrs \\ %{}) do
+    User.stripe_changeset(user, attrs)
+  end
+
   def set_stripe_default_payment(user, default_payment) do
     user
     |> User.stripe_changeset(%{stripe_payment_method: default_payment})

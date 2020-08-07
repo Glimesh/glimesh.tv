@@ -105,6 +105,8 @@ export default {
                     .then(backend.onSubscriptionComplete.bind(backend));
             } else {
                 // Create a payment method first if we don't have one...
+                let billingName = document.getElementById("paymentName");
+
                 backend.createPaymentMethod(card, billingName.value).then(function({paymentMethod}) {
                     backend.createSubscription(backend.customerId(), paymentMethod.id, "price_1H8TwGBLNaYgaiU5uwYJO2Vb")
                         .then(backend.onSubscriptionComplete.bind(backend));
