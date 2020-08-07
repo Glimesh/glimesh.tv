@@ -32,7 +32,7 @@ defmodule Glimesh.Payments.Subscription do
     subscription
     |> cast(attrs, [:stripe_subscription_id, :stripe_product_id, :stripe_price_id, :stripe_current_period_end, :started_at, :ended_at, :is_active])
     |> put_assoc(:user, attrs.user)
-    |> put_assoc(:streamer, attrs.streamer)
+    |> maybe_put_assoc(:streamer, Map.get(attrs, :streamer, nil))
     |> validate_required([:user, :stripe_subscription_id, :stripe_product_id, :stripe_price_id, :stripe_current_period_end, :started_at, :ended_at])
   end
 
@@ -41,5 +41,13 @@ defmodule Glimesh.Payments.Subscription do
     subscription
     |> cast(attrs, [:stripe_current_period_end, :ended_at, :is_active])
     |> validate_required([:stripe_current_period_end, :ended_at, :is_active])
+  end
+
+  def maybe_put_assoc(changeset, key, value) do
+    if value do
+      changeset |> put_assoc(key, value)
+      else
+      changeset
+    end
   end
 end

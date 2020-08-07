@@ -16,7 +16,7 @@ defmodule GlimeshWeb.UserPaymentsControllerTest do
     test "redirects if user is not logged in" do
       conn = build_conn()
       conn = get(conn, Routes.user_payments_path(conn, :index))
-      assert redirected_to(conn) == Routes.user_payments_path(conn, :index)
+      assert redirected_to(conn) == Routes.user_session_path(conn, :new)
     end
   end
 end

@@ -25,7 +25,7 @@ export default {
 
     createSubscription(customerId, paymentMethodId, priceId) {
         return new Promise((resolve, reject) => {
-            this.pushEvent("subscriptions.channel.subscribe", {
+            this.pushEvent("subscriptions.subscribe", {
                 customerId: customerId,
                 paymentMethodId: paymentMethodId,
                 priceId: priceId,
@@ -45,7 +45,6 @@ export default {
             },
         })
     },
-
 
     stripePublicKey() {
         return this.el.dataset.stripePublicKey
@@ -112,7 +111,6 @@ export default {
                         .then(backend.onSubscriptionComplete.bind(backend));
                 });
             }
-
 
         });
 

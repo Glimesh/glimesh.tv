@@ -25,7 +25,7 @@ defmodule GlimeshWeb.UserLive.SubscribeButton do
   end
 
   @impl true
-  def handle_event("subscriptions.channel.subscribe", %{"paymentMethodId" => payment_method, "priceId" => price_id}, socket) do
+  def handle_event("subscriptions.subscribe", %{"paymentMethodId" => payment_method, "priceId" => price_id}, socket) do
     streamer = socket.assigns.streamer
     user = socket.assigns.user
 
@@ -42,19 +42,6 @@ defmodule GlimeshWeb.UserLive.SubscribeButton do
     end
   end
 
-  @implt true
-  def handle_event("show_modal", _value, socket) do
-    {:noreply, socket
-                |> assign(:show_subscription, true)
-                |> push_event("subscriptions.channel.show_modal", %{})
-    }
-  end
-
-  @implt true
-  def handle_event("hide_modal", _value, socket) do
-    {:noreply, socket |> assign(:show_subscription, false)}
-  end
-
   @impl true
   def handle_event("unsubscribe", _value, socket) do
     streamer = socket.assigns.streamer
@@ -68,4 +55,15 @@ defmodule GlimeshWeb.UserLive.SubscribeButton do
       {:error, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
     end
   end
+
+  @implt true
+  def handle_event("show_modal", _value, socket) do
+    {:noreply, socket |> assign(:show_subscription, true)}
+  end
+
+  @implt true
+  def handle_event("hide_modal", _value, socket) do
+    {:noreply, socket |> assign(:show_subscription, false)}
+  end
+
 end

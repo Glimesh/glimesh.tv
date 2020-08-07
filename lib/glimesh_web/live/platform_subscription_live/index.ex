@@ -29,30 +29,32 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
   end
 
   @impl true
-  def handle_event("cancel-subscription", %{}, socket) do
-    user = socket.assigns.user
-
-    subscription = Payments.get_platform_subscription!(user)
-    with {:ok, _} <- Payments.cancel_subscription(subscription)
-      do
-      {:noreply, socket |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
-    else
-      {:error, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
-    end
-  end
-
-  @impl true
-  def handle_event("stripe-create-subscription", %{"paymentMethodId" => payment_method, "priceId" => price_id}, socket) do
+  def handle_event("subscriptions.subscribe", %{"paymentMethodId" => payment_method, "priceId" => price_id}, socket) do
     user = socket.assigns.user
 
     with {:ok, _} <- Payments.set_payment_method(user, payment_method),
          {:ok, subscription} <- Payments.subscribe(:platform, user, "prod_HhtjnDMhfliLrf", price_id)
       do
-        {:reply, subscription, socket |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
-      else
-        {:pending_requires_action, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
-        {:pending_requires_payment_method, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
-        {:error, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
+      {:reply, subscription, socket
+                             |> assign(:show_subscription, false)
+                             |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
+    else
+      {:pending_requires_action, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
+      {:pending_requires_payment_method, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
+      {:error, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
+    end
+  end
+
+  @impl true
+  def handle_event("cancel-subscription", %{}, socket) do
+    user = socket.assigns.user
+
+    subscription = Payments.get_platform_subscription!(user)
+    with {:ok, _} <- Payments.unsubscribe(subscription)
+      do
+      {:noreply, socket |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
+    else
+      {:error, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
     end
   end
 

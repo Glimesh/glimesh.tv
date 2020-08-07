@@ -103,7 +103,7 @@ defmodule Glimesh.Payments do
   end
 
   def get_platform_subscription!(user) do
-    Repo.get_by!(Subscription, user_id: user.id, is_active: true, streamer_id: nil) |> Repo.preload(:user)
+    Repo.one(from s in Subscription, where: s.user_id == ^user.id and s.is_active == true and is_nil(s.streamer_id)) |> Repo.preload(:user)
   end
 
   def has_platform_subscription?(user) do
