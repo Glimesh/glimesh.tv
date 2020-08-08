@@ -49,7 +49,7 @@ function tryVideo(url) {
 
             let player = OvenPlayer.create("player", {
                 // autoStart: true,
-                image : "/images/stream-not-started.jpg",
+                image: "/images/stream-not-started.jpg",
                 sources: [
                     {
                         type: "webrtc",
@@ -71,11 +71,11 @@ function tryVideo(url) {
             player.on("error", function (error) {
                 console.log(error);
             });
-            player.on('ready', function() {
+            player.on('ready', function () {
                 // player.play();
             });
 
-            player.on('metaChanged', function(f) {
+            player.on('metaChanged', function (f) {
                 console.log(f);
                 player.play();
             });
@@ -86,9 +86,14 @@ function tryVideo(url) {
     }
 }
 
+import ProcessPayment from './hooks/ProcessPayment';
+
 let Hooks = {};
+Hooks.ProcessPayment = ProcessPayment;
 Hooks.LoadVideo = {
-    playbackUrl() { return this.el.dataset.playbackUrl },
+    playbackUrl() {
+        return this.el.dataset.playbackUrl
+    },
     mounted() {
         tryVideo(this.playbackUrl())
     }
@@ -105,17 +110,16 @@ window.addEventListener("phx:page-loading-stop", info => {
     NProgress.done();
 
     // Close the nav bar on navigate
-    if(document.getElementById("primaryNav")) {
+    if (document.getElementById("primaryNav")) {
         document.getElementById("primaryNav").classList.remove('show');
     }
 });
-// tryVideo();
 
 // connect if there are any LiveViews on the page
 liveSocket.connect();
 
 // expose liveSocket on window for web console debug logs and latency simulation:
-// liveSocket.enableDebug();
+liveSocket.enableDebug();
 // >> liveSocket.enableLatencySim(1000)
 window.liveSocket = liveSocket;
 

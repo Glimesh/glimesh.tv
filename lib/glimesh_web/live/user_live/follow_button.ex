@@ -31,7 +31,8 @@ defmodule GlimeshWeb.UserLive.FollowButton do
           |> assign(:following, following)}
   end
 
-  def handle_event("follow", value, socket) do
+  @impl true
+  def handle_event("follow", _value, socket) do
     case Glimesh.Streams.follow(socket.assigns.streamer, socket.assigns.user, false) do
       {:ok, _follow} ->
         {:noreply,
@@ -44,6 +45,7 @@ defmodule GlimeshWeb.UserLive.FollowButton do
     end
   end
 
+  @impl true
   def handle_event("unfollow", _value, socket) do
     case Glimesh.Streams.unfollow(socket.assigns.streamer, socket.assigns.user) do
       {:ok, _} ->

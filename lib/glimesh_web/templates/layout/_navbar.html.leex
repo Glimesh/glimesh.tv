@@ -29,6 +29,9 @@
         <li class="nav-item">
             <%= live_redirect "Following", class: "nav-link", to: Routes.page_path(@conn, :index, "following") %>
         </li>
+        <li class="nav-item">
+            <%= live_redirect "Upgrade!", class: "nav-link text-warning", to: Routes.platform_subscription_index_path(@conn, :index) %>
+        </li>
         <% end %>
     </ul>
      <ul class="navbar-nav">
@@ -40,6 +43,10 @@
                   <img src="<%= Glimesh.Avatar.url({@current_user.avatar, @current_user}, :original) %>" alt="avatar" class="img-avatar">
               </a>
               <div class="dropdown-menu" aria-labelledby="userProfileDropdown">
+                  <%= link class: "dropdown-item", to: Routes.user_payments_path(@conn, :index) do %>
+                      <i class="fas fa-money-bill"></i>
+                      My Payments
+                  <% end %>
                   <%= link class: "dropdown-item", to: Routes.user_settings_path(@conn, :edit) do %>
                       <i class="fas fa-user"></i>
                       My Profile

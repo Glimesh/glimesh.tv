@@ -1,0 +1,36 @@
+<div id="subscription-magic">
+    <%= if @user do %>
+        <%= if @subscribed do %>
+            <button class="btn btn-secondary" phx-click="unsubscribe">Unsubscribe</button>
+        <% else %>
+            <button class="btn btn-secondary" phx-click="show_modal">Subscribe</button>
+        <% end %>
+    <% else %>
+        <%= link "Subscribe", to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary" %>
+    <% end %>
+
+    <%= if @show_subscription do %>
+    <div id="paymentModal2" class="live-modal"
+        phx-capture-click="hide_modal"
+        phx-window-keydown="hide_modal"
+        phx-key="escape"
+        phx-target="#paymentModal2"
+        phx-page-loading>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Payment Details</h5>
+                    <button type="button" class="close" phx-click="hide_modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :channel, user: @user, streamer: @streamer %>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <% end %>
+</div>

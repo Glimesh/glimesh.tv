@@ -38,11 +38,11 @@ defmodule Glimesh.MixProject do
       {:phoenix_ecto, "~> 4.1"},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_live_view, "~> 0.13.0"},
+      {:phoenix_live_view, "~> 0.14.3"},
       {:floki, ">= 0.0.0", only: :test},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_dashboard, "~> 0.2.0"},
+      {:phoenix_live_dashboard, "~> 0.2.7"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
@@ -53,7 +53,8 @@ defmodule Glimesh.MixProject do
       {:waffle_ecto, "~> 0.0.9"},
       {:phx_gen_auth, "~> 0.4.0", only: [:dev], runtime: false},
       {:bamboo, "~> 1.5"},
-      {:phoenix_markdown, "~> 1.0"}
+      {:phoenix_markdown, "~> 1.0"},
+      {:stripity_stripe, "~> 2.0"}
     ]
   end
 

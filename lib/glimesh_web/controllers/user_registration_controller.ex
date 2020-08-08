@@ -5,7 +5,7 @@ defmodule GlimeshWeb.UserRegistrationController do
   alias Glimesh.Accounts.User
   alias GlimeshWeb.UserAuth
 
-  def new(conn, params) do
+  def new(conn, _params) do
     changeset = Accounts.change_user_registration(%User{})
     render(conn, "new.html", changeset: changeset)
   end
