@@ -81,9 +81,9 @@ defmodule GlimeshWeb.UserSettingsController do
     user = conn.assigns.current_user
 
     conn
-      |> assign(:user, user)
-      |> assign(:profile_changeset, Accounts.change_user_profile(user))
-      |> assign(:email_changeset, Accounts.change_user_email(user))
-      |> assign(:password_changeset, Accounts.change_user_password(user))
+    |> assign(:user, user)
+    |> assign(:profile_changeset, Accounts.change_user_profile(user))
+    |> assign(:email_changeset, Accounts.change_user_email(user))
+    |> assign(:password_changeset, Accounts.change_user_password(user))
   end
 end

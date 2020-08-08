@@ -33,13 +33,14 @@ defmodule Glimesh.Streams do
   end
 
   def timeout_user(streamer, moderator, user_to_timeout) do
-    log = %UserModerationLog{
-      streamer: streamer,
-      moderator: moderator,
-      user: user_to_timeout
-    }
-    |> UserModerationLog.changeset(%{action: "timeout"})
-    |> Repo.insert()
+    log =
+      %UserModerationLog{
+        streamer: streamer,
+        moderator: moderator,
+        user: user_to_timeout
+      }
+      |> UserModerationLog.changeset(%{action: "timeout"})
+      |> Repo.insert()
 
     :ets.insert(:banned_list, {user_to_timeout.username, true})
 
@@ -55,16 +56,21 @@ defmodule Glimesh.Streams do
   end
 
   defp broadcast_chats({:error, _reason} = error, _event), do: error
+
   defp broadcast_chats({:ok, chat_message}, event) do
     Phoenix.PubSub.broadcast(Glimesh.PubSub, "chats", {event, chat_message})
     {:ok, chat_message}
   end
 
-
   alias Glimesh.Streams.Followers
 
   def list_followed_streams(user) do
-    Repo.all(from f in Followers, where: f.user_id == ^user.id, join: streamer in assoc(f, :streamer), select: streamer)
+    Repo.all(
+      from f in Followers,
+        where: f.user_id == ^user.id,
+        join: streamer in assoc(f, :streamer),
+        select: streamer
+    )
   end
 
   def follow(streamer, user, live_notifications \\ false) do
@@ -72,10 +78,12 @@ defmodule Glimesh.Streams do
       has_live_notifications: live_notifications
     }
 
-    results = %Followers{
-      streamer: streamer,
-      user: user
-    } |> Followers.changeset(attrs)
+    results =
+      %Followers{
+        streamer: streamer,
+        user: user
+      }
+      |> Followers.changeset(attrs)
       |> Repo.insert()
 
     Glimesh.Chat.create_chat_message(streamer, user, %{message: "just followed the stream!"})
@@ -88,7 +96,8 @@ defmodule Glimesh.Streams do
   end
 
   def is_following?(streamer, user) do
-    Repo.exists?(from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id)
+    Repo.exists?(
+      from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id
+    )
   end
-
 end

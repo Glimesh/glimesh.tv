@@ -79,28 +79,38 @@ defmodule GlimeshWeb.SubscriptionComponent do
   end
 
   def handle_event("update_price", %{"product_id" => product_id, "price_id" => price_id}, socket) do
-#    send self(), {:updated_card, %{socket.assigns.card | title: title}}
+    #    send self(), {:updated_card, %{socket.assigns.card | title: title}}
     {:noreply, socket}
   end
 
-
   @impl true
-  def handle_event("subscriptions.channel.subscribe", %{"paymentMethodId" => payment_method, "priceId" => price_id}, socket) do
+  def handle_event(
+        "subscriptions.channel.subscribe",
+        %{"paymentMethodId" => payment_method, "priceId" => price_id},
+        socket
+      ) do
     streamer = socket.assigns.streamer
     user = socket.assigns.user
 
     with {:ok, _} <- Payments.set_payment_method(user, payment_method),
-         {:ok, subscription} <- Payments.subscribe(:channel, user, streamer, "prod_HhtjnDMhfliLrf", price_id)
-      do
-      {:reply, subscription, socket
-                             |> assign(:show_subscription, false)
-                             |> assign(:subscribed, Payments.has_channel_subscription?(socket.assigns.user, socket.assigns.streamer))}
+         {:ok, subscription} <-
+           Payments.subscribe(:channel, user, streamer, "prod_HhtjnDMhfliLrf", price_id) do
+      {:reply, subscription,
+       socket
+       |> assign(:show_subscription, false)
+       |> assign(
+         :subscribed,
+         Payments.has_channel_subscription?(socket.assigns.user, socket.assigns.streamer)
+       )}
     else
-      {:pending_requires_action, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
-      {:pending_requires_payment_method, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
-      {:error, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
+      {:pending_requires_action, error_msg} ->
+        {:noreply, socket |> assign(:stripe_error, error_msg)}
+
+      {:pending_requires_payment_method, error_msg} ->
+        {:noreply, socket |> assign(:stripe_error, error_msg)}
+
+      {:error, error_msg} ->
+        {:noreply, socket |> assign(:stripe_error, error_msg)}
     end
   end
-
-
 end

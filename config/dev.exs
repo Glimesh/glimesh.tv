@@ -31,15 +31,14 @@ config :glimesh, GlimeshWeb.Endpoint,
   url: [host: "localhost", port: 4001],
   http: [port: 4000],
   https: [
-   port: 4001,
-   cipher_suite: :strong,
-   keyfile: "priv/cert/selfsigned_key.pem",
-   certfile: "priv/cert/selfsigned.pem",
-   transport_options: [socket_opts: [:inet6]]
+    port: 4001,
+    cipher_suite: :strong,
+    keyfile: "priv/cert/selfsigned_key.pem",
+    certfile: "priv/cert/selfsigned.pem",
+    transport_options: [socket_opts: [:inet6]]
   ]
 
-config :glimesh, GlimeshWeb.Emails.Mailer,
-       adapter: Bamboo.LocalAdapter
+config :glimesh, GlimeshWeb.Emails.Mailer, adapter: Bamboo.LocalAdapter
 
 # ## SSL Support
 #
