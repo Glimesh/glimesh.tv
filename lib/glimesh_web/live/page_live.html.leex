@@ -174,7 +174,7 @@
             <%= live_redirect to: Routes.user_stream_path(@socket, :index, stream.username) do %>
                 <div class="widget widget-chart-one">
                     <div class="widget-heading">
-                        <h5 class=""><span class="badge badge-danger">Live!</span> <%= stream.username %></h5>
+                        <h5 class=""><span class="badge badge-danger">Live!</span> <%= stream.displayname %></h5>
                     </div>
 
                     <div class="widget-content">
