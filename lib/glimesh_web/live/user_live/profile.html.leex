@@ -15,7 +15,7 @@
                     <ul class="list-inline">
                         <%= if @streamer.social_twitter do %>
                         <li rel="ugc" class="list-inline-item">
-                            <a href="https://twitter.com/<%= @streamer.social_twitter %>" _target="blank"
+                            <a href="https://twitter.com/<%= @streamer.social_twitter %>" target="_blank"
                                 class="social-icon">
                                 <i class="fab fa-twitter"></i>
                             </a>
@@ -23,7 +23,7 @@
                         <%  end %>
                         <%= if @streamer.social_youtube do %>
                         <li rel="ugc" class="list-inline-item">
-                            <a href="https://youtube.com/<%= @streamer.social_youtube %>" _target="blank"
+                            <a href="https://youtube.com/<%= @streamer.social_youtube %>" target="_blank"
                                 class="social-icon">
                                 <i class="fab fa-youtube"></i>
                             </a>
@@ -31,7 +31,7 @@
                         <%  end %>
                         <%= if @streamer.social_instagram do %>
                         <li class="list-inline-item">
-                            <a rel="ugc" href="https://instagram.com/<%= @streamer.social_instagram %>" _target="blank"
+                            <a rel="ugc" href="https://instagram.com/<%= @streamer.social_instagram %>" target="_blank"
                                 class="social-icon">
                                 <i class="fab fa-instagram"></i>
                             </a>
@@ -39,7 +39,7 @@
                         <%  end %>
                         <%= if @streamer.social_discord do %>
                         <li class="list-inline-item">
-                            <a rel="ugc" href="https://discord.gg/<%= @streamer.social_discord %>" _target="blank"
+                            <a rel="ugc" href="https://discord.gg/<%= @streamer.social_discord %>" target="_blank"
                                 class="social-icon">
                                 <i class="fab fa-discord"></i>
                             </a>
@@ -65,6 +65,12 @@
 
                     </div>
 
+                    <%= if @streamer == @user do %>
+                    <a class="btn btn-primary btn-sm mt-4" target="_blank" href="https://twitter.com/intent/tweet?text=<%= @streamer_share_text %>" data-size="large">Share my profile on Twitter</a>
+                    <% else  %>
+                    <a class="btn btn-primary btn-sm mt-4" target="_blank" href="https://twitter.com/intent/tweet?text=<%= @viewer_share_text %>" data-size="large">Share on Twitter</a>
+                    <% end %>
+
                 </div>
             </div>
 
@@ -79,6 +85,7 @@
                 </div>
             </div>
 
+            <!-- Be back soon!
             <div class="card text-center mt-4">
                 <div class="card-header">
                     <h5>Achievements</h5>
@@ -87,6 +94,7 @@
                     <p>Found the achievements achievement!</p>
                 </div>
             </div>
+            -->
         </div>
         <div class="col-md-8">
 
@@ -101,7 +109,11 @@
                     </div>
                     <% end %>
 
-                    <%= raw(@streamer.profile_content_html) %>
+                    <%= if @streamer.profile_content_html do %>
+                        <%= raw(@streamer.profile_content_html) %>
+                    <% else %>
+                        <p>Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!</p>
+                    <% end %>
 
                 </div>
             </div>

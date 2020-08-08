@@ -11,7 +11,7 @@ defmodule GlimeshWeb.StreamsLive.List do
     {:ok,
      socket
      |> assign(:page_title, "Followed Streams")
-     |> assign(:category, "Followed Streams")
+     |> assign(:category, "Followed")
      |> assign(:show_banner, false)
      |> assign(:streams, Streams.list_followed_streams(user))}
   end
