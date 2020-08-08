@@ -11,7 +11,7 @@
                 <div class="text-center">
                     <h5 class="mt-4">Profile Picture</h5>
                     <img src="<%= Glimesh.Avatar.url({@user.avatar, @user}, :original) %>" alt="Your Profile Picture"
-                         class="img-responsive mb-4 img-avatar">
+                         class="img-fluid mb-4 img-avatar">
 
                     <div class="mb-4 text-left">
                         <%= file_input f, :avatar, id: "customFile", class: "", accept: "image/png, image/jpeg" %>
@@ -93,6 +93,19 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <%= label f, :youtube_intro_url, "YouTube Teaser URL" %>
+                    <%= text_input f, :youtube_intro_url, [class: "form-control mb-4", placeholder: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"] %>
+                    <%= error_tag f, :youtube_intro_url %>
+                </div>
+
+                <div class="form-group">
+                    <%= label f, :profile_content_md, "Profile Content (Markdown supported)" %>
+                    <%= textarea f, :profile_content_md, [class: "form-control mb-4"] %>
+                    <%= error_tag f, :profile_content_md %>
+                </div>
+
                 <input type="submit" class="btn btn-primary" value="Update Settings">
             </div>
         </div>

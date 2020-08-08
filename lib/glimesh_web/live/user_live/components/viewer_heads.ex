@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.UserLive.ViewerHeads do
+defmodule GlimeshWeb.UserLive.Components.ViewerHeads do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Presence

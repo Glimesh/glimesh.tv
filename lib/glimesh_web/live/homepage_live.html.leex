@@ -1,7 +1,63 @@
 
 
 <div class="layout-px-spacing">
-<%= if @show_banner do %>
+
+    <div class="container">
+
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
+      <div class="col-md-12 p-lg-5 mx-auto my-5">
+        <h1 class="display-4 font-weight-normal">Next-Gen Live Streaming</h1>
+        <p class="lead font-weight-normal">The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving. We're launching soon, but you can get your account setup early and learn more about us below!</p>
+        <%= link "Register Your Account", to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-lg mt-3" %>
+      </div>
+    </div>
+
+
+    <!-- START THE FEATURETTES -->
+
+
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7">
+        <h2 class="featurette-heading">Warp speed streaming. <br><small class="text-muted">It's even faster than light.</small></h2>
+        <p class="lead">Our fastest streaming technology is built on open standards and gives your streams unimaginable levels of interactivity. We're constantly pushing the boundaries of live video and of course, it's open source.</p>
+      </div>
+      <div class="col-md-5">
+        <img src="/images/ikaros-happy.png" alt="" class="img-fluid">
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading">Oh yeah, it’s that good. <span class="text-muted">See for yourself.</span></h2>
+        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+      </div>
+      <div class="col-md-5 order-md-1">
+        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 500x500"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7">
+        <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
+        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+      </div>
+      <div class="col-md-5">
+        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 500x500"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <!-- /END THE FEATURETTES -->
+    </div>
+
 
     <div class="container mt-4">
         <div class="row">
@@ -136,56 +192,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="row layout-top-spacing">
-
-        <div class="col-md-9 layout-spacing">
-            <div class="widget widget-chart-one">
-                <div class="widget-header">
-                    <h3>Featured Stream: IKAROS's Shaves His Head for The Trevor Project</h3>
-                </div>
-                <div class="widget-content">
-                    <%= live_redirect to: Routes.user_stream_path(@socket, :index, "IKAROS") do %>
-                    <img src="/images/stream-not-started.jpg" alt="" class="img-fluid">
-                    <% end %>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="infobox-1">
-                <h5 class="info-heading">Welcome to Glimesh</h5>
-                <p class="info-text">People first streaming, with discoverability as a primary feature. Let's build the next generation of streaming.</p>
-                <a class="info-link" href="">Learn More</a>
-            </div>
-        </div>
-
-    </div>
-<% else %>
-    <h2><%= @category %></h2>
-<% end %>
-
-
-    <div class="row layout-top-spacing">
-        <%= for stream <- @streams do %>
-
-        <div class="col-md-3 layout-spacing">
-            <%= live_redirect to: Routes.user_stream_path(@socket, :index, stream.username) do %>
-                <div class="widget widget-chart-one">
-                    <div class="widget-heading">
-                        <h5 class=""><span class="badge badge-danger">Live!</span> <%= stream.displayname %></h5>
-                    </div>
-
-                    <div class="widget-content">
-                        <img src="/images/stream-not-started.jpg" alt="" class="img-fluid">
-                    </div>
-                </div>
-            <% end %>
-        </div>
-
-        <% end %>
-
     </div>
 
 </div>

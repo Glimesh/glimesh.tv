@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.UserLive.FollowButton do
+defmodule GlimeshWeb.UserLive.Components.FollowButton do
   use GlimeshWeb, :live_view
 
   @impl true
@@ -6,12 +6,14 @@ defmodule GlimeshWeb.UserLive.FollowButton do
     ~L"""
     <%= if @user do %>
       <%= if @following do %>
-        <button class="btn btn-primary" phx-click="unfollow">Unfollow</button>
+        <button class="btn btn-primary btn-block" phx-click="unfollow">Unfollow</button>
       <% else %>
-        <button class="btn btn-primary" phx-click="follow" phx-throttle="5000">Follow</button>
+        <button class="btn btn-primary btn-block" phx-click="follow" phx-throttle="5000">Follow</button>
       <% end %>
     <% else %>
-      <%= link "Follow", to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-small" %>
+      <%= link to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-block" do %>
+        Follow
+      <% end %>
     <% end %>
     """
   end
@@ -19,7 +21,10 @@ defmodule GlimeshWeb.UserLive.FollowButton do
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => nil}, socket) do
     {:ok,
-     socket |> assign(:streamer, streamer) |> assign(:user, nil) |> assign(:following, false)}
+     socket
+     |> assign(:streamer, streamer)
+     |> assign(:user, nil)
+     |> assign(:following, false)}
   end
 
   @impl true
@@ -43,7 +48,7 @@ defmodule GlimeshWeb.UserLive.FollowButton do
          |> assign(:following, true)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, changeset: changeset) |> IO.inspect()}
+        {:noreply, assign(socket, changeset: changeset)}
     end
   end
 

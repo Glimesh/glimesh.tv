@@ -25,7 +25,7 @@ defmodule GlimeshWeb.Endpoint do
     from: :glimesh,
     gzip: false,
     only:
-      ~w(css fonts images js ovenplayer cache_manifest.json favicons browserconfig.xml favicon.ico robots.txt site.webmanifest)
+      ~w(css fonts images videos js ovenplayer cache_manifest.json favicons browserconfig.xml favicon.ico robots.txt site.webmanifest)
 
   plug Plug.Static, at: "/uploads", from: Application.get_env(:waffle, :storage_dir)
 

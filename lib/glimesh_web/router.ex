@@ -96,16 +96,20 @@ defmodule GlimeshWeb.Router do
     get "/blog", ArticleController, :index
     get "/blog/:slug", ArticleController, :show
 
-    live "/", PageLive, :index
-    live "/streams", PageLive, :index
-    live "/streams/:category", PageLive, :index
+    live "/", HomepageLive, :index
+    live "/streams", StreamsLive.List, :index
+    live "/streams/:category", StreamsLive.List, :index
 
-    live "/:username", UserLive.Stream, :index
-    live "/:username/profile", UserLive.Profile, :index
+    live "/users", UserLive.Index, :index
 
     delete "/users/log_out", UserSessionController, :delete
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :confirm
+
+
+    # This must be the last route
+    live "/:username", UserLive.Stream, :index
+    live "/:username/profile", UserLive.Profile, :index
   end
 end

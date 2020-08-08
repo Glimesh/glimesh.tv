@@ -25,6 +25,10 @@ defmodule Glimesh.Accounts.User do
     field :stripe_customer_id, :string
     field :stripe_payment_method, :string
 
+    field :youtube_intro_url, :string
+    field :profile_content_md, :string
+    field :profile_content_html, :string
+
     timestamps()
   end
 
@@ -162,10 +166,15 @@ defmodule Glimesh.Accounts.User do
       :social_twitter,
       :social_youtube,
       :social_instagram,
-      :social_discord
+      :social_discord,
+      :youtube_intro_url,
+      :profile_content_md
     ])
-    |> cast_attachments(attrs, [:avatar])
+    |> validate_length(:profile_content_md, max: 8192)
+    |> validate_youtube_url(:youtube_intro_url)
     |> validate_displayname()
+    |> set_profile_content_html()
+    |> cast_attachments(attrs, [:avatar])
   end
 
   @doc """
@@ -208,6 +217,27 @@ defmodule Glimesh.Accounts.User do
       changeset
     else
       add_error(changeset, :current_password, "Invalid Password")
+    end
+  end
+
+  def validate_youtube_url(changeset, field) when is_atom(field) do
+    validate_change(changeset, field, fn current_field, value ->
+      matches = Regex.run(~r/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/, value)
+      if matches < 2 do
+        [{current_field, "Incorrect YouTube URL format"}]
+      else
+        []
+      end
+    end)
+  end
+
+  def set_profile_content_html(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{profile_content_md: profile_content_md}} ->
+        {:ok, html_doc, []} = Earmark.as_html(profile_content_md)
+        put_change(changeset, :profile_content_html, html_doc)
+      _ ->
+        changeset
     end
   end
 end

@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.UserLive.ViewerUpvotes do
+defmodule GlimeshWeb.UserLive.Components.ViewerUpvotes do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Presence

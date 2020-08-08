@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.PageLive do
+defmodule GlimeshWeb.StreamsLive.List do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Streams
@@ -18,11 +18,12 @@ defmodule GlimeshWeb.PageLive do
 
   @impl true
   def mount(params, _session, socket) do
+    category = String.capitalize(params["category"])
+
     {:ok,
      socket
-     |> assign(:page_title, params["category"])
-     |> assign(:category, params["category"])
-     |> assign(:show_banner, is_nil(params["category"]))
+     |> assign(:page_title, category)
+     |> assign(:category, category)
      |> assign(:streams, Streams.list_streams())}
   end
 end
