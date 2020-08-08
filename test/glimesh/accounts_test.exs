@@ -87,7 +87,14 @@ defmodule Glimesh.AccountsTest do
     test "registers users with a hashed password" do
       email = unique_user_email()
       username = unique_user_username()
-      {:ok, user} = Accounts.register_user(%{email: email, username: username, password: valid_user_password()})
+
+      {:ok, user} =
+        Accounts.register_user(%{
+          email: email,
+          username: username,
+          password: valid_user_password()
+        })
+
       assert user.email == email
       assert user.username == username
       assert is_binary(user.hashed_password)
@@ -97,29 +104,44 @@ defmodule Glimesh.AccountsTest do
 
     test "validates and accepts reserved word inside username" do
       username = "FOOadminFOO"
-      {:ok, user} = Accounts.register_user(%{email: unique_user_email(), username: username, password: valid_user_password()})
+
+      {:ok, user} =
+        Accounts.register_user(%{
+          email: unique_user_email(),
+          username: username,
+          password: valid_user_password()
+        })
 
       assert user.username == username
     end
 
     test "validates and rejects reserved word list for username" do
-      {:error, changeset} = Accounts.register_user(%{email: unique_user_email(), username: "admin", password: valid_user_password()})
+      {:error, changeset} =
+        Accounts.register_user(%{
+          email: unique_user_email(),
+          username: "admin",
+          password: valid_user_password()
+        })
 
       assert %{username: ["This username is reserved"]} = errors_on(changeset)
     end
 
     test "validates and rejects bad word list for username" do
-      {:error, changeset} = Accounts.register_user(%{email: unique_user_email(), username: "ass", password: valid_user_password()})
+      {:error, changeset} =
+        Accounts.register_user(%{
+          email: unique_user_email(),
+          username: "ass",
+          password: valid_user_password()
+        })
 
       assert %{username: ["This username contains a bad word"]} = errors_on(changeset)
     end
 
-#    test "validates and rejects bad word inside username" do
-#      {:error, changeset} = Accounts.register_user(%{email: unique_user_email(), username: "FOOassFOO", password: valid_user_password()})
-#
-#      assert %{username: ["This username contains a bad word"]} = errors_on(changeset)
-#    end
-
+    #    test "validates and rejects bad word inside username" do
+    #      {:error, changeset} = Accounts.register_user(%{email: unique_user_email(), username: "FOOassFOO", password: valid_user_password()})
+    #
+    #      assert %{username: ["This username contains a bad word"]} = errors_on(changeset)
+    #    end
   end
 
   describe "change_user_registration/2" do
@@ -197,7 +219,8 @@ defmodule Glimesh.AccountsTest do
           Accounts.deliver_update_email_instructions(user, "current@example.com", url)
         end)
 
-      expected_email = GlimeshWeb.Emails.Email.user_update_email_instructions(user, "[TOKEN]#{token}[TOKEN]")
+      expected_email =
+        GlimeshWeb.Emails.Email.user_update_email_instructions(user, "[TOKEN]#{token}[TOKEN]")
 
       {:ok, token} = Base.url_decode64(token, padding: false)
       assert user_token = Repo.get_by(UserToken, token: :crypto.hash(:sha256, token))
@@ -205,7 +228,7 @@ defmodule Glimesh.AccountsTest do
       assert user_token.sent_to == user.email
       assert user_token.context == "change:current@example.com"
 
-      assert_delivered_email expected_email
+      assert_delivered_email(expected_email)
     end
   end
 
@@ -378,7 +401,8 @@ defmodule Glimesh.AccountsTest do
           Accounts.deliver_user_confirmation_instructions(user, url)
         end)
 
-      expected_email = GlimeshWeb.Emails.Email.user_confirmation_instructions(user, "[TOKEN]#{token}[TOKEN]")
+      expected_email =
+        GlimeshWeb.Emails.Email.user_confirmation_instructions(user, "[TOKEN]#{token}[TOKEN]")
 
       {:ok, token} = Base.url_decode64(token, padding: false)
       assert user_token = Repo.get_by(UserToken, token: :crypto.hash(:sha256, token))
@@ -386,7 +410,7 @@ defmodule Glimesh.AccountsTest do
       assert user_token.sent_to == user.email
       assert user_token.context == "confirm"
 
-      assert_delivered_email expected_email
+      assert_delivered_email(expected_email)
     end
   end
 
@@ -435,7 +459,8 @@ defmodule Glimesh.AccountsTest do
           Accounts.deliver_user_reset_password_instructions(user, url)
         end)
 
-      expected_email = GlimeshWeb.Emails.Email.user_reset_password_instructions(user, "[TOKEN]#{token}[TOKEN]")
+      expected_email =
+        GlimeshWeb.Emails.Email.user_reset_password_instructions(user, "[TOKEN]#{token}[TOKEN]")
 
       {:ok, token} = Base.url_decode64(token, padding: false)
       assert user_token = Repo.get_by(UserToken, token: :crypto.hash(:sha256, token))
@@ -443,7 +468,7 @@ defmodule Glimesh.AccountsTest do
       assert user_token.sent_to == user.email
       assert user_token.context == "reset_password"
 
-      assert_delivered_email expected_email
+      assert_delivered_email(expected_email)
     end
   end
 

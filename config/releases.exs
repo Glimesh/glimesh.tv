@@ -22,6 +22,7 @@ secret_key_base =
     environment variable SECRET_KEY_BASE is missing.
     You can generate one by calling: mix phx.gen.secret
     """
+
 live_view_signing_salt =
   System.get_env("LIVE_VIEW_SIGNING_SALT") ||
     raise """
@@ -41,7 +42,7 @@ config :glimesh, GlimeshWeb.Endpoint,
   url: [
     scheme: url_scheme,
     host: url_host,
-    port: url_port,
+    port: url_port
   ],
   secret_key_base: secret_key_base,
   live_view: [signing_salt: live_view_signing_salt]
@@ -54,9 +55,16 @@ if http_port !== "" do
 end
 
 if https_port !== "" do
-  https_key_file = System.get_env("HTTPS_KEY_FILE") || raise "environment variable HTTPS_KEY_FILE is missing."
-  https_cert_file = System.get_env("HTTPS_CERT_FILE") || raise "environment variable HTTPS_CERT_FILE is missing."
-  https_cacert_file = System.get_env("HTTPS_CACERT_FILE") || raise "environment variable HTTPS_CACERT_FILE is missing."
+  https_key_file =
+    System.get_env("HTTPS_KEY_FILE") || raise "environment variable HTTPS_KEY_FILE is missing."
+
+  https_cert_file =
+    System.get_env("HTTPS_CERT_FILE") || raise "environment variable HTTPS_CERT_FILE is missing."
+
+  https_cacert_file =
+    System.get_env("HTTPS_CACERT_FILE") ||
+      raise "environment variable HTTPS_CACERT_FILE is missing."
+
   config :glimesh, GlimeshWeb.Endpoint,
     https: [
       port: https_port,
@@ -73,6 +81,7 @@ mailgun_api_key =
     raise """
     environment variable MAILGUN_API_KEY is missing.
     """
+
 mailgun_domain =
   System.get_env("MAILGUN_DOMAIN") ||
     raise """

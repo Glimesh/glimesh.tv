@@ -8,15 +8,17 @@ defmodule GlimeshWeb.AboutController do
   end
 
   def faq(conn, _param) do
-    render(conn, "faq.html", page_title: "F.A.Q",  subtitle: "Frequently Answered Questions!")
+    render(conn, "faq.html", page_title: "F.A.Q", subtitle: "Frequently Answered Questions!")
   end
 
   def privacy(conn, _param) do
-    render(conn, "privacy.html", page_title: "Privacy & Cookie Policy", subtitle: "They are delicious, but they are yours!")
+    render(conn, "privacy.html",
+      page_title: "Privacy & Cookie Policy",
+      subtitle: "They are delicious, but they are yours!"
+    )
   end
 
   def terms(conn, _param) do
     render(conn, "terms.html", page_title: "Terms of Service", subtitle: "")
   end
-
 end

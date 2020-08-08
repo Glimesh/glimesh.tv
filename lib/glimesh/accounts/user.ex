@@ -53,12 +53,13 @@ defmodule Glimesh.Accounts.User do
     |> unique_constraint(:username)
     |> validate_username_reserved_words(:username)
     |> validate_username_no_bad_words(:username)
+
     # Disabled for now
     # |> validate_username_contains_no_bad_words(:username)
   end
 
   def validate_username_reserved_words(changeset, field) when is_atom(field) do
-    validate_change(changeset, field, fn (current_field, value) ->
+    validate_change(changeset, field, fn current_field, value ->
       if Enum.member?(Application.get_env(:glimesh, :reserved_words), value) do
         [{current_field, "This username is reserved"}]
       else
@@ -68,7 +69,7 @@ defmodule Glimesh.Accounts.User do
   end
 
   def validate_username_no_bad_words(changeset, field) when is_atom(field) do
-    validate_change(changeset, field, fn (current_field, value) ->
+    validate_change(changeset, field, fn current_field, value ->
       if Enum.member?(Application.get_env(:glimesh, :bad_words), value) do
         [{current_field, "This username contains a bad word"}]
       else
@@ -78,8 +79,10 @@ defmodule Glimesh.Accounts.User do
   end
 
   def validate_username_contains_no_bad_words(changeset, field) when is_atom(field) do
-    validate_change(changeset, field, fn (current_field, value) ->
-      if Enum.any?(Application.get_env(:glimesh, :bad_words), fn w -> String.contains?(value, w) end) do
+    validate_change(changeset, field, fn current_field, value ->
+      if Enum.any?(Application.get_env(:glimesh, :bad_words), fn w ->
+           String.contains?(value, w)
+         end) do
         [{current_field, "This username contains a bad word"}]
       else
         []
@@ -115,10 +118,10 @@ defmodule Glimesh.Accounts.User do
   end
 
   def validate_displayname(changeset) do
-    validate_change(changeset, :displayname, fn (current_field, value) ->
+    validate_change(changeset, :displayname, fn current_field, value ->
       if String.downcase(value) !== get_field(changeset, :username) do
         [{current_field, "Display name must match Username"}]
-        else
+      else
         []
       end
     end)
@@ -154,7 +157,13 @@ defmodule Glimesh.Accounts.User do
   """
   def profile_changeset(user, attrs) do
     user
-    |> cast(attrs, [:displayname, :social_twitter, :social_youtube, :social_instagram, :social_discord])
+    |> cast(attrs, [
+      :displayname,
+      :social_twitter,
+      :social_youtube,
+      :social_instagram,
+      :social_discord
+    ])
     |> cast_attachments(attrs, [:avatar])
     |> validate_displayname()
   end

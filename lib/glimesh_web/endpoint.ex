@@ -24,7 +24,8 @@ defmodule GlimeshWeb.Endpoint do
     at: "/",
     from: :glimesh,
     gzip: false,
-    only: ~w(css fonts images js ovenplayer cache_manifest.json favicons browserconfig.xml favicon.ico robots.txt site.webmanifest)
+    only:
+      ~w(css fonts images js ovenplayer cache_manifest.json favicons browserconfig.xml favicon.ico robots.txt site.webmanifest)
 
   plug Plug.Static, at: "/uploads", from: Application.get_env(:waffle, :storage_dir)
 
@@ -47,7 +48,7 @@ defmodule GlimeshWeb.Endpoint do
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
-#    body_reader: {GlimeshWeb.BodySaver, :read_body, []},
+    #    body_reader: {GlimeshWeb.BodySaver, :read_body, []},
     json_decoder: Phoenix.json_library()
 
   plug Plug.MethodOverride

@@ -22,6 +22,5 @@ defmodule Glimesh.Repo.Migrations.CreatePlatformSubscriptions do
       add :stripe_customer_id, :string
       add :stripe_payment_method, :string
     end
-
   end
 end

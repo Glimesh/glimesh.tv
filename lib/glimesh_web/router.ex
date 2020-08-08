@@ -37,12 +37,11 @@ defmodule GlimeshWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-   scope "/api", GlimeshWeb do
-     pipe_through :api
+  scope "/api", GlimeshWeb do
+    pipe_through :api
 
-     post "/webhook/stripe", WebhookController, :stripe
-   end
-
+    post "/webhook/stripe", WebhookController, :stripe
+  end
 
   ## Authentication routes
 
@@ -78,11 +77,11 @@ defmodule GlimeshWeb.Router do
   scope "/", GlimeshWeb do
     pipe_through [:browser, :require_admin_user]
 
-    get    "/blog/new", ArticleController, :new
-    get    "/blog/:slug/edit", ArticleController, :edit
-    post   "/blog", ArticleController, :create
-    patch  "/blog/:slug", ArticleController, :update
-    put    "/blog/:slug", ArticleController, :update
+    get "/blog/new", ArticleController, :new
+    get "/blog/:slug/edit", ArticleController, :edit
+    post "/blog", ArticleController, :create
+    patch "/blog/:slug", ArticleController, :update
+    put "/blog/:slug", ArticleController, :update
     delete "/blog/:slug", ArticleController, :delete
   end
 

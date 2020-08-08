@@ -6,14 +6,13 @@ defmodule GlimeshWeb.UserLive.Profile do
   def mount(%{"username" => username}, _session, socket) do
     case Accounts.get_by_username(username) do
       %Glimesh.Accounts.User{} = user ->
-        {:ok, socket
-              |> assign(:page_title, "#{user.displayname}'s Profile")
-              |> assign(:user, user)
-        }
+        {:ok,
+         socket
+         |> assign(:page_title, "#{user.displayname}'s Profile")
+         |> assign(:user, user)}
 
-      nil -> {:ok, redirect(socket, to: "/")}
+      nil ->
+        {:ok, redirect(socket, to: "/")}
     end
-
   end
-
 end

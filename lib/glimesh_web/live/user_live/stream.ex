@@ -13,17 +13,16 @@ defmodule GlimeshWeb.UserLive.Stream do
 
         maybe_user = Accounts.get_user_by_session_token(session["user_token"])
 
-        {:ok, socket
-              |> assign(:page_title, "#{streamer_username}'s Live Stream")
-              |> assign(:streamer, streamer)
-              |> assign(:playback_url, "/examples/big_buck_bunny_720p_surround.ogv")
-              |> assign(:user, maybe_user) # this will be nil, which our children components handle
-        }
+        {:ok,
+         socket
+         |> assign(:page_title, "#{streamer_username}'s Live Stream")
+         |> assign(:streamer, streamer)
+         |> assign(:playback_url, "/examples/big_buck_bunny_720p_surround.ogv")
+         # this will be nil, which our children components handle
+         |> assign(:user, maybe_user)}
 
       nil ->
         {:ok, redirect(socket, to: "/#{streamer_username}/profile")}
     end
-
   end
-
 end

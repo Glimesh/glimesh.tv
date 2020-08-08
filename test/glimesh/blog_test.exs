@@ -7,9 +7,28 @@ defmodule Glimesh.BlogTest do
   describe "articles" do
     alias Glimesh.Blog.Article
 
-    @valid_attrs %{body_md: "some body_md", description: "some description", published: true, slug: "some slug", title: "some title"}
-    @update_attrs %{body_md: "some updated body_md", description: "some updated description", published: false, slug: "some updated slug", title: "some updated title"}
-    @invalid_attrs %{body_html: nil, body_md: nil, description: nil, published: nil, slug: nil, title: nil}
+    @valid_attrs %{
+      body_md: "some body_md",
+      description: "some description",
+      published: true,
+      slug: "some slug",
+      title: "some title"
+    }
+    @update_attrs %{
+      body_md: "some updated body_md",
+      description: "some updated description",
+      published: false,
+      slug: "some updated slug",
+      title: "some updated title"
+    }
+    @invalid_attrs %{
+      body_html: nil,
+      body_md: nil,
+      description: nil,
+      published: nil,
+      slug: nil,
+      title: nil
+    }
 
     def article_fixture(attrs \\ %{}) do
       {:ok, article} = Blog.create_article(admin_fixture(), attrs |> Enum.into(@valid_attrs))

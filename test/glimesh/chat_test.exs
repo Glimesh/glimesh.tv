@@ -15,7 +15,8 @@ defmodule Glimesh.ChatTest do
       streamer = user_fixture()
       user = user_fixture()
 
-      {:ok, chat_message} = Chat.create_chat_message(streamer, user, attrs |> Enum.into(@valid_attrs))
+      {:ok, chat_message} =
+        Chat.create_chat_message(streamer, user, attrs |> Enum.into(@valid_attrs))
 
       chat_message
     end
@@ -31,17 +32,23 @@ defmodule Glimesh.ChatTest do
     end
 
     test "create_chat_message/1 with valid data creates a chat_message" do
-      assert {:ok, %ChatMessage{} = chat_message} = Chat.create_chat_message(user_fixture(), user_fixture(), @valid_attrs)
+      assert {:ok, %ChatMessage{} = chat_message} =
+               Chat.create_chat_message(user_fixture(), user_fixture(), @valid_attrs)
+
       assert chat_message.message == "some message"
     end
 
     test "create_chat_message/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Chat.create_chat_message(user_fixture(), user_fixture(), @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               Chat.create_chat_message(user_fixture(), user_fixture(), @invalid_attrs)
     end
 
     test "update_chat_message/2 with valid data updates the chat_message" do
       chat_message = chat_message_fixture()
-      assert {:ok, %ChatMessage{} = chat_message} = Chat.update_chat_message(chat_message, @update_attrs)
+
+      assert {:ok, %ChatMessage{} = chat_message} =
+               Chat.update_chat_message(chat_message, @update_attrs)
+
       assert chat_message.message == "some updated message"
     end
 
@@ -51,11 +58,11 @@ defmodule Glimesh.ChatTest do
       assert chat_message == Chat.get_chat_message!(chat_message.id)
     end
 
-#    test "delete_chat_message/1 deletes the chat_message" do
-#      chat_message = chat_message_fixture()
-#      assert {:ok, %ChatMessage{}} = Chat.delete_chat_message(chat_message)
-#      assert_raise Ecto.NoResultsError, fn -> Chat.get_chat_message!(chat_message.id) end
-#    end
+    #    test "delete_chat_message/1 deletes the chat_message" do
+    #      chat_message = chat_message_fixture()
+    #      assert {:ok, %ChatMessage{}} = Chat.delete_chat_message(chat_message)
+    #      assert_raise Ecto.NoResultsError, fn -> Chat.get_chat_message!(chat_message.id) end
+    #    end
 
     test "change_chat_message/1 returns a chat_message changeset" do
       chat_message = chat_message_fixture()

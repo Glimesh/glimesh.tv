@@ -12,9 +12,13 @@ defmodule GlimeshWeb.ArticleController do
 
   def show(conn, %{"slug" => slug}) do
     article = Blog.get_article_by_slug!(slug)
-    render(conn, "show.html", article: article, page_title: article.title, page_description: article.description)
-  end
 
+    render(conn, "show.html",
+      article: article,
+      page_title: article.title,
+      page_description: article.description
+    )
+  end
 
   # Admin Only
   def new(conn, _params) do

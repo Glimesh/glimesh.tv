@@ -36,6 +36,9 @@ npm-debug.log
 # Don't commit the SSL keys. Generate them with the mix phx.gen.cert command
 /priv/cert/
 
+# OS Files
+.DS_Store
+
 # Development
 .elixir_ls/
 .idea/

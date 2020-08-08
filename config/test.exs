@@ -21,8 +21,7 @@ config :glimesh, GlimeshWeb.Endpoint,
   http: [port: 4002],
   server: false
 
-config :glimesh, GlimeshWeb.Emails.Mailer,
-       adapter: Bamboo.TestAdapter
+config :glimesh, GlimeshWeb.Emails.Mailer, adapter: Bamboo.TestAdapter
 
 # Print only warnings and errors during test
 config :logger, level: :warn

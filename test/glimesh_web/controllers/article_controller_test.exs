@@ -4,9 +4,28 @@ defmodule GlimeshWeb.ArticleControllerTest do
   alias Glimesh.Blog
   import Glimesh.AccountsFixtures
 
-  @create_attrs %{body_md: "some body_md", description: "some description", published: true, slug: "some-slug", title: "some title"}
-  @update_attrs %{body_md: "some updated body_md", description: "some updated description", published: false, slug: "some-updated-slug", title: "some updated title"}
-  @invalid_attrs %{body_html: nil, body_md: nil, description: nil, published: nil, slug: nil, title: nil}
+  @create_attrs %{
+    body_md: "some body_md",
+    description: "some description",
+    published: true,
+    slug: "some-slug",
+    title: "some title"
+  }
+  @update_attrs %{
+    body_md: "some updated body_md",
+    description: "some updated description",
+    published: false,
+    slug: "some-updated-slug",
+    title: "some updated title"
+  }
+  @invalid_attrs %{
+    body_html: nil,
+    body_md: nil,
+    description: nil,
+    published: nil,
+    slug: nil,
+    title: nil
+  }
 
   def fixture(:article) do
     {:ok, article} = Blog.create_article(admin_fixture(), @create_attrs)
@@ -73,7 +92,6 @@ defmodule GlimeshWeb.ArticleControllerTest do
       assert html_response(conn, 200) =~ "Edit Article"
     end
   end
-
 
   defp create_article(_) do
     article = fixture(:article)

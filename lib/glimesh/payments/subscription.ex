@@ -2,15 +2,16 @@ defmodule Glimesh.Payments.Subscription do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: [
-    :stripe_subscription_id,
-    :stripe_product_id,
-    :stripe_price_id,
-    :stripe_current_period_end,
-    :is_active,
-    :started_at,
-    :ended_at
-  ]}
+  @derive {Jason.Encoder,
+           only: [
+             :stripe_subscription_id,
+             :stripe_product_id,
+             :stripe_price_id,
+             :stripe_current_period_end,
+             :is_active,
+             :started_at,
+             :ended_at
+           ]}
   schema "subscriptions" do
     belongs_to :user, Glimesh.Accounts.User
     belongs_to :streamer, Glimesh.Accounts.User
@@ -30,10 +31,26 @@ defmodule Glimesh.Payments.Subscription do
   @doc false
   def create_changeset(subscription, attrs) do
     subscription
-    |> cast(attrs, [:stripe_subscription_id, :stripe_product_id, :stripe_price_id, :stripe_current_period_end, :started_at, :ended_at, :is_active])
+    |> cast(attrs, [
+      :stripe_subscription_id,
+      :stripe_product_id,
+      :stripe_price_id,
+      :stripe_current_period_end,
+      :started_at,
+      :ended_at,
+      :is_active
+    ])
     |> put_assoc(:user, attrs.user)
     |> maybe_put_assoc(:streamer, Map.get(attrs, :streamer, nil))
-    |> validate_required([:user, :stripe_subscription_id, :stripe_product_id, :stripe_price_id, :stripe_current_period_end, :started_at, :ended_at])
+    |> validate_required([
+      :user,
+      :stripe_subscription_id,
+      :stripe_product_id,
+      :stripe_price_id,
+      :stripe_current_period_end,
+      :started_at,
+      :ended_at
+    ])
   end
 
   @doc false
@@ -46,7 +63,7 @@ defmodule Glimesh.Payments.Subscription do
   def maybe_put_assoc(changeset, key, value) do
     if value do
       changeset |> put_assoc(key, value)
-      else
+    else
       changeset
     end
   end
