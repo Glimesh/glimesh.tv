@@ -9,6 +9,5 @@ defmodule Glimesh.Repo.Migrations.CreateChatMessages do
 
       timestamps()
     end
-
   end
 end

@@ -95,11 +95,13 @@ defmodule Glimesh.Accounts do
   """
   def register_user(attrs) do
     # Check to see if the register_user function was called from a test or the live site
-    attrs = cond do
-      attrs["username"] -> Map.merge(attrs, %{"displayname" => attrs["username"]})
-      attrs[:username] -> Map.merge(attrs, %{displayname: attrs[:username]})
-      true -> attrs
-    end
+    attrs =
+      cond do
+        attrs["username"] -> Map.merge(attrs, %{"displayname" => attrs["username"]})
+        attrs[:username] -> Map.merge(attrs, %{displayname: attrs[:username]})
+        true -> attrs
+      end
+
     %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
@@ -232,11 +234,10 @@ defmodule Glimesh.Accounts do
     |> Ecto.Multi.delete_all(:tokens, UserToken.user_and_contexts_query(user, :all))
     |> Repo.transaction()
     |> case do
-         {:ok, %{user: user}} -> {:ok, user}
-         {:error, :user, changeset, _} -> {:error, changeset}
-       end
+      {:ok, %{user: user}} -> {:ok, user}
+      {:error, :user, changeset, _} -> {:error, changeset}
+    end
   end
-
 
   @doc """
   Returns an `%Ecto.Changeset{}` for changing the users profile.
@@ -265,8 +266,8 @@ defmodule Glimesh.Accounts do
   """
   def update_user_profile(user, attrs) do
     user
-      |> User.profile_changeset(attrs)
-      |> Repo.update()
+    |> User.profile_changeset(attrs)
+    |> Repo.update()
   end
 
   @doc """
@@ -281,13 +282,16 @@ defmodule Glimesh.Accounts do
         }
 
         {:ok, stripe_customer} = Stripe.Customer.create(new_customer) |> IO.inspect()
-        {:ok, _} = user
-                   |> User.stripe_changeset(%{stripe_customer_id: stripe_customer.id})
-                   |> Repo.update()
+
+        {:ok, _} =
+          user
+          |> User.stripe_changeset(%{stripe_customer_id: stripe_customer.id})
+          |> Repo.update()
 
         stripe_customer.id
 
-      stripe_customer_id -> stripe_customer_id
+      stripe_customer_id ->
+        stripe_customer_id
     end
   end
 
@@ -296,7 +300,6 @@ defmodule Glimesh.Accounts do
     |> User.stripe_changeset(%{stripe_user_id: user_id})
     |> Repo.update()
   end
-
 
   def change_stripe_default_payment(%User{} = user, attrs \\ %{}) do
     User.stripe_changeset(user, attrs)
@@ -323,6 +326,7 @@ defmodule Glimesh.Accounts do
   Gets the user with the given signed token.
   """
   def get_user_by_session_token(token) when is_nil(token), do: nil
+
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
     Repo.one(query)

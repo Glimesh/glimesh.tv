@@ -10,63 +10,56 @@ defmodule GlimeshWeb.Emails.Email do
     user_base_email()
     |> to(user.email)
     |> subject("Confirm your email with Glimesh!")
-    |> text_body(
-         """
-          ==============================
+    |> text_body("""
+     ==============================
 
-          Hi #{user.username},
+     Hi #{user.username},
 
-          You can confirm your account by visiting the url below:
+     You can confirm your account by visiting the url below:
 
-          #{url}
+     #{url}
 
-          If you didn't create an account with us, please ignore this.
+     If you didn't create an account with us, please ignore this.
 
-          ==============================
-         """
-       )
-
+     ==============================
+    """)
   end
 
   def user_reset_password_instructions(user, url) do
     user_base_email()
     |> to(user.email)
     |> subject("Reset your password on Glimesh!")
-    |> text_body(
-         """
-          ==============================
+    |> text_body("""
+     ==============================
 
-          Hi #{user.username},
+     Hi #{user.username},
 
-          You can reset your password by visiting the url below:
+     You can reset your password by visiting the url below:
 
-          #{url}
+     #{url}
 
-          If you didn't request this change, please ignore this.
+     If you didn't request this change, please ignore this.
 
-          ==============================
-         """
-       )
+     ==============================
+    """)
   end
 
   def user_update_email_instructions(user, url) do
     user_base_email()
     |> to(user.email)
     |> subject("Change your email on Glimesh!")
-    |> text_body(
-         """
-          ==============================
+    |> text_body("""
+     ==============================
 
-          Hi #{user.username},
+     Hi #{user.username},
 
-          You can change your e-mail by visiting the url below:
+     You can change your e-mail by visiting the url below:
 
-          #{url}
+     #{url}
 
-          If you didn't request this change, please ignore this.
+     If you didn't request this change, please ignore this.
 
-          ==============================
-         """
-       )
+     ==============================
+    """)
   end
 end

@@ -25,8 +25,10 @@ config :glimesh, GlimeshWeb.Endpoint,
 
 config :glimesh, GlimeshWeb.Emails.Mailer,
   adapter: Bamboo.MailgunAdapter,
-  api_key: "my_api_key", # or {:system, "MAILGUN_API_KEY"},
-  domain: "your.domain", # or {:system, "MAILGUN_DOMAIN"},
+  # or {:system, "MAILGUN_API_KEY"},
+  api_key: "my_api_key",
+  # or {:system, "MAILGUN_DOMAIN"},
+  domain: "your.domain",
   hackney_opts: [recv_timeout: :timer.minutes(1)]
 
 # Configures Elixir's Logger
@@ -37,14 +39,13 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :phoenix, :template_engines,
-       md: PhoenixMarkdown.Engine
+config :phoenix, :template_engines, md: PhoenixMarkdown.Engine
 
 config :stripity_stripe,
-       api_key: "YOUR SECRET KEY",
-       public_api_key: "YOUR PUBLIC KEY",
-       connect_client_id: "YOUR CLIENT ID",
-       webhook_secret: "YOUR WEBHOOK SECRET"
+  api_key: "YOUR SECRET KEY",
+  public_api_key: "YOUR PUBLIC KEY",
+  connect_client_id: "YOUR CLIENT ID",
+  webhook_secret: "YOUR WEBHOOK SECRET"
 
 import_config "badwords.exs"
 # Import environment specific config. This must remain at the bottom

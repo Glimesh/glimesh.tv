@@ -12,11 +12,15 @@ defmodule Glimesh.StreamsTest do
       %{
         streamer: user_fixture(),
         moderator: user_fixture(),
-        user: user_fixture(),
+        user: user_fixture()
       }
     end
 
-    test "times out a user and removes messages successfully", %{streamer: streamer, moderator: moderator, user: user} do
+    test "times out a user and removes messages successfully", %{
+      streamer: streamer,
+      moderator: moderator,
+      user: user
+    } do
       {:ok, _} = Chat.create_chat_message(streamer, user, %{message: "bad message"})
       {:ok, _} = Chat.create_chat_message(streamer, moderator, %{message: "good message"})
       assert length(Chat.list_chat_messages(streamer)) == 2
@@ -33,13 +37,13 @@ defmodule Glimesh.StreamsTest do
       assert record.user.id == user.id
       assert record.action == "timeout"
     end
+
     #
     #    test "returns the user if the email exists" do
     ##      %{id: id} = user = user_fixture()
     ##      assert %User{id: ^id} = Accounts.get_user_by_email(user.email)
     #    end
   end
-
 
   describe "followers" do
     alias Glimesh.Streams.Followers

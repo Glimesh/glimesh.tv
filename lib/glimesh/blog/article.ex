@@ -29,6 +29,7 @@ defmodule Glimesh.Blog.Article do
       %Ecto.Changeset{valid?: true, changes: %{body_md: body_md}} ->
         {:ok, html_doc, []} = Earmark.as_html(body_md)
         put_change(changeset, :body_html, html_doc)
+
       _ ->
         changeset
     end

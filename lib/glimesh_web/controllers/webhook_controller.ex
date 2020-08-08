@@ -8,5 +8,4 @@ defmodule GlimeshWeb.WebhookController do
 
     conn
   end
-
 end

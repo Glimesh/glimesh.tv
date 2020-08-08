@@ -11,10 +11,13 @@ defmodule Glimesh.Payments do
   def set_payment_method(user, payment_method_id) do
     customer_id = Glimesh.Accounts.get_stripe_customer_id(user)
 
-    with {:ok, _} <- Stripe.PaymentMethod.attach(%{customer: customer_id, payment_method: payment_method_id}),
-         {:ok, _} <- Stripe.Customer.update(customer_id, %{invoice_settings: %{default_payment_method: payment_method_id}}),
-         {:ok, _} <- Glimesh.Accounts.set_stripe_default_payment(user, payment_method_id)
-      do
+    with {:ok, _} <-
+           Stripe.PaymentMethod.attach(%{customer: customer_id, payment_method: payment_method_id}),
+         {:ok, _} <-
+           Stripe.Customer.update(customer_id, %{
+             invoice_settings: %{default_payment_method: payment_method_id}
+           }),
+         {:ok, _} <- Glimesh.Accounts.set_stripe_default_payment(user, payment_method_id) do
       {:ok, "Successfully saved and set payment method as default."}
     else
       {:error, %Stripe.Error{user_message: user_message}} -> {:error, user_message}
@@ -25,30 +28,28 @@ defmodule Glimesh.Payments do
   def subscribe(:platform, user, product_id, price_id) do
     customer_id = Glimesh.Accounts.get_stripe_customer_id(user)
 
-    stripe_input = %{ customer: customer_id, items: [%{ price: price_id }] }
+    stripe_input = %{customer: customer_id, items: [%{price: price_id}]}
 
-    with {:ok, sub} <- Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"]),
-         {:ok, platform_sub} <- create_subscription(
-           %{
+    with {:ok, sub} <-
+           Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"]),
+         {:ok, platform_sub} <-
+           create_subscription(%{
              user: user,
-
              stripe_subscription_id: sub.id,
              stripe_product_id: product_id,
              stripe_price_id: price_id,
              stripe_current_period_end: sub.current_period_end,
-
              is_active: true,
              started_at: NaiveDateTime.utc_now(),
-             ended_at: NaiveDateTime.utc_now(),
-           }
-         )
-    do
+             ended_at: NaiveDateTime.utc_now()
+           }) do
       {:ok, platform_sub}
     else
       {:error, %Stripe.Error{user_message: user_message}} -> {:error, user_message}
       {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
     end
   end
+
   def subscribe(:channel, user, streamer, product_id, price_id) do
     # Basically the same as subscribe(:platform) but with
     # "transfer_data" => [
@@ -59,32 +60,30 @@ defmodule Glimesh.Payments do
 
     stripe_input = %{
       customer: customer_id,
-      items: [%{ price: price_id }],
+      items: [%{price: price_id}],
       application_fee_percent: 50,
-      transfer_data: %{ destination: streamer.stripe_user_id }
+      transfer_data: %{destination: streamer.stripe_user_id}
     }
 
-    with {:ok, stripe_sub} <- Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"]),
-         {:ok, channel_sub} <- create_subscription(
-           %{
+    with {:ok, stripe_sub} <-
+           Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"]),
+         {:ok, channel_sub} <-
+           create_subscription(%{
              user: user,
              streamer: streamer,
-
              stripe_subscription_id: stripe_sub.id,
              stripe_product_id: product_id,
              stripe_price_id: price_id,
              stripe_current_period_end: stripe_sub.current_period_end,
-
              is_active: true,
              started_at: NaiveDateTime.utc_now(),
-             ended_at: NaiveDateTime.utc_now(),
-           }
-         )
-      do
-      {:ok, %{
-        status: stripe_sub.status,
-        subscription: channel_sub
-      }}
+             ended_at: NaiveDateTime.utc_now()
+           }) do
+      {:ok,
+       %{
+         status: stripe_sub.status,
+         subscription: channel_sub
+       }}
     else
       {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
       {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
@@ -93,8 +92,7 @@ defmodule Glimesh.Payments do
 
   def unsubscribe(subscription) do
     with {:ok, _} <- Stripe.Subscription.delete(subscription.stripe_subscription_id),
-         {:ok, platform_sub} <- update_subscription(subscription, %{is_active: false})
-      do
+         {:ok, platform_sub} <- update_subscription(subscription, %{is_active: false}) do
       {:ok, platform_sub}
     else
       {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
@@ -103,29 +101,43 @@ defmodule Glimesh.Payments do
   end
 
   def get_platform_subscription!(user) do
-    Repo.one(from s in Subscription, where: s.user_id == ^user.id and s.is_active == true and is_nil(s.streamer_id)) |> Repo.preload(:user)
+    Repo.one(
+      from s in Subscription,
+        where: s.user_id == ^user.id and s.is_active == true and is_nil(s.streamer_id)
+    )
+    |> Repo.preload(:user)
   end
 
   def has_platform_subscription?(user) do
-    Repo.exists?(from s in Subscription, where: s.user_id == ^user.id and s.is_active == true and is_nil(s.streamer_id))
+    Repo.exists?(
+      from s in Subscription,
+        where: s.user_id == ^user.id and s.is_active == true and is_nil(s.streamer_id)
+    )
   end
 
   def get_channel_subscriptions(user) do
-    Repo.all(from s in Subscription, where: s.user_id == ^user.id and s.is_active == true and not is_nil(s.streamer_id)) |> Repo.preload([:user, :streamer])
+    Repo.all(
+      from s in Subscription,
+        where: s.user_id == ^user.id and s.is_active == true and not is_nil(s.streamer_id)
+    )
+    |> Repo.preload([:user, :streamer])
   end
 
   def get_channel_subscription!(user, streamer) do
-    Repo.get_by!(Subscription, user_id: user.id, is_active: true, streamer_id: streamer.id) |> Repo.preload([:user, :streamer])
+    Repo.get_by!(Subscription, user_id: user.id, is_active: true, streamer_id: streamer.id)
+    |> Repo.preload([:user, :streamer])
   end
 
   def has_channel_subscription?(user, streamer) do
-    Repo.exists?(from s in Subscription, where: s.user_id == ^user.id and s.is_active == true and s.streamer_id == ^streamer.id)
+    Repo.exists?(
+      from s in Subscription,
+        where: s.user_id == ^user.id and s.is_active == true and s.streamer_id == ^streamer.id
+    )
   end
 
   def oauth_connect(user, code) do
     with {:ok, resp} <- Stripe.Connect.OAuth.token(code),
-         {:ok, _} <- Glimesh.Accounts.set_stripe_user_id(user, resp.stripe_user_id)
-    do
+         {:ok, _} <- Glimesh.Accounts.set_stripe_user_id(user, resp.stripe_user_id) do
       {:ok, "Successfully updated Stripe oauth user."}
     else
       {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}

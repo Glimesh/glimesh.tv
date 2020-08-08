@@ -40,7 +40,7 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
       profile_conn =
         put(conn, Routes.user_settings_path(conn, :update_profile), %{
           "user" => %{
-            "displayname" => String.upcase(user.username),
+            "displayname" => String.upcase(user.username)
           }
         })
 
@@ -55,7 +55,7 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
       profile_conn =
         put(conn, Routes.user_settings_path(conn, :update_profile), %{
           "user" => %{
-            "displayname" => user.username <> "f",
+            "displayname" => user.username <> "f"
           }
         })
 

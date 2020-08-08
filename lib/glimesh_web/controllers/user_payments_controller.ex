@@ -4,8 +4,8 @@ defmodule GlimeshWeb.UserPaymentsController do
   def index(conn, _params) do
     user = conn.assigns.current_user
 
-    params = Plug.Conn.Query.encode(
-      %{
+    params =
+      Plug.Conn.Query.encode(%{
         "client_id" => Application.get_env(:stripity_stripe, :connect_client_id),
         "state" => Plug.CSRFProtection.get_csrf_token(),
         "suggested_capabilities" => ["transfers", "card_payments"],
@@ -13,8 +13,7 @@ defmodule GlimeshWeb.UserPaymentsController do
           "email" => user.email,
           "url" => Routes.user_stream_url(conn, :index, user.username)
         }
-      }
-    )
+      })
 
     stripe_oauth_url = "https://connect.stripe.com/express/oauth/authorize?" <> params
 
@@ -61,5 +60,4 @@ defmodule GlimeshWeb.UserPaymentsController do
         |> redirect(to: Routes.user_payments_path(conn, :index))
     end
   end
-
 end

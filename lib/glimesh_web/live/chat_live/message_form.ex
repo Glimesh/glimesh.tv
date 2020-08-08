@@ -8,11 +8,11 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   def update(%{chat_message: chat_message, user: user} = assigns, socket) do
     changeset = Chat.change_chat_message(chat_message)
 
-    {:ok, socket
-           |> assign(assigns)
-           |> assign(:changeset, changeset)
-           |> assign(:disabled, is_nil(user))
-    }
+    {:ok,
+     socket
+     |> assign(assigns)
+     |> assign(:changeset, changeset)
+     |> assign(:disabled, is_nil(user))}
   end
 
   @impl true
@@ -30,10 +30,11 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   end
 
   defp save_chat_message(socket, streamer, user, chat_message_params) do
-
     case Chat.create_chat_message(streamer, user, chat_message_params) do
       {:ok, _chat_message} ->
-        Presence.update_presence(self(), "chatters:#{streamer.username}", user.id, fn x -> %{x | size: x.size + 2} end)
+        Presence.update_presence(self(), "chatters:#{streamer.username}", user.id, fn x ->
+          %{x | size: x.size + 2}
+        end)
 
         {:noreply,
          socket
