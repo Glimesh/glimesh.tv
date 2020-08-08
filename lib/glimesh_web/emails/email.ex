@@ -13,7 +13,7 @@ defmodule GlimeshWeb.Emails.Email do
     |> text_body("""
      ==============================
 
-     Hi #{user.username},
+     Hi #{user.displayname},
 
      You can confirm your account by visiting the url below:
 
@@ -32,7 +32,7 @@ defmodule GlimeshWeb.Emails.Email do
     |> text_body("""
      ==============================
 
-     Hi #{user.username},
+     Hi #{user.displayname},
 
      You can reset your password by visiting the url below:
 
@@ -51,7 +51,7 @@ defmodule GlimeshWeb.Emails.Email do
     |> text_body("""
      ==============================
 
-     Hi #{user.username},
+     Hi #{user.displayname},
 
      You can change your e-mail by visiting the url below:
 

@@ -9,7 +9,7 @@ defmodule GlimeshWeb.UserLive.ViewerHeads do
       <div class="avatar--group">
         <%= for chatter <- @chatters do %>
           <div id="chatter-<%= chatter.username %>" class="avatar">
-              <img src="<%= chatter.avatar %>" class="rounded-circle bs-tooltip" data-toggle="tooltip" data-placement="bottom" data-original-title="<%= chatter.username %>" alt="<%= chatter.username %>" style="width: <%= chatter.size %>px; height: <%= chatter.size %>px;" />
+              <img src="<%= chatter.avatar %>" class="rounded-circle bs-tooltip" data-toggle="tooltip" data-placement="bottom" data-original-title="<%= chatter.displayname %>" alt="<%= chatter.displayname %>" style="width: <%= chatter.size %>px; height: <%= chatter.size %>px;" />
           </div>
         <% end %>
         <%= if length(@chatters) > 23 do %>
