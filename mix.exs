@@ -55,7 +55,8 @@ defmodule Glimesh.MixProject do
       {:bamboo, "~> 1.5"},
       {:phoenix_markdown, "~> 1.0"},
       {:stripity_stripe, "~> 2.0"},
-      {:html_sanitize_ex, "~> 1.4.1"}
+      {:html_sanitize_ex, "~> 1.4.1"},
+      {:earmark, "~> 1.4"}
     ]
   end
 
