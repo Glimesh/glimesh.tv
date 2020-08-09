@@ -20,7 +20,7 @@ defmodule GlimeshWeb.UserPaymentsController do
     render(
       conn,
       "index.html",
-      is_verified_streamer: !is_nil(user.stripe_user_id),
+      is_sub_ready_streamer: !is_nil(user.stripe_user_id),
       stripe_oauth_url: stripe_oauth_url,
       has_platform_subscription: Glimesh.Payments.has_platform_subscription?(user),
       subscriptions: Glimesh.Payments.get_channel_subscriptions(user),

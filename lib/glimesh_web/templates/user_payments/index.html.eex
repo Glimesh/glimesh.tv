@@ -72,9 +72,9 @@
             <div class="widget widget-account-invoice-two">
                 <div class="widget-content">
                     <div class="account-box">
-                        <%= if @is_verified_streamer do %>
+                        <%= if @is_sub_ready_streamer do %>
                         <div class="info">
-                            <h5 class="">Verified Streamer</h5>
+                            <h5 class="">Sub-ready Streamer</h5>
                             <!--<p class="inv-balance">$10,344</p>-->
                         </div>
                         <div class="acc-action">
