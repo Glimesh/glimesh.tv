@@ -340,7 +340,7 @@ defmodule Glimesh.Accounts do
       user
       |> User.tfa_changeset(attrs)
       |> User.validate_current_password(password)
-      |> User.validate_tfa(pin)
+      |> User.validate_tfa(pin, user.tfa_token)
 
     Ecto.Multi.new()
     |> Ecto.Multi.update(:user, changeset)
