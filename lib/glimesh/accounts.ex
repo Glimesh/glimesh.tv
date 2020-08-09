@@ -315,6 +315,43 @@ defmodule Glimesh.Accounts do
     |> Repo.update()
   end
 
+  def change_tfa(user, attrs \\ %{}) do
+    User.tfa_changeset(user, attrs)
+  end
+
+  def update_tfa(user, pin, attrs) do
+    changeset =
+      user
+      |> User.tfa_changeset(attrs)
+      |> User.validate_tfa(pin, user.tfa_token)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:user, changeset)
+    |> Ecto.Multi.delete_all(:tokens, UserToken.user_and_contexts_query(user, :all))
+    |> Repo.transaction()
+    |> case do
+         {:ok, %{user: user}} -> {:ok, user}
+         {:error, :user, changeset, _} -> {:error, changeset}
+       end
+  end
+
+  def update_tfa(user, pin, password, attrs) do
+    changeset =
+      user
+      |> User.tfa_changeset(attrs)
+      |> User.validate_current_password(password)
+      |> User.validate_tfa(pin)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:user, changeset)
+    |> Ecto.Multi.delete_all(:tokens, UserToken.user_and_contexts_query(user, :all))
+    |> Repo.transaction()
+    |> case do
+         {:ok, %{user: user}} -> {:ok, user}
+         {:error, :user, changeset, _} -> {:error, changeset}
+       end
+  end
+
   ## Session
 
   @doc """

@@ -66,6 +66,9 @@ defmodule GlimeshWeb.Router do
     put "/users/settings/update_password", UserSettingsController, :update_password
     put "/users/settings/update_email", UserSettingsController, :update_email
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+    put "/users/settings/update_tfa", UserSettingsController, :update_tfa
+    get "/users/settings/get_tfa", UserSettingsController, :get_tfa
+    get "/users/settings/tfa_registered", UserSettingsController, :tfa_registered
   end
 
   scope "/", GlimeshWeb do

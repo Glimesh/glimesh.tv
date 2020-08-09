@@ -196,4 +196,78 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-8 offset-md-4">
+            <div class="card mt-4">
+                <div class="card-body">
+
+                    <h3>2FA Setup</h3>
+
+                    <%= form_for @tfa_changeset, Routes.user_settings_path(@conn, :update_tfa), fn f -> %>
+                    <%= if @tfa_changeset.action do %>
+                    <div class="alert alert-danger">
+                        <p style="margin-bottom: 0px;">Oops, something went wrong! Please check the errors below.</p>
+                    </div>
+                    <% end %>
+                    <div id="tfa-form-loader" style="display:none;">
+                    
+                    <div class="new-tfa-form-class">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <img src="/users/settings/get_tfa" />
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <%= label f, "2FA Code" %>
+                                <%= text_input f, :tfa, required: true, class: "form-control mb-4" %>
+                                <%= error_tag f, :tfa %>
+                            </div>
+                        </div>
+                        <div class="new-tfa-form-class col-sm-6">
+                            <div class="form-group">
+                                <%= label f, :current_password, for: "current_password_for_tfa" %>
+                                <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_tfa", class: "form-control mb-4" %>
+                                <%= error_tag f, :current_password %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="new-tfa-form-class">
+                            <%= submit "Submit Two Factor Authentication", class: "btn btn-primary" %>
+                        </div>
+                        <div class="existing-tfa-form-class">
+                            <%= submit "Remove Two Factor Authentication", class: "btn btn-primary" %>
+                        </div>
+                    </div>
+                    </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<script>
+    fetch("/users/settings/tfa_registered")
+        .then(res => res.ok ? res : Promise.reject(res))
+        .then(res => res.json())
+        .then(res => {
+            if(res.new)
+            {
+                document.querySelectorAll(".existing-tfa-form-class").forEach(t => t.style.display = "none");
+            }
+            else
+            {
+                document.querySelectorAll(".new-tfa-form-class").forEach(t => t.style.display = "none");
+                document.querySelector("#current_password_for_tfa").required = false;
+            }
+            document.querySelector("#tfa-form-loader").style.display = "block"
+        })
+</script>
