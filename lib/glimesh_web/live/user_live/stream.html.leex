@@ -1,121 +1,114 @@
-
 <div class="layout-px-spacing">
 
 
-    <div class="row sales layout-top-spacing">
+  <div class="row sales layout-top-spacing display-flex">
 
-        <div class="col-xl-9 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-            <div class="widget widget-chart-one">
-                <div class="widget-heading">
-                    <div class="row">
-                      <div class="col-8">
-                        <h5 class=""><span class="badge badge-danger">Live!</span> <%= @streamer.displayname %>'s Cuts His Hair For The Trevor Project!</h5>
-                      </div>
-                      <div class="col-4">
-                        <div class="float-right">
-                            <div class="stream-info ml-4">
-                                <%= if @streamer.stripe_user_id do %>
-                                <%= live_render(@socket, GlimeshWeb.UserLive.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                                <% end %>
-                                <%= live_render(@socket, GlimeshWeb.UserLive.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                                <%= live_render(@socket, GlimeshWeb.UserLive.ViewerCount, id: "viewer-count", session: %{"user" => @user, "streamer" => @streamer.username}) %>
-                            </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-
-                <div class="widget-content">
-                    <div class="embed-responsive embed-responsive-16by9">
-                      <div id="player-container" class="embed-responsive-item" phx-hook="LoadVideo" data-playback-url="<%= @playback_url %>">
-                        <div id="player"></div>
-                      </div>
-
-                     <!--<video id="video" width="1920" height="1080" controls preload="auto" autoplay muted class="video-js vjs-default-skin embed-responsive-item" data-setup='{"liveui": true}'>
-                      <source src="<%= @playback_url %>">
-                      <source src="http://origin-01.vs.glimesh.tv/app/stream/playlist.m3u8" type="application/x-mpegURL">
-                     </video>-->
-                    </div>
-
-
-                    <div class="d-none d-sm-block mt-4">
-                        <div class="row">
-                          <div class="col-12">
-                            <%# live_render(@socket, GlimeshWeb.UserLive.ViewerHeads, id: "viewer-heads", session: %{"user" => @user, "streamer" => @streamer.username, "fake_multiplier" => 12}) %>
-                          </div>
-                        </div>
-                    </div>
-                </div>
+    <div id="video-column" class="col-xl-9 layout-spacing">
+      <div class="widget widget-chart-one">
+        <div class="widget-heading">
+          <div class="row">
+            <div class="col-8">
+              <h5 class=""><span class="badge badge-danger">Live!</span> <%= @streamer.displayname %>'s Cuts His Hair
+                For The Trevor Project!</h5>
             </div>
-        </div>
-
-        <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-
-          <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "streamer" => @streamer} %>
-        </div>
-
-    </div>
-
-    <div class="row">
-      <div class="col-md-4 mb-4">
-        <div class="widget widget-chart-one">
-          <div class="widget-heading">
-            <h3>About The Trevor Project</h3>
-          </div>
-          <div class="widget-content">
-            <p>The Trevor Project is the world’s largest suicide prevention and crisis intervention organization for LGBTQ (lesbian, gay, bisexual, transgender, queer, and questioning) young people. The organization works to save young lives by providing support through free and confidential suicide prevention and crisis intervention programs on platforms where young people spend their time: a 24/7 phone lifeline, chat, text and soon-to-come integrations with social media platforms. The organization also runs TrevorSpace, the world’s largest safe space social networking site for LGBTQ youth, and operates innovative education, research, and advocacy programs.</p>
-            <a href="https://www.thetrevorproject.org/" target="_blank" class="btn btn-trevor">Learn more about The Trevor Project!</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="widget widget-chart-one">
-          <div class="widget-heading">
-            <h3>About IKAROS</h3>
-          </div>
-          <div class="widget-content">
-            <p>Full-time Twitch Streamer, Musician, eSports, Computer Scientist. Look for your reply in the thunder. Small creator advocate.</p>
-            <p>IKAROS streams nightly on Twitch.TV</p>
-
-            <a target="_blank" href="https://www.twitch.tv/IKAROSttv" class="btn btn-block btn-secondary">Twitch</a>
-            <a target="_blank" href="https://twitter.com/ikarosttv" class="btn btn-block btn-info">Twitter</a>
-            <a target="_blank" href="https://azureblaze.gg/" class="btn btn-block btn-info">Azure Blaze</a>
+            <div class="col-4">
+              <div class="float-right">
+                <div class="stream-info btn-toolbar ml-4">
+                  <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <%= if @streamer.stripe_user_id do %>
+                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                    <% end %>
+                  </div>
+                  <div class="btn-group mr-2" role="group" aria-label="Second group">
+                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                  </div>
+                  <div class="btn-group" role="group" aria-label="Third group">
+                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"user" => @user, "streamer" => @streamer.username}) %>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="widget widget-chart-one mt-4">
-          <div class="widget-heading">
-            <h3>About Glimesh</h3>
-          </div>
-          <div class="widget-content">
-            <p>Glimesh is a next generation streaming platform built by the community, for the community. We know establishing a following is hard and the hours are long. Our platform focuses on increasing discoverability for content creators and implementing the latest in streaming technology to level the playing field. We understand the importance of interaction between content creators and their fans and we’re dedicated to innovating new ways to bring communities closer together.</p>
-            <h4>Why make this project?</h4>
-            <p>The core inspiration of this project has been equality. There are two main problems with existing streaming websites: they take too much of a cut and the gap between streamers is great. Glimesh is our chance to make this right, and build a platform that puts the streamers &amp; community first, not the advertisers.</p>
-            <h4>What makes Glimesh unique?</h4>
-            <p>Glimesh is built by the community, for the community. We are an Open Company dedicated to putting true transparency and openness first. Come see for yourself by joining our <a target="_blank" href="https://discord.gg/glimesh">Discord</a>!</p>
-            <h4>When will it be ready?</h4>
-            <p>Let’s be realistic, there’s a lot to tackle. Design, development, infrastructure and business are all key areas we need to build out. However the idea is to tackle it in an MVP approach to get value to you as soon as possible and then iterate.</p>
-            <h4>How can I help?</h4>
-            <p>Easy! Join us in  <a target="_blank" href="https://discord.gg/glimesh">Discord</a>  and look for the #volunteers channel and let us know what you can do.</p>
 
+        <div class="widget-content">
+          <div class="embed-responsive embed-responsive-16by9">
+            <div id="player-container" class="embed-responsive-item" phx-hook="LoadVideo"
+              data-playback-url="<%= @playback_url %>">
+              <div id="player"></div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="widget widget-chart-one">
-          <div class="widget-heading">
-            <h3>Chat Rules</h3>
-          </div>
-          <div class="widget-content">
-            <p>1. <strong>Hate Speech</strong> - Hate Speech is not tolerated by Glimesh under any circumstances. Any message that promotes, encourages, or facilitates discrimination, denigration, objectification, harassment, or violence based on race, age, sexuality, physical characteristics, gender identity, disability, military service, religion and/or nationality will be considered hate speech is prohibited. We also don't allow for the hateful use of racial or misogynistic slurs. If you have to question whether your message violates this rule, don't send it.</p>
-            <p>2. <strong>Harassment</strong> - We want you, as a member of our community, to feel safe and respected so you can engage and connect with others. Harassment or bullying of other community members or the streamer will not be tolerated. Harassment is considered any message or activity with the intention to intimidate, degrade, abuse, or bully others, or creates a hostile environment for others. Telling the streamer or another user to "kill yourself" is unacceptable. If the streamer or another community member asks you not to make certain remarks, and you continue, that is harassment. If the streamer's rules say such comments are not welcome, it is harassment.</p>
-            <p>3. <strong>Threats & Violence</strong> -  All threats will be taken seriously by the moderators and Glimesh team. This includes threats of harm to others, threats of swatting, threats of doxing, threats of DDoS and threats of harassment.</p>
-            <p>4. <strong>Spam</strong> - No one likes spam. Spam is considered posting large amounts of repetitive, unwanted messages in a short amount of time.</p>
-            <p>5. <strong>Personal Information</strong> - Posting personal information about others without their consent ( “doxxing") is not allowed. It is prohibited to share content that may reveal private personal information about individuals, or their private property, without permission.</p>
 
-            <p>Any violation to the above rules will result in your comment being removed from the chat and an automatic <strong>ban for the remainder of the charity stream event</strong>. Serious violations may result in a ban from future events.</p>
+          <div class="d-none d-sm-block mt-4">
+            <div class="row">
+              <div class="col-12">
+                <%# live_render(@socket, GlimeshWeb.UserLive.ViewerHeads, id: "viewer-heads", session: %{"user" => @user, "streamer" => @streamer.username, "fake_multiplier" => 12}) %>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div id="chat-column" class="col-xl-3 layout-spacing">
+      <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "streamer" => @streamer} %>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-xl-9 layout-spacing">
+      <div class="widget widget-chart-one">
+        <div class="widget-heading">
+          <h3>About The Trevor Project</h3>
+        </div>
+        <div class="widget-content">
+          <p>The Trevor Project is the world’s largest suicide prevention and crisis intervention organization for LGBTQ
+            (lesbian, gay, bisexual, transgender, queer, and questioning) young people. The organization works to save
+            young lives by providing support through free and confidential suicide prevention and crisis intervention
+            programs on platforms where young people spend their time: a 24/7 phone lifeline, chat, text and
+            soon-to-come integrations with social media platforms. The organization also runs TrevorSpace, the world’s
+            largest safe space social networking site for LGBTQ youth, and operates innovative education, research, and
+            advocacy programs.</p>
+          <a href="https://www.thetrevorproject.org/" target="_blank" class="btn btn-trevor">Learn more about The Trevor
+            Project!</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 layout-spacing">
+      <div class="widget widget-chart-one">
+        <div class="widget-heading">
+          <h3>Chat Rules</h3>
+        </div>
+        <div class="widget-content">
+          <p>1. <strong>Hate Speech</strong> - Hate Speech is not tolerated by Glimesh under any circumstances. Any
+            message that promotes, encourages, or facilitates discrimination, denigration, objectification, harassment,
+            or violence based on race, age, sexuality, physical characteristics, gender identity, disability, military
+            service, religion and/or nationality will be considered hate speech is prohibited. We also don't allow for
+            the hateful use of racial or misogynistic slurs. If you have to question whether your message violates this
+            rule, don't send it.</p>
+          <p>2. <strong>Harassment</strong> - We want you, as a member of our community, to feel safe and respected so
+            you can engage and connect with others. Harassment or bullying of other community members or the streamer
+            will not be tolerated. Harassment is considered any message or activity with the intention to intimidate,
+            degrade, abuse, or bully others, or creates a hostile environment for others. Telling the streamer or
+            another user to "kill yourself" is unacceptable. If the streamer or another community member asks you not to
+            make certain remarks, and you continue, that is harassment. If the streamer's rules say such comments are
+            not welcome, it is harassment.</p>
+          <p>3. <strong>Threats & Violence</strong> - All threats will be taken seriously by the moderators and Glimesh
+            team. This includes threats of harm to others, threats of swatting, threats of doxing, threats of DDoS and
+            threats of harassment.</p>
+          <p>4. <strong>Spam</strong> - No one likes spam. Spam is considered posting large amounts of repetitive,
+            unwanted messages in a short amount of time.</p>
+          <p>5. <strong>Personal Information</strong> - Posting personal information about others without their consent
+            ( “doxxing") is not allowed. It is prohibited to share content that may reveal private personal information
+            about individuals, or their private property, without permission.</p>
+
+          <p>Any violation to the above rules will result in your comment being removed from the chat and an automatic
+            <strong>ban for the remainder of the charity stream event</strong>. Serious violations may result in a ban
+            from future events.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>

@@ -9,6 +9,10 @@ defmodule Glimesh.Accounts do
 
   ## Database getters
 
+  def list_users() do
+    Repo.all(from u in User, where: not is_nil(u.confirmed_at))
+  end
+
   @doc """
   Gets a user by email.
 

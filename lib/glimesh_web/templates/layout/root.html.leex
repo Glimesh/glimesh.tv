@@ -18,15 +18,27 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#0E1726">
 
-    <meta property="og:url" content="https://glimesh.tv/" />
-    <meta property="og:title" content="Your Next Generation Streaming Platform" />
-    <meta property="og:description" content="Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish." />
-    <meta property="og:image" content="https://glimesh.tv/images/website-lander.jpg" />
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@Glimesh">
-    <meta name="twitter:title" content="Your Next Generation Streaming Platform">
-    <meta name="twitter:description" content="Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish.">
-    <meta name="twitter:image" content="https://glimesh.tv/images/website-lander.jpg">
+    <%= if assigns[:custom_meta] do %>
+      <meta property="og:url" content="https://glimesh.tv/" />
+      <meta property="og:title" content="<%= assigns.custom_meta.title %>" />
+      <meta property="og:description" content="<%= assigns.custom_meta.description %>" />
+      <meta property="og:image" content="<%= assigns.custom_meta.image_url %>" />
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:site" content="@Glimesh">
+      <meta name="twitter:title" content="<%= assigns.custom_meta.title %>">
+      <meta name="twitter:description" content="<%= assigns.custom_meta.description %>">
+      <meta name="twitter:image" content="<%= assigns.custom_meta.image_url %>">
+    <% else %>
+      <meta property="og:url" content="https://glimesh.tv/" />
+      <meta property="og:title" content="Your Next Generation Streaming Platform" />
+      <meta property="og:description" content="Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish." />
+      <meta property="og:image" content="https://glimesh.tv/images/website-lander.jpg" />
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:site" content="@Glimesh">
+      <meta name="twitter:title" content="Your Next Generation Streaming Platform">
+      <meta name="twitter:description" content="Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish.">
+      <meta name="twitter:image" content="https://glimesh.tv/images/website-lander.jpg">
+    <% end %>
 
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     <%= if Application.get_env(:glimesh, :environment) !== :dev do %>

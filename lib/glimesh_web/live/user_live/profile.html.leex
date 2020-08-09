@@ -1,46 +1,91 @@
-
-<div class="container">
-    <h2 class="mt-4"><%= @user.displayname %>'s Profile</h2>
+<div class="container mt-4">
     <div class="row">
         <div class="col-md-4">
             <div class="card text-center">
                 <div class="card-body">
-                    <img src="<%= Glimesh.Avatar.url({@user.avatar, @user}, :original) %>" alt="Your Profile Picture"
-                         class="img-responsive mb-4 img-avatar">
+                    <h2><%= @streamer.displayname %></h2>
+                    <img src="<%= Glimesh.Avatar.url({@streamer.avatar, @streamer}, :original) %>"
+                        alt="Your Profile Picture"
+                        class="img-fluid mb-2 img-avatar <%= if @streamer.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+
+                    <%= if @streamer.stripe_user_id do %>
+                    <div class="mb-4"><span class="badge badge-secondary">Verified Streamer</span></div>
+                    <% end %>
 
                     <ul class="list-inline">
-                      <%= if @user.social_twitter do %>
-                       <li rel="ugc" class="list-inline-item">
-                           <a href="https://twitter.com/<%= @user.social_twitter %>" _target="blank" class="social-icon">
-                               <i class="fab fa-twitter"></i>
-                           </a>
-                       </li>
-                       <%  end %>
-                       <%= if @user.social_youtube do %>
-                       <li rel="ugc" class="list-inline-item">
-                           <a href="https://youtube.com/<%= @user.social_youtube %>" _target="blank" class="social-icon">
-                               <i class="fab fa-youtube"></i>
-                           </a>
-                       </li>
-                       <%  end %>
-                       <%= if @user.social_instagram do %>
-                       <li class="list-inline-item">
-                           <a rel="ugc" href="https://instagram.com/<%= @user.social_instagram %>" _target="blank" class="social-icon">
-                               <i class="fab fa-instagram"></i>
-                           </a>
-                       </li>
-                       <%  end %>
-                       <%= if @user.social_discord do %>
-                       <li class="list-inline-item">
-                           <a rel="ugc" href="https://discord.gg/<%= @user.social_discord %>" _target="blank" class="social-icon">
-                               <i class="fab fa-discord"></i>
-                           </a>
-                       </li>
-                       <%  end %>
+                        <%= if @streamer.social_twitter do %>
+                        <li rel="ugc" class="list-inline-item">
+                            <a href="https://twitter.com/<%= @streamer.social_twitter %>" target="_blank"
+                                class="social-icon">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </li>
+                        <%  end %>
+                        <%= if @streamer.social_youtube do %>
+                        <li rel="ugc" class="list-inline-item">
+                            <a href="https://youtube.com/<%= @streamer.social_youtube %>" target="_blank"
+                                class="social-icon">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </li>
+                        <%  end %>
+                        <%= if @streamer.social_instagram do %>
+                        <li class="list-inline-item">
+                            <a rel="ugc" href="https://instagram.com/<%= @streamer.social_instagram %>" target="_blank"
+                                class="social-icon">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </li>
+                        <%  end %>
+                        <%= if @streamer.social_discord do %>
+                        <li class="list-inline-item">
+                            <a rel="ugc" href="https://discord.gg/<%= @streamer.social_discord %>" target="_blank"
+                                class="social-icon">
+                                <i class="fab fa-discord"></i>
+                            </a>
+                        </li>
+                        <%  end %>
                     </ul>
+
+                    <div class="simple--counter-container mt-4">
+
+                        <div class="counter-container">
+                            <div class="counter-content">
+                                <h5 class="s-counter2 s-counter"><%= @followers_count %></h1>
+                            </div>
+                            <p class="s-counter-text">Followers</p>
+                        </div>
+
+                        <div class="counter-container">
+                            <div class="counter-content">
+                                <h5 class="s-counter3 s-counter"><%= @following_count %></h1>
+                            </div>
+                            <p class="s-counter-text">Following</p>
+                        </div>
+
+                    </div>
+
+                    <%= if @streamer == @user do %>
+                    <a class="btn btn-primary btn-sm mt-4" target="_blank" href="https://twitter.com/intent/tweet?text=<%= @streamer_share_text %>" data-size="large">Share my profile on Twitter</a>
+                    <% else  %>
+                    <a class="btn btn-primary btn-sm mt-4" target="_blank" href="https://twitter.com/intent/tweet?text=<%= @viewer_share_text %>" data-size="large">Share on Twitter</a>
+                    <% end %>
 
                 </div>
             </div>
+
+            <div class="card text-center mt-4">
+                <div class="card-header">
+                    <h5>Pre-Follow Streamer</h5>
+                </div>
+                <div class="card-body">
+                    <p>Glimesh isn't launched yet, but you can follow <%= @streamer.displayname %> now and get
+                        automatically notified when they go live!</p>
+                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                </div>
+            </div>
+
+            <!-- Be back soon!
             <div class="card text-center mt-4">
                 <div class="card-header">
                     <h5>Achievements</h5>
@@ -49,12 +94,27 @@
                     <p>Found the achievements achievement!</p>
                 </div>
             </div>
+            -->
         </div>
         <div class="col-md-8">
 
             <div class="card">
                 <div class="card-body">
-                    Hi, this is a profile!
+                    <%= if @youtube_id do %>
+                    <div class="embed-responsive embed-responsive-16by9 mb-4">
+                        <iframe class="embed-responsive-item" src="https://www.youtube-nocookie.com/embed/<%= @youtube_id %>"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <% end %>
+
+                    <%= if @streamer.profile_content_html do %>
+                        <%= raw(@streamer.profile_content_html) %>
+                    <% else %>
+                        <p>Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!</p>
+                    <% end %>
+
                 </div>
             </div>
         </div>

@@ -1,0 +1,26 @@
+<div class="container">
+
+    <h2>Our Users</h2>
+    <div class="row layout-top-spacing">
+        <%= for user <- @users do %>
+
+        <div class="col-md-2">
+            <%= live_redirect to: Routes.user_profile_path(@socket, :index, user.username) do %>
+            <div class="text-md-center">
+                <h4><%= user.displayname %></h2>
+                <img src="<%= Glimesh.Avatar.url({user.avatar, user}, :original) %>"
+                    alt="Your Profile Picture"
+                     style="width: 80% !important;"
+                    class="img-fluid mb-2 img-avatar <%= if user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+
+                <%= if user.stripe_user_id do %>
+                <div class="mb-4"><span class="badge badge-secondary">Verified Streamer</span></div>
+                <% end %>
+            </div>
+            <% end %>
+        </div>
+
+        <% end %>
+
+    </div>
+</div>

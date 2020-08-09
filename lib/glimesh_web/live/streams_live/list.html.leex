@@ -1,0 +1,35 @@
+
+
+<div class="layout-px-spacing">
+
+    <div class="container">
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
+        <div class="col-md-12 p-lg-5 mx-auto my-5">
+            <h1 class="display-4 font-weight-normal"><%= @category %> Streams Coming Soon</h1>
+            <p class="lead font-weight-normal">We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!</p>
+        </div>
+        </div>
+    </div>
+
+
+    <div class="row layout-top-spacing">
+        <%= for stream <- @streams do %>
+
+        <div class="col-md-3 layout-spacing">
+            <%= live_redirect to: Routes.user_stream_path(@socket, :index, stream.username) do %>
+                <div class="widget widget-chart-one">
+                    <div class="widget-heading">
+                        <h5 class=""><span class="badge badge-danger">Live!</span> <%= stream.displayname %></h5>
+                    </div>
+
+                    <div class="widget-content">
+                        <img src="/images/stream-not-started.jpg" alt="" class="img-fluid">
+                    </div>
+                </div>
+            <% end %>
+        </div>
+
+        <% end %>
+
+    </div>
+</div>

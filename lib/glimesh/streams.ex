@@ -100,4 +100,12 @@ defmodule Glimesh.Streams do
       from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id
     )
   end
+
+  def count_followers(user) do
+    Repo.one!(from f in Followers, select: count(f.id), where: f.streamer_id == ^user.id)
+  end
+
+  def count_following(user) do
+    Repo.one!(from f in Followers, select: count(f.id), where: f.user_id == ^user.id)
+  end
 end
