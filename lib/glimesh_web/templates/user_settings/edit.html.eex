@@ -14,6 +14,7 @@
                          class="img-fluid mb-4 img-avatar">
 
                     <div class="mb-4 text-left">
+                        <p>Click Update Settings down below when you've chosen the file.</p>
                         <%= file_input f, :avatar, id: "customFile", class: "", accept: "image/png, image/jpeg" %>
                     </div>
                 </div>
@@ -102,7 +103,7 @@
 
                 <div class="form-group">
                     <%= label f, :profile_content_md, "Profile Content (Markdown supported)" %>
-                    <%= textarea f, :profile_content_md, [class: "form-control mb-4"] %>
+                    <%= textarea f, :profile_content_md, [class: "form-control mb-4", rows: 20] %>
                     <%= error_tag f, :profile_content_md %>
                 </div>
 

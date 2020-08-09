@@ -234,7 +234,8 @@ defmodule Glimesh.Accounts.User do
   def set_profile_content_html(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{profile_content_md: profile_content_md}} ->
-        {:ok, html_doc, []} = Earmark.as_html(profile_content_md)
+        {:ok, html_doc, []} = Earmark.as_html(HtmlSanitizeEx.strip_tags(profile_content_md))
+
         put_change(changeset, :profile_content_html, html_doc)
       _ ->
         changeset

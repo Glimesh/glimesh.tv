@@ -40,7 +40,7 @@ defmodule GlimeshWeb.Router do
   scope "/api", GlimeshWeb do
     pipe_through :api
 
-    post "/webhook/stripe", WebhookController, :stripe
+    # post "/webhook/stripe", WebhookController, :stripe
   end
 
   ## Authentication routes
@@ -61,12 +61,6 @@ defmodule GlimeshWeb.Router do
   scope "/", GlimeshWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    live "/platform_subscriptions", PlatformSubscriptionLive.Index, :index
-
-    get "/users/payments", UserPaymentsController, :index
-    get "/users/payments/connect", UserPaymentsController, :connect
-    put "/users/payments/delete_default_payment", UserPaymentsController, :delete_default_payment
-
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings/update_profile", UserSettingsController, :update_profile
     put "/users/settings/update_password", UserSettingsController, :update_password
@@ -76,6 +70,12 @@ defmodule GlimeshWeb.Router do
 
   scope "/", GlimeshWeb do
     pipe_through [:browser, :require_admin_user]
+
+    live "/platform_subscriptions", PlatformSubscriptionLive.Index, :index
+
+    get "/users/payments", UserPaymentsController, :index
+    get "/users/payments/connect", UserPaymentsController, :connect
+    put "/users/payments/delete_default_payment", UserPaymentsController, :delete_default_payment
 
     get "/blog/new", ArticleController, :new
     get "/blog/:slug/edit", ArticleController, :edit
@@ -106,7 +106,6 @@ defmodule GlimeshWeb.Router do
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :confirm
-
 
     # This must be the last route
     live "/:username", UserLive.Stream, :index
