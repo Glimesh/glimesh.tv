@@ -93,6 +93,16 @@ config :glimesh, GlimeshWeb.Emails.Mailer,
   api_key: mailgun_api_key,
   domain: mailgun_domain
 
+stripe_public_api_key = System.get_env("STRIPE_PUBLIC_API_KEY") || raise "environment variable STRIPE_PUBLIC_API_KEY is missing."
+stripe_api_key = System.get_env("STRIPE_API_KEY") || raise "environment variable STRIPE_API_KEY is missing."
+stripe_connect_client_id = System.get_env("STRIPE_CONNECT_CLIENT_ID") || raise "environment variable STRIPE_CONNECT_CLIENT_ID is missing."
+stripe_webhook_secret = System.get_env("STRIPE_WEBHOOK_SECRET") || raise "environment variable STRIPE_WEBHOOK_SECRET is missing."
+config :stripity_stripe,
+  public_api_key: stripe_public_api_key,
+  api_key: stripe_api_key,
+  connect_client_id: stripe_connect_client_id,
+  webhook_secret: stripe_webhook_secret
+
 # ## Using releases (Elixir v1.9+)
 #
 # If you are doing OTP releases, you need to instruct Phoenix
