@@ -29,7 +29,7 @@ defmodule Glimesh.Accounts.User do
     field :profile_content_md, :string
     field :profile_content_html, :string
 
-    field :tfa_token, :string, allow_nil: true
+    field :tfa_token, :string
 
     timestamps()
   end
