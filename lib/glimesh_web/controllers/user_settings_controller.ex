@@ -78,11 +78,10 @@ defmodule GlimeshWeb.UserSettingsController do
     end
   end
 
-  def update_tfa(conn, %{"current_password" => password, "user" => %{"tfa" => pin}}) do
+  def update_tfa(conn, %{"current_password" => password, "user" => %{"tfa" => pin}, "tfa_tmp" => secret}) do
     user = conn.assigns.current_user
-    serverHash = nil
     if user.tfa_token do
-      case Accounts.update_tfa(user, pin, %{"tfa_token": serverHash}) do
+      case Accounts.update_tfa(user, pin, %{"tfa_token": nil}) do
         {:ok, user} ->
           conn
           |> put_flash(:info, "2FA updated successfully.")
@@ -93,8 +92,7 @@ defmodule GlimeshWeb.UserSettingsController do
           render(conn, "edit.html", tfa_changeset: changeset)
       end
     else
-      serverHash = Base.encode32(user.hashed_password, padding: false)
-      case Accounts.update_tfa(user, pin, password, %{"tfa_token": serverHash}) do
+      case Accounts.update_tfa(user, pin, password, %{"tfa_token": secret}) do
         {:ok, user} ->
           conn
           |> put_flash(:info, "2FA updated successfully.")
@@ -109,7 +107,8 @@ defmodule GlimeshWeb.UserSettingsController do
 
   def get_tfa(conn, _params) do
     user = conn.assigns.current_user
-    text(conn, Tfa.generate_tfa_img("Glimesh",user.username,user.hashed_password))
+    secret = Tfa.generate_secret(user.hashed_password)
+    json(conn, %{tmp: secret, svg: Tfa.generate_tfa_img("Glimesh",user.username,secret)})
   end
 
   def tfa_registered(conn, _params) do

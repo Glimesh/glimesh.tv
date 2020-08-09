@@ -214,7 +214,8 @@
                     <div class="new-tfa-form-class">
                         <div class="row">
                             <div class="col-sm-12">
-                                <img src="/users/settings/get_tfa" />
+                                <div id="tfa-img">
+                                </div>
                             </div>
                         </div>
                         <br />
@@ -234,6 +235,14 @@
                                 <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_tfa", class: "form-control mb-4" %>
                                 <%= error_tag f, :current_password %>
                             </div>
+                        </div>
+                    </div>
+
+                    <div style="display:none;">
+                        <div class="form-group">
+                            <%= label f, :tfa_tmp, for: "tmp_for_tfa" %>
+                            <%= password_input f, :tfa_tmp, required: true, name: "tfa_tmp", id: "tmp_for_tfa", class: "form-control mb-4" %>
+                            <%= error_tag f, :tfa_tmp %>
                         </div>
                     </div>
 
@@ -261,12 +270,20 @@
         .then(res => {
             if(res.new)
             {
-                document.querySelectorAll(".existing-tfa-form-class").forEach(t => t.style.display = "none");
+                fetch("/users/settings/get_tfa")
+                    .then(res => res.ok ? res : Promise.reject(res))
+                    .then(res => res.json())
+                    .then(res => {
+                        document.querySelector("#tfa-img").innerHTML = res.svg.substring(39);
+                        document.querySelector("#tmp_for_tfa").value = res.tmp;
+                        document.querySelectorAll(".existing-tfa-form-class").forEach(t => t.style.display = "none");
+                    });
             }
             else
             {
                 document.querySelectorAll(".new-tfa-form-class").forEach(t => t.style.display = "none");
                 document.querySelector("#current_password_for_tfa").required = false;
+                document.querySelector("#tmp_for_tfa").required = false;
             }
             document.querySelector("#tfa-form-loader").style.display = "block"
         })

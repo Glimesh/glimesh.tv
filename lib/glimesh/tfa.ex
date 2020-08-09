@@ -1,14 +1,14 @@
 defmodule Glimesh.Tfa do
 
   @doc """
-  This generates the 2FA image for Google Authenticatior
+  This generates the 2FA image for a totp Authenticatior such as Google Authenticator or Authy
   """
   def generate_tfa_img(issuer, accountTitle, secret) do
     accountTitleNoSpaces = String.replace(accountTitle, " ", "")
-    provisionUrl = "otpauth://totp/#{accountTitleNoSpaces}?secret=#{Base.encode32(secret, padding: false)}&issuer=#{issuer}"
+    provisionUrl = "otpauth://totp/#{accountTitleNoSpaces}?secret=#{secret}&issuer=#{issuer}"
     provisionUrl
     |> EQRCode.encode()
-    |> EQRCode.png(width: 300)
+    |> EQRCode.svg(width: 355, background_color: :transparent, color: "#1b55e2")
   end
 
   defp generate_hmac(secret, period) do
@@ -19,7 +19,7 @@ defmodule Glimesh.Tfa do
       |> String.pad_leading(16, "0")
       |> String.upcase()
       |> Base.decode16!()
-    secretBytes = Base.decode32!(secret)
+    secretBytes = Base.decode32!(secret, padding: false)
     :crypto.hmac(:sha, secretBytes, moving_factor)
   end
 
@@ -50,11 +50,23 @@ defmodule Glimesh.Tfa do
       |> generate_hotp
   end
 
+  @doc """
+  Validates the pin with the secret key supplied
+  """
   def validate_pin(pin, secret) do
     serverPin = generate_totp(secret)
     cond do
       pin == serverPin -> secret
       pin != serverPin -> nil
     end
+  end
+
+  @doc """
+  Generates a pseudo random secret key based on a string input
+  """
+  def generate_secret(key) do
+    key
+      |> Bcrypt.hash_pwd_salt()
+      |> Base.encode32(padding: false)
   end
 end
