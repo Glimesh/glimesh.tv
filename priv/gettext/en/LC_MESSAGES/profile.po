@@ -12,13 +12,13 @@ msgstr ""
 "Plural-Forms: nplurals=2\n"
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:135
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:149
 msgid "Change E-mail"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:127
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:161
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:141
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:175
 msgid "Current Password"
 msgstr ""
 
@@ -29,53 +29,42 @@ msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:12
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:22
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:23
 msgid "Your Settings"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:108
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:122
 msgid "Change e-mail"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:90
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:91
 msgid "Discord Server URL"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:40
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:120
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:134
 msgid "Email"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:67
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:68
 msgid "Instagram Username"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:47
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:48
 msgid "Social"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:56
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:57
 msgid "Twitter Username"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:96
-msgid "Update Settings"
-msgstr ""
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:33
-msgid "Username"
-msgstr ""
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:79
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:80
 msgid "YouTube Username"
 msgstr ""
 
@@ -85,21 +74,51 @@ msgid "Your Profile"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:177
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:191
 msgid "Change Password"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:143
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:157
 msgid "Change password"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:169
-msgid "Confirm new password"
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:170
+msgid "New password"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:156
-msgid "New password"
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:17
+msgid "Click Update Settings down below when you've chosen the file."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:183
+msgid "Confirm New Password"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:34
+msgid "Display Name"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:41
+msgid "Language"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:105
+msgid "Profile Content (Markdown supported)"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:110
+msgid "Update Settings"
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:99
+msgid "YouTube Teaser URL"
 msgstr ""

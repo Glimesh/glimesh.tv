@@ -1,5 +1,5 @@
 <div class="container">
-    <h2><%= dgettext "profile", "Your Profile" %></h2>
+    <h2 class="mt-4"><%= dgettext "profile", "Your Profile" %></h2>
     <%= live_redirect dgettext("profile", "View Public Profile"), class: "btn btn-primary mb-4", to: Routes.user_profile_path(@conn, :index, @user.username) %>
 
     <%= form_for @profile_changeset, Routes.user_settings_path(@conn, :update_profile), [multipart: true, class: "form"], fn f -> %>
@@ -14,7 +14,7 @@
                          class="img-fluid mb-4 img-avatar">
 
                     <div class="mb-4 text-left">
-                        <p>Click Update Settings down below when you've chosen the file.</p>
+                        <p><%= dgettext("profile", "Click Update Settings down below when you've chosen the file.") %> </p>
                         <%= file_input f, :avatar, id: "customFile", class: "", accept: "image/png, image/jpeg" %>
                     </div>
                 </div>
@@ -24,22 +24,22 @@
 
                 <%= if @profile_changeset.action do %>
                 <div class="alert alert-danger">
-                    <p><%= dgettext "errors", "Oops, something went wrong! Please check the errors below." %></p>
+                    <p style="margin-bottom: 0px;"><%= dgettext "errors", "Oops, something went wrong! Please check the errors below." %></p>
                 </div>
                 <% end %>
 
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <%= label f, "Display Name" %>
+                            <%= label f, dgettext("profile", "Display Name") %>
                             <%= text_input f, :displayname, [class: "form-control"]%>
                             <%= error_tag f, :displayname %>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <%= label f, dgettext("profile", "Email") %>
-                            <%= text_input f, :email, [disabled: "true", class: "form-control mb-4"] %>
+                            <%= label f, dgettext("profile", "Language") %>
+                            <%= select f, :locale, [English: "en", Espanol: "es"], [class: "form-control"] %>
                             <%= error_tag f, :email %>
                         </div>
                     </div>
@@ -96,18 +96,18 @@
                 </div>
 
                 <div class="form-group">
-                    <%= label f, :youtube_intro_url, "YouTube Teaser URL" %>
+                    <%= label f, :youtube_intro_url, dgettext("profile", "YouTube Teaser URL") %>
                     <%= text_input f, :youtube_intro_url, [class: "form-control mb-4", placeholder: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"] %>
                     <%= error_tag f, :youtube_intro_url %>
                 </div>
 
                 <div class="form-group">
-                    <%= label f, :profile_content_md, "Profile Content (Markdown supported)" %>
+                    <%= label f, :profile_content_md, dgettext("profile", "Profile Content (Markdown supported)") %>
                     <%= textarea f, :profile_content_md, [class: "form-control mb-4", rows: 20] %>
                     <%= error_tag f, :profile_content_md %>
                 </div>
 
-                <input type="submit" class="btn btn-primary" value="Update Settings">
+                <%= submit dgettext("profile", "Update Settings"), class: "btn btn-primary" %>
             </div>
         </div>
         </div>
@@ -124,7 +124,7 @@
                     <%= form_for @email_changeset, Routes.user_settings_path(@conn, :update_email), fn f -> %>
                     <%= if @email_changeset.action do %>
                     <div class="alert alert-danger">
-                        <p style="margin-bottom: 0px;">Oops, something went wrong! Please check the errors below.</p>
+                        <p style="margin-bottom: 0px;"><%= dgettext "errors", "Oops, something went wrong! Please check the errors below." %></p>
                     </div>
                     <% end %>
 
@@ -159,7 +159,7 @@
                     <%= form_for @password_changeset, Routes.user_settings_path(@conn, :update_password), fn f -> %>
                     <%= if @password_changeset.action do %>
                     <div class="alert alert-danger">
-                        <p style="margin-bottom: 0px;">Oops, something went wrong! Please check the errors below.</p>
+                        <p style="margin-bottom: 0px;"><%= dgettext "errors", "Oops, something went wrong! Please check the errors below." %></p>
                     </div>
                     <% end %>
 

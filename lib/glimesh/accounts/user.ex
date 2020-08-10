@@ -29,6 +29,7 @@ defmodule Glimesh.Accounts.User do
     field :profile_content_md, :string
     field :profile_content_html, :string
 
+    field :locale, :string
     timestamps()
   end
 
@@ -163,6 +164,7 @@ defmodule Glimesh.Accounts.User do
     user
     |> cast(attrs, [
       :displayname,
+      :locale,
       :social_twitter,
       :social_youtube,
       :social_instagram,
