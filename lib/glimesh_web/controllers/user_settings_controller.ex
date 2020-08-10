@@ -78,10 +78,15 @@ defmodule GlimeshWeb.UserSettingsController do
     end
   end
 
-  def update_tfa(conn, %{"current_password" => password, "user" => %{"tfa" => pin}, "tfa_tmp" => secret}) do
+  def update_tfa(conn, %{
+        "current_password" => password,
+        "user" => %{"tfa" => pin},
+        "tfa_tmp" => secret
+      }) do
     user = conn.assigns.current_user
+
     if user.tfa_token do
-      case Accounts.update_tfa(user, pin, %{"tfa_token": nil}) do
+      case Accounts.update_tfa(user, pin, %{tfa_token: nil}) do
         {:ok, user} ->
           conn
           |> put_flash(:info, "2FA updated successfully.")
@@ -92,7 +97,7 @@ defmodule GlimeshWeb.UserSettingsController do
           render(conn, "edit.html", tfa_changeset: changeset)
       end
     else
-      case Accounts.update_tfa(user, pin, password, %{"tfa_token": secret}) do
+      case Accounts.update_tfa(user, pin, password, %{tfa_token: secret}) do
         {:ok, user} ->
           conn
           |> put_flash(:info, "2FA updated successfully.")
@@ -108,7 +113,7 @@ defmodule GlimeshWeb.UserSettingsController do
   def get_tfa(conn, _params) do
     user = conn.assigns.current_user
     secret = Tfa.generate_secret(user.hashed_password)
-    json(conn, %{tmp: secret, svg: Tfa.generate_tfa_img("Glimesh",user.username,secret)})
+    json(conn, %{tmp: secret, svg: Tfa.generate_tfa_img("Glimesh", user.username, secret)})
   end
 
   def tfa_registered(conn, _params) do
@@ -118,11 +123,12 @@ defmodule GlimeshWeb.UserSettingsController do
 
   defp assign_email_and_password_changesets(conn, _opts) do
     user = conn.assigns.current_user
+
     conn
-      |> assign(:user, user)
-      |> assign(:profile_changeset, Accounts.change_user_profile(user))
-      |> assign(:email_changeset, Accounts.change_user_email(user))
-      |> assign(:password_changeset, Accounts.change_user_password(user))
-      |> assign(:tfa_changeset, Accounts.change_tfa(user))
+    |> assign(:user, user)
+    |> assign(:profile_changeset, Accounts.change_user_profile(user))
+    |> assign(:email_changeset, Accounts.change_user_email(user))
+    |> assign(:password_changeset, Accounts.change_user_password(user))
+    |> assign(:tfa_changeset, Accounts.change_tfa(user))
   end
 end

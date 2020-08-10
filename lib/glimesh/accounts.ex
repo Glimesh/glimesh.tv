@@ -321,17 +321,19 @@ defmodule Glimesh.Accounts do
 
   def update_tfa_temp(user, attrs) do
     user
-      |> User.tfa_changeset(attrs)
-      |> Repo.update()
+    |> User.tfa_changeset(attrs)
+    |> Repo.update()
   end
 
   def update_tfa(user, pin, attrs) do
     secret = user.tfa_token
     IO.puts("attrs #{attrs.tfa_token}")
     IO.puts("user #{user.tfa_token}")
+
     if attrs.tfa_token do
       secret = attrs.tfa_token
     end
+
     changeset =
       user
       |> User.tfa_changeset(attrs)
@@ -342,9 +344,9 @@ defmodule Glimesh.Accounts do
     |> Ecto.Multi.delete_all(:tokens, UserToken.user_and_contexts_query(user, :all))
     |> Repo.transaction()
     |> case do
-         {:ok, %{user: user}} -> {:ok, user}
-         {:error, :user, changeset, _} -> {:error, changeset}
-       end
+      {:ok, %{user: user}} -> {:ok, user}
+      {:error, :user, changeset, _} -> {:error, changeset}
+    end
   end
 
   def update_tfa(user, pin, password, attrs) do
@@ -359,9 +361,9 @@ defmodule Glimesh.Accounts do
     |> Ecto.Multi.delete_all(:tokens, UserToken.user_and_contexts_query(user, :all))
     |> Repo.transaction()
     |> case do
-         {:ok, %{user: user}} -> {:ok, user}
-         {:error, :user, changeset, _} -> {:error, changeset}
-       end
+      {:ok, %{user: user}} -> {:ok, user}
+      {:error, :user, changeset, _} -> {:error, changeset}
+    end
   end
 
   ## Session

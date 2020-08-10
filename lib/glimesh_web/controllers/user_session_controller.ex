@@ -15,6 +15,7 @@ defmodule GlimeshWeb.UserSessionController do
     if user = Accounts.get_user_by_email_and_password(email, password) do
       if user.tfa_token do
         %{"tfa" => tfa} = user_params
+
         if Tfa.validate_pin(tfa, user.tfa_token) do
           UserAuth.log_in_user(conn, user, user_params)
         else

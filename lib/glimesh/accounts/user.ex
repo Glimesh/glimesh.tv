@@ -233,6 +233,7 @@ defmodule Glimesh.Accounts.User do
   def validate_youtube_url(changeset, field) when is_atom(field) do
     validate_change(changeset, field, fn current_field, value ->
       matches = Regex.run(~r/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/, value)
+
       if matches < 2 do
         [{current_field, "Incorrect YouTube URL format"}]
       else
@@ -247,6 +248,7 @@ defmodule Glimesh.Accounts.User do
         {:ok, html_doc, []} = Earmark.as_html(HtmlSanitizeEx.strip_tags(profile_content_md))
 
         put_change(changeset, :profile_content_html, html_doc)
+
       _ ->
         changeset
     end
