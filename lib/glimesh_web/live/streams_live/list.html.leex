@@ -5,8 +5,8 @@
     <div class="container">
         <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
         <div class="col-md-12 p-lg-5 mx-auto my-5">
-            <h1 class="display-4 font-weight-normal"><%= @category %> Streams Coming Soon</h1>
-            <p class="lead font-weight-normal">We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!</p>
+            <h1 class="display-4 font-weight-normal"><%= @category %> <%= dgettext("streams", "Streams Coming Soon") %></h1>
+            <p class="lead font-weight-normal"><%= dgettext("streams", "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!") %></p>
         </div>
         </div>
     </div>
@@ -19,7 +19,7 @@
             <%= live_redirect to: Routes.user_stream_path(@socket, :index, stream.username) do %>
                 <div class="widget widget-chart-one">
                     <div class="widget-heading">
-                        <h5 class=""><span class="badge badge-danger">Live!</span> <%= stream.displayname %></h5>
+                        <h5 class=""><span class="badge badge-danger"><%= dgettext("streams", "Live!") %></span> <%= stream.displayname %></h5>
                     </div>
 
                     <div class="widget-content">

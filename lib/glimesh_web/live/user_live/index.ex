@@ -6,6 +6,7 @@ defmodule GlimeshWeb.UserLive.Index do
 
   def mount(_, session, socket) do
     users = Accounts.list_users()
+    if session["locale"], do: Gettext.put_locale(session["locale"]) # If the viewer is logged in set their locale, otherwise it defaults to English
 
     {:ok,
          socket

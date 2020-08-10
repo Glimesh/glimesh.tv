@@ -10,38 +10,38 @@
     <div class="collapse navbar-collapse" id="primaryNav">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <%= live_redirect "Gaming", class: "nav-link", to: Routes.streams_list_path(@conn, :index, "gaming") %>
+                <%= live_redirect dgettext("navbar", "Gaming"), class: "nav-link", to: Routes.streams_list_path(@conn, :index, "gaming") %>
             </li>
             <li class="nav-item">
-                <%= live_redirect "Art", class: "nav-link", to: Routes.streams_list_path(@conn, :index, "art") %>
+                <%= live_redirect dgettext("navbar", "Art"), class: "nav-link", to: Routes.streams_list_path(@conn, :index, "art") %>
             </li>
             <li class="nav-item">
-                <%= live_redirect "Music", class: "nav-link", to: Routes.streams_list_path(@conn, :index, "music") %>
+                <%= live_redirect dgettext("navbar", "Music"), class: "nav-link", to: Routes.streams_list_path(@conn, :index, "music") %>
             </li>
             <li class="nav-item">
-                <%= live_redirect "Tech", class: "nav-link", to: Routes.streams_list_path(@conn, :index, "tech") %>
+                <%= live_redirect dgettext("navbar", "Tech"), class: "nav-link", to: Routes.streams_list_path(@conn, :index, "tech") %>
             </li>
             <li class="nav-item">
-                <%= live_redirect "IRL", class: "nav-link", to: Routes.streams_list_path(@conn, :index, "irl") %>
+                <%= live_redirect dgettext("navbar", "IRL"), class: "nav-link", to: Routes.streams_list_path(@conn, :index, "irl") %>
             </li>
             <li class="nav-item">
-                <%= live_redirect "Education", class: "nav-link", to: Routes.streams_list_path(@conn, :index, "education") %>
+                <%= live_redirect dgettext("navbar", "Education"), class: "nav-link", to: Routes.streams_list_path(@conn, :index, "education") %>
             </li>
             <li class="nav-item dropdown user-profile-dropdown">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="moreDropdown"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    More
+                    <%= dgettext("navbar", "More") %>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="moreDropdown">
                     <%= link class: "dropdown-item", to: Routes.user_index_path(@conn, :index) do %>
                     <i class="fas fa-user"></i>
-                    Users
+                    <%= dgettext("navbar", "Users") %>
                     <% end %>
                 </div>
             </li>
             <%= if assigns[:current_user] do %>
             <li class="nav-item">
-                <%= live_redirect "Following", class: "nav-link", to: Routes.streams_list_path(@conn, :index, "following") %>
+                <%= live_redirect dgettext("navbar", "Following"), class: "nav-link", to: Routes.streams_list_path(@conn, :index, "following") %>
             </li>
             <% end %>
         </ul>
@@ -55,24 +55,24 @@
                         class="img-avatar <%= if @current_user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
                 </a>
                 <div class="dropdown-menu" aria-labelledby="userProfileDropdown">
-                    <%= live_redirect "Upgrade!", class: "nav-link text-warning", to: Routes.platform_subscription_index_path(@conn, :index) %>
+                    <%= live_redirect dgettext("navbar", "Upgrade!"), class: "nav-link text-warning", to: Routes.platform_subscription_index_path(@conn, :index) %>
                     <%= link class: "dropdown-item", to: Routes.user_payments_path(@conn, :index) do %>
                     <i class="fas fa-money-bill"></i>
-                    My Payments
+                    <%= dgettext("navbar", "My Payments") %>
                     <% end %>
                     <%= link class: "dropdown-item", to: Routes.user_settings_path(@conn, :edit) do %>
                     <i class="fas fa-user"></i>
-                    My Profile
+                    <%= dgettext("navbar", "My Profile") %>
                     <% end %>
                     <%= link class: "dropdown-item", to: Routes.user_session_path(@conn, :delete), method: :delete do %>
                     <i class="fas fa-door-closed"></i>
-                    Sign Out
+                    <%= dgettext("navbar", "Sign Out") %>
                     <% end %>
                 </div>
             </li>
             <% else %>
-            <li><%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "nav-link" %></li>
-            <li><%= link "Sign in", to: Routes.user_session_path(@conn, :new), class: "nav-link" %></li>
+            <li><%= link dgettext("navbar", "Register"), to: Routes.user_registration_path(@conn, :new), class: "nav-link" %></li>
+            <li><%= link dgettext("navbar", "Sign in"), to: Routes.user_session_path(@conn, :new), class: "nav-link" %></li>
             <% end %>
         </ul>
     </div>

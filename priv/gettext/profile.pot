@@ -121,3 +121,28 @@ msgstr ""
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:99
 msgid "YouTube Teaser URL"
 msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_settings_controller.ex:71
+msgid "Profile updated successfully."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_settings_controller.ex:27
+msgid "A link to confirm your e-mail change has been sent to the new address."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_settings_controller.ex:40
+msgid "E-mail changed successfully."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_settings_controller.ex:45
+msgid "Email change link is invalid or it has expired."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_settings_controller.ex:56
+msgid "Password updated successfully."
+msgstr ""
