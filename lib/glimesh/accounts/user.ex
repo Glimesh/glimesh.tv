@@ -29,7 +29,7 @@ defmodule Glimesh.Accounts.User do
     field :profile_content_md, :string
     field :profile_content_html, :string
 
-    field :locale, :string
+    field :locale, :string, default: "en"
     timestamps()
   end
 

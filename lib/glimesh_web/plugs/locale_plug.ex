@@ -29,7 +29,9 @@ defmodule GlimeshWeb.Plugs.Locale do
   end
 
   def locale_from_user(conn) do
-    conn.assigns.current_user.locale |> validate_locale
+    if conn.assigns.current_user do
+      conn.assigns.current_user.locale |> validate_locale
+    end
   end
 
   defp validate_locale(locale) when locale in @locales, do: locale
