@@ -4,11 +4,17 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
   @impl true
   def render(assigns) do
     ~L"""
+      <%= if @user do %>
       <div class="text-center">
         <a href="#" phx-click="show_modal" class="text-danger">
           Report User <i class="fas fa-flag"></i>
         </a>
       </div>
+      <%= if live_flash(@flash, :info) do %>
+      <p class="alert alert-info" role="alert"
+          phx-click="lv:clear-flash"
+          phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+      <% end %>
 
       <%= if @show_report do %>
        <div id="reportModal" class="live-modal"
@@ -69,17 +75,38 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
             </div>
         </div>
       <% end %>
+    <% end %>
     """
   end
 
   @impl true
-  def mount(_, _, socket) do
-    {:ok, socket |> assign(:show_report, false)}
+  def mount(_params, %{"streamer" => streamer, "user" => nil}, socket) do
+    {:ok,
+     socket
+     |> assign(:streamer, streamer)
+     |> assign(:user, nil)
+     |> assign(:show_report, false)}
   end
 
   @impl true
+  def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
+    {:ok,
+     socket
+     |> assign(:streamer, streamer)
+     |> assign(:user, user)
+     |> assign(:show_report, false)}
+  end
+
+  @impl true
+  @spec handle_event(<<_::32, _::_*48>>, any, Phoenix.LiveView.Socket.t()) :: {:noreply, map}
   def handle_event("save", %{"report_reason" => report_reason, "notes" => notes}, socket) do
-    IO.inspect([report_reason, notes])
+    {:ok, _} =
+      Glimesh.Accounts.UserNotifier.deliver_user_report_alert(
+        socket.assigns.user,
+        socket.assigns.streamer,
+        report_reason,
+        notes
+      )
 
     {:noreply,
      socket |> assign(:show_report, false) |> put_flash(:info, "Report submitted, thank you!")}

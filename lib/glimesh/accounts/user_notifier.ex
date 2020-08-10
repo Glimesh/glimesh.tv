@@ -41,10 +41,6 @@ defmodule Glimesh.Accounts.UserNotifier do
   Send a user report alert to an admin
   """
   def deliver_user_report_alert(reporting_user, reported_user, reason, notes) do
-    if admin.is_admin == false do
-      raise "Must be reporting to an admin!"
-    end
-
     admins = Glimesh.Accounts.list_admins()
 
     for admin <- admins do
@@ -53,6 +49,6 @@ defmodule Glimesh.Accounts.UserNotifier do
       Mailer.deliver_later(email)
     end
 
-    {:ok, %{to: email.to, body: email.text_body}}
+    {:ok, %{}}
   end
 end
