@@ -147,3 +147,58 @@ msgstr ""
 #: lib/glimesh_web/controllers/user_settings_controller.ex:56
 msgid "Password updated successfully."
 msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_confirmation_controller.ex:34
+msgid "Account confirmed successfully."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_confirmation_controller.ex:39
+msgid "Confirmation link is invalid or it has expired."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_confirmation_controller.ex:22
+msgid "If your e-mail is in our system and it has not been confirmed yet, "
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_confirmation_controller.ex:23
+msgid "you will receive an e-mail with instructions shortly."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_reset_password_controller.ex:24
+msgid "If your e-mail is in our system, you will receive instructions to reset your password shortly."
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/glimesh_web/controllers/user_reset_password_controller.ex:39
+msgid "Password reset successfully."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_confirmation/new.html.eex:2
+msgid "Resend confirmation instructions"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_confirmation/new.html.eex:18
+msgid "Resent confirmation instructions"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_reset_password_controller.ex:54
+msgid "Reset password link is invalid or it has expired."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_registration_controller.ex:23
+msgid "User created successfully."
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/glimesh_web/templates/user_confirmation/new.html.eex:11
+msgid "email"
+msgstr ""

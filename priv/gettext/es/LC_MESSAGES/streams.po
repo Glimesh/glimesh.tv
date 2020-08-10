@@ -12,12 +12,12 @@ msgstr ""
 "Plural-Forms: nplurals=2\n"
 
 #, elixir-format
-#: lib/glimesh_web/live/streams_live/list.ex:14
+#: lib/glimesh_web/live/streams_live/list.ex:15
 msgid "Followed"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/live/streams_live/list.ex:13
+#: lib/glimesh_web/live/streams_live/list.ex:14
 msgid "Followed Streams"
 msgstr ""
 
@@ -27,11 +27,11 @@ msgid "Live!"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/live/streams_live/list.html.leex:8
-msgid "Streams Coming Soon"
-msgstr "Streams Soon"
-
-#, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:9
 msgid "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!"
-msgstr "This is testing out our new translation system! This usually isn't the text here!"
+msgstr "Ocasionalmente transmitimos eventos especiales u otras transmisiones únicas, pero una vez que estemos en vivo, estas páginas se llenarán con nuestros streamers!"
+
+#, elixir-format
+#: lib/glimesh_web/live/streams_live/list.html.leex:8
+msgid "%{category} Streams Coming Soon"
+msgstr "Próximamente transmisiones en vivo de %{category}"
