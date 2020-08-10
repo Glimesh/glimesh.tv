@@ -1,0 +1,32 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: ja\n"
+"Plural-Forms: nplurals=1\n"
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/root.html.leex:77
+msgid "About"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/root.html.leex:89
+msgid "Blog"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/root.html.leex:82
+msgid "Legal"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/root.html.leex:66
+msgid "Social"
+msgstr ""
