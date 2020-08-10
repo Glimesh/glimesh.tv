@@ -1,4 +1,4 @@
-defmodule Glimesh.AccountsTest do
+defmodule Glimesh.AccountsProfileTest do
   use Glimesh.DataCase
   use Bamboo.Test
 
