@@ -3,6 +3,6 @@ defmodule GlimeshWeb.HomepageLive do
 
   @impl true
   def mount(params, _session, socket) do
-    {:ok, socket}
+    {:ok, socket |> assign(:page_title, "Glimesh")}
   end
 end

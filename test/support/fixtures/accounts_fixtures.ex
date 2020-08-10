@@ -21,7 +21,7 @@ defmodule Glimesh.AccountsFixtures do
     user
   end
 
-  def admin_fixture(attrs \\ %{}) do
+  def admin_fixture(_attrs \\ %{}) do
     user_fixture(%{is_admin: true})
   end
 
