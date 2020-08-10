@@ -83,6 +83,7 @@ msgid "Change password"
 msgstr ""
 
 #, elixir-format
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:10
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:170
 msgid "New password"
 msgstr ""
@@ -200,4 +201,55 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/templates/user_confirmation/new.html.eex:11
 msgid "email"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:1
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:19
+msgid "Reset password"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:14
+msgid "Confirm new password"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/profile.html.leex:56
+msgid "Followers"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/profile.html.leex:63
+msgid "Following"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/profile.html.leex:79
+msgid "Pre-Follow Streamer"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/profile.html.leex:69
+msgid "Share my profile on Twitter"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/profile.html.leex:71
+msgid "Share on Twitter"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/index.html.leex:19
+msgid "Sub Ready!"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/profile.html.leex:12
+msgid "Sub-ready Streamer"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/profile.html.leex:115
+msgid "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!"
 msgstr ""

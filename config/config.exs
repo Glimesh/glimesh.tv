@@ -33,7 +33,7 @@ config :glimesh, GlimeshWeb.Emails.Mailer,
 
 config :glimesh, GlimeshWeb.Gettext,
   default_locale: "en",
-  locales: ~w(en es)
+  locales: ~w(en es ja)
 
 # Configures Elixir's Logger
 config :logger, :console,

@@ -58,6 +58,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:74
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:24
 msgid "Register"
 msgstr ""
 
@@ -68,6 +69,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:75
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:25
 msgid "Sign in"
 msgstr ""
 

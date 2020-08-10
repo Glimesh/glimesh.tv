@@ -1,26 +1,26 @@
-<h1>Reset password</h1>
+<h1><%= dgettext("profile", "Reset password") %></h1>
 
 <%= form_for @changeset, Routes.user_reset_password_path(@conn, :update, @token), fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+      <p><%= dgettext("errors", "Oops, something went wrong! Please check the errors below.") %></p>
     </div>
   <% end %>
 
-  <%= label f, :password, "New password" %>
+  <%= label f, :password, dgettext("profile", "New password") %>
   <%= password_input f, :password, required: true %>
   <%= error_tag f, :password %>
 
-  <%= label f, :password_confirmation, "Confirm new password" %>
+  <%= label f, :password_confirmation, dgettext("profile", "Confirm new password") %>
   <%= password_input f, :password_confirmation, required: true %>
   <%= error_tag f, :password_confirmation %>
 
   <div>
-    <%= submit "Reset password" %>
+    <%= submit dgettext("profile", "Reset password") %>
   </div>
 <% end %>
 
 <p>
-  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
-  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
+  <%= link dgettext("navbar", "Register"), to: Routes.user_registration_path(@conn, :new) %> |
+  <%= link dgettext("navbar", "Sign in"), to: Routes.user_session_path(@conn, :new) %>
 </p>

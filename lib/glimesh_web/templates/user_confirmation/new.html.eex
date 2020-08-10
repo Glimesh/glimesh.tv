@@ -1,13 +1,28 @@
-<h1>Resend confirmation instructions</h1>
+<div class="container">
+  <h1 class="mt-4 text-center" ><%= dgettext("profile", "Resend confirmation instructions") %></h1>
 
-<%= form_for :user, Routes.user_confirmation_path(@conn, :create), fn f -> %>
-  <%= label f, :email %>
-  <%= email_input f, :email, required: true %>
+  <div class="card">
+    <div class="card-body">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <div class="card-body">
+        <%= form_for :user, Routes.user_confirmation_path(@conn, :create), fn f -> %>
+          <div cass="form-group">
+            <%= label f, dgettext("profile", "email") %>
+            <%= email_input f, :email, [required: true, class: "form-control"] %>
+            <%= error_tag f, :email %>
 
-  <div>
-    <%= submit "Resend confirmation instructions" %>
+          </div>
+
+          <div>
+            <%= submit dgettext("profile", "Resent confirmation instructions"), class: "btn btn-primary" %>
+          </div>
+        <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-<% end %>
+</div>
 
 <p>
   <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |

@@ -16,7 +16,7 @@
                             class="img-fluid mb-2 img-avatar <%= if user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
 
                         <%= if user.stripe_user_id do %>
-                        <div class="mb-4"><span class="badge badge-secondary">Sub Ready!</span></div>
+                        <div class="mb-4"><span class="badge badge-secondary"><%= dgettext("profile", "Sub Ready!") %></span></div>
                         <% end %>
                     </div>
                 </div>
