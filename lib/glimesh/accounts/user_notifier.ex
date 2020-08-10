@@ -13,6 +13,8 @@ defmodule Glimesh.Accounts.UserNotifier do
     {:ok, %{to: email.to, body: email.text_body}}
   end
 
+  @spec deliver_reset_password_instructions(atom | %{displayname: any, email: any}, any) ::
+          {:ok, %{body: nil | binary, to: any}}
   @doc """
   Deliver instructions to reset password account.
   """
@@ -31,6 +33,25 @@ defmodule Glimesh.Accounts.UserNotifier do
     email = Email.user_update_email_instructions(user, url)
 
     Mailer.deliver_later(email)
+
+    {:ok, %{to: email.to, body: email.text_body}}
+  end
+
+  @doc """
+  Send a user report alert to an admin
+  """
+  def deliver_user_report_alert(reporting_user, reported_user, reason, notes) do
+    if admin.is_admin == false do
+      raise "Must be reporting to an admin!"
+    end
+
+    admins = Glimesh.Accounts.list_admins()
+
+    for admin <- admins do
+      email = Email.user_report_alert(admin, reporting_user, reported_user, reason, notes)
+
+      Mailer.deliver_later(email)
+    end
 
     {:ok, %{to: email.to, body: email.text_body}}
   end
