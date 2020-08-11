@@ -127,4 +127,20 @@ defmodule Glimesh.Streams do
   def count_following(user) do
     Repo.one!(from f in Followers, select: count(f.id), where: f.user_id == ^user.id)
   end
+
+  alias Glimesh.Streams.StreamMetadata
+
+  def change_title(streamer, title) do
+    attrs = %{
+      stream_title: title
+    }
+
+    results = get_metadata_from_streamer(streamer) |> StreamMetadata.title_changeset(attrs)
+
+    results
+  end
+
+  def get_metadata_from_streamer(streamer) do
+    Repo.get_by(StreamMetadata, streamer_id: streamer.id)
+  end
 end
