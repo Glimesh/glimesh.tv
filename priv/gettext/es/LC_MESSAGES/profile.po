@@ -20,7 +20,7 @@ msgstr ""
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:141
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:175
 msgid "Current Password"
-msgstr "Contraseña Actual"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:3
@@ -140,11 +140,6 @@ msgid "E-mail changed successfully."
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:45
-msgid "Email change link is invalid or it has expired."
-msgstr ""
-
-#, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:56
 msgid "Password updated successfully."
 msgstr ""
@@ -152,11 +147,6 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:34
 msgid "Account confirmed successfully."
-msgstr ""
-
-#, elixir-format
-#: lib/glimesh_web/controllers/user_confirmation_controller.ex:39
-msgid "Confirmation link is invalid or it has expired."
 msgstr ""
 
 #, elixir-format
@@ -187,11 +177,6 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/templates/user_confirmation/new.html.eex:18
 msgid "Resent confirmation instructions"
-msgstr ""
-
-#, elixir-format
-#: lib/glimesh_web/controllers/user_reset_password_controller.ex:54
-msgid "Reset password link is invalid or it has expired."
 msgstr ""
 
 #, elixir-format
@@ -253,4 +238,30 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:115
 msgid "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:11
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:15
+msgid "Follow"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:47
+msgid "User followed successfully"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:61
+msgid "User unfollowed successfully"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:9
+msgid "Unfollow"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_session_controller.ex:23
+msgid "Logged out successfully."
 msgstr ""

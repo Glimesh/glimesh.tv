@@ -51,7 +51,7 @@ defmodule GlimeshWeb.UserResetPasswordController do
       conn |> assign(:user, user) |> assign(:token, token)
     else
       conn
-      |> put_flash(:error, dgettext("profile", "Reset password link is invalid or it has expired."))
+      |> put_flash(:error, dgettext("errors", "Reset password link is invalid or it has expired."))
       |> redirect(to: "/")
       |> halt()
     end

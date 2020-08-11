@@ -6,7 +6,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
     ~L"""
     <%= if @user do %>
       <%= if @following do %>
-        <button class="btn btn-primary btn-block" phx-click="unfollow"><%= dgettext("proflile", "Unfollow") %></button>
+        <button class="btn btn-primary btn-block" phx-click="unfollow"><%= dgettext("profile", "Unfollow") %></button>
       <% else %>
         <button class="btn btn-primary btn-block" phx-click="follow" phx-throttle="5000"><%= dgettext("profile", "Follow") %></button>
       <% end %>

@@ -48,7 +48,7 @@
                         <%= form_for @default_payment_changeset, Routes.user_payments_path(@conn, :delete_default_payment), fn f -> %>
                             <%= if @default_payment_changeset.action do %>
                             <div class="alert alert-danger">
-                                <p><%= dgettext("payments", "Oops, something went wrong! Please check the errors below.") %></p>
+                                <p><%= dgettext("errors", "Oops, something went wrong! Please check the errors below.") %></p>
                             </div>
                             <% end %>
                             <button type="submit" class="btn btn-block btn-danger"><%= dgettext("payments", "Delete Saved Payment") %></button>

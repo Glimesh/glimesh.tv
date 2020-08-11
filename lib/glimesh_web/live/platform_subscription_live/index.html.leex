@@ -50,8 +50,8 @@
                 <div class="card">
                   <div class="card-body">
                     <%= if @has_platform_subscription do %>
-                    <h4>You're subscribed!</h4>
-                    <h6>Thanks for supporting Glimesh :D</h6>
+                    <h4><%= dgettext("platform_sub", "You're subscribed!") %></h4>
+                    <h6><%= dgettext("platform_sub", "Thanks for supporting Glimesh :D") %></h6>
 
                     <div class="text-center mt-4 mb-4">
                         <img src="/images/glimcons/GlimberryPie.png" alt="" class="img-fluid">
@@ -61,7 +61,7 @@
                         <p><%= @stripe_error %></p>
                     <% end %>
 
-                    <button class="btn btn-danger btn-block" phx-click="cancel-subscription" phx-throttle="1000">Cancel Subscription</button>
+                    <button class="btn btn-danger btn-block" phx-click="cancel-subscription" phx-throttle="1000"><%= dgettext("platform_sub", "Cancel Subscription") %></button>
 
                     <% else %>
                         <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :platform, user: @user %>

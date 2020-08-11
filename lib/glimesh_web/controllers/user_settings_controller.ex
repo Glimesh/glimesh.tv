@@ -42,7 +42,7 @@ defmodule GlimeshWeb.UserSettingsController do
 
       :error ->
         conn
-        |> put_flash(:error, dgettext("profile", "Email change link is invalid or it has expired."))
+        |> put_flash(:error, dgettext("errors", "Email change link is invalid or it has expired."))
         |> redirect(to: Routes.user_settings_path(conn, :edit))
     end
   end
