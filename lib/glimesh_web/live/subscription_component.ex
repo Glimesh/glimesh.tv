@@ -57,7 +57,8 @@ defmodule GlimeshWeb.SubscriptionComponent do
     }
   end
 
-  def update(%{type: :platform, user: user} = params, socket) do
+  @impl true
+  def update(%{type: :platform, user: user}, socket) do
     {
       :ok,
       socket
@@ -66,22 +67,14 @@ defmodule GlimeshWeb.SubscriptionComponent do
     }
   end
 
-  def update(%{type: :channel, user: user, streamer: streamer} = params, socket) do
+  @impl true
+  def update(%{type: :channel, user: user, streamer: _}, socket) do
     {
       :ok,
       socket
       |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
       |> assign(:stripe_payment_method, user.stripe_payment_method)
     }
-  end
-
-  def base_update(params, socket) do
-    socket |> assign(:productid)
-  end
-
-  def handle_event("update_price", %{"product_id" => product_id, "price_id" => price_id}, socket) do
-    #    send self(), {:updated_card, %{socket.assigns.card | title: title}}
-    {:noreply, socket}
   end
 
   @impl true

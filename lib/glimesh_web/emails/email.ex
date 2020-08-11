@@ -62,4 +62,27 @@ defmodule GlimeshWeb.Emails.Email do
      ==============================
     """)
   end
+
+  def user_report_alert(admin, reporting_user, reported_user, reason, notes) do
+    user_base_email()
+    |> to(admin.email)
+    |> subject("User Alert Report for #{reported_user.displayname}!")
+    |> text_body("""
+     ==============================
+
+     Hi #{admin.displayname},
+
+     A new user alert has come in!
+
+     Reported User:
+      Username: #{reported_user.username}
+      Reason: #{reason}
+      Notes: #{notes}
+
+     Reported By:
+      Username: #{reporting_user.username}
+
+     ==============================
+    """)
+  end
 end

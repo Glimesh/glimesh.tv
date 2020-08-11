@@ -74,6 +74,10 @@
                 </div>
             </div>
 
+            <div class="mt-4">
+                <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+            </div>
+
             <div class="card text-center mt-4">
                 <div class="card-header">
                     <h5><%= dgettext("profile", "Pre-Follow Streamer") %></h5>
