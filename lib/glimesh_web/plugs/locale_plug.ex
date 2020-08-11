@@ -6,7 +6,6 @@ defmodule GlimeshWeb.Plugs.Locale do
   @locales Gettext.known_locales(GlimeshWeb.Gettext)
   def call(%Plug.Conn{params: %{"locale" => locale}} = conn, _opts) when locale in @locales do
     Gettext.put_locale(GlimeshWeb.Gettext, locale)
-    conn = put_resp_cookie conn, "locale", locale, max_age: 10*24*60*60
     conn
   end
 
@@ -24,10 +23,6 @@ defmodule GlimeshWeb.Plugs.Locale do
     conn.params["locale"] |> validate_locale
   end
 
-  def locale_from_cookies(conn) do
-    conn.cookies["locale"] |> validate_locale
-  end
-
   def locale_from_user(conn) do
     if conn.assigns.current_user do
       conn.assigns.current_user.locale |> validate_locale
@@ -39,10 +34,9 @@ defmodule GlimeshWeb.Plugs.Locale do
   defp validate_locale(_locale), do: nil
 
   defp persist_locale(conn, new_locale) do
-    if conn.cookies["locale"] != new_locale do
+    if conn.private.plug_session["locale"] != new_locale do
       conn
       |> put_session(:locale, new_locale)
-      |> put_resp_cookie("locale", new_locale, max_age: 10*24*60*60)
     else
       conn
     end
