@@ -4,6 +4,6 @@ defmodule GlimeshWeb.HomepageLive do
   @impl true
   def mount(params, session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"]) # If the viewer is logged in set their locale, otherwise it defaults to English
-    {:ok, socket}
+    {:ok, socket |> assign(:page_title, "Glimesh")}
   end
 end
