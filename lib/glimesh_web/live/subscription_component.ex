@@ -13,14 +13,14 @@ defmodule GlimeshWeb.SubscriptionComponent do
         data-stripe-customer-id="<%= @stripe_customer_id %>"
         data-stripe-payment-method="<%= @stripe_payment_method %>">
           <%= if @stripe_payment_method do %>
-            <p>Payment method already attached!</p>
+            <p><%= dgettext("payments", "Payment method already attached!") %> </p>
           <% else %>
             <div class="form-group">
-              <label for="paymentName">Your Name</label>
+              <label for="paymentName"><%= dgettext("payments", "Your Name") %></label>
               <input id="paymentName" name="name" placeholder="Name on Your Card" required class="form-control">
             </div>
             <div class="form-group">
-              <label for="card-element">Payment Details</label>
+              <label for="card-element"><%= dgettext("payments", "Payment Details") %></label>
               <div id="card-element" class="form-control">
               <!-- Elements will create input elements here -->
               </div>
@@ -33,14 +33,14 @@ defmodule GlimeshWeb.SubscriptionComponent do
             </div>
           <% end %>
 
-          <h4>Total Charge</h4>
+          <h4><%= dgettext("payments", "Total Charge") %></h4>
             <div class="pricing-plan-label billed-monthly-label">
-            <strong>$5</strong>/ monthly
+            <strong>$5</strong>/ <%= dgettext("payments", "monthly") %>
           </div>
 
           <div id="card-errors" role="alert"></div>
 
-          <button type="submit" class="btn btn-primary btn-block btn-lg">Subscribe</button>
+          <button type="submit" class="btn btn-primary btn-block btn-lg"><%= dgettext("payments", "Subscribe") %></button>
       </form>
     """
   end

@@ -36,8 +36,8 @@ defmodule GlimeshWeb.UserSessionControllerTest do
       conn = get(conn, "/")
       response = html_response(conn, 200)
       assert response =~ user.username
-      assert response =~ "My Profile\n</a>"
-      assert response =~ "Sign Out\n</a>"
+      assert response =~ "\nMy Profile</a>"
+      assert response =~ "\nSign Out</a>"
     end
 
     test "logs the user in with remember me", %{conn: conn, user: user} do

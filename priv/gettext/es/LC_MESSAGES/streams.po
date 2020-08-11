@@ -1,0 +1,37 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: es\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/glimesh_web/live/streams_live/list.ex:15
+msgid "Followed"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/streams_live/list.ex:14
+msgid "Followed Streams"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/streams_live/list.html.leex:22
+msgid "Live!"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/streams_live/list.html.leex:9
+msgid "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/streams_live/list.html.leex:8
+msgid "%{category} Streams Coming Soon"
+msgstr ""

@@ -8,6 +8,7 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
   @impl true
   def mount(_params, session, socket) do
     user = Accounts.get_user_by_session_token(session["user_token"])
+    if session["locale"], do: Gettext.put_locale(session["locale"]) # If the viewer is logged in set their locale, otherwise it defaults to English
 
     {:ok,
      socket

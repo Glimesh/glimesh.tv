@@ -9,7 +9,7 @@
                         class="img-fluid mb-2 img-avatar <%= if @streamer.stripe_user_id, do: "img-verified-streamer", else: "" %>">
 
                     <%= if @streamer.stripe_user_id do %>
-                    <div class="mb-4"><span class="badge badge-secondary">Sub-ready Streamer</span></div>
+                    <div class="mb-4"><span class="badge badge-secondary"><%= dgettext("profile", "Sub-ready Streamer") %></span></div>
                     <% end %>
 
                     <ul class="list-inline">
@@ -53,22 +53,22 @@
                             <div class="counter-content">
                                 <h5 class="s-counter2 s-counter"><%= @followers_count %></h1>
                             </div>
-                            <p class="s-counter-text">Followers</p>
+                            <p class="s-counter-text"><%= dgettext("profile", "Followers") %></p>
                         </div>
 
                         <div class="counter-container">
                             <div class="counter-content">
                                 <h5 class="s-counter3 s-counter"><%= @following_count %></h1>
                             </div>
-                            <p class="s-counter-text">Following</p>
+                            <p class="s-counter-text"><%= dgettext("profile", "Following") %></p>
                         </div>
 
                     </div>
 
                     <%= if @streamer == @user do %>
-                    <a class="btn btn-primary btn-sm mt-4" target="_blank" href="https://twitter.com/intent/tweet?text=<%= @streamer_share_text %>" data-size="large">Share my profile on Twitter</a>
+                    <a class="btn btn-primary btn-sm mt-4" target="_blank" href="https://twitter.com/intent/tweet?text=<%= @streamer_share_text %>" data-size="large"><%= dgettext("profile", "Share my profile on Twitter") %></a>
                     <% else  %>
-                    <a class="btn btn-primary btn-sm mt-4" target="_blank" href="https://twitter.com/intent/tweet?text=<%= @viewer_share_text %>" data-size="large">Share on Twitter</a>
+                    <a class="btn btn-primary btn-sm mt-4" target="_blank" href="https://twitter.com/intent/tweet?text=<%= @viewer_share_text %>" data-size="large"><%= dgettext("profile", "Share on Twitter") %></a>
                     <% end %>
 
                 </div>
@@ -80,7 +80,7 @@
 
             <div class="card text-center mt-4">
                 <div class="card-header">
-                    <h5>Pre-Follow Streamer</h5>
+                    <h5><%= dgettext("profile", "Pre-Follow Streamer") %></h5>
                 </div>
                 <div class="card-body">
                     <p>Glimesh isn't launched yet, but you can follow <%= @streamer.displayname %> now and get
@@ -116,7 +116,7 @@
                     <%= if @streamer.profile_content_html do %>
                         <%= raw(@streamer.profile_content_html) %>
                     <% else %>
-                        <p>Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!</p>
+                        <p><%= dgettext("profile", "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!") %></p>
                     <% end %>
 
                 </div>
