@@ -35,7 +35,7 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
                     <div class="modal-body">
                       <p>What has this user done wrong?</p>
 
-                      <%= f = form_for :user, "#", [phx_submit: :save] %>
+                      <%= form_for :user, "#", [phx_submit: :save] %>
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="report_reason" id="hateSpeech" value="hate-speech">
                         <label class="form-check-label" for="exampleRadios1">

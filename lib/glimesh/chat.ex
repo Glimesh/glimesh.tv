@@ -201,8 +201,10 @@ defmodule Glimesh.Chat do
   def user_in_message(nil, _msg) do
     false
   end
+
   def user_in_message(user, chat_message) do
     username = user.username
+
     !(username == chat_message.user.username) &&
       (String.match?(chat_message.message, ~r/#{username}/i) ||
          String.match?(chat_message.message, ~r/#{"@" <> username}/i))

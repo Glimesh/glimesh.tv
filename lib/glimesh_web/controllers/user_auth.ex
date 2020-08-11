@@ -143,7 +143,7 @@ defmodule GlimeshWeb.UserAuth do
   @doc """
   Used for routes that require the user to be an administrator.
   """
-  def require_admin_user(conn, opts) do
+  def require_admin_user(conn, _opts) do
     if conn.assigns[:current_user] && conn.assigns[:current_user].is_admin do
       conn
     else

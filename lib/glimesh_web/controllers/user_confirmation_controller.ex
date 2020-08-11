@@ -36,7 +36,10 @@ defmodule GlimeshWeb.UserConfirmationController do
 
       :error ->
         conn
-        |> put_flash(:error, dgettext("errors", "Confirmation link is invalid or it has expired."))
+        |> put_flash(
+          :error,
+          dgettext("errors", "Confirmation link is invalid or it has expired.")
+        )
         |> redirect(to: "/")
     end
   end

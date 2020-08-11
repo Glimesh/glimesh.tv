@@ -47,7 +47,6 @@ defmodule GlimeshWeb.ArticleController do
   end
 
   def update(conn, %{"slug" => slug, "article" => article_params}) do
-    user = conn.assigns.current_user
     article = Blog.get_article_by_slug!(slug)
 
     case Blog.update_article(article, article_params) do

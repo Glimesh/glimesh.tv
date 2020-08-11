@@ -24,7 +24,10 @@ defmodule GlimeshWeb.UserSettingsController do
         conn
         |> put_flash(
           :info,
-          dgettext("profile", "A link to confirm your e-mail change has been sent to the new address.")
+          dgettext(
+            "profile",
+            "A link to confirm your e-mail change has been sent to the new address."
+          )
         )
         |> redirect(to: Routes.user_settings_path(conn, :edit))
 
@@ -42,7 +45,10 @@ defmodule GlimeshWeb.UserSettingsController do
 
       :error ->
         conn
-        |> put_flash(:error, dgettext("errors", "Email change link is invalid or it has expired."))
+        |> put_flash(
+          :error,
+          dgettext("errors", "Email change link is invalid or it has expired.")
+        )
         |> redirect(to: Routes.user_settings_path(conn, :edit))
     end
   end

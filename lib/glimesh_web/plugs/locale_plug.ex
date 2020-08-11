@@ -11,7 +11,9 @@ defmodule GlimeshWeb.Plugs.Locale do
 
   def call(conn, _opts) do
     case locale_from_user(conn) || locale_from_params(conn) do
-      nil -> conn
+      nil ->
+        conn
+
       locale ->
         Gettext.put_locale(GlimeshWeb.Gettext, locale)
         conn = conn |> persist_locale(locale)
@@ -41,5 +43,4 @@ defmodule GlimeshWeb.Plugs.Locale do
       conn
     end
   end
-
 end
