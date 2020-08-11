@@ -20,7 +20,8 @@ defmodule GlimeshWeb.StreamsLive.List do
   @impl true
   def mount(params, session, socket) do
     category = String.capitalize(params["category"])
-    if session["locale"], do: Gettext.put_locale(session["locale"]) # If the viewer is logged in set their locale, otherwise it defaults to English
+    # If the viewer is logged in set their locale, otherwise it defaults to English
+    if session["locale"], do: Gettext.put_locale(session["locale"])
 
     {:ok,
      socket

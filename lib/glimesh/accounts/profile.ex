@@ -36,7 +36,7 @@ defmodule Glimesh.Accounts.Profile do
     end
   end
 
-  def streamer_share_text(streamer, profile_url) do
+  def streamer_share_text(_streamer, profile_url) do
     URI.encode_www_form(
       "Just created my @Glimesh Profile Page. I'll be streaming here when they launch but in the mean time you can follow me at #{
         profile_url

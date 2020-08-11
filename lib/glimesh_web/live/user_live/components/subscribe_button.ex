@@ -4,7 +4,6 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
   alias Glimesh.Accounts
   alias Glimesh.Payments
 
-
   @impl true
   def render(assigns) do
     ~L"""
@@ -50,7 +49,11 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => nil}, socket) do
     {:ok,
-     socket |> assign(:streamer, streamer) |> assign(:user, nil) |> assign(:subscribed, false) |> assign(:show_subscription, false)}
+     socket
+     |> assign(:streamer, streamer)
+     |> assign(:user, nil)
+     |> assign(:subscribed, false)
+     |> assign(:show_subscription, false)}
   end
 
   @impl true

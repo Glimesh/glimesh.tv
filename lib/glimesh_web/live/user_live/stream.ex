@@ -12,7 +12,8 @@ defmodule GlimeshWeb.UserLive.Stream do
         Presence.track_presence(self(), "viewer_count:#{streamer_username}", socket.id, %{})
 
         maybe_user = Accounts.get_user_by_session_token(session["user_token"])
-        if session["locale"], do: Gettext.put_locale(session["locale"]) # If the viewer is logged in set their locale, otherwise it defaults to English
+        # If the viewer is logged in set their locale, otherwise it defaults to English
+        if session["locale"], do: Gettext.put_locale(session["locale"])
 
         {:ok,
          socket
