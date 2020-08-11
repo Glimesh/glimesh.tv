@@ -39,7 +39,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <%= label f, dgettext("profile", "Language") %>
-                            <%= select f, :locale, [English: "en", Español: "es"], [class: "form-control"] %> <!-- This will manually need to be populated as languages are completed. Format: Displayname: "locale_code"-->
+                            <%= select f, :locale, [English: "en", Español: "es", Deutsche: "de", 日本人: "ja"], [class: "form-control"] %> <!-- This will manually need to be populated as languages are completed. Format: Displayname: "locale_code"-->
                             <%= error_tag f, :email %>
                         </div>
                     </div>
