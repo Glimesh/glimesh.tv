@@ -134,13 +134,51 @@ defmodule Glimesh.Streams do
     attrs = %{
       stream_title: title
     }
+    streamerMeta = get_metadata_from_streamer(streamer)
 
-    results = get_metadata_from_streamer(streamer) |> StreamMetadata.title_changeset(attrs)
+    {:ok, results} =
+      %StreamMetadata{
+        streamer: streamer
+      }
+      |> Map.merge(streamerMeta)
+      |> StreamMetadata.changeset(attrs)
+      |> Repo.update()
 
-    results
+    update_data = %{title: results.stream_title, streamer_username: streamer.username}
+    broadcast({:ok, update_data}, :update_title)
+    {:ok, results}
+  end
+
+  def create_metadata(streamer) do
+    attrs = %{
+      stream_title: "My first stream!"
+    }
+    results =
+      %StreamMetadata{
+        streamer: streamer
+      }
+      |> StreamMetadata.changeset(attrs)
+      |> Repo.insert()
   end
 
   def get_metadata_from_streamer(streamer) do
-    Repo.get_by(StreamMetadata, streamer_id: streamer.id)
+    data = Repo.get_by(StreamMetadata, streamer_id: streamer.id)
+    if !data do
+      create_metadata(streamer)
+      get_metadata_from_streamer(streamer)
+    else
+      data
+    end
+  end
+
+  def subscribe_metadata do
+    Phoenix.PubSub.subscribe(Glimesh.PubSub, "streams")
+  end
+
+  defp broadcast({:error, _reason} = error, _event), do: error
+
+  defp broadcast({:ok, data}, event) do
+    Phoenix.PubSub.broadcast(Glimesh.PubSub, "streams", {event, data})
+    {:ok, data}
   end
 end

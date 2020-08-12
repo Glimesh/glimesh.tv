@@ -11,8 +11,7 @@ defmodule Glimesh.Streams.StreamMetadata do
     timestamps()
   end
 
-  def title_changeset(stream_metadata, attrs) do
-    IO.inspect(stream_metadata)
+  def changeset(stream_metadata, attrs \\ %{}) do
     stream_metadata
     |> cast(attrs, [:stream_title])
   end
