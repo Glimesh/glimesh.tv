@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <h1 class="text-center">Glimesh Blog</h1>
+  <h1 class="text-center"><%= dgettext("blog", "Glimesh Blog") %></h1>
 
   <div class="row justify-content-md-center">
     <div class="col-md-8">
@@ -12,7 +12,7 @@
             <%= article.description %>
           </p>
 
-          <%= link "Read More", to: Routes.article_path(@conn, :show, article.slug) %>
+          <%= link dgettext("blog", "Read More"), to: Routes.article_path(@conn, :show, article.slug) %>
         </div>
       </div>
       <% end %>

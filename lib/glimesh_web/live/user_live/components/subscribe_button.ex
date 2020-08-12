@@ -4,19 +4,18 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
   alias Glimesh.Accounts
   alias Glimesh.Payments
 
-
   @impl true
   def render(assigns) do
     ~L"""
     <div id="subscription-magic">
         <%= if @user do %>
             <%= if @subscribed do %>
-                <button class="btn btn-secondary" phx-click="unsubscribe">Unsubscribe</button>
+                <button class="btn btn-secondary" phx-click="unsubscribe"><%= dgettext("payments", "Unsubscribe") %></button>
             <% else %>
-                <button class="btn btn-secondary" phx-click="show_modal">Subscribe</button>
+                <button class="btn btn-secondary" phx-click="show_modal"><%= dgettext("payments", "Subscribe") %></button>
             <% end %>
         <% else %>
-            <%= link "Subscribe", to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary" %>
+            <%= link dgettext("payments", "Subscribe"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary" %>
         <% end %>
 
         <%= if @show_subscription do %>
@@ -29,7 +28,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Payment Details</h5>
+                        <h5 class="modal-title"><%= dgettext("payments", "Payment Details") %></h5>
                         <button type="button" class="close" phx-click="hide_modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -50,7 +49,11 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => nil}, socket) do
     {:ok,
-     socket |> assign(:streamer, streamer) |> assign(:user, nil) |> assign(:subscribed, false) |> assign(:show_subscription, false)}
+     socket
+     |> assign(:streamer, streamer)
+     |> assign(:user, nil)
+     |> assign(:subscribed, false)
+     |> assign(:show_subscription, false)}
   end
 
   @impl true

@@ -13,14 +13,14 @@ defmodule GlimeshWeb.SubscriptionComponent do
         data-stripe-customer-id="<%= @stripe_customer_id %>"
         data-stripe-payment-method="<%= @stripe_payment_method %>">
           <%= if @stripe_payment_method do %>
-            <p>Payment method already attached!</p>
+            <p><%= dgettext("payments", "Payment method already attached!") %> </p>
           <% else %>
             <div class="form-group">
-              <label for="paymentName">Your Name</label>
+              <label for="paymentName"><%= dgettext("payments", "Your Name") %></label>
               <input id="paymentName" name="name" placeholder="Name on Your Card" required class="form-control">
             </div>
             <div class="form-group">
-              <label for="card-element">Payment Details</label>
+              <label for="card-element"><%= dgettext("payments", "Payment Details") %></label>
               <div id="card-element" class="form-control">
               <!-- Elements will create input elements here -->
               </div>
@@ -33,14 +33,14 @@ defmodule GlimeshWeb.SubscriptionComponent do
             </div>
           <% end %>
 
-          <h4>Total Charge</h4>
+          <h4><%= dgettext("payments", "Total Charge") %></h4>
             <div class="pricing-plan-label billed-monthly-label">
-            <strong>$5</strong>/ monthly
+            <strong>$5</strong>/ <%= dgettext("payments", "monthly") %>
           </div>
 
           <div id="card-errors" role="alert"></div>
 
-          <button type="submit" class="btn btn-primary btn-block btn-lg">Subscribe</button>
+          <button type="submit" class="btn btn-primary btn-block btn-lg"><%= dgettext("payments", "Subscribe") %></button>
       </form>
     """
   end
@@ -57,7 +57,8 @@ defmodule GlimeshWeb.SubscriptionComponent do
     }
   end
 
-  def update(%{type: :platform, user: user} = params, socket) do
+  @impl true
+  def update(%{type: :platform, user: user}, socket) do
     {
       :ok,
       socket
@@ -66,22 +67,14 @@ defmodule GlimeshWeb.SubscriptionComponent do
     }
   end
 
-  def update(%{type: :channel, user: user, streamer: streamer} = params, socket) do
+  @impl true
+  def update(%{type: :channel, user: user, streamer: _}, socket) do
     {
       :ok,
       socket
       |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
       |> assign(:stripe_payment_method, user.stripe_payment_method)
     }
-  end
-
-  def base_update(params, socket) do
-    socket |> assign(:productid)
-  end
-
-  def handle_event("update_price", %{"product_id" => product_id, "price_id" => price_id}, socket) do
-    #    send self(), {:updated_card, %{socket.assigns.card | title: title}}
-    {:noreply, socket}
   end
 
   @impl true

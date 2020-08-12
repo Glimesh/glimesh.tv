@@ -6,13 +6,13 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
     ~L"""
     <%= if @user do %>
       <%= if @following do %>
-        <button class="btn btn-primary btn-block" phx-click="unfollow">Unfollow</button>
+        <button class="btn btn-primary btn-block" phx-click="unfollow"><%= dgettext("profile", "Unfollow") %></button>
       <% else %>
-        <button class="btn btn-primary btn-block" phx-click="follow" phx-throttle="5000">Follow</button>
+        <button class="btn btn-primary btn-block" phx-click="follow" phx-throttle="5000"><%= dgettext("profile", "Follow") %></button>
       <% end %>
     <% else %>
       <%= link to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-block" do %>
-        Follow
+        <%= dgettext("profile", "Follow") %>
       <% end %>
     <% end %>
     """
@@ -30,6 +30,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
     following = Glimesh.Streams.is_following?(streamer, user)
+    Gettext.put_locale(user.locale)
 
     {:ok,
      socket
@@ -44,7 +45,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
       {:ok, _follow} ->
         {:noreply,
          socket
-         |> put_flash(:info, "User followed successfully")
+         |> put_flash(:info, dgettext("profile", "User followed successfully"))
          |> assign(:following, true)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -58,7 +59,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, "User unfollowed successfully")
+         |> put_flash(:info, dgettext("profile", "User unfollowed successfully"))
          |> assign(:following, false)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

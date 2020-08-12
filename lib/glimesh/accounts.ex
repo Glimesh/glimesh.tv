@@ -13,6 +13,10 @@ defmodule Glimesh.Accounts do
     Repo.all(from u in User, where: not is_nil(u.confirmed_at))
   end
 
+  def list_admins() do
+    Repo.all(from u in User, where: u.is_admin == true)
+  end
+
   @doc """
   Gets a user by email.
 

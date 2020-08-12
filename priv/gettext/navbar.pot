@@ -1,0 +1,88 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here as no
+## effect: edit them in PO (.po) files instead.
+msgid ""
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:16
+msgid "Art"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:28
+msgid "Education"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:44
+msgid "Following"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:13
+msgid "Gaming"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:25
+msgid "IRL"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:33
+msgid "More"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:19
+msgid "Music"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:61
+msgid "My Payments"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:65
+msgid "My Profile"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:74
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:24
+msgid "Register"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:69
+msgid "Sign Out"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:75
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:25
+msgid "Sign in"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:22
+msgid "Tech"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:58
+msgid "Upgrade!"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:38
+msgid "Users"
+msgstr ""

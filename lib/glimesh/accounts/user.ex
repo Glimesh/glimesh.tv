@@ -1,6 +1,7 @@
 defmodule Glimesh.Accounts.User do
   use Ecto.Schema
   use Waffle.Ecto.Schema
+  import GlimeshWeb.Gettext
   import Ecto.Changeset
 
   @derive {Inspect, except: [:password]}
@@ -30,7 +31,8 @@ defmodule Glimesh.Accounts.User do
     field :profile_content_html, :string
 
     field :tfa_token, :string
-
+    
+    field :locale, :string, default: "en"
     timestamps()
   end
 
@@ -126,7 +128,7 @@ defmodule Glimesh.Accounts.User do
   def validate_displayname(changeset) do
     validate_change(changeset, :displayname, fn current_field, value ->
       if String.downcase(value) !== get_field(changeset, :username) do
-        [{current_field, "Display name must match Username"}]
+        [{current_field, dgettext("errors", "Display name must match Username")}]
       else
         []
       end
@@ -144,7 +146,7 @@ defmodule Glimesh.Accounts.User do
     |> validate_email()
     |> case do
       %{changes: %{email: _}} = changeset -> changeset
-      %{} = changeset -> add_error(changeset, :email, "Email is the same")
+      %{} = changeset -> add_error(changeset, :email, dgettext("errors", "Email is the same"))
     end
   end
 
@@ -154,7 +156,7 @@ defmodule Glimesh.Accounts.User do
   def password_changeset(user, attrs) do
     user
     |> cast(attrs, [:password])
-    |> validate_confirmation(:password, message: "Password does not match")
+    |> validate_confirmation(:password, message: dgettext("errors", "Password does not match"))
     |> validate_password()
   end
 
@@ -165,6 +167,7 @@ defmodule Glimesh.Accounts.User do
     user
     |> cast(attrs, [
       :displayname,
+      :locale,
       :social_twitter,
       :social_youtube,
       :social_instagram,
@@ -226,7 +229,7 @@ defmodule Glimesh.Accounts.User do
     if valid_password?(changeset.data, password) do
       changeset
     else
-      add_error(changeset, :current_password, "Invalid Password")
+      add_error(changeset, :current_password, dgettext("errors", "Invalid Password"))
     end
   end
 
@@ -235,7 +238,7 @@ defmodule Glimesh.Accounts.User do
       matches = Regex.run(~r/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/, value)
 
       if matches < 2 do
-        [{current_field, "Incorrect YouTube URL format"}]
+        [{current_field, dgettext("errors", "Incorrect YouTube URL format")}]
       else
         []
       end
@@ -245,7 +248,11 @@ defmodule Glimesh.Accounts.User do
   def set_profile_content_html(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{profile_content_md: profile_content_md}} ->
-        {:ok, html_doc, []} = Earmark.as_html(HtmlSanitizeEx.strip_tags(profile_content_md))
+        put_change(
+          changeset,
+          :profile_content_html,
+          Glimesh.Accounts.Profile.safe_user_markdown_to_html(profile_content_md)
+        )
 
         put_change(changeset, :profile_content_html, html_doc)
 

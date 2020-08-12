@@ -31,6 +31,10 @@ config :glimesh, GlimeshWeb.Emails.Mailer,
   domain: "your.domain",
   hackney_opts: [recv_timeout: :timer.minutes(1)]
 
+config :glimesh, GlimeshWeb.Gettext,
+  default_locale: "en",
+  locales: ~w(en es ja de nap)
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

@@ -25,7 +25,10 @@ defmodule GlimeshWeb.UserSettingsController do
         conn
         |> put_flash(
           :info,
-          "A link to confirm your e-mail change has been sent to the new address."
+          dgettext(
+            "profile",
+            "A link to confirm your e-mail change has been sent to the new address."
+          )
         )
         |> redirect(to: Routes.user_settings_path(conn, :edit))
 
@@ -38,12 +41,15 @@ defmodule GlimeshWeb.UserSettingsController do
     case Accounts.update_user_email(conn.assigns.current_user, token) do
       :ok ->
         conn
-        |> put_flash(:info, "E-mail changed successfully.")
+        |> put_flash(:info, dgettext("profile", "E-mail changed successfully."))
         |> redirect(to: Routes.user_settings_path(conn, :edit))
 
       :error ->
         conn
-        |> put_flash(:error, "Email change link is invalid or it has expired.")
+        |> put_flash(
+          :error,
+          dgettext("errors", "Email change link is invalid or it has expired.")
+        )
         |> redirect(to: Routes.user_settings_path(conn, :edit))
     end
   end
@@ -54,7 +60,7 @@ defmodule GlimeshWeb.UserSettingsController do
     case Accounts.update_user_password(user, password, user_params) do
       {:ok, user} ->
         conn
-        |> put_flash(:info, "Password updated successfully.")
+        |> put_flash(:info, dgettext("profile", "Password updated successfully."))
         |> put_session(:user_return_to, Routes.user_settings_path(conn, :edit))
         |> UserAuth.log_in_user(user)
 
@@ -69,7 +75,7 @@ defmodule GlimeshWeb.UserSettingsController do
     case Accounts.update_user_profile(user, user_params) do
       {:ok, user} ->
         conn
-        |> put_flash(:info, "Profile updated successfully.")
+        |> put_flash(:info, dgettext("profile", "Profile updated successfully."))
         |> put_session(:user_return_to, Routes.user_settings_path(conn, :edit))
         |> UserAuth.log_in_user(user)
 
