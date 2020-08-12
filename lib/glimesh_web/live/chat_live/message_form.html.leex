@@ -1,14 +1,16 @@
-<%= if @disabled do %>
-  <p class="text-center">You must be logged in to chat. <%= link "Register", to: Routes.user_registration_path(@socket, :new) %></p>
-<% end %>
+<div id="chat-form" phx-hook="Chat">
+  <%= if @disabled do %>
+    <p class="text-center">You must be logged in to chat. <%= link "Register", to: Routes.user_registration_path(@socket, :new) %></p>
+  <% end %>
 
-<%= f = form_for @changeset, "#",
-  id: "chat_message-form",
-  class: ["chat-form"],
-  phx_target: @myself,
-  phx_change: "validate",
-  phx_submit: "send" %>
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-  <%= text_input f, :message, class: ["mail-write-box form-control"], autocomplete: "off", disabled: @disabled %>
-  <%= error_tag f, :message %>
-</form>
+  <%= f = form_for @changeset, "#",
+    id: "chat_message-form",
+    class: ["chat-form"],
+    phx_target: @myself,
+    phx_change: "validate",
+    phx_submit: "send" %>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    <%= text_input f, :message, class: ["mail-write-box form-control"], autocomplete: "off", disabled: @disabled %>
+    <%= error_tag f, :message %>
+  </form>
+</div>

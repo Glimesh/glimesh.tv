@@ -13,9 +13,9 @@ import "../css/app.scss"
 //     import socket from "./socket"
 //
 import "phoenix_html"
-import {Socket} from "phoenix"
+import { Socket } from "phoenix"
 import NProgress from "nprogress"
-import {LiveSocket} from "phoenix_live_view"
+import { LiveSocket } from "phoenix_live_view"
 import BSN from "bootstrap.native";
 
 
@@ -87,9 +87,11 @@ function tryVideo(url) {
 }
 
 import ProcessPayment from './hooks/ProcessPayment';
+import Chat from './hooks/Chat';
 
 let Hooks = {};
 Hooks.ProcessPayment = ProcessPayment;
+Hooks.Chat = Chat;
 Hooks.LoadVideo = {
     playbackUrl() {
         return this.el.dataset.playbackUrl
@@ -100,7 +102,7 @@ Hooks.LoadVideo = {
 };
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}, hooks: Hooks});
+let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken }, hooks: Hooks });
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", info => NProgress.start());
