@@ -35,3 +35,8 @@ msgstr ""
 #: lib/glimesh_web/live/streams_live/list.html.leex:8
 msgid "%{category} Streams Coming Soon"
 msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/components/viewer_count.ex:9
+msgid " %{count} Viewers"
+msgstr ""

@@ -1,0 +1,81 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: nap\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:64
+msgid "Cancel Subscription"
+msgstr "Avbestille abonnementet"
+
+#, elixir-format
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:22
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:38
+msgid "Cosmetic Features"
+msgstr "Kosmetiske funksjoner"
+
+#, elixir-format
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:4
+msgid "Glimesh Funding Progress"
+msgstr "Fremdriften for Glimesh-finansieringen"
+
+#, elixir-format
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:18
+msgid "Help us fund the platform & grow!"
+msgstr "Hjelp oss med å finansiere plattformen og vokse!"
+
+#, elixir-format
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:6
+msgid "Platform Subs"
+msgstr "Platform-abonnementer"
+
+#, elixir-format
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:32
+msgid "Popular!"
+msgstr "Populær!"
+
+#, elixir-format
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:28
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:45
+msgid "Select"
+msgstr "Velg"
+
+#, elixir-format
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:7
+msgid "Streamer Subs"
+msgstr "Streamer-abonnementer"
+
+#, elixir-format
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:34
+msgid "Support Glimesh's future with your wallet! Get special perks to show off."
+msgstr "Støtt Glimeshs fremtid med lommeboka! Få spesielle frynsegoder å vise frem."
+
+#, elixir-format
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:54
+msgid "Thanks for supporting Glimesh :D"
+msgstr "Takk for at du støtter Glimesh :D"
+
+#, elixir-format
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:53
+msgid "You're subscribed!"
+msgstr "Du er abonnert!"
+
+#, elixir-format
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:19
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:35
+msgid "monthly"
+msgstr "månedlig"
+
+#, elixir-format
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:20
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:36
+msgid "yearly"
+msgstr "årlig"

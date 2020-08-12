@@ -1,39 +1,40 @@
-## This file is a PO Template file.
+## "msgid"s in this file come from POT (.pot) files.
 ##
-## "msgid"s here are often extracted from source code.
-## Add new translations manually only if they're dynamic
-## translations that can't be statically extracted.
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
 ##
-## Run "mix gettext.extract" to bring this file up to
-## date. Leave "msgstr"s empty as changing them here as no
-## effect: edit them in PO (.po) files instead.
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
 msgid ""
 msgstr ""
+"Language: nap\n"
+"Plural-Forms: nplurals=2\n"
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.ex:15
 msgid "Followed"
-msgstr ""
+msgstr "Fulgte"
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.ex:14
 msgid "Followed Streams"
-msgstr ""
+msgstr "Fulgte strømmer"
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:22
 msgid "Live!"
-msgstr ""
+msgstr "Direkte!"
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:9
 msgid "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!"
-msgstr ""
+msgstr "Noen ganger streamer vi spesielle arrangementer eller andre unike strømmer, men når vi først er live vil disse sidene bli fylt med streamere!"
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:8
 msgid "%{category} Streams Coming Soon"
-msgstr ""
+msgstr "%{category} strømmer kommer snart"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/viewer_count.ex:9
