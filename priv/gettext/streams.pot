@@ -39,3 +39,8 @@ msgstr ""
 #: lib/glimesh_web/live/user_live/components/viewer_count.ex:9
 msgid " %{count} Viewers"
 msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/components/streamer_title.ex:21
+msgid "Update Title"
+msgstr ""

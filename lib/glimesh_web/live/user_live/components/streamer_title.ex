@@ -18,7 +18,7 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
             <div class="form-group">
               <%= f = form_for @changeset, "#", [phx_submit: :save] %>
               <%= text_input f, :stream_title, [class: "form-control"] %>
-              <%= submit "Update Title", class: "btn btn-primary mt-1" %>
+              <%= submit dgettext("streams", "Update Title"), class: "btn btn-primary mt-1" %>
               <i class="far fa-edit" phx-click="toggle-edit" style="color: red"></i>
             </div>
           </h5>
