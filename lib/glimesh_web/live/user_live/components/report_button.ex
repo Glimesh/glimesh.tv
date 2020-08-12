@@ -7,7 +7,7 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
       <%= if @user do %>
       <div class="text-center">
         <a href="#" phx-click="show_modal" class="text-danger">
-          Report User <i class="fas fa-flag"></i>
+          <%= dgettext("profile", "Report User") %> <i class="fas fa-flag"></i>
         </a>
       </div>
       <%= if live_flash(@flash, :info) do %>
@@ -33,40 +33,40 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
                     </div>
 
                     <div class="modal-body">
-                      <p>What has this user done wrong?</p>
+                      <p><%= dgettext("report", "What has this user done wrong?")%></p>
 
                       <%= form_for :user, "#", [phx_submit: :save] %>
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="report_reason" id="hateSpeech" value="hate-speech">
                         <label class="form-check-label" for="exampleRadios1">
-                          Hate Speech
+                          <%= dgettext("report", "Hate Speech") %>
                         </label>
                       </div>
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="report_reason" id="reportInappropriateContent" value="inappropriate-content">
                         <label class="form-check-label" for="exampleRadios2">
-                          Inappropriate Content
+                          <%= dgettext("report", "Inappropriate Content") %>
                         </label>
                       </div>
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="report_reason" id="reportCopyrightInfringementOrLawViolation" value="copyright-infringement-or-law-violation">
                         <label class="form-check-label" for="reportCopyrightInfringementOrLawViolation">
-                          Copyright Infringement / Law Violation
+                          <%= dgettext("report", "Copyright Infringement / Law Violation") %>
                         </label>
                       </div>
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="report_reason" id="reportOther" value="other">
                         <label class="form-check-label" for="reportOther">
-                          Other
+                          <%= dgettext("report", "Other") %>
                         </label>
                       </div>
 
                       <div class="form-group mt-4">
-                        <label for="reportNotes">Notes</label>
+                        <label for="reportNotes"><%= dgettext("report", "Notes") %></label>
                         <input type="text" class="form-control" name="notes" id="reportNotes" placeholder="Another other details you'd like to share">
                       </div>
 
-                      <button class="btn btn-danger btn-block mt-4">Submit Report</button>
+                      <button class="btn btn-danger btn-block mt-4"><%= dgettext("report", "Submit Report") %></button>
                       </form>
                     </div>
 
@@ -90,6 +90,7 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
 
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
+    Gettext.put_locale(user.locale)
     {:ok,
      socket
      |> assign(:streamer, streamer)

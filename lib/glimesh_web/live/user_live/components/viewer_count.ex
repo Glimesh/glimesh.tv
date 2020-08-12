@@ -6,7 +6,7 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCount do
   @impl true
   def render(assigns) do
     ~L"""
-      <span class="badge badge-danger"><%= @viewer_count %> Viewers</span>
+      <span class="badge badge-danger"><%= dgettext("streams", " %{count} Viewers", count: @viewer_count) %></span>
     """
   end
 

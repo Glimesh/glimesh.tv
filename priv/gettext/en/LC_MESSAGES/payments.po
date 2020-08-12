@@ -12,12 +12,12 @@ msgstr ""
 "Plural-Forms: nplurals=2\n"
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_payments_controller.ex:54
+#: lib/glimesh_web/controllers/user_payments_controller.ex:57
 msgid "Payment method deleted!"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_payments_controller.ex:38
+#: lib/glimesh_web/controllers/user_payments_controller.ex:40
 msgid "Stripe account linked successfully, welcome to the sub club!"
 msgstr ""
 
@@ -87,7 +87,7 @@ msgid "Subscribed since ?."
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:14
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:13
 #: lib/glimesh_web/templates/user_payments/index.html.eex:110
 msgid "Unsubscribe"
 msgstr ""
@@ -119,7 +119,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:23
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:32
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:31
 msgid "Payment Details"
 msgstr ""
 
@@ -130,7 +130,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:43
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:16 lib/glimesh_web/live/user_live/components/subscribe_button.ex:19
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:15 lib/glimesh_web/live/user_live/components/subscribe_button.ex:18
 msgid "Subscribe"
 msgstr ""
 

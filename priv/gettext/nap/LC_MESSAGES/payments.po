@@ -1,149 +1,150 @@
-## This file is a PO Template file.
+## "msgid"s in this file come from POT (.pot) files.
 ##
-## "msgid"s here are often extracted from source code.
-## Add new translations manually only if they're dynamic
-## translations that can't be statically extracted.
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
 ##
-## Run "mix gettext.extract" to bring this file up to
-## date. Leave "msgstr"s empty as changing them here as no
-## effect: edit them in PO (.po) files instead.
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
 msgid ""
 msgstr ""
+"Language: nap\n"
+"Plural-Forms: nplurals=2\n"
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_payments_controller.ex:57
 msgid "Payment method deleted!"
-msgstr ""
+msgstr "Betalingsmetode slettet!"
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_payments_controller.ex:40
 msgid "Stripe account linked successfully, welcome to the sub club!"
-msgstr ""
+msgstr "Stripekonto koblet vellykket, velkommen til sub-klubben!"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:54
 msgid "Delete Saved Payment"
-msgstr ""
+msgstr "Slett lagret betaling"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:93
 msgid "Enable Subscriptions"
-msgstr ""
+msgstr "Aktiver abonnement"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:108
 msgid "Glimesh Sub!"
-msgstr ""
+msgstr "Glimesh Abbo!"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:129
 msgid "Income History"
-msgstr ""
+msgstr "Inntektshistorikk"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:137
 msgid "Payment History"
-msgstr ""
+msgstr "Betalingshistorikk"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:11
 msgid "Received"
-msgstr ""
+msgstr "Mottatt"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:44
 msgid "Saved Payment Method"
-msgstr ""
+msgstr "Lagret betalingsmetode"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:27
 msgid "Sent"
-msgstr ""
+msgstr "Sendt"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:59
 msgid "Setup Payment Method"
-msgstr ""
+msgstr "Sett opp betalingsmetode"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:87
 msgid "Streamer"
-msgstr ""
+msgstr "Strømmer"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:77
 msgid "Sub-ready Streamer"
-msgstr ""
+msgstr "Sub-klar strømmer"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:120
 msgid "Subscribed since %{date}"
-msgstr ""
+msgstr "Abonnert siden %{date}"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:109
 msgid "Subscribed since ?."
-msgstr ""
+msgstr "Abonnert siden ?"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:13
 #: lib/glimesh_web/templates/user_payments/index.html.eex:110
 msgid "Unsubscribe"
-msgstr ""
+msgstr "Avabonner"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:82
 msgid "Welcome to the sub club!"
-msgstr ""
+msgstr "Velkommen til abbo-klubben!"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:64
 msgid "You can link a payment method by creating a subscription to a channel, or the platform."
-msgstr ""
+msgstr "Du kan koble til en betalingsmetode ved å opprette et abonnement på en kanal eller plattformen."
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:46
 msgid "You have an existing saved payment method. You can delete it by clicking the button below."
-msgstr ""
+msgstr "Du har en eksisterende lagret betalingsmetode. Du kan slette den ved å klikke på knappen nedenfor."
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:2
 msgid "Your Payment Portal"
-msgstr ""
+msgstr "Din betalingsportal"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:102
 msgid "Your Subscriptions"
-msgstr ""
+msgstr "Dine abonnementer"
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:23
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:31
 msgid "Payment Details"
-msgstr ""
+msgstr "Betalingshistorikk"
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:16
 msgid "Payment method already attached!"
-msgstr ""
+msgstr "Betalingsmåte allerede vedlagt!"
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:43
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:15 lib/glimesh_web/live/user_live/components/subscribe_button.ex:18
 msgid "Subscribe"
-msgstr ""
+msgstr "Abonner"
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:36
 msgid "Total Charge"
-msgstr ""
+msgstr "Total kostnad"
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:19
 msgid "Your Name"
-msgstr ""
+msgstr "Navnet ditt"
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:38
 msgid "monthly"
-msgstr ""
+msgstr "månedlig"

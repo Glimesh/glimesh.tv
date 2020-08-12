@@ -30,6 +30,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
     following = Glimesh.Streams.is_following?(streamer, user)
+    Gettext.put_locale(user.locale)
 
     {:ok,
      socket

@@ -83,8 +83,7 @@
                     <h5><%= dgettext("profile", "Pre-Follow Streamer") %></h5>
                 </div>
                 <div class="card-body">
-                    <p>Glimesh isn't launched yet, but you can follow <%= @streamer.displayname %> now and get
-                        automatically notified when they go live!</p>
+                    <p><%= dgettext("profile", "Glimesh isn't launched yet, but you can follow %{streamer} now and get automatically notified when they go live!", streamer: @streamer.displayname) %></P>
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                 </div>
             </div>
