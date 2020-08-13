@@ -1,4 +1,6 @@
 defmodule Glimesh.Streams.Followers do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

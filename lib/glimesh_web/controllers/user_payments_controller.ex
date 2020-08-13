@@ -1,6 +1,9 @@
 defmodule GlimeshWeb.UserPaymentsController do
   use GlimeshWeb, :controller
 
+  alias Glimesh.Accounts
+  alias Glimesh.Payments
+
   def index(conn, _params) do
     user = conn.assigns.current_user
 
@@ -22,9 +25,9 @@ defmodule GlimeshWeb.UserPaymentsController do
       "index.html",
       is_sub_ready_streamer: !is_nil(user.stripe_user_id),
       stripe_oauth_url: stripe_oauth_url,
-      has_platform_subscription: Glimesh.Payments.has_platform_subscription?(user),
-      subscriptions: Glimesh.Payments.get_channel_subscriptions(user),
-      default_payment_changeset: Glimesh.Accounts.change_stripe_default_payment(user),
+      has_platform_subscription: Payments.has_platform_subscription?(user),
+      subscriptions: Payments.get_channel_subscriptions(user),
+      default_payment_changeset: Accounts.change_stripe_default_payment(user),
       has_payment_method: !is_nil(user.stripe_payment_method)
     )
   end
@@ -32,7 +35,7 @@ defmodule GlimeshWeb.UserPaymentsController do
   def connect(conn, %{"state" => state, "code" => code}) do
     user = conn.assigns.current_user
     #    Plug.CSRFProtection.valid_state_and_csrf_token?(state)
-    case Glimesh.Payments.oauth_connect(user, code) do
+    case Payments.oauth_connect(user, code) do
       {:ok, _} ->
         conn
         |> put_flash(
@@ -51,7 +54,7 @@ defmodule GlimeshWeb.UserPaymentsController do
   def delete_default_payment(conn, %{}) do
     user = conn.assigns.current_user
 
-    case Glimesh.Accounts.set_stripe_default_payment(user, nil) do
+    case Accounts.set_stripe_default_payment(user, nil) do
       {:ok, _} ->
         conn
         |> put_flash(:info, dgettext("payments", "Payment method deleted!"))

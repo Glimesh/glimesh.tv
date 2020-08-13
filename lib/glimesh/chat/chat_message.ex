@@ -1,4 +1,6 @@
 defmodule Glimesh.Chat.ChatMessage do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

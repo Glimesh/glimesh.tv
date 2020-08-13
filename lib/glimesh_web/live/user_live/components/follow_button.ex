@@ -1,6 +1,8 @@
 defmodule GlimeshWeb.UserLive.Components.FollowButton do
   use GlimeshWeb, :live_view
 
+  alias Glimesh.Streams
+
   @impl true
   def render(assigns) do
     ~L"""
@@ -29,7 +31,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
 
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
-    following = Glimesh.Streams.is_following?(streamer, user)
+    following = Streams.is_following?(streamer, user)
     Gettext.put_locale(user.locale)
 
     {:ok,
@@ -41,7 +43,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
 
   @impl true
   def handle_event("follow", _value, socket) do
-    case Glimesh.Streams.follow(socket.assigns.streamer, socket.assigns.user, false) do
+    case Streams.follow(socket.assigns.streamer, socket.assigns.user, false) do
       {:ok, _follow} ->
         {:noreply,
          socket
@@ -55,7 +57,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
 
   @impl true
   def handle_event("unfollow", _value, socket) do
-    case Glimesh.Streams.unfollow(socket.assigns.streamer, socket.assigns.user) do
+    case Streams.unfollow(socket.assigns.streamer, socket.assigns.user) do
       {:ok, _} ->
         {:noreply,
          socket

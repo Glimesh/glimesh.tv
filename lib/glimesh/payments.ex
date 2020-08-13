@@ -4,12 +4,13 @@ defmodule Glimesh.Payments do
   """
 
   import Ecto.Query, warn: false
+
+  alias Glimesh.Accounts
+  alias Glimesh.Payments.Subscription
   alias Glimesh.Repo
 
-  alias Glimesh.Payments.Subscription
-
   def set_payment_method(user, payment_method_id) do
-    customer_id = Glimesh.Accounts.get_stripe_customer_id(user)
+    customer_id = Accounts.get_stripe_customer_id(user)
 
     with {:ok, _} <-
            Stripe.PaymentMethod.attach(%{customer: customer_id, payment_method: payment_method_id}),
@@ -17,7 +18,7 @@ defmodule Glimesh.Payments do
            Stripe.Customer.update(customer_id, %{
              invoice_settings: %{default_payment_method: payment_method_id}
            }),
-         {:ok, _} <- Glimesh.Accounts.set_stripe_default_payment(user, payment_method_id) do
+         {:ok, _} <- Accounts.set_stripe_default_payment(user, payment_method_id) do
       {:ok, "Successfully saved and set payment method as default."}
     else
       {:error, %Stripe.Error{user_message: user_message}} -> {:error, user_message}
@@ -26,7 +27,7 @@ defmodule Glimesh.Payments do
   end
 
   def subscribe(:platform, user, product_id, price_id) do
-    customer_id = Glimesh.Accounts.get_stripe_customer_id(user)
+    customer_id = Accounts.get_stripe_customer_id(user)
 
     stripe_input = %{customer: customer_id, items: [%{price: price_id}]}
 
@@ -56,7 +57,7 @@ defmodule Glimesh.Payments do
     #    "destination" => "{{CONNECTED_STRIPE_ACCOUNT_ID}}",
     #  ],
     # "application_fee_percent" => 10,
-    customer_id = Glimesh.Accounts.get_stripe_customer_id(user)
+    customer_id = Accounts.get_stripe_customer_id(user)
 
     stripe_input = %{
       customer: customer_id,
@@ -137,7 +138,7 @@ defmodule Glimesh.Payments do
 
   def oauth_connect(user, code) do
     with {:ok, resp} <- Stripe.Connect.OAuth.token(code),
-         {:ok, _} <- Glimesh.Accounts.set_stripe_user_id(user, resp.stripe_user_id) do
+         {:ok, _} <- Accounts.set_stripe_user_id(user, resp.stripe_user_id) do
       {:ok, "Successfully updated Stripe oauth user."}
     else
       {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}

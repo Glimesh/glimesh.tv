@@ -1,4 +1,6 @@
 defmodule Glimesh.Accounts.User do
+  @moduledoc false
+
   use Ecto.Schema
   use Waffle.Ecto.Schema
   import GlimeshWeb.Gettext

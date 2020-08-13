@@ -1,4 +1,8 @@
 defmodule Glimesh.Tfa do
+  @moduledoc """
+  Two factor auth helper functionality.
+  """
+
   @doc """
   This generates the 2FA image for a totp Authenticatior such as Google Authenticator or Authy
   """

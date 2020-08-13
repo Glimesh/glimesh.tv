@@ -1,4 +1,6 @@
 defmodule Glimesh.Accounts.UserNotifier do
+  @moduledoc false
+
   alias GlimeshWeb.Emails.Email
   alias GlimeshWeb.Emails.Mailer
 

@@ -1,4 +1,6 @@
 defmodule Glimesh.Streams.UserModerationLog do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

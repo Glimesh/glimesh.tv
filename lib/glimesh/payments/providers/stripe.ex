@@ -1,4 +1,6 @@
 defmodule Glimesh.Payments.Providers.Stripe do
+  @moduledoc false
+
   def incoming_webhook(raw_http_body, signature) do
     wh_secret = Application.get_env(:stripity_stripe, :webhook_secret)
 

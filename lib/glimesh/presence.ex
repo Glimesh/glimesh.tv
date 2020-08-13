@@ -1,4 +1,6 @@
 defmodule Glimesh.Presence do
+  @moduledoc false
+
   use Phoenix.Presence,
     otp_app: :glimesh,
     pubsub_server: Glimesh.PubSub
