@@ -33,6 +33,10 @@ defmodule Glimesh.Streams do
   end
 
   def timeout_user(streamer, moderator, user_to_timeout) do
+    if Glimesh.Chat.can_moderate?(streamer, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
     log =
       %UserModerationLog{
         streamer: streamer,
