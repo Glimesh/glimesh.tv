@@ -17,8 +17,8 @@ defmodule Glimesh.Streams.UserModerator do
   end
 
   @doc false
-  def changeset(chat_message, attrs) do
-    chat_message
+  def changeset(user_moderator, attrs) do
+    user_moderator
     |> cast(attrs, [
       :can_short_timeout,
       :can_long_timeout,
@@ -27,5 +27,6 @@ defmodule Glimesh.Streams.UserModerator do
       :can_unban
     ])
     |> validate_required([:streamer, :user])
+    |> unique_constraint([:streamer_id, :user_id])
   end
 end
