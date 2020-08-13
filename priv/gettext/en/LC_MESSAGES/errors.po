@@ -99,12 +99,12 @@ msgid "Confirmation link is invalid or it has expired."
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:50
+#: lib/glimesh_web/controllers/user_settings_controller.ex:51
 msgid "Email change link is invalid or it has expired."
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_session_controller.ex:17
+#: lib/glimesh_web/controllers/user_session_controller.ex:22
 msgid "Invalid e-mail or password"
 msgstr ""
 
@@ -114,26 +114,31 @@ msgid "Reset password link is invalid or it has expired."
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh/accounts/user.ex:129
+#: lib/glimesh/accounts/user.ex:131
 msgid "Display name must match Username"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh/accounts/user.ex:147
+#: lib/glimesh/accounts/user.ex:149
 msgid "Email is the same"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh/accounts/user.ex:231
+#: lib/glimesh/accounts/user.ex:241
 msgid "Incorrect YouTube URL format"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh/accounts/user.ex:222
+#: lib/glimesh/accounts/user.ex:232
 msgid "Invalid Password"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh/accounts/user.ex:157
+#: lib/glimesh/accounts/user.ex:159
 msgid "Password does not match"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_session_controller.ex:19
+msgid "Invalid 2FA Code"
 msgstr ""

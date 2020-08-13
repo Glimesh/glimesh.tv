@@ -30,6 +30,8 @@ defmodule Glimesh.Accounts.User do
     field :profile_content_md, :string
     field :profile_content_html, :string
 
+    field :tfa_token, :string
+
     field :locale, :string, default: "en"
     timestamps()
   end
@@ -197,6 +199,14 @@ defmodule Glimesh.Accounts.User do
   end
 
   @doc """
+  A user changeset for setting 2FA
+  """
+  def tfa_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:tfa_token])
+  end
+
+  @doc """
   Verifies the password.
 
   If there is no user or the user doesn't have a password, we call
@@ -246,6 +256,17 @@ defmodule Glimesh.Accounts.User do
 
       _ ->
         changeset
+    end
+  end
+
+  @doc """
+  Validates the sent 2FA code otherwise adds an error to the changeset.
+  """
+  def validate_tfa(changeset, pin, secret) do
+    if Glimesh.Tfa.validate_pin(pin, secret) do
+      changeset
+    else
+      add_error(changeset, :tfa, "Invalid 2FA code")
     end
   end
 end

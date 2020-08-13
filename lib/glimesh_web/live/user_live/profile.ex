@@ -8,6 +8,7 @@ defmodule GlimeshWeb.UserLive.Profile do
   def mount(%{"username" => username}, session, socket) do
     # If the viewer is logged in set their locale, otherwise it defaults to English
     if session["locale"], do: Gettext.put_locale(session["locale"])
+
     case Accounts.get_by_username(username) do
       %Glimesh.Accounts.User{} = streamer ->
         maybe_user = Accounts.get_user_by_session_token(session["user_token"])

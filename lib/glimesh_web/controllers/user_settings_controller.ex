@@ -1,6 +1,7 @@
 defmodule GlimeshWeb.UserSettingsController do
   use GlimeshWeb, :controller
 
+  alias Glimesh.Tfa
   alias Glimesh.Accounts
   alias GlimeshWeb.UserAuth
 
@@ -83,6 +84,43 @@ defmodule GlimeshWeb.UserSettingsController do
     end
   end
 
+  def update_tfa(conn, %{"current_password" => password, "user" => %{"tfa" => pin}}) do
+    user = conn.assigns.current_user
+
+    IO.puts("is empty #{password == ""}")
+
+    case Accounts.update_tfa(user, pin, password, %{
+      tfa_token:
+        if user.tfa_token do
+          nil
+        else
+          get_session(conn, :tfa_secret)
+        end
+    }) do
+      {:ok, user} ->
+        conn
+        |> put_flash(:info, "2FA updated successfully.")
+        |> put_session(:user_return_to, Routes.user_settings_path(conn, :edit))
+        |> UserAuth.log_in_user(user)
+
+      {:error, changeset} ->
+        render(conn, "edit.html", tfa_changeset: changeset)
+    end
+  end
+
+  def get_tfa(conn, _params) do
+    user = conn.assigns.current_user
+    secret =
+      case get_session(conn, :tfa_secret) do
+        nil -> Tfa.generate_secret(user.hashed_password)
+        _ -> get_session(conn, :tfa_secret)
+      end
+
+    conn
+    |> put_session(:tfa_secret, secret)
+    |> text(Tfa.generate_tfa_img("Glimesh", user.username, secret))
+  end
+
   defp assign_email_and_password_changesets(conn, _opts) do
     user = conn.assigns.current_user
 
@@ -91,5 +129,6 @@ defmodule GlimeshWeb.UserSettingsController do
     |> assign(:profile_changeset, Accounts.change_user_profile(user))
     |> assign(:email_changeset, Accounts.change_user_email(user))
     |> assign(:password_changeset, Accounts.change_user_password(user))
+    |> assign(:tfa_changeset, Accounts.change_tfa(user))
   end
 end

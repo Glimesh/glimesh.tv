@@ -56,7 +56,8 @@ defmodule Glimesh.MixProject do
       {:phoenix_markdown, "~> 1.0"},
       {:stripity_stripe, "~> 2.0"},
       {:html_sanitize_ex, "~> 1.4.1"},
-      {:earmark, "~> 1.4"}
+      {:earmark, "~> 1.4"},
+      {:eqrcode, "~> 0.1.7"}
     ]
   end
 
