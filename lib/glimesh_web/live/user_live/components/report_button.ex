@@ -70,7 +70,6 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
                       </form>
                     </div>
 
-
                 </div>
             </div>
         </div>

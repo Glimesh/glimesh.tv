@@ -1,8 +1,8 @@
 defmodule GlimeshWeb.StreamsLive.List do
   use GlimeshWeb, :live_view
 
-  alias Glimesh.Streams
   alias Glimesh.Accounts
+  alias Glimesh.Streams
 
   @impl true
   def mount(%{"category" => "following"}, session, socket) do

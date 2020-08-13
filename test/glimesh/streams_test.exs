@@ -3,9 +3,9 @@ defmodule Glimesh.StreamsTest do
   use Bamboo.Test
 
   import Glimesh.AccountsFixtures
-  alias Glimesh.Streams
   alias Glimesh.Chat
-  alias Glimesh.Streams.{UserModerationLog}
+  alias Glimesh.Streams
+  alias Glimesh.Streams.UserModerationLog
 
   describe "timeout_user/3" do
     setup do
@@ -59,7 +59,7 @@ defmodule Glimesh.StreamsTest do
     @update_attrs %{has_live_notifications: false}
     @invalid_attrs %{has_live_notifications: nil}
 
-    def followers_fixture() do
+    def followers_fixture do
       streamer = user_fixture()
       user = user_fixture()
 

@@ -2,10 +2,10 @@ defmodule GlimeshWeb.ChatLive.Index do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Accounts
-  alias Glimesh.Streams
   alias Glimesh.Chat
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Presence
+  alias Glimesh.Streams
 
   @impl true
   def mount(_params, session, socket) do

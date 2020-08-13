@@ -1,9 +1,9 @@
 defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
   use GlimeshWeb, :live_view
 
-  alias Payments
   alias Glimesh.Accounts
   alias Glimesh.Payments
+  alias Payments
 
   @impl true
   def mount(_params, session, socket) do
@@ -64,11 +64,13 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
 
     subscription = Payments.get_platform_subscription!(user)
 
-    with {:ok, _} <- Payments.unsubscribe(subscription) do
-      {:noreply,
-       socket |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
-    else
-      {:error, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
+    case Payments.unsubscribe(subscription) do
+      {:ok, _} ->
+        {:noreply,
+         socket |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
+
+      {:error, error_msg} ->
+        {:noreply, socket |> assign(:stripe_error, error_msg)}
     end
   end
 end

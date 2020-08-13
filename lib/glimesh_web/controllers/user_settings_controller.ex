@@ -1,8 +1,8 @@
 defmodule GlimeshWeb.UserSettingsController do
   use GlimeshWeb, :controller
 
-  alias Glimesh.Tfa
   alias Glimesh.Accounts
+  alias Glimesh.Tfa
   alias GlimeshWeb.UserAuth
 
   plug :assign_email_and_password_changesets

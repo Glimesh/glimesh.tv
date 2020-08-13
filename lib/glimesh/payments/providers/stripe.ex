@@ -8,7 +8,7 @@ defmodule Glimesh.Payments.Providers.Stripe do
   end
 
   def handle_webhook(%{type: "payment_intent.succeeded"} = stripe_event) do
-    IO.inspect(stripe_event)
+    {:ok, ""}
   end
 
   def handle_webhook(%{type: type}) do

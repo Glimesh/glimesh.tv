@@ -136,12 +136,6 @@ defmodule Glimesh.AccountsTest do
 
       assert %{username: ["This username contains a bad word"]} = errors_on(changeset)
     end
-
-    #    test "validates and rejects bad word inside username" do
-    #      {:error, changeset} = Accounts.register_user(%{email: unique_user_email(), username: "FOOassFOO", password: valid_user_password()})
-    #
-    #      assert %{username: ["This username contains a bad word"]} = errors_on(changeset)
-    #    end
   end
 
   describe "change_user_registration/2" do

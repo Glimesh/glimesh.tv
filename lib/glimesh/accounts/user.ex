@@ -88,6 +88,7 @@ defmodule Glimesh.Accounts.User do
 
   def validate_username_contains_no_bad_words(changeset, field) when is_atom(field) do
     validate_change(changeset, field, fn current_field, value ->
+      # credo:disable-for-next-line
       if Enum.any?(Application.get_env(:glimesh, :bad_words), fn w ->
            String.contains?(value, w)
          end) do

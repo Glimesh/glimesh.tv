@@ -167,7 +167,7 @@ defmodule Glimesh.Chat do
     ChatMessage.changeset(chat_message, attrs)
   end
 
-  def empty_chat_message() do
+  def empty_chat_message do
     ChatMessage.changeset(%ChatMessage{}, %{})
   end
 

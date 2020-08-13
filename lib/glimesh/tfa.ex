@@ -3,10 +3,10 @@ defmodule Glimesh.Tfa do
   This generates the 2FA image for a totp Authenticatior such as Google Authenticator or Authy
   """
   def generate_tfa_img(issuer, accountTitle, secret) do
-    accountTitleNoSpaces = String.replace(accountTitle, " ", "")
-    provisionUrl = "otpauth://totp/#{accountTitleNoSpaces}?secret=#{secret}&issuer=#{issuer}"
+    account_title_no_spaces = String.replace(accountTitle, " ", "")
+    provision_url = "otpauth://totp/#{account_title_no_spaces}?secret=#{secret}&issuer=#{issuer}"
 
-    provisionUrl
+    provision_url
     |> EQRCode.encode()
     |> EQRCode.png(width: 355, background_color: :transparent, color: <<27, 85, 226>>)
   end
@@ -21,8 +21,8 @@ defmodule Glimesh.Tfa do
       |> String.upcase()
       |> Base.decode16!()
 
-    secretBytes = Base.decode32!(secret, padding: false)
-    :crypto.hmac(:sha, secretBytes, moving_factor)
+    secret_bytes = Base.decode32!(secret, padding: false)
+    :crypto.hmac(:sha, secret_bytes, moving_factor)
   end
 
   defp hmac_dynamic_truncation(hmac) do
@@ -59,12 +59,7 @@ defmodule Glimesh.Tfa do
     if secret == nil do
       true
     else
-      serverPin = generate_totp(secret)
-
-      cond do
-        pin == serverPin -> true
-        pin != serverPin -> false
-      end
+      pin == generate_totp(secret)
     end
   end
 

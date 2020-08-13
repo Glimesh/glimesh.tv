@@ -4,11 +4,11 @@ defmodule Glimesh.Streams do
   """
 
   import Ecto.Query, warn: false
-  alias Glimesh.Repo
   alias Glimesh.Accounts.User
-  alias Glimesh.Streams.UserModerator
-  alias Glimesh.Streams.UserModerationLog
   alias Glimesh.Chat
+  alias Glimesh.Repo
+  alias Glimesh.Streams.UserModerationLog
+  alias Glimesh.Streams.UserModerator
 
   ## Database getters
 
@@ -21,7 +21,7 @@ defmodule Glimesh.Streams do
       []
 
   """
-  def list_streams() do
+  def list_streams do
     Repo.all(from u in User, where: u.can_stream == true)
   end
 

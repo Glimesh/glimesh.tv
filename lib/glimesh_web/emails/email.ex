@@ -1,7 +1,7 @@
 defmodule GlimeshWeb.Emails.Email do
   import Bamboo.Email
 
-  def user_base_email() do
+  def user_base_email do
     new_email()
     |> from("support@glimesh.tv")
   end

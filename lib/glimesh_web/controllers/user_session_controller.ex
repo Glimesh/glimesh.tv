@@ -1,8 +1,8 @@
 defmodule GlimeshWeb.UserSessionController do
   use GlimeshWeb, :controller
 
-  alias Glimesh.Tfa
   alias Glimesh.Accounts
+  alias Glimesh.Tfa
   alias GlimeshWeb.UserAuth
 
   def new(conn, _params) do
