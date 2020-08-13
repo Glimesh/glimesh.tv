@@ -33,15 +33,17 @@ defmodule Glimesh.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:phx_gen_auth, "~> 0.4.0", only: :dev, runtime: false},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:floki, ">= 0.0.0", only: :test},
       {:bcrypt_elixir, "~> 2.0"},
       {:phoenix, "~> 1.5.3"},
       {:phoenix_ecto, "~> 4.1"},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_live_view, "~> 0.14.3"},
-      {:floki, ">= 0.0.0", only: :test},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.2.7"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
@@ -51,7 +53,6 @@ defmodule Glimesh.MixProject do
       {:comeonin, "~> 5.3"},
       {:waffle, "~> 1.1"},
       {:waffle_ecto, "~> 0.0.9"},
-      {:phx_gen_auth, "~> 0.4.0", only: [:dev], runtime: false},
       {:bamboo, "~> 1.5"},
       {:phoenix_markdown, "~> 1.0"},
       {:stripity_stripe, "~> 2.0"},
@@ -72,7 +73,8 @@ defmodule Glimesh.MixProject do
       setup: ["deps.get", "ecto.setup", "cmd npm install --prefix assets"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      code_quality: ["format", "credo --strict"]
     ]
   end
 end

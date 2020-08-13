@@ -331,6 +331,7 @@ defmodule Glimesh.Accounts do
           |> User.tfa_changeset(attrs)
           |> User.validate_current_password(password)
           |> User.validate_tfa(pin, attrs.tfa_token)
+
         false ->
           user
           |> User.tfa_changeset(attrs)
