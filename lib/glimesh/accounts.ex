@@ -4,16 +4,17 @@ defmodule Glimesh.Accounts do
   """
 
   import Ecto.Query, warn: false
+
   alias Glimesh.Repo
-  alias Glimesh.Accounts.{User, UserToken, UserNotifier}
+  alias Glimesh.Accounts.{User, UserNotifier, UserToken}
 
   ## Database getters
 
-  def list_users() do
+  def list_users do
     Repo.all(from u in User, where: not is_nil(u.confirmed_at))
   end
 
-  def list_admins() do
+  def list_admins do
     Repo.all(from u in User, where: u.is_admin == true)
   end
 
@@ -289,7 +290,7 @@ defmodule Glimesh.Accounts do
           description: user.username
         }
 
-        {:ok, stripe_customer} = Stripe.Customer.create(new_customer) |> IO.inspect()
+        {:ok, stripe_customer} = Stripe.Customer.create(new_customer)
 
         {:ok, _} =
           user
@@ -331,6 +332,7 @@ defmodule Glimesh.Accounts do
           |> User.tfa_changeset(attrs)
           |> User.validate_current_password(password)
           |> User.validate_tfa(pin, attrs.tfa_token)
+
         false ->
           user
           |> User.tfa_changeset(attrs)

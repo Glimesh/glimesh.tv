@@ -2,8 +2,8 @@ defmodule GlimeshWeb.UserLive.Stream do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Accounts
-  alias Glimesh.Streams
   alias Glimesh.Presence
+  alias Glimesh.Streams
 
   def mount(%{"username" => streamer_username}, session, socket) do
     case Streams.get_by_username(streamer_username) do

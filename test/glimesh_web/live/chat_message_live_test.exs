@@ -15,7 +15,7 @@ defmodule GlimeshWeb.ChatMessageLiveTest do
     chat_message
   end
 
-  defp setup_streamer() do
+  defp setup_streamer do
     user_fixture()
   end
 

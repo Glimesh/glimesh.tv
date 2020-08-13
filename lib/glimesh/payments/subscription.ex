@@ -1,4 +1,6 @@
 defmodule Glimesh.Payments.Subscription do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

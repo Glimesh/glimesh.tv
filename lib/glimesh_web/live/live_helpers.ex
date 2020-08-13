@@ -1,4 +1,8 @@
 defmodule GlimeshWeb.LiveHelpers do
+  @moduledoc """
+  Inject methods into live views to provide common functionality.
+  """
+
   import Phoenix.LiveView.Helpers
 
   @doc """

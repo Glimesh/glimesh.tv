@@ -4,11 +4,12 @@ defmodule Glimesh.Streams do
   """
 
   import Ecto.Query, warn: false
-  alias Glimesh.Repo
   alias Glimesh.Accounts.User
-  alias Glimesh.Streams.UserModerator
-  alias Glimesh.Streams.UserModerationLog
   alias Glimesh.Chat
+  alias Glimesh.Repo
+  alias Glimesh.Streams.Followers
+  alias Glimesh.Streams.UserModerationLog
+  alias Glimesh.Streams.UserModerator
 
   ## Database getters
 
@@ -21,7 +22,7 @@ defmodule Glimesh.Streams do
       []
 
   """
-  def list_streams() do
+  def list_streams do
     Repo.all(from u in User, where: u.can_stream == true)
   end
 
@@ -49,7 +50,7 @@ defmodule Glimesh.Streams do
   end
 
   def timeout_user(streamer, moderator, user_to_timeout) do
-    if Glimesh.Chat.can_moderate?(streamer, moderator) === false do
+    if Chat.can_moderate?(streamer, moderator) === false do
       raise "User does not have permission to moderate."
     end
 
@@ -81,8 +82,6 @@ defmodule Glimesh.Streams do
     Phoenix.PubSub.broadcast(Glimesh.PubSub, "chats", {event, chat_message})
     {:ok, chat_message}
   end
-
-  alias Glimesh.Streams.Followers
 
   def list_followed_streams(user) do
     Repo.all(

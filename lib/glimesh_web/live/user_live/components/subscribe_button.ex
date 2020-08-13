@@ -109,11 +109,13 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
     user = socket.assigns.user
     subscription = Payments.get_channel_subscription!(user, streamer)
 
-    with {:ok, _} <- Payments.unsubscribe(subscription) do
-      {:noreply,
-       socket |> assign(:subscribed, Payments.has_channel_subscription?(user, streamer))}
-    else
-      {:error, error_msg} -> {:noreply, socket |> assign(:stripe_error, error_msg)}
+    case Payments.unsubscribe(subscription) do
+      {:ok, _} ->
+        {:noreply,
+         socket |> assign(:subscribed, Payments.has_channel_subscription?(user, streamer))}
+
+      {:error, error_msg} ->
+        {:noreply, socket |> assign(:stripe_error, error_msg)}
     end
   end
 

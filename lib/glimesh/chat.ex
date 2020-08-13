@@ -4,9 +4,10 @@ defmodule Glimesh.Chat do
   """
 
   import Ecto.Query, warn: false
-  alias Glimesh.Repo
 
   alias Glimesh.Chat.ChatMessage
+  alias Glimesh.Repo
+  alias Phoenix.HTML.Tag
 
   @doc """
   Returns the list of chat_messages.
@@ -167,7 +168,7 @@ defmodule Glimesh.Chat do
     ChatMessage.changeset(chat_message, attrs)
   end
 
-  def empty_chat_message() do
+  def empty_chat_message do
     ChatMessage.changeset(%ChatMessage{}, %{})
   end
 
@@ -184,7 +185,7 @@ defmodule Glimesh.Chat do
 
   def render_global_badge(user) do
     if user.is_admin do
-      Phoenix.HTML.Tag.content_tag(:span, "Team Glimesh", class: "badge badge-danger")
+      Tag.content_tag(:span, "Team Glimesh", class: "badge badge-danger")
     else
       ""
     end
@@ -192,7 +193,7 @@ defmodule Glimesh.Chat do
 
   def render_stream_badge(stream, user) do
     if can_moderate?(stream, user) and user.is_admin === false do
-      Phoenix.HTML.Tag.content_tag(:span, "Moderator", class: "badge badge-info")
+      Tag.content_tag(:span, "Moderator", class: "badge badge-info")
     else
       ""
     end
