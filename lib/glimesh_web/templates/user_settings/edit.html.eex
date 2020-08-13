@@ -236,7 +236,7 @@
                                 <%= error_tag f, :current_password %>
                             </div>
                         </div>
-                        <%= else %>
+                        <% else %>
                         <div class="col-sm-6" style="display:none">
                             <div class="form-group">
                                 <%= label f, :current_password, dgettext("profile", "Current Password") %>

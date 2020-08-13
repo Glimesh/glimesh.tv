@@ -6,6 +6,7 @@ defmodule Glimesh.Streams do
   import Ecto.Query, warn: false
   alias Glimesh.Repo
   alias Glimesh.Accounts.User
+  alias Glimesh.Streams.UserModerator
   alias Glimesh.Streams.UserModerationLog
   alias Glimesh.Chat
 
@@ -32,7 +33,26 @@ defmodule Glimesh.Streams do
     Repo.get_by!(User, username: username, can_stream: true)
   end
 
+  def add_moderator(streamer, moderator) do
+    %UserModerator{
+      streamer: streamer,
+      user: moderator
+    }
+    |> UserModerator.changeset(%{
+      :can_short_timeout => true,
+      :can_long_timeout => true,
+      :can_un_timeout => true,
+      :can_ban => true,
+      :can_unban => true
+    })
+    |> Repo.insert()
+  end
+
   def timeout_user(streamer, moderator, user_to_timeout) do
+    if Glimesh.Chat.can_moderate?(streamer, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
     log =
       %UserModerationLog{
         streamer: streamer,

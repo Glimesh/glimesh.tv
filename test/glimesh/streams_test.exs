@@ -25,11 +25,14 @@ defmodule Glimesh.StreamsTest do
       {:ok, _} = Chat.create_chat_message(streamer, moderator, %{message: "good message"})
       assert length(Chat.list_chat_messages(streamer)) == 2
 
+      {:ok, _} = Glimesh.Streams.add_moderator(streamer, moderator)
+
       {:ok, _} = Streams.timeout_user(streamer, moderator, user)
       assert length(Chat.list_chat_messages(streamer)) == 1
     end
 
     test "adds log of timeout action", %{streamer: streamer, moderator: moderator, user: user} do
+      {:ok, _} = Glimesh.Streams.add_moderator(streamer, moderator)
       {:ok, record} = Streams.timeout_user(streamer, moderator, user)
 
       assert record.streamer.id == streamer.id
@@ -38,11 +41,15 @@ defmodule Glimesh.StreamsTest do
       assert record.action == "timeout"
     end
 
-    #
-    #    test "returns the user if the email exists" do
-    ##      %{id: id} = user = user_fixture()
-    ##      assert %User{id: ^id} = Accounts.get_user_by_email(user.email)
-    #    end
+    test "moderation privileges are required to timeout", %{
+      streamer: streamer,
+      moderator: moderator,
+      user: user
+    } do
+      assert_raise RuntimeError,
+                   "User does not have permission to moderate.",
+                   fn -> Streams.timeout_user(streamer, moderator, user) end
+    end
   end
 
   describe "followers" do
