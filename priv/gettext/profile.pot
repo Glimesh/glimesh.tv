@@ -275,3 +275,13 @@ msgstr ""
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:227
 msgid "2FA Code"
 msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:248
+msgid "Remove Two Factor Authentication"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:243
+msgid "Submit Two Factor Authentication"
+msgstr ""

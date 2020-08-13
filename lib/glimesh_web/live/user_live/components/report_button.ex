@@ -91,6 +91,7 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
     Gettext.put_locale(user.locale)
+
     {:ok,
      socket
      |> assign(:streamer, streamer)

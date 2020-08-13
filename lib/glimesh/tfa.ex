@@ -8,7 +8,7 @@ defmodule Glimesh.Tfa do
 
     provisionUrl
     |> EQRCode.encode()
-    |> EQRCode.svg(width: 355, background_color: :transparent, color: "#1b55e2")
+    |> EQRCode.png(width: 355, background_color: :transparent, color: <<27, 85, 226>>)
   end
 
   defp generate_hmac(secret, period) do

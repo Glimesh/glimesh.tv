@@ -209,18 +209,17 @@
                         <p style="margin-bottom: 0px;">Oops, something went wrong! Please check the errors below.</p>
                     </div>
                     <% end %>
-                    <div id="tfa-form-loader" style="display:none;">
-
+                    <div>
+                    <%= if @user.tfa_token == nil do %>
                     <div class="new-tfa-form-class">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div id="tfa-img">
-                                </div>
+                                <img src="/users/settings/get_tfa" />
                             </div>
                         </div>
                         <br />
                     </div>
-
+                    <% end %>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -238,23 +237,16 @@
                         </div>
                     </div>
 
-                    <div style="display:none;">
-                        <div class="form-group">
-                            <%= label f, :tfa_tmp, for: "tmp_for_tfa" %>
-                            <%= password_input f, :tfa_tmp, required: true, name: "tfa_tmp", id: "tmp_for_tfa", class: "form-control mb-4" %>
-                            <%= error_tag f, :tfa_tmp %>
+                    <%= if @user.tfa_token == nil do %>
+                        <div>
+                            <%= submit dgettext("profile", "Submit Two Factor Authentication"), class: "btn btn-primary" %>
                         </div>
-                    </div>
-
-                    <div>
-                        <div class="new-tfa-form-class">
-                            <%= submit "Submit Two Factor Authentication", class: "btn btn-primary" %>
+                    <% end %>
+                    <%= if @user.tfa_token do %>
+                        <div>
+                            <%= submit dgettext("profile", "Remove Two Factor Authentication"), class: "btn btn-primary" %>
                         </div>
-                        <div class="existing-tfa-form-class">
-                            <%= submit "Remove Two Factor Authentication", class: "btn btn-primary" %>
-                        </div>
-                    </div>
-                    </div>
+                    <% end %>
                     <% end %>
                 </div>
             </div>
@@ -262,29 +254,3 @@
     </div>
 
 </div>
-
-<script>
-    fetch("/users/settings/tfa_registered")
-        .then(res => res.ok ? res : Promise.reject(res))
-        .then(res => res.json())
-        .then(res => {
-            if(res.new)
-            {
-                fetch("/users/settings/get_tfa")
-                    .then(res => res.ok ? res : Promise.reject(res))
-                    .then(res => res.json())
-                    .then(res => {
-                        document.querySelector("#tfa-img").innerHTML = res.svg.substring(39);
-                        document.querySelector("#tmp_for_tfa").value = res.tmp;
-                        document.querySelectorAll(".existing-tfa-form-class").forEach(t => t.style.display = "none");
-                    });
-            }
-            else
-            {
-                document.querySelectorAll(".new-tfa-form-class").forEach(t => t.style.display = "none");
-                document.querySelector("#current_password_for_tfa").required = false;
-                document.querySelector("#tmp_for_tfa").required = false;
-            }
-            document.querySelector("#tfa-form-loader").style.display = "block"
-        })
-</script>

@@ -91,35 +91,32 @@ defmodule GlimeshWeb.UserSettingsController do
       }) do
     user = conn.assigns.current_user
 
+    case Accounts.update_tfa(user, pin, password, %{
+      tfa_token:
+        if user.tfa_token do
+          nil
+        else
+          secret
+        end
+    }) do
+      {:ok, user} ->
+        conn
+        |> put_flash(:info, "2FA updated successfully.")
+        |> put_session(:user_return_to, Routes.user_settings_path(conn, :edit))
+        |> UserAuth.log_in_user(user)
 
-      case Accounts.update_tfa(user, pin, %{
-        tfa_token:
-          if user.tfa_token do
-            nil
-          else
-            secret
-          end
-      }) do
-        {:ok, user} ->
-          conn
-          |> put_flash(:info, "2FA updated successfully.")
-          |> put_session(:user_return_to, Routes.user_settings_path(conn, :edit))
-          |> UserAuth.log_in_user(user)
-
-        {:error, changeset} ->
-          render(conn, "edit.html", tfa_changeset: changeset)
-      end
+      {:error, changeset} ->
+        render(conn, "edit.html", tfa_changeset: changeset)
+    end
   end
 
   def get_tfa(conn, _params) do
     user = conn.assigns.current_user
     secret = Tfa.generate_secret(user.hashed_password)
-    json(conn, %{tmp: secret, svg: Tfa.generate_tfa_img("Glimesh", user.username, secret)})
-  end
 
-  def tfa_registered(conn, _params) do
-    user = conn.assigns.current_user
-    json(conn, %{new: user.tfa_token == nil})
+    conn
+    |> put_session(:tfa_secret, secret)
+    |> text(Tfa.generate_tfa_img("Glimesh", user.username, secret))
   end
 
   defp assign_email_and_password_changesets(conn, _opts) do

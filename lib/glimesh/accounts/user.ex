@@ -253,6 +253,7 @@ defmodule Glimesh.Accounts.User do
           :profile_content_html,
           Glimesh.Accounts.Profile.safe_user_markdown_to_html(profile_content_md)
         )
+
       _ ->
         changeset
     end

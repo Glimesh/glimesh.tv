@@ -323,40 +323,18 @@ defmodule Glimesh.Accounts do
     User.tfa_changeset(user, attrs)
   end
 
-  def update_tfa_temp(user, attrs) do
-    user
-    |> User.tfa_changeset(attrs)
-    |> Repo.update()
-  end
-
-  def update_tfa(user, pin, attrs) do
-    secret = user.tfa_token
-
-    if attrs.tfa_token do
-      secret = attrs.tfa_token
-    end
-
-    changeset =
-      user
-      |> User.tfa_changeset(attrs)
-      |> User.validate_tfa(pin, secret)
-
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:user, changeset)
-    |> Ecto.Multi.delete_all(:tokens, UserToken.user_and_contexts_query(user, :all))
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{user: user}} -> {:ok, user}
-      {:error, :user, changeset, _} -> {:error, changeset}
-    end
-  end
-
   def update_tfa(user, pin, password, attrs) do
     changeset =
-      user
-      |> User.tfa_changeset(attrs)
-      |> User.validate_current_password(password)
-      |> User.validate_tfa(pin, attrs.tfa_token)
+      if password do
+        user
+        |> User.tfa_changeset(attrs)
+        |> User.validate_current_password(password)
+        |> User.validate_tfa(pin, attrs.tfa_token)
+      else
+        user
+        |> User.tfa_changeset(attrs)
+        |> User.validate_tfa(pin, user.tfa_token)
+      end
 
     Ecto.Multi.new()
     |> Ecto.Multi.update(:user, changeset)
