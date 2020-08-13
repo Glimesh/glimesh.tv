@@ -91,8 +91,15 @@ defmodule GlimeshWeb.UserSettingsController do
       }) do
     user = conn.assigns.current_user
 
-    if user.tfa_token do
-      case Accounts.update_tfa(user, pin, %{tfa_token: nil}) do
+
+      case Accounts.update_tfa(user, pin, %{
+        tfa_token:
+          if user.tfa_token do
+            nil
+          else
+            secret
+          end
+      }) do
         {:ok, user} ->
           conn
           |> put_flash(:info, "2FA updated successfully.")
@@ -102,18 +109,6 @@ defmodule GlimeshWeb.UserSettingsController do
         {:error, changeset} ->
           render(conn, "edit.html", tfa_changeset: changeset)
       end
-    else
-      case Accounts.update_tfa(user, pin, password, %{tfa_token: secret}) do
-        {:ok, user} ->
-          conn
-          |> put_flash(:info, "2FA updated successfully.")
-          |> put_session(:user_return_to, Routes.user_settings_path(conn, :edit))
-          |> UserAuth.log_in_user(user)
-
-        {:error, changeset} ->
-          render(conn, "edit.html", tfa_changeset: changeset)
-      end
-    end
   end
 
   def get_tfa(conn, _params) do
