@@ -10,19 +10,13 @@ defmodule GlimeshWeb.UserSessionController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    %{"email" => email, "password" => password} = user_params
+    %{"email" => email, "password" => password, "tfa" => tfa} = user_params
 
     if user = Accounts.get_user_by_email_and_password(email, password) do
-      if user.tfa_token do
-        %{"tfa" => tfa} = user_params
-
-        if Tfa.validate_pin(tfa, user.tfa_token) do
-          UserAuth.log_in_user(conn, user, user_params)
-        else
-          render(conn, "new.html", error_message: "Invalid 2FA code")
-        end
-      else
+      if Tfa.validate_pin(tfa, user.tfa_token) do
         UserAuth.log_in_user(conn, user, user_params)
+      else
+        render(conn, "new.html", error_message: "Invalid 2FA code")
       end
     else
       render(conn, "new.html", error_message: dgettext("errors", "Invalid e-mail or password"))

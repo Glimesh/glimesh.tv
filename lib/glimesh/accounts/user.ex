@@ -31,7 +31,7 @@ defmodule Glimesh.Accounts.User do
     field :profile_content_html, :string
 
     field :tfa_token, :string
-    
+
     field :locale, :string, default: "en"
     timestamps()
   end
@@ -253,9 +253,6 @@ defmodule Glimesh.Accounts.User do
           :profile_content_html,
           Glimesh.Accounts.Profile.safe_user_markdown_to_html(profile_content_md)
         )
-
-        put_change(changeset, :profile_content_html, html_doc)
-
       _ ->
         changeset
     end

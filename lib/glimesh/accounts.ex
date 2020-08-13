@@ -331,8 +331,6 @@ defmodule Glimesh.Accounts do
 
   def update_tfa(user, pin, attrs) do
     secret = user.tfa_token
-    IO.puts("attrs #{attrs.tfa_token}")
-    IO.puts("user #{user.tfa_token}")
 
     if attrs.tfa_token do
       secret = attrs.tfa_token

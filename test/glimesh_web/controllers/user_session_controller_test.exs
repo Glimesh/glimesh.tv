@@ -26,7 +26,7 @@ defmodule GlimeshWeb.UserSessionControllerTest do
     test "logs the user in", %{conn: conn, user: user} do
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{
-          "user" => %{"email" => user.email, "password" => valid_user_password()}
+          "user" => %{"email" => user.email, "password" => valid_user_password(), "tfa" => nil}
         })
 
       assert get_session(conn, :user_token)
@@ -46,7 +46,8 @@ defmodule GlimeshWeb.UserSessionControllerTest do
           "user" => %{
             "email" => user.email,
             "password" => valid_user_password(),
-            "remember_me" => "true"
+            "remember_me" => "true",
+            "tfa" => nil
           }
         })
 
@@ -57,7 +58,7 @@ defmodule GlimeshWeb.UserSessionControllerTest do
     test "emits error message with invalid credentials", %{conn: conn, user: user} do
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{
-          "user" => %{"email" => user.email, "password" => "invalid_password"}
+          "user" => %{"email" => user.email, "password" => "invalid_password", "tfa" => nil}
         })
 
       response = html_response(conn, 200)

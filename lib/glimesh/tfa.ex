@@ -56,11 +56,15 @@ defmodule Glimesh.Tfa do
   Validates the pin with the secret key supplied
   """
   def validate_pin(pin, secret) do
-    serverPin = generate_totp(secret)
+    if secret == nil do
+      true
+    else
+      serverPin = generate_totp(secret)
 
-    cond do
-      pin == serverPin -> secret
-      pin != serverPin -> nil
+      cond do
+        pin == serverPin -> true
+        pin != serverPin -> false
+      end
     end
   end
 
