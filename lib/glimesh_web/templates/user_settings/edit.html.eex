@@ -201,7 +201,7 @@
             <div class="card mt-4">
                 <div class="card-body">
 
-                    <h3>2FA Setup</h3>
+                    <h3><%= dgettext "profile", "2FA Setup" %></h3>
 
                     <%= form_for @tfa_changeset, Routes.user_settings_path(@conn, :update_tfa), fn f -> %>
                     <%= if @tfa_changeset.action do %>
@@ -228,24 +228,34 @@
                                 <%= error_tag f, :tfa %>
                             </div>
                         </div>
-                        <div class="new-tfa-form-class col-sm-6">
+                        <%= if @user.tfa_token == nil do %>
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <%= label f, :current_password, dgettext("profile", "Current Password") %>
                                 <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_tfa", class: "form-control mb-4" %>
                                 <%= error_tag f, :current_password %>
                             </div>
                         </div>
+                        <%= else %>
+                        <div class="col-sm-6" style="display:none">
+                            <div class="form-group">
+                                <%= label f, :current_password, dgettext("profile", "Current Password") %>
+                                <%= password_input f, :current_password, name: "current_password", id: "current_password_for_tfa", class: "form-control mb-4" %>
+                                <%= error_tag f, :current_password %>
+                            </div>
+                        </div>
+                        <% end %>
                     </div>
 
                     <%= if @user.tfa_token == nil do %>
-                        <div>
-                            <%= submit dgettext("profile", "Submit Two Factor Authentication"), class: "btn btn-primary" %>
-                        </div>
+                    <div>
+                        <%= submit dgettext("profile", "Submit Two Factor Authentication"), class: "btn btn-primary" %>
+                    </div>
                     <% end %>
                     <%= if @user.tfa_token do %>
-                        <div>
-                            <%= submit dgettext("profile", "Remove Two Factor Authentication"), class: "btn btn-primary" %>
-                        </div>
+                    <div>
+                        <%= submit dgettext("profile", "Remove Two Factor Authentication"), class: "btn btn-primary" %>
+                    </div>
                     <% end %>
                     <% end %>
                 </div>

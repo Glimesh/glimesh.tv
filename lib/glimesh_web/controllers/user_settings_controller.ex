@@ -84,19 +84,17 @@ defmodule GlimeshWeb.UserSettingsController do
     end
   end
 
-  def update_tfa(conn, %{
-        "current_password" => password,
-        "user" => %{"tfa" => pin},
-        "tfa_tmp" => secret
-      }) do
+  def update_tfa(conn, %{"current_password" => password, "user" => %{"tfa" => pin}}) do
     user = conn.assigns.current_user
+
+    IO.puts("is empty #{password == ""}")
 
     case Accounts.update_tfa(user, pin, password, %{
       tfa_token:
         if user.tfa_token do
           nil
         else
-          secret
+          get_session(conn, :tfa_secret)
         end
     }) do
       {:ok, user} ->
@@ -112,7 +110,11 @@ defmodule GlimeshWeb.UserSettingsController do
 
   def get_tfa(conn, _params) do
     user = conn.assigns.current_user
-    secret = Tfa.generate_secret(user.hashed_password)
+    secret =
+      case get_session(conn, :tfa_secret) do
+        nil -> Tfa.generate_secret(user.hashed_password)
+        _ -> get_session(conn, :tfa_secret)
+      end
 
     conn
     |> put_session(:tfa_secret, secret)

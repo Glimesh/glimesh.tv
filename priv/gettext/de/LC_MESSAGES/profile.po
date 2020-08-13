@@ -19,6 +19,7 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:141
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:175 lib/glimesh_web/templates/user_settings/edit.html.eex:234
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:242
 msgid "Current Password"
 msgstr ""
 
@@ -273,16 +274,21 @@ msgid "Report User"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:227
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:226
 msgid "2FA Code"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:248
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:257
 msgid "Remove Two Factor Authentication"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:243
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:252
 msgid "Submit Two Factor Authentication"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:204
+msgid "2FA Setup"
 msgstr ""

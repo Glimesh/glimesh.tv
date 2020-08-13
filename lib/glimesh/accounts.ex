@@ -325,15 +325,16 @@ defmodule Glimesh.Accounts do
 
   def update_tfa(user, pin, password, attrs) do
     changeset =
-      if password do
-        user
-        |> User.tfa_changeset(attrs)
-        |> User.validate_current_password(password)
-        |> User.validate_tfa(pin, attrs.tfa_token)
-      else
-        user
-        |> User.tfa_changeset(attrs)
-        |> User.validate_tfa(pin, user.tfa_token)
+      case password != "" do
+        true ->
+          user
+          |> User.tfa_changeset(attrs)
+          |> User.validate_current_password(password)
+          |> User.validate_tfa(pin, attrs.tfa_token)
+        false ->
+          user
+          |> User.tfa_changeset(attrs)
+          |> User.validate_tfa(pin, user.tfa_token)
       end
 
     Ecto.Multi.new()
