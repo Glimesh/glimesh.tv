@@ -18,7 +18,7 @@ msgstr "Endre epost"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:141
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:175
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:175 lib/glimesh_web/templates/user_settings/edit.html.eex:234
 msgid "Current Password"
 msgstr "Gjeldende passord"
 
@@ -125,22 +125,22 @@ msgid "YouTube Teaser URL"
 msgstr "Youtube teaser-URL"
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:77
+#: lib/glimesh_web/controllers/user_settings_controller.ex:78
 msgid "Profile updated successfully."
 msgstr "Profil oppdatert"
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:27
+#: lib/glimesh_web/controllers/user_settings_controller.ex:28
 msgid "A link to confirm your e-mail change has been sent to the new address."
 msgstr "En lenke for å bekrefte at e-postendringen din er sendt til den nye adressen."
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:43
+#: lib/glimesh_web/controllers/user_settings_controller.ex:44
 msgid "E-mail changed successfully."
 msgstr "E-postadressen ble endret"
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:62
+#: lib/glimesh_web/controllers/user_settings_controller.ex:63
 msgid "Password updated successfully."
 msgstr "Passordet ble oppdatert."
 
@@ -258,7 +258,7 @@ msgid "Unfollow"
 msgstr "Avfølg"
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_session_controller.ex:23
+#: lib/glimesh_web/controllers/user_session_controller.ex:28
 msgid "Logged out successfully."
 msgstr "Logget ut"
 
@@ -271,3 +271,8 @@ msgstr ""
 #: lib/glimesh_web/live/user_live/components/report_button.ex:10
 msgid "Report User"
 msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:227
+msgid "2FA Code"
+msgstr "2FA Kode"
