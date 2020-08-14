@@ -1,4 +1,5 @@
 defmodule Glimesh.Streams.StreamMetadata do
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
   alias Glimesh.Accounts.User
@@ -15,5 +16,4 @@ defmodule Glimesh.Streams.StreamMetadata do
     stream_metadata
     |> cast(attrs, [:stream_title])
   end
-
 end

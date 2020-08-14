@@ -134,6 +134,7 @@ defmodule Glimesh.Streams do
     attrs = %{
       stream_title: title
     }
+
     streamer_meta = get_metadata_from_streamer(streamer)
 
     {:ok, results} =
@@ -153,6 +154,7 @@ defmodule Glimesh.Streams do
     attrs = %{
       stream_title: "My first stream!"
     }
+
     results =
       %StreamMetadata{
         streamer: streamer
@@ -163,7 +165,8 @@ defmodule Glimesh.Streams do
 
   def get_metadata_from_streamer(streamer) do
     data = Repo.get_by(StreamMetadata, streamer_id: streamer.id)
-    if !data do
+
+    unless data do
       create_metadata(streamer)
       get_metadata_from_streamer(streamer)
     else
@@ -178,7 +181,12 @@ defmodule Glimesh.Streams do
   defp broadcast_metadata({:error, _reason} = error, _event), do: error
 
   defp broadcast_metadata({:ok, data}, event) do
-    Phoenix.PubSub.broadcast(Glimesh.PubSub, "streams:#{data.streamer.id}:metadata", {event, data})
+    Phoenix.PubSub.broadcast(
+      Glimesh.PubSub,
+      "streams:#{data.streamer.id}:metadata",
+      {event, data}
+    )
+
     {:ok, data}
   end
 end
