@@ -8,8 +8,7 @@
         <div class="widget-heading">
           <div class="row">
             <div class="col-8">
-              <h5 class=""><span class="badge badge-danger">Live!</span> <%= @streamer.displayname %>'s Cuts His Hair
-                For The Trevor Project!</h5>
+              <%= live_render(@socket, GlimeshWeb.UserLive.Components.StreamerTitle, id: "streamer-title", session: %{"user" => @user, "streamer" => @streamer}) %>
             </div>
             <div class="col-4">
               <div class="float-right">

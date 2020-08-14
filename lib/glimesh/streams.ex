@@ -127,4 +127,68 @@ defmodule Glimesh.Streams do
   def count_following(user) do
     Repo.one!(from f in Followers, select: count(f.id), where: f.user_id == ^user.id)
   end
+
+  alias Glimesh.Streams.StreamMetadata
+
+  def update_title(streamer, title) do
+    attrs = %{
+      stream_title: title
+    }
+
+    streamer_meta = get_metadata_from_streamer(streamer)
+
+    {:ok, results} =
+      %StreamMetadata{
+        streamer: streamer
+      }
+      |> Map.merge(streamer_meta)
+      |> StreamMetadata.changeset(attrs)
+      |> Repo.update()
+
+    update_data = %{title: results.stream_title, streamer: streamer}
+    broadcast_metadata({:ok, update_data}, :update_title)
+    {:ok, results}
+  end
+
+  def create_metadata(streamer) do
+    attrs = %{
+      stream_title: "My first stream!"
+    }
+
+    results =
+      %StreamMetadata{
+        streamer: streamer
+      }
+      |> StreamMetadata.changeset(attrs)
+      |> Repo.insert()
+  end
+
+  def get_metadata_from_streamer(streamer) do
+    data = Repo.get_by(StreamMetadata, streamer_id: streamer.id)
+
+    case data do
+      nil ->
+        create_metadata(streamer)
+        get_metadata_from_streamer(streamer)
+
+      _ ->
+        data
+    end
+  end
+
+  def subscribe_metadata(streamer_id) do
+    Phoenix.PubSub.subscribe(Glimesh.PubSub, "streams:#{streamer_id}:metadata")
+  end
+
+  defp broadcast_metadata({:error, _reason} = error, _event), do: error
+
+  defp broadcast_metadata({:ok, data}, event) do
+    Phoenix.PubSub.broadcast(
+      Glimesh.PubSub,
+      "streams:#{data.streamer.id}:metadata",
+      {event, data}
+    )
+
+    {:ok, data}
+  end
 end
