@@ -130,7 +130,7 @@ defmodule Glimesh.Streams do
 
   alias Glimesh.Streams.StreamMetadata
 
-  def change_title(streamer, title) do
+  def update_title(streamer, title) do
     attrs = %{
       stream_title: title
     }
@@ -144,8 +144,8 @@ defmodule Glimesh.Streams do
       |> StreamMetadata.changeset(attrs)
       |> Repo.update()
 
-    update_data = %{title: results.stream_title, streamer_username: streamer.username}
-    broadcast({:ok, update_data}, :update_title)
+    update_data = %{title: results.stream_title, streamer: streamer}
+    broadcast_metadata({:ok, update_data}, :update_title)
     {:ok, results}
   end
 
@@ -171,14 +171,14 @@ defmodule Glimesh.Streams do
     end
   end
 
-  def subscribe_metadata do
-    Phoenix.PubSub.subscribe(Glimesh.PubSub, "streams")
+  def subscribe_metadata(streamer_id) do
+    Phoenix.PubSub.subscribe(Glimesh.PubSub, "streams:#{streamer_id}:metadata")
   end
 
-  defp broadcast({:error, _reason} = error, _event), do: error
+  defp broadcast_metadata({:error, _reason} = error, _event), do: error
 
-  defp broadcast({:ok, data}, event) do
-    Phoenix.PubSub.broadcast(Glimesh.PubSub, "streams", {event, data})
+  defp broadcast_metadata({:ok, data}, event) do
+    Phoenix.PubSub.broadcast(Glimesh.PubSub, "streams:#{data.streamer.id}:metadata", {event, data})
     {:ok, data}
   end
 end
