@@ -166,11 +166,13 @@ defmodule Glimesh.Streams do
   def get_metadata_from_streamer(streamer) do
     data = Repo.get_by(StreamMetadata, streamer_id: streamer.id)
 
-    unless data do
-      create_metadata(streamer)
-      get_metadata_from_streamer(streamer)
-    else
-      data
+    case data do
+      nil ->
+        create_metadata(streamer)
+        get_metadata_from_streamer(streamer)
+
+      _ ->
+        data
     end
   end
 
