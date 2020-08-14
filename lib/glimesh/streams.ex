@@ -134,13 +134,13 @@ defmodule Glimesh.Streams do
     attrs = %{
       stream_title: title
     }
-    streamerMeta = get_metadata_from_streamer(streamer)
+    streamer_meta = get_metadata_from_streamer(streamer)
 
     {:ok, results} =
       %StreamMetadata{
         streamer: streamer
       }
-      |> Map.merge(streamerMeta)
+      |> Map.merge(streamer_meta)
       |> StreamMetadata.changeset(attrs)
       |> Repo.update()
 
