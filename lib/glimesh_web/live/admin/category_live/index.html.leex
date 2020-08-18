@@ -1,5 +1,5 @@
 <div class="container">
-  <h1>Listing Categories</h1>
+  <h1><%= dgettext("admin", "Listing Categories") %></h1>
 
   <%= if @live_action in [:new, :edit] do %>
     <%= live_modal @socket, GlimeshWeb.Admin.CategoryLive.FormComponent,
@@ -13,10 +13,10 @@
   <table class="table">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Slug</th>
-        <th>Avatar</th>
-        <th>Parent</th>
+        <th><%= dgettext("admin", "Name") %></th>
+        <th><%= dgettext("admin", "Slug") %></th>
+        <th><%= dgettext("admin", "Avatar") %></th>
+        <th><%= dgettext("admin", "Parent") %></th>
 
         <th></th>
       </tr>
@@ -32,13 +32,13 @@
           <td>
             <span><%= live_redirect "Show", to: Routes.category_show_path(@socket, :show, category) %></span>
             <span><%= live_patch "Edit", to: Routes.category_index_path(@socket, :edit, category) %></span>
-            <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: category.id, data: [confirm: "Are you sure?"] %></span>
+            <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: category.id, data: [confirm: dgettext("admin", "Are you sure?")] %></span>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 
-  <span><%= live_patch "New Category", to: Routes.category_index_path(@socket, :new), class: "btn btn-primary" %></span>
+  <span><%= live_patch dgettext("admin", "New Category"), to: Routes.category_index_path(@socket, :new), class: "btn btn-primary" %></span>
 
 </div>

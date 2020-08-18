@@ -114,27 +114,27 @@ msgid "Reset password link is invalid or it has expired."
 msgstr "Tilbakestill passordkoblingen er ugyldig, eller den er utløpt."
 
 #, elixir-format
-#: lib/glimesh/accounts/user.ex:131
+#: lib/glimesh/accounts/user.ex:134
 msgid "Display name must match Username"
 msgstr "Visningsnavn må samsvare med brukernavn"
 
 #, elixir-format
-#: lib/glimesh/accounts/user.ex:149
+#: lib/glimesh/accounts/user.ex:152
 msgid "Email is the same"
 msgstr "Eposten er lik"
 
 #, elixir-format
-#: lib/glimesh/accounts/user.ex:241
+#: lib/glimesh/accounts/user.ex:244
 msgid "Incorrect YouTube URL format"
 msgstr "Feil Youtube-URL-format"
 
 #, elixir-format
-#: lib/glimesh/accounts/user.ex:232
+#: lib/glimesh/accounts/user.ex:235
 msgid "Invalid Password"
 msgstr "Ugyldig passord"
 
 #, elixir-format
-#: lib/glimesh/accounts/user.ex:159
+#: lib/glimesh/accounts/user.ex:162
 msgid "Password does not match"
 msgstr "Passord samsvarer ikke"
 

@@ -36,7 +36,7 @@ defmodule GlimeshWeb.Admin.CategoryLive.FormComponent do
       {:ok, _category} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Category updated successfully")
+         |> put_flash(:info, dgettext("admin", "Category updated successfully"))
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -49,7 +49,7 @@ defmodule GlimeshWeb.Admin.CategoryLive.FormComponent do
       {:ok, _category} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Category created successfully")
+         |> put_flash(:info, dgettext("admin", "Category created successfully"))
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

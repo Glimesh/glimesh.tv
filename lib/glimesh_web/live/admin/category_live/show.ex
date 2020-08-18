@@ -16,6 +16,6 @@ defmodule GlimeshWeb.Admin.CategoryLive.Show do
      |> assign(:category, Streams.get_category_by_id!(id))}
   end
 
-  defp page_title(:show), do: "Show Category"
-  defp page_title(:edit), do: "Edit Category"
+  defp page_title(:show), do: dgettext("admin", "Show Category")
+  defp page_title(:edit), do: dgettext("admin", "Edit Category")
 end

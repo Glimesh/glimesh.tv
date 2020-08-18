@@ -12,12 +12,12 @@ msgstr ""
 "Plural-Forms: nplurals=2\n"
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_payments_controller.ex:57
+#: lib/glimesh_web/controllers/user_payments_controller.ex:60
 msgid "Payment method deleted!"
 msgstr "Betalingsmetode slettet!"
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_payments_controller.ex:40
+#: lib/glimesh_web/controllers/user_payments_controller.ex:43
 msgid "Stripe account linked successfully, welcome to the sub club!"
 msgstr "Stripekonto koblet vellykket, velkommen til sub-klubben!"
 

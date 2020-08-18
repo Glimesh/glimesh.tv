@@ -16,19 +16,19 @@ defmodule GlimeshWeb.Admin.CategoryLive.Index do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Edit Category")
+    |> assign(:page_title, dgettext("admin", "Edit Category"))
     |> assign(:category, Streams.get_category_by_id!(id))
   end
 
   defp apply_action(socket, :new, _params) do
     socket
-    |> assign(:page_title, "New Category")
+    |> assign(:page_title, dgettext("admin", "New Category"))
     |> assign(:category, %Category{})
   end
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Categories")
+    |> assign(:page_title, dgettext("admin", "Listing Categories"))
     |> assign(:category, nil)
   end
 
