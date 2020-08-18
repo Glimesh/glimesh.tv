@@ -59,18 +59,14 @@
     <div class="col-xl-9 layout-spacing">
       <div class="widget widget-chart-one">
         <div class="widget-heading">
-          <h3>About The Trevor Project</h3>
+          <h3>About <%= @streamer.displayname %>'s Stream</h3>
         </div>
         <div class="widget-content">
-          <p>The Trevor Project is the world’s largest suicide prevention and crisis intervention organization for LGBTQ
-            (lesbian, gay, bisexual, transgender, queer, and questioning) young people. The organization works to save
-            young lives by providing support through free and confidential suicide prevention and crisis intervention
-            programs on platforms where young people spend their time: a 24/7 phone lifeline, chat, text and
-            soon-to-come integrations with social media platforms. The organization also runs TrevorSpace, the world’s
-            largest safe space social networking site for LGBTQ youth, and operates innovative education, research, and
-            advocacy programs.</p>
-          <a href="https://www.thetrevorproject.org/" target="_blank" class="btn btn-trevor">Learn more about The Trevor
-            Project!</a>
+          <%= if @streamer.profile_content_html do %>
+              <%= raw(@streamer.profile_content_html) %>
+          <% else %>
+              <p><%= dgettext("profile", "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!") %></p>
+          <% end %>
         </div>
       </div>
     </div>

@@ -88,10 +88,12 @@ function tryVideo(url) {
 
 import ProcessPayment from './hooks/ProcessPayment';
 import Chat from './hooks/Chat';
+import Choices from "./hooks/Choices"
 
 let Hooks = {};
 Hooks.ProcessPayment = ProcessPayment;
 Hooks.Chat = Chat;
+Hooks.Choices = Choices;
 Hooks.LoadVideo = {
     playbackUrl() {
         return this.el.dataset.playbackUrl

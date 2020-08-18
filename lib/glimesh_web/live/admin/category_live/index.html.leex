@@ -1,0 +1,44 @@
+<div class="container">
+  <h1>Listing Categories</h1>
+
+  <%= if @live_action in [:new, :edit] do %>
+    <%= live_modal @socket, GlimeshWeb.Admin.CategoryLive.FormComponent,
+      id: @category.id || :new,
+      title: @page_title,
+      action: @live_action,
+      category: @category,
+      return_to: Routes.category_index_path(@socket, :index) %>
+  <% end %>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Slug</th>
+        <th>Avatar</th>
+        <th>Parent</th>
+
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="categories">
+      <%= for category <- @categories do %>
+        <tr id="category-<%= category.id %>">
+          <td><%= category.name %></td>
+          <td><%= category.slug %></td>
+          <td><%= category.avatar %></td>
+          <td><%= category.parent_id %></td>
+
+          <td>
+            <span><%= live_redirect "Show", to: Routes.category_show_path(@socket, :show, category) %></span>
+            <span><%= live_patch "Edit", to: Routes.category_index_path(@socket, :edit, category) %></span>
+            <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: category.id, data: [confirm: "Are you sure?"] %></span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <span><%= live_patch "New Category", to: Routes.category_index_path(@socket, :new), class: "btn btn-primary" %></span>
+
+</div>

@@ -1,0 +1,37 @@
+<h1>Show Category</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, GlimeshWeb.Admin.CategoryLive.FormComponent,
+    id: @category.id,
+    title: @page_title,
+    action: @live_action,
+    category: @category,
+    return_to: Routes.category_show_path(@socket, :show, @category) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @category.name %>
+  </li>
+
+  <li>
+    <strong>Slug:</strong>
+    <%= @category.slug %>
+  </li>
+
+  <li>
+    <strong>Avatar:</strong>
+    <%= @category.avatar %>
+  </li>
+
+  <li>
+    <strong>Parent:</strong>
+    <%= @category.parent_id %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.category_show_path(@socket, :edit, @category), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.category_index_path(@socket, :index) %></span>

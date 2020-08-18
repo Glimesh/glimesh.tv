@@ -19,14 +19,20 @@ defmodule GlimeshWeb.StreamsLive.List do
 
   @impl true
   def mount(params, session, socket) do
-    category = String.capitalize(params["category"])
-    # If the viewer is logged in set their locale, otherwise it defaults to English
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
-    {:ok,
-     socket
-     |> assign(:page_title, category)
-     |> assign(:category, category)
-     |> assign(:streams, Streams.list_streams())}
+    case Streams.get_category!(params["category"]) do
+      %Glimesh.Streams.Category{} = category ->
+        page = Glimesh.StreamLayout.CategoryHomepage.generate_category_page(category)
+
+        {:ok,
+         socket
+         |> assign(:page_title, category.name)
+         |> assign(:category, category)
+         |> assign(:page, page)}
+
+      nil ->
+        {:ok, redirect(socket, to: "/")}
+    end
   end
 end

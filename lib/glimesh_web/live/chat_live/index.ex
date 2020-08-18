@@ -30,7 +30,7 @@ defmodule GlimeshWeb.ChatLive.Index do
       |> assign(:update_action, "replace")
       |> assign(:streamer, streamer)
       |> assign(:user, session["user"])
-      |> assign(:can_moderate, Glimesh.Chat.can_moderate?(streamer, session["user"]))
+      |> assign(:is_moderator, Glimesh.Chat.can_moderate?(streamer, session["user"]))
       |> assign(:chat_messages, list_chat_messages(streamer))
       |> assign(:chat_message, %ChatMessage{})
 
