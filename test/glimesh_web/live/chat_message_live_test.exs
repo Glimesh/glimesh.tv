@@ -1,7 +1,6 @@
 defmodule GlimeshWeb.ChatMessageLiveTest do
   use GlimeshWeb.ConnCase
 
-  import Phoenix.LiveViewTest
   import Glimesh.AccountsFixtures
 
   alias Glimesh.Chat

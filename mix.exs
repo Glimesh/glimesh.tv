@@ -35,6 +35,7 @@ defmodule Glimesh.MixProject do
     [
       {:phx_gen_auth, "~> 0.4.0", only: :dev, runtime: false},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:faker, "~> 0.14", only: :dev},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:floki, ">= 0.0.0", only: :test},
       {:bcrypt_elixir, "~> 2.0"},
@@ -58,7 +59,8 @@ defmodule Glimesh.MixProject do
       {:stripity_stripe, "~> 2.0"},
       {:html_sanitize_ex, "~> 1.4.1"},
       {:earmark, "~> 1.4"},
-      {:eqrcode, "~> 0.1.7"}
+      {:eqrcode, "~> 0.1.7"},
+      {:slugify, "~> 1.3"}
     ]
   end
 

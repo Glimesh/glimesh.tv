@@ -1,4 +1,4 @@
-defmodule Glimesh.Streams.StreamMetadata do
+defmodule Glimesh.Streams.Metadata do
   @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
@@ -6,6 +6,7 @@ defmodule Glimesh.Streams.StreamMetadata do
 
   schema "stream_metadata" do
     belongs_to :streamer, Glimesh.Accounts.User
+    belongs_to :category, Glimesh.Streams.Category
 
     field :stream_title, :string, default: "Live Stream!"
 
@@ -14,6 +15,14 @@ defmodule Glimesh.Streams.StreamMetadata do
 
   def changeset(stream_metadata, attrs \\ %{}) do
     stream_metadata
-    |> cast(attrs, [:stream_title])
+    |> cast(attrs, [:stream_title, :category_id])
+  end
+
+  def maybe_put_assoc(changeset, key, value) do
+    if value do
+      changeset |> put_assoc(key, value)
+    else
+      changeset
+    end
   end
 end

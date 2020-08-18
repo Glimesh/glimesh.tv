@@ -2,34 +2,65 @@
 
 <div class="layout-px-spacing">
 
-    <div class="container">
-        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
-        <div class="col-md-12 p-lg-5 mx-auto my-5">
-            <h1 class="display-4 font-weight-normal"><%= dgettext("streams", "%{category} Streams Coming Soon", category: @category) %></h1>
-            <p class="lead font-weight-normal"><%= dgettext("streams", "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!") %></p>
+    <%= if @page.layout == "none" do %>
+        <div class="container">
+            <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
+                <div class="col-md-12 p-lg-5 mx-auto my-5">
+                    <h1 class="display-4 font-weight-normal"><%= dgettext("streams", "%{category} Streams Coming Soon", category: @category.name) %></h1>
+                    <p class="lead font-weight-normal"><%= dgettext("streams", "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!") %></p>
+                </div>
+            </div>
         </div>
+    <% else %>
+
+        <div class="container">
+            <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
+                <div class="col-md-12 mx-auto ">
+                    <h1 class="display-4 font-weight-normal"><%= dgettext("streams", "%{category} Streams", category: @page.title) %></h1>
+                </div>
+            </div>
         </div>
-    </div>
 
 
-    <div class="row layout-top-spacing">
-        <%= for stream <- @streams do %>
+        <div class="row">
 
-        <div class="col-md-3 layout-spacing">
-            <%= live_redirect to: Routes.user_stream_path(@socket, :index, stream.username) do %>
-                <div class="widget widget-chart-one">
-                    <div class="widget-heading">
-                        <h5 class=""><span class="badge badge-danger"><%= dgettext("streams", "Live!") %></span> <%= stream.displayname %></h5>
-                    </div>
 
-                    <div class="widget-content">
-                        <img src="/images/stream-not-started.jpg" alt="" class="img-fluid">
+        <%= for section <- @page.sections do %>
+            <%= if section.layout == "full" do %>
+
+            <% end %>
+
+            <div class="<%= section.bs_parent_class %> mt-4">
+                <div class="card">
+                    <div class="card-body">
+                    <h4><%= section.title %></h4>
+                        <div class="row">
+                            <%= for stream <- section.streams do %>
+                            <div class="<%= section.bs_child_class %> mt-4">
+                                <%= live_redirect to: Routes.user_stream_path(@socket, :index, stream.streamer.displayname) do %>
+                                    <div class="card card-stream">
+                                        <img src="https://picsum.photos/320/180?random=<%= stream.streamer.id %>" alt="" class="card-img">
+                                        <div class="card-img-overlay">
+                                            <h6 class="card-title"><%= stream.stream_title %></h5>
+                                            <p class="card-text card-stream-live">
+                                                <span class="badge badge-danger"><%= :rand.uniform(100) %> <i class="fas fa-user"></i></span>
+                                            </p>
+                                            <p class="card-text card-stream-streamer <%= if stream.streamer.stripe_user_id, do: "sub-ready", else: "" %>">
+                                                <span class="card-stream-username"><%= stream.streamer.displayname %></span>
+                                                <img src="<%= Glimesh.Avatar.url({stream.streamer.avatar, stream.streamer}, :original) %>" alt="<%= stream.streamer.displayname%>" class="img-avatar <%= if stream.streamer.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+                                            </p>
+                                        </div>
+                                    </div>
+                                <% end %>
+                            </div>
+                            <% end %>
+                        </div>
                     </div>
                 </div>
-            <% end %>
-        </div>
-
+            </div>
         <% end %>
 
-    </div>
+        </div>
+    <% end %>
+
 </div>

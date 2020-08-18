@@ -1,9 +1,6 @@
 defmodule GlimeshWeb.UserPaymentsControllerTest do
   use GlimeshWeb.ConnCase, async: true
 
-  alias Glimesh.Accounts
-  import Glimesh.AccountsFixtures
-
   setup :register_and_log_in_user
 
   describe "GET /users/payments" do

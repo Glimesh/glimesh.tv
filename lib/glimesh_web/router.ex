@@ -61,7 +61,7 @@ defmodule GlimeshWeb.Router do
     get "/users/settings/tfa_registered", UserSettingsController, :tfa_registered
   end
 
-  scope "/", GlimeshWeb do
+  scope "/admin", GlimeshWeb do
     pipe_through [:browser, :require_admin_user]
 
     import Phoenix.LiveDashboard.Router
@@ -80,6 +80,13 @@ defmodule GlimeshWeb.Router do
     patch "/blog/:slug", ArticleController, :update
     put "/blog/:slug", ArticleController, :update
     delete "/blog/:slug", ArticleController, :delete
+
+    live "/categories", Admin.CategoryLive.Index, :index
+    live "/categories/new", Admin.CategoryLive.Index, :new
+    live "/categories/:id/edit", Admin.CategoryLive.Index, :edit
+
+    live "/categories/:id", Admin.CategoryLive.Show, :show
+    live "/categories/:id/show/edit", Admin.CategoryLive.Show, :edit
   end
 
   scope "/", GlimeshWeb do

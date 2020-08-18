@@ -22,17 +22,12 @@ msgid "Followed Streams"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/live/streams_live/list.html.leex:22
-msgid "Live!"
-msgstr ""
-
-#, elixir-format
-#: lib/glimesh_web/live/streams_live/list.html.leex:9
+#: lib/glimesh_web/live/streams_live/list.html.leex:10
 msgid "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/live/streams_live/list.html.leex:8
+#: lib/glimesh_web/live/streams_live/list.html.leex:9
 msgid "%{category} Streams Coming Soon"
 msgstr ""
 
@@ -41,7 +36,12 @@ msgstr ""
 msgid " %{count} Viewers"
 msgstr ""
 
+#, elixir-format, fuzzy
+#: lib/glimesh_web/live/streams_live/list.html.leex:19
+msgid "%{category} Streams"
+msgstr ""
+
 #, elixir-format
-#: lib/glimesh_web/live/user_live/components/streamer_title.ex:21
-msgid "Update Title"
+#: lib/glimesh_web/live/user_live/components/streamer_title.ex:22
+msgid "Save Info"
 msgstr ""

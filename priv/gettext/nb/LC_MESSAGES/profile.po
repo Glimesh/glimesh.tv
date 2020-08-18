@@ -234,27 +234,28 @@ msgstr "Sub-klar strømmer"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:118
+#: lib/glimesh_web/live/user_live/stream.html.leex:68
 msgid "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!"
 msgstr "Velkommen til min profil! Jeg har ikke tilpasset det ennå, men jeg kan enkelt gjøre det ved å klikke brukernavnet mitt oppe i høyre hjørne!"
 
 #, elixir-format
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:11
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:15
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:13
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:17
 msgid "Follow"
 msgstr "Følg"
 
 #, elixir-format
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:48
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:50
 msgid "User followed successfully"
 msgstr "Bruker fulgt"
 
 #, elixir-format
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:62
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:64
 msgid "User unfollowed successfully"
 msgstr "Bruker avfulgt"
 
 #, elixir-format
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:9
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:11
 msgid "Unfollow"
 msgstr "Avfølg"
 
@@ -274,6 +275,7 @@ msgid "Report User"
 msgstr ""
 
 #, elixir-format
+#: lib/glimesh_web/templates/user_session/new.html.eex:266
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:226
 msgid "2FA Code"
 msgstr "2FA Kode"

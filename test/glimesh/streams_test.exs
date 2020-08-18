@@ -5,7 +5,6 @@ defmodule Glimesh.StreamsTest do
   import Glimesh.AccountsFixtures
   alias Glimesh.Chat
   alias Glimesh.Streams
-  alias Glimesh.Streams.UserModerationLog
 
   describe "timeout_user/3" do
     setup do
@@ -53,8 +52,6 @@ defmodule Glimesh.StreamsTest do
   end
 
   describe "followers" do
-    alias Glimesh.Streams.Followers
-
     @valid_attrs %{has_live_notifications: true}
     @update_attrs %{has_live_notifications: false}
     @invalid_attrs %{has_live_notifications: nil}
@@ -98,6 +95,71 @@ defmodule Glimesh.StreamsTest do
 
       Streams.follow(streamer, user)
       assert {:error, %Ecto.Changeset{}} = Streams.follow(streamer, user)
+    end
+  end
+
+  describe "categories" do
+    alias Glimesh.Streams.Category
+
+    @valid_attrs %{
+      name: "some name"
+    }
+    @update_attrs %{
+      name: "some updated name"
+    }
+    @invalid_attrs %{name: nil}
+
+    def category_fixture(attrs \\ %{}) do
+      {:ok, category} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Streams.create_category()
+
+      category
+    end
+
+    test "list_categories/0 returns all categories" do
+      category = category_fixture()
+      assert Enum.map(Streams.list_categories(), fn x -> x.name end) == [category.name]
+    end
+
+    test "get_category_by_id!/1 returns the category with given id" do
+      category = category_fixture()
+      assert Streams.get_category_by_id!(category.id) == category
+    end
+
+    test "create_category/1 with valid data creates a category" do
+      assert {:ok, %Category{} = category} = Streams.create_category(@valid_attrs)
+      assert category.name == "some name"
+      assert category.slug == "some-name"
+    end
+
+    test "create_category/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Streams.create_category(@invalid_attrs)
+    end
+
+    test "update_category/2 with valid data updates the category" do
+      category = category_fixture()
+      assert {:ok, %Category{} = category} = Streams.update_category(category, @update_attrs)
+      assert category.name == "some updated name"
+      assert category.slug == "some-updated-name"
+    end
+
+    test "update_category/2 with invalid data returns error changeset" do
+      category = category_fixture()
+      assert {:error, %Ecto.Changeset{}} = Streams.update_category(category, @invalid_attrs)
+      assert category == Streams.get_category_by_id!(category.id)
+    end
+
+    test "delete_category/1 deletes the category" do
+      category = category_fixture()
+      assert {:ok, %Category{}} = Streams.delete_category(category)
+      assert_raise Ecto.NoResultsError, fn -> Streams.get_category_by_id!(category.id) end
+    end
+
+    test "change_category/1 returns a category changeset" do
+      category = category_fixture()
+      assert %Ecto.Changeset{} = Streams.change_category(category)
     end
   end
 end

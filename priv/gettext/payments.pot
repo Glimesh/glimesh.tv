@@ -11,12 +11,12 @@ msgid ""
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_payments_controller.ex:57
+#: lib/glimesh_web/controllers/user_payments_controller.ex:60
 msgid "Payment method deleted!"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_payments_controller.ex:40
+#: lib/glimesh_web/controllers/user_payments_controller.ex:43
 msgid "Stripe account linked successfully, welcome to the sub club!"
 msgstr ""
 

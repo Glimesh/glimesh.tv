@@ -21,7 +21,7 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
   end
 
   describe "PUT /users/settings/update_profile" do
-    test "updates the social media profiles", %{conn: conn, user: user} do
+    test "updates the social media profiles", %{conn: conn} do
       profile_conn =
         put(conn, Routes.user_settings_path(conn, :update_profile), %{
           "user" => %{

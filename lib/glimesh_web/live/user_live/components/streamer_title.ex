@@ -3,26 +3,30 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
 
   alias Glimesh.Presence
   alias Glimesh.Streams
-  alias Glimesh.Streams.StreamMetadata
+  alias Glimesh.Streams.Metadata
 
   @impl true
   def render(assigns) do
     ~L"""
     <%= if @user && @is_streamer do %>
       <%= if !@editing do %>
-        <h5 class=""><span class="badge badge-danger">Live!</span> <%= @title %>  <a class="fas fa-edit" phx-click="toggle-edit" href="#"></a></h5>
+        <h5 class=""><span class="badge badge-danger">Live!</span> <span class="badge badge-primary"><%= @metadata.category.tag_name %></span> <%= @metadata.stream_title %> <a class="fas fa-edit" phx-click="toggle-edit" href="#"></a></h5>
       <% else %>
-        <h5 class="">
-          <div class="form-group">
-            <%= f = form_for @changeset, "#", [phx_submit: :save] %>
-            <%= text_input f, :stream_title, [class: "form-control"] %>
-            <%= submit dgettext("streams", "Update Title"), class: "btn btn-primary mt-1" %>
-            <i class="far fa-edit" phx-click="toggle-edit" style="color: red"></i>
+        <%= f = form_for @changeset, "#", [phx_submit: :save] %>
+          <div class="input-group">
+
+          <%= select f, :category_id, @categories, [class: "form-control", "phx-hook": "Choices", "phx-update": "ignore"] %>
+          <%= text_input f, :stream_title, [class: "form-control"] %>
+
+          <div class="input-group-append">
+            <%= submit dgettext("streams", "Save Info"), class: "btn btn-primary" %>
           </div>
-        </h5>
+
+          </div>
+        </form
       <% end %>
     <% else %>
-      <h5 class=""><span class="badge badge-danger">Live!</span> <%= @title %></h5>
+      <h5 class=""><span class="badge badge-danger">Live!</span> <span class="badge badge-primary"><%= @metadata.category.tag_name %></span> <%= @metadata.stream_title %> </h5>
     <% end %>
     """
   end
@@ -30,12 +34,13 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => nil}, socket) do
     if connected?(socket), do: Streams.subscribe_metadata(streamer.id)
+    metadata = Streams.get_metadata_from_streamer(streamer)
 
     {:ok,
      socket
      |> assign(:streamer, streamer)
      |> assign(:user, nil)
-     |> assign(:title, Streams.get_metadata_from_streamer(streamer).stream_title)
+     |> assign(:metadata, metadata)
      |> assign(:editing, false)
      |> assign(:is_streamer, false)}
   end
@@ -43,23 +48,15 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
     if connected?(socket), do: Streams.subscribe_metadata(streamer.id)
-
-    title_changeset =
-      if streamer.username == user.username do
-        Streams.StreamMetadata.changeset(
-          Streams.get_metadata_from_streamer(streamer)
-          |> Map.merge(%{streamer: streamer})
-        )
-      else
-        nil
-      end
+    metadata = Streams.get_metadata_from_streamer(streamer)
 
     {:ok,
      socket
+     |> assign_categories()
      |> assign(:streamer, streamer)
      |> assign(:user, user)
-     |> assign(:title, Streams.get_metadata_from_streamer(streamer).stream_title)
-     |> assign(:changeset, title_changeset)
+     |> assign(:metadata, metadata)
+     |> assign(:changeset, Streams.change_metadata(metadata))
      |> assign(:is_streamer, if(user.username == streamer.username, do: true, else: false))
      |> assign(:editing, false)}
   end
@@ -70,20 +67,13 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
   end
 
   @impl true
-  def handle_event("save", %{"stream_metadata" => %{"stream_title" => new_title}}, socket) do
-    case Streams.update_title(socket.assigns.streamer, new_title) do
-      {:ok, changetitle} ->
+  def handle_event("save", %{"metadata" => metadata}, socket) do
+    case Streams.update_metadata(socket.assigns.metadata, metadata) do
+      {:ok, changeset} ->
         {:noreply,
          socket
          |> assign(:editing, false)
-         |> assign(:title, new_title)
-         |> assign(
-           :changeset,
-           Streams.StreamMetadata.changeset(
-             changetitle
-             |> Map.merge(%{streamer: socket.assigns.streamer})
-           )
-         )}
+         |> assign(:changeset, Streams.change_metadata(changeset))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
@@ -91,7 +81,15 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
   end
 
   @impl true
-  def handle_info({:update_title, data}, socket) do
-    {:noreply, assign(socket, title: data.title)}
+  def handle_info({:update_metadata, data}, socket) do
+    {:noreply, assign(socket, metadata: data)}
+  end
+
+  defp assign_categories(socket) do
+    socket
+    |> assign(
+      :categories,
+      Streams.list_categories_for_select()
+    )
   end
 end

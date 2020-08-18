@@ -1,0 +1,37 @@
+<h1><%= dgettext("admin", "Show Category") %></h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, GlimeshWeb.Admin.CategoryLive.FormComponent,
+    id: @category.id,
+    title: @page_title,
+    action: @live_action,
+    category: @category,
+    return_to: Routes.category_show_path(@socket, :show, @category) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong><%= dgettext("admin", "Name") %>:</strong>
+    <%= @category.name %>
+  </li>
+
+  <li>
+    <strong><%= dgettext("admin", "Slug") %>:</strong>
+    <%= @category.slug %>
+  </li>
+
+  <li>
+    <strong><%= dgettext("admin", "Avatar") %>:</strong>
+    <%= @category.avatar %>
+  </li>
+
+  <li>
+    <strong><%= dgettext("admin", "Parent") %>:</strong>
+    <%= @category.parent_id %>
+  </li>
+
+</ul>
+
+<span><%= live_patch dgettext("admin", "Edit"), to: Routes.category_show_path(@socket, :edit, @category), class: "button" %></span>
+<span><%= live_redirect dgettext("admin", "Back"), to: Routes.category_index_path(@socket, :index) %></span>

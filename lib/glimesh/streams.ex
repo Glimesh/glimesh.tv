@@ -7,7 +7,9 @@ defmodule Glimesh.Streams do
   alias Glimesh.Accounts.User
   alias Glimesh.Chat
   alias Glimesh.Repo
+  alias Glimesh.Streams.Category
   alias Glimesh.Streams.Followers
+  alias Glimesh.Streams.Metadata
   alias Glimesh.Streams.UserModerationLog
   alias Glimesh.Streams.UserModerator
 
@@ -24,6 +26,24 @@ defmodule Glimesh.Streams do
   """
   def list_streams do
     Repo.all(from u in User, where: u.can_stream == true)
+  end
+
+  def list_in_category(category) do
+    # Repo.all(
+    #   from u in User,
+    #     join: sm in Metadata,
+    #     on: u.id == sm.streamer_id,
+    #     join: c in Category,
+    #     on: c.id == sm.category_id,
+    #     where: c.id == ^category.id or c.parent_id == ^category.id
+    # )
+    Repo.all(
+      from sm in Metadata,
+        join: c in Category,
+        on: c.id == sm.category_id,
+        where: c.id == ^category.id or c.parent_id == ^category.id
+    )
+    |> Repo.preload([:category, :streamer])
   end
 
   def get_by_username(username) when is_binary(username) do
@@ -128,43 +148,79 @@ defmodule Glimesh.Streams do
     Repo.one!(from f in Followers, select: count(f.id), where: f.user_id == ^user.id)
   end
 
-  alias Glimesh.Streams.StreamMetadata
+  alias Glimesh.Streams.Metadata
 
-  def update_title(streamer, title) do
-    attrs = %{
-      stream_title: title
-    }
+  def get_metadata_for_streamer(streamer) do
+    metadata =
+      case Repo.get_by(Metadata, streamer_id: streamer.id) do
+        nil ->
+          {:ok, metadata} = create_metadata(streamer)
+          metadata
 
-    streamer_meta = get_metadata_from_streamer(streamer)
+        %Metadata{} = metadata ->
+          metadata
+      end
 
-    {:ok, results} =
-      %StreamMetadata{
-        streamer: streamer
-      }
-      |> Map.merge(streamer_meta)
-      |> StreamMetadata.changeset(attrs)
-      |> Repo.update()
-
-    update_data = %{title: results.stream_title, streamer: streamer}
-    broadcast_metadata({:ok, update_data}, :update_title)
-    {:ok, results}
+    metadata |> Repo.preload([:category])
   end
 
-  def create_metadata(streamer) do
-    attrs = %{
-      stream_title: "My first stream!"
-    }
+  @doc """
+  Creates some metadata.
 
-    results =
-      %StreamMetadata{
-        streamer: streamer
-      }
-      |> StreamMetadata.changeset(attrs)
-      |> Repo.insert()
+  ## Examples
+
+      iex> create_metadata(%{field: value})
+      {:ok, %Metadata{}}
+
+      iex> create_metadata(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_metadata(streamer, attrs \\ %{}) do
+    %Metadata{
+      streamer: streamer
+    }
+    |> Metadata.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates some metadata.
+
+  ## Examples
+
+      iex> update_metadata(metadata, %{field: new_value})
+      {:ok, %Metadata{}}
+
+      iex> update_metadata(metadata, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_metadata(%Metadata{} = metadata, attrs) do
+    new_meta =
+      metadata
+      |> Metadata.changeset(attrs)
+      |> Repo.update!()
+      |> Repo.preload(:category, force: true)
+
+    broadcast({:ok, new_meta}, :update_metadata)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking metadata changes.
+
+  ## Examples
+
+      iex> change_metadata(category)
+      %Ecto.Changeset{data: %Metadata{}}
+
+  """
+  def change_metadata(%Metadata{} = metadata, attrs \\ %{}) do
+    Metadata.changeset(metadata, attrs)
   end
 
   def get_metadata_from_streamer(streamer) do
-    data = Repo.get_by(StreamMetadata, streamer_id: streamer.id)
+    data = Repo.get_by(Metadata, streamer_id: streamer.id) |> Repo.preload([:category])
 
     case data do
       nil ->
@@ -176,19 +232,150 @@ defmodule Glimesh.Streams do
     end
   end
 
+  @spec subscribe_metadata(any) :: :ok | {:error, {:already_registered, pid}}
   def subscribe_metadata(streamer_id) do
     Phoenix.PubSub.subscribe(Glimesh.PubSub, "streams:#{streamer_id}:metadata")
   end
 
-  defp broadcast_metadata({:error, _reason} = error, _event), do: error
+  defp broadcast({:error, _reason} = error, _event), do: error
 
-  defp broadcast_metadata({:ok, data}, event) do
+  defp broadcast({:ok, data}, :update_metadata = event) do
     Phoenix.PubSub.broadcast(
       Glimesh.PubSub,
-      "streams:#{data.streamer.id}:metadata",
+      "streams:#{data.streamer_id}:metadata",
       {event, data}
     )
 
     {:ok, data}
+  end
+
+  alias Glimesh.Streams.Category
+
+  @doc """
+  Returns the list of categories.
+
+  ## Examples
+
+      iex> list_categories()
+      [%Category{}, ...]
+
+  """
+  def list_categories do
+    Repo.all(Category) |> Repo.preload(:parent)
+  end
+
+  def list_categories_for_select do
+    # Repo.all(from c in Category, order_by: [asc: :id, asc: :parent_id, asc: :name])
+    # |> Enum.map(fn x ->
+    #   name = if x.parent_id, do: " - #{x.name}", else: x.name
+    #   {name, x.id}
+    # end)
+
+    Repo.all(from c in Category, order_by: [asc: :tag_name])
+    |> Enum.map(&{&1.tag_name, &1.id})
+  end
+
+  def list_parent_categories do
+    Repo.all(from c in Category, where: is_nil(c.parent_id))
+  end
+
+  @spec list_categories_by_parent(atom | %{id: any}) :: any
+  def list_categories_by_parent(category) do
+    Repo.all(from c in Category, where: c.parent_id == ^category.id)
+  end
+
+  def list_subcategories_and_streams(category) do
+    Repo.all(
+      from sm in Metadata,
+        join: c in Category,
+        on: c.id == sm.category_id,
+        where: c.id == ^category.id or c.parent_id == ^category.id
+    )
+    |> Repo.preload([:streamer, :category])
+    |> Enum.group_by(fn x -> x.category.name end)
+  end
+
+  @doc """
+  Gets a single category.
+
+  Raises `Ecto.NoResultsError` if the Category does not exist.
+
+  ## Examples
+
+      iex> get_category!(123)
+      %Category{}
+
+      iex> get_category!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_category!(slug),
+    do: Repo.one(from c in Category, where: c.slug == ^slug and is_nil(c.parent_id))
+
+  def get_category_by_id!(id), do: Repo.get_by!(Category, id: id)
+
+  @doc """
+  Creates a category.
+
+  ## Examples
+
+      iex> create_category(%{field: value})
+      {:ok, %Category{}}
+
+      iex> create_category(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_category(attrs \\ %{}) do
+    %Category{}
+    |> Category.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a category.
+
+  ## Examples
+
+      iex> update_category(category, %{field: new_value})
+      {:ok, %Category{}}
+
+      iex> update_category(category, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_category(%Category{} = category, attrs) do
+    category
+    |> Category.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a category.
+
+  ## Examples
+
+      iex> delete_category(category)
+      {:ok, %Category{}}
+
+      iex> delete_category(category)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_category(%Category{} = category) do
+    Repo.delete(category)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking category changes.
+
+  ## Examples
+
+      iex> change_category(category)
+      %Ecto.Changeset{data: %Category{}}
+
+  """
+  def change_category(%Category{} = category, attrs \\ %{}) do
+    Category.changeset(category, attrs)
   end
 end
