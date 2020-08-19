@@ -26,7 +26,21 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   end
 
   def handle_event("send", %{"chat_message" => chat_message_params}, socket) do
-    save_chat_message(socket, socket.assigns.streamer, socket.assigns.user, chat_message_params)
+    {is_command, command} = chat_message_is_command(chat_message_params)
+    if is_command do
+      case command do
+        {:timeout, components} ->
+          [user, time] = components
+          IO.inspect(components)
+        _ ->
+          IO.inspect(command)
+      end
+      {:noreply,
+        socket
+        |> put_flash(:info, "Command recived")}
+    else
+      save_chat_message(socket, socket.assigns.streamer, socket.assigns.user, chat_message_params)
+    end
   end
 
   defp save_chat_message(socket, streamer, user, chat_message_params) do
@@ -45,4 +59,22 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
         {:noreply, assign(socket, changeset: changeset)}
     end
   end
+
+  defp chat_message_is_command(%{"message" => message}) do
+    {first, rest} = String.split_at(message, 1)
+    if first == "/" do
+      [command | components] = String.split(rest)
+      ##this is annoying but hey you do what you do to get it to work
+      case command do
+        c when c == "timeout" ->
+          {true, {:timeout, components}}
+        c when c == "ban" ->
+          {true, {:ban, components}}
+        _ ->
+          {false, nil}
+      end
+    else
+      {false, nil}
+    end
+    end
 end

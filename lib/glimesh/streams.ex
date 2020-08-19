@@ -87,19 +87,38 @@ defmodule Glimesh.Streams do
 
     Chat.delete_chat_messages_for_user(streamer, user_to_timeout)
 
-    broadcast_chats({:ok, user_to_timeout}, :user_timedout)
+    broadcast_chats({:ok, user_to_timeout}, :user_timedout, streamer)
 
     log
   end
 
   def ban_user(streamer, moderator, user_to_ban) do
-    timeout_user(streamer, moderator, user_to_ban)
+    if Chat.can_moderate?(streamer, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
+    log =
+      %UserModerationLog{
+        streamer: streamer,
+        moderator: moderator,
+        user: user_to_ban
+      }
+      |> UserModerationLog.changeset(%{action: "timeout"})
+      |> Repo.insert()
+
+    :ets.insert(:banned_list, {user_to_ban.username, true})
+
+    Chat.delete_chat_messages_for_user(streamer, user_to_ban)
+
+    broadcast_chats({:ok, user_to_ban}, :user_timedout, streamer)
+
+    log
   end
 
   defp broadcast_chats({:error, _reason} = error, _event), do: error
 
-  defp broadcast_chats({:ok, chat_message}, event) do
-    Phoenix.PubSub.broadcast(Glimesh.PubSub, "chats", {event, chat_message})
+  defp broadcast_chats({:ok, chat_message}, event, streamer) do
+    Phoenix.PubSub.broadcast(Glimesh.PubSub, "chats:#{streamer.id}", {event, chat_message})
     {:ok, chat_message}
   end
 

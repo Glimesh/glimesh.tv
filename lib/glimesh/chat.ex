@@ -97,24 +97,6 @@ defmodule Glimesh.Chat do
   end
 
   @doc """
-  Updates a chat_message.
-
-  ## Examples
-
-      iex> update_chat_message(chat_message, %{field: new_value})
-      {:ok, %ChatMessage{}}
-
-      iex> update_chat_message(chat_message, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_chat_message(%ChatMessage{} = chat_message, attrs) do
-    chat_message
-    |> ChatMessage.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
   Deletes a chat_message.
 
   ## Examples
@@ -180,7 +162,8 @@ defmodule Glimesh.Chat do
     user.is_admin ||
       Repo.exists?(
         from m in UserModerator, where: m.streamer_id == ^streamer.id and m.user_id == ^user.id
-      )
+      ) ||
+      streamer.id == user.id
   end
 
   def render_global_badge(user) do
@@ -192,10 +175,13 @@ defmodule Glimesh.Chat do
   end
 
   def render_stream_badge(stream, user) do
-    if can_moderate?(stream, user) and user.is_admin === false do
-      Tag.content_tag(:span, "Moderator", class: "badge badge-info")
-    else
-      ""
+    cond do
+      stream.id === user.id and user.is_admin === false ->
+        Tag.content_tag(:span, "Streamer", class: "badge badge-light")
+      can_moderate?(stream, user) and user.is_admin === false ->
+        Tag.content_tag(:span, "Moderator", class: "badge badge-info")
+      true ->
+        ""
     end
   end
 
@@ -211,14 +197,14 @@ defmodule Glimesh.Chat do
          String.match?(chat_message.message, ~r/#{"@" <> username}/i))
   end
 
-  def subscribe do
-    Phoenix.PubSub.subscribe(Glimesh.PubSub, "chats")
+  def subscribe(user) do
+    Phoenix.PubSub.subscribe(Glimesh.PubSub, "chats:#{user.id}")
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error
 
   defp broadcast({:ok, chat_message}, event) do
-    Phoenix.PubSub.broadcast(Glimesh.PubSub, "chats", {event, chat_message})
+    Phoenix.PubSub.broadcast(Glimesh.PubSub, "chats:#{chat_message.streamer.id}", {event, chat_message})
     {:ok, chat_message}
   end
 end

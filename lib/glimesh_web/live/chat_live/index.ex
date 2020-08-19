@@ -9,7 +9,7 @@ defmodule GlimeshWeb.ChatLive.Index do
 
   @impl true
   def mount(_params, session, socket) do
-    if connected?(socket), do: Chat.subscribe()
+    if connected?(socket), do: Chat.subscribe(session["streamer"])
 
     streamer = session["streamer"]
 
@@ -58,7 +58,7 @@ defmodule GlimeshWeb.ChatLive.Index do
 
   @impl true
   def handle_event("ban_user", %{"user" => to_ban_user}, socket) do
-    Streams.timeout_user(
+    Streams.ban_user(
       socket.assigns.streamer,
       socket.assigns.user,
       Accounts.get_by_username!(to_ban_user)
