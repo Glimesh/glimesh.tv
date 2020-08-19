@@ -8,129 +8,129 @@
 ## to merge POT files into PO files.
 msgid ""
 msgstr ""
-"Language: ja\n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1\n"
 
 msgid "can't be blank"
-msgstr "空白にはできません。"
+msgstr ""
 
 msgid "has already been taken"
-msgstr "すでに使用されています。"
+msgstr ""
 
 msgid "is invalid"
-msgstr "無効"
+msgstr ""
 
 msgid "must be accepted"
-msgstr "受け入れられなければならない"
+msgstr ""
 
 msgid "has invalid format"
-msgstr "無効な形式"
+msgstr ""
 
 msgid "has an invalid entry"
-msgstr "無効なエントリ"
+msgstr ""
 
 msgid "is reserved"
-msgstr "予約済み"
+msgstr ""
 
 msgid "does not match confirmation"
-msgstr "一致していません"
+msgstr ""
 
 msgid "is still associated with this entry"
-msgstr "まだこのエントリに関連付けられています。"
+msgstr ""
 
 msgid "are still associated with this entry"
-msgstr "このエントリにまだ関連付けられています。"
+msgstr ""
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] "%{count} 文字でなければなりません。"
+msgstr[0] ""
 
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] "％{count}項目必要です。"
+msgstr[0] ""
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] "最低%{count} 文字以上でなければなりません。"
+msgstr[0] ""
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] "少なくとも%{count}項目必要です。"
+msgstr[0] ""
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] "%{count}文字以内でなければなりません。"
+msgstr[0] ""
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] "%{count}項目以上持つことはできません。"
+msgstr[0] ""
 
 msgid "must be less than %{number}"
-msgstr "%{number}より小さい必要があります。"
+msgstr ""
 
 msgid "must be greater than %{number}"
-msgstr "%{number}より大きい必要があります。"
+msgstr ""
 
 msgid "must be less than or equal to %{number}"
-msgstr "%{number} 以下でなければなりません。"
+msgstr ""
 
 msgid "must be greater than or equal to %{number}"
-msgstr "%{number} 以上でなければなりません。"
+msgstr ""
 
 msgid "must be equal to %{number}"
-msgstr "%{number}と等しくなければなりません。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:51
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:6 lib/glimesh_web/templates/user_settings/edit.html.eex:27
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:127 lib/glimesh_web/templates/user_settings/edit.html.eex:162
 msgid "Oops, something went wrong! Please check the errors below."
-msgstr "おっと、何かが間違っていました! 以下のエラーを確認してください。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:41
 msgid "Confirmation link is invalid or it has expired."
-msgstr "確認用リンクが無効、または有効期限が切れています。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:51
 msgid "Email change link is invalid or it has expired."
-msgstr "メールアドレス変更リンクが無効、または有効期限が切れています。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:22
 msgid "Invalid e-mail or password"
-msgstr "メールアドレスまたはパスワードが無効です。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_reset_password_controller.ex:59
 msgid "Reset password link is invalid or it has expired."
-msgstr "パスワードのリセットリンクが無効、または有効期限が切れています。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:134
 msgid "Display name must match Username"
-msgstr "表示名はユーザー名と一致している必要があります。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:152
 msgid "Email is the same"
-msgstr "同じメールアドレス"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:244
 msgid "Incorrect YouTube URL format"
-msgstr "YouTubeのURL形式が間違っています。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:235
 msgid "Invalid Password"
-msgstr "無効なパスワード"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:162
 msgid "Password does not match"
-msgstr "パスワードが一致しません。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:19

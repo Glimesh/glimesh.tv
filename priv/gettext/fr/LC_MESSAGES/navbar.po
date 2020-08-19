@@ -8,82 +8,82 @@
 ## to merge POT files into PO files.
 msgid ""
 msgstr ""
-"Language: ja\n"
-"Plural-Forms: nplurals=1\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2\n"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:16
 msgid "Art"
-msgstr "Art"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:28
 msgid "Education"
-msgstr "Education"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:44
 msgid "Following"
-msgstr "Following"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:13
 msgid "Gaming"
-msgstr "Gaming"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:25
 msgid "IRL"
-msgstr "IRL"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:33
 msgid "More"
-msgstr "More"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:19
 msgid "Music"
-msgstr "Music"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:61
 msgid "My Payments"
-msgstr "私の支払い"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:65
 msgid "My Profile"
-msgstr "私のプロフィール"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:74
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:24
 msgid "Register"
-msgstr "レジスター"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:69
 msgid "Sign Out"
-msgstr "サインアウト"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:75
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:25
 msgid "Sign in"
-msgstr "サインイン"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:22
 msgid "Tech"
-msgstr "Tech"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:58
 msgid "Upgrade!"
-msgstr "アップグレード!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:38
 msgid "Users"
-msgstr "ユーザー"
+msgstr ""

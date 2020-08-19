@@ -8,74 +8,74 @@
 ## to merge POT files into PO files.
 msgid ""
 msgstr ""
-"Language: ja\n"
-"Plural-Forms: nplurals=1\n"
+"Language: sv\n"
+"Plural-Forms: nplurals=2\n"
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:64
 msgid "Cancel Subscription"
-msgstr "サブスクリプションをキャンセル"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:22
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:38
 msgid "Cosmetic Features"
-msgstr "ビジュアル機能"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:4
 msgid "Glimesh Funding Progress"
-msgstr "グリメッシュ資金調達の進捗状況"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:18
 msgid "Help us fund the platform & grow!"
-msgstr "プラットフォームへの資金提供と成長にご協力ください＼(^o^)／"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:6
 msgid "Platform Subs"
-msgstr "プラットフォーム登録者"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:32
 msgid "Popular!"
-msgstr "Popular!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:28
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:45
 msgid "Select"
-msgstr "選択"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:7
 msgid "Streamer Subs"
-msgstr "ストリーマーチャンネル登録者"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:34
 msgid "Support Glimesh's future with your wallet! Get special perks to show off."
-msgstr "お財布でGlimeshの未来を応援しよう! これ見よがしのスペシャル特典を手に入れよう。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:54
 msgid "Thanks for supporting Glimesh :D"
-msgstr "グリメッシュをサポートしてくれてありがとう (^o^)"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:53
 msgid "You're subscribed!"
-msgstr "登録しています♪ヽ(´▽｀)/"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:19
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:35
 msgid "monthly"
-msgstr "毎月"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:20
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:36
 msgid "yearly"
-msgstr "毎年"
+msgstr ""

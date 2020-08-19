@@ -8,25 +8,25 @@
 ## to merge POT files into PO files.
 msgid ""
 msgstr ""
-"Language: ja\n"
-"Plural-Forms: nplurals=1\n"
+"Language: sv\n"
+"Plural-Forms: nplurals=2\n"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:77
 msgid "About"
-msgstr "About"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:89
 msgid "Blog"
-msgstr "Blog"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:82
 msgid "Legal"
-msgstr "利用規約"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:66
 msgid "Social"
-msgstr "ソーシャル"
+msgstr ""

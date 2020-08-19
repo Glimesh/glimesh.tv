@@ -267,12 +267,12 @@ msgstr "Logget ut"
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:86
 msgid "Glimesh isn't launched yet, but you can follow %{streamer} now and get automatically notified when they go live!"
-msgstr ""
+msgstr "Glimesh er ikke lansert enda, men du kan følge %{streamer} nå og få et automatisk varsel når de går live!"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:10
 msgid "Report User"
-msgstr ""
+msgstr "Rapporter bruker"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_session/new.html.eex:266

@@ -8,40 +8,40 @@
 ## to merge POT files into PO files.
 msgid ""
 msgstr ""
-"Language: ja\n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1\n"
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.ex:15
 msgid "Followed"
-msgstr "Followed"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.ex:14
 msgid "Followed Streams"
-msgstr "Followedストリーム"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:10
 msgid "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!"
-msgstr "私たちは、特別なイベントやその他のユニークなストリームをたまに配信していますが、ライブになれば、このページはストリーマーで埋め尽くされます!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:9
 msgid "%{category} Streams Coming Soon"
-msgstr "間もなく登場する%{category}ストリーム"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/viewer_count.ex:9
 msgid " %{count} Viewers"
-msgstr "%{count} Viewers"
+msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:19
 msgid "%{category} Streams"
-msgstr "%{category} Streams"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/streamer_title.ex:22
 msgid "Save Info"
-msgstr "情報を保存"
+msgstr ""

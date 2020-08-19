@@ -8,271 +8,271 @@
 ## to merge POT files into PO files.
 msgid ""
 msgstr ""
-"Language: ja\n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1\n"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:149
 msgid "Change E-mail"
-msgstr "Ｅメールを変更"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:141
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:175 lib/glimesh_web/templates/user_settings/edit.html.eex:234
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:242
 msgid "Current Password"
-msgstr "現在のパスワード"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:3
 msgid "View Public Profile"
-msgstr "プロフィールを見る"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:12
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:23
 msgid "Your Settings"
-msgstr "あなたの設定"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:122
 msgid "Change e-mail"
-msgstr "Ｅメールを変更"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:91
 msgid "Discord Server URL"
-msgstr "DiscordサーバーURL"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:134
 msgid "Email"
-msgstr "Eメール"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:68
 msgid "Instagram Username"
-msgstr "InstagramユーザーID"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:48
 msgid "Social"
-msgstr "ソーシャル"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:57
 msgid "Twitter Username"
-msgstr "TwitterユーザーID"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:80
 msgid "YouTube Username"
-msgstr "YouTubeユーザーID"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:2
 msgid "Your Profile"
-msgstr "あなたのプロフィール"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:191
 msgid "Change Password"
-msgstr "パスワード変更"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:157
 msgid "Change password"
-msgstr "パスワード変更"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:10
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:170
 msgid "New password"
-msgstr "新しいパスワード"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:17
 msgid "Click Update Settings down below when you've chosen the file."
-msgstr "ファイルを選択したら、下の設定更新をクリックしてください。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:183
 msgid "Confirm New Password"
-msgstr "新しいパスワードを確認"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:34
 msgid "Display Name"
-msgstr "表示名"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:41
 msgid "Language"
-msgstr "言語"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:105
 msgid "Profile Content (Markdown supported)"
-msgstr "プロフィールコンテンツ（Markdown対応）"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:110
 msgid "Update Settings"
-msgstr "設定を更新"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:99
 msgid "YouTube Teaser URL"
-msgstr "YouTubeティーザーURL"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:78
 msgid "Profile updated successfully."
-msgstr "プロフィールが更新されました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:28
 msgid "A link to confirm your e-mail change has been sent to the new address."
-msgstr "メールアドレスの変更を確認するためのリンクが新しいアドレスに送信されました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:44
 msgid "E-mail changed successfully."
-msgstr "メールアドレスが正常に変更されました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:63
 msgid "Password updated successfully."
-msgstr "パスワードの更新に成功しました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:34
 msgid "Account confirmed successfully."
-msgstr "アカウントを正常に確認しました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:22
 msgid "If your e-mail is in our system and it has not been confirmed yet, "
-msgstr "メールがシステムにあり、まだ確認されていない場合"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:23
 msgid "you will receive an e-mail with instructions shortly."
-msgstr "まもなく手順が記載されたメールが届きます。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_reset_password_controller.ex:24
 msgid "If your e-mail is in our system, you will receive instructions to reset your password shortly."
-msgstr "あなたのメールが私たちのシステムにある場合は、まもなくパスワードをリセットするための手順が送信されます。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_reset_password_controller.ex:42
 msgid "Password reset successfully."
-msgstr "パスワードが正常にリセットされました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_confirmation/new.html.eex:2
 #: lib/glimesh_web/templates/user_confirmation/new.html.eex:18
 msgid "Resend confirmation instructions"
-msgstr "確認手順を再送信する"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_registration_controller.ex:23
 msgid "User created successfully."
-msgstr "ユーザーの作成に成功しました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_confirmation/new.html.eex:11
 msgid "email"
-msgstr "Eメール"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:1
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:19
 msgid "Reset password"
-msgstr "パスワードのリセット"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:14
 msgid "Confirm new password"
-msgstr "新しいパスワードを確認"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:56
 msgid "Followers"
-msgstr "Followers"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:63
 msgid "Following"
-msgstr "Following"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:83
 msgid "Pre-Follow Streamer"
-msgstr "Pre-Follow Streamer"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:69
 msgid "Share my profile on Twitter"
-msgstr "Twitterで私のプロフィールをシェアする"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:71
 msgid "Share on Twitter"
-msgstr "Twitterでシェアする"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:19
 msgid "Sub Ready!"
-msgstr "Sub Ready!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:12
 msgid "Sub-ready Streamer"
-msgstr "Sub-ready Streamer"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:118
 #: lib/glimesh_web/live/user_live/stream.html.leex:68
 msgid "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!"
-msgstr "私のプロフィールへようこそ! まだカスタマイズしていませんが、右上のユーザー名をクリックすることで簡単にカスタマイズできます!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:13
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:17
 msgid "Follow"
-msgstr "Follow"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:50
 msgid "User followed successfully"
-msgstr "ユーザーのフォローが成功しました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:64
 msgid "User unfollowed successfully"
-msgstr "ユーザーのフォローを解除しました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:11
 msgid "Unfollow"
-msgstr "Unfollow"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:28
 msgid "Logged out successfully."
-msgstr "正常にログアウトしました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:86
 msgid "Glimesh isn't launched yet, but you can follow %{streamer} now and get automatically notified when they go live!"
-msgstr "グリメッシュはまだリリースされていませんが、%{streamer}をフォローして、ライブ配信時に自動的に通知を受け取れます!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:10
 msgid "Report User"
-msgstr "レポートユーザー"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_session/new.html.eex:266

@@ -14,4 +14,4 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:3
 msgid "Our Users"
-msgstr ""
+msgstr "私たちユーザー"

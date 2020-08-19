@@ -8,40 +8,40 @@
 ## to merge POT files into PO files.
 msgid ""
 msgstr ""
-"Language: ja\n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1\n"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:54
 msgid "Copyright Infringement / Law Violation"
-msgstr "著作権侵害 / 法律違反"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:42
 msgid "Hate Speech"
-msgstr "ヘイトスピーチ"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:48
 msgid "Inappropriate Content"
-msgstr "不適切なコンテンツ"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:65
 msgid "Notes"
-msgstr "ノート"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:60
 msgid "Other"
-msgstr "その他"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:69
 msgid "Submit Report"
-msgstr "レポートを送信"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:36
 msgid "What has this user done wrong?"
-msgstr "このユーザーは何を間違っていますか"
+msgstr ""
