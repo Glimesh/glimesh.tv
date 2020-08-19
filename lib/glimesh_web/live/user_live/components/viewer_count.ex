@@ -2,6 +2,7 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCount do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Presence
+  alias Glimesh.Streams
 
   @impl true
   def render(assigns) do
@@ -11,11 +12,10 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCount do
   end
 
   @impl true
-  def mount(_params, %{"streamer" => streamer}, socket) do
-    viewer_count_topic = "viewer_count:#{streamer}"
+  def mount(_params, %{"streamer_id" => streamer_id}, socket) do
+    {:ok, topic} = Streams.subscribe_to(:viewers, streamer_id)
 
-    viewer_count = Presence.list_presences(viewer_count_topic) |> Enum.count()
-    GlimeshWeb.Endpoint.subscribe(viewer_count_topic)
+    viewer_count = Presence.list_presences(topic) |> Enum.count()
 
     {:ok, assign(socket, :viewer_count, viewer_count)}
   end
@@ -24,7 +24,7 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCount do
   def handle_info(
         %{
           event: "presence_diff",
-          topic: "viewer_count:" <> _streamer,
+          topic: "streams:viewers:" <> _streamer,
           payload: %{joins: joins, leaves: leaves}
         },
         %{assigns: %{viewer_count: count}} = socket

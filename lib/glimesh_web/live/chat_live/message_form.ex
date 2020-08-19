@@ -3,6 +3,7 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
 
   alias Glimesh.Chat
   alias Glimesh.Presence
+  alias Glimesh.Streams
 
   @impl true
   def update(%{chat_message: chat_message, user: user} = assigns, socket) do
@@ -32,9 +33,14 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   defp save_chat_message(socket, streamer, user, chat_message_params) do
     case Chat.create_chat_message(streamer, user, chat_message_params) do
       {:ok, _chat_message} ->
-        Presence.update_presence(self(), "chatters:#{streamer.username}", user.id, fn x ->
-          %{x | size: x.size + 2}
-        end)
+        Presence.update_presence(
+          self(),
+          Streams.get_subscribe_topic(:chatters, streamer.id),
+          user.id,
+          fn x ->
+            %{x | size: x.size + 2}
+          end
+        )
 
         {:noreply,
          socket

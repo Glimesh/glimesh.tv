@@ -22,7 +22,7 @@
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                   </div>
                   <div class="btn-group" role="group" aria-label="Third group">
-                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"user" => @user, "streamer" => @streamer.username}) %>
+                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"streamer_id" => @streamer.id}) %>
                   </div>
                 </div>
               </div>
