@@ -14,9 +14,9 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/templates/article/index.html.eex:2
 msgid "Glimesh Blog"
-msgstr ""
+msgstr "グリメッシュ Blog"
 
 #, elixir-format
 #: lib/glimesh_web/templates/article/index.html.eex:15
 msgid "Read More"
-msgstr ""
+msgstr "Read More"

@@ -34,7 +34,7 @@ msgstr "%{category} strømmer kommer snart"
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/viewer_count.ex:9
 msgid " %{count} Viewers"
-msgstr ""
+msgstr "%{count} seere"
 
 #, elixir-format, fuzzy
 #: lib/glimesh_web/live/streams_live/list.html.leex:19
@@ -44,4 +44,4 @@ msgstr "%{category} strømmer kommer snart"
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/streamer_title.ex:22
 msgid "Save Info"
-msgstr ""
+msgstr "Lagre info"

@@ -1,0 +1,150 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: vi\n"
+"Plural-Forms: nplurals=1\n"
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_payments_controller.ex:60
+msgid "Payment method deleted!"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_payments_controller.ex:43
+msgid "Stripe account linked successfully, welcome to the sub club!"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:54
+msgid "Delete Saved Payment"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:93
+msgid "Enable Subscriptions"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:108
+msgid "Glimesh Sub!"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:129
+msgid "Income History"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:137
+msgid "Payment History"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:11
+msgid "Received"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:44
+msgid "Saved Payment Method"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:27
+msgid "Sent"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:59
+msgid "Setup Payment Method"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:87
+msgid "Streamer"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:77
+msgid "Sub-ready Streamer"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:120
+msgid "Subscribed since %{date}"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:109
+msgid "Subscribed since ?."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:13
+#: lib/glimesh_web/templates/user_payments/index.html.eex:110
+msgid "Unsubscribe"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:82
+msgid "Welcome to the sub club!"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:64
+msgid "You can link a payment method by creating a subscription to a channel, or the platform."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:46
+msgid "You have an existing saved payment method. You can delete it by clicking the button below."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:2
+msgid "Your Payment Portal"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:102
+msgid "Your Subscriptions"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/subscription_component.ex:23
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:31
+msgid "Payment Details"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/subscription_component.ex:16
+msgid "Payment method already attached!"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/subscription_component.ex:43
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:15 lib/glimesh_web/live/user_live/components/subscribe_button.ex:18
+msgid "Subscribe"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/subscription_component.ex:36
+msgid "Total Charge"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/subscription_component.ex:19
+msgid "Your Name"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/live/subscription_component.ex:38
+msgid "monthly"
+msgstr ""

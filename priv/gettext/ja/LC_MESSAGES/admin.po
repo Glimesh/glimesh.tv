@@ -14,77 +14,77 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:35
 msgid "Are you sure?"
-msgstr ""
+msgstr "本気ですか？"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:18
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:25
 msgid "Avatar"
-msgstr ""
+msgstr "アバター"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:37
 msgid "Back"
-msgstr ""
+msgstr "バック"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/form_component.ex:52
 msgid "Category created successfully"
-msgstr ""
+msgstr "カテゴリが正常に作成されました"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/form_component.ex:39
 msgid "Category updated successfully"
-msgstr ""
+msgstr "カテゴリは正常に更新されました"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:36
 msgid "Edit"
-msgstr ""
+msgstr "エディト"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.ex:19
 #: lib/glimesh_web/live/admin/category_live/show.ex:20
 msgid "Edit Category"
-msgstr ""
+msgstr "カテゴリを編集"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.ex:31
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:2
 msgid "Listing Categories"
-msgstr ""
+msgstr "カテゴリーのリスト"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:16
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:15
 msgid "Name"
-msgstr ""
+msgstr "名前"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.ex:25
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:42
 msgid "New Category"
-msgstr ""
+msgstr "新たなカテゴリー"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:19
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:30
 msgid "Parent"
-msgstr ""
+msgstr "ペアレント"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/form_component.html.leex:11
 msgid "Parent Category"
-msgstr ""
+msgstr "ペアレントカテゴリー"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.ex:19
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:1
 msgid "Show Category"
-msgstr ""
+msgstr "カテゴリを表示"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:17
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:20
 msgid "Slug"
-msgstr ""
+msgstr "スラッグ"

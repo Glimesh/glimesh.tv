@@ -14,34 +14,34 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.ex:15
 msgid "Followed"
-msgstr ""
+msgstr "Followed"
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.ex:14
 msgid "Followed Streams"
-msgstr ""
+msgstr "Followedストリーム"
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:10
 msgid "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!"
-msgstr ""
+msgstr "私たちは、特別なイベントやその他のユニークなストリームをたまに配信していますが、ライブになれば、このページはストリーマーで埋め尽くされます!"
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:9
 msgid "%{category} Streams Coming Soon"
-msgstr ""
+msgstr "間もなく登場する%{category}ストリーム"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/viewer_count.ex:9
 msgid " %{count} Viewers"
-msgstr ""
+msgstr "%{count} Viewers"
 
 #, elixir-format, fuzzy
 #: lib/glimesh_web/live/streams_live/list.html.leex:19
 msgid "%{category} Streams"
-msgstr ""
+msgstr "%{category} Streams"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/streamer_title.ex:22
 msgid "Save Info"
-msgstr ""
+msgstr "情報を保存"

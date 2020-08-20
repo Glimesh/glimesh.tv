@@ -1,0 +1,144 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: es_MX\n"
+"Plural-Forms: nplurals=2\n"
+
+msgid "can't be blank"
+msgstr ""
+
+msgid "has already been taken"
+msgstr ""
+
+msgid "is invalid"
+msgstr ""
+
+msgid "must be accepted"
+msgstr ""
+
+msgid "has invalid format"
+msgstr ""
+
+msgid "has an invalid entry"
+msgstr ""
+
+msgid "is reserved"
+msgstr ""
+
+msgid "does not match confirmation"
+msgstr ""
+
+msgid "is still associated with this entry"
+msgstr ""
+
+msgid "are still associated with this entry"
+msgstr ""
+
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "must be less than %{number}"
+msgstr ""
+
+msgid "must be greater than %{number}"
+msgstr ""
+
+msgid "must be less than or equal to %{number}"
+msgstr ""
+
+msgid "must be greater than or equal to %{number}"
+msgstr ""
+
+msgid "must be equal to %{number}"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:51
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:6 lib/glimesh_web/templates/user_settings/edit.html.eex:27
+#: lib/glimesh_web/templates/user_settings/edit.html.eex:127 lib/glimesh_web/templates/user_settings/edit.html.eex:162
+msgid "Oops, something went wrong! Please check the errors below."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_confirmation_controller.ex:41
+msgid "Confirmation link is invalid or it has expired."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_settings_controller.ex:51
+msgid "Email change link is invalid or it has expired."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_session_controller.ex:22
+msgid "Invalid e-mail or password"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_reset_password_controller.ex:59
+msgid "Reset password link is invalid or it has expired."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh/accounts/user.ex:134
+msgid "Display name must match Username"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh/accounts/user.ex:152
+msgid "Email is the same"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh/accounts/user.ex:244
+msgid "Incorrect YouTube URL format"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh/accounts/user.ex:235
+msgid "Invalid Password"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh/accounts/user.ex:162
+msgid "Password does not match"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_session_controller.ex:19
+msgid "Invalid 2FA Code"
+msgstr ""

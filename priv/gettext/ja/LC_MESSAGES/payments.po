@@ -14,57 +14,57 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/controllers/user_payments_controller.ex:60
 msgid "Payment method deleted!"
-msgstr ""
+msgstr "決済方法を削除しました!"
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_payments_controller.ex:43
 msgid "Stripe account linked successfully, welcome to the sub club!"
-msgstr ""
+msgstr "Stripeアカウントが正常にリンクされました。Sub Clubへようこそ!"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:54
 msgid "Delete Saved Payment"
-msgstr ""
+msgstr "保存された支払いを削除"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:93
 msgid "Enable Subscriptions"
-msgstr ""
+msgstr "サブスクリプションを有効にする"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:108
 msgid "Glimesh Sub!"
-msgstr ""
+msgstr "グリメッシュ sub!"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:129
 msgid "Income History"
-msgstr ""
+msgstr "収入の推移"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:137
 msgid "Payment History"
-msgstr ""
+msgstr "支払い履歴"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:11
 msgid "Received"
-msgstr ""
+msgstr "受け取った"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:44
 msgid "Saved Payment Method"
-msgstr ""
+msgstr "保存された支払い方法"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:27
 msgid "Sent"
-msgstr ""
+msgstr "送った"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:59
 msgid "Setup Payment Method"
-msgstr ""
+msgstr "お支払い方法の設定"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:87
@@ -74,77 +74,77 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:77
 msgid "Sub-ready Streamer"
-msgstr ""
+msgstr "Streamer"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:120
 msgid "Subscribed since %{date}"
-msgstr ""
+msgstr "％{date}以降に購読"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:109
 msgid "Subscribed since ?."
-msgstr ""
+msgstr "?から購読"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:13
 #: lib/glimesh_web/templates/user_payments/index.html.eex:110
 msgid "Unsubscribe"
-msgstr ""
+msgstr "退会"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:82
 msgid "Welcome to the sub club!"
-msgstr ""
+msgstr "Sub Clubへようこそ(*^^*)"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:64
 msgid "You can link a payment method by creating a subscription to a channel, or the platform."
-msgstr ""
+msgstr "チャンネルまたはプラットフォームへのサブスクリプションを作成することにより、支払い方法をリンクできます。"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:46
 msgid "You have an existing saved payment method. You can delete it by clicking the button below."
-msgstr ""
+msgstr "保存済みのお支払い方法が既にあります。下のボタンをクリックして削除できます"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:2
 msgid "Your Payment Portal"
-msgstr ""
+msgstr "支払いポータル"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:102
 msgid "Your Subscriptions"
-msgstr ""
+msgstr "あなたのサブスクリプション"
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:23
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:31
 msgid "Payment Details"
-msgstr ""
+msgstr "支払詳細"
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:16
 msgid "Payment method already attached!"
-msgstr ""
+msgstr "お支払い方法は付属(゜.゜)"
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:43
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:15 lib/glimesh_web/live/user_live/components/subscribe_button.ex:18
 msgid "Subscribe"
-msgstr ""
+msgstr "Subscribe"
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:36
 msgid "Total Charge"
-msgstr ""
+msgstr "合計料金"
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:19
 msgid "Your Name"
-msgstr ""
+msgstr "あなたの名前"
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:38
 msgid "monthly"
-msgstr ""
+msgstr "毎月"

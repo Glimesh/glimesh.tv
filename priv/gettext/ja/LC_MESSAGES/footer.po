@@ -14,19 +14,19 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:77
 msgid "About"
-msgstr ""
+msgstr "About"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:89
 msgid "Blog"
-msgstr ""
+msgstr "Blog"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:82
 msgid "Legal"
-msgstr ""
+msgstr "利用規約"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:66
 msgid "Social"
-msgstr ""
+msgstr "ソーシャル"

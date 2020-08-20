@@ -14,76 +14,76 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:16
 msgid "Art"
-msgstr ""
+msgstr "Art"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:28
 msgid "Education"
-msgstr ""
+msgstr "Education"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:44
 msgid "Following"
-msgstr ""
+msgstr "Following"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:13
 msgid "Gaming"
-msgstr ""
+msgstr "Gaming"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:25
 msgid "IRL"
-msgstr ""
+msgstr "IRL"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:33
 msgid "More"
-msgstr ""
+msgstr "More"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:19
 msgid "Music"
-msgstr ""
+msgstr "Music"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:61
 msgid "My Payments"
-msgstr ""
+msgstr "私の支払い"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:65
 msgid "My Profile"
-msgstr ""
+msgstr "私のプロフィール"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:74
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:24
 msgid "Register"
-msgstr ""
+msgstr "レジスター"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:69
 msgid "Sign Out"
-msgstr ""
+msgstr "サインアウト"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:75
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:25
 msgid "Sign in"
-msgstr ""
+msgstr "サインイン"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:22
 msgid "Tech"
-msgstr ""
+msgstr "Tech"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:58
 msgid "Upgrade!"
-msgstr ""
+msgstr "アップグレード!"
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:38
 msgid "Users"
-msgstr ""
+msgstr "ユーザー"
