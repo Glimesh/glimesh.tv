@@ -14,7 +14,7 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:35
 msgid "Are you sure?"
-msgstr ""
+msgstr "Är du säker?"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:18
@@ -25,66 +25,66 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:37
 msgid "Back"
-msgstr ""
+msgstr "Tillbaka"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/form_component.ex:52
 msgid "Category created successfully"
-msgstr ""
+msgstr "Kategorin är skapad"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/form_component.ex:39
 msgid "Category updated successfully"
-msgstr ""
+msgstr "Kategorin har uppdaterats"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:36
 msgid "Edit"
-msgstr ""
+msgstr "Redigera"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.ex:19
 #: lib/glimesh_web/live/admin/category_live/show.ex:20
 msgid "Edit Category"
-msgstr ""
+msgstr "Redigera kategori"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.ex:31
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:2
 msgid "Listing Categories"
-msgstr ""
+msgstr "Lista kategorier"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:16
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:15
 msgid "Name"
-msgstr ""
+msgstr "Namn"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.ex:25
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:42
 msgid "New Category"
-msgstr ""
+msgstr "Ny kategori"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:19
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:30
 msgid "Parent"
-msgstr ""
+msgstr "Förälder"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/form_component.html.leex:11
 msgid "Parent Category"
-msgstr ""
+msgstr "Föräldrakategori"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.ex:19
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:1
 msgid "Show Category"
-msgstr ""
+msgstr "Visa kategori"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:17
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:20
 msgid "Slug"
-msgstr ""
+msgstr "Snigel"

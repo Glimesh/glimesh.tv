@@ -14,68 +14,68 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:64
 msgid "Cancel Subscription"
-msgstr ""
+msgstr "Avbryt prenumeration"
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:22
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:38
 msgid "Cosmetic Features"
-msgstr ""
+msgstr "Kosmetiska funktioner"
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:4
 msgid "Glimesh Funding Progress"
-msgstr ""
+msgstr "Glimesh-finansieringsframsteg"
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:18
 msgid "Help us fund the platform & grow!"
-msgstr ""
+msgstr "Hjälp oss att finansiera plattformen och växa!"
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:6
 msgid "Platform Subs"
-msgstr ""
+msgstr "Platforms prenumeration"
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:32
 msgid "Popular!"
-msgstr ""
+msgstr "Populär!"
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:28
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:45
 msgid "Select"
-msgstr ""
+msgstr "Välj"
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:7
 msgid "Streamer Subs"
-msgstr ""
+msgstr "Prenumerationer"
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:34
 msgid "Support Glimesh's future with your wallet! Get special perks to show off."
-msgstr ""
+msgstr "Stöd Glimeshs framtid med din plånbok! Få specialförmåner att visa upp."
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:54
 msgid "Thanks for supporting Glimesh :D"
-msgstr ""
+msgstr "Tack för att du stöttar Glimesh :D"
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:53
 msgid "You're subscribed!"
-msgstr ""
+msgstr "Du prenumererar!"
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:19
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:35
 msgid "monthly"
-msgstr ""
+msgstr "Månadsvis"
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:20
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:36
 msgid "yearly"
-msgstr ""
+msgstr "Årligen"

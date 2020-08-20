@@ -14,34 +14,34 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:54
 msgid "Copyright Infringement / Law Violation"
-msgstr ""
+msgstr "Brott mot upphovsrätt / brott"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:42
 msgid "Hate Speech"
-msgstr ""
+msgstr "Hat tal"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:48
 msgid "Inappropriate Content"
-msgstr ""
+msgstr "Opassande innehåll"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:65
 msgid "Notes"
-msgstr ""
+msgstr "Anteckningar"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:60
 msgid "Other"
-msgstr ""
+msgstr "Övrigt"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:69
 msgid "Submit Report"
-msgstr ""
+msgstr "Skicka in rapport"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:36
 msgid "What has this user done wrong?"
-msgstr ""
+msgstr "Vad har den här användaren gjort för fel?"

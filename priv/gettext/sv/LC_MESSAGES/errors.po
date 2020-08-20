@@ -12,131 +12,125 @@ msgstr ""
 "Plural-Forms: nplurals=2\n"
 
 msgid "can't be blank"
-msgstr ""
+msgstr "fältet kan inte vara tomt"
 
 msgid "has already been taken"
-msgstr ""
+msgstr "Redan upptaget"
 
 msgid "is invalid"
-msgstr ""
+msgstr "Ogiltig"
 
 msgid "must be accepted"
-msgstr ""
+msgstr "Måste accepteras"
 
 msgid "has invalid format"
-msgstr ""
+msgstr "Ogiltigt format"
 
 msgid "has an invalid entry"
-msgstr ""
+msgstr "ogiltig post"
 
 msgid "is reserved"
-msgstr ""
+msgstr "reserverad"
 
 msgid "does not match confirmation"
-msgstr ""
+msgstr "Bekräftelsen matchar inte"
 
 msgid "is still associated with this entry"
-msgstr ""
+msgstr "Fortfarande associerad med den här posten"
 
 msgid "are still associated with this entry"
-msgstr ""
+msgstr "Fortfarande associerad med den här posten"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Måste vara %{count} -tecken"
 
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Måste ha %{count} objekt"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Måste minst vara %{count} -tecken"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Måste minst ha %{count} objekt"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Får inte överstiga %{count} -tecken"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Kan inte ha mer än %{count} objekt"
 
 msgid "must be less than %{number}"
-msgstr ""
+msgstr "Måste vara mindre än %{number}"
 
 msgid "must be greater than %{number}"
-msgstr ""
+msgstr "Måste vara större än %{number}"
 
 msgid "must be less than or equal to %{number}"
-msgstr ""
+msgstr "Måste vara mindre än eller lika med %{number}"
 
 msgid "must be greater than or equal to %{number}"
-msgstr ""
+msgstr "Måste vara större än eller lika med %{number}"
 
 msgid "must be equal to %{number}"
-msgstr ""
+msgstr "Måste vara lika med %{number}"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:51
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:6 lib/glimesh_web/templates/user_settings/edit.html.eex:27
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:127 lib/glimesh_web/templates/user_settings/edit.html.eex:162
 msgid "Oops, something went wrong! Please check the errors below."
-msgstr ""
+msgstr "Oops! Något gick fel! Kontrollera felen nedan."
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:41
 msgid "Confirmation link is invalid or it has expired."
-msgstr ""
+msgstr "Bekräftelselänken är ogiltig eller den har gått ut."
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:51
 msgid "Email change link is invalid or it has expired."
-msgstr ""
+msgstr "E-poständringslänken är ogiltig eller den har gått ut."
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:22
 msgid "Invalid e-mail or password"
-msgstr ""
+msgstr "Ogiltig e-post eller lösenord"
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_reset_password_controller.ex:59
 msgid "Reset password link is invalid or it has expired."
-msgstr ""
+msgstr "Återställ lösenordslänken är ogiltig eller den har gått ut."
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:134
 msgid "Display name must match Username"
-msgstr ""
+msgstr "Visningsnamn måste matcha användarnamn"
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:152
 msgid "Email is the same"
-msgstr ""
+msgstr "E-mailen är densamma"
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:244
 msgid "Incorrect YouTube URL format"
-msgstr ""
+msgstr "Felaktigt YouTube-URL-format"
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:235
 msgid "Invalid Password"
-msgstr ""
+msgstr "felaktigt lösenord"
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:162
 msgid "Password does not match"
-msgstr ""
+msgstr "Lösenordet matchar inte"
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:19
