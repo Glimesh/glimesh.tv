@@ -33,7 +33,7 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
 
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => nil}, socket) do
-    if connected?(socket), do: Streams.subscribe_metadata(streamer.id)
+    if connected?(socket), do: Streams.subscribe_to(:metadata, streamer.id)
     metadata = Streams.get_metadata_from_streamer(streamer)
 
     {:ok,
@@ -47,7 +47,7 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
 
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
-    if connected?(socket), do: Streams.subscribe_metadata(streamer.id)
+    if connected?(socket), do: Streams.subscribe_to(:metadata, streamer.id)
     metadata = Streams.get_metadata_from_streamer(streamer)
 
     {:ok,

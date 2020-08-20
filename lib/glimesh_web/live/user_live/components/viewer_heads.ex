@@ -2,6 +2,7 @@ defmodule GlimeshWeb.UserLive.Components.ViewerHeads do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Presence
+  alias Glimesh.Streams
 
   @impl true
   def render(assigns) do
@@ -23,18 +24,17 @@ defmodule GlimeshWeb.UserLive.Components.ViewerHeads do
 
   @impl true
   def mount(_params, %{"streamer" => streamer}, socket) do
-    chatters_topic = "chatters:#{streamer}"
+    {:ok, chatters_topic} = Streams.get_subscribe_topic(:chatters, streamer.id)
 
     chatters = Presence.list_presences(chatters_topic) |> Enum.take(24)
-    GlimeshWeb.Endpoint.subscribe(chatters_topic)
 
     {:ok, assign(socket, :chatters, chatters)}
   end
 
   @impl true
-  def handle_info(%{event: "presence_diff", topic: "chatters:" <> streamer}, socket) do
+  def handle_info(%{event: "presence_diff", topic: topic}, socket) do
     chatters =
-      Presence.list_presences("chatters:#{streamer}")
+      Presence.list_presences(topic)
       |> Enum.sort(fn x, y -> x.size > y.size end)
       |> Enum.take(24)
 

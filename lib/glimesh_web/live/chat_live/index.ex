@@ -8,21 +8,24 @@ defmodule GlimeshWeb.ChatLive.Index do
   alias Glimesh.Streams
 
   @impl true
-  def mount(_params, session, socket) do
-    if connected?(socket), do: Chat.subscribe()
-
-    streamer = session["streamer"]
+  def mount(_params, %{"streamer" => streamer} = session, socket) do
+    if connected?(socket), do: Streams.subscribe_to(:chat, streamer.id)
 
     if session["user"] do
       user = session["user"]
 
-      Presence.track_presence(self(), "chatters:#{streamer.username}", user.id, %{
-        typing: false,
-        username: user.username,
-        avatar: Glimesh.Avatar.url({user.avatar, user}, :original),
-        user_id: user.id,
-        size: 48
-      })
+      Presence.track_presence(
+        self(),
+        Streams.get_subscribe_topic(:chatters, streamer.id),
+        user.id,
+        %{
+          typing: false,
+          username: user.username,
+          avatar: Glimesh.Avatar.url({user.avatar, user}, :original),
+          user_id: user.id,
+          size: 48
+        }
+      )
     end
 
     new_socket =

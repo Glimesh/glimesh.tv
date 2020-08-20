@@ -7,6 +7,7 @@ defmodule Glimesh.Chat do
 
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Repo
+  alias Glimesh.Streams
   alias Phoenix.HTML.Tag
 
   @doc """
@@ -211,14 +212,17 @@ defmodule Glimesh.Chat do
          String.match?(chat_message.message, ~r/#{"@" <> username}/i))
   end
 
-  def subscribe do
-    Phoenix.PubSub.subscribe(Glimesh.PubSub, "chats")
-  end
-
   defp broadcast({:error, _reason} = error, _event), do: error
 
   defp broadcast({:ok, chat_message}, event) do
-    Phoenix.PubSub.broadcast(Glimesh.PubSub, "chats", {event, chat_message})
+    streamer_id = chat_message.streamer.id
+
+    Phoenix.PubSub.broadcast(
+      Glimesh.PubSub,
+      Streams.get_subscribe_topic(:chat, streamer_id),
+      {event, chat_message}
+    )
+
     {:ok, chat_message}
   end
 end

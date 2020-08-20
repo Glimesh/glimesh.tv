@@ -13,6 +13,28 @@ defmodule Glimesh.Streams do
   alias Glimesh.Streams.UserModerationLog
   alias Glimesh.Streams.UserModerator
 
+  def get_subscribe_topic(:chat, streamer_id), do: "streams:chat:#{streamer_id}"
+  def get_subscribe_topic(:chatters, streamer_id), do: "streams:chatters:#{streamer_id}"
+  def get_subscribe_topic(:viewers, streamer_id), do: "streams:viewers:#{streamer_id}"
+  def get_subscribe_topic(:metadata, streamer_id), do: "streams:metadata:#{streamer_id}"
+
+  def subscribe_to(topic_atom, streamer_id),
+    do: sub_and_return(get_subscribe_topic(topic_atom, streamer_id))
+
+  defp sub_and_return(topic), do: {Phoenix.PubSub.subscribe(Glimesh.PubSub, topic), topic}
+
+  defp broadcast({:error, _reason} = error, _event), do: error
+
+  defp broadcast({:ok, data}, :update_metadata = event) do
+    Phoenix.PubSub.broadcast(
+      Glimesh.PubSub,
+      get_subscribe_topic(:metadata, data.streamer_id),
+      {event, data}
+    )
+
+    {:ok, data}
+  end
+
   ## Database getters
 
   @doc """
@@ -87,7 +109,7 @@ defmodule Glimesh.Streams do
 
     Chat.delete_chat_messages_for_user(streamer, user_to_timeout)
 
-    broadcast_chats({:ok, user_to_timeout}, :user_timedout)
+    broadcast_timeout({:ok, streamer.id, user_to_timeout}, :user_timedout)
 
     log
   end
@@ -96,10 +118,27 @@ defmodule Glimesh.Streams do
     timeout_user(streamer, moderator, user_to_ban)
   end
 
+  defp broadcast_timeout({:error, _reason} = error, _event), do: error
+
+  defp broadcast_timeout({:ok, streamer_id, bad_user}, :user_timedout) do
+    Phoenix.PubSub.broadcast(
+      Glimesh.PubSub,
+      get_subscribe_topic(:chat, streamer_id),
+      {:user_timedout, bad_user}
+    )
+
+    {:ok, bad_user}
+  end
+
   defp broadcast_chats({:error, _reason} = error, _event), do: error
 
   defp broadcast_chats({:ok, chat_message}, event) do
-    Phoenix.PubSub.broadcast(Glimesh.PubSub, "chats", {event, chat_message})
+    Phoenix.PubSub.broadcast(
+      Glimesh.PubSub,
+      get_subscribe_topic(:chat, chat_message.streamer.id),
+      {event, chat_message}
+    )
+
     {:ok, chat_message}
   end
 
@@ -230,23 +269,6 @@ defmodule Glimesh.Streams do
       _ ->
         data
     end
-  end
-
-  @spec subscribe_metadata(any) :: :ok | {:error, {:already_registered, pid}}
-  def subscribe_metadata(streamer_id) do
-    Phoenix.PubSub.subscribe(Glimesh.PubSub, "streams:#{streamer_id}:metadata")
-  end
-
-  defp broadcast({:error, _reason} = error, _event), do: error
-
-  defp broadcast({:ok, data}, :update_metadata = event) do
-    Phoenix.PubSub.broadcast(
-      Glimesh.PubSub,
-      "streams:#{data.streamer_id}:metadata",
-      {event, data}
-    )
-
-    {:ok, data}
   end
 
   alias Glimesh.Streams.Category
