@@ -40,8 +40,13 @@
 
           <div class="d-none d-sm-block mt-4">
             <div class="row">
-              <div class="col-12">
+              <div class="col-8">
                 <%# live_render(@socket, GlimeshWeb.UserLive.ViewerHeads, id: "viewer-heads", session: %{"user" => @user, "streamer" => @streamer.username, "fake_multiplier" => 12}) %>
+              </div>
+              <div class="col-4">
+                <div class="float-right">
+                  <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                </div>
               </div>
             </div>
           </div>
