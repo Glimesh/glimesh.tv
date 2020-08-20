@@ -9,12 +9,12 @@ defmodule GlimeshWeb.StreamsLive.List do
     user = Accounts.get_user_by_session_token(session["user_token"])
     Gettext.put_locale(session["locale"])
 
+    page = Glimesh.StreamLayout.FollowersHomepage.generate_following_page(user)
+
     {:ok,
      socket
      |> assign(:page_title, dgettext("streams", "Followed Streams"))
-     |> assign(:category, dgettext("streams", "Followed"))
-     |> assign(:show_banner, false)
-     |> assign(:streams, Streams.list_followed_streams(user))}
+     |> assign(:page, page)}
   end
 
   @impl true

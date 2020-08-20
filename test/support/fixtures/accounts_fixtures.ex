@@ -8,6 +8,13 @@ defmodule Glimesh.AccountsFixtures do
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
 
+  def streamer_fixture(attrs \\ %{}) do
+    streamer = user_fixture(attrs)
+    {:ok, _} = Glimesh.Streams.create_metadata(streamer)
+
+    streamer
+  end
+
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =
       attrs

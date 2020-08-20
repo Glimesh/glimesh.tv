@@ -68,6 +68,16 @@ defmodule Glimesh.Streams do
     |> Repo.preload([:category, :streamer])
   end
 
+  def list_followed_streams(user) do
+    Repo.all(
+      from sm in Metadata,
+        join: f in Followers,
+        on: sm.streamer_id == f.streamer_id,
+        where: f.user_id == ^user.id
+    )
+    |> Repo.preload([:category, :streamer])
+  end
+
   def get_by_username(username) when is_binary(username) do
     Repo.get_by(User, username: username, can_stream: true)
   end
@@ -140,15 +150,6 @@ defmodule Glimesh.Streams do
     )
 
     {:ok, chat_message}
-  end
-
-  def list_followed_streams(user) do
-    Repo.all(
-      from f in Followers,
-        where: f.user_id == ^user.id,
-        join: streamer in assoc(f, :streamer),
-        select: streamer
-    )
   end
 
   def follow(streamer, user, live_notifications \\ false) do
