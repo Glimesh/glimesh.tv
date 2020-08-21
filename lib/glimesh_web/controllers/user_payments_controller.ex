@@ -42,7 +42,7 @@ defmodule GlimeshWeb.UserPaymentsController do
         conn
         |> put_flash(
           :info,
-          dgettext("payments", "Stripe account linked successfully, welcome to the sub club!")
+          gettext("Stripe account linked successfully, welcome to the sub club!")
         )
         |> redirect(to: Routes.user_payments_path(conn, :index))
 
@@ -59,7 +59,7 @@ defmodule GlimeshWeb.UserPaymentsController do
     case Accounts.set_stripe_default_payment(user, nil) do
       {:ok, _} ->
         conn
-        |> put_flash(:info, dgettext("payments", "Payment method deleted!"))
+        |> put_flash(:info, gettext("Payment method deleted!"))
         |> redirect(to: Routes.user_payments_path(conn, :index))
 
       {:error, err} ->

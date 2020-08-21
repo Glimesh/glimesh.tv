@@ -26,7 +26,7 @@ defmodule GlimeshWeb.UserSettingsController do
     case Accounts.update_user_profile(user, user_params) do
       {:ok, user} ->
         conn
-        |> put_flash(:info, dgettext("profile", "Profile updated successfully."))
+        |> put_flash(:info, gettext("Profile updated successfully."))
         |> put_session(:user_return_to, Routes.user_settings_path(conn, :profile))
         |> UserAuth.log_in_user(user)
 

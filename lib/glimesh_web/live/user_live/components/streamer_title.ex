@@ -17,7 +17,7 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
           <%= text_input f, :stream_title, [class: "form-control"] %>
 
           <div class="input-group-append">
-            <%= submit dgettext("streams", "Save Info"), class: "btn btn-primary" %>
+            <%= submit gettext("Save Info"), class: "btn btn-primary" %>
           </div>
 
           </div>
