@@ -3,19 +3,19 @@
     <div class="col-2 user-sidebar">
         <div class="list-group list-group-flush">
             <%= link class: "list-group-item list-group-item-action " <> active_user_profile_path(@conn), to: Routes.user_settings_path(@conn, :profile) do %>
-                <i class="fas fa-user fa-fw"></i> <%= dgettext("user", "Profile") %>
+                <i class="fas fa-user fa-fw"></i> <%= gettext("Profile") %>
             <% end %>
             <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: Routes.user_settings_path(@conn, :stream) do %>
-                <i class="fas fa-video fa-fw"></i> <%= dgettext("user", "Stream") %>
+                <i class="fas fa-video fa-fw"></i> <%= gettext("Stream") %>
             <% end %>
             <%= link class: "list-group-item list-group-item-action " <> active_user_payments_path(@conn), to: Routes.user_payments_path(@conn, :index) do %>
-                <i class="fas fa-money-bill fa-fw"></i> <%= dgettext("user", "Payments") %>
+                <i class="fas fa-money-bill fa-fw"></i> <%= gettext("Payments") %>
             <% end %>
             <%= link class: "list-group-item list-group-item-action " <> active_user_settings_path(@conn), to: Routes.user_settings_path(@conn, :settings) do %>
-                <i class="fas fa-cog fa-fw"></i> <%= dgettext("user", "Settings") %>
+                <i class="fas fa-cog fa-fw"></i> <%= gettext("Settings") %>
             <% end %>
             <%= link class: "list-group-item list-group-item-action " <> active_user_security_path(@conn), to: Routes.user_security_path(@conn, :index) do %>
-                <i class="fas fa-lock fa-fw"></i> <%= dgettext("user", "Security") %>
+                <i class="fas fa-lock fa-fw"></i> <%= gettext("Security") %>
             <% end %>
         </div>
     </div>

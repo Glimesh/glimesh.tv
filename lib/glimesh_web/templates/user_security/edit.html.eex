@@ -4,27 +4,27 @@
         <div class="col-6">
             <div class="card mt-4">
                 <div class="card-header">
-                    <h3><%= dgettext "profile", "Change e-mail" %></h3>
+                    <h3><%= gettext "Change e-mail" %></h3>
                 </div>
                 <div class="card-body">
                     <%= form_for @email_changeset, Routes.user_security_path(@conn, :update_email), fn f -> %>
                     <%= if @email_changeset.action do %>
                     <div class="alert alert-danger">
-                        <p style="margin-bottom: 0px;"><%= dgettext "errors", "Oops, something went wrong! Please check the errors below." %></p>
+                        <p style="margin-bottom: 0px;"><%= gettext "Oops, something went wrong! Please check the errors below." %></p>
                     </div>
                     <% end %>
 
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <%= label f, dgettext("profile", "Email") %>
+                                <%= label f, gettext("Email") %>
                                 <%= email_input f, :email, required: true, class: "form-control mb-4" %>
                                 <%= error_tag f, :email %>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <%= label f, :current_password, dgettext("profile", "Current Password") %>
+                                <%= label f, :current_password, gettext("Current Password") %>
                                 <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email", class: "form-control mb-4" %>
                                 <%= error_tag f, :current_password %>
                             </div>
@@ -32,7 +32,7 @@
                     </div>
 
                     <div>
-                        <%= submit dgettext("profile", "Change E-mail"), class: "btn btn-primary" %>
+                        <%= submit gettext("Change E-mail"), class: "btn btn-primary" %>
                     </div>
                     <% end %>
                 </div>
@@ -40,12 +40,12 @@
             <div class="card mt-4">
                 <div class="card-body">
 
-                    <h3><%= dgettext "profile", "Change password" %></h3>
+                    <h3><%= gettext "Change password" %></h3>
 
                     <%= form_for @password_changeset, Routes.user_security_path(@conn, :update_password), fn f -> %>
                     <%= if @password_changeset.action do %>
                     <div class="alert alert-danger">
-                        <p style="margin-bottom: 0px;"><%= dgettext "errors", "Oops, something went wrong! Please check the errors below." %></p>
+                        <p style="margin-bottom: 0px;"><%= gettext "Oops, something went wrong! Please check the errors below." %></p>
                     </div>
                     <% end %>
 
@@ -53,12 +53,12 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <%= label f, :password, dgettext("profile", "New password") %>
+                                <%= label f, :password, gettext("New password") %>
                                 <%= password_input f, :password, required: true, class: "form-control mb-4" %>
                                 <%= error_tag f, :password %>
                             </div>
                             <div class="form-group">
-                                <%= label f, :current_password, dgettext("profile", "Current Password") %>
+                                <%= label f, :current_password, gettext("Current Password") %>
                                 <%= password_input f, :current_password, required: true, name: "current_password", id:
                                 "current_password_for_password", class: "form-control mb-4" %>
                                 <%= error_tag f, :current_password %>
@@ -66,7 +66,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <%= label f, :password_confirmation, dgettext("profile", "Confirm New Password") %>
+                                <%= label f, :password_confirmation, gettext("Confirm New Password") %>
                                 <%= password_input f, :password_confirmation, required: true, class: "form-control mb-4"  %>
                                 <%= error_tag f, :password_confirmation %>
                             </div>
@@ -74,7 +74,7 @@
                     </div>
 
                     <div>
-                        <%= submit dgettext("profile", "Change Password"), class: "btn btn-primary" %>
+                        <%= submit gettext("Change Password"), class: "btn btn-primary" %>
                     </div>
                     <% end %>
                 </div>
@@ -85,7 +85,7 @@
             <div class="card mt-4">
                 <div class="card-body">
 
-                    <h3><%= dgettext "profile", "2FA Setup" %></h3>
+                    <h3><%= gettext "2FA Setup" %></h3>
 
                     <%= form_for @tfa_changeset, Routes.user_security_path(@conn, :update_tfa), fn f -> %>
                         <%= if @tfa_changeset.action do %>
@@ -107,7 +107,7 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <%= label f, dgettext("profile", "2FA Code") %>
+                                    <%= label f, gettext("2FA Code") %>
                                     <%= text_input f, :tfa, required: true, class: "form-control mb-4" %>
                                     <%= error_tag f, :tfa %>
                                 </div>
@@ -115,7 +115,7 @@
                             <%= if @user.tfa_token == nil do %>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <%= label f, :current_password, dgettext("profile", "Current Password") %>
+                                    <%= label f, :current_password, gettext("Current Password") %>
                                     <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_tfa", class: "form-control mb-4" %>
                                     <%= error_tag f, :current_password %>
                                 </div>
@@ -123,7 +123,7 @@
                             <% else %>
                             <div class="col-sm-6" style="display:none">
                                 <div class="form-group">
-                                    <%= label f, :current_password, dgettext("profile", "Current Password") %>
+                                    <%= label f, :current_password, gettext("Current Password") %>
                                     <%= password_input f, :current_password, name: "current_password", id: "current_password_for_tfa", class: "form-control mb-4" %>
                                     <%= error_tag f, :current_password %>
                                 </div>
@@ -133,12 +133,12 @@
 
                         <%= if @user.tfa_token == nil do %>
                         <div>
-                            <%= submit dgettext("profile", "Submit Two Factor Authentication"), class: "btn btn-primary" %>
+                            <%= submit gettext("Submit Two Factor Authentication"), class: "btn btn-primary" %>
                         </div>
                         <% end %>
                         <%= if @user.tfa_token do %>
                         <div>
-                            <%= submit dgettext("profile", "Remove Two Factor Authentication"), class: "btn btn-primary" %>
+                            <%= submit gettext("Remove Two Factor Authentication"), class: "btn btn-primary" %>
                         </div>
                         <% end %>
                     <% end %>
