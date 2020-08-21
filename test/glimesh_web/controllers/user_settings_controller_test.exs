@@ -58,7 +58,7 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
 
       response = html_response(profile_conn, 200)
       assert response =~ "<h2 class=\"mt-4\">Your Profile</h2>"
-      assert response =~ "Display name must match Username"
+      assert response =~ "Display name must match username"
     end
   end
 end

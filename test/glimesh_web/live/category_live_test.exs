@@ -64,7 +64,7 @@ defmodule GlimeshWeb.CategoryLiveTest do
 
       assert index_live
              |> form("#category-form", category: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "Cannot be blank"
 
       new_input = %{name: "some new category", parent_id: parent_category.id}
 
@@ -88,7 +88,7 @@ defmodule GlimeshWeb.CategoryLiveTest do
 
       assert index_live
              |> form("#category-form", category: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "Cannot be blank"
 
       {:ok, _, html} =
         index_live
@@ -124,7 +124,7 @@ defmodule GlimeshWeb.CategoryLiveTest do
 
       assert show_live
              |> form("#category-form", category: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "Cannot be blank"
 
       {:ok, _, html} =
         show_live

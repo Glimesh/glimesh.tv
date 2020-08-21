@@ -21,7 +21,9 @@ defmodule GlimeshWeb.UserResetPasswordController do
     conn
     |> put_flash(
       :info,
-      gettext("If your e-mail is in our system, you will receive instructions to reset your password shortly.")
+      gettext(
+        "If your e-mail is in our system, you will receive instructions to reset your password shortly."
+      )
     )
     |> redirect(to: "/")
   end
