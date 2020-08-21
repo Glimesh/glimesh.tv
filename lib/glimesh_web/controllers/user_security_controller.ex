@@ -41,7 +41,7 @@ defmodule GlimeshWeb.UserSecurityController do
       :ok ->
         conn
         |> put_flash(:info, gettext("E-mail changed successfully."))
-        |> redirect(to: Routes.user_security_path(conn, :profile)
+        |> redirect(to: Routes.user_security_path(conn, :profile))
 
       :error ->
         conn
