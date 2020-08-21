@@ -4,6 +4,8 @@ defmodule GlimeshWeb.UserPaymentsController do
   alias Glimesh.Accounts
   alias Glimesh.Payments
 
+  plug :put_layout, "user-sidebar.html"
+
   def index(conn, _params) do
     user = conn.assigns.current_user
 
