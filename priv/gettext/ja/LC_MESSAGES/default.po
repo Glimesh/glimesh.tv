@@ -222,7 +222,7 @@ msgstr "毎月"
 msgid "yearly"
 msgstr "毎年"
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/glimesh_web/live/user_live/components/viewer_count.ex:10
 msgid " %{count} Viewers"
 msgstr "%{count} Viewers"
@@ -561,7 +561,7 @@ msgstr "レジスター"
 msgid "Register Your Account"
 msgstr "アカウントを登録する"
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:257
 msgid "Remove Two Factor Authentication"
 msgstr "2段階認証を送信"

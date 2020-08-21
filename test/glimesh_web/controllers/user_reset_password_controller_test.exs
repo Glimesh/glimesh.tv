@@ -26,7 +26,7 @@ defmodule GlimeshWeb.UserResetPasswordControllerTest do
         })
 
       assert redirected_to(conn) == "/"
-      assert get_flash(conn, :info) =~ "If your e-mail is in our system"
+      assert get_flash(conn, :info) =~ "If your email is in our system, you will receive instructions to reset your password shortly."
       assert Repo.get_by!(Accounts.UserToken, user_id: user.id).context == "reset_password"
     end
 
@@ -37,7 +37,7 @@ defmodule GlimeshWeb.UserResetPasswordControllerTest do
         })
 
       assert redirected_to(conn) == "/"
-      assert get_flash(conn, :info) =~ "If your e-mail is in our system"
+      assert get_flash(conn, :info) =~ "If your email is in our system, you will receive instructions to reset your password shortly."
       assert Repo.all(Accounts.UserToken) == []
     end
   end

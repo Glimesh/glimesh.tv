@@ -842,12 +842,12 @@ msgstr ""
 msgid "A link to confirm your e-mail change has been sent to the new address."
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:122
 msgid "Change e-mail"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:157
 msgid "Change password"
 msgstr ""

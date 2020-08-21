@@ -222,7 +222,7 @@ msgstr "månedlig"
 msgid "yearly"
 msgstr "årlig"
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/glimesh_web/live/user_live/components/viewer_count.ex:10
 msgid " %{count} Viewers"
 msgstr "%{count} seere"
@@ -560,7 +560,7 @@ msgstr "Registrer"
 msgid "Register Your Account"
 msgstr "Registrer din konto"
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:257
 msgid "Remove Two Factor Authentication"
 msgstr "Send to-faktor-autentisering"
