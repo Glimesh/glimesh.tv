@@ -1,9 +1,7 @@
 defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
   use GlimeshWeb, :live_view
 
-  alias Glimesh.Presence
   alias Glimesh.Streams
-  alias Glimesh.Streams.Metadata
 
   @impl true
   def render(assigns) do

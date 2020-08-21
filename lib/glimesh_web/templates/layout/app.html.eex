@@ -7,4 +7,3 @@
 <% end %>
 
 <%= @inner_content %>
-

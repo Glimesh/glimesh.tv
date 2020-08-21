@@ -58,11 +58,11 @@
                     <%= live_redirect dgettext("navbar", "Upgrade!"), class: "nav-link text-warning", to: Routes.platform_subscription_index_path(@conn, :index) %>
                     <%= link class: "dropdown-item", to: Routes.user_payments_path(@conn, :index) do %>
                     <i class="fas fa-money-bill"></i>
-                    <%= dgettext("navbar", "My Payments") %>
+                    <%= dgettext("navbar", "Payments") %>
                     <% end %>
-                    <%= link class: "dropdown-item", to: Routes.user_settings_path(@conn, :edit) do %>
+                    <%= link class: "dropdown-item", to: Routes.user_settings_path(@conn, :profile) do %>
                     <i class="fas fa-user"></i>
-                    <%= dgettext("navbar", "My Profile") %>
+                    <%= dgettext("navbar", "Settings") %>
                     <% end %>
                     <%= link class: "dropdown-item", to: Routes.user_session_path(@conn, :delete), method: :delete do %>
                     <i class="fas fa-door-closed"></i>

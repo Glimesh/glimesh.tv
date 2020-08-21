@@ -51,14 +51,18 @@ defmodule GlimeshWeb.Router do
   scope "/", GlimeshWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/users/settings", UserSettingsController, :edit
+    get "/users/settings/profile", UserSettingsController, :profile
+    get "/users/settings/stream", UserSettingsController, :stream
+    get "/users/settings/settings", UserSettingsController, :settings
     put "/users/settings/update_profile", UserSettingsController, :update_profile
-    put "/users/settings/update_password", UserSettingsController, :update_password
-    put "/users/settings/update_email", UserSettingsController, :update_email
-    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-    put "/users/settings/update_tfa", UserSettingsController, :update_tfa
-    get "/users/settings/get_tfa", UserSettingsController, :get_tfa
-    get "/users/settings/tfa_registered", UserSettingsController, :tfa_registered
+
+    get "/users/settings/security", UserSecurityController, :index
+    put "/users/settings/update_password", UserSecurityController, :update_password
+    put "/users/settings/update_email", UserSecurityController, :update_email
+    get "/users/settings/confirm_email/:token", UserSecurityController, :confirm_email
+    put "/users/settings/update_tfa", UserSecurityController, :update_tfa
+    get "/users/settings/get_tfa", UserSecurityController, :get_tfa
+    get "/users/settings/tfa_registered", UserSecurityController, :tfa_registered
   end
 
   scope "/admin", GlimeshWeb do
