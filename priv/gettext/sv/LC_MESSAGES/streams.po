@@ -39,7 +39,7 @@ msgstr "%{antal} tittare"
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:19
 msgid "%{category} Streams"
-msgstr "%{kategori} streams"
+msgstr "%{category} streams"
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/streamer_title.ex:22
