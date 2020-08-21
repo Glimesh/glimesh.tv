@@ -12,7 +12,8 @@
                             <%= for chat_message <- @chat_messages do %>
                                 <div id="<%= chat_message.id %>" class="<%=if Glimesh.Chat.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>">
                                     <%= if @is_moderator do %>
-                                    <i class="fas fa-times-circle" phx-click="timeout_user" phx-value-user="<%= chat_message.user.username %>"></i>
+                                        <i class="fas fa-times-circle" phx-click="ban_user" phx-value-user="<%= chat_message.user.username %>"></i>
+                                        <i class="fas fa-clock" phx-click="timeout_user" phx-value-user="<%= chat_message.user.username %>"></i>
                                     <% end %>
                                     <%= Glimesh.Chat.render_global_badge(chat_message.user) %>
                                     <%= Glimesh.Chat.render_stream_badge(@streamer, chat_message.user) %>

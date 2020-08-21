@@ -69,7 +69,7 @@ defmodule Glimesh.Streams do
     |> Repo.insert()
   end
 
-  def timeout_user(streamer, moderator, user_to_timeout) do
+  def timeout_user(streamer, moderator, user_to_timeout, time) do
     if Chat.can_moderate?(streamer, moderator) === false do
       raise "User does not have permission to moderate."
     end
@@ -83,7 +83,7 @@ defmodule Glimesh.Streams do
       |> UserModerationLog.changeset(%{action: "timeout"})
       |> Repo.insert()
 
-    :ets.insert(:banned_list, {user_to_timeout.username, true})
+    :ets.insert(:timedout_list, {user_to_timeout.username, {streamer.id, time}})
 
     Chat.delete_chat_messages_for_user(streamer, user_to_timeout)
 
@@ -103,14 +103,14 @@ defmodule Glimesh.Streams do
         moderator: moderator,
         user: user_to_ban
       }
-      |> UserModerationLog.changeset(%{action: "timeout"})
+      |> UserModerationLog.changeset(%{action: "ban"})
       |> Repo.insert()
 
-    :ets.insert(:banned_list, {user_to_ban.username, true})
+    :ets.insert(:banned_list, {user_to_ban.username, {streamer.id, true}})
 
     Chat.delete_chat_messages_for_user(streamer, user_to_ban)
 
-    broadcast_chats({:ok, user_to_ban}, :user_timedout, streamer)
+    broadcast_chats({:ok, user_to_ban}, :user_banned, streamer)
 
     log
   end

@@ -5,6 +5,7 @@ defmodule Glimesh.Chat do
 
   import Ecto.Query, warn: false
 
+  alias Glimesh.Streams.UserModerationLog
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Repo
   alias Phoenix.HTML.Tag
@@ -83,7 +84,23 @@ defmodule Glimesh.Chat do
     username = user.username
 
     case :ets.lookup(:banned_list, username) do
-      [{^username, _}] -> raise ArgumentError, message: "user must not be banned"
+      [{^username, {streamid, banned}}] ->
+        if streamid === streamer.id and banned do
+          raise ArgumentError, message: "user must not be banned"
+        else
+          true
+        end
+      [] -> true
+    end
+
+    case :ets.lookup(:timedout_list, username) do
+      [{^username, {streamid, time}}] ->
+        IO.inspect(DateTime.compare(DateTime.utc_now(), time))
+        if streamid === streamer.id and DateTime.compare(DateTime.utc_now(), time) !== :gt do
+          raise ArgumentError, message: "user must not be timedout"
+        else
+          true
+        end
       [] -> true
     end
 
@@ -133,6 +150,19 @@ defmodule Glimesh.Chat do
           m.is_visible == true and
             m.streamer_id == ^streamer.id and
             m.user_id == ^user.id
+
+    Repo.update_all(query, set: [is_visible: false])
+  end
+
+  @doc """
+  Deletes all chat messages for the streamers chat
+  """
+  def delete_all_chat_messages(streamer) do
+    query =
+      from m in ChatMessage,
+        where:
+          m.is_visible == true and
+            m.streamer_id == ^streamer.id
 
     Repo.update_all(query, set: [is_visible: false])
   end
@@ -201,10 +231,100 @@ defmodule Glimesh.Chat do
     Phoenix.PubSub.subscribe(Glimesh.PubSub, "chats:#{user.id}")
   end
 
+
+  def timeout_user(streamer, moderator, user_to_timeout, time) do
+    IO.inspect(time)
+    if can_moderate?(streamer, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
+    log =
+      %UserModerationLog{
+        streamer: streamer,
+        moderator: moderator,
+        user: user_to_timeout
+      }
+      |> UserModerationLog.changeset(%{action: "timeout"})
+      |> Repo.insert()
+
+    :ets.insert(:timedout_list, {user_to_timeout.username, {streamer.id, time}})
+
+    delete_chat_messages_for_user(streamer, user_to_timeout)
+
+    broadcast({:ok, %{streamer: streamer, user: user_to_timeout, moderator: moderator}}, :user_timedout)
+
+    log
+  end
+
+  def ban_user(streamer, moderator, user_to_ban) do
+    if can_moderate?(streamer, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
+    log =
+      %UserModerationLog{
+        streamer: streamer,
+        moderator: moderator,
+        user: user_to_ban
+      }
+      |> UserModerationLog.changeset(%{action: "ban"})
+      |> Repo.insert()
+
+    :ets.insert(:banned_list, {user_to_ban.username, {streamer.id, true}})
+
+    delete_chat_messages_for_user(streamer, user_to_ban)
+
+    broadcast({:ok, %{streamer: streamer, user: user_to_ban, moderator: moderator}}, :user_banned)
+
+    log
+  end
+
+  def unban_user(streamer, moderator, user_to_unban) do
+    if can_moderate?(streamer, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
+    log =
+      %UserModerationLog{
+        streamer: streamer,
+        moderator: moderator,
+        user: user_to_unban
+      }
+      |> UserModerationLog.changeset(%{action: "unban"})
+      |> Repo.insert()
+
+    :ets.delete(:banned_list, user_to_unban.username)
+
+    broadcast({:ok, %{streamer: streamer, user: user_to_unban, moderator: moderator}}, :user_unbanned)
+
+    log
+  end
+
+  def clear_chat(streamer, moderator) do
+    if can_moderate?(streamer, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
+    log =
+      %UserModerationLog{
+        streamer: streamer,
+        moderator: moderator,
+        user: moderator
+      }
+      |> UserModerationLog.changeset(%{action: "clear_chat"})
+      |> Repo.insert()
+
+    delete_all_chat_messages(streamer)
+
+    broadcast({:ok, %{streamer: streamer, moderator: moderator}}, :chat_cleared)
+
+    log
+  end
+
   defp broadcast({:error, _reason} = error, _event), do: error
 
-  defp broadcast({:ok, chat_message}, event) do
-    Phoenix.PubSub.broadcast(Glimesh.PubSub, "chats:#{chat_message.streamer.id}", {event, chat_message})
-    {:ok, chat_message}
+  defp broadcast({:ok, data}, event) do
+    Phoenix.PubSub.broadcast(Glimesh.PubSub, "chats:#{data.streamer.id}", {event, data})
+    {:ok, data}
   end
 end

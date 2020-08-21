@@ -3,6 +3,7 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
 
   alias Glimesh.Chat
   alias Glimesh.Presence
+  alias Glimesh.Accounts
 
   @impl true
   def update(%{chat_message: chat_message, user: user} = assigns, socket) do
@@ -31,13 +32,57 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
       case command do
         {:timeout, components} ->
           [user, time] = components
-          IO.inspect(components)
+          date_time = DateTime.utc_now()
+
+          if String.contains?(time, "s") and !String.contains?(time, ["h", "m"]) do
+            time = time
+              |> String.trim()
+              |> String.replace("s", "")
+            if Integer.parse(time) === :error do
+              raise "Time was not a parsable integer"
+            else
+              {time_int, _} = Integer.parse(time)
+              date_time = DateTime.add(date_time, time_int)
+            end
+          end
+          if String.contains?(time, "m") and !String.contains?(time, ["h", "s"]) do
+            time = time
+              |> String.trim()
+              |> String.replace("m", "")
+            if Integer.parse(time) === :error do
+              raise "Time was not a parsable integer"
+            else
+              {time_int, _} = Integer.parse(time)
+              date_time = DateTime.add(date_time, time_int * 60)
+            end
+          end
+          if String.contains?(time, "h") and !String.contains?(time, ["s", "m"]) do
+            time = time
+              |> String.trim()
+              |> String.replace("h", "")
+            if Integer.parse(time) === :error do
+              raise "Time was not a parsable integer"
+            else
+              {time_int, _} = Integer.parse(time)
+              date_time = DateTime.add(date_time, time_int * 60 * 60)
+            end
+          end
+          Chat.timeout_user(socket.assigns.streamer, socket.assigns.user, Accounts.get_by_username!(String.replace(user, "@", "")), date_time)
+        {:ban, components} ->
+          [user] = components
+          Chat.ban_user(socket.assigns.streamer, socket.assigns.user, Accounts.get_by_username!(String.replace(user, "@", "")))
+        {:unban, components} ->
+          [user] = components
+          Chat.unban_user(socket.assigns.streamer, socket.assigns.user, Accounts.get_by_username!(String.replace(user, "@", "")))
+        {:clear, _} ->
+          Chat.clear_chat(socket.assigns.streamer, socket.assigns.user)
         _ ->
           IO.inspect(command)
       end
       {:noreply,
         socket
-        |> put_flash(:info, "Command recived")}
+        |> put_flash(:info, "Command recived")
+        |> assign(:changeset, Chat.empty_chat_message())}
     else
       save_chat_message(socket, socket.assigns.streamer, socket.assigns.user, chat_message_params)
     end
@@ -66,15 +111,19 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
       [command | components] = String.split(rest)
       ##this is annoying but hey you do what you do to get it to work
       case command do
-        c when c == "timeout" ->
+        "timeout" ->
           {true, {:timeout, components}}
-        c when c == "ban" ->
+        "ban" ->
           {true, {:ban, components}}
+        "unban" ->
+          {true, {:unban, components}}
+        "clear" ->
+          {true, {:clear, components}}
         _ ->
           {false, nil}
       end
     else
       {false, nil}
     end
-    end
+  end
 end

@@ -47,10 +47,12 @@ defmodule GlimeshWeb.ChatLive.Index do
 
   @impl true
   def handle_event("timeout_user", %{"user" => to_ban_user}, socket) do
+    dt = DateTime.add(DateTime.utc_now(), 300, :second) # for some reason add can only accept seconds and lower so this will equate to 5 minutes in the future
     Streams.timeout_user(
       socket.assigns.streamer,
       socket.assigns.user,
-      Accounts.get_by_username!(to_ban_user)
+      Accounts.get_by_username!(to_ban_user),
+      dt
     )
 
     {:noreply, socket}
@@ -70,9 +72,9 @@ defmodule GlimeshWeb.ChatLive.Index do
   @impl true
   def handle_info({:chat_sent, message}, socket) do
     {:noreply,
-     socket
-     |> assign(:update_action, "append")
-     |> update(:chat_messages, fn messages -> [message | messages] end)}
+      socket
+      |> assign(:update_action, "append")
+      |> update(:chat_messages, fn messages -> [message | messages] end)}
   end
 
   @impl true
@@ -80,9 +82,26 @@ defmodule GlimeshWeb.ChatLive.Index do
     # Gotta figure out why messages here is [], I guess it's the temporary assigns above? But why does :chat_sent work?
     # {:noreply, socket |> assign(:update_action, "replace") |> update(:chat_messages, fn messages -> Enum.reject(messages, fn x -> x.user_id === bad_user.id end) |> IO.inspect() end)}
     {:noreply,
-     socket
-     |> assign(:update_action, "replace")
-     |> assign(:chat_messages, list_chat_messages(socket.assigns.streamer))}
+      socket
+      |> assign(:update_action, "replace")
+      |> assign(:chat_messages, list_chat_messages(socket.assigns.streamer))}
+  end
+
+  @impl true
+  def handle_info({:user_banned, _}, socket) do
+    {:noreply,
+      socket
+      |> assign(:update_action, "replace")
+      |> assign(:chat_messages, list_chat_messages(socket.assigns.streamer))}
+  end
+
+  @impl true
+  def handle_info({:chat_cleared, _}, socket) do
+    IO.inspect(socket)
+    {:noreply,
+      socket
+      |> assign(:update_action, "replace")
+      |> assign(:chat_messages, [%ChatMessage{}])}
   end
 
   defp list_chat_messages(streamer) do
