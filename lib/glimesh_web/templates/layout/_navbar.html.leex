@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <%= live_redirect class: "navbar-brand", to: Routes.homepage_path(@conn, :index) do %>
-    <img src="/images/logos/logo-with-side-text.png" class="d-inline-block align-top" alt="">
+    <img src="/images/logos/logo-for-navbar.png" class="d-inline-block align-top" alt="">
     <% end %>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#primaryNav"
         aria-controls="primaryNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,20 +52,24 @@
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <%= @current_user.displayname %>
                     <img src="<%= Glimesh.Avatar.url({@current_user.avatar, @current_user}, :original) %>" alt="avatar"
+                        width="30" height="30"
                         class="img-avatar <%= if @current_user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
                 </a>
                 <div class="dropdown-menu" aria-labelledby="userProfileDropdown">
-                    <%= live_redirect gettext("Upgrade!"), class: "nav-link text-warning", to: Routes.platform_subscription_index_path(@conn, :index) %>
+                    <%= live_redirect class: "dropdown-item text-warning", to: Routes.platform_subscription_index_path(@conn, :index) do %>
+                    <i class="fas fa-cookie fa-fw"></i>
+                    <%= gettext("Upgrade!") %>
+                    <% end %>
                     <%= link class: "dropdown-item", to: Routes.user_payments_path(@conn, :index) do %>
-                    <i class="fas fa-money-bill"></i>
+                    <i class="fas fa-money-bill fa-fw"></i>
                     <%= gettext("Payments") %>
                     <% end %>
                     <%= link class: "dropdown-item", to: Routes.user_settings_path(@conn, :profile) do %>
-                    <i class="fas fa-user"></i>
+                    <i class="fas fa-user fa-fw"></i>
                     <%= gettext("Settings") %>
                     <% end %>
                     <%= link class: "dropdown-item", to: Routes.user_session_path(@conn, :delete), method: :delete do %>
-                    <i class="fas fa-door-closed"></i>
+                    <i class="fas fa-door-closed fa-fw"></i>
                     <%= gettext("Sign Out") %>
                     <% end %>
                 </div>
