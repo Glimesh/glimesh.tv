@@ -70,17 +70,10 @@ function tryVideo(url) {
             player.on("error", function (error) {
                 console.log(error);
             });
-            player.on('ready', function () {
-                // player.play();
-            });
 
             player.on('metaChanged', function (f) {
-                console.log(f);
                 player.play();
             });
-
-            setTimeout(function () {
-            }, 5000);
         });
     }
 }
@@ -106,11 +99,9 @@ let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("
 let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken }, hooks: Hooks });
 
 // Show progress bar on live navigation and form submits
-window.addEventListener("phx:page-loading-start", info => NProgress.start());
+window.addEventListener("phx:page-loading-start", () => {});
 window.addEventListener("phx:page-loading-stop", info => {
-    console.log("phx:page-loading-stop");
     BSN.initCallback(document.body);
-    NProgress.done();
 
     // Close the nav bar on navigate
     if (document.getElementById("primaryNav")) {
@@ -122,7 +113,7 @@ window.addEventListener("phx:page-loading-stop", info => {
 liveSocket.connect();
 
 // expose liveSocket on window for web console debug logs and latency simulation:
-liveSocket.enableDebug();
-// >> liveSocket.enableLatencySim(1000)
+// liveSocket.enableDebug();
+// liveSocket.enableLatencySim(1000)
 window.liveSocket = liveSocket;
 
