@@ -2,8 +2,8 @@ Copyright (c) 2020-present Glimesh
 
 Portions of this software are licensed as follows:
 
-* All content that resides under the "assets/css/" directory of this repository, 
-  if that directory exists, is licensed under the license defined in "assets/css/LICENSE.md".
+* All content that resides under the "assets/css/cork" directory of this repository, 
+  if that directory exists, is licensed under the license defined in "assets/css/cork/LICENSE.md".
 * All client-side Javascript (when served directly or after being compiled, arranged, 
   augmented, or combined), is licensed under the "MIT Expat" license.
 * All third party components incorporated into the Glimesh Software are licensed under the 

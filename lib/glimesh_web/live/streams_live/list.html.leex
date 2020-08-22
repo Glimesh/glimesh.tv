@@ -47,7 +47,7 @@
                                             </p>
                                             <p class="card-text card-stream-streamer <%= if stream.streamer.stripe_user_id, do: "sub-ready", else: "" %>">
                                                 <span class="card-stream-username"><%= stream.streamer.displayname %></span>
-                                                <img src="<%= Glimesh.Avatar.url({stream.streamer.avatar, stream.streamer}, :original) %>" alt="<%= stream.streamer.displayname%>" class="img-avatar <%= if stream.streamer.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+                                                <img src="<%= Glimesh.Avatar.url({stream.streamer.avatar, stream.streamer}, :original) %>" alt="<%= stream.streamer.displayname%>" width="35" height="35" class="img-avatar <%= if stream.streamer.stripe_user_id, do: "img-verified-streamer", else: "" %>">
                                             </p>
                                         </div>
                                     </div>
