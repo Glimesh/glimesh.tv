@@ -263,7 +263,7 @@
                                 <div id="tfa-field" class="field-wrapper input">
                                     <i class="fas fa-lock"></i>
 
-                                    <%= text_input f, :tfa, class: "form-control", placeholder: dgettext("profile", "2FA Code") %>
+                                    <%= text_input f, :tfa, class: "form-control", placeholder: gettext("2FA Code") %>
 
                                     <%= submit "Login", class: "btn btn-success" %>
                                 </div>

@@ -27,10 +27,7 @@ defmodule GlimeshWeb.UserSecurityController do
         conn
         |> put_flash(
           :info,
-          dgettext(
-            "profile",
-            "A link to confirm your e-mail change has been sent to the new address."
-          )
+          gettext("A link to confirm your e-mail change has been sent to the new address.")
         )
         |> redirect(to: Routes.user_security_path(conn, :profile))
 
@@ -43,14 +40,14 @@ defmodule GlimeshWeb.UserSecurityController do
     case Accounts.update_user_email(conn.assigns.current_user, token) do
       :ok ->
         conn
-        |> put_flash(:info, dgettext("profile", "E-mail changed successfully."))
+        |> put_flash(:info, gettext("E-mail changed successfully."))
         |> redirect(to: Routes.user_security_path(conn, :profile))
 
       :error ->
         conn
         |> put_flash(
           :error,
-          dgettext("errors", "Email change link is invalid or it has expired.")
+          gettext("Email change link is invalid or it has expired.")
         )
         |> redirect(to: Routes.user_security_path(conn, :profile))
     end
@@ -62,7 +59,7 @@ defmodule GlimeshWeb.UserSecurityController do
     case Accounts.update_user_password(user, password, user_params) do
       {:ok, user} ->
         conn
-        |> put_flash(:info, dgettext("profile", "Password updated successfully."))
+        |> put_flash(:info, gettext("Password updated successfully."))
         |> put_session(:user_return_to, Routes.user_security_path(conn, :profile))
         |> UserAuth.log_in_user(user)
 

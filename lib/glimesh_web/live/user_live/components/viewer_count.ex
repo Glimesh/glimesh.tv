@@ -7,7 +7,7 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCount do
   @impl true
   def render(assigns) do
     ~L"""
-      <button class="btn btn-danger"><%= dgettext("streams", " %{count} Viewers", count: @viewer_count) %></button>
+      <button class="btn btn-danger"><%= gettext(" %{count} Viewers", count: @viewer_count) %></button>
     """
   end
 

@@ -1,5 +1,5 @@
 <div class="container">
-    <h2 class="mt-4"><%= dgettext("payments", "Your Payment Portal") %></h2>
+    <h2 class="mt-4"><%= gettext("Your Payment Portal") %></h2>
 
     <div class="row">
         <div class="col-md-4">
@@ -8,7 +8,7 @@
                     <div class="w-content">
                         <div class="w-info">
                             <h6 class="value">$ 0</h6>
-                            <p class=""><%= dgettext("payments", "Received") %></p>
+                            <p class=""><%= gettext("Received") %></p>
                         </div>
                         <div class="">
                             <div class="w-icon">
@@ -24,7 +24,7 @@
                     <div class="w-content">
                         <div class="w-info">
                             <h6 class="value">$ 0</h6>
-                            <p class=""><%= dgettext("payments", "Sent") %></p>
+                            <p class=""><%= gettext("Sent") %></p>
                         </div>
                         <div class="">
                             <div class="w-icon">
@@ -41,27 +41,27 @@
                 <div class="card-body">
                     <%= if @has_payment_method do %>
 
-                        <h5 class=""><%= dgettext("payments", "Saved Payment Method") %></h5>
+                        <h5 class=""><%= gettext("Saved Payment Method") %></h5>
 
-                        <p><%= dgettext("payments", "You have an existing saved payment method. You can delete it by clicking the button below.") %></p>
+                        <p><%= gettext("You have an existing saved payment method. You can delete it by clicking the button below.") %></p>
 
                         <%= form_for @default_payment_changeset, Routes.user_payments_path(@conn, :delete_default_payment), fn _ -> %>
                             <%= if @default_payment_changeset.action do %>
                             <div class="alert alert-danger">
-                                <p><%= dgettext("errors", "Oops, something went wrong! Please check the errors below.") %></p>
+                                <p><%= gettext("Oops, something went wrong! Please check the errors below.") %></p>
                             </div>
                             <% end %>
-                            <button type="submit" class="btn btn-block btn-danger"><%= dgettext("payments", "Delete Saved Payment") %></button>
+                            <button type="submit" class="btn btn-block btn-danger"><%= gettext("Delete Saved Payment") %></button>
                         <% end %>
 
                     <% else %>
                     <div class="info">
-                        <h5 class=""><%= dgettext("payments", "Setup Payment Method") %></h5>
+                        <h5 class=""><%= gettext("Setup Payment Method") %></h5>
                         <!--<p class="inv-balance">$10,344</p>-->
                     </div>
                     <div class="acc-action">
                         <div class="">
-                        <p><%= dgettext("payments", "You can link a payment method by creating a subscription to a channel, or the platform.") %></p>
+                        <p><%= gettext("You can link a payment method by creating a subscription to a channel, or the platform.") %></p>
                         </div>
                     </div>
                     <% end %>
@@ -74,23 +74,23 @@
                     <div class="account-box">
                         <%= if @is_sub_ready_streamer do %>
                         <div class="info">
-                            <h5 class=""><%= dgettext("payments", "Sub-ready Streamer") %></h5>
+                            <h5 class=""><%= gettext("Sub-ready Streamer") %></h5>
                             <!--<p class="inv-balance">$10,344</p>-->
                         </div>
                         <div class="acc-action">
                             <div class="">
-                            <h6><%= dgettext("payments", "Welcome to the sub club!") %></h6>
+                            <h6><%= gettext("Welcome to the sub club!") %></h6>
                             </div>
                         </div>
                         <% else %>
                         <div class="info">
-                            <h5 class=""><%= dgettext("payments", "Streamer") %></h5>
+                            <h5 class=""><%= gettext("Streamer") %></h5>
                             <!--<p class="inv-balance">$10,344</p>-->
                         </div>
                         <div class="acc-action">
                             <div class="">
                             </div>
-                            <a href="<%= @stripe_oauth_url %>" class="btn btn-light-default"><%= dgettext("payments", "Enable Subscriptions") %></a>
+                            <a href="<%= @stripe_oauth_url %>" class="btn btn-light-default"><%= gettext("Enable Subscriptions") %></a>
                         </div>
                         <% end %>
                     </div>
@@ -99,15 +99,15 @@
         </div>
     </div>
 
-    <h4 class="mt-4"><%= dgettext("payments", "Your Subscriptions") %></h4>
+    <h4 class="mt-4"><%= gettext("Your Subscriptions") %></h4>
     <div class="row">
         <%= if @has_platform_subscription do %>
         <div class="col-md-3">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title"><%= dgettext("payments", "Glimesh Sub!") %></h5>
-                <p class="card-text"><%= dgettext("payments", "Subscribed since ?.") %></p>
-                <%= link dgettext("payments", "Unsubscribe"), to: Routes.platform_subscription_index_path(@conn, :index), class: "btn btn-danger btn-sm" %>
+                <h5 class="card-title"><%= gettext("Glimesh Sub!") %></h5>
+                <p class="card-text"><%= gettext("Subscribed since ?.") %></p>
+                <%= link gettext("Unsubscribe"), to: Routes.platform_subscription_index_path(@conn, :index), class: "btn btn-danger btn-sm" %>
               </div>
             </div>
         </div>
@@ -117,7 +117,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h5 class="card-title"><%= sub.streamer.displayname %></h5>
-                    <p class="card-text"><%= dgettext("payments", "Subscribed since %{date}", date: sub.started_at) %></p>
+                    <p class="card-text"><%= gettext("Subscribed since %{date}", date: sub.started_at) %></p>
                     <%= link "Unsubscribe", to: Routes.user_stream_path(@conn, :index, sub.streamer.displayname), class: "btn btn-danger btn-sm" %>
                   </div>
                 </div>
@@ -126,7 +126,7 @@
     </div>
     <div class="card mt-4">
         <div class="card-header">
-            <h5><%= dgettext("payments", "Income History") %> </h5>
+            <h5><%= gettext("Income History") %> </h5>
         </div>
         <div class="card-body">
 
@@ -134,7 +134,7 @@
     </div>
     <div class="card mt-4">
         <div class="card-header">
-            <h5><%= dgettext("payments", "Payment History") %></h5>
+            <h5><%= gettext("Payment History") %></h5>
         </div>
         <div class="card-body">
 

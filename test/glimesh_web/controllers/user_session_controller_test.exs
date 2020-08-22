@@ -63,7 +63,7 @@ defmodule GlimeshWeb.UserSessionControllerTest do
 
       response = html_response(conn, 200)
       assert response =~ "<h3>Login to our Alpha!</h3>"
-      assert response =~ "Invalid e-mail or password"
+      assert response =~ "Invalid email or password"
     end
   end
 

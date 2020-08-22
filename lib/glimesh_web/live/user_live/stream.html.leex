@@ -70,7 +70,7 @@
           <%= if @streamer.profile_content_html do %>
               <%= raw(@streamer.profile_content_html) %>
           <% else %>
-              <p><%= dgettext("profile", "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!") %></p>
+              <p><%= gettext("Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!") %></p>
           <% end %>
         </div>
       </div>

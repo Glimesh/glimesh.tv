@@ -13,7 +13,7 @@ defmodule GlimeshWeb.StreamsLive.List do
 
     {:ok,
      socket
-     |> assign(:page_title, dgettext("streams", "Followed Streams"))
+     |> assign(:page_title, gettext("Followed Streams"))
      |> assign(:page, page)}
   end
 

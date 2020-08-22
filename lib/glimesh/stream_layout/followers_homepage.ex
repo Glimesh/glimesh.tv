@@ -19,7 +19,7 @@ defmodule Glimesh.StreamLayout.FollowersHomepage do
   end
 
   def set_title(page) do
-    Map.put(page, :title, dgettext("navbar", "Following"))
+    Map.put(page, :title, gettext("Following"))
   end
 
   def set_section(page, user) do

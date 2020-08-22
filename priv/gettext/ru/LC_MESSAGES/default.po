@@ -1,100 +1,103 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
 msgid ""
 msgstr ""
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Project-Id-Version: Glimesh\n"
-"Language: ja\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3\n"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:35
 msgid "Are you sure?"
-msgstr "本気ですか？"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:18
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:25
 msgid "Avatar"
-msgstr "アバター"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:37
 msgid "Back"
-msgstr "バック"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:64
 msgid "Cancel Subscription"
-msgstr "サブスクリプションをキャンセル"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/form_component.ex:52
 msgid "Category created successfully"
-msgstr "カテゴリが正常に作成されました"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/form_component.ex:39
 msgid "Category updated successfully"
-msgstr "カテゴリは正常に更新されました"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:41
 msgid "Confirmation link is invalid or it has expired."
-msgstr "確認用リンクが無効、または有効期限が切れています。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:22
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:38
 msgid "Cosmetic Features"
-msgstr "ビジュアル機能"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:134
 msgid "Display name must match Username"
-msgstr "表示名はユーザー名と一致している必要があります。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:36
 msgid "Edit"
-msgstr "編集"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.ex:19
 #: lib/glimesh_web/live/admin/category_live/show.ex:20
 msgid "Edit Category"
-msgstr "カテゴリを編集"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:48
 msgid "Email change link is invalid or it has expired."
-msgstr "メールアドレス変更リンクが無効、または有効期限が切れています。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:152
 msgid "Email is the same"
-msgstr "同じメールアドレス"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/article/index.html.eex:2
 msgid "Glimesh Blog"
-msgstr "グリメッシュ Blog"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:4
 msgid "Glimesh Funding Progress"
-msgstr "グリメッシュ資金調達の進捗状況"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:18
 msgid "Help us fund the platform & grow!"
-msgstr "プラットフォームへの資金提供と成長にご協力ください＼(^o^)／"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:244
 msgid "Incorrect YouTube URL format"
-msgstr "YouTubeのURL形式が間違っています。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:19
@@ -104,138 +107,138 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:235
 msgid "Invalid Password"
-msgstr "無効なパスワード"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:22
 msgid "Invalid e-mail or password"
-msgstr "メールアドレスまたはパスワードが無効です。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.ex:31
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:2
 msgid "Listing Categories"
-msgstr "カテゴリーのリスト"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:16
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:15
 msgid "Name"
-msgstr "名前"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.ex:25
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:42
 msgid "New Category"
-msgstr "新たなカテゴリー"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:51
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:6 lib/glimesh_web/templates/user_settings/edit.html.eex:27
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:127 lib/glimesh_web/templates/user_settings/edit.html.eex:162
 msgid "Oops, something went wrong! Please check the errors below."
-msgstr "おっと、何かが間違っていました! 以下のエラーを確認してください。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:19
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:30
 msgid "Parent"
-msgstr "ペアレント"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/form_component.html.leex:11
 msgid "Parent Category"
-msgstr "ペアレントカテゴリー"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:162
 msgid "Password does not match"
-msgstr "パスワードが一致しません。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:6
 msgid "Platform Subs"
-msgstr "プラットフォーム登録者"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:32
 msgid "Popular!"
-msgstr "Popular!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/article/index.html.eex:15
 msgid "Read More"
-msgstr "Read More"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_reset_password_controller.ex:56
 msgid "Reset password link is invalid or it has expired."
-msgstr "パスワードのリセットリンクが無効、または有効期限が切れています。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:28
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:45
 msgid "Select"
-msgstr "選択"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.ex:19
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:1
 msgid "Show Category"
-msgstr "カテゴリを表示"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:17
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:20
 msgid "Slug"
-msgstr "スラッグ"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:7
 msgid "Streamer Subs"
-msgstr "ストリーマーチャンネル登録者"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:34
 msgid "Support Glimesh's future with your wallet! Get special perks to show off."
-msgstr "お財布でGlimeshの未来を応援しよう! これ見よがしのスペシャル特典を手に入れよう。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:54
 msgid "Thanks for supporting Glimesh :D"
-msgstr "グリメッシュをサポートしてくれてありがとう (^o^)"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:53
 msgid "You're subscribed!"
-msgstr "登録しています♪ヽ(´▽｀)/"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:19
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:35 lib/glimesh_web/live/subscription_component.ex:38
 msgid "monthly"
-msgstr "毎月"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:20
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:36
 msgid "yearly"
-msgstr "毎年"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/viewer_count.ex:10
 msgid " %{count} Viewers"
-msgstr "%{count} Viewers"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:19
 msgid "%{category} Streams"
-msgstr "%{category} Streams"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:9
 msgid "%{category} Streams Coming Soon"
-msgstr "間もなく登場する%{category}ストリーム"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_session/new.html.eex:266
@@ -246,616 +249,615 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:77
 msgid "About"
-msgstr "About"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:34
 msgid "Account confirmed successfully."
-msgstr "アカウントを正常に確認しました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:16
 msgid "Art"
-msgstr "Art"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:89
 msgid "Blog"
-msgstr "Blog\n"
-""
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:48
 msgid "Built by the community, for the community."
-msgstr "コミュニティによって、コミュニティのために構築されました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:149
 msgid "Change E-mail"
-msgstr "Ｅメールを変更"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:191
 msgid "Change Password"
-msgstr "パスワード変更"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:17
 msgid "Click Update Settings down below when you've chosen the file."
-msgstr "ファイルを選択したら、下の設定更新をクリックしてください。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:48
 msgid "Community Driven."
-msgstr "コミュニティ主導"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:49
 msgid "Community is one of our main focuse at Glimesh and we make sure to include you every step of the way. We host staff meetings live on our platform every Tuesday that are open to everyone and if there's a feature you wish we had, you can collaborate on our %{a_start}open source codebase%{a_end} to create it!"
-msgstr "コミュニティはグリメッシュの主要な焦点の一つであり、あらゆる段階で皆さんを必ず含めるようにしています。毎週火曜日には、プラットフォーム上でスタッフミーティングライブを開催しており、誰でも参加できます。もし、欲しい機能がある場合は、オープンソースのコードベースで協力し、それを作成することができます!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:183
 msgid "Confirm New Password"
-msgstr "新しいパスワードを確認"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:14
 msgid "Confirm new password"
-msgstr "新しいパスワードを確認"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:54
 msgid "Copyright Infringement / Law Violation"
-msgstr "著作権侵害 / 法律違反"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:141
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:175 lib/glimesh_web/templates/user_settings/edit.html.eex:234
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:242
 msgid "Current Password"
-msgstr "現在のパスワード"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:54
 msgid "Delete Saved Payment"
-msgstr "保存された支払いを削除"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:91
 msgid "Discord Server URL"
-msgstr "DiscordサーバーURL"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:34
 msgid "Display Name"
-msgstr "表示名"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:41
 msgid "E-mail changed successfully."
-msgstr "メールアドレスが正常に変更されました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:28
 msgid "Education"
-msgstr "Education"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:134
 msgid "Email"
-msgstr "Eメール"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:93
 msgid "Enable Subscriptions"
-msgstr "サブスクリプションを有効にする"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:13
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:17
 msgid "Follow"
-msgstr "Follow"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.ex:16
 msgid "Followed Streams"
-msgstr "Followedストリーム"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:56
 msgid "Followers"
-msgstr "Followers"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/stream_layout/followers_homepage.ex:22
 #: lib/glimesh_web/live/user_live/profile.html.leex:63 lib/glimesh_web/templates/layout/_navbar.html.leex:44
 msgid "Following"
-msgstr "Following"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:65
 msgid "For launch, subscriptions will be only be enabled in the US."
-msgstr "リリース時には、サブスクリプションは米国でのみ有効になります。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:13
 msgid "Gaming"
-msgstr "Gaming"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:108
 msgid "Glimesh Sub!"
-msgstr "グリメッシュ sub!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:86
 msgid "Glimesh isn't launched yet, but you can follow %{streamer} now and get automatically notified when they go live!"
-msgstr "グリメッシュはまだリリースされていませんが、%{streamer}をフォローして、ライブ配信時に自動的に通知を受け取れます!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:42
 msgid "Hate Speech"
-msgstr "ヘイトスピーチ"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:25
 msgid "IRL"
-msgstr "IRL"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:22
 msgid "If your e-mail is in our system and it has not been confirmed yet, "
-msgstr "メールがシステムにあり、まだ確認されていない場合"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:48
 msgid "Inappropriate Content"
-msgstr "不適切なコンテンツ"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:129
 msgid "Income History"
-msgstr "収入の推移"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:68
 msgid "Instagram Username"
-msgstr "InstagramユーザーID"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:23
 msgid "It's even faster than light."
-msgstr "光よりもさらに速く。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:41
 msgid "Language"
-msgstr "言語"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:82
 msgid "Legal"
-msgstr "利用規約"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:64
 msgid "Level the playing field."
-msgstr "公平な競争の場。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:28
 msgid "Logged out successfully."
-msgstr "正常にログアウトしました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:33
 msgid "More"
-msgstr "More"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:19
 msgid "Music"
-msgstr "Music"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:61
 msgid "My Payments"
-msgstr "私の支払い"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:65
 msgid "My Profile"
-msgstr "私のプロフィール"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:10
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:170
 msgid "New password"
-msgstr "新しいパスワード"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:6
 msgid "Next-Gen Live Streaming"
-msgstr "次世代のライブストリーミング"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:65
 msgid "Notes"
-msgstr "ノート"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:60
 msgid "Other"
-msgstr "その他"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:3
 msgid "Our Users"
-msgstr "私たちユーザー"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:24
 msgid "Our fastest streaming technology is built on open standards and gives your streams unimaginable levels of interactivity. We're constantly pushing the boundaries of live video and of course, it's open source."
-msgstr "当社の最速ストリーミングテクノロジーはオープンスタンダードに基づいて構築されており、想像を超えるレベルのインタラクティブ性をストリームに提供します。私たちは常にライブビデオの境界を押し広げています。もちろん、それはオープンソースです"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_reset_password_controller.ex:39
 msgid "Password reset successfully."
-msgstr "パスワードが正常にリセットされました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:60
 msgid "Password updated successfully."
-msgstr "パスワードの更新に成功しました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:23
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:31
 msgid "Payment Details"
-msgstr "支払詳細"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:137
 msgid "Payment History"
-msgstr "支払い履歴"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:16
 msgid "Payment method already attached!"
-msgstr "お支払い方法は付属(゜.゜)"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_payments_controller.ex:60
 msgid "Payment method deleted!"
-msgstr "決済方法を削除しました!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:83
 msgid "Pre-Follow Streamer"
-msgstr "Pre-Follow Streamer"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:105
 msgid "Profile Content (Markdown supported)"
-msgstr "プロフィールコンテンツ（Markdown対応）"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:75
 msgid "Profile updated successfully."
-msgstr "プロフィールが更新されました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:11
 msgid "Received"
-msgstr "受け取った"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:74
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:24
 msgid "Register"
-msgstr "レジスター"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:8
 msgid "Register Your Account"
-msgstr "アカウントを登録する"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:257
 msgid "Remove Two Factor Authentication"
-msgstr "2段階認証を送信"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:10
 msgid "Report User"
-msgstr "レポートユーザー"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_confirmation/new.html.eex:2
 #: lib/glimesh_web/templates/user_confirmation/new.html.eex:18
 msgid "Resend confirmation instructions"
-msgstr "確認手順を再送信する"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:1
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:19
 msgid "Reset password"
-msgstr "パスワードのリセット"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/streamer_title.ex:22
 msgid "Save Info"
-msgstr "情報を保存"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:44
 msgid "Saved Payment Method"
-msgstr "保存された支払い方法"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:27
 msgid "Sent"
-msgstr "送った"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:59
 msgid "Setup Payment Method"
-msgstr "お支払い方法の設定"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:69
 msgid "Share my profile on Twitter"
-msgstr "Twitterで私のプロフィールをシェアする"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:71
 msgid "Share on Twitter"
-msgstr "Twitterでシェアする"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:69
 msgid "Sign Out"
-msgstr "サインアウト"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:75
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:25
 msgid "Sign in"
-msgstr "サインイン"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:66
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:48
 msgid "Social"
-msgstr "ソーシャル"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:87
 msgid "Streamer"
-msgstr "Streamer"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_payments_controller.ex:43
 msgid "Stripe account linked successfully, welcome to the sub club!"
-msgstr "Stripeアカウントが正常にリンクされました。Sub Clubへようこそ!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:19
 msgid "Sub Ready!"
-msgstr "Sub Ready!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:12
 #: lib/glimesh_web/templates/user_payments/index.html.eex:77
 msgid "Sub-ready Streamer"
-msgstr "Sub-ready Streamer"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:69
 msgid "Submit Report"
-msgstr "レポートを送信"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:252
 msgid "Submit Two Factor Authentication"
-msgstr "2段階認証を送信"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:43
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:15 lib/glimesh_web/live/user_live/components/subscribe_button.ex:18
 msgid "Subscribe"
-msgstr "Subscribe"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:120
 msgid "Subscribed since %{date}"
-msgstr "％{date}以降に購読"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:109
 msgid "Subscribed since ?."
-msgstr "?から購読"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:65
 msgid "Subscription buttons shouldn't be restricted for a particular group of streamers. Everyone who can verify their identity and bank information will receive a subscription button for their stream."
-msgstr "サブスクリプションボタンは、特定のグループのストリーマーに制限されるべきではありません。身元と銀行情報を確認できる人は誰でも、自分のストリームのサブスクリプションボタンを受け取ることができます。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:64
 msgid "Subscriptions for Everyone."
-msgstr "全員のサブスクリプション"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:22
 msgid "Tech"
-msgstr "Tech"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:7
 msgid "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving. We're launching soon, but you can get your account setup early and learn more about us below!"
-msgstr "真のリアルタイムインタラクティビティを中心に構築された最初の配信プラットフォームです。私たちの配信は、ワープするような超高速で、チャットはまばゆく、コミュニティは反映しています。間もなくリリースされますが、あなたのアカウントを早期に設定して、以下で我々についての詳細を確認できます。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:36
 msgid "Total Charge"
-msgstr "合計料金"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:57
 msgid "Twitter Username"
-msgstr "TwitterユーザーID"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:11
 msgid "Unfollow"
-msgstr "Unfollow"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:13
 #: lib/glimesh_web/templates/user_payments/index.html.eex:110
 msgid "Unsubscribe"
-msgstr "退会"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:110
 msgid "Update Settings"
-msgstr "設定を更新"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:58
 msgid "Upgrade!"
-msgstr "アップグレード!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_registration_controller.ex:23
 msgid "User created successfully."
-msgstr "ユーザーの作成に成功しました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:50
 msgid "User followed successfully"
-msgstr "ユーザーのフォローが成功しました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:64
 msgid "User unfollowed successfully"
-msgstr "ユーザーのフォローを解除しました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:38
 msgid "Users"
-msgstr "ユーザー"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:3
 msgid "View Public Profile"
-msgstr "プロフィールを見る"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:23
 msgid "Warp Speed Streaming."
-msgstr "ワープスピードストリーミング"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:10
 msgid "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!"
-msgstr "私たちは、特別なイベントやその他のユニークなストリームをたまに配信していますが、ライブになれば、このページはストリーマーで埋め尽くされます!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:118
 #: lib/glimesh_web/live/user_live/stream.html.leex:73
 msgid "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!"
-msgstr "私のプロフィールへようこそ! まだカスタマイズしていませんが、右上のユーザー名をクリックすることで簡単にカスタマイズできます!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:82
 msgid "Welcome to the sub club!"
-msgstr "Sub Clubへようこそ(*^^*)"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:36
 msgid "What has this user done wrong?"
-msgstr "このユーザーは何を間違っていますか"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:64
 msgid "You can link a payment method by creating a subscription to a channel, or the platform."
-msgstr "チャンネルまたはプラットフォームへのサブスクリプションを作成することにより、支払い方法をリンクできます。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:46
 msgid "You have an existing saved payment method. You can delete it by clicking the button below."
-msgstr "保存済みのお支払い方法が既にあります。下のボタンをクリックして削除できます"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:99
 msgid "YouTube Teaser URL"
-msgstr "YouTubeティーザーURL"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:80
 msgid "YouTube Username"
-msgstr "YouTubeユーザーID"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:19
 msgid "Your Name"
-msgstr "あなたの名前"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:2
 msgid "Your Payment Portal"
-msgstr "支払いポータル"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:12
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:23
 msgid "Your Settings"
-msgstr "あなたの設定"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:102
 msgid "Your Subscriptions"
-msgstr "あなたのサブスクリプション"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_confirmation/new.html.eex:11
 msgid "email"
-msgstr "Ｅメール"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:23
 msgid "you will receive an e-mail with instructions shortly."
-msgstr "まもなく手順が記載されたメールが届きます。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:204
 msgid "2FA Setup"
-msgstr "2段階認証の設定"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:28
 msgid "A link to confirm your e-mail change has been sent to the new address."
-msgstr "メールアドレスの変更を確認するためのリンクが新しいアドレスに送信されました。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:122
 msgid "Change e-mail"
-msgstr "Ｅメールを変更"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:157
 msgid "Change password"
-msgstr "パスワード変更"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_reset_password_controller.ex:24
 msgid "If your e-mail is in our system, you will receive instructions to reset your password shortly."
-msgstr "あなたのメールが私たちのシステムにある場合は、まもなくパスワードをリセットするための手順が送信されます。"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/edit.html.eex:2
 msgid "Your Profile"
-msgstr "あなたのプロフィール"
+msgstr ""
