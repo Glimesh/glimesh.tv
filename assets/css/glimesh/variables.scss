@@ -1,3 +1,20 @@
 $font-family-base: "Quicksand";
 
 $secondary: #5c1ac3;
+
+$color-bone-white: #f1f2f3;
+$color-navy-blue: #1b2e4b;
+$color-cosmic-blue: #0e1726;
+$color-teal: #009688;
+
+// List Groups
+$list-group-bg: $color-cosmic-blue;
+$list-group-hover-bg: $color-navy-blue;
+
+$list-group-active-bg: $color-navy-blue;
+$list-group-active-color: $color-teal;
+
+$list-group-action-hover-color: $color-teal;
+$list-group-action-color: $color-bone-white;
+$list-group-action-active-color: $color-teal;
+$list-group-action-active-bg: $color-navy-blue;
