@@ -95,7 +95,6 @@ defmodule Glimesh.Chat do
 
     case :ets.lookup(:timedout_list, username) do
       [{^username, {streamid, time}}] ->
-        IO.inspect(DateTime.compare(DateTime.utc_now(), time))
         if streamid === streamer.id and DateTime.compare(DateTime.utc_now(), time) !== :gt do
           raise ArgumentError, message: "user must not be timedout"
         else
@@ -233,7 +232,6 @@ defmodule Glimesh.Chat do
 
 
   def timeout_user(streamer, moderator, user_to_timeout, time) do
-    IO.inspect(time)
     if can_moderate?(streamer, moderator) === false do
       raise "User does not have permission to moderate."
     end

@@ -7,7 +7,6 @@
     id: "chat_message-form",
     class: ["chat-form"],
     phx_target: @myself,
-    phx_change: "validate",
     phx_submit: "send" %>
     <i class="far fa-smile-beam emoji-activator"></i>
     <%= text_input f, :message, class: ["mail-write-box form-control"], autocomplete: "off", disabled: @disabled %>

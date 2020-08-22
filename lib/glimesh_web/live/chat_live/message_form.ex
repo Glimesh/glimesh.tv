@@ -43,6 +43,7 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
             else
               {time_int, _} = Integer.parse(time)
               date_time = DateTime.add(date_time, time_int)
+              Chat.timeout_user(socket.assigns.streamer, socket.assigns.user, Accounts.get_by_username!(String.replace(user, "@", "")), date_time)
             end
           end
           if String.contains?(time, "m") and !String.contains?(time, ["h", "s"]) do
@@ -54,6 +55,7 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
             else
               {time_int, _} = Integer.parse(time)
               date_time = DateTime.add(date_time, time_int * 60)
+              Chat.timeout_user(socket.assigns.streamer, socket.assigns.user, Accounts.get_by_username!(String.replace(user, "@", "")), date_time)
             end
           end
           if String.contains?(time, "h") and !String.contains?(time, ["s", "m"]) do
@@ -65,9 +67,9 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
             else
               {time_int, _} = Integer.parse(time)
               date_time = DateTime.add(date_time, time_int * 60 * 60)
+              Chat.timeout_user(socket.assigns.streamer, socket.assigns.user, Accounts.get_by_username!(String.replace(user, "@", "")), date_time)
             end
           end
-          Chat.timeout_user(socket.assigns.streamer, socket.assigns.user, Accounts.get_by_username!(String.replace(user, "@", "")), date_time)
         {:ban, components} ->
           [user] = components
           Chat.ban_user(socket.assigns.streamer, socket.assigns.user, Accounts.get_by_username!(String.replace(user, "@", "")))

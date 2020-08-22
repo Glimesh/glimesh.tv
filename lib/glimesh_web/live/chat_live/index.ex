@@ -33,6 +33,7 @@ defmodule GlimeshWeb.ChatLive.Index do
       |> assign(:is_moderator, Glimesh.Chat.can_moderate?(streamer, session["user"]))
       |> assign(:chat_messages, list_chat_messages(streamer))
       |> assign(:chat_message, %ChatMessage{})
+      |> assign(:chat_clear, false)
 
     {:ok, new_socket, temporary_assigns: [chat_messages: []]}
   end
@@ -74,34 +75,37 @@ defmodule GlimeshWeb.ChatLive.Index do
     {:noreply,
       socket
       |> assign(:update_action, "append")
-      |> update(:chat_messages, fn messages -> [message | messages] end)}
+      |> update(:chat_messages, fn messages -> [message | messages] end)
+      |> assign(:chat_clear, false)}
   end
 
   @impl true
   def handle_info({:user_timedout, _bad_user}, socket) do
-    # Gotta figure out why messages here is [], I guess it's the temporary assigns above? But why does :chat_sent work?
-    # {:noreply, socket |> assign(:update_action, "replace") |> update(:chat_messages, fn messages -> Enum.reject(messages, fn x -> x.user_id === bad_user.id end) |> IO.inspect() end)}
+    messages = list_chat_messages(socket.assigns.streamer);
     {:noreply,
       socket
       |> assign(:update_action, "replace")
-      |> assign(:chat_messages, list_chat_messages(socket.assigns.streamer))}
+      |> assign(:chat_messages, messages)
+      |> assign(:chat_clear, !Enum.any?(messages))}
   end
 
   @impl true
   def handle_info({:user_banned, _}, socket) do
+    messages = list_chat_messages(socket.assigns.streamer);
     {:noreply,
       socket
       |> assign(:update_action, "replace")
-      |> assign(:chat_messages, list_chat_messages(socket.assigns.streamer))}
+      |> assign(:chat_messages, messages)
+      |> assign(:chat_clear, !Enum.any?(messages))}
   end
 
   @impl true
   def handle_info({:chat_cleared, _}, socket) do
-    IO.inspect(socket)
     {:noreply,
       socket
       |> assign(:update_action, "replace")
-      |> assign(:chat_messages, [%ChatMessage{}])}
+      |> assign(:chat_messages, list_chat_messages(socket.assigns.streamer))
+      |> assign(:chat_clear, true)}
   end
 
   defp list_chat_messages(streamer) do
