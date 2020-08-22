@@ -5,8 +5,16 @@
       <div class="col-md-12 p-lg-5 mx-auto my-5">
         <h1 class="display-4 font-weight-normal"><%= dgettext("homepage", "Next-Gen Live Streaming") %></h1>
         <p class="lead font-weight-normal"><%= dgettext("homepage", "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving. We're launching soon, but you can get your account setup early and learn more about us below!") %></p>
-        <%= link dgettext("homepage", "Register Your Account"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-lg mt-3" %>
+        <%= link dgettext("homepage", "Register Your Account"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-lg mt-3", id: "registerButton" %>
       </div>
+      <script>
+        var registerButton = document.getElementById("registerButton");
+        var isloggedin = document.getElementById("userProfileDropdown");//This only appears if the user is logged in
+        if (isloggedin !== null) { //If we find the logged in layout...
+          registerButton.innerHTML = "Edit Your Account";
+          registerButton.href = "/users/settings" //Redirect the user to their settings 
+        }
+      </script>
     </div>
     </div>
 </div>
