@@ -10,8 +10,6 @@ defmodule Glimesh.Schema do
       Dataloader.new()
       |> Dataloader.add_source(Repo, Dataloader.Ecto.new(Repo))
 
-    # |> Dataloader.add_source(Streams, Streams.data())
-
     Map.put(ctx, :loader, loader)
   end
 
@@ -20,10 +18,17 @@ defmodule Glimesh.Schema do
   end
 
   query do
+    @desc "Get a list of streams"
+    field :streams, list_of(:stream) do
+      resolve(fn _parent, _args, _resolution ->
+        {:ok, Glimesh.Streams.list_streams()}
+      end)
+    end
+
     @desc "Get a list of users"
     field :users, list_of(:user) do
       resolve(fn _parent, _args, _resolution ->
-        {:ok, Glimesh.Streams.list_streams()}
+        {:ok, Glimesh.Accounts.list_users()}
       end)
     end
 

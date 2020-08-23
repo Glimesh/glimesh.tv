@@ -47,7 +47,12 @@ defmodule Glimesh.Streams do
 
   """
   def list_streams do
-    Repo.all(from u in User, where: u.can_stream == true)
+    Repo.all(
+      from sm in Metadata,
+      join: c in Category,
+      on: c.id == sm.category_id
+    )
+    |> Repo.preload([:category, :streamer])
   end
 
   def list_in_category(category) do

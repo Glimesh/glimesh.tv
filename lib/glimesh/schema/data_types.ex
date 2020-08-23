@@ -5,14 +5,21 @@ defmodule Glimesh.Schema.DataTypes do
 
   alias Glimesh.Repo
 
-  # object :stream do
-  #   field :title, :string
-  #   field :category, :string
+   object :stream do
+     field :stream_title, :string, name: "title", description: "The title of the stream"
+     field :category, non_null(:category), resolve: dataloader(Repo)
 
-  #   field :user, non_null(:user) do
-  #     resolve(dataloader(Repo))
-  #   end
-  # end
+     field :streamer, non_null(:user), name: "user", resolve: dataloader(Repo)
+   end
+
+   object :category do
+     field :id, :id
+     field :name, :string, description: "Name of the category"
+     field :tag_name, :string, description: "Parent Name and Name of the category in one string"
+     field :slug, :string, description: "Slug of the category"
+
+     field :parent, :category, resolve: dataloader(Repo)
+  end
 
   object :user do
     field :id, :id
@@ -37,8 +44,7 @@ defmodule Glimesh.Schema.DataTypes do
     field :id, :id
     field :message, :string
 
-    field :user, non_null(:user) do
-      resolve(dataloader(Repo))
-    end
+    field :user, non_null(:user), resolve: dataloader(Repo)
+    field :streamer, non_null(:user), resolve: dataloader(Repo)
   end
 end
