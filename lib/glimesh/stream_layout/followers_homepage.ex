@@ -23,7 +23,7 @@ defmodule Glimesh.StreamLayout.FollowersHomepage do
   end
 
   def set_section(page, user) do
-    streams = Streams.list_followed_streams(user)
+    streams = Streams.list_followed_channels(user)
 
     sections = [
       %PageSection{

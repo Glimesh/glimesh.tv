@@ -1,27 +1,20 @@
 defmodule Glimesh.Schema do
+  @moduledoc """
+  GraphQL Schema for the API
+  """
+
   use Absinthe.Schema
 
   alias Glimesh.Repo
+  alias Glimesh.Streams
 
   import_types(Glimesh.Schema.DataTypes)
 
-  def context(ctx) do
-    loader =
-      Dataloader.new()
-      |> Dataloader.add_source(Repo, Dataloader.Ecto.new(Repo))
-
-    Map.put(ctx, :loader, loader)
-  end
-
-  def plugins do
-    [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
-  end
-
   query do
-    @desc "Get a list of streams"
-    field :streams, list_of(:stream) do
+    @desc "Get a list of channels"
+    field :channels, list_of(:channel) do
       resolve(fn _parent, _args, _resolution ->
-        {:ok, Glimesh.Streams.list_streams()}
+        {:ok, Streams.list_channels()}
       end)
     end
 
@@ -35,10 +28,22 @@ defmodule Glimesh.Schema do
     @desc "Get a list of chat messages"
     field :chat_messages, list_of(:chat_message) do
       resolve(fn _parent, _args, _resolution ->
-        streamer = Glimesh.Streams.get_by_username!("clone1018")
+        streamer = Streams.get_channel_for_username!("clone1018")
 
         {:ok, Glimesh.Chat.list_chat_messages(streamer)}
       end)
     end
+  end
+
+  def context(ctx) do
+    loader =
+      Dataloader.new()
+      |> Dataloader.add_source(Repo, Dataloader.Ecto.new(Repo))
+
+    Map.put(ctx, :loader, loader)
+  end
+
+  def plugins do
+    [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
   end
 end

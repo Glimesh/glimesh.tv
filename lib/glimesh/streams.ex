@@ -8,15 +8,15 @@ defmodule Glimesh.Streams do
   alias Glimesh.Chat
   alias Glimesh.Repo
   alias Glimesh.Streams.Category
+  alias Glimesh.Streams.Channel
   alias Glimesh.Streams.Followers
-  alias Glimesh.Streams.Metadata
   alias Glimesh.Streams.UserModerationLog
   alias Glimesh.Streams.UserModerator
 
+  def get_subscribe_topic(:channel, streamer_id), do: "streams:channel:#{streamer_id}"
   def get_subscribe_topic(:chat, streamer_id), do: "streams:chat:#{streamer_id}"
   def get_subscribe_topic(:chatters, streamer_id), do: "streams:chatters:#{streamer_id}"
   def get_subscribe_topic(:viewers, streamer_id), do: "streams:viewers:#{streamer_id}"
-  def get_subscribe_topic(:metadata, streamer_id), do: "streams:metadata:#{streamer_id}"
 
   def subscribe_to(topic_atom, streamer_id),
     do: sub_and_return(get_subscribe_topic(topic_atom, streamer_id))
@@ -25,10 +25,10 @@ defmodule Glimesh.Streams do
 
   defp broadcast({:error, _reason} = error, _event), do: error
 
-  defp broadcast({:ok, data}, :update_metadata = event) do
+  defp broadcast({:ok, data}, :update_channel = event) do
     Phoenix.PubSub.broadcast(
       Glimesh.PubSub,
-      get_subscribe_topic(:metadata, data.streamer_id),
+      get_subscribe_topic(:channel, data.streamer_id),
       {event, data}
     )
 
@@ -46,49 +46,69 @@ defmodule Glimesh.Streams do
       []
 
   """
-  def list_streams do
+  def list_channels do
     Repo.all(
-      from sm in Metadata,
-      join: c in Category,
-      on: c.id == sm.category_id
+      from c in Channel,
+        join: cat in Category,
+        on: cat.id == c.category_id
     )
-    |> Repo.preload([:category, :streamer])
+    |> Repo.preload([:category, :user])
   end
 
   def list_in_category(category) do
-    # Repo.all(
-    #   from u in User,
-    #     join: sm in Metadata,
-    #     on: u.id == sm.streamer_id,
-    #     join: c in Category,
-    #     on: c.id == sm.category_id,
-    #     where: c.id == ^category.id or c.parent_id == ^category.id
-    # )
     Repo.all(
-      from sm in Metadata,
-        join: c in Category,
-        on: c.id == sm.category_id,
-        where: c.id == ^category.id or c.parent_id == ^category.id
+      from c in Channel,
+        join: cat in Category,
+        on: cat.id == c.category_id,
+        where: cat.id == ^category.id or cat.parent_id == ^category.id
     )
-    |> Repo.preload([:category, :streamer])
+    |> Repo.preload([:category, :user])
   end
 
-  def list_followed_streams(user) do
+  def list_followed_channels(user) do
     Repo.all(
-      from sm in Metadata,
+      from c in Channel,
         join: f in Followers,
-        on: sm.streamer_id == f.streamer_id,
+        on: c.user_id == f.streamer_id,
         where: f.user_id == ^user.id
     )
-    |> Repo.preload([:category, :streamer])
+    |> Repo.preload([:category, :user])
   end
 
-  def get_by_username(username) when is_binary(username) do
-    Repo.get_by(User, username: username, can_stream: true)
+  def get_channel_for_username!(username) do
+    Repo.one(
+      from c in Channel,
+        join: u in User,
+        on: c.user_id == u.id,
+        where: u.username == ^username
+    )
+    |> Repo.preload([:category, :user])
   end
 
-  def get_by_username!(username) when is_binary(username) do
-    Repo.get_by!(User, username: username, can_stream: true)
+  def get_channel_for_user!(user) do
+    Repo.get_by(Channel, user_id: user.id) |> Repo.preload([:category, :user])
+  end
+
+  def create_channel(user, attrs \\ %{}) do
+    %Channel{
+      user: user
+    }
+    |> Channel.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_channel(%Channel{} = channel, attrs) do
+    new_channel =
+      channel
+      |> Channel.changeset(attrs)
+      |> Repo.update!()
+      |> Repo.preload(:category, force: true)
+
+    broadcast({:ok, new_channel}, :update_channel)
+  end
+
+  def change_channel(%Channel{} = channel, attrs \\ %{}) do
+    Channel.changeset(channel, attrs)
   end
 
   def add_moderator(streamer, moderator) do
@@ -193,90 +213,6 @@ defmodule Glimesh.Streams do
     Repo.one!(from f in Followers, select: count(f.id), where: f.user_id == ^user.id)
   end
 
-  alias Glimesh.Streams.Metadata
-
-  def get_metadata_for_streamer(streamer) do
-    metadata =
-      case Repo.get_by(Metadata, streamer_id: streamer.id) do
-        nil ->
-          {:ok, metadata} = create_metadata(streamer)
-          metadata
-
-        %Metadata{} = metadata ->
-          metadata
-      end
-
-    metadata |> Repo.preload([:category])
-  end
-
-  @doc """
-  Creates some metadata.
-
-  ## Examples
-
-      iex> create_metadata(%{field: value})
-      {:ok, %Metadata{}}
-
-      iex> create_metadata(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_metadata(streamer, attrs \\ %{}) do
-    %Metadata{
-      streamer: streamer
-    }
-    |> Metadata.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates some metadata.
-
-  ## Examples
-
-      iex> update_metadata(metadata, %{field: new_value})
-      {:ok, %Metadata{}}
-
-      iex> update_metadata(metadata, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_metadata(%Metadata{} = metadata, attrs) do
-    new_meta =
-      metadata
-      |> Metadata.changeset(attrs)
-      |> Repo.update!()
-      |> Repo.preload(:category, force: true)
-
-    broadcast({:ok, new_meta}, :update_metadata)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking metadata changes.
-
-  ## Examples
-
-      iex> change_metadata(category)
-      %Ecto.Changeset{data: %Metadata{}}
-
-  """
-  def change_metadata(%Metadata{} = metadata, attrs \\ %{}) do
-    Metadata.changeset(metadata, attrs)
-  end
-
-  def get_metadata_from_streamer(streamer) do
-    data = Repo.get_by(Metadata, streamer_id: streamer.id) |> Repo.preload([:category])
-
-    case data do
-      nil ->
-        create_metadata(streamer)
-        get_metadata_from_streamer(streamer)
-
-      _ ->
-        data
-    end
-  end
-
   alias Glimesh.Streams.Category
 
   @doc """
@@ -293,12 +229,6 @@ defmodule Glimesh.Streams do
   end
 
   def list_categories_for_select do
-    # Repo.all(from c in Category, order_by: [asc: :id, asc: :parent_id, asc: :name])
-    # |> Enum.map(fn x ->
-    #   name = if x.parent_id, do: " - #{x.name}", else: x.name
-    #   {name, x.id}
-    # end)
-
     Repo.all(from c in Category, order_by: [asc: :tag_name])
     |> Enum.map(&{&1.tag_name, &1.id})
   end
@@ -310,17 +240,6 @@ defmodule Glimesh.Streams do
   @spec list_categories_by_parent(atom | %{id: any}) :: any
   def list_categories_by_parent(category) do
     Repo.all(from c in Category, where: c.parent_id == ^category.id)
-  end
-
-  def list_subcategories_and_streams(category) do
-    Repo.all(
-      from sm in Metadata,
-        join: c in Category,
-        on: c.id == sm.category_id,
-        where: c.id == ^category.id or c.parent_id == ^category.id
-    )
-    |> Repo.preload([:streamer, :category])
-    |> Enum.group_by(fn x -> x.category.name end)
   end
 
   @doc """

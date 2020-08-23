@@ -70,21 +70,21 @@ defmodule Glimesh.StreamsTest do
       user = user_fixture()
       Streams.follow(streamer, user)
 
-      followed = Streams.list_followed_streams(user)
+      followed = Streams.list_followed_channels(user)
 
-      assert Enum.map(followed, fn x -> x.streamer.username end) == [streamer.username]
+      assert Enum.map(followed, fn x -> x.user.username end) == [streamer.username]
     end
 
     test "unfollow/2 successfully unfollows streamer" do
       streamer = streamer_fixture()
       user = user_fixture()
       Streams.follow(streamer, user)
-      followed = Streams.list_followed_streams(user)
+      followed = Streams.list_followed_channels(user)
 
-      assert Enum.map(followed, fn x -> x.streamer.username end) == [streamer.username]
+      assert Enum.map(followed, fn x -> x.user.username end) == [streamer.username]
 
       Streams.unfollow(streamer, user)
-      assert Streams.list_followed_streams(user) == []
+      assert Streams.list_followed_channels(user) == []
     end
 
     test "is_following?/1 detects active follow" do

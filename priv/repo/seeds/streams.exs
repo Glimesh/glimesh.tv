@@ -24,10 +24,9 @@ for n <- 1..num_streams do
       password: "TestUserPassword!"
     })
 
-  metadata = Glimesh.Streams.get_metadata_for_streamer(user)
-
-  Glimesh.Streams.update_metadata(metadata, %{
-    "stream_title" => Faker.Lorem.Shakespeare.hamlet(),
-    "category_id" => category
-  })
+  {:ok, channel} =
+    Glimesh.Streams.create_channel(user, %{
+      "title" => Faker.Lorem.Shakespeare.hamlet(),
+      "category_id" => category
+    })
 end

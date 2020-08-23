@@ -2,12 +2,12 @@ defmodule Glimesh.Repo do
   @moduledoc false
 
   use Ecto.Repo,
-      otp_app: :glimesh,
-      adapter: Ecto.Adapters.Postgres
+    otp_app: :glimesh,
+    adapter: Ecto.Adapters.Postgres
 
   import Ecto.Query
 
-  def data() do
+  def data do
     Dataloader.Ecto.new(Glimesh.Repo, query: &query/2)
   end
 
