@@ -27,11 +27,13 @@ defmodule GlimeshWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  scope "/api", GlimeshWeb do
-    pipe_through :api
+  forward "/api", Absinthe.Plug, schema: Glimesh.Schema
 
-    # post "/webhook/stripe", WebhookController, :stripe
-  end
+  # scope "/api", GlimeshWeb do
+  #   pipe_through :api
+
+  #   # post "/webhook/stripe", WebhookController, :stripe
+  # end
 
   ## Authentication routes
 
