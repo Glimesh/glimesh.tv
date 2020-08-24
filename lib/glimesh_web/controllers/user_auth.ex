@@ -155,6 +155,19 @@ defmodule GlimeshWeb.UserAuth do
     end
   end
 
+  @doc """
+  Used for api routes that require authentication.
+  """
+  def require_authenticated_user_api(conn, _opts) do
+    if conn.assigns[:current_user] do
+      conn
+    else
+      conn
+      |> json(%{error: "You must be logged in to access the api"})
+      |> halt()
+    end
+  end
+
   defp maybe_store_return_to(%{method: "GET", request_path: request_path} = conn) do
     put_session(conn, :user_return_to, request_path)
   end

@@ -1,6 +1,6 @@
 defmodule Glimesh.Streams do
   @moduledoc """
-  The Streamers context.
+  The Streams context. Contains Channels, Streams, Followers
   """
 
   import Ecto.Query, warn: false
@@ -12,6 +12,8 @@ defmodule Glimesh.Streams do
   alias Glimesh.Streams.Followers
   alias Glimesh.Streams.UserModerationLog
   alias Glimesh.Streams.UserModerator
+
+  ## Broadcasting Functions
 
   def get_subscribe_topic(:channel, streamer_id), do: "streams:channel:#{streamer_id}"
   def get_subscribe_topic(:chat, streamer_id), do: "streams:chat:#{streamer_id}"
@@ -28,24 +30,27 @@ defmodule Glimesh.Streams do
   defp broadcast({:ok, data}, :update_channel = event) do
     Phoenix.PubSub.broadcast(
       Glimesh.PubSub,
-      get_subscribe_topic(:channel, data.streamer_id),
+      get_subscribe_topic(:channel, data.user.id),
       {event, data}
     )
 
     {:ok, data}
   end
 
+  defp broadcast_timeout({:error, _reason} = error, _event), do: error
+
+  defp broadcast_timeout({:ok, streamer_id, bad_user}, :user_timedout) do
+    Phoenix.PubSub.broadcast(
+      Glimesh.PubSub,
+      get_subscribe_topic(:chat, streamer_id),
+      {:user_timedout, bad_user}
+    )
+
+    {:ok, bad_user}
+  end
+
   ## Database getters
 
-  @doc """
-  Get all streamers.
-
-  ## Examples
-
-      iex> list_streams()
-      []
-
-  """
   def list_channels do
     Repo.all(
       from c in Channel,
@@ -111,6 +116,8 @@ defmodule Glimesh.Streams do
     Channel.changeset(channel, attrs)
   end
 
+  ## Moderation
+
   def add_moderator(streamer, moderator) do
     %UserModerator{
       streamer: streamer,
@@ -153,29 +160,7 @@ defmodule Glimesh.Streams do
     timeout_user(streamer, moderator, user_to_ban)
   end
 
-  defp broadcast_timeout({:error, _reason} = error, _event), do: error
-
-  defp broadcast_timeout({:ok, streamer_id, bad_user}, :user_timedout) do
-    Phoenix.PubSub.broadcast(
-      Glimesh.PubSub,
-      get_subscribe_topic(:chat, streamer_id),
-      {:user_timedout, bad_user}
-    )
-
-    {:ok, bad_user}
-  end
-
-  defp broadcast_chats({:error, _reason} = error, _event), do: error
-
-  defp broadcast_chats({:ok, chat_message}, event) do
-    Phoenix.PubSub.broadcast(
-      Glimesh.PubSub,
-      get_subscribe_topic(:chat, chat_message.streamer.id),
-      {event, chat_message}
-    )
-
-    {:ok, chat_message}
-  end
+  ## Following
 
   def follow(streamer, user, live_notifications \\ false) do
     attrs = %{
@@ -212,6 +197,8 @@ defmodule Glimesh.Streams do
   def count_following(user) do
     Repo.one!(from f in Followers, select: count(f.id), where: f.user_id == ^user.id)
   end
+
+  ## Categories
 
   alias Glimesh.Streams.Category
 

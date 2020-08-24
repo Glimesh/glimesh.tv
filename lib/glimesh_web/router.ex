@@ -18,6 +18,13 @@ defmodule GlimeshWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :graphql do
+    plug :fetch_session
+    plug :fetch_current_user
+    plug :accepts, ["json"]
+    plug GlimeshWeb.Plugs.ApiContextPlug
+  end
+
   if Mix.env() in [:dev, :test] do
     scope "/" do
       pipe_through :browser
@@ -26,14 +33,11 @@ defmodule GlimeshWeb.Router do
     end
   end
 
-  # Other scopes may use custom stacks.
-  forward "/api", Absinthe.Plug, schema: Glimesh.Schema
+  scope "/api" do
+    pipe_through :graphql
 
-  # scope "/api", GlimeshWeb do
-  #   pipe_through :api
-
-  #   # post "/webhook/stripe", WebhookController, :stripe
-  # end
+    forward "/", Absinthe.Plug, schema: Glimesh.Schema
+  end
 
   ## Authentication routes
 

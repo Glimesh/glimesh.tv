@@ -37,17 +37,17 @@
                         <div class="row">
                             <%= for stream <- section.streams do %>
                             <div class="<%= section.bs_child_class %> mt-4">
-                                <%= live_redirect to: Routes.user_stream_path(@socket, :index, stream.streamer.displayname) do %>
+                                <%= live_redirect to: Routes.user_stream_path(@socket, :index, stream.user.displayname) do %>
                                     <div class="card card-stream">
-                                        <img src="https://picsum.photos/320/180?random=<%= stream.streamer.id %>" alt="" class="card-img">
+                                        <img src="https://picsum.photos/320/180?random=<%= stream.user.id %>" alt="" class="card-img">
                                         <div class="card-img-overlay">
                                             <h6 class="card-title"><%= stream.title %></h5>
                                             <p class="card-text card-stream-live">
                                                 <span class="badge badge-danger"><%= :rand.uniform(100) %> <i class="fas fa-user"></i></span>
                                             </p>
-                                            <p class="card-text card-stream-streamer <%= if stream.streamer.stripe_user_id, do: "sub-ready", else: "" %>">
-                                                <span class="card-stream-username"><%= stream.streamer.displayname %></span>
-                                                <img src="<%= Glimesh.Avatar.url({stream.streamer.avatar, stream.streamer}, :original) %>" alt="<%= stream.streamer.displayname%>" width="35" height="35" class="img-avatar <%= if stream.streamer.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+                                            <p class="card-text card-stream-streamer <%= if stream.user.stripe_user_id, do: "sub-ready", else: "" %>">
+                                                <span class="card-stream-username"><%= stream.user.displayname %></span>
+                                                <img src="<%= Glimesh.Avatar.url({stream.user.avatar, stream.user}, :original) %>" alt="<%= stream.user.displayname%>" width="35" height="35" class="img-avatar <%= if stream.user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
                                             </p>
                                         </div>
                                     </div>
