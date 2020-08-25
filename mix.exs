@@ -60,7 +60,10 @@ defmodule Glimesh.MixProject do
       {:html_sanitize_ex, "~> 1.4.1"},
       {:earmark, "~> 1.4"},
       {:eqrcode, "~> 0.1.7"},
-      {:slugify, "~> 1.3"}
+      {:slugify, "~> 1.3"},
+      {:absinthe, "~> 1.5"},
+      {:absinthe_plug, "~> 1.5"},
+      {:dataloader, "~> 1.0.0"}
     ]
   end
 

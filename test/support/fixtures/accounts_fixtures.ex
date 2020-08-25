@@ -10,7 +10,7 @@ defmodule Glimesh.AccountsFixtures do
 
   def streamer_fixture(attrs \\ %{}) do
     streamer = user_fixture(attrs)
-    {:ok, _} = Glimesh.Streams.create_metadata(streamer)
+    {:ok, _} = Glimesh.Streams.create_channel(streamer)
 
     streamer
   end
