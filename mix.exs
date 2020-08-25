@@ -80,7 +80,7 @@ defmodule Glimesh.MixProject do
       "ecto.seed": ["run priv/repo/seeds.#{Mix.env()}.exs"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "run priv/repo/seeds/categories.exs", "test"],
       code_quality: ["format", "credo --strict"]
     ]
   end
