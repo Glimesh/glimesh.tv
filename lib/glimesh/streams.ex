@@ -85,7 +85,8 @@ defmodule Glimesh.Streams do
       from c in Channel,
         join: u in User,
         on: c.user_id == u.id,
-        where: u.username == ^username
+        where: u.username == ^username,
+        where: c.inaccessible == false
     )
     |> Repo.preload([:category, :user])
   end
@@ -103,8 +104,11 @@ defmodule Glimesh.Streams do
   end
 
   def delete_channel(channel) do
+    attrs = %{"inaccessible": true}
+
     channel
-    |> Repo.delete()
+    |> Channel.changeset(attrs)
+    |> Repo.update()
   end
 
   def update_channel(%Channel{} = channel, attrs) do

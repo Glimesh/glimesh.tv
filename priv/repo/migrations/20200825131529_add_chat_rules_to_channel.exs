@@ -5,6 +5,7 @@ defmodule Glimesh.Repo.Migrations.AddChatRulesToChannel do
     alter table(:channels) do
       add :chat_rules_md, :text
       add :chat_rules_html, :text
+      add :inaccessible, :boolean
     end
   end
 end
