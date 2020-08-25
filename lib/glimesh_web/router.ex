@@ -60,8 +60,11 @@ defmodule GlimeshWeb.Router do
 
     get "/users/settings/profile", UserSettingsController, :profile
     get "/users/settings/stream", UserSettingsController, :stream
+    put "/users/settings/create_channel", UserSettingsController, :create_channel
+    put "/users/settings/delete_channel", UserSettingsController, :delete_channel
     get "/users/settings/settings", UserSettingsController, :settings
     put "/users/settings/update_profile", UserSettingsController, :update_profile
+    put "/users/settings/update_channel", UserSettingsController, :update_channel
 
     get "/users/settings/security", UserSecurityController, :index
     put "/users/settings/update_password", UserSecurityController, :update_password

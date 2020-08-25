@@ -94,12 +94,17 @@ defmodule Glimesh.Streams do
     Repo.get_by(Channel, user_id: user.id) |> Repo.preload([:category, :user])
   end
 
-  def create_channel(user, attrs \\ %{}) do
+  def create_channel(user, attrs \\ %{"category_id": 1}) do
     %Channel{
       user: user
     }
     |> Channel.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def delete_channel(channel) do
+    channel
+    |> Repo.delete()
   end
 
   def update_channel(%Channel{} = channel, attrs) do

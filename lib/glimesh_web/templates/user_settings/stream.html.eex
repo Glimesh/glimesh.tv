@@ -1,1 +1,52 @@
-<h2>If you could stream, your settings would go here.</h2>
+<div class="container">
+    <h2 class="mt-4"><%= gettext("Stream Settings") %></h2>
+    <%= if !@channel do %>
+        <h5><%= gettext("You currently don't have a channel setup. Press the button below if you'd like to setup your channel!") %></h5>
+        <%= link gettext("Create Channel"), class: "btn btn-primary", to: Routes.user_settings_path(@conn, :create_channel), method: "put"%>
+    <% else %>
+    <%= form_for @channel_changeset, Routes.user_settings_path(@conn, :update_channel), [multipart: true, class: "form"], fn f -> %>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <%= if @channel_changeset.action do %>
+                <div class="alert alert-danger">
+                    <p> <%= gettext("Oops, something went wrong! Please check the erroprs below.") %></p>
+                </div>
+                <% end %>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <%= label f, gettext("Stream Title") %>
+                        <%= text_input f, :title, [class: "form-control"] %>
+                        <%= error_tag f, :title %>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <%= label f, gettext("Stream Category") %>
+                        <%= select f, :category_id, @categories, [class: "form-control", "phx-hook": "Choices", "phx-update": "ignore"] %>
+                        <%= error_tag f, :category_id %>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <%= label f, gettext("Chat Rules (Markdown Supported)") %>
+                        <%= textarea f, :chat_rules_md, [class: "form-control mb-4", rows: 20] %>
+                        <%= error_tag f, :chat_rules_md %>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <%= submit gettext("Update Settings"), class: "btn btn-primary" %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% end %>
+    <%= button("DELETE CHANNEL", to: Routes.user_settings_path(@conn, :delete_channel), method: "put", class: "btn btn-danger mt-4", data: [confirm: "Are you sure? This will remove your streaming channel. All settings will be wiped."]) %>
+    <% end %>
+</div>

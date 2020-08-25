@@ -24,6 +24,7 @@ defmodule GlimeshWeb.UserLive.Stream do
          socket
          |> assign(:page_title, channel.title)
          |> assign(:streamer, channel.user)
+         |> assign(:channel, channel)
          |> assign(:playback_url, "/examples/big_buck_bunny_720p_surround.ogv")
          # this will be nil, which our children components handle
          |> assign(:user, maybe_user)}
