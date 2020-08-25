@@ -21,7 +21,15 @@ defmodule Glimesh.Streams.Channel do
 
   def changeset(channel, attrs \\ %{}) do
     channel
-    |> cast(attrs, [:title, :category_id, :language, :thumbnail, :stream_key, :chat_rules_md, :inaccessible])
+    |> cast(attrs, [
+      :title,
+      :category_id,
+      :language,
+      :thumbnail,
+      :stream_key,
+      :chat_rules_md,
+      :inaccessible
+    ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 50)
     |> set_chat_rules_content_html()

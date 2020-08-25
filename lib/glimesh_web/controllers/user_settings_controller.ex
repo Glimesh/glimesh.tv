@@ -39,11 +39,13 @@ defmodule GlimeshWeb.UserSettingsController do
 
   def create_channel(conn, _params) do
     user = conn.assigns.current_user
+
     case Streams.create_channel(user) do
       {:ok, channel} ->
         conn
         |> put_session(:user_return_to, Routes.user_settings_path(conn, :stream))
         |> UserAuth.log_in_user(user)
+
       {:error, changeset} ->
         render(conn, "stream.html", channel_changeset: changeset)
     end
@@ -52,11 +54,13 @@ defmodule GlimeshWeb.UserSettingsController do
   def delete_channel(conn, _params) do
     user = conn.assigns.current_user
     channel = Streams.get_channel_for_username!(user.username)
+
     case Streams.delete_channel(channel) do
       {:ok, callback} ->
         conn
         |> put_session(:user_return_to, Routes.user_settings_path(conn, :stream))
         |> UserAuth.log_in_user(user)
+
       {:error, changeset} ->
         render(conn, "stream.html", channel_changeset: changeset)
     end
@@ -64,6 +68,7 @@ defmodule GlimeshWeb.UserSettingsController do
 
   def update_channel(conn, %{"channel" => channel_params}) do
     channel = conn.assigns.channel
+
     case Streams.update_channel(channel, channel_params) do
       {:ok, channel} ->
         conn
@@ -86,6 +91,7 @@ defmodule GlimeshWeb.UserSettingsController do
 
   defp assign_channel_changesets(conn, _opts) do
     channel = Streams.get_channel_for_username!(conn.assigns.current_user.username)
+
     if channel do
       conn
       |> assign(:channel, channel)
@@ -94,6 +100,5 @@ defmodule GlimeshWeb.UserSettingsController do
     else
       conn |> assign(:channel, channel)
     end
-
   end
 end

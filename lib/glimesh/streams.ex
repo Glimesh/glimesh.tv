@@ -95,7 +95,7 @@ defmodule Glimesh.Streams do
     Repo.get_by(Channel, user_id: user.id) |> Repo.preload([:category, :user])
   end
 
-  def create_channel(user, attrs \\ %{"category_id": 1}) do
+  def create_channel(user, attrs \\ %{category_id: 1}) do
     %Channel{
       user: user
     }
@@ -104,7 +104,7 @@ defmodule Glimesh.Streams do
   end
 
   def delete_channel(channel) do
-    attrs = %{"inaccessible": true}
+    attrs = %{inaccessible: true}
 
     channel
     |> Channel.changeset(attrs)
