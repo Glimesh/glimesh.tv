@@ -58,7 +58,7 @@ defmodule Glimesh.Schema.StreamsTypes do
     field :language, :string, description: "The language a user can expect in the stream."
     field :thumbnail, :string
     field :stream_key, :string
-    field :inaccessible, :boolean, default: false
+    field :inaccessible, :boolean
 
     field :chat_rules_md, :string
     field :chat_rules_html, :string
