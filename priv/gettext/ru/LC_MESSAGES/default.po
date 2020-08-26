@@ -70,7 +70,7 @@ msgid "Edit Category"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:48
+#: lib/glimesh_web/controllers/user_security_controller.ex:50
 msgid "Email change link is invalid or it has expired."
 msgstr ""
 
@@ -97,11 +97,6 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:244
 msgid "Incorrect YouTube URL format"
-msgstr ""
-
-#, elixir-format
-#: lib/glimesh_web/controllers/user_session_controller.ex:19
-msgid "Invalid 2FA Code"
 msgstr ""
 
 #, elixir-format
@@ -134,8 +129,8 @@ msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:51
-#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:6 lib/glimesh_web/templates/user_settings/edit.html.eex:27
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:127 lib/glimesh_web/templates/user_settings/edit.html.eex:162
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:6 lib/glimesh_web/templates/user_security/edit.html.eex:13
+#: lib/glimesh_web/templates/user_security/edit.html.eex:48 lib/glimesh_web/templates/user_settings/profile.html.eex:27
 msgid "Oops, something went wrong! Please check the errors below."
 msgstr ""
 
@@ -171,7 +166,7 @@ msgid "Read More"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_reset_password_controller.ex:56
+#: lib/glimesh_web/controllers/user_reset_password_controller.ex:58
 msgid "Reset password link is invalid or it has expired."
 msgstr ""
 
@@ -241,8 +236,8 @@ msgid "%{category} Streams Coming Soon"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_session/new.html.eex:266
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:226
+#: lib/glimesh_web/templates/user_security/edit.html.eex:110
+#: lib/glimesh_web/templates/user_session/tfa.html.eex:20
 msgid "2FA Code"
 msgstr ""
 
@@ -272,17 +267,17 @@ msgid "Built by the community, for the community."
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:149
+#: lib/glimesh_web/templates/user_security/edit.html.eex:35
 msgid "Change E-mail"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:191
+#: lib/glimesh_web/templates/user_security/edit.html.eex:77
 msgid "Change Password"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:17
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:17
 msgid "Click Update Settings down below when you've chosen the file."
 msgstr ""
 
@@ -297,7 +292,7 @@ msgid "Community is one of our main focuse at Glimesh and we make sure to includ
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:183
+#: lib/glimesh_web/templates/user_security/edit.html.eex:69
 msgid "Confirm New Password"
 msgstr ""
 
@@ -312,9 +307,9 @@ msgid "Copyright Infringement / Law Violation"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:141
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:175 lib/glimesh_web/templates/user_settings/edit.html.eex:234
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:242
+#: lib/glimesh_web/templates/user_security/edit.html.eex:27
+#: lib/glimesh_web/templates/user_security/edit.html.eex:61 lib/glimesh_web/templates/user_security/edit.html.eex:118
+#: lib/glimesh_web/templates/user_security/edit.html.eex:126
 msgid "Current Password"
 msgstr ""
 
@@ -324,17 +319,17 @@ msgid "Delete Saved Payment"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:91
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:91
 msgid "Discord Server URL"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:34
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:34
 msgid "Display Name"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:41
+#: lib/glimesh_web/controllers/user_security_controller.ex:43
 msgid "E-mail changed successfully."
 msgstr ""
 
@@ -344,7 +339,7 @@ msgid "Education"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:134
+#: lib/glimesh_web/templates/user_security/edit.html.eex:20
 msgid "Email"
 msgstr ""
 
@@ -421,7 +416,7 @@ msgid "Income History"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:68
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:68
 msgid "Instagram Username"
 msgstr ""
 
@@ -431,7 +426,7 @@ msgid "It's even faster than light."
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:41
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:41
 msgid "Language"
 msgstr ""
 
@@ -446,7 +441,7 @@ msgid "Level the playing field."
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_session_controller.ex:28
+#: lib/glimesh_web/controllers/user_session_controller.ex:43
 msgid "Logged out successfully."
 msgstr ""
 
@@ -461,18 +456,8 @@ msgid "Music"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:61
-msgid "My Payments"
-msgstr ""
-
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:65
-msgid "My Profile"
-msgstr ""
-
-#, elixir-format
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:10
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:170
+#: lib/glimesh_web/templates/user_security/edit.html.eex:56
 msgid "New password"
 msgstr ""
 
@@ -502,12 +487,12 @@ msgid "Our fastest streaming technology is built on open standards and gives you
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_reset_password_controller.ex:39
+#: lib/glimesh_web/controllers/user_reset_password_controller.ex:41
 msgid "Password reset successfully."
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:60
+#: lib/glimesh_web/controllers/user_security_controller.ex:62
 msgid "Password updated successfully."
 msgstr ""
 
@@ -528,7 +513,7 @@ msgid "Payment method already attached!"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_payments_controller.ex:60
+#: lib/glimesh_web/controllers/user_payments_controller.ex:62
 msgid "Payment method deleted!"
 msgstr ""
 
@@ -538,12 +523,12 @@ msgid "Pre-Follow Streamer"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:105
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:105
 msgid "Profile Content (Markdown supported)"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:75
+#: lib/glimesh_web/controllers/user_settings_controller.ex:29
 msgid "Profile updated successfully."
 msgstr ""
 
@@ -553,7 +538,7 @@ msgid "Received"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:74
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:78
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:24
 msgid "Register"
 msgstr ""
@@ -564,7 +549,7 @@ msgid "Register Your Account"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:257
+#: lib/glimesh_web/templates/user_security/edit.html.eex:141
 msgid "Remove Two Factor Authentication"
 msgstr ""
 
@@ -586,7 +571,7 @@ msgid "Reset password"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/live/user_live/components/streamer_title.ex:22
+#: lib/glimesh_web/live/user_live/components/streamer_title.ex:20
 msgid "Save Info"
 msgstr ""
 
@@ -616,19 +601,19 @@ msgid "Share on Twitter"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:69
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:73
 msgid "Sign Out"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:75
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:79
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:25
 msgid "Sign in"
 msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:66
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:48
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:48
 msgid "Social"
 msgstr ""
 
@@ -638,7 +623,7 @@ msgid "Streamer"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_payments_controller.ex:43
+#: lib/glimesh_web/controllers/user_payments_controller.ex:45
 msgid "Stripe account linked successfully, welcome to the sub club!"
 msgstr ""
 
@@ -659,7 +644,7 @@ msgid "Submit Report"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:252
+#: lib/glimesh_web/templates/user_security/edit.html.eex:136
 msgid "Submit Two Factor Authentication"
 msgstr ""
 
@@ -705,7 +690,7 @@ msgid "Total Charge"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:57
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:57
 msgid "Twitter Username"
 msgstr ""
 
@@ -721,12 +706,12 @@ msgid "Unsubscribe"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:110
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:110
 msgid "Update Settings"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:58
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:61
 msgid "Upgrade!"
 msgstr ""
 
@@ -751,7 +736,7 @@ msgid "Users"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:3
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:3
 msgid "View Public Profile"
 msgstr ""
 
@@ -792,12 +777,12 @@ msgid "You have an existing saved payment method. You can delete it by clicking 
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:99
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:99
 msgid "YouTube Teaser URL"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:80
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:80
 msgid "YouTube Username"
 msgstr ""
 
@@ -809,12 +794,6 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:2
 msgid "Your Payment Portal"
-msgstr ""
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:12
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:23
-msgid "Your Settings"
 msgstr ""
 
 #, elixir-format
@@ -833,22 +812,22 @@ msgid "you will receive an e-mail with instructions shortly."
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:204
+#: lib/glimesh_web/templates/user_security/edit.html.eex:88
 msgid "2FA Setup"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:28
+#: lib/glimesh_web/controllers/user_security_controller.ex:30
 msgid "A link to confirm your e-mail change has been sent to the new address."
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:122
+#: lib/glimesh_web/templates/user_security/edit.html.eex:7
 msgid "Change e-mail"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:157
+#: lib/glimesh_web/templates/user_security/edit.html.eex:43
 msgid "Change password"
 msgstr ""
 
@@ -858,6 +837,144 @@ msgid "If your e-mail is in our system, you will receive instructions to reset y
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/edit.html.eex:2
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:2
 msgid "Your Profile"
+msgstr ""
+
+## From Ecto.Changeset.cast/4
+msgid "can't be blank"
+msgstr ""
+
+## From Ecto.Changeset.unique_constraint/3
+msgid "has already been taken"
+msgstr ""
+
+## From Ecto.Changeset.put_change/3
+msgid "is invalid"
+msgstr ""
+
+## From Ecto.Changeset.validate_acceptance/3
+msgid "must be accepted"
+msgstr ""
+
+## From Ecto.Changeset.validate_format/3
+msgid "has invalid format"
+msgstr ""
+
+## From Ecto.Changeset.validate_subset/3
+msgid "has an invalid entry"
+msgstr ""
+
+## From Ecto.Changeset.validate_exclusion/3
+msgid "is reserved"
+msgstr ""
+
+## From Ecto.Changeset.validate_confirmation/3
+msgid "does not match confirmation"
+msgstr ""
+
+## From Ecto.Changeset.no_assoc_constraint/3
+msgid "is still associated with this entry"
+msgstr ""
+
+msgid "are still associated with this entry"
+msgstr ""
+
+## From Ecto.Changeset.validate_length/3
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+## From Ecto.Changeset.validate_number/3
+msgid "must be less than %{number}"
+msgstr ""
+
+msgid "must be greater than %{number}"
+msgstr ""
+
+msgid "must be less than or equal to %{number}"
+msgstr ""
+
+msgid "must be greater than or equal to %{number}"
+msgstr ""
+
+msgid "must be equal to %{number}"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_session/tfa.html.eex:30
+msgid "Don't have access anymore?"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_session/tfa.html.eex:7
+msgid "Enter your 2FA code!"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_session_controller.ex:33
+msgid "Invalid 2FA code, if you need help please email %{email}"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:65 sidebar.html.eex:12
+msgid "Payments"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_session/tfa.html.eex:30
+msgid "Please contact %{email}"
+msgstr ""
+
+#, elixir-format
+#: sidebar.html.eex:6
+msgid "Profile"
+msgstr ""
+
+#, elixir-format
+#: sidebar.html.eex:18
+msgid "Security"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:69 sidebar.html.eex:15
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:12 lib/glimesh_web/templates/user_settings/profile.html.eex:23
+msgid "Settings"
+msgstr ""
+
+#, elixir-format
+#: sidebar.html.eex:9
+msgid "Stream"
 msgstr ""

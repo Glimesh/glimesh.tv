@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="text-center">
-                    <h5 class="mt-4"><%= gettext("Your Settings") %></h5>
+                    <h5 class="mt-4"><%= gettext("Settings") %></h5>
                     <img src="<%= Glimesh.Avatar.url({@user.avatar, @user}, :original) %>" alt="Your Profile Picture"
                          class="img-fluid mb-4 img-avatar">
 
@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <h5 class=""><%= gettext "Your Settings" %></h5>
+                <h5 class=""><%= gettext "Settings" %></h5>
 
                 <%= if @profile_changeset.action do %>
                 <div class="alert alert-danger">
