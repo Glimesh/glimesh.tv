@@ -73,5 +73,5 @@ config :glimesh,
     "fuck", "fudgepacker", "fudge", "packer", "flange", "goddamn", "god", "damn", "hell", "homo", "jerk", "jizz",
     "knobend", "knob", "labia", "muff", "nigger", "nigga", "penis", "piss", "poop",
     "prick", "pube", "pussy", "queer", "scrotum", "sex", "shit", "sh1t", "slut", "smegma", "spunk", "tit",
-    "tosser", "turd", "twat", "vagina", "wank", "whore", "wtf"
+    "tosser", "turd", "twat", "vagina", "wank", "whore", "wtf","poser"
   ]
