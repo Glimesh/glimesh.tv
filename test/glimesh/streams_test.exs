@@ -9,7 +9,7 @@ defmodule Glimesh.StreamsTest do
   describe "timeout_user/3" do
     setup do
       %{
-        streamer: user_fixture(),
+        streamer: streamer_fixture(),
         moderator: user_fixture(),
         user: user_fixture()
       }
@@ -57,7 +57,7 @@ defmodule Glimesh.StreamsTest do
     @invalid_attrs %{has_live_notifications: nil}
 
     def followers_fixture do
-      streamer = user_fixture()
+      streamer = streamer_fixture()
       user = user_fixture()
 
       {:ok, followers} = Streams.follow(streamer, user)
@@ -66,31 +66,36 @@ defmodule Glimesh.StreamsTest do
     end
 
     test "follow/2 successfully follows streamer" do
-      streamer = user_fixture()
+      streamer = streamer_fixture()
       user = user_fixture()
       Streams.follow(streamer, user)
-      assert Streams.list_followed_streams(user) == [streamer]
+
+      followed = Streams.list_followed_channels(user)
+
+      assert Enum.map(followed, fn x -> x.user.username end) == [streamer.username]
     end
 
     test "unfollow/2 successfully unfollows streamer" do
-      streamer = user_fixture()
+      streamer = streamer_fixture()
       user = user_fixture()
       Streams.follow(streamer, user)
-      assert Streams.list_followed_streams(user) == [streamer]
+      followed = Streams.list_followed_channels(user)
+
+      assert Enum.map(followed, fn x -> x.user.username end) == [streamer.username]
 
       Streams.unfollow(streamer, user)
-      assert Streams.list_followed_streams(user) == []
+      assert Streams.list_followed_channels(user) == []
     end
 
     test "is_following?/1 detects active follow" do
-      streamer = user_fixture()
+      streamer = streamer_fixture()
       user = user_fixture()
       Streams.follow(streamer, user)
       assert Streams.is_following?(streamer, user) == true
     end
 
     test "follow/2 twice returns error changeset" do
-      streamer = user_fixture()
+      streamer = streamer_fixture()
       user = user_fixture()
 
       Streams.follow(streamer, user)
@@ -120,7 +125,7 @@ defmodule Glimesh.StreamsTest do
 
     test "list_categories/0 returns all categories" do
       category = category_fixture()
-      assert Enum.map(Streams.list_categories(), fn x -> x.name end) == [category.name]
+      assert Enum.member?(Enum.map(Streams.list_categories(), fn x -> x.name end), category.name)
     end
 
     test "get_category_by_id!/1 returns the category with given id" do

@@ -1,0 +1,154 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h3><%= gettext "Change e-mail" %></h3>
+                </div>
+                <div class="card-body">
+                    <%= form_for @email_changeset, Routes.user_security_path(@conn, :update_email), fn f -> %>
+                    <%= if @email_changeset.action do %>
+                    <div class="alert alert-danger">
+                        <p style="margin-bottom: 0px;">
+                            <%= gettext "Oops, something went wrong! Please check the errors below." %></p>
+                    </div>
+                    <% end %>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <%= label f, gettext("Email") %>
+                                <%= email_input f, :email, required: true, class: "form-control mb-4" %>
+                                <%= error_tag f, :email %>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <%= label f, :current_password, gettext("Current Password") %>
+                                <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email", class: "form-control mb-4" %>
+                                <%= error_tag f, :current_password %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <%= submit gettext("Change E-mail"), class: "btn btn-primary" %>
+                    </div>
+                    <% end %>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+
+                    <h3><%= gettext "Change password" %></h3>
+
+                    <%= form_for @password_changeset, Routes.user_security_path(@conn, :update_password), fn f -> %>
+                    <%= if @password_changeset.action do %>
+                    <div class="alert alert-danger">
+                        <p style="margin-bottom: 0px;">
+                            <%= gettext "Oops, something went wrong! Please check the errors below." %></p>
+                    </div>
+                    <% end %>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <%= label f, :password, gettext("New password") %>
+                                <%= password_input f, :password, required: true, class: "form-control mb-4" %>
+                                <%= error_tag f, :password %>
+                            </div>
+                            <div class="form-group">
+                                <%= label f, :current_password, gettext("Current Password") %>
+                                <%= password_input f, :current_password, required: true, name: "current_password", id:
+                                "current_password_for_password", class: "form-control mb-4" %>
+                                <%= error_tag f, :current_password %>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <%= label f, :password_confirmation, gettext("Confirm New Password") %>
+                                <%= password_input f, :password_confirmation, required: true, class: "form-control mb-4"  %>
+                                <%= error_tag f, :password_confirmation %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <%= submit gettext("Change Password"), class: "btn btn-primary" %>
+                    </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="card mt-4">
+                <div class="card-body">
+
+                    <h3><%= gettext "2FA Setup" %></h3>
+
+                    <%= form_for @tfa_changeset, Routes.user_security_path(@conn, :update_tfa), fn f -> %>
+                    <%= if @tfa_changeset.action do %>
+                    <div class="alert alert-danger">
+                        <p style="margin-bottom: 0px;">Oops, something went wrong! Please check the errors below.</p>
+                    </div>
+                    <% end %>
+                    <div>
+                        <%= if @user.tfa_token == nil do %>
+                        <div class="text-center">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <img src="/users/settings/get_tfa" />
+                                    <br>
+                                    <%= link gettext("Black & White 2FA Image"), to: Routes.user_security_path(@conn, :get_tfa, color: "bw"), target: "_blank" %>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <% end %>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <%= label f, gettext("2FA Code") %>
+                                    <%= text_input f, :tfa, required: true, class: "form-control mb-4" %>
+                                    <%= error_tag f, :tfa %>
+                                </div>
+                            </div>
+                            <%= if @user.tfa_token == nil do %>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <%= label f, :current_password, gettext("Current Password") %>
+                                    <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_tfa", class: "form-control mb-4" %>
+                                    <%= error_tag f, :current_password %>
+                                </div>
+                            </div>
+                            <% else %>
+                            <div class="col-sm-6" style="display:none">
+                                <div class="form-group">
+                                    <%= label f, :current_password, gettext("Current Password") %>
+                                    <%= password_input f, :current_password, name: "current_password", id: "current_password_for_tfa", class: "form-control mb-4" %>
+                                    <%= error_tag f, :current_password %>
+                                </div>
+                            </div>
+                            <% end %>
+                        </div>
+
+                        <%= if @user.tfa_token == nil do %>
+                        <div>
+                            <%= submit gettext("Submit Two Factor Authentication"), class: "btn btn-primary" %>
+                        </div>
+                        <% end %>
+                        <%= if @user.tfa_token do %>
+                        <div>
+                            <%= submit gettext("Remove Two Factor Authentication"), class: "btn btn-primary" %>
+                        </div>
+                        <% end %>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>

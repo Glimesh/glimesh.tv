@@ -70,7 +70,7 @@ defmodule Glimesh.Accounts.User do
 
   def validate_username_reserved_words(changeset, field) when is_atom(field) do
     validate_change(changeset, field, fn current_field, value ->
-      if Enum.member?(Application.get_env(:glimesh, :reserved_words), value) do
+      if Enum.member?(Application.get_env(:glimesh, :reserved_words), String.downcase(value)) do
         [{current_field, "This username is reserved"}]
       else
         []
@@ -80,7 +80,7 @@ defmodule Glimesh.Accounts.User do
 
   def validate_username_no_bad_words(changeset, field) when is_atom(field) do
     validate_change(changeset, field, fn current_field, value ->
-      if Enum.member?(Application.get_env(:glimesh, :bad_words), value) do
+      if Enum.member?(Application.get_env(:glimesh, :bad_words), String.downcase(value)) do
         [{current_field, "This username contains a bad word"}]
       else
         []
@@ -92,7 +92,7 @@ defmodule Glimesh.Accounts.User do
     validate_change(changeset, field, fn current_field, value ->
       # credo:disable-for-next-line
       if Enum.any?(Application.get_env(:glimesh, :bad_words), fn w ->
-           String.contains?(value, w)
+           String.contains?(String.downcase(value), w)
          end) do
         [{current_field, "This username contains a bad word"}]
       else
@@ -130,8 +130,8 @@ defmodule Glimesh.Accounts.User do
 
   def validate_displayname(changeset) do
     validate_change(changeset, :displayname, fn current_field, value ->
-      if String.downcase(value) !== get_field(changeset, :username) do
-        [{current_field, dgettext("errors", "Display name must match Username")}]
+      if String.downcase(value) !== String.downcase(get_field(changeset, :username)) do
+        [{current_field, gettext("Display name must match Username")}]
       else
         []
       end
@@ -149,7 +149,7 @@ defmodule Glimesh.Accounts.User do
     |> validate_email()
     |> case do
       %{changes: %{email: _}} = changeset -> changeset
-      %{} = changeset -> add_error(changeset, :email, dgettext("errors", "Email is the same"))
+      %{} = changeset -> add_error(changeset, :email, gettext("Email is the same"))
     end
   end
 
@@ -159,7 +159,7 @@ defmodule Glimesh.Accounts.User do
   def password_changeset(user, attrs) do
     user
     |> cast(attrs, [:password])
-    |> validate_confirmation(:password, message: dgettext("errors", "Password does not match"))
+    |> validate_confirmation(:password, message: gettext("Password does not match"))
     |> validate_password()
   end
 
@@ -232,7 +232,7 @@ defmodule Glimesh.Accounts.User do
     if valid_password?(changeset.data, password) do
       changeset
     else
-      add_error(changeset, :current_password, dgettext("errors", "Invalid Password"))
+      add_error(changeset, :current_password, gettext("Invalid Password"))
     end
   end
 
@@ -241,7 +241,7 @@ defmodule Glimesh.Accounts.User do
       matches = Regex.run(~r/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/, value)
 
       if matches < 2 do
-        [{current_field, dgettext("errors", "Incorrect YouTube URL format")}]
+        [{current_field, gettext("Incorrect YouTube URL format")}]
       else
         []
       end

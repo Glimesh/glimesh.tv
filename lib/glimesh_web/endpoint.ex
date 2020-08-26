@@ -1,14 +1,16 @@
 defmodule GlimeshWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :glimesh
 
-  # The session will be stored in the cookie and signed,
-  # this means its contents can be read but not tampered with.
-  # Set :encryption_salt if you would also like to encrypt it.
+  # The session will be stored in the cookie: signed & encrypted.
+  # The value used for encryption is our `secret_key_base`
   @session_options [
     store: :cookie,
     key: "_glimesh_key",
     signing_salt: Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:live_view][:signing_salt]
   ]
+
+  # Redirect to primary domain before doing anything
+  plug :canonical_host
 
   socket "/socket", GlimeshWeb.UserSocket,
     websocket: true,
@@ -55,4 +57,15 @@ defmodule GlimeshWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug GlimeshWeb.Router
+
+  defp canonical_host(conn, _opts) do
+    case Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:canonical_host] do
+      host when is_binary(host) ->
+        opts = PlugCanonicalHost.init(canonical_host: host)
+        PlugCanonicalHost.call(conn, opts)
+
+      _ ->
+        conn
+    end
+  end
 end

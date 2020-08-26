@@ -1,6 +1,6 @@
 defmodule Glimesh.Streams do
   @moduledoc """
-  The Streamers context.
+  The Streams context. Contains Channels, Streams, Followers
   """
 
   import Ecto.Query, warn: false
@@ -8,51 +8,156 @@ defmodule Glimesh.Streams do
   alias Glimesh.Chat
   alias Glimesh.Repo
   alias Glimesh.Streams.Category
+  alias Glimesh.Streams.Channel
   alias Glimesh.Streams.Followers
-  alias Glimesh.Streams.Metadata
   alias Glimesh.Streams.UserModerationLog
   alias Glimesh.Streams.UserModerator
 
+  ## Broadcasting Functions
+
+  def get_subscribe_topic(:channel, streamer_id), do: "streams:channel:#{streamer_id}"
+  def get_subscribe_topic(:chat, streamer_id), do: "streams:chat:#{streamer_id}"
+  def get_subscribe_topic(:chatters, streamer_id), do: "streams:chatters:#{streamer_id}"
+  def get_subscribe_topic(:viewers, streamer_id), do: "streams:viewers:#{streamer_id}"
+
+  def subscribe_to(topic_atom, streamer_id),
+    do: sub_and_return(get_subscribe_topic(topic_atom, streamer_id))
+
+  defp sub_and_return(topic), do: {Phoenix.PubSub.subscribe(Glimesh.PubSub, topic), topic}
+
+  defp broadcast({:error, _reason} = error, _event), do: error
+
+  defp broadcast({:ok, data}, :update_channel = event) do
+    Phoenix.PubSub.broadcast(
+      Glimesh.PubSub,
+      get_subscribe_topic(:channel, data.user.id),
+      {event, data}
+    )
+
+    {:ok, data}
+  end
+
+  defp broadcast_timeout({:error, _reason} = error, _event), do: error
+
+  defp broadcast_timeout({:ok, streamer_id, bad_user}, :user_timedout) do
+    Phoenix.PubSub.broadcast(
+      Glimesh.PubSub,
+      get_subscribe_topic(:chat, streamer_id),
+      {:user_timedout, bad_user}
+    )
+
+    {:ok, bad_user}
+  end
+
   ## Database getters
 
-  @doc """
-  Get all streamers.
-
-  ## Examples
-
-      iex> list_streams()
-      []
-
-  """
-  def list_streams do
-    Repo.all(from u in User, where: u.can_stream == true)
+  def list_channels do
+    Repo.all(
+      from c in Channel,
+        join: cat in Category,
+        on: cat.id == c.category_id
+    )
+    |> Repo.preload([:category, :user])
   end
 
   def list_in_category(category) do
-    # Repo.all(
-    #   from u in User,
-    #     join: sm in Metadata,
-    #     on: u.id == sm.streamer_id,
-    #     join: c in Category,
-    #     on: c.id == sm.category_id,
-    #     where: c.id == ^category.id or c.parent_id == ^category.id
-    # )
     Repo.all(
-      from sm in Metadata,
-        join: c in Category,
-        on: c.id == sm.category_id,
-        where: c.id == ^category.id or c.parent_id == ^category.id
+      from c in Channel,
+        join: cat in Category,
+        on: cat.id == c.category_id,
+        where: c.status == "live",
+        where: cat.id == ^category.id or cat.parent_id == ^category.id
     )
-    |> Repo.preload([:category, :streamer])
+    |> Repo.preload([:category, :user])
   end
 
-  def get_by_username(username) when is_binary(username) do
-    Repo.get_by(User, username: username, can_stream: true)
+  def list_all_follows do
+    Repo.all(from(f in Followers))
   end
 
-  def get_by_username!(username) when is_binary(username) do
-    Repo.get_by!(User, username: username, can_stream: true)
+  def list_followers(user) do
+    Repo.all(from f in Followers, where: f.streamer_id == ^user.id) |> Repo.preload(:user)
   end
+
+  def list_following(user) do
+    Repo.all(from f in Followers, where: f.user_id == ^user.id)
+  end
+
+  def list_followed_channels(user) do
+    Repo.all(
+      from c in Channel,
+        join: f in Followers,
+        on: c.user_id == f.streamer_id,
+        where: c.status == "live",
+        where: f.user_id == ^user.id
+    )
+    |> Repo.preload([:category, :user])
+  end
+
+  def get_channel!(id) do
+    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :user])
+  end
+
+  def get_channel_for_username!(username) do
+    Repo.one(
+      from c in Channel,
+        join: u in User,
+        on: c.user_id == u.id,
+        where: u.username == ^username,
+        where: c.inaccessible == false
+    )
+    |> Repo.preload([:category, :user])
+  end
+
+  def get_channel_for_stream_key!(stream_key) do
+    Repo.one(
+      from c in Channel,
+        where: c.stream_key == ^stream_key and c.inaccessible == false
+    )
+    |> Repo.preload([:category, :user])
+  end
+
+  def get_channel_for_user!(user) do
+    Repo.get_by(Channel, user_id: user.id) |> Repo.preload([:category, :user])
+  end
+
+  def create_channel(user, attrs \\ %{category_id: Enum.at(list_categories(), 0).id}) do
+    %Channel{
+      user: user
+    }
+    |> Channel.create_changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def delete_channel(channel) do
+    attrs = %{inaccessible: true}
+
+    channel
+    |> Channel.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def update_channel(%Channel{} = channel, attrs) do
+    new_channel =
+      channel
+      |> Channel.changeset(attrs)
+      |> Repo.update()
+
+    case new_channel do
+      {:error, changeset} ->
+        new_channel
+
+      {:ok, changeset} ->
+        broadcast_message = Repo.preload(changeset, :category, force: true)
+        broadcast({:ok, broadcast_message}, :update_channel)
+    end
+  end
+
+  def change_channel(%Channel{} = channel, attrs \\ %{}) do
+    Channel.changeset(channel, attrs)
+  end
+
+  ## Moderation
 
   def add_moderator(streamer, moderator) do
     %UserModerator{
@@ -87,7 +192,7 @@ defmodule Glimesh.Streams do
 
     Chat.delete_chat_messages_for_user(streamer, user_to_timeout)
 
-    broadcast_chats({:ok, user_to_timeout}, :user_timedout, streamer)
+    broadcast_timeout({:ok, streamer.id, user_to_timeout}, :user_timedout)
 
     log
   end
@@ -131,6 +236,8 @@ defmodule Glimesh.Streams do
     )
   end
 
+  ## Following
+
   def follow(streamer, user, live_notifications \\ false) do
     attrs = %{
       has_live_notifications: live_notifications
@@ -159,6 +266,10 @@ defmodule Glimesh.Streams do
     )
   end
 
+  def get_following(streamer, user) do
+    Repo.one!(from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id)
+  end
+
   def count_followers(user) do
     Repo.one!(from f in Followers, select: count(f.id), where: f.streamer_id == ^user.id)
   end
@@ -167,106 +278,7 @@ defmodule Glimesh.Streams do
     Repo.one!(from f in Followers, select: count(f.id), where: f.user_id == ^user.id)
   end
 
-  alias Glimesh.Streams.Metadata
-
-  def get_metadata_for_streamer(streamer) do
-    metadata =
-      case Repo.get_by(Metadata, streamer_id: streamer.id) do
-        nil ->
-          {:ok, metadata} = create_metadata(streamer)
-          metadata
-
-        %Metadata{} = metadata ->
-          metadata
-      end
-
-    metadata |> Repo.preload([:category])
-  end
-
-  @doc """
-  Creates some metadata.
-
-  ## Examples
-
-      iex> create_metadata(%{field: value})
-      {:ok, %Metadata{}}
-
-      iex> create_metadata(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_metadata(streamer, attrs \\ %{}) do
-    %Metadata{
-      streamer: streamer
-    }
-    |> Metadata.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates some metadata.
-
-  ## Examples
-
-      iex> update_metadata(metadata, %{field: new_value})
-      {:ok, %Metadata{}}
-
-      iex> update_metadata(metadata, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_metadata(%Metadata{} = metadata, attrs) do
-    new_meta =
-      metadata
-      |> Metadata.changeset(attrs)
-      |> Repo.update!()
-      |> Repo.preload(:category, force: true)
-
-    broadcast({:ok, new_meta}, :update_metadata)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking metadata changes.
-
-  ## Examples
-
-      iex> change_metadata(category)
-      %Ecto.Changeset{data: %Metadata{}}
-
-  """
-  def change_metadata(%Metadata{} = metadata, attrs \\ %{}) do
-    Metadata.changeset(metadata, attrs)
-  end
-
-  def get_metadata_from_streamer(streamer) do
-    data = Repo.get_by(Metadata, streamer_id: streamer.id) |> Repo.preload([:category])
-
-    case data do
-      nil ->
-        create_metadata(streamer)
-        get_metadata_from_streamer(streamer)
-
-      _ ->
-        data
-    end
-  end
-
-  @spec subscribe_metadata(any) :: :ok | {:error, {:already_registered, pid}}
-  def subscribe_metadata(streamer_id) do
-    Phoenix.PubSub.subscribe(Glimesh.PubSub, "streams:#{streamer_id}:metadata")
-  end
-
-  defp broadcast({:error, _reason} = error, _event), do: error
-
-  defp broadcast({:ok, data}, :update_metadata = event) do
-    Phoenix.PubSub.broadcast(
-      Glimesh.PubSub,
-      "streams:#{data.streamer_id}:metadata",
-      {event, data}
-    )
-
-    {:ok, data}
-  end
+  ## Categories
 
   alias Glimesh.Streams.Category
 
@@ -284,12 +296,6 @@ defmodule Glimesh.Streams do
   end
 
   def list_categories_for_select do
-    # Repo.all(from c in Category, order_by: [asc: :id, asc: :parent_id, asc: :name])
-    # |> Enum.map(fn x ->
-    #   name = if x.parent_id, do: " - #{x.name}", else: x.name
-    #   {name, x.id}
-    # end)
-
     Repo.all(from c in Category, order_by: [asc: :tag_name])
     |> Enum.map(&{&1.tag_name, &1.id})
   end
@@ -301,17 +307,6 @@ defmodule Glimesh.Streams do
   @spec list_categories_by_parent(atom | %{id: any}) :: any
   def list_categories_by_parent(category) do
     Repo.all(from c in Category, where: c.parent_id == ^category.id)
-  end
-
-  def list_subcategories_and_streams(category) do
-    Repo.all(
-      from sm in Metadata,
-        join: c in Category,
-        on: c.id == sm.category_id,
-        where: c.id == ^category.id or c.parent_id == ^category.id
-    )
-    |> Repo.preload([:streamer, :category])
-    |> Enum.group_by(fn x -> x.category.name end)
   end
 
   @doc """
@@ -396,5 +391,43 @@ defmodule Glimesh.Streams do
   """
   def change_category(%Category{} = category, attrs \\ %{}) do
     Category.changeset(category, attrs)
+  end
+
+  # Streams
+
+  def get_stream!(id) do
+    Repo.get_by!(Glimesh.Streams.Stream, id: id)
+  end
+
+  @doc """
+  Starts a stream for a specific channel
+  Only called very intentionally by Janus after stream authentication
+  Also sends notifications
+  """
+  def start_stream(channel) do
+    channel
+  end
+
+  @doc """
+  Ends a stream for a specific channel
+  Called either intentionally by Janus when the stream ends, or manually by the platform on a timer
+  Archives the stream
+  """
+  def end_stream(channel) do
+    channel
+  end
+
+  def create_stream(channel, attrs \\ %{}) do
+    %Glimesh.Streams.Stream{
+      channel: channel
+    }
+    |> Glimesh.Streams.Stream.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_stream(%Glimesh.Streams.Stream{} = stream, attrs) do
+    stream
+    |> Glimesh.Streams.Stream.changeset(attrs)
+    |> Repo.update()
   end
 end

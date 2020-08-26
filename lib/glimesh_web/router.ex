@@ -18,6 +18,17 @@ defmodule GlimeshWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :graphql do
+    plug :fetch_session
+    plug :fetch_current_user
+    plug :accepts, ["json"]
+    plug GlimeshWeb.Plugs.ApiContextPlug
+  end
+
+  pipeline :oauth do
+    plug Plug.Parsers, parsers: [:urlendoded]
+  end
+
   if Mix.env() in [:dev, :test] do
     scope "/" do
       pipe_through :browser
@@ -26,11 +37,18 @@ defmodule GlimeshWeb.Router do
     end
   end
 
-  # Other scopes may use custom stacks.
-  scope "/api", GlimeshWeb do
-    pipe_through :api
+  scope "/api/oauth", GlimeshWeb do
+    pipe_through :oauth
 
-    # post "/webhook/stripe", WebhookController, :stripe
+    post "/token", Oauth2Provider.TokenController, :create
+    post "/revoke", Oauth2Provider.TokenController, :revoke
+    post "/introspec", Oauth2Provider.TokenController, :introspec
+  end
+
+  scope "/api" do
+    pipe_through :graphql
+
+    forward "/", Absinthe.Plug, schema: Glimesh.Schema
   end
 
   ## Authentication routes
@@ -42,6 +60,7 @@ defmodule GlimeshWeb.Router do
     post "/users/register", UserRegistrationController, :create
     get "/users/log_in", UserSessionController, :new
     post "/users/log_in", UserSessionController, :create
+    post "/users/log_in_tfa", UserSessionController, :tfa
     get "/users/reset_password", UserResetPasswordController, :new
     post "/users/reset_password", UserResetPasswordController, :create
     get "/users/reset_password/:token", UserResetPasswordController, :edit
@@ -51,16 +70,32 @@ defmodule GlimeshWeb.Router do
   scope "/", GlimeshWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/users/settings", UserSettingsController, :edit
+    get "/users/settings/profile", UserSettingsController, :profile
+    get "/users/settings/stream", UserSettingsController, :stream
+    put "/users/settings/create_channel", UserSettingsController, :create_channel
+    put "/users/settings/delete_channel", UserSettingsController, :delete_channel
+    get "/users/settings/settings", UserSettingsController, :settings
     put "/users/settings/update_profile", UserSettingsController, :update_profile
-    put "/users/settings/update_password", UserSettingsController, :update_password
-    put "/users/settings/update_email", UserSettingsController, :update_email
-    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-    put "/users/settings/update_tfa", UserSettingsController, :update_tfa
-    get "/users/settings/get_tfa", UserSettingsController, :get_tfa
-    get "/users/settings/tfa_registered", UserSettingsController, :tfa_registered
+    put "/users/settings/update_channel", UserSettingsController, :update_channel
 
-    get "/oauth/authorize", PhoenixOauth2Provider.AuthorizationController, :new
+    get "/users/settings/security", UserSecurityController, :index
+    put "/users/settings/update_password", UserSecurityController, :update_password
+    put "/users/settings/update_email", UserSecurityController, :update_email
+    get "/users/settings/confirm_email/:token", UserSecurityController, :confirm_email
+    put "/users/settings/update_tfa", UserSecurityController, :update_tfa
+    get "/users/settings/get_tfa", UserSecurityController, :get_tfa
+    get "/users/settings/tfa_registered", UserSecurityController, :tfa_registered
+
+    resources "/users/settings/applications", UserApplicationsController
+
+    resources "/users/settings/authorizations", Oauth2Provider.AuthorizedApplicationController,
+      only: [:index, :delete],
+      param: "uid"
+
+    get "/oauth/authorize", Oauth2Provider.AuthorizationController, :new
+    get "/oauth/authorize/:code", Oauth2Provider.AuthorizationController, :show
+    post "/oauth/authorize", Oauth2Provider.AuthorizationController, :create
+    delete "/oauth/authorize", Oauth2Provider.AuthorizationController, :delete
   end
 
   scope "/admin", GlimeshWeb do
@@ -116,5 +151,6 @@ defmodule GlimeshWeb.Router do
     # This must be the last route
     live "/:username", UserLive.Stream, :index
     live "/:username/profile", UserLive.Profile, :index
+    live "/:username/profile/followers", UserLive.Followers, :index
   end
 end

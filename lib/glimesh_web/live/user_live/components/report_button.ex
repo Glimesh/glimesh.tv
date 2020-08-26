@@ -7,7 +7,7 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
       <%= if @user do %>
       <div class="text-center">
         <a href="#" phx-click="show_modal" class="text-danger">
-          <%= dgettext("profile", "Report User") %> <i class="fas fa-flag"></i>
+          <%= gettext("Report User") %> <i class="fas fa-flag"></i>
         </a>
       </div>
       <%= if live_flash(@flash, :info) do %>
@@ -33,40 +33,40 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
                     </div>
 
                     <div class="modal-body">
-                      <p><%= dgettext("report", "What has this user done wrong?")%></p>
+                      <p><%= gettext("What has this user done wrong?")%></p>
 
                       <%= form_for :user, "#", [phx_submit: :save] %>
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="report_reason" id="hateSpeech" value="hate-speech">
                         <label class="form-check-label" for="exampleRadios1">
-                          <%= dgettext("report", "Hate Speech") %>
+                          <%= gettext("Hate Speech") %>
                         </label>
                       </div>
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="report_reason" id="reportInappropriateContent" value="inappropriate-content">
                         <label class="form-check-label" for="exampleRadios2">
-                          <%= dgettext("report", "Inappropriate Content") %>
+                          <%= gettext("Inappropriate Content") %>
                         </label>
                       </div>
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="report_reason" id="reportCopyrightInfringementOrLawViolation" value="copyright-infringement-or-law-violation">
                         <label class="form-check-label" for="reportCopyrightInfringementOrLawViolation">
-                          <%= dgettext("report", "Copyright Infringement / Law Violation") %>
+                          <%= gettext("Copyright Infringement / Law Violation") %>
                         </label>
                       </div>
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="report_reason" id="reportOther" value="other">
                         <label class="form-check-label" for="reportOther">
-                          <%= dgettext("report", "Other") %>
+                          <%= gettext("Other") %>
                         </label>
                       </div>
 
                       <div class="form-group mt-4">
-                        <label for="reportNotes"><%= dgettext("report", "Notes") %></label>
+                        <label for="reportNotes"><%= gettext("Notes") %></label>
                         <input type="text" class="form-control" name="notes" id="reportNotes" placeholder="Another other details you'd like to share">
                       </div>
 
-                      <button class="btn btn-danger btn-block mt-4"><%= dgettext("report", "Submit Report") %></button>
+                      <button class="btn btn-danger btn-block mt-4"><%= gettext("Submit Report") %></button>
                       </form>
                     </div>
 

@@ -21,8 +21,7 @@ defmodule GlimeshWeb.UserResetPasswordController do
     conn
     |> put_flash(
       :info,
-      dgettext(
-        "profile",
+      gettext(
         "If your e-mail is in our system, you will receive instructions to reset your password shortly."
       )
     )
@@ -39,7 +38,7 @@ defmodule GlimeshWeb.UserResetPasswordController do
     case Accounts.reset_user_password(conn.assigns.user, user_params) do
       {:ok, _} ->
         conn
-        |> put_flash(:info, dgettext("profile", "Password reset successfully."))
+        |> put_flash(:info, gettext("Password reset successfully."))
         |> redirect(to: Routes.user_session_path(conn, :new))
 
       {:error, changeset} ->
@@ -56,7 +55,7 @@ defmodule GlimeshWeb.UserResetPasswordController do
       conn
       |> put_flash(
         :error,
-        dgettext("errors", "Reset password link is invalid or it has expired.")
+        gettext("Reset password link is invalid or it has expired.")
       )
       |> redirect(to: "/")
       |> halt()

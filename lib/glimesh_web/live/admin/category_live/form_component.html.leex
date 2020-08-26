@@ -8,7 +8,7 @@
   phx_submit: "save" %>
 
   <div class="form-group">
-    <%= label f, :parent_id, dgettext("admin", "Parent Category") %>
+    <%= label f, :parent_id, gettext("Parent Category") %>
     <%= select f, :parent_id, @existing_categories, class: "form-control" %>
     <%= error_tag f, :parent_id %>
   </div>

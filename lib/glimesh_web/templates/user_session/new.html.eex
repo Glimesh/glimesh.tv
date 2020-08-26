@@ -238,9 +238,9 @@
                     <%= form_for @conn, Routes.user_session_path(@conn, :create), [as: :user, class: "text-left"], fn f -> %>
                         <%= if @error_message do %>
                             <div class="alert alert-danger">
-                              <p><%= @error_message %></p>
+                                <p><%= @error_message %></p>
                             </div>
-                          <% end %>
+                        <% end %>
 
                         <div class="coming-soon">
                             <div class="">
@@ -255,23 +255,12 @@
                                 <div id="password-field" class="field-wrapper input">
                                     <i class="fas fa-lock"></i>
                                     <%= password_input f, :password, class: "form-control", placeholder: "Password", required: true %>
+                                    <%= submit "Login", class: "btn btn-success" %>
                                 </div>
                                 <%= error_tag f, :password %>
                             </div>
-                            <br>
-                            <div class="">
-                                <div id="tfa-field" class="field-wrapper input">
-                                    <i class="fas fa-lock"></i>
-
-                                    <%= text_input f, :tfa, class: "form-control", placeholder: dgettext("profile", "2FA Code") %>
-
-                                    <%= submit "Login", class: "btn btn-success" %>
-                                </div>
-                                <%= error_tag f, :tfa %>
-                            </div>
                             <%= label f, :remember_me, "Keep me logged in for 60 days" %>
-                          <%= checkbox f, :remember_me %>
-
+                            <%= checkbox f, :remember_me %>
                         </div>
                     <% end %>
 

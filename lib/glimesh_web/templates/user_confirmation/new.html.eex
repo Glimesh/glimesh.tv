@@ -1,5 +1,5 @@
 <div class="container">
-  <h1 class="mt-4 text-center" ><%= dgettext("profile", "Resend confirmation instructions") %></h1>
+  <h1 class="mt-4 text-center" ><%= gettext("Resend confirmation instructions") %></h1>
 
   <div class="card">
     <div class="card-body">
@@ -8,14 +8,14 @@
         <div class="card-body">
         <%= form_for :user, Routes.user_confirmation_path(@conn, :create), fn f -> %>
           <div cass="form-group">
-            <%= label f, dgettext("profile", "email") %>
+            <%= label f, gettext("email") %>
             <%= email_input f, :email, [required: true, class: "form-control"] %>
             <%= error_tag f, :email %>
 
           </div>
 
           <div>
-            <%= submit dgettext("profile", "Resend confirmation instructions"), class: "btn btn-primary" %>
+            <%= submit gettext("Resend confirmation instructions"), class: "btn btn-primary" %>
           </div>
         <% end %>
         </div>
