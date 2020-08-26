@@ -48,6 +48,7 @@ defmodule GlimeshWeb.Router do
     post "/users/register", UserRegistrationController, :create
     get "/users/log_in", UserSessionController, :new
     post "/users/log_in", UserSessionController, :create
+    post "/users/log_in_tfa", UserSessionController, :tfa
     get "/users/reset_password", UserResetPasswordController, :new
     post "/users/reset_password", UserResetPasswordController, :create
     get "/users/reset_password/:token", UserResetPasswordController, :edit
