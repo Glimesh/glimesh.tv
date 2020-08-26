@@ -1,0 +1,55 @@
+.card-stream {
+    .card-img {
+        filter: blur(1px);
+    }
+    .card-img:hover {
+        filter: none;
+    }
+
+    .card-title {
+        text-shadow: 0px 0px 10px black;
+        font-size: 1.5em;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .card-stream-live {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        margin: 15px;
+    }
+
+    .card-stream-streamer {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        margin: 15px;
+        padding: 1px;
+
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 30px;
+
+        .card-stream-username {
+            display: none;
+        }
+
+        img {
+            width: 35px;
+        }
+    }
+    .card-stream-streamer.sub-ready {
+        background: $secondary !important;
+    }
+
+    &:hover {
+        .card-stream-streamer {
+            padding-left: 10px;
+
+            .card-stream-username {
+                display: inline-block;
+            }
+        }
+    }
+}

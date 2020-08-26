@@ -37,6 +37,18 @@ defmodule Glimesh.Streams do
     {:ok, data}
   end
 
+  defp broadcast_chats({:error, _reason} = error, _event), do: error
+
+  defp broadcast_chats({:ok, data}, event, streamer) do
+    Phoenix.PubSub.broadcast(
+      Glimesh.PubSub,
+      get_subscribe_topic(:chat, streamer.id),
+      {event, data}
+    )
+
+    {:ok, data}
+  end
+
   defp broadcast_timeout({:error, _reason} = error, _event), do: error
 
   defp broadcast_timeout({:ok, streamer_id, bad_user}, :user_timedout) do
@@ -218,13 +230,6 @@ defmodule Glimesh.Streams do
     broadcast_chats({:ok, user_to_ban}, :user_banned, streamer)
 
     log
-  end
-
-  defp broadcast_chats({:error, _reason} = error, _event), do: error
-
-  defp broadcast_chats({:ok, chat_message}, event, streamer) do
-    Phoenix.PubSub.broadcast(Glimesh.PubSub, "chats:#{streamer.id}", {event, chat_message})
-    {:ok, chat_message}
   end
 
   def list_followed_streams(user) do
