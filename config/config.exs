@@ -35,6 +35,10 @@ config :glimesh, GlimeshWeb.Gettext,
   default_locale: "en",
   locales: ~w(en es ja de nb)
 
+config :glimesh, ExOauth2Provider,
+  repo: Glimesh.Repo,
+  resource_owner: Glimesh.Users.User
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

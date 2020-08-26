@@ -1,0 +1,3 @@
+<h1>Authorization code</h1>
+
+<code><%= @code %></code>

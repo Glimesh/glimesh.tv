@@ -59,6 +59,8 @@ defmodule GlimeshWeb.Router do
     put "/users/settings/update_tfa", UserSettingsController, :update_tfa
     get "/users/settings/get_tfa", UserSettingsController, :get_tfa
     get "/users/settings/tfa_registered", UserSettingsController, :tfa_registered
+
+    get "/oauth/authorize", PhoenixOauth2Provider.AuthorizationController, :new
   end
 
   scope "/admin", GlimeshWeb do
