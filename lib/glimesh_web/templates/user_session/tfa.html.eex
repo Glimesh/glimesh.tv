@@ -4,7 +4,7 @@
             <div class="coming-soon-container">
                 <div class="coming-soon-content">
 
-                    <h3><%= dgettext("login", "Enter your 2FA code!") %></h3>
+                    <h3><%= gettext("Enter your 2FA code!") %></h3>
                     <%= form_for @conn, Routes.user_session_path(@conn, :tfa), [as: :user, class: "text-left"], fn f -> %>
                         <%= if @error_message do %>
                         <div class="alert alert-danger">
@@ -17,7 +17,7 @@
                                 <div id="tfa-field" class="field-wrapper input">
                                     <i class="fas fa-lock"></i>
 
-                                    <%= text_input f, :tfa, class: "form-control", placeholder: dgettext("profile", "2FA Code"), autofocus: true %>
+                                    <%= text_input f, :tfa, class: "form-control", placeholder: gettext("2FA Code"), autofocus: true %>
 
                                     <%= submit "Login", class: "btn btn-success" %>
                                 </div>
@@ -27,7 +27,7 @@
                     <% end %>
 
                     <p class="mt-4">
-                        <%= dgettext("login", "Don't have access anymore?") %><br><%= dgettext("login", "Please contact %{email}", email: "support@glimesh.tv") %>
+                        <%= gettext("Don't have access anymore?") %><br><%= gettext("Please contact %{email}", email: "support@glimesh.tv") %>
                     </p>
 
                 </div>
