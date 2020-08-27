@@ -28,7 +28,7 @@ defmodule Glimesh.StreamLayout.FollowersHomepage do
     sections = [
       %PageSection{
         # Title of the section
-        title: "Your Followed Streams",
+        title: gettext("Your Followed Streams"),
         # How the category should show up, eg: half, full
         layout: "full",
         bs_parent_class: "col-md-12",
