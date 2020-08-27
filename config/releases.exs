@@ -39,6 +39,7 @@ https_port = System.get_env("HTTPS_PORT") || raise "environment variable URL_POR
 config :glimesh, GlimeshWeb.Endpoint,
   server: true,
   cache_static_manifest: "priv/static/cache_manifest.json",
+  canonical_host: url_host,
   url: [
     scheme: url_scheme,
     host: url_host,

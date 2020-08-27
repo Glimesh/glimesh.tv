@@ -9,6 +9,9 @@ defmodule GlimeshWeb.Endpoint do
     signing_salt: Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:live_view][:signing_salt]
   ]
 
+  # Redirect to primary domain before doing anything
+  plug :canonical_host
+
   socket "/socket", GlimeshWeb.UserSocket,
     websocket: true,
     longpoll: false
@@ -54,4 +57,15 @@ defmodule GlimeshWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug GlimeshWeb.Router
+
+  defp canonical_host(conn, _opts) do
+    case Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:canonical_host] do
+      host when is_binary(host) ->
+        opts = PlugCanonicalHost.init(canonical_host: host)
+        PlugCanonicalHost.call(conn, opts)
+
+      _ ->
+        conn
+    end
+  end
 end
