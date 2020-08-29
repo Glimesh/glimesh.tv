@@ -255,14 +255,22 @@
                                 <div id="password-field" class="field-wrapper input">
                                     <i class="fas fa-lock"></i>
                                     <%= password_input f, :password, class: "form-control", placeholder: "Password", required: true %>
-
-                                    <%= submit "Login", class: "btn btn-success" %>
                                 </div>
                                 <%= error_tag f, :password %>
                             </div>
                             <br>
+                            <div class="">
+                                <div id="tfa-field" class="field-wrapper input">
+                                    <i class="fas fa-lock"></i>
+
+                                    <%= text_input f, :tfa, class: "form-control", placeholder: gettext("2FA Code") %>
+
+                                    <%= submit "Login", class: "btn btn-success" %>
+                                </div>
+                                <%= error_tag f, :tfa %>
+                            </div>
                             <%= label f, :remember_me, "Keep me logged in for 60 days" %>
-                            <%= checkbox f, :remember_me %>
+                          <%= checkbox f, :remember_me %>
 
                         </div>
                     <% end %>

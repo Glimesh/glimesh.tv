@@ -1,0 +1,7 @@
+<div class="container" style="text-align:center;">
+  <h1>An error has occurred</h1>
+
+  <div>
+    <p><%= @error[:error_description] %></p>
+  </div>
+</div>

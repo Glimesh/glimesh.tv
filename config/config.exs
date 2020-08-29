@@ -35,6 +35,18 @@ config :glimesh, GlimeshWeb.Gettext,
   default_locale: "en",
   locales: ~w(en es ja de nb es_MX es_AR fr sv vi ru)
 
+config :ex_oauth2_provider, namespace: Glimesh
+config :ex_oauth2_provider, ExOauth2Provider,
+  repo: Glimesh.Repo,
+  resource_owner: Glimesh.Accounts.User,
+  use_refresh_token: true,
+  revoke_refresh_token_on_use: true,
+  default_scopes: ~w(public),
+  optional_scopes: ~w(email chat),
+  authorization_code_expires_in: 600,
+  access_token_expires_in: 7200,
+  grant_flows: ~w(authorization_code client_credentials)
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
