@@ -66,7 +66,7 @@ defmodule GlimeshWeb.SubscriptionComponent do
       socket
       |> assign(:stripe_product_id, data.product_id)
       |> assign(:stripe_price_id, data.price_id)
-      |> assign(:price, convert_price(data.price))
+      |> assign(:price, format_price(data.price))
       |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
       |> assign(:stripe_payment_method, user.stripe_payment_method)
     }
@@ -100,7 +100,7 @@ defmodule GlimeshWeb.SubscriptionComponent do
   #   }
   # end
 
-  defp convert_price(iprice) do
+  defp format_price(iprice) do
     :erlang.float_to_binary(iprice / 100, decimals: 2)
   end
 end

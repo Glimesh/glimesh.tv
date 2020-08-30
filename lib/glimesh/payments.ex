@@ -51,6 +51,9 @@ defmodule Glimesh.Payments do
 
     stripe_input = %{customer: customer_id, items: [%{price: price_id}]}
 
+    {:ok, product} = Stripe.Product.retrieve(product_id)
+    {:ok, price} = Stripe.Price.retrieve(price_id)
+
     with {:ok, sub} <-
            Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"]),
          {:ok, platform_sub} <-
@@ -60,6 +63,8 @@ defmodule Glimesh.Payments do
              stripe_product_id: product_id,
              stripe_price_id: price_id,
              stripe_current_period_end: sub.current_period_end,
+             price: price.unit_amount,
+             product_name: product.name,
              is_active: true,
              started_at: NaiveDateTime.utc_now(),
              ended_at: NaiveDateTime.utc_now()
@@ -164,6 +169,22 @@ defmodule Glimesh.Payments do
       {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
       {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
     end
+  end
+
+  def sum_incoming(user) do
+    Repo.one(
+      from s in Subscription,
+        select: sum(s.price),
+        where: s.streamer_id == ^user.id and s.is_active == true
+    )
+  end
+
+  def sum_outgoing(user) do
+    Repo.one(
+      from s in Subscription,
+        select: sum(s.price),
+        where: s.user_id == ^user.id and s.is_active == true
+    )
   end
 
   @doc """

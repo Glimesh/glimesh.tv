@@ -20,6 +20,7 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
      |> assign(:price, Payments.get_platform_sub_founder_price())
      |> assign(:stripe_public_key, Application.get_env(:stripity_stripe, :public_api_key))
      |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
+     |> assign(:subscription, Payments.get_platform_subscription!(user))
      |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
   end
 
@@ -53,17 +54,18 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
   @impl true
   def handle_event(
         "subscriptions.subscribe",
-        %{"paymentMethodId" => payment_method, "priceId" => price_id},
+        %{"paymentMethodId" => payment_method},
         socket
       ) do
     user = socket.assigns.user
 
     with {:ok, _} <- Payments.set_payment_method(user, payment_method),
          {:ok, subscription} <-
-           Payments.subscribe(:platform, user, "prod_HhtjnDMhfliLrf", price_id) do
+           Payments.subscribe(:platform, user, socket.assigns.product_id, socket.assigns.price_id) do
       {:reply, subscription,
        socket
        |> assign(:show_subscription, false)
+       |> assign(:subscription, Payments.get_platform_subscription!(user))
        |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
     else
       {:pending_requires_action, error_msg} ->

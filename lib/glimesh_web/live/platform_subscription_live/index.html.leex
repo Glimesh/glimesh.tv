@@ -25,7 +25,9 @@
                                 <li>Animated Emotes</li>
                             </ul>
                         </div>
+                        <%= if @has_platform_subscription == false do %>
                         <button phx-click="select-platform-supporter" class="button btn btn-default btn-block margin-top-20"><%= gettext("Select") %></button>
+                        <% end %>
                     </div>
                     <!-- Plan -->
                     <div class="pricing-plan mb-5 mt-md-0 recommended">
@@ -43,7 +45,9 @@
                                 <li>5 Custom Emotes</li>
                             </ul>
                         </div>
+                        <%= if @has_platform_subscription == false do %>
                         <button phx-click="select-platform-founder" class="button btn btn-default btn-block margin-top-20"><%= gettext("Select") %></button>
+                        <% end %>
                     </div>
                 </div>
             </div>
@@ -52,7 +56,12 @@
                   <div class="card-body">
                     <%= if @has_platform_subscription do %>
                     <h4><%= gettext("You're subscribed!") %></h4>
-                    <h6><%= gettext("Thanks for supporting Glimesh :D") %></h6>
+                    <h6><%= gettext("Thanks for supporting Glimesh. Your genuine support is appreciated.") %></h6>
+
+                    <div class="text-center mt-4">
+                        <h4><%= @subscription.product_name %><br>
+                            <small><strong>$<%= @subscription.price %></strong> / <%= gettext("monthly") %></small></h4>
+                    </div>
 
                     <div class="text-center mt-4 mb-4">
                         <img src="/images/glimcons/GlimberryPie.png" alt="" class="img-fluid">
