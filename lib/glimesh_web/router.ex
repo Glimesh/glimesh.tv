@@ -22,7 +22,7 @@ defmodule GlimeshWeb.Router do
     plug :fetch_session
     plug :fetch_current_user
     plug :accepts, ["json"]
-    plug GlimeshWeb.Plugs.ApiContextPlug
+    # plug GlimeshWeb.Plugs.ApiContextPlug
   end
 
   if Mix.env() in [:dev, :test] do
@@ -36,7 +36,7 @@ defmodule GlimeshWeb.Router do
   scope "/api" do
     pipe_through :graphql
 
-    forward "/", Absinthe.Plug, schema: Glimesh.Schema
+    forward "/", Absinthe.Plug.GraphiQL, schema: Glimesh.Schema, socket: GlimeshWeb.UserSocket
   end
 
   ## Authentication routes

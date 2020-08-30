@@ -48,6 +48,8 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
     if connected?(socket), do: Streams.subscribe_to(:channel, streamer.id)
     channel = Streams.get_channel_for_user!(streamer)
 
+    Process.send_after(self(), :update, 3000)
+
     {:ok,
      socket
      |> assign_categories()
@@ -57,6 +59,32 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
      |> assign(:changeset, Streams.change_channel(channel))
      |> assign(:is_streamer, if(user.username == streamer.username, do: true, else: false))
      |> assign(:editing, false)}
+  end
+
+  def handle_info(:update, socket) do
+    Phoenix.PubSub.broadcast(
+      Glimesh.PubSub,
+      "streams:channel:1",
+      {:update_channel,
+       %{
+         title: :rand.uniform(10000),
+         category: %{
+           tag_name: "Fake"
+         }
+       }}
+    )
+
+    # GlimeshWeb.Endpoint.broadcast("streams:channel:1", :update_channel, %{
+    #   title: "fake",
+    #   category: %{
+    #     tag_name: "Fake"
+    #   }
+    # })
+
+    IO.inspect("sent update")
+
+    Process.send_after(self(), :update, 3000)
+    {:noreply, socket}
   end
 
   @impl true

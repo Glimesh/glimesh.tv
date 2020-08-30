@@ -1,6 +1,7 @@
 defmodule Glimesh.Schema.StreamsTypes do
   @moduledoc false
   use Absinthe.Schema.Notation
+  use Glimesh.AbsintheRelay
 
   import Absinthe.Resolution.Helpers
 
@@ -28,6 +29,29 @@ defmodule Glimesh.Schema.StreamsTypes do
     field :category, :category do
       arg(:slug, :string)
       resolve(&StreamsResolver.find_category/2)
+    end
+  end
+
+  object :streams_subscriptions do
+    field :channel, :channel do
+      arg(:username, non_null(:string))
+
+      config(fn args, _ ->
+        {:ok, stream} = StreamsResolver.find_channel(%{username: args.username}, "")
+        topic = Glimesh.Streams.get_subscribe_topic(:channel, stream.user.id)
+
+        IO.inspect(topic)
+
+        AbsintheRelay.subscribe_and_relay(elixir_topic, absinthe_topic)
+
+        {:ok, topic: "streams:channel:1"}
+      end)
+
+      resolve(fn channel, _, _ ->
+        IO.inspect(channel)
+
+        {:ok, channel}
+      end)
     end
   end
 

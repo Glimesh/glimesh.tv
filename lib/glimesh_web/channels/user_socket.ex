@@ -1,6 +1,9 @@
 defmodule GlimeshWeb.UserSocket do
   use Phoenix.Socket
 
+  use Absinthe.Phoenix.Socket,
+    schema: Glimesh.Schema
+
   ## Channels
   # channel "room:*", GlimeshWeb.RoomChannel
 
@@ -17,6 +20,8 @@ defmodule GlimeshWeb.UserSocket do
   # performing token verification on connect.
   @impl true
   def connect(_params, socket, _connect_info) do
+    IO.inspect(socket.pubsub_server)
+
     {:ok, socket}
   end
 
