@@ -15,9 +15,28 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
      socket
      |> assign(:user, user)
      |> assign(:stripe_error, nil)
+     |> assign(:product_id, Payments.get_platform_sub_founder_product_id())
+     |> assign(:price_id, Payments.get_platform_sub_founder_price_id())
+     |> assign(:price, Payments.get_platform_sub_founder_price())
      |> assign(:stripe_public_key, Application.get_env(:stripity_stripe, :public_api_key))
      |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
      |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
+  end
+
+  def handle_event("select-platform-supporter", _, socket) do
+    {:noreply,
+     socket
+     |> assign(:product_id, Payments.get_platform_sub_supporter_product_id())
+     |> assign(:price_id, Payments.get_platform_sub_supporter_price_id())
+     |> assign(:price, Payments.get_platform_sub_supporter_price())}
+  end
+
+  def handle_event("select-platform-founder", _, socket) do
+    {:noreply,
+     socket
+     |> assign(:product_id, Payments.get_platform_sub_founder_product_id())
+     |> assign(:price_id, Payments.get_platform_sub_founder_price_id())
+     |> assign(:price, Payments.get_platform_sub_founder_price())}
   end
 
   @impl true

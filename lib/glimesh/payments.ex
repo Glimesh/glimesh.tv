@@ -9,6 +9,26 @@ defmodule Glimesh.Payments do
   alias Glimesh.Payments.Subscription
   alias Glimesh.Repo
 
+  def get_platform_sub_supporter_product_id,
+    do: get_stripe_config(:platform_sub_supporter_product_id)
+
+  def get_platform_sub_supporter_price_id, do: get_stripe_config(:platform_sub_supporter_price_id)
+  def get_platform_sub_supporter_price, do: get_stripe_config(:platform_sub_supporter_price)
+
+  def get_platform_sub_founder_product_id,
+    do: get_stripe_config(:platform_sub_founder_product_id)
+
+  def get_platform_sub_founder_price_id, do: get_stripe_config(:platform_sub_founder_price_id)
+  def get_platform_sub_founder_price, do: get_stripe_config(:platform_sub_founder_price)
+
+  def get_channel_sub_base_product_id, do: get_stripe_config(:platform_sub_supporter_product_id)
+  def get_channel_sub_base_price_id, do: get_stripe_config(:platform_sub_supporter_price_id)
+  def get_channel_sub_base_price, do: get_stripe_config(:platform_sub_supporter_price)
+
+  def get_stripe_config(key) do
+    Application.get_env(:glimesh, :stripe_config)[key]
+  end
+
   def set_payment_method(user, payment_method_id) do
     customer_id = Accounts.get_stripe_customer_id(user)
 

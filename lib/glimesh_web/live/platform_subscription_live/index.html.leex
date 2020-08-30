@@ -14,7 +14,7 @@
                 <div class="pricing-plans-container mt-5 d-md-flex d-block">
                     <!-- Plan -->
                     <div class="pricing-plan mb-5">
-                        <h3>Lil Meshi</h3>
+                        <h3><%= gettext("Supporter") %></h3>
                         <p class="margin-top-10"><%= gettext("Help us fund the platform & grow!") %></p>
                         <div class="pricing-plan-label billed-monthly-label"><strong>$5</strong>/ <%= gettext("monthly") %></div>
                         <div class="pricing-plan-label billed-yearly-label"><strong>$290</strong>/ <%= gettext("yearly") %></div>
@@ -25,24 +25,25 @@
                                 <li>Animated Emotes</li>
                             </ul>
                         </div>
-                        <a href="javascript:void(0);" class="button btn btn-default btn-block margin-top-20"><%= gettext("Select") %></a>
+                        <button phx-click="select-platform-supporter" class="button btn btn-default btn-block margin-top-20"><%= gettext("Select") %></button>
                     </div>
                     <!-- Plan -->
                     <div class="pricing-plan mb-5 mt-md-0 recommended">
                         <div class="recommended-badge"><%= gettext("Popular!") %></div>
-                        <h3>Founder</h3>
+                        <h3><%= gettext("Founder") %></h3>
                         <p class="margin-top-10"><%= gettext("Support Glimesh's future with your wallet! Get special perks to show off.") %></p>
                         <div class="pricing-plan-label billed-monthly-label"><strong>$25</strong>/ <%= gettext("monthly") %></div>
                         <div class="pricing-plan-label billed-yearly-label"><strong>$670</strong>/ <%= gettext("yearly") %></div>
                         <div class="pricing-plan-features mb-4">
                             <strong><%= gettext("Cosmetic Features") %></strong>
                             <ul>
+                                <li>Supporter Perks</li>
                                 <li>Founder Badge</li>
                                 <li>Animated Avatar Ring</li>
                                 <li>5 Custom Emotes</li>
                             </ul>
                         </div>
-                        <a href="javascript:void(0);" class="button btn btn-default btn-block margin-top-20"><%= gettext("Select") %></a>
+                        <button phx-click="select-platform-founder" class="button btn btn-default btn-block margin-top-20"><%= gettext("Select") %></button>
                     </div>
                 </div>
             </div>
@@ -64,7 +65,7 @@
                     <button class="btn btn-danger btn-block" phx-click="cancel-subscription" phx-throttle="1000"><%= gettext("Cancel Subscription") %></button>
 
                     <% else %>
-                        <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :platform, user: @user %>
+                        <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :platform, user: @user, product_id: @product_id, price_id: @price_id, price: @price %>
 
                         <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider." class="img-fluid mt-4">
                     <% end %>
