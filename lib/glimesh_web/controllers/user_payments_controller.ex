@@ -25,14 +25,16 @@ defmodule GlimeshWeb.UserPaymentsController do
     render(
       conn,
       "index.html",
-      incoming: format_price(Payments.sum_incoming(user)),
-      outgoing: format_price(Payments.sum_outgoing(user)),
+      incoming: Payments.sum_incoming(user),
+      outgoing: Payments.sum_outgoing(user),
       is_sub_ready_streamer: !is_nil(user.stripe_user_id),
       stripe_oauth_url: stripe_oauth_url,
       platform_subscription: Payments.get_platform_subscription!(user),
       subscriptions: Payments.get_channel_subscriptions(user),
       default_payment_changeset: Accounts.change_stripe_default_payment(user),
-      has_payment_method: !is_nil(user.stripe_payment_method)
+      has_payment_method: !is_nil(user.stripe_payment_method),
+      payout_history: Payments.list_payout_history(user) |> IO.inspect(),
+      payment_history: Payments.list_payment_history(user)
     )
   end
 
@@ -70,7 +72,4 @@ defmodule GlimeshWeb.UserPaymentsController do
         |> redirect(to: Routes.user_payments_path(conn, :index))
     end
   end
-
-  defp format_price(nil), do: "0.00"
-  defp format_price(iprice), do: :erlang.float_to_binary(iprice / 100, decimals: 2)
 end

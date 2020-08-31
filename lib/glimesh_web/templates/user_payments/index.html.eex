@@ -7,7 +7,7 @@
                 <div class="widget-content">
                     <div class="w-content">
                         <div class="w-info">
-                            <h6 class="value">$<%= @incoming %></h6>
+                            <h6 class="value">$<%= format_price(@incoming) %></h6>
                             <p class=""><%= gettext("Receiving Monthly") %></p>
                         </div>
                         <div class="">
@@ -23,7 +23,7 @@
                 <div class="widget-content">
                     <div class="w-content">
                         <div class="w-info">
-                            <h6 class="value">$<%= @outgoing %></h6>
+                            <h6 class="value">$<%= format_price(@outgoing) %></h6>
                             <p class=""><%= gettext("Giving Monthly") %></p>
                         </div>
                         <div class="">
@@ -126,10 +126,28 @@
     </div>
     <div class="card mt-4">
         <div class="card-header">
-            <h5><%= gettext("Income History") %> </h5>
+            <h5><%= gettext("Payout History") %> </h5>
         </div>
         <div class="card-body">
-
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Initiated</th>
+                        <th>Amount</th>
+                        <th>Est Arrival</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <%= for payout <- @payout_history do %>
+                    <tr>
+                        <td><%= payout.created %></td>
+                        <td>$<%= format_price(payout.amount) %></td>
+                        <td><%= payout.arrival_date %></td>
+                        <td><a href="<%= payout.receipt_url %>" target="_blank">Receipt</a></td>
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="card mt-4">
@@ -137,7 +155,25 @@
             <h5><%= gettext("Payment History") %></h5>
         </div>
         <div class="card-body">
-
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <%= for payment <- @payment_history do %>
+                    <tr>
+                        <td><%= payment.description %></td>
+                        <td>$<%= format_price(payment.amount) %></td>
+                        <td><%= payment.status %></td>
+                        <td><a href="<%= payment.receipt_url %>" target="_blank">Receipt</a></td>
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

@@ -187,6 +187,18 @@ defmodule Glimesh.Payments do
     )
   end
 
+  def list_payment_history(user) do
+    {:ok, payment_history} = Stripe.Charge.list(%{customer: user.stripe_customer_id})
+
+    payment_history.data
+  end
+
+  def list_payout_history(user) do
+    {:ok, payout_history} = Stripe.Payout.list(%{destination: user.stripe_user_id})
+
+    payout_history.data
+  end
+
   @doc """
   Returns the list of subscription.
 
