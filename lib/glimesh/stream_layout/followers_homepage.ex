@@ -19,16 +19,16 @@ defmodule Glimesh.StreamLayout.FollowersHomepage do
   end
 
   def set_title(page) do
-    Map.put(page, :title, dgettext("navbar", "Following"))
+    Map.put(page, :title, gettext("Following"))
   end
 
   def set_section(page, user) do
-    streams = Streams.list_followed_streams(user)
+    streams = Streams.list_followed_channels(user)
 
     sections = [
       %PageSection{
         # Title of the section
-        title: "Your Followed Streams",
+        title: gettext("Your Followed Streams"),
         # How the category should show up, eg: half, full
         layout: "full",
         bs_parent_class: "col-md-12",

@@ -60,7 +60,11 @@ defmodule Glimesh.MixProject do
       {:html_sanitize_ex, "~> 1.4.1"},
       {:earmark, "~> 1.4"},
       {:eqrcode, "~> 0.1.7"},
-      {:slugify, "~> 1.3"}
+      {:slugify, "~> 1.3"},
+      {:absinthe, "~> 1.5"},
+      {:absinthe_plug, "~> 1.5"},
+      {:dataloader, "~> 1.0.0"},
+      {:plug_canonical_host, "~> 2.0"}
     ]
   end
 
@@ -73,7 +77,8 @@ defmodule Glimesh.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "ecto.setup", "cmd npm install --prefix assets"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.seed": ["run priv/repo/seeds.#{Mix.env()}.exs"],
+      "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       code_quality: ["format", "credo --strict"]

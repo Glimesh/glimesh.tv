@@ -40,7 +40,7 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
       conn = get(conn, "/")
       response = html_response(conn, 200)
       assert response =~ username
-      assert response =~ "\nMy Profile</a>"
+      assert response =~ "\nSettings</a>"
       assert response =~ "\nSign Out</a>"
     end
 

@@ -45,7 +45,7 @@
     <script async defer data-domain="glimesh.tv" src="https://s.glimesh.tv/js/index.js"></script>
     <% end %>
 
-    <script defer src="https://js.stripe.com/v3/"></script>
+    <script async defer src="https://js.stripe.com/v3/"></script>
   </head>
   <body>
     <div id="app">
@@ -63,7 +63,7 @@
         <div class="col-md-9">
           <div class="row">
             <div class="col-6 col-md-3 offset-md-3">
-              <h5><%= dgettext("footer", "Social") %></h5>
+              <h5><%= gettext("Social") %></h5>
               <ul class="list-unstyled text-small">
                 <li><a class="text-muted" href="https://twitter.com/Glimesh">Twitter</a></li>
                 <li><a class="text-muted" href="https://discord.gg/Glimesh">Discord</a></li>
@@ -74,19 +74,19 @@
               </ul>
             </div>
             <div class="col-6 col-md-3">
-              <h5><%= dgettext("footer", "About") %></h5>
+              <h5><%= gettext("About") %></h5>
               <ul class="list-unstyled text-small">
                 <li><%= link "About Us", to: Routes.about_path(@conn, :index), class: "text-muted" %></li>
                 <li><%= link "F.A.Qs", to: Routes.about_path(@conn, :faq), class: "text-muted" %></li>
               </ul>
-              <h5><%= dgettext("footer", "Legal") %></h5>
+              <h5><%= gettext("Legal") %></h5>
               <ul class="list-unstyled text-small">
                 <li><%= link "Terms of Service", to: Routes.about_path(@conn, :terms), class: "text-muted" %></li>
                 <li><%= link "Privacy & Cookie Policy", to: Routes.about_path(@conn, :privacy), class: "text-muted" %></li>
               </ul>
             </div>
             <div class="col-md-3">
-              <h5><%= dgettext("footer", "Blog") %></h5>
+              <h5><%= gettext("Blog") %></h5>
               <ul class="list-unstyled text-small">
                 <%= for article <- Glimesh.Blog.list_some_articles(6) do %>
                 <li><%= link article.title, to: Routes.article_path(@conn, :show, article.slug), class: "text-muted" %></li>

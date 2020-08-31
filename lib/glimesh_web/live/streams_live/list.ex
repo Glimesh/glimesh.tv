@@ -6,15 +6,20 @@ defmodule GlimeshWeb.StreamsLive.List do
 
   @impl true
   def mount(%{"category" => "following"}, session, socket) do
-    user = Accounts.get_user_by_session_token(session["user_token"])
-    Gettext.put_locale(session["locale"])
+    case Accounts.get_user_by_session_token(session["user_token"]) do
+      %Glimesh.Accounts.User{} = user ->
+        if session["locale"], do: Gettext.put_locale(session["locale"])
 
-    page = Glimesh.StreamLayout.FollowersHomepage.generate_following_page(user)
+        page = Glimesh.StreamLayout.FollowersHomepage.generate_following_page(user)
 
-    {:ok,
-     socket
-     |> assign(:page_title, dgettext("streams", "Followed Streams"))
-     |> assign(:page, page)}
+        {:ok,
+         socket
+         |> assign(:page_title, gettext("Followed Streams"))
+         |> assign(:page, page)}
+
+      nil ->
+        {:ok, redirect(socket, to: "/")}
+    end
   end
 
   @impl true
