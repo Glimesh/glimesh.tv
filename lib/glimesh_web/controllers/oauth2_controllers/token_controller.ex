@@ -31,4 +31,8 @@ defmodule GlimeshWeb.Oauth2Provider.TokenController do
         |> json(error)
     end
   end
+
+  def debug(conn, _params) do
+    json(conn, Enum.into(Routes.__info__(:functions), %{}, fn {k,v} -> {"#{k}/#{v}", v} end))
+  end
 end

@@ -1,5 +1,6 @@
-<h1>New Application</h1>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.oauth_application_path(@conn, :create)) %>
-
-<span><%= link "Back", to: Routes.oauth_application_path(@conn, :index) %></span>
+<div class="container" style="text-align:center;">
+  <h1>New Application</h1>
+  <%= render "form.html", Map.put(assigns, :action, Routes.application_path(@conn, :create)) %>
+  <div style="margin-bottom:7px;"></div>
+  <%= link "Back", class: "btn btn-primary", to: Routes.application_path(@conn, :index) %>
+</div>

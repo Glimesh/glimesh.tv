@@ -1,40 +1,58 @@
-<h1>Show Application</h1>
+<div class="container" style="text-align:center;">
+  <h1>Show Application</h1>
 
-<ul>
-  <li>
-    <strong>Name:</strong>
-    <%= @application.name %>
-  </li>
-  <li>
-    <strong>ID:</strong>
-    <%= @application.uid %>
-  </li>
-  <li>
-    <strong>Secret:</strong>
-    <%= @application.secret %>
-  </li>
-  <li>
-    <strong>Scopes:</strong>
-    <%= @application.scopes %>
-  </li>
-  <li>
-    <strong>Callback urls:</strong>
-    <table class="table">
-      <tbody>
-<%= for redirect_uri <- String.split(@application.redirect_uri) do %>
-        <tr>
-          <td>
-            <code><%= redirect_uri %></code>
-          </td>
-          <td>
-            <%= link "Authorize", to: Routes.oauth_authorization_path(@conn, :new, client_id: @application.uid, redirect_uri: redirect_uri, response_type: "code", scope: @application.scopes), target: '_blank' %>
-          </td>
-        </tr>
-<% end %>
-      </tbody>
-    </table>
-  </li>
-</ul>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <strong>Name:</strong>
+      <%= @application.name %>
+    </li>
+    <li class="list-group-item">
+      <strong>ID:</strong>
+      <%= @application.uid %>
+    </li>
+    <li class="list-group-item">
+      <button class="btn btn-dark" onclick="toClipboard()">
+        Copy Secret
+      </button>
 
-<span><%= link "Edit", to: Routes.oauth_application_path(@conn, :edit, @application) %></span>
-<span><%= link "Back", to: Routes.oauth_application_path(@conn, :index) %></span>
+      <div style="position:relative; overflow:hidden;">
+        <input style="position:absolute; top:-100px;" id="secretKey" value="<%= @application.secret %>"/>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <strong>Callback urls:</strong>
+      <table class="table">
+        <tbody>
+          <%= for redirect_uri <- String.split(@application.redirect_uri) do %>
+            <tr>
+              <td>
+                <code><%= redirect_uri %></code>
+              </td>
+              <td>
+                <%= link "Authorize", to: Routes.authorization_path(@conn, :new, client_id: @application.uid, redirect_uri: redirect_uri, response_type: "code", scope: @application.scopes), target: '_blank' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </li>
+  </ul>
+
+  <%= button "Edit", class: "btn btn-primary", to: Routes.application_path(@conn, :edit, @application) %>
+  <span></span>
+  <%= link "Back", class: "btn btn-primary", to: Routes.application_path(@conn, :index) %>
+</div>
+
+<script>
+  //this is purely for security reasons and this is the only way to propperly send html values to the clipboard
+  function toClipboard(){
+    var key = document.querySelector("#secretKey");
+
+    key.select();
+    key.setSelectionRange(0, 99999);
+
+    document.execCommand("copy");
+
+    alert("Secret is now in the clipboard"); // replace with gettext at somepoint
+  }
+</script>

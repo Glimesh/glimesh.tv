@@ -42,6 +42,7 @@ defmodule GlimeshWeb.Router do
 
     post "/token", Oauth2Provider.TokenController, :create
     post "/revoke", Oauth2Provider.TokenController, :revoke
+    get "/debug", Oauth2Provider.TokenController, :debug
   end
 
   scope "/api" do
@@ -89,6 +90,9 @@ defmodule GlimeshWeb.Router do
     get "/oauth/authorize/:code", Oauth2Provider.AuthorizationController, :show
     post "/oauth/authorize", Oauth2Provider.AuthorizationController, :create
     delete "/oauth/authorize", Oauth2Provider.AuthorizationController, :delete
+
+    resources "/applications", Oauth2Provider.ApplicationController, param: "uid"
+    resources "/authedapps", Oauth2Provider.AuthorizedApplicationController, only: [:index, :delete], param: "uid"
   end
 
   scope "/admin", GlimeshWeb do

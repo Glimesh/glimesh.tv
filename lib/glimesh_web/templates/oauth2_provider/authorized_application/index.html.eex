@@ -1,23 +1,25 @@
-<h1>Authorized Applications</h1>
+<div class="container" style="text-align:center;">
+  <h1>Authorized Applications</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Application</th>
-      <th>Created At</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for application <- @applications do %>
-    <tr>
-      <td><%= application.name %></td>
-      <td><%= application.inserted_at %></td>
+  <table style="width:100%">
+    <thead>
+      <tr>
+        <th>Application</th>
+        <th>Created At</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for application <- @applications do %>
+        <tr>
+          <td><%= application.name %></td>
+          <td><%= application.inserted_at %></td>
 
-      <td class="text-right">
-        <span><%= link "Delete", to: Routes.oauth_authorized_application_path(@conn, :delete, application), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
+          <td class="text-right">
+            <span><%= link "Delete", to: Routes.authorized_application_path(@conn, :delete, application), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
