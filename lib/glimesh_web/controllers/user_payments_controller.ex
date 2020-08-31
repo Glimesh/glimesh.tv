@@ -33,7 +33,7 @@ defmodule GlimeshWeb.UserPaymentsController do
       subscriptions: Payments.get_channel_subscriptions(user),
       default_payment_changeset: Accounts.change_stripe_default_payment(user),
       has_payment_method: !is_nil(user.stripe_payment_method),
-      payout_history: Payments.list_payout_history(user) |> IO.inspect(),
+      payout_history: Payments.list_payout_history(user),
       payment_history: Payments.list_payment_history(user)
     )
   end

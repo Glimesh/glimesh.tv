@@ -11,7 +11,9 @@ defmodule GlimeshWeb.SubscriptionComponent do
         phx-hook="ProcessPayment"
         data-stripe-public-key="<%= @stripe_public_key %>"
         data-stripe-customer-id="<%= @stripe_customer_id %>"
-        data-stripe-payment-method="<%= @stripe_payment_method %>">
+        data-stripe-payment-method="<%= @stripe_payment_method %>"
+        data-stripe-product-id="<%= @stripe_product_id %>"
+        data-stripe-price-id="<%= @stripe_price_id %>">
           <%= if @stripe_payment_method do %>
             <p><%= gettext("Payment method already attached!") %> </p>
           <% else %>
@@ -71,34 +73,6 @@ defmodule GlimeshWeb.SubscriptionComponent do
       |> assign(:stripe_payment_method, user.stripe_payment_method)
     }
   end
-
-  # @impl true
-  # def update(%{type: :platform, user: user, p}, socket) do
-  #   IO.inspect(socket)
-
-  #   {
-  #     :ok,
-  #     socket
-  #     |> assign(:stripe_product_id, Payments.get_platform_sub_supporter_product_id())
-  #     |> assign(:stripe_price_id, Payments.get_platform_sub_supporter_price_id())
-  #     |> assign(:price, convert_price(Payments.get_platform_sub_supporter_price()))
-  #     |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
-  #     |> assign(:stripe_payment_method, user.stripe_payment_method)
-  #   }
-  # end
-
-  # @impl true
-  # def update(%{type: :channel, user: user, streamer: _}, socket) do
-  #   {
-  #     :ok,
-  #     socket
-  #     |> assign(:stripe_product_id, Payments.get_channel_sub_base_product_id())
-  #     |> assign(:stripe_price_id, Payments.get_channel_sub_base_price_id())
-  #     |> assign(:price, convert_price(Payments.get_channel_sub_base_price()))
-  #     |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
-  #     |> assign(:stripe_payment_method, user.stripe_payment_method)
-  #   }
-  # end
 
   defp format_price(iprice) do
     :erlang.float_to_binary(iprice / 100, decimals: 2)

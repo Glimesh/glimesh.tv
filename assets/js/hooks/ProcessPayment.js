@@ -27,8 +27,7 @@ export default {
         return new Promise((resolve, reject) => {
             this.pushEvent("subscriptions.subscribe", {
                 customerId: customerId,
-                paymentMethodId: paymentMethodId,
-                priceId: priceId,
+                paymentMethodId: paymentMethodId
             }, function (results) {
                 resolve(results);
             });
@@ -47,10 +46,10 @@ export default {
     },
 
     productId() {
-        return this.el.dataset.productId
+        return this.el.dataset.stripeProductId
     },
     priceId() {
-        return this.el.dataset.priceId
+        return this.el.dataset.stripePriceId
     },
 
     stripePublicKey() {
@@ -71,6 +70,8 @@ export default {
         let backend = this;
 
         console.log("mounted")
+        console.log(this.priceId())
+        console.log(this.productId())
 
         backend.stripe = Stripe(this.stripePublicKey());
 

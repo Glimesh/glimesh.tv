@@ -35,7 +35,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
                     </div>
 
                     <div class="modal-body">
-                        <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :channel, user: @user, streamer: @streamer %>
+                        <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :channel, user: @user, streamer: @streamer, product_id: @product_id, price_id: @price_id, price: @price %>
                     </div>
 
                 </div>
@@ -66,6 +66,9 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
      |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
      |> assign(:stripe_payment_method, user.stripe_payment_method)
      |> assign(:stripe_error, nil)
+     |> assign(:product_id, Payments.get_channel_sub_base_product_id())
+     |> assign(:price_id, Payments.get_channel_sub_base_price_id())
+     |> assign(:price, Payments.get_channel_sub_base_price())
      |> assign(:show_subscription, false)
      |> assign(:streamer, streamer)
      |> assign(:user, user)
@@ -73,17 +76,19 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
   end
 
   @impl true
-  def handle_event(
-        "subscriptions.subscribe",
-        %{"paymentMethodId" => payment_method, "priceId" => price_id},
-        socket
-      ) do
+  def handle_event("subscriptions.subscribe", %{"paymentMethodId" => payment_method}, socket) do
     streamer = socket.assigns.streamer
     user = socket.assigns.user
 
     with {:ok, _} <- Payments.set_payment_method(user, payment_method),
          {:ok, subscription} <-
-           Payments.subscribe(:channel, user, streamer, "prod_HhtjnDMhfliLrf", price_id) do
+           Payments.subscribe(
+             :channel,
+             user,
+             streamer,
+             socket.assigns.product_id,
+             socket.assigns.price_id
+           ) do
       {:reply, subscription,
        socket
        |> assign(:show_subscription, false)

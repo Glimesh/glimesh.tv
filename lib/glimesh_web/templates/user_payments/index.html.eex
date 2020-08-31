@@ -106,7 +106,7 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title"><%= @platform_subscription.product_name %></h5>
-                <p class="card-text"><%= gettext("Subscribed since ?.") %></p>
+                <p class="card-text"><%= gettext("Subscribed since %{date}.", date: format_datetime(@platform_subscription.started_at)) %></p>
                 <%= link gettext("Unsubscribe"), to: Routes.platform_subscription_index_path(@conn, :index), class: "btn btn-danger btn-sm" %>
               </div>
             </div>
@@ -117,7 +117,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h5 class="card-title"><%= sub.streamer.displayname %></h5>
-                    <p class="card-text"><%= gettext("Subscribed since %{date}", date: sub.started_at) %></p>
+                    <p class="card-text"><%= gettext("Subscribed since %{date}", date: format_datetime(sub.started_at)) %></p>
                     <%= link "Unsubscribe", to: Routes.user_stream_path(@conn, :index, sub.streamer.displayname), class: "btn btn-danger btn-sm" %>
                   </div>
                 </div>
@@ -132,18 +132,15 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Initiated</th>
+                        <th>Date / Time</th>
                         <th>Amount</th>
-                        <th>Est Arrival</th>
                     </tr>
                 </thead>
                 <tbody>
                 <%= for payout <- @payout_history do %>
                     <tr>
-                        <td><%= payout.created %></td>
+                        <td><%= format_datetime(payout.created) %></td>
                         <td>$<%= format_price(payout.amount) %></td>
-                        <td><%= payout.arrival_date %></td>
-                        <td><a href="<%= payout.receipt_url %>" target="_blank">Receipt</a></td>
                     </tr>
                 <% end %>
                 </tbody>
@@ -158,6 +155,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th>Date / Time</th>
                         <th>Description</th>
                         <th>Amount</th>
                         <th>Status</th>
@@ -166,6 +164,7 @@
                 <tbody>
                 <%= for payment <- @payment_history do %>
                     <tr>
+                        <td><%= format_datetime(payment.created) %></td>
                         <td><%= payment.description %></td>
                         <td>$<%= format_price(payment.amount) %></td>
                         <td><%= payment.status %></td>

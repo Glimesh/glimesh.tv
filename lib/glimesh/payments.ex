@@ -84,6 +84,9 @@ defmodule Glimesh.Payments do
     # "application_fee_percent" => 10,
     customer_id = Accounts.get_stripe_customer_id(user)
 
+    {:ok, product} = Stripe.Product.retrieve(product_id)
+    {:ok, price} = Stripe.Price.retrieve(price_id)
+
     stripe_input = %{
       customer: customer_id,
       items: [%{price: price_id}],
@@ -101,6 +104,8 @@ defmodule Glimesh.Payments do
              stripe_product_id: product_id,
              stripe_price_id: price_id,
              stripe_current_period_end: stripe_sub.current_period_end,
+             price: price.unit_amount,
+             product_name: product.name,
              is_active: true,
              started_at: NaiveDateTime.utc_now(),
              ended_at: NaiveDateTime.utc_now()
@@ -194,7 +199,7 @@ defmodule Glimesh.Payments do
   end
 
   def list_payout_history(user) do
-    {:ok, payout_history} = Stripe.Payout.list(%{destination: user.stripe_user_id})
+    {:ok, payout_history} = Stripe.Transfer.list(%{destination: user.stripe_user_id})
 
     payout_history.data
   end

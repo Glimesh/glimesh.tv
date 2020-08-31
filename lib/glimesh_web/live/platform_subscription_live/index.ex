@@ -24,6 +24,17 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
      |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
   end
 
+  @impl true
+  def handle_params(params, _url, socket) do
+    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  end
+
+  defp apply_action(socket, :index, _params) do
+    socket
+    |> assign(:page_title, "Listing Platform subscriptions")
+    |> assign(:platform_subscription, nil)
+  end
+
   def handle_event("select-platform-supporter", _, socket) do
     {:noreply,
      socket
@@ -38,17 +49,6 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
      |> assign(:product_id, Payments.get_platform_sub_founder_product_id())
      |> assign(:price_id, Payments.get_platform_sub_founder_price_id())
      |> assign(:price, Payments.get_platform_sub_founder_price())}
-  end
-
-  @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
-  end
-
-  defp apply_action(socket, :index, _params) do
-    socket
-    |> assign(:page_title, "Listing Platform subscriptions")
-    |> assign(:platform_subscription, nil)
   end
 
   @impl true
@@ -94,4 +94,7 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
         {:noreply, socket |> assign(:stripe_error, error_msg)}
     end
   end
+
+  def format_price(nil), do: "0.00"
+  def format_price(iprice), do: :erlang.float_to_binary(iprice / 100, decimals: 2)
 end
