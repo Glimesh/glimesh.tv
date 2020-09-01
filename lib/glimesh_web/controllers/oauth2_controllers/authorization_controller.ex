@@ -2,44 +2,42 @@ defmodule GlimeshWeb.Oauth2Provider.AuthorizationController do
   @moduledoc false
   use GlimeshWeb, :controller
 
-  alias ExOauth2Provider.Authorization
+  alias Glimesh.OauthHandler
 
   def new(conn, params) do
     code = Map.get(params, "code")
-    cond do
-      code != nil ->
-        redirect(conn, to: Routes.authorization_path(conn, :show, code))
-      code == nil ->
-        conn.assigns[:current_user]
-        |> Authorization.preauthorize(params, [otp_app: :glimesh])
-        |> case do
-          {:ok, client, scopes} ->
-            # add language support to the scopes as their added
-            render(conn, "new.html", params: params, client: client, scopes: scopes)
+    if(code != nil) do
+      redirect(conn, to: Routes.authorization_path(conn, :show, code))
+    else
+      conn.assigns[:current_user]
+      |> OauthHandler.preauthorize(params, [otp_app: :glimesh])
+      |> case do
+        {:ok, client, scopes} ->
+          render(conn, "new.html", params: params, client: client, scopes: scopes)
 
-          {:native_redirect, %{code: code}} ->
-            redirect(conn, to: Routes.authorization_path(conn, :show, code))
+        {:native_redirect, %{code: code}} ->
+          redirect(conn, to: Routes.authorization_path(conn, :show, code))
 
-          {:redirect, redirect_uri} ->
-            redirect(conn, external: redirect_uri)
+        {:redirect, redirect_uri} ->
+          redirect(conn, external: redirect_uri)
 
-          {:error, error, status} ->
-            conn
-            |> put_status(status)
-            |> render("error.html", error: error)
+        {:error, error, status} ->
+          conn
+          |> put_status(status)
+          |> render("error.html", error: error)
         end
     end
   end
 
   def create(conn, params) do
     conn.assigns[:current_user]
-    |> Authorization.authorize(params, [otp_app: :glimesh])
+    |> OauthHandler.authorize(params, [otp_app: :glimesh])
     |> redirect_or_render(conn)
   end
 
   def delete(conn, params) do
     conn.assigns[:current_user]
-    |> Authorization.deny(params, [otp_app: :glimesh])
+    |> OauthHandler.deny(params, [otp_app: :glimesh])
     |> redirect_or_render(conn)
   end
 
@@ -56,6 +54,11 @@ defmodule GlimeshWeb.Oauth2Provider.AuthorizationController do
   defp redirect_or_render({:error, error, status}, conn) do
     conn
     |> put_status(status)
-    |> json(error)
+    |> render("error.html", error: error)
+  end
+  defp redirect_or_render({:error, {:error, error, status}}, conn) do
+    conn
+    |> put_status(status)
+    |> render("error.html", error: error)
   end
 end

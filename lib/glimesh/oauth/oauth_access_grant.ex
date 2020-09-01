@@ -1,4 +1,5 @@
 defmodule Glimesh.OauthAccessGrants.OauthAccessGrant do
+  @moduledoc false
   use Ecto.Schema
   use ExOauth2Provider.AccessGrants.AccessGrant, otp_app: :glimesh
 

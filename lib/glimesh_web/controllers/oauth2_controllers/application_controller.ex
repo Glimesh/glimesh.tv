@@ -2,7 +2,10 @@ defmodule GlimeshWeb.Oauth2Provider.ApplicationController do
   @moduledoc false
   use GlimeshWeb, :controller
 
-  alias ExOauth2Provider.Applications
+  alias ExOauth2Provider.{
+    Applications,
+    Config
+  }
   alias Plug.Conn
 
   plug :assign_native_redirect_uri when action in [:new, :create, :edit, :update]
@@ -16,7 +19,7 @@ defmodule GlimeshWeb.Oauth2Provider.ApplicationController do
   def new(conn, _params) do
     config = [otp_app: :glimesh]
     changeset =
-      ExOauth2Provider.Config.application(config)
+      Config.application(config)
       |> struct()
       |> Applications.change_application(%{}, config)
 
@@ -83,7 +86,7 @@ defmodule GlimeshWeb.Oauth2Provider.ApplicationController do
   end
 
   defp assign_native_redirect_uri(conn, _opts) do
-    native_redirect_uri = ExOauth2Provider.Config.native_redirect_uri([otp_app: :glimesh])
+    native_redirect_uri = Config.native_redirect_uri([otp_app: :glimesh])
 
     Conn.assign(conn, :native_redirect_uri, native_redirect_uri)
   end

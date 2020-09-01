@@ -44,8 +44,8 @@ config :ex_oauth2_provider, ExOauth2Provider,
   default_scopes: ~w(public),
   optional_scopes: ~w(email chat),
   authorization_code_expires_in: 600,
-  access_token_expires_in: 7200,
-  grant_flows: ~w(authorization_code client_credentials)
+  access_token_expires_in: 21600,
+  grant_flows: ~w(authorization_code client_credentials implicit_grant)
 
 # Configures Elixir's Logger
 config :logger, :console,
