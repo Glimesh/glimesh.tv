@@ -6,7 +6,7 @@ defmodule GlimeshWeb.Oauth2Provider.AuthorizationController do
 
   def new(conn, params) do
     code = Map.get(params, "code")
-    if(code != nil) do
+    if code != nil do
       redirect(conn, to: Routes.authorization_path(conn, :show, code))
     else
       conn.assigns[:current_user]
