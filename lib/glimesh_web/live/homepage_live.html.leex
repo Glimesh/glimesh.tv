@@ -5,14 +5,14 @@
       <div class="col-md-12 p-lg-5 mx-auto my-5">
         <h1 class="display-4 font-weight-normal"><%= gettext("Next-Gen Live Streaming") %></h1>
         <p class="lead font-weight-normal"><%= gettext("The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving. We're launching soon, but you can get your account setup early and learn more about us below!") %></p>
-        <%= if @current_user do %>
-        <%= link gettext("Edit Your Account"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3" %>
-        <% else %>
-        <%= link gettext("Register Your Account"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-lg mt-3" %>
-        <% end %>
-      </div>
-    </div>
-    </div>
+         <%= if @current_user do %>
+            <%= link gettext("Edit Your Account"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3" %>
+         <% else %>
+            <%= link gettext("Register Your Account"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-lg mt-3" %>
+         <% end %>
+     </div>
+   </div>
+  </div>
 </div>
 
 <div class="layout-px-spacing">
