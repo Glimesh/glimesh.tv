@@ -12,6 +12,7 @@ defmodule Glimesh.Streams.Channel do
     field :language, :string
     field :thumbnail, :string
     field :stream_key, :string
+    field :backend, :string
 
     timestamps()
   end
