@@ -5,7 +5,8 @@ defmodule Glimesh.OauthHandler.TokenUtils do
     Applications,
     AccessTokens,
     Config,
-    Utils.Error}
+    Utils.Error
+  }
   alias Glimesh.OauthHandler.OauthError
 
   def load_client({:ok, %{request: request = %{"client_id" => client_id}} = params}, config) do
