@@ -32,7 +32,7 @@ defmodule GlimeshWeb.Oauth2Provider.ApplicationController do
     |> case do
       {:ok, application} ->
         conn
-        |> put_flash(:info, "Application created successfully.")
+        |> put_flash(:info, gettext("Application created successfully."))
         |> redirect(to: Routes.application_path(conn, :show, application))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -61,7 +61,7 @@ defmodule GlimeshWeb.Oauth2Provider.ApplicationController do
     case Applications.update_application(application, application_params, config) do
       {:ok, application} ->
         conn
-        |> put_flash(:info, "Application updated successfully.")
+        |> put_flash(:info, gettext("Application updated successfully."))
         |> redirect(to: Routes.application_path(conn, :show, application))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -77,7 +77,7 @@ defmodule GlimeshWeb.Oauth2Provider.ApplicationController do
       |> Applications.delete_application(config)
 
     conn
-    |> put_flash(:info, "Application deleted successfully.")
+    |> put_flash(:info, gettext("Application deleted successfully."))
     |> redirect(to: Routes.application_path(conn, :index))
   end
 

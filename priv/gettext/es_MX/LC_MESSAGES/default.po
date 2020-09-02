@@ -1037,7 +1037,7 @@ msgstr ""
 msgid "ID:"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:6
 msgid "Name:"
 msgstr ""
@@ -1053,7 +1053,7 @@ msgstr ""
 msgid "Redirect URI"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/application/form.html.eex:20
 msgid "Save"
 msgstr ""
@@ -1151,4 +1151,19 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:2
 msgid "to use your account?"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/oauth2_controllers/application_controller.ex:35
+msgid "Application created successfully."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/oauth2_controllers/application_controller.ex:80
+msgid "Application deleted successfully."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/oauth2_controllers/application_controller.ex:64
+msgid "Application updated successfully."
 msgstr ""
