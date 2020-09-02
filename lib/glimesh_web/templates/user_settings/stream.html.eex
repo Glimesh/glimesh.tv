@@ -10,7 +10,7 @@
             <div class="row">
                 <%= if @channel_changeset.action do %>
                 <div class="alert alert-danger">
-                    <p> <%= gettext("Oops, something went wrong! Please check the erroprs below.") %></p>
+                    <p> <%= gettext("Oops, something went wrong! Please check the errors below.") %></p>
                 </div>
                 <% end %>
             </div>
@@ -47,6 +47,6 @@
         </div>
     </div>
     <% end %>
-    <%= button("Delete Channel", to: Routes.user_settings_path(@conn, :delete_channel), method: "put", class: "btn btn-danger mt-4", data: [confirm: "Pressing OK will: \n - Delete your channel \n - Wipe all settings tied to the channel \n - Clear all followers for the channel \n\nPressing OK will NOT: \n- Delete your Glimesh account \n- Remove all profile related settings \n\nAre you sure you want to do this?"]) %>
+    <%= button(gettext("Delete Channel"), to: Routes.user_settings_path(@conn, :delete_channel), method: "put", class: "btn btn-danger mt-4", data: [confirm: "Pressing OK will: \n - Delete your channel \n - Wipe all settings tied to the channel \n - Clear all followers for the channel \n\nPressing OK will NOT: \n- Delete your Glimesh account \n- Remove all profile related settings \n\nAre you sure you want to do this?"]) %>
     <% end %>
 </div>

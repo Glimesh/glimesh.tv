@@ -30,6 +30,7 @@ defmodule Glimesh.Streams.Channel do
       :chat_rules_md,
       :inaccessible
     ])
+    |> validate_length(:chat_rules_md, max: 8192)
     |> set_chat_rules_content_html()
   end
 

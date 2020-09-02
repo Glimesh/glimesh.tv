@@ -44,7 +44,7 @@ defmodule GlimeshWeb.UserSettingsController do
       {:ok, channel} ->
         conn
         |> put_session(:user_return_to, Routes.user_settings_path(conn, :stream))
-        |> UserAuth.log_in_user(user)
+        |> redirect(to: "/users/settings/stream")
 
       {:error, changeset} ->
         render(conn, "stream.html", channel_changeset: changeset)
