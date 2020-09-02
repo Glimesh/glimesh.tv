@@ -18,7 +18,7 @@ defmodule GlimeshWeb.Oauth2Provider.AuthorizedApplicationController do
       |> Applications.revoke_all_access_tokens_for(conn.assigns[:current_user], config)
 
     conn
-    |> put_flash(:info, "Application revoked.")
+    |> put_flash(:info, gettext("Application revoked."))
     |> redirect(to: Routes.authorized_application_path(conn, :index))
   end
 end

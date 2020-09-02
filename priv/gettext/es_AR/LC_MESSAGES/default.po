@@ -1172,3 +1172,8 @@ msgstr ""
 #: lib/glimesh_web/controllers/oauth2_controllers/application_controller.ex:64
 msgid "Application updated successfully."
 msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/controllers/oauth2_controllers/authorized_application_controller.ex:21
+msgid "Application revoked."
+msgstr ""
