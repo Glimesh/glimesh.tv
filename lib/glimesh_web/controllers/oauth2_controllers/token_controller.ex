@@ -3,6 +3,7 @@ defmodule GlimeshWeb.Oauth2Provider.TokenController do
   use GlimeshWeb, :controller
 
   alias ExOauth2Provider.Token
+  alias Glimesh.OauthHandler.TokenUtils
 
   def create(conn, params) do
     params
@@ -32,7 +33,26 @@ defmodule GlimeshWeb.Oauth2Provider.TokenController do
     end
   end
 
-  def debug(conn, _params) do
-    json(conn, Enum.into(Routes.__info__(:functions), %{}, fn {k,v} -> {"#{k}/#{v}", v} end))
+  def introspec(conn, params) do
+    config = [otp_app: :glimesh]
+    return =
+      {:ok, %{request: params}}
+      |> TokenUtils.load_client_introspec(config)
+      |> TokenUtils.load_access_token(config)
+      |> TokenUtils.load_resource_owner(config)
+      |> TokenUtils.validate_request()
+
+    case return do
+      {:error, response} ->
+        case response.error_status do
+          :not_accessable ->
+            json(conn, %{active: false})
+          :invalid_ownership ->
+            json(conn, %{error: "invalid_ownership", error_discription: "Client ID or Client Secret does not match the tokens application."})
+        end
+      {:ok, response} ->
+        user = response.access_token.resource_owner
+        json(conn, %{active: true, username: user.username, user_id: user.id, scopes: response.access_token.scopes})
+    end
   end
 end

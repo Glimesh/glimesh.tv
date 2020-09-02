@@ -42,7 +42,7 @@ defmodule GlimeshWeb.Router do
 
     post "/token", Oauth2Provider.TokenController, :create
     post "/revoke", Oauth2Provider.TokenController, :revoke
-    get "/debug", Oauth2Provider.TokenController, :debug
+    post "/introspec", Oauth2Provider.TokenController, :introspec
   end
 
   scope "/api" do

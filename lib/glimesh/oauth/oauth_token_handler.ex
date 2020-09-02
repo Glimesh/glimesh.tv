@@ -1,15 +1,12 @@
-defmodule Glimesh.Authorization.Token do
+defmodule Glimesh.OauthHandler.Token do
   @moduledoc false
-  alias Glimesh.Authorization.TokenUtils
   alias ExOauth2Provider.{
-    Config,
     AccessTokens,
-    AccessGrants,
-    Authorization.Utils,
     Authorization.Utils.Response,
     RedirectURI,
     Scopes,
     Utils.Error}
+  alias Glimesh.OauthHandler.TokenUtils
 
   def preauthorize(resource_owner, request, config \\ []) do
     resource_owner

@@ -88,6 +88,6 @@ defmodule Glimesh.OauthHandler do
   end
 
   defp flow_to_mod("authorization_code"), do: ExOauth2Provider.Authorization.Code
-  defp flow_to_mod("implicit_grant"), do: Glimesh.Authorization.Token
+  defp flow_to_mod("implicit_grant"), do: Glimesh.OauthHandler.Token
   defp flow_to_mod(_), do: nil
 end
