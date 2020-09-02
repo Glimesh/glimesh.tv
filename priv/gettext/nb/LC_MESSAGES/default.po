@@ -21,6 +21,8 @@ msgstr "Profilbilde"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:37
+#: lib/glimesh_web/templates/oauth2_provider/application/edit.html.eex:5 lib/glimesh_web/templates/oauth2_provider/application/new.html.eex:5
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:43
 msgid "Back"
 msgstr "Tilbake"
 
@@ -57,6 +59,7 @@ msgstr "Visningsnavn må samsvare med brukernavn"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:36
+#: lib/glimesh_web/templates/oauth2_provider/application/index.html.eex:18 lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:41
 msgid "Edit"
 msgstr "Endre"
 
@@ -114,7 +117,8 @@ msgstr "Liste over kategorier"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:16
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:15
+#: lib/glimesh_web/live/admin/category_live/show.html.leex:15 lib/glimesh_web/templates/oauth2_provider/application/form.html.eex:8
+#: lib/glimesh_web/templates/oauth2_provider/application/index.html.eex:7
 msgid "Name"
 msgstr "Navn"
 
@@ -125,7 +129,8 @@ msgid "New Category"
 msgstr "Ny kategori"
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_payments/index.html.eex:51
+#: lib/glimesh_web/templates/oauth2_provider/application/form.html.eex:4
+#: lib/glimesh_web/templates/oauth2_provider/authorization/error.html.eex:2 lib/glimesh_web/templates/user_payments/index.html.eex:51
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:6 lib/glimesh_web/templates/user_security/edit.html.eex:13
 #: lib/glimesh_web/templates/user_security/edit.html.eex:48 lib/glimesh_web/templates/user_settings/profile.html.eex:27
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:13
@@ -235,7 +240,7 @@ msgstr "%{category} strømmer kommer snart"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:110
-#: lib/glimesh_web/templates/user_session/tfa.html.eex:20
+#: lib/glimesh_web/templates/user_session/new.html.eex:266 lib/glimesh_web/templates/user_session/tfa.html.eex:20
 msgid "2FA Code"
 msgstr ""
 
@@ -1012,7 +1017,135 @@ msgstr ""
 msgid "You currently don't have a channel setup. Press the button below if you'd like to setup your channel!"
 msgstr ""
 
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:7
+msgid "Application"
+msgstr "Applikasjon"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:32
+#: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:2 lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:21
+msgid "Authorize"
+msgstr "Authentiser"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:2
+msgid "Authorized Applications"
+msgstr "Authentisert Applikasjoner"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/index.html.eex:8
+msgid "Callback URL"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:23
+msgid "Callback urls:"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:15
+msgid "Copy Secret"
+msgstr "Kopier Secret"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:8
+msgid "Created at"
+msgstr "Laget på"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/index.html.eex:20
+#: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:19
+msgid "Delete"
+msgstr "Fjern"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:30
+msgid "Deny"
+msgstr "Benekte"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/edit.html.eex:2
+msgid "Edit Application"
+msgstr "Editer Applikasjon"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:10
+msgid "ID:"
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:6
+msgid "Name:"
+msgstr "Navn"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/index.html.eex:27
+#: lib/glimesh_web/templates/oauth2_provider/application/new.html.eex:2
+msgid "New Application"
+msgstr "Ny Applikasjon"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/form.html.eex:14
+msgid "Redirect URI"
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/glimesh_web/templates/oauth2_provider/application/form.html.eex:20
+msgid "Save"
+msgstr "Lagre info"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:44
+msgid "Secret is now in the clipboard."
+msgstr "Secret er nå i utklippstablen."
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:2
+msgid "Show Application"
+msgstr "Vis Applikasjon"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:5
+msgid "This application will be able to:"
+msgstr "Denne applikasjonen vil kunne:"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/form.html.eex:17
+msgid "Use one line per URI"
+msgstr "Bruk en linje per URI"
+
 #, elixir-format, fuzzy
 #: lib/glimesh/stream_layout/followers_homepage.ex:31
 msgid "Your Followed Streams"
 msgstr "Fulgte strømmer"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/index.html.eex:2
+msgid "Your applications"
+msgstr "Dine applikasjoner"
+
+#, elixir-format
+#: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:8
+msgid "scopechat"
+msgstr "Lar denne appen handle på dine vegne i chatten."
+
+#, elixir-format
+#: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:7
+msgid "scopeemail"
+msgstr "Lar denne appen å se din epost adresse."
+
+#, elixir-format
+#: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:6
+msgid "scopepublic"
+msgstr "Lar denne appen å vite hvem du er."
+
+#, elixir-format
+#: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:9
+msgid "scopestream"
+msgstr "Lar denne appen å se din stream key."
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:2
+msgid "to use your account?"
+msgstr "vill bruke kontoen din."

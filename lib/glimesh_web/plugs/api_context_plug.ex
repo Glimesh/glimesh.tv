@@ -41,7 +41,7 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
 
   def authorized(conn, opts) do
     if get_req_header(conn, "authorization") != [] do
-      key    = Keyword.get(opts, :key, :default)
+      key    = Keyword.get(opts, :key, :oauth_token)
       config = [otp_app: :glimesh]
 
       conn
@@ -49,7 +49,6 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
       |> verify_token(conn, key, config)
       |> get_current_access_token(key)
       |> handle_authentication(conn, key)
-      |> IO.inspect()
     else
       conn.assigns[:current_user]
     end

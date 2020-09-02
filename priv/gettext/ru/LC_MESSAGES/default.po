@@ -24,6 +24,8 @@ msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:37
+#: lib/glimesh_web/templates/oauth2_provider/application/edit.html.eex:5 lib/glimesh_web/templates/oauth2_provider/application/new.html.eex:5
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:43
 msgid "Back"
 msgstr ""
 
@@ -60,6 +62,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:36
+#: lib/glimesh_web/templates/oauth2_provider/application/index.html.eex:18 lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:41
 msgid "Edit"
 msgstr ""
 
@@ -117,7 +120,8 @@ msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:16
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:15
+#: lib/glimesh_web/live/admin/category_live/show.html.leex:15 lib/glimesh_web/templates/oauth2_provider/application/form.html.eex:8
+#: lib/glimesh_web/templates/oauth2_provider/application/index.html.eex:7
 msgid "Name"
 msgstr ""
 
@@ -128,7 +132,8 @@ msgid "New Category"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_payments/index.html.eex:51
+#: lib/glimesh_web/templates/oauth2_provider/application/form.html.eex:4
+#: lib/glimesh_web/templates/oauth2_provider/authorization/error.html.eex:2 lib/glimesh_web/templates/user_payments/index.html.eex:51
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:6 lib/glimesh_web/templates/user_security/edit.html.eex:13
 #: lib/glimesh_web/templates/user_security/edit.html.eex:48 lib/glimesh_web/templates/user_settings/profile.html.eex:27
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:13
@@ -1019,9 +1024,136 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:4
 msgid "You currently don't have a channel setup. Press the button below if you'd like to setup your channel!"
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:7
+msgid "Application"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:32
+#: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:2 lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:21
+msgid "Authorize"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:2
+msgid "Authorized Applications"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/index.html.eex:8
+msgid "Callback URL"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:23
+msgid "Callback urls:"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:15
+msgid "Copy Secret"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:8
+msgid "Created at"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/index.html.eex:20
+#: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:19
+msgid "Delete"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:30
+msgid "Deny"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/edit.html.eex:2
+msgid "Edit Application"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:10
+msgid "ID:"
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:6
+msgid "Name:"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/index.html.eex:27
+#: lib/glimesh_web/templates/oauth2_provider/application/new.html.eex:2
+msgid "New Application"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/form.html.eex:14
+msgid "Redirect URI"
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/glimesh_web/templates/oauth2_provider/application/form.html.eex:20
+msgid "Save"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:44
+msgid "Secret is now in the clipboard."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/show.html.eex:2
+msgid "Show Application"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:5
+msgid "This application will be able to:"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/form.html.eex:17
+msgid "Use one line per URI"
 msgstr ""
 
 #, elixir-format, fuzzy
 #: lib/glimesh/stream_layout/followers_homepage.ex:31
 msgid "Your Followed Streams"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/application/index.html.eex:2
+msgid "Your applications"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:8
+msgid "scopechat"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:7
+msgid "scopeemail"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:6
+msgid "scopepublic"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:9
+msgid "scopestream"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:2
+msgid "to use your account?"
 msgstr ""

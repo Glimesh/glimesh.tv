@@ -1,11 +1,11 @@
 <div class="container" style="text-align:center;">
-  <h1>Your applications</h1>
+  <h1><%= gettext("Your applications") %></h1>
 
   <table style="width:100%">
     <thead>
       <tr class="row">
-        <th class="col-md-2">Name</th>
-        <th class="col-md-8">Callback URL</th>
+        <th class="col-md-2"><%= gettext("Name") %></th>
+        <th class="col-md-8"><%= gettext("Callback URL") %></th>
         <th class="col-md-2"></th>
       </tr>
     </thead>
@@ -15,14 +15,14 @@
           <td class="col-md-2 list-group-item"><%= link application.name, style: "width: 100%; padding: 0.4375rem 0rem; text-shadow: none; font-size: 14px; color: #007bff; font-weight: 400; white-space: normal; word-wrap: break-word; touch-action: manipulation; cursor: pointer; display: inline-block; text-allign: center; vertical-allign: middle; user-select: none; background-color:#0c1321; border-radius: 0.25rem;", to: Routes.application_path(@conn, :show, application) %></td>
           <td class="col-md-8 list-group-item"><span style="height:100%; width: 100%; padding: 0.4375rem 0rem; text-shadow: none; font-size: 14px; font-weight: 400; white-space: normal; word-wrap: break-word; display: inline-block; text-allign: center; vertical-allign: middle;"><%= application.redirect_uri %></span></td>
           <td class="col-md-2 list-group-item">
-            <%= link "Edit", class: "btn btn-primary", to: Routes.application_path(@conn, :edit, application) %>
+            <%= link gettext("Edit"), class: "btn btn-primary", to: Routes.application_path(@conn, :edit, application) %>
             <div style="margin-bottom:7px;"></div>
-            <%= link "Delete", class: "btn btn-primary", to: Routes.application_path(@conn, :delete, application), method: :delete, data: [confirm: "Are you sure?"] %>
+            <%= link gettext("Delete"), class: "btn btn-primary", to: Routes.application_path(@conn, :delete, application), method: :delete, data: [confirm: "Are you sure?"] %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 
-  <span><%= link "New Application", class: "btn btn-primary", to: Routes.application_path(@conn, :new) %></span>
+  <span><%= link gettext("New Application"), class: "btn btn-primary", to: Routes.application_path(@conn, :new) %></span>
 </div>

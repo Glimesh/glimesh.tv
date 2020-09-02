@@ -1,11 +1,11 @@
 <div class="container" style="text-align:center;">
-  <h1>Authorized Applications</h1>
+  <h1><%= gettext("Authorized Applications") %></h1>
 
   <table style="width:50%; margin: 0 25%">
     <thead>
       <tr class="row">
-        <th class="col-md-5 list-group-item">Application</th>
-        <th class="col-md-4 list-group-item">Created At</th>
+        <th class="col-md-5 list-group-item"><%= gettext("Application") %></th>
+        <th class="col-md-4 list-group-item"><%= gettext("Created at") %></th>
         <th class="col-md-3"></th>
       </tr>
     </thead>
@@ -16,7 +16,7 @@
           <td class="col-md-4 list-group-item"><%= application.inserted_at %></td>
 
           <td class="col-md-3 list-group-item">
-            <span><%= link "Delete", to: Routes.authorized_application_path(@conn, :delete, application), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+            <span><%= link gettext("Delete"), to: Routes.authorized_application_path(@conn, :delete, application), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
           </td>
         </tr>
       <% end %>

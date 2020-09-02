@@ -1,5 +1,5 @@
 <div class="container" style="text-align:center;">
-  <h1>An error has occurred</h1>
+  <h1><%= gettext("Oops, something went wrong! Please check the errors below.") %></h1>
 
   <div>
     <p><%= @error[:error_description] %></p>
