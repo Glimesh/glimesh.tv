@@ -6,7 +6,7 @@ defmodule GlimeshWeb.Oauth2Provider.AuthorizationView do
       "public" -> gettext("scopepublic")
       "email" -> gettext("scopeemail")
       "chat" -> gettext("scopechat")
-      "stream" -> gettext("scopestream")
+      "streamkey" -> gettext("scopestream")
     end
   end
 end

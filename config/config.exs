@@ -42,7 +42,7 @@ config :ex_oauth2_provider, ExOauth2Provider,
   use_refresh_token: true,
   revoke_refresh_token_on_use: true,
   default_scopes: ~w(public),
-  optional_scopes: ~w(email chat),
+  optional_scopes: ~w(email chat streamkey),
   authorization_code_expires_in: 600,
   access_token_expires_in: 21600,
   grant_flows: ~w(authorization_code client_credentials implicit_grant)
