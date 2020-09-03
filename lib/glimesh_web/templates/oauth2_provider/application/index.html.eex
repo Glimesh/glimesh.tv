@@ -23,6 +23,6 @@
       <% end %>
     </tbody>
   </table>
-
+  <div style="margin-bottom:7px;"></div>
   <span><%= link gettext("New Application"), class: "btn btn-primary", to: Routes.application_path(@conn, :new) %></span>
 </div>
