@@ -13,6 +13,7 @@ defmodule Glimesh.Streams.Channel do
     field :thumbnail, :string
     field :stream_key, :string
     field :inaccessible, :boolean, default: false
+    field :backend, :string
 
     field :chat_rules_md, :string
     field :chat_rules_html, :string

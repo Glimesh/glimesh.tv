@@ -32,10 +32,14 @@
 
         <div class="widget-content">
           <div class="embed-responsive embed-responsive-16by9">
-            <div id="player-container" class="embed-responsive-item" phx-hook="LoadVideo"
-              data-playback-url="<%= @playback_url %>">
+            <%= if @backend == "ftl" do %>
+            <video id="video-player" phx-hook="FtlVideo" data-janus-server-uri="<%= @janus_uri %>"
+              data-channel-id="<%= @channel_id %>" poster="/images/stream-not-started.jpg" autoplay controls></video>
+            <% else %>
+            <div id="player-container" class="embed-responsive-item" phx-hook="OvenVideo">
               <div id="player"></div>
             </div>
+            <% end %>
           </div>
 
           <div class="d-none d-sm-block mt-4">
@@ -68,9 +72,11 @@
         </div>
         <div class="widget-content">
           <%= if @streamer.profile_content_html do %>
-              <%= raw(@streamer.profile_content_html) %>
+          <%= raw(@streamer.profile_content_html) %>
           <% else %>
-              <p><%= gettext("Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!") %></p>
+          <p>
+            <%= gettext("Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!") %>
+          </p>
           <% end %>
         </div>
       </div>
