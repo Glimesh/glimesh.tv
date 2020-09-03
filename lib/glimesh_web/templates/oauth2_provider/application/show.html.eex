@@ -37,7 +37,7 @@
       </table>
     </li>
   </ul>
-
+  <div style="margin-bottom:7px;"></div>
   <%= link gettext("Edit"), class: "btn btn-primary", to: Routes.application_path(@conn, :edit, @application) %>
   <span></span>
   <%= link gettext("Back"), class: "btn btn-primary", to: Routes.application_path(@conn, :index) %>
