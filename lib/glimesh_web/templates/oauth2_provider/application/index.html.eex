@@ -1,4 +1,4 @@
-<div class="container" style="text-align:center;">
+<div class="container text-center">
   <h1><%= gettext("Your applications") %></h1>
 
   <table style="width:100%">
@@ -12,8 +12,8 @@
     <tbody>
       <%= for application <- @applications do %>
         <tr class="row">
-          <td class="col-md-2 list-group-item"><%= link application.name, style: "width: 100%; padding: 0.4375rem 0rem; text-shadow: none; font-size: 14px; color: #007bff; font-weight: 400; white-space: normal; word-wrap: break-word; touch-action: manipulation; cursor: pointer; display: inline-block; text-allign: center; vertical-allign: middle; user-select: none; background-color:#0c1321; border-radius: 0.25rem;", to: Routes.application_path(@conn, :show, application) %></td>
-          <td class="col-md-8 list-group-item"><span style="height:100%; width: 100%; padding: 0.4375rem 0rem; text-shadow: none; font-size: 14px; font-weight: 400; white-space: normal; word-wrap: break-word; display: inline-block; text-allign: center; vertical-allign: middle;"><%= application.redirect_uri %></span></td>
+          <td class="col-md-2 list-group-item"><%= link application.name, class: "btn btn-application", to: Routes.application_path(@conn, :show, application) %></td>
+          <td class="col-md-8 list-group-item"><span class="full-btn-center"><%= application.redirect_uri %></span></td>
           <td class="col-md-2 list-group-item">
             <%= link gettext("Edit"), class: "btn btn-primary", to: Routes.application_path(@conn, :edit, application) %>
             <div style="margin-bottom:7px;"></div>

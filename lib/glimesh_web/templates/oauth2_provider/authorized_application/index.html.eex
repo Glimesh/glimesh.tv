@@ -1,4 +1,4 @@
-<div class="container" style="text-align:center;">
+<div class="container text-center">
   <h1><%= gettext("Authorized Applications") %></h1>
 
   <table style="width:50%; margin: 0 25%">

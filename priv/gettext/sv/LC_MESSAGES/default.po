@@ -1027,6 +1027,7 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:4
 msgid "You currently don't have a channel setup. Press the button below if you'd like to setup your channel!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:7

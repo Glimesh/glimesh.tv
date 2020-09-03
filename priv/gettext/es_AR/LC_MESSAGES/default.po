@@ -1021,11 +1021,6 @@ msgid "You currently don't have a channel setup. Press the button below if you'd
 msgstr ""
 
 #, elixir-format
-#: sidebar.html.eex:9
-msgid "Stream"
-msgstr ""
-
-#, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:7
 msgid "Application"
 msgstr ""
