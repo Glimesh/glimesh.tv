@@ -1,4 +1,4 @@
-<div class="container" style="text-align:center;">
+<div class="container text-center">
   <h1><%= gettext("Authorize") %> <strong><%= @client.name %></strong> <%= gettext("to use your account?") %></h1>
 
   <div>

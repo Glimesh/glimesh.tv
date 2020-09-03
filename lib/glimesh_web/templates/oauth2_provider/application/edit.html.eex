@@ -1,4 +1,4 @@
-<div class="container" style="text-align:center;">
+<div class="container text-center">
   <h1><%= gettext("Edit Application") %></h1>
   <%= render "form.html", Map.put(assigns, :action, Routes.application_path(@conn, :update, @changeset.data)) %>
   <div style="margin-bottom:7px;"></div>
