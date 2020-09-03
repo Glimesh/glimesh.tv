@@ -46,7 +46,7 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
     if connected?(socket), do: Streams.subscribe_to(:channel, streamer.id)
-    channel = Streams.get_channel_for_user!(streamer)
+    channel = Streams.get_channel_for_username!(streamer.username)
 
     {:ok,
      socket

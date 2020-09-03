@@ -125,7 +125,7 @@ defmodule Glimesh.StreamsTest do
 
     test "list_categories/0 returns all categories" do
       category = category_fixture()
-      assert Enum.map(Streams.list_categories(), fn x -> x.name end) == [category.name]
+      assert Enum.member?(Enum.map(Streams.list_categories(), fn x -> x.name end), category.name)
     end
 
     test "get_category_by_id!/1 returns the category with given id" do

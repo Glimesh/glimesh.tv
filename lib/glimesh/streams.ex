@@ -85,7 +85,8 @@ defmodule Glimesh.Streams do
       from c in Channel,
         join: u in User,
         on: c.user_id == u.id,
-        where: u.username == ^username
+        where: u.username == ^username,
+        where: c.inaccessible == false
     )
     |> Repo.preload([:category, :user])
   end
@@ -94,7 +95,7 @@ defmodule Glimesh.Streams do
     Repo.get_by(Channel, user_id: user.id) |> Repo.preload([:category, :user])
   end
 
-  def create_channel(user, attrs \\ %{}) do
+  def create_channel(user, attrs \\ %{category_id: Enum.at(list_categories(), 0).id}) do
     %Channel{
       user: user
     }
@@ -102,14 +103,28 @@ defmodule Glimesh.Streams do
     |> Repo.insert()
   end
 
+  def delete_channel(channel) do
+    attrs = %{inaccessible: true}
+
+    channel
+    |> Channel.changeset(attrs)
+    |> Repo.update()
+  end
+
   def update_channel(%Channel{} = channel, attrs) do
     new_channel =
       channel
       |> Channel.changeset(attrs)
-      |> Repo.update!()
-      |> Repo.preload(:category, force: true)
+      |> Repo.update()
 
-    broadcast({:ok, new_channel}, :update_channel)
+    case new_channel do
+      {:error, changeset} ->
+        new_channel
+
+      {:ok, changeset} ->
+        broadcast_message = Repo.preload(changeset, :category, force: true)
+        broadcast({:ok, broadcast_message}, :update_channel)
+    end
   end
 
   def change_channel(%Channel{} = channel, attrs \\ %{}) do

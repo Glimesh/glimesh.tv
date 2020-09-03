@@ -130,6 +130,7 @@ msgstr "Ny kategori"
 #: lib/glimesh_web/templates/user_payments/index.html.eex:51
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:6 lib/glimesh_web/templates/user_security/edit.html.eex:13
 #: lib/glimesh_web/templates/user_security/edit.html.eex:48 lib/glimesh_web/templates/user_settings/profile.html.eex:27
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:13
 msgid "Oops, something went wrong! Please check the errors below."
 msgstr "Oops! Något gick fel! Kontrollera felen nedan."
 
@@ -358,7 +359,7 @@ msgid "Follow"
 msgstr "Följ"
 
 #, elixir-format
-#: lib/glimesh_web/live/streams_live/list.ex:16
+#: lib/glimesh_web/live/streams_live/list.ex:17
 msgid "Followed Streams"
 msgstr "Följer"
 
@@ -532,7 +533,7 @@ msgid "Profile Content (Markdown supported)"
 msgstr "Profilinnehåll (Markdown stöds)"
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:29
+#: lib/glimesh_web/controllers/user_settings_controller.ex:31
 msgid "Profile updated successfully."
 msgstr "Profilen har uppdaterats."
 
@@ -714,6 +715,7 @@ msgstr "Sluta prenumerera"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:110
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:44
 msgid "Update Settings"
 msgstr "Uppdatera inställningarna"
 
@@ -981,3 +983,48 @@ msgstr "Dina inställningar"
 #: sidebar.html.eex:9
 msgid "Stream"
 msgstr "Streamer"
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:36
+msgid "Chat Rules (Markdown Supported)"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:5
+msgid "Create Channel"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:50
+msgid "Delete Channel"
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:27
+msgid "Stream Category"
+msgstr "Föräldrakategori"
+
+#, elixir-format, fuzzy
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:2
+msgid "Stream Settings"
+msgstr "Uppdatera inställningarna"
+
+#, elixir-format, fuzzy
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:20
+msgid "Stream Title"
+msgstr "Streamer"
+
+#, elixir-format
+#: lib/glimesh_web/controllers/user_settings_controller.ex:75
+msgid "Stream settings updated successfully"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:4
+msgid "You currently don't have a channel setup. Press the button below if you'd like to setup your channel!"
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/glimesh/stream_layout/followers_homepage.ex:31
+msgid "Your Followed Streams"
+msgstr "Följer"
