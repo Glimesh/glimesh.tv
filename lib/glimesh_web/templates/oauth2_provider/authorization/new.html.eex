@@ -9,8 +9,8 @@
       <% end %>
     </ul>
   </div>
-
-  <div>
+  <div style="margin-bottom:7px;"></div>
+  <div class="d-flex justify-content-center">
     <%= form_tag Routes.authorization_path(@conn, :create), method: :post do %>
       <input type="hidden" name="client_id" value="<%= @params["client_id"] %>" />
       <input type="hidden" name="redirect_uri" value="<%= @params["redirect_uri"] %>" />
@@ -18,16 +18,16 @@
       <input type="hidden" name="response_type" value="<%= @params["response_type"] %>" />
       <input type="hidden" name="scope" value="<%= @params["scope"] %>" />
       <input type="hidden" name="client_secret" value="<%= @params["client_secret"] %>" />
-      <%= submit gettext("Authorize") %>
+      <%= submit gettext("Authorize"), class: "btn btn-primary" %>
     <% end %>
-    <%= form_tag Routes.authorization_path(@conn, :delete), method: :delete do %>
+    <%= form_tag Routes.authorization_path(@conn, :delete), method: :delete, style: "margin-left: 7px;" do %>
       <input type="hidden" name="client_id" value="<%= @params["client_id"] %>" />
       <input type="hidden" name="redirect_uri" value="<%= @params["redirect_uri"] %>" />
       <input type="hidden" name="state" value="<%= @params["state"] %>" />
       <input type="hidden" name="response_type" value="<%= @params["response_type"] %>" />
       <input type="hidden" name="scope" value="<%= @params["scope"] %>" />
       <input type="hidden" name="client_secret" value="<%= @params["client_secret"] %>" />
-      <%= submit gettext("Deny") %>
+      <%= submit gettext("Deny"), class: "btn btn-danger" %>
     <% end %>
   </div>
 </div>
