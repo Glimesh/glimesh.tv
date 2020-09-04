@@ -2,10 +2,12 @@ defmodule GlimeshWeb.Oauth2Provider.ApplicationController do
   @moduledoc false
   use GlimeshWeb, :controller
 
+  alias Ecto.Changeset
   alias ExOauth2Provider.{
     Applications,
     Config
   }
+  alias Glimesh.Repo
   alias Plug.Conn
 
   plug :assign_native_redirect_uri when action in [:new, :create, :edit, :update]
@@ -31,6 +33,18 @@ defmodule GlimeshWeb.Oauth2Provider.ApplicationController do
     |> Applications.create_application(application_params, [otp_app: :glimesh])
     |> case do
       {:ok, application} ->
+        config = Application.fetch_env!(:ex_oauth2_provider, ExOauth2Provider);
+        scopes =
+          List.flatten([
+            Keyword.get(config, :default_scopes, []),
+            Keyword.get(config, :optional_scopes, [])
+          ])
+        changeset = Applications.change_application(application, %{}, [otp_app: :glimesh])
+        |> Changeset.cast(%{scopes: Enum.join(scopes, " ")}, [:scopes])
+        Ecto.Multi.new()
+        |> Ecto.Multi.update(:oauth_applications, changeset)
+        |> Repo.transaction()
+
         conn
         |> put_flash(:info, gettext("Application created successfully."))
         |> redirect(to: Routes.application_path(conn, :show, application))
