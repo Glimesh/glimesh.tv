@@ -11,14 +11,14 @@
     </thead>
     <tbody>
       <%= for application <- @applications do %>
-        <tr class="row">
-          <td class="col-md-5 list-group-item"><%= application.name %></td>
-          <td class="col-md-4 list-group-item"><%= application.inserted_at %></td>
+      <tr class="row">
+        <td class="col-md-5 list-group-item"><%= application.name %></td>
+        <td class="col-md-4 list-group-item"><%= application.inserted_at %></td>
 
-          <td class="col-md-3 list-group-item">
-            <span><%= link gettext("Delete"), to: Routes.authorized_application_path(@conn, :delete, application), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-          </td>
-        </tr>
+        <td class="col-md-3 list-group-item">
+          <span><%= link gettext("Delete"), to: Routes.authorized_application_path(@conn, :delete, application), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+        </td>
+      </tr>
       <% end %>
     </tbody>
   </table>

@@ -20,6 +20,7 @@ import {
     LiveSocket
 } from "phoenix_live_view"
 import BSN from "bootstrap.native";
+import bsCustomFileInput from "bs-custom-file-input";
 
 import ProcessPayment from './hooks/ProcessPayment';
 import Chat from './hooks/Chat';
@@ -42,10 +43,14 @@ let liveSocket = new LiveSocket("/live", Socket, {
     hooks: Hooks
 });
 
+// Init the file upload handler
+bsCustomFileInput.init();
+
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", () => {});
 window.addEventListener("phx:page-loading-stop", info => {
     BSN.initCallback(document.body);
+    bsCustomFileInput.init();
 
     // Close the nav bar on navigate
     if (document.getElementById("primaryNav")) {

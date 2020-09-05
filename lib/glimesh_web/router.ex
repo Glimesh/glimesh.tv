@@ -86,13 +86,16 @@ defmodule GlimeshWeb.Router do
     get "/users/settings/get_tfa", UserSecurityController, :get_tfa
     get "/users/settings/tfa_registered", UserSecurityController, :tfa_registered
 
+    resources "/users/settings/applications", UserApplicationsController
+
+    resources "/users/settings/authorizations", Oauth2Provider.AuthorizedApplicationController,
+      only: [:index, :delete],
+      param: "uid"
+
     get "/oauth/authorize", Oauth2Provider.AuthorizationController, :new
     get "/oauth/authorize/:code", Oauth2Provider.AuthorizationController, :show
     post "/oauth/authorize", Oauth2Provider.AuthorizationController, :create
     delete "/oauth/authorize", Oauth2Provider.AuthorizationController, :delete
-
-    resources "/applications", Oauth2Provider.ApplicationController, param: "uid"
-    resources "/authedapps", Oauth2Provider.AuthorizedApplicationController, only: [:index, :delete], param: "uid"
   end
 
   scope "/admin", GlimeshWeb do

@@ -1,0 +1,13 @@
+<div class="container mt-4">
+  <h1><%= gettext("Edit Application") %></h1>
+
+  <div class="card">
+    <div class="card-body">
+      <%= render "form.html", Map.put(assigns, :action, Routes.user_applications_path(@conn, :update, @changeset.data)) %>
+    </div>
+    <div class="card-footer">
+
+      <%= link gettext("Back"), class: "btn btn-primary", to: Routes.user_applications_path(@conn, :index) %>
+    </div>
+  </div>
+</div>
