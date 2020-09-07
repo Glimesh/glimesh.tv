@@ -1,0 +1,26 @@
+.navbar{
+  background-color: #0e1726 !important;
+}
+
+.navbar .navbar-nav a.nav-link{
+  color: #fff;
+}
+
+.navbar .dropdown-menu{
+  background-color: #1b2e4b;
+  font-size: .875rem;
+  padding: 10px;
+}
+
+.navbar .dropdown-menu .dropdown-item{
+  padding: 11px 8px;
+  border-radius: 5px;
+}
+
+.navbar .dropdown-menu .dropdown-item:hover{
+  background-color: #212529;
+}
+
+.navbar .dropdown-menu a{
+  color: #888ea8;
+}
