@@ -27,6 +27,7 @@ import Chat from './hooks/Chat';
 import Choices from "./hooks/Choices";
 import FtlVideo from "./hooks/FtlVideo";
 import OvenVideo from "./hooks/OvenVideo";
+import ClickToCopy from "./hooks/ClickToCopy";
 
 let Hooks = {};
 Hooks.ProcessPayment = ProcessPayment;
@@ -34,6 +35,7 @@ Hooks.Chat = Chat;
 Hooks.Choices = Choices;
 Hooks.FtlVideo = FtlVideo;
 Hooks.OvenVideo = OvenVideo;
+Hooks.ClickToCopy = ClickToCopy;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {

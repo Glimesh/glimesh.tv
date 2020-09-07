@@ -15,9 +15,10 @@ defmodule GlimeshWeb.UserApplicationsController do
   end
 
   def show(conn, %{"id" => id}) do
+    applications = Apps.list_apps_for_user(conn.assigns.user)
     application = Apps.get_app!(id)
 
-    render(conn, "show.html", application: application)
+    render(conn, "show.html", application: application, applications: applications)
   end
 
   def new(conn, _params) do

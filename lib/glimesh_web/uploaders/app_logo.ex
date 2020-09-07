@@ -37,9 +37,9 @@ defmodule Glimesh.AppLogo do
   end
 
   # # Provide a default URL if there hasn't been a file uploaded
-  # def default_url(_version, _scope) do
-  #   "/images/200x200.jpg"
-  # end
+  def default_url(_version, _scope) do
+    "/images/200x200.jpg"
+  end
 
   # Specify custom headers for s3 objects
   # Available options are [:cache_control, :content_disposition,

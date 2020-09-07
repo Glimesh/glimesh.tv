@@ -13,8 +13,8 @@
 
 <div class="form-group">
   <%= label f, gettext("Homepage") %>
-  <%= text_input f, :homepage, class: "form-control" %>
-  <%= error_tag f, :homepage %>
+  <%= text_input f, :homepage_url, class: "form-control" %>
+  <%= error_tag f, :homepage_url %>
 </div>
 
 <div class="form-group">
@@ -34,12 +34,12 @@
 </div>
 
 <%= inputs_for f, :oauth_application, fn oa -> %>
-  <div class="form-group">
-    <%= label oa, gettext("Allowed Redirect URI's") %>
-    <%= textarea oa, :redirect_uri, class: "form-control" %>
-    <%= error_tag oa, :redirect_uri %>
-    <span class="help-block"><%= gettext("Use one line per URI") %></span>
-  </div>
+<div class="form-group">
+  <%= label oa, gettext("Allowed Redirect URI's") %>
+  <%= textarea oa, :redirect_uri, class: "form-control" %>
+  <%= error_tag oa, :redirect_uri %>
+  <span class="help-block"><%= gettext("Use one line per URI") %></span>
+</div>
 <% end %>
 
 

@@ -8,28 +8,24 @@
     </div>
   </div>
 
-  <p>
-    Want to build a chat bot, a online tool, or other service that integrates with Glimesh? You're in the right place!
-    Create an Application to get started and checkout our API documentation if you need some guidance.
-  </p>
-
-
   <div class="row">
-    <%= for application <- @applications do %>
     <div class="col-md-3">
+      <div class="list-group">
+        <%= for app <- @applications do %>
+        <%= link app.name, class: "list-group-item list-group-item-action", to: Routes.user_applications_path(@conn, :show, app) %>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-md-9">
+
       <div class="card">
-        <div class="card-header">
-          <h5 class="text-center"><%= application.name %></h5>
-        </div>
         <div class="card-body">
-          <%= application.redirect_uri %>
-        </div>
-        <div class="card-footer">
-          <%= link gettext("Edit"), class: "btn btn-primary btn-block", to: Routes.user_applications_path(@conn, :edit, application) %>
+          <p>
+            <%= gettext("Want to build a chat bot, a online tool, or other service that integrates with Glimesh? You're in the right place! Create an Application to get started and checkout our API documentation if you need some guidance.") %>
+          </p>
         </div>
       </div>
     </div>
-    <% end %>
   </div>
 
 </div>

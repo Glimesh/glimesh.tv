@@ -62,6 +62,29 @@ defmodule Glimesh.AppsTest do
       assert app.homepage_url == "https://glimesh.tv/"
     end
 
+    test "create_app/1 with string keys and atom keys creates an app", %{user: user} do
+      # Atom keys
+      assert {:ok, %App{} = app} = Apps.create_app(user, @valid_attrs)
+      assert app.name == "some name"
+      assert app.description == "some description"
+      assert app.homepage_url == "https://glimesh.tv/"
+
+      # String Keys
+      assert {:ok, %App{} = app} =
+               Apps.create_app(user, %{
+                 "name" => "some name",
+                 "description" => "some description",
+                 "homepage_url" => "https://glimesh.tv/",
+                 "oauth_application" => %{
+                   "redirect_uri" => "https://glimesh.tv/something"
+                 }
+               })
+
+      assert app.name == "some name"
+      assert app.description == "some description"
+      assert app.homepage_url == "https://glimesh.tv/"
+    end
+
     test "create_app/1 creates an oauth application", %{user: user} do
       assert {:ok, %App{} = app} = Apps.create_app(user, @valid_attrs)
 

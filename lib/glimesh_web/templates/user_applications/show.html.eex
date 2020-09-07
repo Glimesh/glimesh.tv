@@ -1,59 +1,106 @@
-<div class="container text-center">
-  <h1><%= gettext("Show Application") %></h1>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-9">
+      <h2><%= gettext("Applications") %></h2>
+    </div>
+    <div class="col-3">
+      <%= link gettext("Create Application"), class: "btn btn-primary btn-block", to: Routes.user_applications_path(@conn, :new) %>
+    </div>
+  </div>
 
-  <ul class="list-group">
-    <li class="list-group-item">
-      <strong><%= gettext("Name:") %></strong>
-      <%= @application.name %>
-    </li>
-    <li class="list-group-item">
-      <strong><%= gettext("ID:") %></strong>
-      <%= @application.oauth_application.uid %>
-    </li>
-    <li class="list-group-item">
-      <button class="btn btn-dark" onclick="toClipboard()">
-        <%= gettext("Copy Secret") %>
-      </button>
-
-      <div style="position:relative; overflow:hidden;">
-        <input style="position:absolute; top:-100px;" id="secretKey" value="<%= @application.oauth_application.secret %>" />
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <%= for app <- @applications do %>
+        <%= link app.name, class: "list-group-item list-group-item-action", to: Routes.user_applications_path(@conn, :show, app) %>
+        <% end %>
       </div>
-    </li>
-    <li class="list-group-item">
-      <strong><%= gettext("Callback urls:") %></strong>
-      <table class="table">
-        <tbody>
-          <%= for redirect_uri <- String.split(@application.oauth_application.redirect_uri) do %>
-          <tr>
-            <td>
-              <code><%= redirect_uri %></code>
-            </td>
-            <td>
-              <%= link gettext("Authorize"), to: Routes.authorization_path(@conn, :new, client_id: @application.oauth_application.uid, redirect_uri: redirect_uri, response_type: "code", scope: @application.oauth_application.scopes), target: '_blank' %>
-            </td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </li>
-  </ul>
-  <div style="margin-bottom:7px;"></div>
-  <%= link gettext("Edit"), class: "btn btn-primary", to: Routes.user_applications_path(@conn, :edit, @application) %>
-  <span></span>
-  <%= link gettext("Back"), class: "btn btn-primary", to: Routes.user_applications_path(@conn, :index) %>
-  <span style="display:none;" id="clipboardtext"><%= gettext("Secret is now in the clipboard.") %>></span>
+    </div>
+    <div class="col-md-9">
+
+      <div class="card">
+        <div class="card-body">
+          <div class="media">
+            <img class="mr-3" src="<%= Glimesh.AppLogo.url({@application.logo, @application}, :original) %>"
+              alt="Generic placeholder image">
+            <div class="media-body">
+              <h5 class="mt-0"><%= @application.name %></h5>
+              <p><%= @application.description %></p>
+              <p><i class="fas fa-wifi fa-w"></i> <%= @application.homepage_url %></p>
+            </div>
+          </div>
+
+          <h3><%= gettext("Credentials") %></h3>
+          <div class="form-group">
+            <label for="clientId">Client ID</label>
+            <div class="input-group">
+              <input id="clientId" type="text" class="form-control" readonly
+                value="<%= @application.oauth_application.uid %>">
+              <div class="input-group-append">
+                <button class="btn btn-info click-to-copy" type="button"
+                  data-copy-value="<%= @application.oauth_application.uid %>"
+                  data-copied-error-text="<%= gettext("Error") %>"
+                  data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="secretKey">Secret Key</label>
+            <div class="input-group">
+              <input id="secretKey" type="text" class="form-control" readonly
+                value="<%= @application.oauth_application.secret %>">
+              <div class="input-group-append">
+                <button class="btn btn-info click-to-copy" type="button"
+                  data-copy-value="<%= @application.oauth_application.secret %>"
+                  data-copied-error-text="<%= gettext("Error") %>"
+                  data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
+              </div>
+            </div>
+          </div>
+
+          <h3><%= gettext("Callbacks") %></h3>
+          <table class="table">
+            <tbody>
+              <%= for redirect_uri <- String.split(@application.oauth_application.redirect_uri) do %>
+              <tr>
+                <td>
+                  <code><%= redirect_uri %></code>
+                </td>
+                <td>
+                  <%= link gettext("Authorize"), to: Routes.authorization_path(@conn, :new, client_id: @application.oauth_application.uid, redirect_uri: redirect_uri, response_type: "code", scope: @application.oauth_application.scopes), target: '_blank' %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <%= link gettext("Edit Application"), class: "btn btn-primary", to: Routes.user_applications_path(@conn, :edit, @application) %>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
-  //this is purely for security reasons and this is the only way to propperly send html values to the clipboard
-  function toClipboard() {
-    var key = document.querySelector("#secretKey");
+  var clicksToCopy = document.querySelectorAll(".click-to-copy")
+  for (var button of clicksToCopy) {
+    button.addEventListener('click', function (event) {
+      var oldText = event.target.innerText;
+      var copiedText = event.target.dataset.copiedText;
+      var copiedErrorText = event.target.dataset.copiedText;
+      var value = event.target.dataset.copyValue;
 
-    key.select();
-    key.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(value).then(function () {
+        event.target.innerText = copiedText;
 
-    document.execCommand("copy");
-
-    alert(document.querySelector("#clipboardtext").innerText);
+        setTimeout(function () {
+          event.target.innerText = oldText;
+        }, 5000);
+      }, function (err) {
+        event.target.innerText = copiedErrorText;
+      });
+    })
   }
 </script>
