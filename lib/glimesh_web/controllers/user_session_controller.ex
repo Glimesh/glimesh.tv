@@ -11,12 +11,24 @@ defmodule GlimeshWeb.UserSessionController do
 
   def create(conn, %{"user" => %{"email" => email, "password" => password} = user_params}) do
     if user = Accounts.get_user_by_email_and_password(email, password) do
-      if user.tfa_token do
-        conn
-        |> put_session(:tfa_user_id, user.id)
-        |> render("tfa.html", error_message: nil)
-      else
-        UserAuth.log_in_user(conn, user, user_params)
+      case user.is_banned do
+        false ->
+          if user.tfa_token do
+            conn
+            |> put_session(:tfa_user_id, user.id)
+            |> render("tfa.html", error_message: nil)
+          else
+            UserAuth.log_in_user(conn, user, user_params)
+          end
+
+        true ->
+          render(conn, "new.html",
+            error_message:
+              gettext(
+                "User account is banned. Please contact support at %{email} for more information.",
+                email: "support@glimesh.tv"
+              )
+          )
       end
     else
       render(conn, "new.html", error_message: gettext("Invalid e-mail or password"))
