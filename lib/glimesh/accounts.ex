@@ -88,6 +88,11 @@ defmodule Glimesh.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def is_user_banned_by_username(username) do
+    user = Repo.get_by(User, username: username)
+    user.is_banned
+  end
+
   ## User registration
 
   @doc """

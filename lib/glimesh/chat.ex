@@ -97,6 +97,10 @@ defmodule Glimesh.Chat do
       [] -> true
     end
 
+    if Accounts.is_user_banned_by_username(username) do
+      raise ArgumentError, message: "User must not be banned"
+    end
+
     # Need to add this since phoenix likes strings and our tests don't use them :)
     message_contain_link_helper =
       if attrs["message"] do
