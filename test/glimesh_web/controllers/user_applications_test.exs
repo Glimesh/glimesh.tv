@@ -1,100 +1,105 @@
 defmodule GlimeshWeb.UserApplicationsTest do
   use GlimeshWeb.ConnCase
 
-  alias Glimesh.Blog
+  alias Glimesh.Apps
   import Glimesh.AccountsFixtures
 
+  setup :register_and_log_in_user
+
   @create_attrs %{
-    body_md: "some body_md",
+    name: "some name",
     description: "some description",
-    published: true,
-    slug: "some-slug",
-    title: "some title"
+    homepage_url: "https://glimesh.tv/",
+    oauth_application: %{
+      redirect_uri: "https://glimesh.tv/something"
+    }
   }
   @update_attrs %{
-    body_md: "some updated body_md",
+    name: "some updated name",
     description: "some updated description",
-    published: false,
-    slug: "some-updated-slug",
-    title: "some updated title"
+    homepage_url: "https://dev.glimesh.tv/",
+    oauth_application: %{
+      redirect_uri: "https://glimesh.tv/something-new"
+    }
   }
   @invalid_attrs %{
-    body_html: nil,
-    body_md: nil,
+    name: nil,
     description: nil,
-    published: nil,
-    slug: nil,
-    title: nil
+    oauth_application: %{
+      redirect_uri: nil
+    }
   }
 
-  def fixture(:apps) do
-    {:ok, article} = Blog.create_article(admin_fixture(), @create_attrs)
-    article
+  def fixture(:app) do
+    {:ok, app} = Apps.create_app(user_fixture(), @create_attrs)
+    app
   end
 
   describe "index" do
-    test "lists all articles", %{conn: conn} do
-      conn = get(conn, Routes.article_path(conn, :index))
-      assert html_response(conn, 200) =~ "Glimesh Blog"
+    test "lists all apps", %{conn: conn} do
+      conn = get(conn, Routes.user_applications_path(conn, :index))
+      assert html_response(conn, 200) =~ "Applications"
     end
   end
 
-  describe "new article" do
+  describe "new app" do
     setup :register_and_log_in_admin_user
 
     test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.article_path(conn, :new))
-      assert html_response(conn, 200) =~ "New Article"
+      conn = get(conn, Routes.user_applications_path(conn, :new))
+      assert html_response(conn, 200) =~ "Create Application"
     end
   end
 
-  describe "create article" do
-    setup :register_and_log_in_admin_user
-
+  describe "create app" do
     test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.article_path(conn, :create), article: @create_attrs)
+      conn = post(conn, Routes.user_applications_path(conn, :create), app: @create_attrs)
 
-      assert %{slug: slug} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.article_path(conn, :show, slug)
+      assert %{id: id} = redirected_params(conn)
+      assert redirected_to(conn) == Routes.user_applications_path(conn, :show, id)
 
-      conn = get(conn, Routes.article_path(conn, :show, slug))
-      assert html_response(conn, 200) =~ "some title"
+      conn = get(conn, Routes.user_applications_path(conn, :show, id))
+      assert html_response(conn, 200) =~ "some name"
+      assert html_response(conn, 200) =~ "https://glimesh.tv/something"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.article_path(conn, :create), article: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Article"
+      conn = post(conn, Routes.user_applications_path(conn, :create), app: @invalid_attrs)
+      assert html_response(conn, 200) =~ "Create Application"
     end
   end
 
-  describe "edit article" do
-    setup [:register_and_log_in_admin_user, :create_article]
+  describe "edit app" do
+    setup [:create_app]
 
-    test "renders form for editing chosen article", %{conn: conn, article: article} do
-      conn = get(conn, Routes.article_path(conn, :edit, article.slug))
-      assert html_response(conn, 200) =~ "Edit Article"
+    test "renders form for editing chosen app", %{conn: conn, app: app} do
+      conn = get(conn, Routes.user_applications_path(conn, :edit, app.id))
+      assert html_response(conn, 200) =~ "Edit Application"
     end
   end
 
-  describe "update article" do
-    setup [:register_and_log_in_admin_user, :create_article]
+  describe "update app" do
+    setup [:create_app]
 
-    test "redirects when data is valid", %{conn: conn, article: article} do
-      conn = put(conn, Routes.article_path(conn, :update, article.slug), article: @update_attrs)
-      assert redirected_to(conn) == Routes.article_path(conn, :show, @update_attrs.slug)
+    test "redirects when data is valid", %{conn: conn, app: app} do
+      conn = put(conn, Routes.user_applications_path(conn, :update, app), app: @update_attrs)
 
-      conn = get(conn, Routes.article_path(conn, :show, @update_attrs.slug))
-      assert html_response(conn, 200) =~ "<p>\nsome updated body_md</p>\n"
+      assert redirected_to(conn) == Routes.user_applications_path(conn, :show, app)
+
+      conn = get(conn, Routes.user_applications_path(conn, :show, app))
+      assert html_response(conn, 200) =~ "some updated name"
+      assert html_response(conn, 200) =~ app.oauth_application.secret
     end
 
-    test "renders errors when data is invalid", %{conn: conn, article: article} do
-      conn = put(conn, Routes.article_path(conn, :update, article.slug), article: @invalid_attrs)
-      assert html_response(conn, 200) =~ "Edit Article"
+    test "renders errors when data is invalid", %{conn: conn, app: app} do
+      conn = put(conn, Routes.user_applications_path(conn, :update, app), app: @invalid_attrs)
+
+      assert html_response(conn, 200) =~ "Edit Application"
     end
   end
 
-  defp create_article(_) do
-    article = fixture(:article)
-    %{article: article}
+  defp create_app(_) do
+    app = fixture(:app)
+    %{app: app}
   end
 end

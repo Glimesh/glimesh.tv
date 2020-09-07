@@ -25,7 +25,7 @@ defmodule GlimeshWeb.UserApplicationsController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"application" => application_params}) do
+  def create(conn, %{"app" => application_params}) do
     user = conn.assigns.current_user
 
     case Apps.create_app(user, application_params) do
@@ -45,14 +45,14 @@ defmodule GlimeshWeb.UserApplicationsController do
     render(conn, "edit.html", application: application, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "application" => application_params}) do
+  def update(conn, %{"id" => id, "app" => application_params}) do
     application = Apps.get_app!(id)
 
     case Apps.update_app(application, application_params) do
       {:ok, application} ->
         conn
         |> put_flash(:info, "Application updated successfully.")
-        |> redirect(to: Routes.user_applications_path(conn, :show, application.id))
+        |> redirect(to: Routes.user_applications_path(conn, :show, application))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", application: application, changeset: changeset)

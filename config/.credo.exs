@@ -25,8 +25,7 @@
          ignore_names: [
            ~r/(GlimeshWeb.*)$/,
            ~r/(\.\w+Controller|\.Endpoint|\.Repo|\.Router|\.\w+Socket|\.\w+View|\.\w+Live)$/
-         ]},
-        {Credo.Check.Readability.AliasOrder, false}
+         ]}
       ]
     }
   ]
