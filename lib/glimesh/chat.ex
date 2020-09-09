@@ -8,8 +8,8 @@ defmodule Glimesh.Chat do
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Repo
   alias Glimesh.Streams
-  alias Phoenix.HTML.Tag
   alias Phoenix.HTML.Link
+  alias Phoenix.HTML.Tag
 
   @doc """
   Returns the list of chat_messages.
@@ -214,8 +214,11 @@ defmodule Glimesh.Chat do
   end
 
   def hyperlink_message(chat_message) do
-    regex_string = ~r/(?:(?:https?|ftp):\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?/i
+    regex_string =
+      ~r/(?:(?:https?|ftp):\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?/i
+
     found_uris = flatten_list(Regex.scan(regex_string, chat_message))
+
     for message <- String.split(chat_message) do
       if Enum.member?(found_uris, message) do
         case URI.parse(message).scheme do
