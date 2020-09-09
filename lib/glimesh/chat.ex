@@ -214,8 +214,10 @@ defmodule Glimesh.Chat do
   end
 
   def hyperlink_message(chat_message) do
-    regex_string =
-      ~r/(?:(?:https?|ftp):\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?/i
+    regex_string = ~r/ (?:(?:https?|ftp)
+                        :\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))
+                        ?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?
+                      /xi
 
     found_uris = flatten_list(Regex.scan(regex_string, chat_message))
 
