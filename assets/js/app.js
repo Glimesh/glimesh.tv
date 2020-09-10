@@ -27,6 +27,9 @@ import Choices from "./hooks/Choices";
 import FtlVideo from "./hooks/FtlVideo";
 import OvenVideo from "./hooks/OvenVideo";
 
+// https://github.com/github/markdown-toolbar-element
+import "@github/markdown-toolbar-element";
+
 let Hooks = {};
 Hooks.ProcessPayment = ProcessPayment;
 Hooks.Chat = Chat;

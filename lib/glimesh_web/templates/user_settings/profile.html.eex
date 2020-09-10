@@ -103,8 +103,43 @@
 
                 <div class="form-group">
                     <%= label f, :profile_content_md, gettext("Profile Content (Markdown supported)") %>
-                    <%= textarea f, :profile_content_md, [class: "form-control mb-4", rows: 20] %>
-                    <%= error_tag f, :profile_content_md %>
+
+		    <ul class="nav nav-pills" id="markdown-editor" role="tablist">
+		      <li class="nav-item"><a class="nav-link active" href="#editor" data-toggle="tab"><%= gettext("Edit") %></a></li>
+		      <li class="nav-item"><a class="nav-link" href="#preview" data-toggle="tab"><%= gettext("Preview") %></a></li>
+		    </ul>
+		    
+		    <div class="tab-content mt-4">
+		      <div class="tab-pane active" id="editor">
+			<markdown-toolbar for="textarea_edit">
+			  <div class="d-inline-flex mb-2">
+			    <div class="pr-3">
+			      <md-bold class="fas fa-bold fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Bold") %>></md-bold>
+			      <md-italic class="fas fa-italic fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Italic") %>></md-italic>
+			      <md-header class="fas fa-heading fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Heading") %>></md-header>
+			    </div>
+			    <div class="pr-3 pl-3">
+			      <md-quote class="fas fa-quote-right fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Quote") %>></md-quote>
+			      <md-code class="fas fa-code fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Code") %>></md-code>
+			      <md-link class="fas fa-link fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Link") %>></md-link>
+			      <md-image class="fas fa-image fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Image") %>></md-image>
+			    </div>
+			    <div class="pr-3 pl-3">
+			      <md-unordered-list class="fas fa-list-ul fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Unordered List") %>></md-unordered-list>
+			      <md-ordered-list class="fas fa-list-ol fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Ordered List") %>></md-ordered-list>
+			      <md-task-list class="fas fa-tasks fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Tasks List") %>></md-task-list>
+			    </div>
+			  </div>
+			</markdown-toolbar>
+			
+			<%= textarea f, :profile_content_md, [class: "form-control mb-4", id: "textarea_edit", rows: 20] %>
+		      </div>
+		      <div class="tab-pane form-control mb-4" id="preview">
+			<p>Work in Progress</p>
+		      </div>
+		    </div>
+		    
+		    <%= error_tag f, :profile_content_md %>
                 </div>
 
                 <%= submit gettext("Update Settings"), class: "btn btn-primary" %>
@@ -113,6 +148,10 @@
         </div>
     </div>
     <% end %>
-
-
 </div>
+
+<script>
+  $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
