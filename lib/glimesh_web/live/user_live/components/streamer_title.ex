@@ -24,7 +24,7 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
           </div>
 
           </div>
-        </form
+        </form>
       <% end %>
     <% else %>
       <h5 class=""><span class="badge badge-danger">Live!</span> <span class="badge badge-primary"><%= @channel.category.tag_name %></span> <%= @channel.title %> </h5>

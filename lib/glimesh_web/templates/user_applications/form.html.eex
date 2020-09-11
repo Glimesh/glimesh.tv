@@ -1,0 +1,49 @@
+<%= form_for @changeset, @action, [multipart: true, class: "form"], fn f -> %>
+<%= if @changeset.action do %>
+<div class="alert alert-danger">
+  <p><%= gettext("Oops, something went wrong! Please check the errors below.") %></p>
+</div>
+<% end %>
+
+<div class="form-group">
+  <%= label f, gettext("Name") %>
+  <%= text_input f, :name, class: "form-control" %>
+  <%= error_tag f, :name %>
+</div>
+
+<div class="form-group">
+  <%= label f, gettext("Homepage") %>
+  <%= text_input f, :homepage_url, class: "form-control" %>
+  <%= error_tag f, :homepage_url %>
+</div>
+
+<div class="form-group">
+  <%= label f, gettext("Description") %>
+  <%= text_input f, :description, class: "form-control" %>
+  <%= error_tag f, :description %>
+</div>
+
+<div class="form-group">
+  <%= label f, gettext("Image") %>
+  <div class="custom-file">
+    <%= file_input f, :logo, id: "customFile", class: "custom-file-input custom-file form-control", accept: "image/png, image/jpeg" %>
+    <label class="custom-file-label" for="customFile"
+      data-browse="<%= gettext("Browse for Images") %>"><%= gettext("Choose file") %></label>
+  </div>
+  <%= error_tag f, :logo %>
+</div>
+
+<%= inputs_for f, :oauth_application, fn oa -> %>
+<div class="form-group">
+  <%= label oa, gettext("Allowed Redirect URI's") %>
+  <%= textarea oa, :redirect_uri, class: "form-control" %>
+  <%= error_tag oa, :redirect_uri %>
+  <span class="help-block"><%= gettext("Use one line per URI") %></span>
+</div>
+<% end %>
+
+
+<div class="form-group">
+  <%= submit gettext("Save Application"), class: "btn btn-primary" %>
+</div>
+<% end %>
