@@ -208,8 +208,8 @@ defmodule Glimesh.Chat do
     username = user.username
 
     !(username == chat_message.user.username) &&
-      (String.match?(chat_message.message, ~r/#{username}/i) ||
-         String.match?(chat_message.message, ~r/#{"@" <> username}/i))
+      (String.match?(chat_message.message, ~r/\b#{username}\b/i) ||
+         String.match?(chat_message.message, ~r/\b#{"@" <> username}\b/i))
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error
