@@ -6,30 +6,44 @@ defmodule Glimesh.OauthHandler do
     Authorization.Utils,
     Authorization.Utils.Response,
     Config,
-    Utils.Error}
+    Utils.Error
+  }
+
   alias Ecto.Schema
 
   @doc """
   Check ExOauth2Provider.Authorization.Code for usage.
   """
-  @spec preauthorize(Schema.t(), map(), keyword()) :: Response.success() | Response.error() | Response.redirect() | Response.native_redirect()
+  @spec preauthorize(Schema.t(), map(), keyword()) ::
+          Response.success() | Response.error() | Response.redirect() | Response.native_redirect()
   def preauthorize(resource_owner, request, config \\ []) do
     case validate_response_type(request, config) do
-      {:error, :invalid_response_type} -> unsupported_response_type(resource_owner, request, config)
-      {:error, :missing_response_type} -> invalid_request(resource_owner, request, config)
-      {:ok, token_module}              -> token_module.preauthorize(resource_owner, request, config)
+      {:error, :invalid_response_type} ->
+        unsupported_response_type(resource_owner, request, config)
+
+      {:error, :missing_response_type} ->
+        invalid_request(resource_owner, request, config)
+
+      {:ok, token_module} ->
+        token_module.preauthorize(resource_owner, request, config)
     end
   end
 
   @doc """
   Check ExOauth2Provider.Authorization.Code for usage.
   """
-  @spec authorize(Schema.t(), map(), keyword()) :: {:ok, binary()} | Response.error() | Response.redirect() | Response.native_redirect()
+  @spec authorize(Schema.t(), map(), keyword()) ::
+          {:ok, binary()} | Response.error() | Response.redirect() | Response.native_redirect()
   def authorize(resource_owner, request, config \\ []) do
     case validate_response_type(request, config) do
-      {:error, :invalid_response_type} -> unsupported_response_type(resource_owner, request, config)
-      {:error, :missing_response_type} -> invalid_request(resource_owner, request, config)
-      {:ok, token_module}              -> token_module.authorize(resource_owner, request, config)
+      {:error, :invalid_response_type} ->
+        unsupported_response_type(resource_owner, request, config)
+
+      {:error, :missing_response_type} ->
+        invalid_request(resource_owner, request, config)
+
+      {:ok, token_module} ->
+        token_module.authorize(resource_owner, request, config)
     end
   end
 
@@ -39,9 +53,14 @@ defmodule Glimesh.OauthHandler do
   @spec deny(Schema.t(), map(), keyword()) :: Response.error() | Response.redirect()
   def deny(resource_owner, request, config \\ []) do
     case validate_response_type(request, config) do
-      {:error, :invalid_response_type} -> unsupported_response_type(resource_owner, request, config)
-      {:error, :missing_response_type} -> invalid_request(resource_owner, request, config)
-      {:ok, token_module}              -> token_module.deny(resource_owner, request, config)
+      {:error, :invalid_response_type} ->
+        unsupported_response_type(resource_owner, request, config)
+
+      {:error, :missing_response_type} ->
+        invalid_request(resource_owner, request, config)
+
+      {:ok, token_module} ->
+        token_module.deny(resource_owner, request, config)
     end
   end
 
@@ -67,6 +86,7 @@ defmodule Glimesh.OauthHandler do
       mod -> {:ok, mod}
     end
   end
+
   defp validate_response_type(_, _config), do: {:error, :missing_response_type}
 
   defp response_type_to_grant_flow("code"), do: "authorization_code"
@@ -78,7 +98,7 @@ defmodule Glimesh.OauthHandler do
     |> Config.grant_flows()
     |> flow_can_be_used?(grant_flow)
     |> case do
-      true  -> flow_to_mod(grant_flow)
+      true -> flow_to_mod(grant_flow)
       false -> nil
     end
   end

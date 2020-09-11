@@ -6,6 +6,8 @@ defmodule Glimesh.OauthApplications.OauthApplication do
   schema "oauth_applications" do
     application_fields()
 
+    has_one :app, Glimesh.Apps.App
+
     timestamps()
   end
 end

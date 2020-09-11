@@ -20,12 +20,14 @@ import {
     LiveSocket
 } from "phoenix_live_view"
 import BSN from "bootstrap.native";
+import bsCustomFileInput from "bs-custom-file-input";
 
 import ProcessPayment from './hooks/ProcessPayment';
 import Chat from './hooks/Chat';
 import Choices from "./hooks/Choices";
 import FtlVideo from "./hooks/FtlVideo";
 import OvenVideo from "./hooks/OvenVideo";
+import ClickToCopy from "./hooks/ClickToCopy";
 
 let Hooks = {};
 Hooks.ProcessPayment = ProcessPayment;
@@ -33,6 +35,7 @@ Hooks.Chat = Chat;
 Hooks.Choices = Choices;
 Hooks.FtlVideo = FtlVideo;
 Hooks.OvenVideo = OvenVideo;
+Hooks.ClickToCopy = ClickToCopy;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
@@ -42,10 +45,14 @@ let liveSocket = new LiveSocket("/live", Socket, {
     hooks: Hooks
 });
 
+// Init the file upload handler
+bsCustomFileInput.init();
+
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", () => {});
 window.addEventListener("phx:page-loading-stop", info => {
     BSN.initCallback(document.body);
+    bsCustomFileInput.init();
 
     // Close the nav bar on navigate
     if (document.getElementById("primaryNav")) {

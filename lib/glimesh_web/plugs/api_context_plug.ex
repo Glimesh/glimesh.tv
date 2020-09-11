@@ -5,6 +5,7 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
     Keys,
     Plug.ErrorHandler
   }
+
   import Plug.Conn
   import Phoenix.Controller, only: [json: 2]
 
@@ -41,7 +42,7 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
 
   def authorized(conn, opts) do
     if get_req_header(conn, "authorization") != [] do
-      key    = Keyword.get(opts, :key, :oauth_token)
+      key = Keyword.get(opts, :key, :oauth_token)
       config = [otp_app: :glimesh]
 
       conn
@@ -54,7 +55,7 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
     end
   end
 
-  defp fetch_token(conn, opts) do
+  defp fetch_token(conn, _opts) do
     ["Bearer " <> token] = get_req_header(conn, "authorization")
 
     token
@@ -62,17 +63,19 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
 
   defp do_fetch_token(_realm_regex, []), do: nil
   defp do_fetch_token(nil, [token | _tail]), do: String.trim(token)
+
   defp do_fetch_token(realm_regex, [token | tail]) do
     trimmed_token = String.trim(token)
 
     case Regex.run(realm_regex, trimmed_token) do
       [_, match] -> String.trim(match)
-      _          -> do_fetch_token(realm_regex, tail)
+      _ -> do_fetch_token(realm_regex, tail)
     end
   end
 
   defp verify_token(nil, conn, _, _config), do: conn
   defp verify_token("", conn, _, _config), do: conn
+
   defp verify_token(token, conn, key, config) do
     access_token = ExOauth2Provider.authenticate_token(token, config)
 
@@ -84,7 +87,8 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
   end
 
   defp handle_authentication({:ok, _}, conn, _opts), do: conn
-  defp handle_authentication({:error, reason}, %{params: params} = conn, opts) do
+
+  defp handle_authentication({:error, reason}, %{params: params} = conn, _opts) do
     params = Map.put(params, :reason, reason)
 
     conn
@@ -96,8 +100,8 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
   defp get_current_access_token(conn, the_key) do
     case conn.private[Keys.access_token_key(the_key)] do
       {:ok, access_token} -> {:ok, access_token}
-      {:error, error}     -> {:error, error}
-      _                   -> {:error, :no_session}
+      {:error, error} -> {:error, error}
+      _ -> {:error, :no_session}
     end
   end
 end
