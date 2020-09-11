@@ -1,25 +1,39 @@
-<div class="container text-center">
-  <h1><%= gettext("Authorized Applications") %></h1>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-9">
+      <h2><%= gettext("Authorized Applications") %></h2>
+    </div>
+    <div class="col-3">
 
-  <table style="width:50%; margin: 0 25%">
-    <thead>
-      <tr class="row">
-        <th class="col-md-5 list-group-item"><%= gettext("Application") %></th>
-        <th class="col-md-4 list-group-item"><%= gettext("Created at") %></th>
-        <th class="col-md-3"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <%= for application <- @applications do %>
-      <tr class="row">
-        <td class="col-md-5 list-group-item"><%= application.name %></td>
-        <td class="col-md-4 list-group-item"><%= application.inserted_at %></td>
+    </div>
+  </div>
 
-        <td class="col-md-3 list-group-item">
-          <span><%= link gettext("Delete"), to: Routes.authorized_application_path(@conn, :delete, application), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-        </td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <div class="card">
+    <div class="card-body">
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th><%= gettext("Application") %></th>
+            <th><%= gettext("Homepage") %></th>
+            <th><%= gettext("Installed at") %></th>
+            <th><%= gettext("Actions") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for application <- @applications do %>
+          <tr>
+            <td><%= application.name %></td>
+            <td><%= link application.app.homepage_url, to: application.app.homepage_url %></td>
+            <td><%= application.inserted_at %></td>
+            <td>
+              <%= link gettext("Unauthorize"), to: Routes.authorized_application_path(@conn, :delete, application), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>

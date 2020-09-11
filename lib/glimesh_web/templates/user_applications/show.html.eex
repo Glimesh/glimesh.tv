@@ -32,7 +32,7 @@
 
           <h3><%= gettext("Credentials") %></h3>
           <div class="form-group">
-            <label for="clientId">Client ID</label>
+            <label for="clientId"><%= gettext("Client ID") %></label>
             <div class="input-group">
               <input id="clientId" type="text" class="form-control" readonly
                 value="<%= @application.oauth_application.uid %>">
@@ -45,7 +45,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="secretKey">Secret Key</label>
+            <label for="secretKey"><%= gettext("Secret Key") %></label>
             <div class="input-group">
               <input id="secretKey" type="text" class="form-control" readonly
                 value="<%= @application.oauth_application.secret %>">
@@ -57,6 +57,33 @@
               </div>
             </div>
           </div>
+          <div class="form-group">
+            <label for="tokenRoute"><%= gettext("OAuth Token URL") %></label>
+            <div class="input-group">
+              <input id="tokenRoute" type="text" class="form-control" readonly
+                value="<%= Routes.token_url(@conn, :create) %>">
+              <div class="input-group-append">
+                <button class="btn btn-info click-to-copy" type="button"
+                  data-copy-value="<%= Routes.token_url(@conn, :create) %>"
+                  data-copied-error-text="<%= gettext("Error") %>"
+                  data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="authorizationRoute"><%= gettext("OAuth Authorization URL") %></label>
+            <div class="input-group">
+              <input id="authorizationRoute" type="text" class="form-control" readonly
+                value="<%= Routes.authorization_url(@conn, :new) %>">
+              <div class="input-group-append">
+                <button class="btn btn-info click-to-copy" type="button"
+                  data-copy-value="<%= Routes.authorization_url(@conn, :new) %>"
+                  data-copied-error-text="<%= gettext("Error") %>"
+                  data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
+              </div>
+            </div>
+          </div>
+
 
           <h3><%= gettext("Callbacks") %></h3>
           <table class="table">

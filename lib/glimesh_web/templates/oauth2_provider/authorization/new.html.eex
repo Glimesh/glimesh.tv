@@ -1,33 +1,46 @@
-<div class="container text-center">
-  <h1><%= gettext("Authorize") %> <strong><%= @client.name %></strong> <%= gettext("to use your account?") %></h1>
+<div class="container mt-4">
+  <div class="row justify-content-md-center">
+    <div class="col-lg-5">
+      <div class="card">
+        <h5 class="card-header">
+          <%= gettext("Authorize %{name}?", name: @client.name) %>
+        </h5>
+        <div class="card-body">
+          <img class="img-avatar mx-auto d-block mb-4"
+            src="<%= Glimesh.AppLogo.url({@client.app.logo, @client.app}, :original) %>"
+            alt="Generic placeholder image">
+          <p><em><%= @client.app.description %></em></p>
 
-  <div>
-    <p><%= gettext("This application will be able to:") %></p>
-    <ul class="list-group">
-      <%= for scope <- @scopes do %>
-        <li class="list-group-item"><%= scope_gettext(scope) %></li>
-      <% end %>
-    </ul>
-  </div>
-  <div style="margin-bottom:7px;"></div>
-  <div class="d-flex justify-content-center">
-    <%= form_tag Routes.authorization_path(@conn, :create), method: :post do %>
-      <input type="hidden" name="client_id" value="<%= @params["client_id"] %>" />
-      <input type="hidden" name="redirect_uri" value="<%= @params["redirect_uri"] %>" />
-      <input type="hidden" name="state" value="<%= @params["state"] %>" />
-      <input type="hidden" name="response_type" value="<%= @params["response_type"] %>" />
-      <input type="hidden" name="scope" value="<%= @params["scope"] %>" />
-      <input type="hidden" name="client_secret" value="<%= @params["client_secret"] %>" />
-      <%= submit gettext("Authorize"), class: "btn btn-primary" %>
-    <% end %>
-    <%= form_tag Routes.authorization_path(@conn, :delete), method: :delete, style: "margin-left: 7px;" do %>
-      <input type="hidden" name="client_id" value="<%= @params["client_id"] %>" />
-      <input type="hidden" name="redirect_uri" value="<%= @params["redirect_uri"] %>" />
-      <input type="hidden" name="state" value="<%= @params["state"] %>" />
-      <input type="hidden" name="response_type" value="<%= @params["response_type"] %>" />
-      <input type="hidden" name="scope" value="<%= @params["scope"] %>" />
-      <input type="hidden" name="client_secret" value="<%= @params["client_secret"] %>" />
-      <%= submit gettext("Deny"), class: "btn btn-danger" %>
-    <% end %>
+          <p class="mt-4">
+            <h6>
+              <%= gettext("Are you sure you wish to authorize %{name} to use your account? This application will be able to:", name: @client.name) %>
+            </h6>
+          </p>
+          <ul class="list-group">
+            <%= for scope <- @scopes do %>
+            <li class="list-group-item active"><%= scope_gettext(scope) %></li>
+            <% end %>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <%= form_tag Routes.authorization_path(@conn, :create), method: :post do %>
+          <input type="hidden" name="client_id" value="<%= @params["client_id"] %>" />
+          <input type="hidden" name="redirect_uri" value="<%= @params["redirect_uri"] %>" />
+          <input type="hidden" name="state" value="<%= @params["state"] %>" />
+          <input type="hidden" name="response_type" value="<%= @params["response_type"] %>" />
+          <input type="hidden" name="scope" value="<%= @params["scope"] %>" />
+          <input type="hidden" name="client_secret" value="<%= @params["client_secret"] %>" />
+          <div class="row">
+            <div class="col-6">
+              <%= submit gettext("Authorize"), name: "action", value: "authorize", class: "btn btn-primary btn-block" %>
+            </div>
+            <div class="col-6">
+              <%= submit gettext("Deny"), name: "action", value: "deny", class: "btn btn-danger btn-block" %>
+            </div>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

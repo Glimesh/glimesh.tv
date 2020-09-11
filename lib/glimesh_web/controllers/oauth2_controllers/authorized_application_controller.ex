@@ -2,13 +2,13 @@ defmodule GlimeshWeb.Oauth2Provider.AuthorizedApplicationController do
   @moduledoc false
   use GlimeshWeb, :controller
   alias ExOauth2Provider.Applications
-  alias Plug.Conn
 
   plug :put_layout, "user-sidebar.html"
 
   def index(conn, _params) do
     applications =
       Applications.get_authorized_applications_for(conn.assigns[:current_user], otp_app: :glimesh)
+      |> Glimesh.Repo.preload(:app)
 
     render(conn, "index.html", applications: applications)
   end

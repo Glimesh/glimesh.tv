@@ -4,8 +4,8 @@ defmodule Glimesh.Apps do
   """
 
   import Ecto.Query, warn: false
-  alias Glimesh.Repo
   alias Glimesh.Apps.App
+  alias Glimesh.Repo
 
   @doc """
   Returns the list of apps.
@@ -67,39 +67,6 @@ defmodule Glimesh.Apps do
       |> put_in([:oauth_application, :name], Map.get(attrs, :name))
       |> put_in([:oauth_application, :scopes], Enum.join(scopes, " "))
 
-    # Ensure oauth & app changesets are good
-    # Then commit
-
-    # app_changeset = App.changeset(%App{}, attrs)
-
-    # oauth_changeset =
-    #   OAuthApplications.change_application(
-    #     user,
-    #     oauth_app_params,
-    #     otp_app: :glimesh
-    #   )
-
-    # with true <- app_changeset.valid?,
-    #      {:ok, oauth_app} <-
-    #        OAuthApplications.create_application(
-    #          user,
-    #          oauth_app_params,
-    #          otp_app: :glimesh
-    #        ) do
-    #   %App{
-    #     user: user,
-    #     oauth_application: oauth_app_params
-    #   }
-    #   |> App.changeset(attrs)
-    #   |> Repo.insert()
-    # else
-    #   false ->
-    #     {:error, app_changeset}
-    #     # {:error, _} -> {:error, app_changeset}
-    # end
-
-    # attrs = Map.put(attrs, :oauth_application, oauth_app_params)
-
     %App{
       user: user
     }
@@ -127,37 +94,6 @@ defmodule Glimesh.Apps do
       |> put_in([:oauth_application, :id], app.oauth_application_id)
       |> put_in([:oauth_application, :name], Map.get(attrs, :name))
 
-    # oauth_update =
-    #   OAuthApplications.change_application(
-    #     app.oauth_application,
-    #     oauth_app_params,
-    #     otp_app: :glimesh
-    #   )
-
-    # app_update = app |> App.changeset(attrs)
-
-    # {:ok, %{app: app}} =
-    #   Ecto.Multi.new()
-    #   |> Ecto.Multi.update(:oauth_application, oauth_update)
-    #   |> Ecto.Multi.update(:app, app_update)
-    #   |> Repo.transaction()
-
-    # {:ok, app |> Repo.preload(:oauth_application, force: true)}
-
-    # with {:ok, _} <-
-    #        OAuthApplications.update_application(
-    #          app.oauth_application,
-    #          oauth_app_params,
-    #          otp_app: :glimesh
-    #        ) do
-    #   app
-    #   |> Repo.preload(:oauth_application, force: true)
-    #   |> App.changeset(attrs)
-    #   |> Repo.update()
-    # end
-
-    # attrs = Map.put(attrs, :oauth_application, oauth_app_params)
-
     app
     |> App.changeset(attrs)
     |> Repo.update()
@@ -174,6 +110,10 @@ defmodule Glimesh.Apps do
   """
   def change_app(%App{} = app, attrs \\ %{}) do
     App.changeset(app, attrs)
+  end
+
+  defp key_to_atom(%Plug.Upload{} = map) do
+    map
   end
 
   defp key_to_atom(map) do
