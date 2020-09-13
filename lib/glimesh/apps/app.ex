@@ -33,6 +33,12 @@ defmodule Glimesh.Apps.App do
     )
   end
 
+  def oauth_changset(application, %{owner: %Glimesh.Accounts.User{}} = params) do
+    # Manually set the owner
+    %{application | owner: params.owner}
+    |> ExOauth2Provider.Applications.Application.changeset(params, otp_app: :glimesh)
+  end
+
   def oauth_changset(application, params) do
     ExOauth2Provider.Applications.Application.changeset(application, params, otp_app: :glimesh)
   end
