@@ -60,6 +60,7 @@ defmodule Glimesh.AppsTest do
       assert app.name == "some name"
       assert app.description == "some description"
       assert app.homepage_url == "https://glimesh.tv/"
+      assert app.oauth_application.owner_id == user.id
     end
 
     test "create_app/1 with string keys and atom keys creates an app", %{user: user} do

@@ -65,6 +65,7 @@ defmodule Glimesh.Apps do
     attrs =
       attrs
       |> put_in([:oauth_application, :name], Map.get(attrs, :name))
+      |> put_in([:oauth_application, :owner], user)
       |> put_in([:oauth_application, :scopes], Enum.join(scopes, " "))
 
     %App{

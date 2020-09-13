@@ -1,4 +1,4 @@
-defmodule Glimesh.Schema.StreamsTypes do
+defmodule Glimesh.Schema.ChannelTypes do
   @moduledoc false
   use Absinthe.Schema.Notation
 
@@ -28,6 +28,20 @@ defmodule Glimesh.Schema.StreamsTypes do
     field :category, :category do
       arg(:slug, :string)
       resolve(&StreamsResolver.find_category/2)
+    end
+
+    @desc "List all subscribers or subscribees"
+    field :subscriptions, list_of(:sub) do
+      arg(:streamer_username, :string)
+      arg(:user_username, :string)
+      resolve(&StreamsResolver.all_subscriptions/2)
+    end
+
+    @desc "List all follows or followers"
+    field :followers, list_of(:follower) do
+      arg(:streamer_username, :string)
+      arg(:user_username, :string)
+      resolve(&StreamsResolver.all_followers/2)
     end
   end
 
@@ -64,7 +78,12 @@ defmodule Glimesh.Schema.StreamsTypes do
     field :chat_rules_html, :string
 
     field :stream, :stream, resolve: dataloader(Repo)
-    field :user, non_null(:user), resolve: dataloader(Repo)
+
+    field :streamer, non_null(:user), resolve: dataloader(Repo)
+
+    field :user, non_null(:user),
+      resolve: dataloader(Repo),
+      deprecate: "Please use the streamer field"
   end
 
   @desc "A stream is a single live stream in, either current or historical."
@@ -89,5 +108,45 @@ defmodule Glimesh.Schema.StreamsTypes do
     field :avg_chatters, :integer
     field :new_subscribers, :integer
     field :resub_subscribers, :integer
+  end
+
+  @desc "A chat message sent to a channel by a user."
+  object :chat_message do
+    field :id, :id
+    field :message, :string, description: "The chat message."
+
+    field :inserted_at, non_null(:datetime)
+    field :updated_at, non_null(:datetime)
+
+    field :channel, non_null(:channel), resolve: dataloader(Repo)
+    field :user, non_null(:user), resolve: dataloader(Repo)
+  end
+
+  @desc "A follower is a user who subscribes to notifications for a particular channel."
+  object :follower do
+    field :id, :id
+    field :has_live_notifications, :boolean
+
+    field :streamer, non_null(:user), resolve: dataloader(Repo)
+    field :user, non_null(:user), resolve: dataloader(Repo)
+
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+  end
+
+  @desc "A subscription is an exchange of money for support."
+  object :sub do
+    field :id, :id
+    field :is_active, :boolean
+    field :started_at, non_null(:datetime)
+    field :ended_at, :datetime
+    field :price, :integer
+    field :product_name, :string
+
+    field :streamer, non_null(:user), resolve: dataloader(Repo)
+    field :user, non_null(:user), resolve: dataloader(Repo)
+
+    field :inserted_at, non_null(:datetime)
+    field :updated_at, non_null(:datetime)
   end
 end

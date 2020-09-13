@@ -77,4 +77,17 @@ defmodule GlimeshWeb.ConnCase do
     |> Phoenix.ConnTest.init_test_session(%{})
     |> Plug.Conn.put_session(:user_token, token)
   end
+
+  def register_and_set_user_token(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.user_fixture()
+
+    {:ok, %{token: token}} =
+      ExOauth2Provider.AccessTokens.create_token(user, %{}, otp_app: :glimesh)
+
+    %{
+      conn: conn |> Plug.Conn.put_req_header("authorization", "Bearer #{token}"),
+      user: user,
+      token: token
+    }
+  end
 end

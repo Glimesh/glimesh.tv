@@ -6,70 +6,58 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
     Plug.ErrorHandler
   }
 
+  alias Glimesh.Accounts.User
+  alias Glimesh.Repo
+
   import Plug.Conn
   import Phoenix.Controller, only: [json: 2]
 
   def init(opts), do: opts
 
   def call(conn, opts) do
-    if authorized(conn, opts) do
-      context = build_context(conn)
-      Absinthe.Plug.put_options(conn, context: context)
-    else
-      conn
-      |> put_status(:unauthorized)
-      |> json(%{errors: [%{message: "You must be logged in to access the api"}]})
-      |> halt()
-    end
-  end
+    case authorized(conn, opts) do
+      {:ok, %User{} = user} ->
+        Absinthe.Plug.put_options(conn, context: %{current_user: user})
 
-  @doc """
-  Return the current user context based on the authorization header
-  """
-  def build_context(conn) do
-    # with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
-    #      {:ok, current_user} <- authorize(token) do
-    #   %{current_user: current_user}
-    # else
-    #   _ -> %{}
-    # end
-    if conn.assigns[:current_user] do
-      %{current_user: conn.assigns[:current_user]}
-    else
-      %{}
+      {:error, _reason} ->
+        conn
+        |> put_status(:unauthorized)
+        |> json(%{errors: [%{message: "You must be logged in to access the api"}]})
+        |> halt()
     end
   end
 
   def authorized(conn, opts) do
-    if get_req_header(conn, "authorization") != [] do
-      key = Keyword.get(opts, :key, :oauth_token)
-      config = [otp_app: :glimesh]
-
-      conn
-      |> fetch_token(opts)
-      |> verify_token(conn, key, config)
-      |> get_current_access_token(key)
-      |> handle_authentication(conn, key)
+    if fetch_token(conn, opts) do
+      try_token(conn, opts)
     else
-      conn.assigns[:current_user]
+      try_conn(conn, opts)
     end
   end
 
-  defp fetch_token(conn, _opts) do
-    ["Bearer " <> token] = get_req_header(conn, "authorization")
+  def try_token(conn, opts) do
+    key = Keyword.get(opts, :key, :oauth_token)
+    config = [otp_app: :glimesh]
 
-    token
+    conn
+    |> fetch_token(opts)
+    |> verify_token(conn, key, config)
+    |> get_current_access_token(key)
+    |> handle_authentication(conn, key)
   end
 
-  defp do_fetch_token(_realm_regex, []), do: nil
-  defp do_fetch_token(nil, [token | _tail]), do: String.trim(token)
+  def try_conn(%{assigns: %{current_user: %User{} = current_user}}, _opts) do
+    {:ok, current_user}
+  end
 
-  defp do_fetch_token(realm_regex, [token | tail]) do
-    trimmed_token = String.trim(token)
+  def try_conn(_, _opts) do
+    {:error, "You are not logged in."}
+  end
 
-    case Regex.run(realm_regex, trimmed_token) do
-      [_, match] -> String.trim(match)
-      _ -> do_fetch_token(realm_regex, tail)
+  defp fetch_token(conn, _opts) do
+    case get_req_header(conn, "authorization") do
+      ["Bearer " <> token] -> token
+      [] -> false
     end
   end
 
@@ -86,7 +74,21 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
     put_private(conn, Keys.access_token_key(the_key), access_token)
   end
 
-  defp handle_authentication({:ok, _}, conn, _opts), do: conn
+  defp handle_authentication({:ok, %{resource_owner: %User{} = resource_owner}}, _conn, _opts) do
+    {:ok, resource_owner}
+  end
+
+  defp handle_authentication({:ok, %{resource_owner: nil} = oauth_token}, _conn, _opts) do
+    # Slightly more complicated, need to get the app owner when using Client Credentials Grant
+    owner =
+      oauth_token
+      |> Repo.preload(:application)
+      |> Map.get(:application)
+      |> Repo.preload(:owner)
+      |> Map.get(:owner)
+
+    {:ok, owner}
+  end
 
   defp handle_authentication({:error, reason}, %{params: params} = conn, _opts) do
     params = Map.put(params, :reason, reason)
@@ -95,6 +97,8 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
     |> assign(:ex_oauth2_provider_failure, reason)
     |> halt()
     |> ErrorHandler.unauthenticated(params)
+
+    {:error, reason}
   end
 
   defp get_current_access_token(conn, the_key) do

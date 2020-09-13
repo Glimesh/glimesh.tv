@@ -1,9 +1,9 @@
 defmodule GlimeshWeb.Api.ApiAuthTest do
   use GlimeshWeb.ConnCase
 
-  @user_query """
-  query getUser($username: String!) {
-    user(username: $username) {
+  @myself_query """
+  query getMyself {
+    myself {
       username
     }
   }
@@ -39,7 +39,7 @@ defmodule GlimeshWeb.Api.ApiAuthTest do
     end
   end
 
-  describe "authenticated api access" do
+  describe "authenticated api access with login session" do
     setup :register_and_log_in_admin_user
 
     test "gets accepted", %{conn: conn} do
@@ -50,15 +50,37 @@ defmodule GlimeshWeb.Api.ApiAuthTest do
              }
     end
 
-    test "returns a user", %{conn: conn, user: user} do
+    test "returns myself", %{conn: conn, user: user} do
       conn =
         post(conn, "/api", %{
-          "query" => @user_query,
-          "variables" => %{username: user.username}
+          "query" => @myself_query
         })
 
       assert json_response(conn, 200) == %{
-               "data" => %{"user" => %{"username" => user.username}}
+               "data" => %{"myself" => %{"username" => user.username}}
+             }
+    end
+  end
+
+  describe "authenticated api access with authorization header" do
+    setup :register_and_set_user_token
+
+    test "gets accepted", %{conn: conn} do
+      conn = get(conn, "/api")
+
+      assert json_response(conn, 400) == %{
+               "errors" => [%{"message" => "No query document supplied"}]
+             }
+    end
+
+    test "returns myself", %{conn: conn, user: user} do
+      conn =
+        post(conn, "/api", %{
+          "query" => @myself_query
+        })
+
+      assert json_response(conn, 200) == %{
+               "data" => %{"myself" => %{"username" => user.username}}
              }
     end
   end

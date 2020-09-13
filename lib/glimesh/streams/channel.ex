@@ -6,6 +6,7 @@ defmodule Glimesh.Streams.Channel do
   schema "channels" do
     belongs_to :user, Glimesh.Accounts.User
     belongs_to :category, Glimesh.Streams.Category
+    belongs_to :streamer, Glimesh.Accounts.User, source: :user_id
 
     field :title, :string, default: "Live Stream!"
     field :status, :string
