@@ -70,6 +70,18 @@ defmodule Glimesh.Streams do
     |> Repo.preload([:category, :user])
   end
 
+  def list_all_follows do
+    Repo.all(from(f in Followers))
+  end
+
+  def list_followers(user) do
+    Repo.all(from f in Followers, where: f.streamer_id == ^user.id)
+  end
+
+  def list_following(user) do
+    Repo.all(from f in Followers, where: f.user_id == ^user.id)
+  end
+
   def list_followed_channels(user) do
     Repo.all(
       from c in Channel,
@@ -203,6 +215,10 @@ defmodule Glimesh.Streams do
     Repo.exists?(
       from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id
     )
+  end
+
+  def get_following(streamer, user) do
+    Repo.one!(from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id)
   end
 
   def count_followers(user) do

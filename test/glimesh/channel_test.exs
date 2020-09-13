@@ -5,14 +5,12 @@ defmodule Glimesh.ChannelTest do
   alias Glimesh.Streams
 
   describe "stream_settings" do
-    alias Glimesh.Streams.Channel
-
     @valid_attrs %{title: "Valid Title", category_id: 2}
     @invalid_attrs %{title: nil}
 
-    def channel_fixture(attrs \\ %{category_id: 1}) do
+    def channel_fixture() do
       streamer = streamer_fixture()
-      channel = Streams.get_channel_for_username!(streamer.username)
+      Streams.get_channel_for_username!(streamer.username)
     end
 
     test "delete_channel/1 soft deletes channel successfully" do
