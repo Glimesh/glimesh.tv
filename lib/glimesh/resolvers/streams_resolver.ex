@@ -14,6 +14,14 @@ defmodule Glimesh.Resolvers.StreamsResolver do
     {:ok, Streams.get_channel_for_username!(username)}
   end
 
+  def find_channel(%{stream_key: stream_key}, %{context: %{current_user: current_user}}) do
+    if current_user.is_admin do
+      {:ok, Streams.get_channel_for_stream_key!(stream_key)}
+    else
+      {:error, "Unauthorized to access streamKey query."}
+    end
+  end
+
   # Categories
 
   def all_categories(_, _) do

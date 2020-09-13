@@ -16,6 +16,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     @desc "Query individual channel"
     field :channel, :channel do
       arg(:username, :string)
+      arg(:stream_key, :string)
       resolve(&StreamsResolver.find_channel/2)
     end
 
@@ -71,7 +72,17 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :category, :category, resolve: dataloader(Repo)
     field :language, :string, description: "The language a user can expect in the stream."
     field :thumbnail, :string
-    field :stream_key, :string
+
+    field :stream_key, :string do
+      resolve(fn channel, _, %{context: %{current_user: current_user}} ->
+        if current_user.is_admin do
+          {:ok, channel.stream_key}
+        else
+          {:error, "Unauthorized to access streamKey field."}
+        end
+      end)
+    end
+
     field :inaccessible, :boolean
 
     field :chat_rules_md, :string

@@ -103,6 +103,14 @@ defmodule Glimesh.Streams do
     |> Repo.preload([:category, :user])
   end
 
+  def get_channel_for_stream_key!(stream_key) do
+    Repo.one(
+      from c in Channel,
+        where: c.stream_key == ^stream_key and c.inaccessible == false
+    )
+    |> Repo.preload([:category, :user])
+  end
+
   def get_channel_for_user!(user) do
     Repo.get_by(Channel, user_id: user.id) |> Repo.preload([:category, :user])
   end
@@ -111,7 +119,7 @@ defmodule Glimesh.Streams do
     %Channel{
       user: user
     }
-    |> Channel.changeset(attrs)
+    |> Channel.create_changeset(attrs)
     |> Repo.insert()
   end
 
