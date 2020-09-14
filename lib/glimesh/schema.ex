@@ -17,6 +17,10 @@ defmodule Glimesh.Schema do
     import_fields(:streams_queries)
   end
 
+  mutation do
+    import_fields(:streams_mutations)
+  end
+
   def context(ctx) do
     loader =
       Dataloader.new()

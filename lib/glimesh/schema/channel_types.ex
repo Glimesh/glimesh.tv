@@ -15,7 +15,9 @@ defmodule Glimesh.Schema.ChannelTypes do
 
     @desc "Query individual channel"
     field :channel, :channel do
+      arg(:id, :id)
       arg(:username, :string)
+      arg(:stream_key, :string)
       resolve(&StreamsResolver.find_channel/2)
     end
 
@@ -45,6 +47,36 @@ defmodule Glimesh.Schema.ChannelTypes do
     end
   end
 
+  object :streams_mutations do
+    @desc "Start a stream"
+    field :start_stream, type: :stream do
+      arg(:channel_id, non_null(:id))
+
+      resolve(&StreamsResolver.start_stream/3)
+    end
+
+    @desc "End a stream"
+    field :end_stream, type: :stream do
+      arg(:channel_id, non_null(:id))
+
+      resolve(&StreamsResolver.end_stream/3)
+    end
+
+    @desc "Create a stream"
+    field :create_stream, type: :stream do
+      arg(:channel_id, non_null(:id))
+
+      resolve(&StreamsResolver.create_stream/3)
+    end
+
+    @desc "Update a stream"
+    field :update_stream, type: :stream do
+      arg(:id, non_null(:id))
+
+      resolve(&StreamsResolver.update_stream/3)
+    end
+  end
+
   enum :channel_status do
     value(:live, as: "live")
     value(:offline, as: "offline")
@@ -71,7 +103,17 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :category, :category, resolve: dataloader(Repo)
     field :language, :string, description: "The language a user can expect in the stream."
     field :thumbnail, :string
-    field :stream_key, :string
+
+    field :stream_key, :string do
+      resolve(fn channel, _, %{context: %{current_user: current_user}} ->
+        if current_user.is_admin do
+          {:ok, channel.stream_key}
+        else
+          {:error, "Unauthorized to access streamKey field."}
+        end
+      end)
+    end
+
     field :inaccessible, :boolean
 
     field :chat_rules_md, :string
@@ -88,6 +130,8 @@ defmodule Glimesh.Schema.ChannelTypes do
 
   @desc "A stream is a single live stream in, either current or historical."
   object :stream do
+    field :id, :id
+
     field :channel, non_null(:channel), resolve: dataloader(Repo)
 
     field :title, :string, description: "The title of the stream."
