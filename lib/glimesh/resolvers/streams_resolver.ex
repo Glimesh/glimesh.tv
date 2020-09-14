@@ -10,8 +10,60 @@ defmodule Glimesh.Resolvers.StreamsResolver do
     {:ok, Streams.list_channels()}
   end
 
+  def find_channel(%{id: id}, _) do
+    {:ok, Streams.get_channel!(id)}
+  end
+
   def find_channel(%{username: username}, _) do
     {:ok, Streams.get_channel_for_username!(username)}
+  end
+
+  def find_channel(%{stream_key: stream_key}, %{context: %{is_admin: true}}) do
+    {:ok, Streams.get_channel_for_stream_key!(stream_key)}
+  end
+
+  def find_channel(%{stream_key: _}, _) do
+    {:error, "Unauthorized to access streamKey query."}
+  end
+
+  # Streams
+  def start_stream(_parent, %{channel_id: _}, %{context: %{is_admin: true}}) do
+    # stub
+    {:ok, nil}
+  end
+
+  def start_stream(_parent, _args, _resolution) do
+    {:error, "Access denied"}
+  end
+
+  def end_stream(_parent, %{channel_id: _}, %{context: %{is_admin: true}}) do
+    # stub
+    {:ok, nil}
+  end
+
+  def end_stream(_parent, _args, _resolution) do
+    {:error, "Access denied"}
+  end
+
+  def create_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
+    channel = Streams.get_channel!(channel_id)
+    {:ok, stream} = Streams.create_stream(channel)
+
+    {:ok, stream}
+  end
+
+  def create_stream(_parent, _args, _resolution) do
+    {:error, "Access denied"}
+  end
+
+  def update_stream(_parent, %{id: id} = args, %{context: %{is_admin: true}}) do
+    {:ok, stream} = Streams.update_stream(Streams.get_stream!(id), args)
+
+    {:ok, stream}
+  end
+
+  def update_stream(_parent, _args, _resolution) do
+    {:error, "Access denied"}
   end
 
   # Categories
