@@ -92,6 +92,10 @@ defmodule Glimesh.Streams do
     |> Repo.preload([:category, :user])
   end
 
+  def get_channel!(id) do
+    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :user])
+  end
+
   def get_channel_for_username!(username) do
     Repo.one(
       from c in Channel,
@@ -350,5 +354,43 @@ defmodule Glimesh.Streams do
   """
   def change_category(%Category{} = category, attrs \\ %{}) do
     Category.changeset(category, attrs)
+  end
+
+  # Streams
+
+  def get_stream!(id) do
+    Repo.get_by!(Glimesh.Streams.Stream, id: id)
+  end
+
+  @doc """
+  Starts a stream for a specific channel
+  Only called very intentionally by Janus after stream authentication
+  Also sends notifications
+  """
+  def start_stream(channel) do
+    channel
+  end
+
+  @doc """
+  Ends a stream for a specific channel
+  Called either intentionally by Janus when the stream ends, or manually by the platform on a timer
+  Archives the stream
+  """
+  def end_stream(channel) do
+    channel
+  end
+
+  def create_stream(channel, attrs \\ %{}) do
+    %Glimesh.Streams.Stream{
+      channel: channel
+    }
+    |> Glimesh.Streams.Stream.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_stream(%Glimesh.Streams.Stream{} = stream, attrs) do
+    stream
+    |> Glimesh.Streams.Stream.changeset(attrs)
+    |> Repo.update()
   end
 end

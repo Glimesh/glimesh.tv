@@ -17,7 +17,13 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
   def call(conn, opts) do
     case authorized(conn, opts) do
       {:ok, %User{} = user} ->
-        Absinthe.Plug.put_options(conn, context: %{current_user: user})
+        Absinthe.Plug.put_options(conn,
+          context: %{
+            # Allows us to pattern match admin APIs
+            is_admin: user.is_admin,
+            current_user: user
+          }
+        )
 
       {:error, _reason} ->
         conn
