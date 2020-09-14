@@ -65,6 +65,7 @@ defmodule Glimesh.Streams do
       from c in Channel,
         join: cat in Category,
         on: cat.id == c.category_id,
+        where: c.status == "live",
         where: cat.id == ^category.id or cat.parent_id == ^category.id
     )
     |> Repo.preload([:category, :user])
