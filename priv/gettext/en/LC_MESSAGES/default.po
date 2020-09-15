@@ -945,7 +945,6 @@ msgstr "Description"
 msgid "Edit Application"
 msgstr "Edit Application"
 
-#, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:9
 msgid "Edit Your Account"
 msgstr "Edit Your Account"
@@ -998,17 +997,17 @@ msgstr "Want to build a chat bot, a online tool, or other service that integrate
 
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:8
 msgid "scopechat"
-msgstr "scopechat"
+msgstr "Allows this app to act on your behalf in chat."
 
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:7
 msgid "scopeemail"
-msgstr "scopeemail"
+msgstr "Allows this app to view your email adress."
 
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:6
 msgid "scopepublic"
-msgstr "scopepublic"
+msgstr "Allows this app to know who you are."
 
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:9
 msgid "scopestream"
-msgstr "scopestream"
+msgstr "Allow this app to view your stream key."
 
