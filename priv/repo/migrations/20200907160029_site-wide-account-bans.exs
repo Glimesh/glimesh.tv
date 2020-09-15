@@ -4,6 +4,7 @@ defmodule :"Elixir.Glimesh.Repo.Migrations.Site-wide-account-bans" do
   def change do
     alter table(:users) do
       add :is_banned, :boolean, default: false
+      add :ban_reason, :text
     end
   end
 end
