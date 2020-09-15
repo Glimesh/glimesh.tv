@@ -991,17 +991,17 @@ msgstr "채팅 봇, 온라인 도구 등 각종 서비스를 글리메쉬에 구
 
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:8
 msgid "scopechat"
-msgstr "스코프챗"
+msgstr "이 애플리케이션이 채팅에서 사용자를 대신하도록 허용."
 
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:7
 msgid "scopeemail"
-msgstr "스코프이메일"
+msgstr "이 애플리케이션이 이메일 주소를 확인하도록 허용."
 
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:6
 msgid "scopepublic"
-msgstr "스코프퍼블릭"
+msgstr "이 애플리케이션이 프로필을 열람하도록 허용."
 
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:9
 msgid "scopestream"
-msgstr "스코프스트림"
+msgstr "이 애플리케이션이 방송키를 확인할 수 있도록 허용."
 
