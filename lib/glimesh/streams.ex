@@ -76,7 +76,7 @@ defmodule Glimesh.Streams do
   end
 
   def list_followers(user) do
-    Repo.all(from f in Followers, where: f.streamer_id == ^user.id)
+    Repo.all(from f in Followers, where: f.streamer_id == ^user.id) |> Repo.preload(:user)
   end
 
   def list_following(user) do
