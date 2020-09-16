@@ -33,7 +33,7 @@ config :glimesh, GlimeshWeb.Emails.Mailer,
 
 config :glimesh, GlimeshWeb.Gettext,
   default_locale: "en",
-  locales: ~w(en es ja de nb es_MX es_AR fr sv vi ru)
+  locales: ~w(en es ja de nb es_MX es_AR fr sv vi ru ko)
 
 config :ex_oauth2_provider, namespace: Glimesh
 config :ex_oauth2_provider, ExOauth2Provider,
