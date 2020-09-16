@@ -1,4 +1,4 @@
-defmodule :"Elixir.Glimesh.Repo.Migrations.SiteWideAccountBans" do
+defmodule Elixir.Glimesh.Repo.Migrations.SiteWideAccountBans do
   use Ecto.Migration
 
   def change do
