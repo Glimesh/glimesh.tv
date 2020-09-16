@@ -1,0 +1,29 @@
+<div class="container">
+
+    <h2 class="mt-4"><%= gettext("%{username}'s Followers", username: @streamer.displayname) %></h2>
+    <div class="row layout-top-spacing">
+        <%= for follower <- @users do %>
+
+        <div class="col-md-2 mb-4">
+            <%= live_redirect to: Routes.user_profile_path(@socket, :index, follower.user.username) do %>
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-md-center">
+                        <h4><%= follower.user.displayname %></h2>
+                        <img src="<%= Glimesh.Avatar.url({follower.user.avatar, follower.user}, :original) %>"
+                            alt="Your Profile Picture"
+                            style="width: 80% !important;"
+                            class="img-fluid mb-2 img-avatar <%= if follower.user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+
+                        <%= if follower.user.stripe_user_id do %>
+                        <div class="mb-4"><span class="badge badge-secondary"><%= gettext("Sub Ready!") %></span></div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            <% end %>
+        </div>
+
+        <% end %>
+    </div>
+</div>

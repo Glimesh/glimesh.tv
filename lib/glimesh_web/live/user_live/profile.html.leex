@@ -50,13 +50,14 @@
 
                     <div class="simple--counter-container mt-4">
 
+                        <%= live_redirect to: Routes.user_followers_path(@socket, :index, @streamer.username) do %>
                         <div class="counter-container">
                             <div class="counter-content">
                                 <h5 class="s-counter2 s-counter"><%= @followers_count %></h1>
                             </div>
                             <p class="s-counter-text"><%= gettext("Followers") %></p>
                         </div>
-
+                        <% end %>
                         <div class="counter-container">
                             <div class="counter-content">
                                 <h5 class="s-counter3 s-counter"><%= @following_count %></h1>
