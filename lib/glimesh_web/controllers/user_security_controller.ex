@@ -29,7 +29,7 @@ defmodule GlimeshWeb.UserSecurityController do
           :info,
           gettext("A link to confirm your e-mail change has been sent to the new address.")
         )
-        |> redirect(to: Routes.user_security_path(conn, :profile))
+        |> redirect(to: Routes.user_security_path(conn, :index))
 
       {:error, changeset} ->
         render(conn, "edit.html", email_changeset: changeset)
@@ -41,7 +41,7 @@ defmodule GlimeshWeb.UserSecurityController do
       :ok ->
         conn
         |> put_flash(:info, gettext("E-mail changed successfully."))
-        |> redirect(to: Routes.user_security_path(conn, :profile))
+        |> redirect(to: Routes.user_security_path(conn, :index))
 
       :error ->
         conn
@@ -49,7 +49,7 @@ defmodule GlimeshWeb.UserSecurityController do
           :error,
           gettext("Email change link is invalid or it has expired.")
         )
-        |> redirect(to: Routes.user_security_path(conn, :profile))
+        |> redirect(to: Routes.user_security_path(conn, :index))
     end
   end
 
@@ -60,7 +60,7 @@ defmodule GlimeshWeb.UserSecurityController do
       {:ok, user} ->
         conn
         |> put_flash(:info, gettext("Password updated successfully."))
-        |> put_session(:user_return_to, Routes.user_security_path(conn, :profile))
+        |> put_session(:user_return_to, Routes.user_security_path(conn, :index))
         |> UserAuth.log_in_user(user)
 
       {:error, changeset} ->
@@ -82,7 +82,7 @@ defmodule GlimeshWeb.UserSecurityController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "2FA updated successfully.")
-        |> put_session(:user_return_to, Routes.user_security_path(conn, :profile))
+        |> put_session(:user_return_to, Routes.user_security_path(conn, :index))
         |> UserAuth.log_in_user(user)
 
       {:error, changeset} ->
@@ -90,7 +90,8 @@ defmodule GlimeshWeb.UserSecurityController do
     end
   end
 
-  def get_tfa(conn, _params) do
+  def get_tfa(conn, params) do
+    color = Map.get(params, "color", "normal")
     user = conn.assigns.current_user
 
     secret =
@@ -101,7 +102,8 @@ defmodule GlimeshWeb.UserSecurityController do
 
     conn
     |> put_session(:tfa_secret, secret)
-    |> text(Tfa.generate_tfa_img("Glimesh", user.username, secret))
+    |> put_resp_content_type("image/png")
+    |> text(Tfa.generate_tfa_img("Glimesh", user.username, secret, color))
   end
 
   defp assign_email_and_password_changesets(conn, _opts) do

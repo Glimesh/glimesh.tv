@@ -70,7 +70,7 @@ defmodule Glimesh.Accounts.User do
 
   def validate_username_reserved_words(changeset, field) when is_atom(field) do
     validate_change(changeset, field, fn current_field, value ->
-      if Enum.member?(Application.get_env(:glimesh, :reserved_words), value) do
+      if Enum.member?(Application.get_env(:glimesh, :reserved_words), String.downcase(value)) do
         [{current_field, "This username is reserved"}]
       else
         []
@@ -80,7 +80,7 @@ defmodule Glimesh.Accounts.User do
 
   def validate_username_no_bad_words(changeset, field) when is_atom(field) do
     validate_change(changeset, field, fn current_field, value ->
-      if Enum.member?(Application.get_env(:glimesh, :bad_words), value) do
+      if Enum.member?(Application.get_env(:glimesh, :bad_words), String.downcase(value)) do
         [{current_field, "This username contains a bad word"}]
       else
         []
@@ -92,7 +92,7 @@ defmodule Glimesh.Accounts.User do
     validate_change(changeset, field, fn current_field, value ->
       # credo:disable-for-next-line
       if Enum.any?(Application.get_env(:glimesh, :bad_words), fn w ->
-           String.contains?(value, w)
+           String.contains?(String.downcase(value), w)
          end) do
         [{current_field, "This username contains a bad word"}]
       else
@@ -130,7 +130,7 @@ defmodule Glimesh.Accounts.User do
 
   def validate_displayname(changeset) do
     validate_change(changeset, :displayname, fn current_field, value ->
-      if String.downcase(value) !== get_field(changeset, :username) do
+      if String.downcase(value) !== String.downcase(get_field(changeset, :username)) do
         [{current_field, gettext("Display name must match Username")}]
       else
         []

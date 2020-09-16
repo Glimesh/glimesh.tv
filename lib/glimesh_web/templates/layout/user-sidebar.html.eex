@@ -16,16 +16,16 @@
             <%= link class: "list-group-item list-group-item-action " <> active_user_security_path(@conn), to: Routes.user_security_path(@conn, :index) do %>
             <i class="fas fa-lock fa-fw"></i> <%= gettext("Security") %>
             <% end %>
+            <%= link class: "list-group-item list-group-item-action " <> active_user_authorizations_path(@conn), to: Routes.authorized_application_path(@conn, :index) do %>
+            <i class="fas fa-robot fa-fw"></i> <%= gettext("Authorizations") %>
+            <% end %>
         </div>
 
         <hr>
         <h4 class="text-center">Developers</h4>
         <div class="list-group list-group-flush">
             <%= link class: "list-group-item list-group-item-action " <> active_user_applications_path(@conn), to: Routes.user_applications_path(@conn, :index) do %>
-            <i class="fas fa-user fa-fw"></i> <%= gettext("Applications") %>
-            <% end %>
-            <%= link class: "list-group-item list-group-item-action " <> active_user_authorizations_path(@conn), to: Routes.authorized_application_path(@conn, :index) do %>
-            <i class="fas fa-video fa-fw"></i> <%= gettext("Authorizations") %>
+            <i class="fas fa-code fa-fw"></i> <%= gettext("Applications") %>
             <% end %>
         </div>
     </div>

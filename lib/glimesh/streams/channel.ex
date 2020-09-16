@@ -37,7 +37,8 @@ defmodule Glimesh.Streams.Channel do
       :thumbnail,
       :stream_key,
       :chat_rules_md,
-      :inaccessible
+      :inaccessible,
+      :status
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> set_chat_rules_content_html()
