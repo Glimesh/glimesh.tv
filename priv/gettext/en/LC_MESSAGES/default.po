@@ -1121,7 +1121,7 @@ msgstr ""
 msgid "Edit Application"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:9
 msgid "Edit Your Account"
 msgstr "Register Your Account"
