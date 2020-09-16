@@ -1,0 +1,14 @@
+// Used for user generated content or blog posts
+.user-content-body {
+    table {
+        @extend .table;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    li {
+        color: $color-bone-white;
+    }
+}
