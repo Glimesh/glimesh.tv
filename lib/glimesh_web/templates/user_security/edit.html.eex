@@ -10,7 +10,8 @@
                     <%= form_for @email_changeset, Routes.user_security_path(@conn, :update_email), fn f -> %>
                     <%= if @email_changeset.action do %>
                     <div class="alert alert-danger">
-                        <p style="margin-bottom: 0px;"><%= gettext "Oops, something went wrong! Please check the errors below." %></p>
+                        <p style="margin-bottom: 0px;">
+                            <%= gettext "Oops, something went wrong! Please check the errors below." %></p>
                     </div>
                     <% end %>
 
@@ -45,7 +46,8 @@
                     <%= form_for @password_changeset, Routes.user_security_path(@conn, :update_password), fn f -> %>
                     <%= if @password_changeset.action do %>
                     <div class="alert alert-danger">
-                        <p style="margin-bottom: 0px;"><%= gettext "Oops, something went wrong! Please check the errors below." %></p>
+                        <p style="margin-bottom: 0px;">
+                            <%= gettext "Oops, something went wrong! Please check the errors below." %></p>
                     </div>
                     <% end %>
 
@@ -88,17 +90,19 @@
                     <h3><%= gettext "2FA Setup" %></h3>
 
                     <%= form_for @tfa_changeset, Routes.user_security_path(@conn, :update_tfa), fn f -> %>
-                        <%= if @tfa_changeset.action do %>
-                        <div class="alert alert-danger">
-                            <p style="margin-bottom: 0px;">Oops, something went wrong! Please check the errors below.</p>
-                        </div>
-                        <% end %>
-                        <div>
+                    <%= if @tfa_changeset.action do %>
+                    <div class="alert alert-danger">
+                        <p style="margin-bottom: 0px;">Oops, something went wrong! Please check the errors below.</p>
+                    </div>
+                    <% end %>
+                    <div>
                         <%= if @user.tfa_token == nil do %>
-                        <div class="new-tfa-form-class">
+                        <div class="text-center">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <img src="/users/settings/get_tfa" />
+                                    <br>
+                                    <%= link gettext("Black & White 2FA Image"), to: Routes.user_security_path(@conn, :get_tfa, color: "bw"), target: "_blank" %>
                                 </div>
                             </div>
                             <br />
@@ -141,10 +145,10 @@
                             <%= submit gettext("Remove Two Factor Authentication"), class: "btn btn-primary" %>
                         </div>
                         <% end %>
-                    <% end %>
+                        <% end %>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>

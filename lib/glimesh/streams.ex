@@ -88,6 +88,7 @@ defmodule Glimesh.Streams do
       from c in Channel,
         join: f in Followers,
         on: c.user_id == f.streamer_id,
+        where: c.status == "live",
         where: f.user_id == ^user.id
     )
     |> Repo.preload([:category, :user])
