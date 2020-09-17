@@ -64,7 +64,8 @@ defmodule Glimesh.MixProject do
       {:absinthe, "~> 1.5"},
       {:absinthe_plug, "~> 1.5"},
       {:dataloader, "~> 1.0.0"},
-      {:plug_canonical_host, "~> 2.0"}
+      {:plug_canonical_host, "~> 2.0"},
+      {:ex_oauth2_provider, "~> 0.5.6"}
     ]
   end
 
@@ -80,7 +81,12 @@ defmodule Glimesh.MixProject do
       "ecto.seed": ["run priv/repo/seeds.#{Mix.env()}.exs"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      test: [
+        "ecto.create --quiet",
+        "ecto.migrate --quiet",
+        "run priv/repo/seeds/categories.exs",
+        "test"
+      ],
       code_quality: ["format", "credo --strict"]
     ]
   end

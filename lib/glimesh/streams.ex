@@ -65,9 +65,22 @@ defmodule Glimesh.Streams do
       from c in Channel,
         join: cat in Category,
         on: cat.id == c.category_id,
+        where: c.status == "live",
         where: cat.id == ^category.id or cat.parent_id == ^category.id
     )
     |> Repo.preload([:category, :user])
+  end
+
+  def list_all_follows do
+    Repo.all(from(f in Followers))
+  end
+
+  def list_followers(user) do
+    Repo.all(from f in Followers, where: f.streamer_id == ^user.id) |> Repo.preload(:user)
+  end
+
+  def list_following(user) do
+    Repo.all(from f in Followers, where: f.user_id == ^user.id)
   end
 
   def list_followed_channels(user) do
@@ -75,9 +88,14 @@ defmodule Glimesh.Streams do
       from c in Channel,
         join: f in Followers,
         on: c.user_id == f.streamer_id,
+        where: c.status == "live",
         where: f.user_id == ^user.id
     )
     |> Repo.preload([:category, :user])
+  end
+
+  def get_channel!(id) do
+    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :user])
   end
 
   def get_channel_for_username!(username) do
@@ -85,7 +103,16 @@ defmodule Glimesh.Streams do
       from c in Channel,
         join: u in User,
         on: c.user_id == u.id,
-        where: u.username == ^username
+        where: u.username == ^username,
+        where: c.inaccessible == false
+    )
+    |> Repo.preload([:category, :user])
+  end
+
+  def get_channel_for_stream_key!(stream_key) do
+    Repo.one(
+      from c in Channel,
+        where: c.stream_key == ^stream_key and c.inaccessible == false
     )
     |> Repo.preload([:category, :user])
   end
@@ -94,22 +121,36 @@ defmodule Glimesh.Streams do
     Repo.get_by(Channel, user_id: user.id) |> Repo.preload([:category, :user])
   end
 
-  def create_channel(user, attrs \\ %{}) do
+  def create_channel(user, attrs \\ %{category_id: Enum.at(list_categories(), 0).id}) do
     %Channel{
       user: user
     }
-    |> Channel.changeset(attrs)
+    |> Channel.create_changeset(attrs)
     |> Repo.insert()
+  end
+
+  def delete_channel(channel) do
+    attrs = %{inaccessible: true}
+
+    channel
+    |> Channel.changeset(attrs)
+    |> Repo.update()
   end
 
   def update_channel(%Channel{} = channel, attrs) do
     new_channel =
       channel
       |> Channel.changeset(attrs)
-      |> Repo.update!()
-      |> Repo.preload(:category, force: true)
+      |> Repo.update()
 
-    broadcast({:ok, new_channel}, :update_channel)
+    case new_channel do
+      {:error, changeset} ->
+        new_channel
+
+      {:ok, changeset} ->
+        broadcast_message = Repo.preload(changeset, :category, force: true)
+        broadcast({:ok, broadcast_message}, :update_channel)
+    end
   end
 
   def change_channel(%Channel{} = channel, attrs \\ %{}) do
@@ -188,6 +229,10 @@ defmodule Glimesh.Streams do
     Repo.exists?(
       from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id
     )
+  end
+
+  def get_following(streamer, user) do
+    Repo.one!(from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id)
   end
 
   def count_followers(user) do
@@ -311,5 +356,43 @@ defmodule Glimesh.Streams do
   """
   def change_category(%Category{} = category, attrs \\ %{}) do
     Category.changeset(category, attrs)
+  end
+
+  # Streams
+
+  def get_stream!(id) do
+    Repo.get_by!(Glimesh.Streams.Stream, id: id)
+  end
+
+  @doc """
+  Starts a stream for a specific channel
+  Only called very intentionally by Janus after stream authentication
+  Also sends notifications
+  """
+  def start_stream(channel) do
+    channel
+  end
+
+  @doc """
+  Ends a stream for a specific channel
+  Called either intentionally by Janus when the stream ends, or manually by the platform on a timer
+  Archives the stream
+  """
+  def end_stream(channel) do
+    channel
+  end
+
+  def create_stream(channel, attrs \\ %{}) do
+    %Glimesh.Streams.Stream{
+      channel: channel
+    }
+    |> Glimesh.Streams.Stream.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_stream(%Glimesh.Streams.Stream{} = stream, attrs) do
+    stream
+    |> Glimesh.Streams.Stream.changeset(attrs)
+    |> Repo.update()
   end
 end

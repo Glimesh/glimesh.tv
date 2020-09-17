@@ -25,12 +25,24 @@ defmodule GlimeshWeb.Router do
     plug GlimeshWeb.Plugs.ApiContextPlug
   end
 
+  pipeline :oauth do
+    plug Plug.Parsers, parsers: [:urlendoded]
+  end
+
   if Mix.env() in [:dev, :test] do
     scope "/" do
       pipe_through :browser
 
       forward "/sent_emails", Bamboo.SentEmailViewerPlug
     end
+  end
+
+  scope "/api/oauth", GlimeshWeb do
+    pipe_through :oauth
+
+    post "/token", Oauth2Provider.TokenController, :create
+    post "/revoke", Oauth2Provider.TokenController, :revoke
+    post "/introspec", Oauth2Provider.TokenController, :introspec
   end
 
   scope "/api" do
@@ -60,8 +72,11 @@ defmodule GlimeshWeb.Router do
 
     get "/users/settings/profile", UserSettingsController, :profile
     get "/users/settings/stream", UserSettingsController, :stream
+    put "/users/settings/create_channel", UserSettingsController, :create_channel
+    put "/users/settings/delete_channel", UserSettingsController, :delete_channel
     get "/users/settings/settings", UserSettingsController, :settings
     put "/users/settings/update_profile", UserSettingsController, :update_profile
+    put "/users/settings/update_channel", UserSettingsController, :update_channel
 
     get "/users/settings/security", UserSecurityController, :index
     put "/users/settings/update_password", UserSecurityController, :update_password
@@ -70,6 +85,17 @@ defmodule GlimeshWeb.Router do
     put "/users/settings/update_tfa", UserSecurityController, :update_tfa
     get "/users/settings/get_tfa", UserSecurityController, :get_tfa
     get "/users/settings/tfa_registered", UserSecurityController, :tfa_registered
+
+    resources "/users/settings/applications", UserApplicationsController
+
+    resources "/users/settings/authorizations", Oauth2Provider.AuthorizedApplicationController,
+      only: [:index, :delete],
+      param: "uid"
+
+    get "/oauth/authorize", Oauth2Provider.AuthorizationController, :new
+    get "/oauth/authorize/:code", Oauth2Provider.AuthorizationController, :show
+    post "/oauth/authorize", Oauth2Provider.AuthorizationController, :create
+    delete "/oauth/authorize", Oauth2Provider.AuthorizationController, :delete
   end
 
   scope "/admin", GlimeshWeb do
@@ -125,5 +151,6 @@ defmodule GlimeshWeb.Router do
     # This must be the last route
     live "/:username", UserLive.Stream, :index
     live "/:username/profile", UserLive.Profile, :index
+    live "/:username/profile/followers", UserLive.Followers, :index
   end
 end

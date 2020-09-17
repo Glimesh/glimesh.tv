@@ -1,5 +1,6 @@
 defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
   use GlimeshWeb, :live_view
+  import Gettext, only: [with_locale: 2]
 
   alias Glimesh.Streams
 
@@ -17,11 +18,13 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
           <%= text_input f, :title, [class: "form-control"] %>
 
           <div class="input-group-append">
+          <%= with_locale(@user.locale, fn -> %>
             <%= submit gettext("Save Info"), class: "btn btn-primary" %>
+          <% end) %>
           </div>
 
           </div>
-        </form
+        </form>
       <% end %>
     <% else %>
       <h5 class=""><span class="badge badge-danger">Live!</span> <span class="badge badge-primary"><%= @channel.category.tag_name %></span> <%= @channel.title %> </h5>
@@ -46,7 +49,7 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
     if connected?(socket), do: Streams.subscribe_to(:channel, streamer.id)
-    channel = Streams.get_channel_for_user!(streamer)
+    channel = Streams.get_channel_for_username!(streamer.username)
 
     {:ok,
      socket

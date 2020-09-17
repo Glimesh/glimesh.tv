@@ -39,7 +39,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <%= label f, gettext("Language") %>
-                            <%= select f, :locale, [English: "en", Español: "es", "Español rioplatense": "es_AR", "Español mexicano": "es_MX", Deutsche: "de", 日本語: "ja", "Norsk Bokmål": "nb", Français: "fr", Svenska: "sv", "Tiếng Việt": "vi", "Русский": "ru" ], [class: "form-control"] %> <!-- This will manually need to be populated as languages are completed. Format: Displayname: "locale_code"-->
+                            <%= select f, :locale, [English: "en", Español: "es", "Español rioplatense": "es_AR", "Español mexicano": "es_MX", Deutsche: "de", 日本語: "ja", "Norsk Bokmål": "nb", Français: "fr", Svenska: "sv", "Tiếng Việt": "vi", "Русский": "ru", "한국어": "ko", "Italiano": "it" ], [class: "form-control"] %> <!-- This will manually need to be populated as languages are completed. Format: Displayname: "locale_code"-->
                             <%= error_tag f, :email %>
                         </div>
                     </div>

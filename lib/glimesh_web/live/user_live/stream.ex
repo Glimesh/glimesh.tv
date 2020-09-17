@@ -11,7 +11,7 @@ defmodule GlimeshWeb.UserLive.Stream do
         # Keep track of viewers using their socket ID, but later we'll keep track of chatters by their user
         Presence.track_presence(
           self(),
-          Streams.get_subscribe_topic(:viewers, channel.id),
+          Streams.get_subscribe_topic(:viewers, channel.user.id),
           socket.id,
           %{}
         )
@@ -24,8 +24,10 @@ defmodule GlimeshWeb.UserLive.Stream do
          socket
          |> assign(:page_title, channel.title)
          |> assign(:streamer, channel.user)
-         |> assign(:playback_url, "/examples/big_buck_bunny_720p_surround.ogv")
-         # this will be nil, which our children components handle
+         |> assign(:channel, channel)
+         |> assign(:backend, channel.backend)
+         |> assign(:janus_uri, "https://01-nyc3.ftl.live.glimesh.tv/janus")
+         |> assign(:channel_id, channel.id)
          |> assign(:user, maybe_user)}
 
       nil ->

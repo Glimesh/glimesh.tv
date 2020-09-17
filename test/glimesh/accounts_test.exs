@@ -136,6 +136,17 @@ defmodule Glimesh.AccountsTest do
 
       assert %{username: ["This username contains a bad word"]} = errors_on(changeset)
     end
+
+    test "validates and rejects bad word list for username when its uppercase" do
+      {:error, changeset} =
+        Accounts.register_user(%{
+          email: unique_user_email(),
+          username: "ASS",
+          password: valid_user_password()
+        })
+
+      assert %{username: ["This username contains a bad word"]} = errors_on(changeset)
+    end
   end
 
   describe "change_user_registration/2" do
@@ -273,6 +284,41 @@ defmodule Glimesh.AccountsTest do
     test "returns a user changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_password(%User{})
       assert changeset.required == [:password]
+    end
+  end
+
+  describe "update_user_profile/2" do
+    setup do
+      %{user: user_fixture()}
+    end
+
+    test "can update displayname", %{user: user} do
+      {:ok, user} =
+        Accounts.update_user_profile(user, %{
+          displayname: String.upcase(user.username)
+        })
+
+      assert user.displayname == String.upcase(user.username)
+    end
+
+    test "DigiZ can update their displayname" do
+      user = user_fixture(%{username: "Digiz"})
+
+      {:ok, user} =
+        Accounts.update_user_profile(user, %{
+          displayname: "DigiZ"
+        })
+
+      assert user.displayname == "DigiZ"
+    end
+
+    test "can't update displayname if it's different", %{user: user} do
+      {:error, changeset} =
+        Accounts.update_user_profile(user, %{
+          displayname: "SomethingDifferent"
+        })
+
+      assert %{displayname: ["Display name must match username"]} = errors_on(changeset)
     end
   end
 
