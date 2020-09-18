@@ -135,7 +135,7 @@
 			<%= textarea f, :profile_content_md, [class: "form-control mb-4", id: "textarea_edit", rows: 20] %>
 		      </div>
 		      <div class="tab-pane form-control mb-4" id="preview">
-			<p>Work in Progress</p>
+			<p><%= gettext("Coming soon!") %></p>
 		      </div>
 		    </div>
 		    
