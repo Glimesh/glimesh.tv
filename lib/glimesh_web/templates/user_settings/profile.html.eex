@@ -127,7 +127,6 @@
 			    <div class="pr-3 pl-3">
 			      <md-unordered-list class="fas fa-list-ul fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Unordered List") %>></md-unordered-list>
 			      <md-ordered-list class="fas fa-list-ol fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Ordered List") %>></md-ordered-list>
-			      <md-task-list class="fas fa-tasks fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Tasks List") %>></md-task-list>
 			    </div>
 			  </div>
 			</markdown-toolbar>
