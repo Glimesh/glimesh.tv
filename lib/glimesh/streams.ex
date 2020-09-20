@@ -15,6 +15,10 @@ defmodule Glimesh.Streams do
 
   ## Broadcasting Functions
 
+  def get_subscribe_topic(:channel), do: "streams:channel"
+  def get_subscribe_topic(:chat), do: "streams:chat"
+  def get_subscribe_topic(:chatters), do: "streams:chatters"
+  def get_subscribe_topic(:viewers), do: "streams:viewers"
   def get_subscribe_topic(:channel, streamer_id), do: "streams:channel:#{streamer_id}"
   def get_subscribe_topic(:chat, streamer_id), do: "streams:chat:#{streamer_id}"
   def get_subscribe_topic(:chatters, streamer_id), do: "streams:chatters:#{streamer_id}"
@@ -28,10 +32,11 @@ defmodule Glimesh.Streams do
   defp broadcast({:error, _reason} = error, _event), do: error
 
   defp broadcast({:ok, data}, :update_channel = event) do
-    Phoenix.PubSub.broadcast(
-      Glimesh.PubSub,
+    Glimesh.Events.broadcast(
       get_subscribe_topic(:channel, data.user.id),
-      {event, data}
+      get_subscribe_topic(:channel),
+      event,
+      data
     )
 
     {:ok, data}
@@ -40,10 +45,11 @@ defmodule Glimesh.Streams do
   defp broadcast_timeout({:error, _reason} = error, _event), do: error
 
   defp broadcast_timeout({:ok, streamer_id, bad_user}, :user_timedout) do
-    Phoenix.PubSub.broadcast(
-      Glimesh.PubSub,
+    Glimesh.Events.broadcast(
       get_subscribe_topic(:chat, streamer_id),
-      {:user_timedout, bad_user}
+      get_subscribe_topic(:chat),
+      :user_timedout,
+      bad_user
     )
 
     {:ok, bad_user}

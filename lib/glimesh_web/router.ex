@@ -48,7 +48,7 @@ defmodule GlimeshWeb.Router do
   scope "/api" do
     pipe_through :graphql
 
-    forward "/", Absinthe.Plug, schema: Glimesh.Schema
+    forward "/", Absinthe.Plug.GraphiQL, schema: Glimesh.Schema, socket: GlimeshWeb.UserSocket
   end
 
   ## Authentication routes

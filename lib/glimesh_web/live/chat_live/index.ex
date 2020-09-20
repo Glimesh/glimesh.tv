@@ -71,7 +71,7 @@ defmodule GlimeshWeb.ChatLive.Index do
   end
 
   @impl true
-  def handle_info({:chat_sent, message}, socket) do
+  def handle_info({:chat_message, message}, socket) do
     {:noreply,
      socket
      |> assign(:update_action, "append")

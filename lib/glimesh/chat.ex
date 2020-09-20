@@ -94,7 +94,7 @@ defmodule Glimesh.Chat do
     }
     |> ChatMessage.changeset(attrs)
     |> Repo.insert()
-    |> broadcast(:chat_sent)
+    |> broadcast(:chat_message)
   end
 
   @doc """
@@ -217,10 +217,11 @@ defmodule Glimesh.Chat do
   defp broadcast({:ok, chat_message}, event) do
     streamer_id = chat_message.streamer.id
 
-    Phoenix.PubSub.broadcast(
-      Glimesh.PubSub,
+    Glimesh.Events.broadcast(
       Streams.get_subscribe_topic(:chat, streamer_id),
-      {event, chat_message}
+      Streams.get_subscribe_topic(:chat),
+      event,
+      chat_message
     )
 
     {:ok, chat_message}
