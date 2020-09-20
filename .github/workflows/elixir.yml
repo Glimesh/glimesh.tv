@@ -1,10 +1,12 @@
 name: Elixir CI
 
+env: 
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [ master ]
 
 jobs:
   build:
@@ -27,8 +29,8 @@ jobs:
     - name: Set up Elixir
       uses: actions/setup-elixir@v1
       with:
-        elixir-version: '1.10.3' # Define the elixir version [required]
-        otp-version: '22.3' # Define the OTP version [required]
+        elixir-version: '1.10.4' # Define the elixir version [required]
+        otp-version: '23' # Define the OTP version [required]
     - name: Restore dependencies cache
       uses: actions/cache@v2
       with:
@@ -41,3 +43,5 @@ jobs:
       run: mix test
     - name: Code Quality
       run: mix code_quality
+    - name: Code Coverage
+      run: mix coveralls.github
