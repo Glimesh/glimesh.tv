@@ -34,7 +34,7 @@ config :glimesh,
   reserved_words: [
     # Glimesh-specific
     "discover", "following", "events", "community", "network", "communities", "networks", "storage", "css",
-    "js", "webfonts", "img", "avatars", "glimesh", "team",
+    "js", "webfonts", "img", "avatars", "glimesh", "team", "emotes",
 
     # Generic
     "about", "access", "account", "accounts", "add", "address", "adm", "admin", "administration", "adult",

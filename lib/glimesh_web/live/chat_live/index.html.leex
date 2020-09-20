@@ -19,7 +19,9 @@
                                     <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>" width="20" height="20" class="img-chat-avatar" />
                                     <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white" %>:
                                     <br>
-                                    <%= chat_message.message %>
+                                    <div class="chat-message">
+                                        <%= raw(Glimesh.Emote.fullParse(chat_message.message)) %>
+                                    </div>
                                 </div>
                             <% end %>
                         <% end %>
