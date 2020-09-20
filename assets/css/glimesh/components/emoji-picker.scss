@@ -1,0 +1,8 @@
+.emoji-picker__emoji {
+  width: calc(1em * var(--emoji-size-multiplier)) !important;
+  height: calc(1em * var(--emoji-size-multiplier)) !important;
+}
+
+.emoji-picker {
+  --emoji-size-multiplier: 1.25 !important
+}

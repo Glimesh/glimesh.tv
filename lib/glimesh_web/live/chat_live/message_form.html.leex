@@ -9,7 +9,8 @@
     phx_target: @myself,
     phx_submit: "send" %>
     <i class="far fa-smile-beam emoji-activator"></i>
-    <%= text_input f, :message, class: ["mail-write-box form-control"], autocomplete: "off", disabled: @disabled %>
+    <%= text_input f, :message, class: ["mail-write-box form-control"], autocomplete: "off", disabled: @disabled, style: "display:none;" %>
+    <div id="chat_message_pritty" contenteditable="true"></div>
     <%= error_tag f, :message %>
   </form>
 </div>
