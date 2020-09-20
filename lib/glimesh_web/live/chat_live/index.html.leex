@@ -4,7 +4,7 @@
             <div class="chat-conversation-box">
                 <div id="chat-conversation-box-scroll" class="chat-conversation-box-scroll">
                     <div id="chat-messages" class="chat active-chat" phx-update="<%= @update_action %>">
-                        <div class="conversation-start">
+                        <div class="conversation-start" id="shut-up-phoenix">
                             <span>Welcome to the chat! Follow the rules.</span>
                         </div>
                         <%= if @chat_clear === false do %>
@@ -20,7 +20,7 @@
                                     <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white" %>:
                                     <br>
                                     <div class="chat-message">
-                                        <%= raw(Glimesh.Emote.fullParse(Glimesh.Chat.hyperlink_message(chat_message.message))) %>
+                                        <%= raw(Glimesh.Chat.hyperlink_message(Glimesh.Emote.parse(chat_message.message))) %>
                                     </div>
                                 </div>
                             <% end %>

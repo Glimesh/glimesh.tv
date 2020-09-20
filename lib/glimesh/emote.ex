@@ -10,14 +10,6 @@ defmodule Glimesh.Emote do
     end)
   end
 
-  def fullParse(str) do
-    twemojiParse(parse(str))
-  end
-
-  def twemojiParse(str) do
-    str
-  end
-
   def parse(str) do
     names = Enum.map(getEmoteNames(), fn name ->
       String.match?(str, ~r/#{name}/i)

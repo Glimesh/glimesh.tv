@@ -102,22 +102,24 @@ export default {
 
         const targetNode = document.getElementById("chat-messages")
         const config = { childList: true }
-        const modifyFunction = function(addedNodes, nodes){
+        const modifyFunction = function(addedNodes, target){
+            console.log(target)
             for(const node of addedNodes){
-                const index = Number(node.id) - 1;
-                const message = nodes[index].querySelector(".chat-message");
-                message.innerHTML = twemoji.parse(message.innerHTML, function(iconId, options) {
-                    return 'https://twemoji.maxcdn.com/v/13.0.0/svg/' + iconId + '.svg';
-                });
+                if(!isNaN(node.id)){
+                    const message = Array.from(target.querySelectorAll(`.chat-message`)).find(t => t.parentElement.id == node.id);
+                    message.innerHTML = twemoji.parse(message.innerHTML, function(iconId, options) {
+                        return 'https://twemoji.maxcdn.com/v/13.0.0/svg/' + iconId + '.svg';
+                    });
+                }
             }
         }
         const mutationCallback = function(mutationsList, _){
             for(const mutation of mutationsList){
-                modifyFunction(mutation.addedNodes, mutation.target.childNodes);
+                modifyFunction(mutation.addedNodes, mutation.target);
             }
         }
         const observer = new MutationObserver(mutationCallback);
         observer.observe(targetNode, config);
-        modifyFunction(Array.from(targetNode.childNodes).filter(t => t.nodeType === 1 && t.classList.contains("bubble")), Array.from(targetNode.childNodes).filter(t => t.nodeType === 1 && t.classList.contains("bubble")));
+        modifyFunction(Array.from(targetNode.childNodes).filter(t => t.nodeType === 1 && t.classList.contains("bubble")), targetNode);
     }
 };

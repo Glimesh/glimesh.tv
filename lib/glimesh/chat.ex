@@ -9,6 +9,8 @@ defmodule Glimesh.Chat do
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Repo
   alias Glimesh.Streams
+  alias Phoenix.HTML
+  alias Phoenix.HTML.Link
   alias Phoenix.HTML.Tag
 
   @doc """
@@ -238,8 +240,8 @@ defmodule Glimesh.Chat do
     for message <- String.split(chat_message) do
       if Enum.member?(found_uris, message) do
         case URI.parse(message).scheme do
-          "https" -> Link.link(message <> " ", to: message, target: "_blank")
-          "http" -> Link.link(message <> " ", to: message, target: "_blank")
+          "https" -> Link.link(message <> " ", to: message, target: "_blank") |> HTML.safe_to_string()
+          "http" -> Link.link(message <> " ", to: message, target: "_blank") |> HTML.safe_to_string()
         end
       else
         message <> " "
