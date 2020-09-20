@@ -10,6 +10,7 @@ defmodule Glimesh.Chat do
   alias Glimesh.Repo
   alias Glimesh.Streams
   alias Glimesh.Streams.Channel
+  alias Phoenix.HTML.Link
   alias Phoenix.HTML.Tag
 
   @doc """
@@ -223,6 +224,26 @@ defmodule Glimesh.Chat do
          String.match?(chat_message.message, ~r/\b#{"@" <> username}\b/i))
   end
 
+  def hyperlink_message(chat_message) do
+    regex_string = ~r/ (?:(?:https?|ftp)
+                        :\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))
+                        ?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?
+                      /xi
+
+    found_uris = flatten_list(Regex.scan(regex_string, chat_message))
+
+    for message <- String.split(chat_message) do
+      if Enum.member?(found_uris, message) do
+        case URI.parse(message).scheme do
+          "https" -> Link.link(message <> " ", to: message, target: "_blank")
+          "http" -> Link.link(message <> " ", to: message, target: "_blank")
+        end
+      else
+        message <> " "
+      end
+    end
+  end
+
   defp broadcast({:error, _reason} = error, _event), do: error
 
   defp broadcast({:ok, chat_message}, event) do
@@ -235,4 +256,8 @@ defmodule Glimesh.Chat do
 
     {:ok, chat_message}
   end
+
+  defp flatten_list([head | tail]), do: flatten_list(head) ++ flatten_list(tail)
+  defp flatten_list([]), do: []
+  defp flatten_list(element), do: [element]
 end
