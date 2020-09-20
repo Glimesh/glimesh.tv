@@ -63,6 +63,7 @@ defmodule Glimesh.MixProject do
       {:slugify, "~> 1.3"},
       {:absinthe, "~> 1.5"},
       {:absinthe_plug, "~> 1.5"},
+      {:absinthe_phoenix, "~> 2.0"},
       {:dataloader, "~> 1.0.0"},
       {:plug_canonical_host, "~> 2.0"},
       {:ex_oauth2_provider, "~> 0.5.6"}
