@@ -35,6 +35,9 @@ defmodule Glimesh.Accounts.User do
     field :tfa_token, :string
 
     field :locale, :string, default: "en"
+
+    has_one :channel, Glimesh.Streams.Channel
+
     timestamps()
   end
 
