@@ -1,4 +1,3 @@
-
 <div class="chat-system">
 
       <div class="chat-box">
@@ -9,33 +8,38 @@
                         <div class="conversation-start" id="phx-stop-getting-mad">
                             <span>Welcome to chat! Follow the rules.</span>
                         </div>
+                        <%= if @chat_clear === false do %>
                             <%= for chat_message <- @chat_messages do %>
                                 <div id="<%= chat_message.id %>" class="<%=if Glimesh.Chat.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>">
                                     <%= if @is_moderator do %>
-                                    <i class="fas fa-times-circle" phx-click="timeout_user" phx-value-user="<%= chat_message.user.username %>"></i>
+                                        <i class="fas fa-times-circle" phx-click="ban_user" phx-value-user="<%= chat_message.user.username %>"></i>
+                                        <i class="fas fa-clock" phx-click="timeout_user" phx-value-user="<%= chat_message.user.username %>"></i>
                                     <% end %>
                                     <%= Glimesh.Chat.render_global_badge(chat_message.user) %>
                                     <%= Glimesh.Chat.render_stream_badge(@streamer, chat_message.user) %>
                                     <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>" width="20" height="20" class="img-chat-avatar" />
                                     <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white", target: "_blank" %>:
                                     <br>
-                                    <%= Glimesh.Chat.hyperlink_message(chat_message.message) %>
+                                    <div class="chat-message">
+                                        <%= raw(Glimesh.Emote.fullParse(Glimesh.Chat.hyperlink_message(chat_message.message))) %>
+                                    </div>
                                 </div>
                             <% end %>
-                      </div>
-                  </div>
-              </div>
-              <div class="chat-footer chat-active">
-                  <div class="chat-input">
-                      <%= live_component @socket, GlimeshWeb.ChatLive.MessageForm,
-                          id: :new,
-                          action: :new,
-                          chat_message: @chat_message,
-                          streamer: @streamer,
-                          user: @user
-                      %>
-                  </div>
-              </div>
-          </div>
-      </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-footer chat-active">
+                <div class="chat-input">
+                    <%= live_component @socket, GlimeshWeb.ChatLive.MessageForm,
+                        id: :new,
+                        action: :new,
+                        chat_message: @chat_message,
+                        streamer: @streamer,
+                        user: @user
+                    %>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

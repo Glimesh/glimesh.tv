@@ -6,6 +6,7 @@ defmodule Glimesh.Streams.Channel do
   schema "channels" do
     belongs_to :user, Glimesh.Accounts.User
     belongs_to :category, Glimesh.Streams.Category
+    belongs_to :streamer, Glimesh.Accounts.User, source: :user_id
 
     field :title, :string, default: "Live Stream!"
     field :status, :string
@@ -20,6 +21,13 @@ defmodule Glimesh.Streams.Channel do
     timestamps()
   end
 
+  def create_changeset(channel, attrs \\ %{}) do
+    channel
+    |> changeset(attrs)
+    |> put_change(:status, "offline")
+    |> put_change(:stream_key, generate_stream_key())
+  end
+
   def changeset(channel, attrs \\ %{}) do
     channel
     |> cast(attrs, [
@@ -29,7 +37,8 @@ defmodule Glimesh.Streams.Channel do
       :thumbnail,
       :stream_key,
       :chat_rules_md,
-      :inaccessible
+      :inaccessible,
+      :status
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> set_chat_rules_content_html()
@@ -55,5 +64,9 @@ defmodule Glimesh.Streams.Channel do
       _ ->
         changeset
     end
+  end
+
+  defp generate_stream_key do
+    :crypto.strong_rand_bytes(64) |> Base.encode64() |> binary_part(0, 64)
   end
 end

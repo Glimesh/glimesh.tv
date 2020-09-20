@@ -1,3 +1,29 @@
+// this is to lock the footer on the bottom without having to deal with position
+html,
+body {
+    height: 100%;
+
+    // this is the final part to lock the fotter to the bottom you are welcome to try and figure out the best dynamic way to set this but have fun with that function
+    #app {
+        @media(min-height: 558px) {
+            min-height: 51.6073%;
+        }
+
+        @media(min-height: 675px) {
+            min-height: 59.9953%;
+        }
+
+        @media(min-height: 937px) {
+            min-height: 71.1812%;
+        }
+
+        @media(min-height: 1297px) {
+            min-height: 79.18%;
+        }
+    }
+}
+
+
 @font-face {
     font-family: "Quicksand";
     font-style: normal;
@@ -25,3 +51,6 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "glimesh/components/live-modal";
 @import "glimesh/components/img-avatar";
 @import "glimesh/components/card-stream";
+@import "glimesh/components/oauth-template.scss";
+@import "glimesh/components/user-content-body.scss";
+@import "glimesh/components/emoji-picker.scss";

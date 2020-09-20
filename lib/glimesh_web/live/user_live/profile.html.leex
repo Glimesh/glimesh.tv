@@ -9,7 +9,8 @@
                         class="img-fluid mb-2 img-avatar <%= if @streamer.stripe_user_id, do: "img-verified-streamer", else: "" %>">
 
                     <%= if @streamer.stripe_user_id do %>
-                    <div class="mb-4"><span class="badge badge-secondary"><%= gettext("Sub-ready Streamer") %></span></div>
+                    <div class="mb-4"><span class="badge badge-secondary"><%= gettext("Sub-ready Streamer") %></span>
+                    </div>
                     <% end %>
 
                     <ul class="list-inline">
@@ -49,13 +50,14 @@
 
                     <div class="simple--counter-container mt-4">
 
+                        <%= live_redirect to: Routes.user_followers_path(@socket, :index, @streamer.username) do %>
                         <div class="counter-container">
                             <div class="counter-content">
                                 <h5 class="s-counter2 s-counter"><%= @followers_count %></h1>
                             </div>
                             <p class="s-counter-text"><%= gettext("Followers") %></p>
                         </div>
-
+                        <% end %>
                         <div class="counter-container">
                             <div class="counter-content">
                                 <h5 class="s-counter3 s-counter"><%= @following_count %></h1>
@@ -66,9 +68,13 @@
                     </div>
 
                     <%= if @streamer == @user do %>
-                    <a class="btn btn-primary btn-sm mt-4" target="_blank" href="https://twitter.com/intent/tweet?text=<%= @streamer_share_text %>" data-size="large"><%= gettext("Share my profile on Twitter") %></a>
+                    <a class="btn btn-primary btn-sm mt-4" target="_blank"
+                        href="https://twitter.com/intent/tweet?text=<%= @streamer_share_text %>"
+                        data-size="large"><%= gettext("Share my profile on Twitter") %></a>
                     <% else  %>
-                    <a class="btn btn-primary btn-sm mt-4" target="_blank" href="https://twitter.com/intent/tweet?text=<%= @viewer_share_text %>" data-size="large"><%= gettext("Share on Twitter") %></a>
+                    <a class="btn btn-primary btn-sm mt-4" target="_blank"
+                        href="https://twitter.com/intent/tweet?text=<%= @viewer_share_text %>"
+                        data-size="large"><%= gettext("Share on Twitter") %></a>
                     <% end %>
 
                 </div>
@@ -83,7 +89,8 @@
                     <h5><%= gettext("Pre-Follow Streamer") %></h5>
                 </div>
                 <div class="card-body">
-                    <p><%= gettext("Glimesh isn't launched yet, but you can follow %{streamer} now and get automatically notified when they go live!", streamer: @streamer.displayname) %></P>
+                    <p><%= gettext("Glimesh isn't launched yet, but you can follow %{streamer} now and get automatically notified when they go live!", streamer: @streamer.displayname) %>
+                    </P>
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                 </div>
             </div>
@@ -99,23 +106,24 @@
             </div>
             -->
         </div>
-        <div id="bio" class="col-md-8">
+        <div class="col-md-8">
 
             <div class="card">
-                <div class="card-body">
+                <div class="card-body user-content-body">
                     <%= if @youtube_id do %>
                     <div class="embed-responsive embed-responsive-16by9 mb-4">
-                        <iframe class="embed-responsive-item" src="https://www.youtube-nocookie.com/embed/<%= @youtube_id %>"
-                            frameborder="0"
+                        <iframe class="embed-responsive-item"
+                            src="https://www.youtube-nocookie.com/embed/<%= @youtube_id %>" frameborder="0"
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen></iframe>
                     </div>
                     <% end %>
 
                     <%= if @streamer.profile_content_html do %>
-                        <%= raw(@streamer.profile_content_html) %>
+                    <%= raw(@streamer.profile_content_html) %>
                     <% else %>
-                        <p><%= gettext("Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!") %></p>
+                    <p><%= gettext("Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the right hand corner!") %>
+                    </p>
                     <% end %>
 
                 </div>

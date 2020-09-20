@@ -37,6 +37,18 @@ defmodule Glimesh.Streams do
     {:ok, data}
   end
 
+  defp broadcast_chats({:error, _reason} = error, _event), do: error
+
+  defp broadcast_chats({:ok, data}, event, streamer) do
+    Phoenix.PubSub.broadcast(
+      Glimesh.PubSub,
+      get_subscribe_topic(:chat, streamer.id),
+      {event, data}
+    )
+
+    {:ok, data}
+  end
+
   defp broadcast_timeout({:error, _reason} = error, _event), do: error
 
   defp broadcast_timeout({:ok, streamer_id, bad_user}, :user_timedout) do
@@ -65,9 +77,22 @@ defmodule Glimesh.Streams do
       from c in Channel,
         join: cat in Category,
         on: cat.id == c.category_id,
+        where: c.status == "live",
         where: cat.id == ^category.id or cat.parent_id == ^category.id
     )
     |> Repo.preload([:category, :user])
+  end
+
+  def list_all_follows do
+    Repo.all(from(f in Followers))
+  end
+
+  def list_followers(user) do
+    Repo.all(from f in Followers, where: f.streamer_id == ^user.id) |> Repo.preload(:user)
+  end
+
+  def list_following(user) do
+    Repo.all(from f in Followers, where: f.user_id == ^user.id)
   end
 
   def list_followed_channels(user) do
@@ -75,9 +100,14 @@ defmodule Glimesh.Streams do
       from c in Channel,
         join: f in Followers,
         on: c.user_id == f.streamer_id,
+        where: c.status == "live",
         where: f.user_id == ^user.id
     )
     |> Repo.preload([:category, :user])
+  end
+
+  def get_channel!(id) do
+    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :user])
   end
 
   def get_channel_for_username!(username) do
@@ -91,6 +121,14 @@ defmodule Glimesh.Streams do
     |> Repo.preload([:category, :user])
   end
 
+  def get_channel_for_stream_key!(stream_key) do
+    Repo.one(
+      from c in Channel,
+        where: c.stream_key == ^stream_key and c.inaccessible == false
+    )
+    |> Repo.preload([:category, :user])
+  end
+
   def get_channel_for_user!(user) do
     Repo.get_by(Channel, user_id: user.id) |> Repo.preload([:category, :user])
   end
@@ -99,7 +137,7 @@ defmodule Glimesh.Streams do
     %Channel{
       user: user
     }
-    |> Channel.changeset(attrs)
+    |> Channel.create_changeset(attrs)
     |> Repo.insert()
   end
 
@@ -148,7 +186,7 @@ defmodule Glimesh.Streams do
     |> Repo.insert()
   end
 
-  def timeout_user(streamer, moderator, user_to_timeout) do
+  def timeout_user(streamer, moderator, user_to_timeout, time) do
     if Chat.can_moderate?(streamer, moderator) === false do
       raise "User does not have permission to moderate."
     end
@@ -162,7 +200,7 @@ defmodule Glimesh.Streams do
       |> UserModerationLog.changeset(%{action: "timeout"})
       |> Repo.insert()
 
-    :ets.insert(:banned_list, {user_to_timeout.username, true})
+    :ets.insert(:timedout_list, {user_to_timeout.username, {streamer.id, time}})
 
     Chat.delete_chat_messages_for_user(streamer, user_to_timeout)
 
@@ -172,7 +210,35 @@ defmodule Glimesh.Streams do
   end
 
   def ban_user(streamer, moderator, user_to_ban) do
-    timeout_user(streamer, moderator, user_to_ban)
+    if Chat.can_moderate?(streamer, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
+    log =
+      %UserModerationLog{
+        streamer: streamer,
+        moderator: moderator,
+        user: user_to_ban
+      }
+      |> UserModerationLog.changeset(%{action: "ban"})
+      |> Repo.insert()
+
+    :ets.insert(:banned_list, {user_to_ban.username, {streamer.id, true}})
+
+    Chat.delete_chat_messages_for_user(streamer, user_to_ban)
+
+    broadcast_chats({:ok, user_to_ban}, :user_banned, streamer)
+
+    log
+  end
+
+  def list_followed_streams(user) do
+    Repo.all(
+      from f in Followers,
+        where: f.user_id == ^user.id,
+        join: streamer in assoc(f, :streamer),
+        select: streamer
+    )
   end
 
   ## Following
@@ -203,6 +269,10 @@ defmodule Glimesh.Streams do
     Repo.exists?(
       from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id
     )
+  end
+
+  def get_following(streamer, user) do
+    Repo.one!(from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id)
   end
 
   def count_followers(user) do
@@ -326,5 +396,43 @@ defmodule Glimesh.Streams do
   """
   def change_category(%Category{} = category, attrs \\ %{}) do
     Category.changeset(category, attrs)
+  end
+
+  # Streams
+
+  def get_stream!(id) do
+    Repo.get_by!(Glimesh.Streams.Stream, id: id)
+  end
+
+  @doc """
+  Starts a stream for a specific channel
+  Only called very intentionally by Janus after stream authentication
+  Also sends notifications
+  """
+  def start_stream(channel) do
+    channel
+  end
+
+  @doc """
+  Ends a stream for a specific channel
+  Called either intentionally by Janus when the stream ends, or manually by the platform on a timer
+  Archives the stream
+  """
+  def end_stream(channel) do
+    channel
+  end
+
+  def create_stream(channel, attrs \\ %{}) do
+    %Glimesh.Streams.Stream{
+      channel: channel
+    }
+    |> Glimesh.Streams.Stream.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_stream(%Glimesh.Streams.Stream{} = stream, attrs) do
+    stream
+    |> Glimesh.Streams.Stream.changeset(attrs)
+    |> Repo.update()
   end
 end

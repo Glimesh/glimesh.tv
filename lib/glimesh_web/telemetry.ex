@@ -41,7 +41,13 @@ defmodule GlimeshWeb.Telemetry do
       summary("vm.memory.total", unit: {:byte, :kilobyte}),
       summary("vm.total_run_queue_lengths.total"),
       summary("vm.total_run_queue_lengths.cpu"),
-      summary("vm.total_run_queue_lengths.io")
+      summary("vm.total_run_queue_lengths.io"),
+
+      # Absinthe Metrics
+      summary("absinthe.execute.operation.stop.duration", unit: {:native, :millisecond}),
+      summary("absinthe.resolve.field.stop.duration", unit: {:native, :millisecond}),
+      summary("absinthe.subscription.publish.stop.duration", unit: {:native, :millisecond}),
+      summary("absinthe.middleware.batch.stop.duration", unit: {:native, :millisecond})
     ]
   end
 

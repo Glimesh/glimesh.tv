@@ -22,6 +22,7 @@ defmodule Glimesh.Application do
     ]
 
     :ets.new(:banned_list, [:named_table, :public])
+    :ets.new(:timedout_list, [:named_table, :public])
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

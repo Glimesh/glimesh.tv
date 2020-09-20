@@ -5,10 +5,10 @@ defmodule Glimesh.Chat do
 
   import Ecto.Query, warn: false
 
+  alias Glimesh.Streams.UserModerationLog
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Repo
   alias Glimesh.Streams
-  alias Phoenix.HTML.Link
   alias Phoenix.HTML.Tag
 
   @doc """
@@ -85,7 +85,22 @@ defmodule Glimesh.Chat do
     username = user.username
 
     case :ets.lookup(:banned_list, username) do
-      [{^username, _}] -> raise ArgumentError, message: "user must not be banned"
+      [{^username, {streamid, banned}}] ->
+        if streamid === streamer.id and banned do
+          raise ArgumentError, message: "user must not be banned"
+        else
+          true
+        end
+      [] -> true
+    end
+
+    case :ets.lookup(:timedout_list, username) do
+      [{^username, {streamid, time}}] ->
+        if streamid === streamer.id and DateTime.compare(DateTime.utc_now(), time) !== :gt do
+          raise ArgumentError, message: "user must not be timedout"
+        else
+          true
+        end
       [] -> true
     end
 
@@ -96,24 +111,6 @@ defmodule Glimesh.Chat do
     |> ChatMessage.changeset(attrs)
     |> Repo.insert()
     |> broadcast(:chat_sent)
-  end
-
-  @doc """
-  Updates a chat_message.
-
-  ## Examples
-
-      iex> update_chat_message(chat_message, %{field: new_value})
-      {:ok, %ChatMessage{}}
-
-      iex> update_chat_message(chat_message, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_chat_message(%ChatMessage{} = chat_message, attrs) do
-    chat_message
-    |> ChatMessage.changeset(attrs)
-    |> Repo.update()
   end
 
   @doc """
@@ -158,6 +155,19 @@ defmodule Glimesh.Chat do
   end
 
   @doc """
+  Deletes all chat messages for the streamers chat
+  """
+  def delete_all_chat_messages(streamer) do
+    query =
+      from m in ChatMessage,
+        where:
+          m.is_visible == true and
+            m.streamer_id == ^streamer.id
+
+    Repo.update_all(query, set: [is_visible: false])
+  end
+
+  @doc """
   Returns an `%Ecto.Changeset{}` for tracking chat_message changes.
 
   ## Examples
@@ -182,7 +192,8 @@ defmodule Glimesh.Chat do
     user.is_admin ||
       Repo.exists?(
         from m in UserModerator, where: m.streamer_id == ^streamer.id and m.user_id == ^user.id
-      )
+      ) ||
+      streamer.id == user.id
   end
 
   def render_global_badge(user) do
@@ -194,10 +205,13 @@ defmodule Glimesh.Chat do
   end
 
   def render_stream_badge(stream, user) do
-    if can_moderate?(stream, user) and user.is_admin === false do
-      Tag.content_tag(:span, "Moderator", class: "badge badge-info")
-    else
-      ""
+    cond do
+      stream.id === user.id and user.is_admin === false ->
+        Tag.content_tag(:span, "Streamer", class: "badge badge-light")
+      can_moderate?(stream, user) and user.is_admin === false ->
+        Tag.content_tag(:span, "Moderator", class: "badge badge-info")
+      true ->
+        ""
     end
   end
 
@@ -209,10 +223,10 @@ defmodule Glimesh.Chat do
     username = user.username
 
     !(username == chat_message.user.username) &&
-      (String.match?(chat_message.message, ~r/#{username}/i) ||
-         String.match?(chat_message.message, ~r/#{"@" <> username}/i))
+      (String.match?(chat_message.message, ~r/\b#{username}\b/i) ||
+         String.match?(chat_message.message, ~r/\b#{"@" <> username}\b/i))
   end
-
+  
   def hyperlink_message(chat_message) do
     regex_string = ~r/ (?:(?:https?|ftp)
                         :\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))
@@ -233,6 +247,99 @@ defmodule Glimesh.Chat do
     end
   end
 
+  def subscribe(user) do
+    Phoenix.PubSub.subscribe(Glimesh.PubSub, "chats:#{user.id}")
+  end
+
+
+  def timeout_user(streamer, moderator, user_to_timeout, time) do
+    if can_moderate?(streamer, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
+    log =
+      %UserModerationLog{
+        streamer: streamer,
+        moderator: moderator,
+        user: user_to_timeout
+      }
+      |> UserModerationLog.changeset(%{action: "timeout"})
+      |> Repo.insert()
+
+    :ets.insert(:timedout_list, {user_to_timeout.username, {streamer.id, time}})
+
+    delete_chat_messages_for_user(streamer, user_to_timeout)
+
+    broadcast({:ok, %{streamer: streamer, user: user_to_timeout, moderator: moderator}}, :user_timedout)
+
+    log
+  end
+
+  def ban_user(streamer, moderator, user_to_ban) do
+    if can_moderate?(streamer, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
+    log =
+      %UserModerationLog{
+        streamer: streamer,
+        moderator: moderator,
+        user: user_to_ban
+      }
+      |> UserModerationLog.changeset(%{action: "ban"})
+      |> Repo.insert()
+
+    :ets.insert(:banned_list, {user_to_ban.username, {streamer.id, true}})
+
+    delete_chat_messages_for_user(streamer, user_to_ban)
+
+    broadcast({:ok, %{streamer: streamer, user: user_to_ban, moderator: moderator}}, :user_banned)
+
+    log
+  end
+
+  def unban_user(streamer, moderator, user_to_unban) do
+    if can_moderate?(streamer, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
+    log =
+      %UserModerationLog{
+        streamer: streamer,
+        moderator: moderator,
+        user: user_to_unban
+      }
+      |> UserModerationLog.changeset(%{action: "unban"})
+      |> Repo.insert()
+
+    :ets.delete(:banned_list, user_to_unban.username)
+
+    broadcast({:ok, %{streamer: streamer, user: user_to_unban, moderator: moderator}}, :user_unbanned)
+
+    log
+  end
+
+  def clear_chat(streamer, moderator) do
+    if can_moderate?(streamer, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
+    log =
+      %UserModerationLog{
+        streamer: streamer,
+        moderator: moderator,
+        user: moderator
+      }
+      |> UserModerationLog.changeset(%{action: "clear_chat"})
+      |> Repo.insert()
+
+    delete_all_chat_messages(streamer)
+
+    broadcast({:ok, %{streamer: streamer, moderator: moderator}}, :chat_cleared)
+
+    log
+  end
+
   defp broadcast({:error, _reason} = error, _event), do: error
 
   defp broadcast({:ok, chat_message}, event) do
@@ -246,8 +353,4 @@ defmodule Glimesh.Chat do
 
     {:ok, chat_message}
   end
-
-  defp flatten_list([head | tail]), do: flatten_list(head) ++ flatten_list(tail)
-  defp flatten_list([]), do: []
-  defp flatten_list(element), do: [element]
 end

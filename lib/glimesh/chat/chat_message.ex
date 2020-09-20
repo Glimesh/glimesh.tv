@@ -20,5 +20,6 @@ defmodule Glimesh.Chat.ChatMessage do
     chat_message
     |> cast(attrs, [:message, :is_visible])
     |> validate_required([:streamer, :user, :message])
+    |> validate_length(:message, max: 250)
   end
 end
