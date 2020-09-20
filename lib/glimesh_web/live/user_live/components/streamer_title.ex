@@ -82,7 +82,7 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
   end
 
   @impl true
-  def handle_info({:update_channel, data}, socket) do
+  def handle_info({:channel, data}, socket) do
     {:noreply, assign(socket, channel: data)}
   end
 
