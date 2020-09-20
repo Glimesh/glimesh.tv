@@ -237,6 +237,7 @@ defmodule Glimesh.Chat do
         case URI.parse(message).scheme do
           "https" -> Link.link(message <> " ", to: message, target: "_blank")
           "http" -> Link.link(message <> " ", to: message, target: "_blank")
+          _ -> message <> " "
         end
       else
         message <> " "
