@@ -48,7 +48,11 @@ defmodule GlimeshWeb.Router do
   scope "/api" do
     pipe_through :graphql
 
-    forward "/", Absinthe.Plug.GraphiQL, schema: Glimesh.Schema, socket: GlimeshWeb.UserSocket
+    forward "/", Absinthe.Plug.GraphiQL,
+      schema: Glimesh.Schema,
+      socket: GlimeshWeb.UserSocket,
+      default_url: {__MODULE__, :graphiql_default_url},
+      socket_url: {__MODULE__, :graphiql_socket_url}
   end
 
   ## Authentication routes
@@ -152,5 +156,17 @@ defmodule GlimeshWeb.Router do
     live "/:username", UserLive.Stream, :index
     live "/:username/profile", UserLive.Profile, :index
     live "/:username/profile/followers", UserLive.Followers, :index
+  end
+
+  alias GlimeshWeb.Router.Helpers, as: Routes
+
+  def graphiql_default_url(conn) do
+    Routes.url(conn) <> "/api"
+  end
+
+  def graphiql_socket_url(conn) do
+    (Routes.url(conn) <> "/socket")
+    |> String.replace("http", "ws")
+    |> String.replace("https", "wss")
   end
 end

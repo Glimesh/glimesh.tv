@@ -23,8 +23,18 @@ defmodule GlimeshWeb.UserSocket do
   @impl true
   def connect(%{"token" => token}, socket, _connect_info) do
     case Glimesh.Oauth.TokenResolver.resolve_user(token) do
-      {:ok, %User{} = user} -> {:ok, assign(socket, :user_id, user.id)}
-      _ -> :error
+      {:ok, %User{} = user} ->
+        {:ok,
+         socket
+         |> assign(:user_id, user.id)
+         |> Absinthe.Phoenix.Socket.put_options(
+           context: %{
+             current_user: user
+           }
+         )}
+
+      _ ->
+        :error
     end
   end
 
