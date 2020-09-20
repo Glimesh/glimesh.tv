@@ -147,6 +147,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :stream, :stream, resolve: dataloader(Repo)
 
     field :streamer, non_null(:user), resolve: dataloader(Repo)
+    field :chat_messages, list_of(:chat_message), resolve: dataloader(Repo)
 
     field :user, non_null(:user),
       resolve: dataloader(Repo),

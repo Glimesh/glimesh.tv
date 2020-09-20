@@ -8,11 +8,6 @@ defmodule Glimesh.ChannelTest do
     @valid_attrs %{title: "Valid Title", category_id: 2}
     @invalid_attrs %{title: nil}
 
-    def channel_fixture() do
-      streamer = streamer_fixture()
-      Streams.get_channel_for_username!(streamer.username)
-    end
-
     test "delete_channel/1 soft deletes channel successfully" do
       channel = channel_fixture()
       {:ok, channel} = Streams.delete_channel(channel)

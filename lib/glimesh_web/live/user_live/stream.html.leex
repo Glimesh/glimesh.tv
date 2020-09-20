@@ -8,7 +8,7 @@
         <div class="widget-heading">
           <div class="row">
             <div class="col-8">
-              <%= live_render(@socket, GlimeshWeb.UserLive.Components.StreamerTitle, id: "streamer-title", session: %{"user" => @user, "streamer" => @streamer}) %>
+              <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
             </div>
             <div class="col-4">
               <div class="float-right">
@@ -22,7 +22,7 @@
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                   </div>
                   <div class="btn-group" role="group" aria-label="Third group">
-                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"streamer_id" => @streamer.id}) %>
+                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
                   </div>
                 </div>
               </div>
@@ -59,7 +59,7 @@
     </div>
 
     <div id="chat-column" class="col-xl-3 layout-spacing">
-      <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "streamer" => @streamer} %>
+      <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id} %>
     </div>
 
   </div>

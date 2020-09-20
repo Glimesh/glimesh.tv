@@ -1,41 +1,43 @@
-
 <div class="chat-system">
 
-      <div class="chat-box">
-          <div class="chat-box-inner">
-              <div class="chat-conversation-box">
-                  <div id="chat-conversation-box-scroll" class="chat-conversation-box-scroll">
-                      <div id="chat-messages" class="chat active-chat" phx-update="<%= @update_action %>">
+    <div class="chat-box">
+        <div class="chat-box-inner">
+            <div class="chat-conversation-box">
+                <div id="chat-conversation-box-scroll" class="chat-conversation-box-scroll">
+                    <div id="chat-messages" class="chat active-chat" phx-update="<%= @update_action %>">
                         <div class="conversation-start">
                             <span>Welcome to chat! Follow the rules.</span>
                         </div>
-                            <%= for chat_message <- @chat_messages do %>
-                                <div id="<%= chat_message.id %>" class="<%=if Glimesh.Chat.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>">
-                                    <%= if @is_moderator do %>
-                                    <i class="fas fa-times-circle" phx-click="timeout_user" phx-value-user="<%= chat_message.user.username %>"></i>
-                                    <% end %>
-                                    <%= Glimesh.Chat.render_global_badge(chat_message.user) %>
-                                    <%= Glimesh.Chat.render_stream_badge(@streamer, chat_message.user) %>
-                                    <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>" width="20" height="20" class="img-chat-avatar" />
-                                    <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white" %>:
-                                    <br>
-                                    <%= chat_message.message %>
-                                </div>
+                        <%= for chat_message <- @chat_messages do %>
+                        <div id="<%= chat_message.id %>"
+                            class="<%=if Glimesh.Chat.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>">
+                            <%= if @is_moderator do %>
+                            <i class="fas fa-times-circle" phx-click="timeout_user"
+                                phx-value-user="<%= chat_message.user.username %>"></i>
                             <% end %>
-                      </div>
-                  </div>
-              </div>
-              <div class="chat-footer chat-active">
-                  <div class="chat-input">
-                      <%= live_component @socket, GlimeshWeb.ChatLive.MessageForm,
+                            <%= Glimesh.Chat.render_global_badge(chat_message.user) %>
+                            <%= Glimesh.Chat.render_stream_badge(@channel, chat_message.user) %>
+                            <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>"
+                                width="20" height="20" class="img-chat-avatar" />
+                            <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white" %>:
+                            <br>
+                            <%= chat_message.message %>
+                        </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-footer chat-active">
+                <div class="chat-input">
+                    <%= live_component @socket, GlimeshWeb.ChatLive.MessageForm,
                           id: :new,
                           action: :new,
                           chat_message: @chat_message,
-                          streamer: @streamer,
+                          channel: @channel,
                           user: @user
                       %>
-                  </div>
-              </div>
-          </div>
-      </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
