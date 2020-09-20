@@ -1,1 +1,1 @@
-Code.require_file("priv/repo/seeds.exs")
+Code.require_file("seeds.exs")
