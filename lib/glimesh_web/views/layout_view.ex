@@ -21,6 +21,16 @@ defmodule GlimeshWeb.LayoutView do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserSecurityController, :index])
   end
 
+  def active_user_applications_path(conn) do
+    truthy_active(controller_module(conn) == GlimeshWeb.UserApplicationsController)
+  end
+
+  def active_user_authorizations_path(conn) do
+    truthy_active(
+      controller_module(conn) == GlimeshWeb.Oauth2Provider.AuthorizedApplicationController
+    )
+  end
+
   defp controller_action(conn) do
     [controller_module(conn), action_name(conn)]
   end

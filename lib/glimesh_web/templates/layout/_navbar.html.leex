@@ -52,7 +52,7 @@
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <%= @current_user.displayname %>
                     <img src="<%= Glimesh.Avatar.url({@current_user.avatar, @current_user}, :original) %>" alt="avatar"
-                        width="30" height="30"
+                        width="34" height="34"
                         class="img-avatar <%= if @current_user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
                 </a>
                 <div class="dropdown-menu" aria-labelledby="userProfileDropdown">

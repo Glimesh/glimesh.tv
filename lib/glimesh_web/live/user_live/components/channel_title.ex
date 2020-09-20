@@ -1,12 +1,13 @@
-defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
+defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   use GlimeshWeb, :live_view
+  import Gettext, only: [with_locale: 2]
 
   alias Glimesh.Streams
 
   @impl true
   def render(assigns) do
     ~L"""
-    <%= if @user && @is_streamer do %>
+    <%= if @can_change do %>
       <%= if !@editing do %>
         <h5 class=""><span class="badge badge-danger">Live!</span> <span class="badge badge-primary"><%= @channel.category.tag_name %></span> <%= @channel.title %> <a class="fas fa-edit" phx-click="toggle-edit" href="#"></a></h5>
       <% else %>
@@ -17,11 +18,13 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
           <%= text_input f, :title, [class: "form-control"] %>
 
           <div class="input-group-append">
+          <%= with_locale(@user.locale, fn -> %>
             <%= submit gettext("Save Info"), class: "btn btn-primary" %>
+          <% end) %>
           </div>
 
           </div>
-        </form
+        </form>
       <% end %>
     <% else %>
       <h5 class=""><span class="badge badge-danger">Live!</span> <span class="badge badge-primary"><%= @channel.category.tag_name %></span> <%= @channel.title %> </h5>
@@ -30,32 +33,32 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
   end
 
   @impl true
-  def mount(_params, %{"streamer" => streamer, "user" => nil}, socket) do
-    if connected?(socket), do: Streams.subscribe_to(:channel, streamer.id)
-    channel = Streams.get_channel_for_user!(streamer)
+  def mount(_params, %{"channel_id" => channel_id, "user" => nil}, socket) do
+    if connected?(socket), do: Streams.subscribe_to(:channel, channel_id)
+    channel = Streams.get_channel!(channel_id)
 
     {:ok,
      socket
-     |> assign(:streamer, streamer)
+     |> assign(:channel, channel)
      |> assign(:user, nil)
      |> assign(:channel, channel)
      |> assign(:editing, false)
-     |> assign(:is_streamer, false)}
+     |> assign(:can_change, false)}
   end
 
   @impl true
-  def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
-    if connected?(socket), do: Streams.subscribe_to(:channel, streamer.id)
-    channel = Streams.get_channel_for_username!(streamer.username)
+  def mount(_params, %{"channel_id" => channel_id, "user" => user}, socket) do
+    if connected?(socket), do: Streams.subscribe_to(:channel, channel_id)
+    channel = Streams.get_channel!(channel_id)
 
     {:ok,
      socket
      |> assign_categories()
-     |> assign(:streamer, streamer)
+     |> assign(:channel, channel)
      |> assign(:user, user)
      |> assign(:channel, channel)
      |> assign(:changeset, Streams.change_channel(channel))
-     |> assign(:is_streamer, if(user.username == streamer.username, do: true, else: false))
+     |> assign(:can_change, Streams.can_change_channel?(channel, user))
      |> assign(:editing, false)}
   end
 
@@ -79,7 +82,7 @@ defmodule GlimeshWeb.UserLive.Components.StreamerTitle do
   end
 
   @impl true
-  def handle_info({:update_channel, data}, socket) do
+  def handle_info({:channel, data}, socket) do
     {:noreply, assign(socket, channel: data)}
   end
 

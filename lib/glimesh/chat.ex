@@ -5,9 +5,11 @@ defmodule Glimesh.Chat do
 
   import Ecto.Query, warn: false
 
+  alias Glimesh.Accounts.User
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Repo
   alias Glimesh.Streams
+  alias Glimesh.Streams.Channel
   alias Phoenix.HTML.Link
   alias Phoenix.HTML.Tag
 
@@ -20,14 +22,14 @@ defmodule Glimesh.Chat do
       [%ChatMessage{}, ...]
 
   """
-  def list_chat_messages(streamer) do
+  def list_chat_messages(channel) do
     Repo.all(
       from m in ChatMessage,
-        where: m.is_visible == true and m.streamer_id == ^streamer.id,
+        where: m.is_visible == true and m.channel_id == ^channel.id,
         order_by: [desc: :inserted_at],
         limit: 50
     )
-    |> Repo.preload([:user, :streamer])
+    |> Repo.preload([:user, :channel])
     |> Enum.reverse()
   end
 
@@ -40,16 +42,16 @@ defmodule Glimesh.Chat do
       [%ChatMessage{}, ...]
 
   """
-  def list_chat_user_messages(streamer, user) do
+  def list_chat_user_messages(channel, user) do
     Repo.all(
       from m in ChatMessage,
         where:
           m.is_visible == true and
-            m.streamer_id == ^streamer.id and
+            m.channel_id == ^channel.id and
             m.user_id == ^user.id,
         order_by: [desc: :inserted_at]
     )
-    |> Repo.preload([:user, :streamer])
+    |> Repo.preload([:user, :channel])
     |> Enum.reverse()
   end
 
@@ -67,7 +69,7 @@ defmodule Glimesh.Chat do
       ** (Ecto.NoResultsError)
 
   """
-  def get_chat_message!(id), do: Repo.get!(ChatMessage, id) |> Repo.preload([:user, :streamer])
+  def get_chat_message!(id), do: Repo.get!(ChatMessage, id) |> Repo.preload([:user, :channel])
 
   @doc """
   Creates a chat_message.
@@ -81,7 +83,7 @@ defmodule Glimesh.Chat do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_chat_message(streamer, user, attrs \\ %{}) do
+  def create_chat_message(%Channel{} = channel, user, attrs \\ %{}) do
     username = user.username
 
     case :ets.lookup(:banned_list, username) do
@@ -90,12 +92,12 @@ defmodule Glimesh.Chat do
     end
 
     %ChatMessage{
-      streamer: streamer,
+      channel: channel,
       user: user
     }
     |> ChatMessage.changeset(attrs)
     |> Repo.insert()
-    |> broadcast(:chat_sent)
+    |> broadcast(:chat_message)
   end
 
   @doc """
@@ -146,12 +148,12 @@ defmodule Glimesh.Chat do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_chat_messages_for_user(streamer, user) do
+  def delete_chat_messages_for_user(%Channel{} = channel, %User{} = user) do
     query =
       from m in ChatMessage,
         where:
           m.is_visible == true and
-            m.streamer_id == ^streamer.id and
+            m.channel_id == ^channel.id and
             m.user_id == ^user.id
 
     Repo.update_all(query, set: [is_visible: false])
@@ -174,15 +176,24 @@ defmodule Glimesh.Chat do
     ChatMessage.changeset(%ChatMessage{}, %{})
   end
 
-  alias Glimesh.Streams.UserModerator
+  alias Glimesh.Streams.ChannelModerator
   def can_moderate?(nil, nil), do: false
-  def can_moderate?(_streamer, nil), do: false
+  def can_moderate?(_channel, nil), do: false
 
-  def can_moderate?(streamer, user) do
+  def can_moderate?(channel, user) do
     user.is_admin ||
       Repo.exists?(
-        from m in UserModerator, where: m.streamer_id == ^streamer.id and m.user_id == ^user.id
+        from m in ChannelModerator, where: m.channel_id == ^channel.id and m.user_id == ^user.id
       )
+  end
+
+  def can_create_chat_message?(%Channel{} = _, %User{} = user) do
+    username = user.username
+
+    case :ets.lookup(:banned_list, username) do
+      [{^username, _}] -> false
+      [] -> true
+    end
   end
 
   def render_global_badge(user) do
@@ -209,8 +220,8 @@ defmodule Glimesh.Chat do
     username = user.username
 
     !(username == chat_message.user.username) &&
-      (String.match?(chat_message.message, ~r/#{username}/i) ||
-         String.match?(chat_message.message, ~r/#{"@" <> username}/i))
+      (String.match?(chat_message.message, ~r/\b#{username}\b/i) ||
+         String.match?(chat_message.message, ~r/\b#{"@" <> username}\b/i))
   end
 
   def hyperlink_message(chat_message) do
@@ -236,12 +247,11 @@ defmodule Glimesh.Chat do
   defp broadcast({:error, _reason} = error, _event), do: error
 
   defp broadcast({:ok, chat_message}, event) do
-    streamer_id = chat_message.streamer.id
-
-    Phoenix.PubSub.broadcast(
-      Glimesh.PubSub,
-      Streams.get_subscribe_topic(:chat, streamer_id),
-      {event, chat_message}
+    Glimesh.Events.broadcast(
+      Streams.get_subscribe_topic(:chat, chat_message.channel_id),
+      Streams.get_subscribe_topic(:chat),
+      event,
+      chat_message
     )
 
     {:ok, chat_message}

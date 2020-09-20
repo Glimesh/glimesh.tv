@@ -7,13 +7,22 @@ defmodule Glimesh.Schema do
 
   alias Glimesh.Repo
 
-  import_types(Glimesh.Schema.DataTypes)
-  import_types(Glimesh.Schema.AccountsTypes)
-  import_types(Glimesh.Schema.StreamsTypes)
+  import_types(Absinthe.Type.Custom)
+
+  import_types(Glimesh.Schema.AccountTypes)
+  import_types(Glimesh.Schema.ChannelTypes)
 
   query do
     import_fields(:accounts_queries)
     import_fields(:streams_queries)
+  end
+
+  mutation do
+    import_fields(:streams_mutations)
+  end
+
+  subscription do
+    import_fields(:streams_subscriptions)
   end
 
   def context(ctx) do

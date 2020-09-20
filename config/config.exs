@@ -33,7 +33,19 @@ config :glimesh, GlimeshWeb.Emails.Mailer,
 
 config :glimesh, GlimeshWeb.Gettext,
   default_locale: "en",
-  locales: ~w(en es ja de nb es_MX es_AR fr sv vi ru)
+  locales: ~w(en es ja de nb es_MX es_AR fr sv vi ru ko it)
+
+config :ex_oauth2_provider, namespace: Glimesh
+config :ex_oauth2_provider, ExOauth2Provider,
+  repo: Glimesh.Repo,
+  resource_owner: Glimesh.Accounts.User,
+  use_refresh_token: true,
+  revoke_refresh_token_on_use: true,
+  default_scopes: ~w(public),
+  optional_scopes: ~w(email chat streamkey),
+  authorization_code_expires_in: 600,
+  access_token_expires_in: 21600,
+  grant_flows: ~w(authorization_code client_credentials implicit_grant)
 
 # Configures Elixir's Logger
 config :logger, :console,
