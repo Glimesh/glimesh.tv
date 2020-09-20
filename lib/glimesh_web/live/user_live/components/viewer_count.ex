@@ -12,8 +12,8 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCount do
   end
 
   @impl true
-  def mount(_params, %{"streamer_id" => streamer_id}, socket) do
-    {:ok, topic} = Streams.subscribe_to(:viewers, streamer_id)
+  def mount(_params, %{"channel_id" => channel_id}, socket) do
+    {:ok, topic} = Streams.subscribe_to(:viewers, channel_id)
 
     viewer_count = Presence.list_presences(topic) |> Enum.count()
 

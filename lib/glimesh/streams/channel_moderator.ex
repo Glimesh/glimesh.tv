@@ -1,13 +1,14 @@
-defmodule Glimesh.Streams.UserModerator do
+defmodule Glimesh.Streams.ChannelModerator do
   @moduledoc false
 
   use Ecto.Schema
   import Ecto.Changeset
 
   alias Glimesh.Accounts.User
+  alias Glimesh.Streams.Channel
 
-  schema "user_moderators" do
-    belongs_to :streamer, User
+  schema "channel_moderators" do
+    belongs_to :channel, Channel
     belongs_to :user, User
     field :can_short_timeout, :boolean
     field :can_long_timeout, :boolean
@@ -19,8 +20,8 @@ defmodule Glimesh.Streams.UserModerator do
   end
 
   @doc false
-  def changeset(user_moderator, attrs) do
-    user_moderator
+  def changeset(channel_moderator, attrs) do
+    channel_moderator
     |> cast(attrs, [
       :can_short_timeout,
       :can_long_timeout,
@@ -28,7 +29,7 @@ defmodule Glimesh.Streams.UserModerator do
       :can_ban,
       :can_unban
     ])
-    |> validate_required([:streamer, :user])
-    |> unique_constraint([:streamer_id, :user_id])
+    |> validate_required([:channel, :user])
+    |> unique_constraint([:channel_id, :user_id])
   end
 end

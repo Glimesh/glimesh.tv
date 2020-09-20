@@ -9,45 +9,45 @@ defmodule Glimesh.StreamsTest do
   describe "timeout_user/3" do
     setup do
       %{
-        streamer: streamer_fixture(),
+        channel: channel_fixture(),
         moderator: user_fixture(),
         user: user_fixture()
       }
     end
 
     test "times out a user and removes messages successfully", %{
-      streamer: streamer,
+      channel: channel,
       moderator: moderator,
       user: user
     } do
-      {:ok, _} = Chat.create_chat_message(streamer, user, %{message: "bad message"})
-      {:ok, _} = Chat.create_chat_message(streamer, moderator, %{message: "good message"})
-      assert length(Chat.list_chat_messages(streamer)) == 2
+      {:ok, _} = Chat.create_chat_message(channel, user, %{message: "bad message"})
+      {:ok, _} = Chat.create_chat_message(channel, moderator, %{message: "good message"})
+      assert length(Chat.list_chat_messages(channel)) == 2
 
-      {:ok, _} = Glimesh.Streams.add_moderator(streamer, moderator)
+      {:ok, _} = Glimesh.Streams.add_moderator(channel, moderator)
 
-      {:ok, _} = Streams.timeout_user(streamer, moderator, user)
-      assert length(Chat.list_chat_messages(streamer)) == 1
+      {:ok, _} = Streams.timeout_user(channel, moderator, user)
+      assert length(Chat.list_chat_messages(channel)) == 1
     end
 
-    test "adds log of timeout action", %{streamer: streamer, moderator: moderator, user: user} do
-      {:ok, _} = Glimesh.Streams.add_moderator(streamer, moderator)
-      {:ok, record} = Streams.timeout_user(streamer, moderator, user)
+    test "adds log of timeout action", %{channel: channel, moderator: moderator, user: user} do
+      {:ok, _} = Glimesh.Streams.add_moderator(channel, moderator)
+      {:ok, record} = Streams.timeout_user(channel, moderator, user)
 
-      assert record.streamer.id == streamer.id
+      assert record.channel.id == channel.id
       assert record.moderator.id == moderator.id
       assert record.user.id == user.id
       assert record.action == "timeout"
     end
 
     test "moderation privileges are required to timeout", %{
-      streamer: streamer,
+      channel: channel,
       moderator: moderator,
       user: user
     } do
       assert_raise RuntimeError,
                    "User does not have permission to moderate.",
-                   fn -> Streams.timeout_user(streamer, moderator, user) end
+                   fn -> Streams.timeout_user(channel, moderator, user) end
     end
   end
 
