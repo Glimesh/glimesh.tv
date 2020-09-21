@@ -92,7 +92,15 @@ defmodule Glimesh.Chat do
       [] -> true
     end
 
-    create_message = case message_contains_link(attrs["message"]) do
+    #Need to add this since phoenix likes strings and our tests don't use them :)
+    message_contain_link_helper = if attrs["message"] do
+      message_contains_link(attrs["message"])
+    else
+      if attrs.message, do: message_contains_link(attrs.message), else: [true]
+    end
+
+
+    create_message = case message_contain_link_helper do
       [true] ->
         if channel.block_links, do: false, else: true
       _ -> true

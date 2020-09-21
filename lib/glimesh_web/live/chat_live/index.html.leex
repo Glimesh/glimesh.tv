@@ -21,7 +21,7 @@
                                 width="20" height="20" class="img-chat-avatar" />
                             <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white", target: "_blank" %>:
                             <br>
-                            <%= unless @channel.disable_hyperlinks, do: Glimesh.Chat.hyperlink_message(chat_message.message), else: chat_message.message %>
+                            <%= unless @channel.disable_hyperlinks || @channel.block_links, do: Glimesh.Chat.hyperlink_message(chat_message.message), else: chat_message.message %>
                         </div>
                         <% end %>
                     </div>
