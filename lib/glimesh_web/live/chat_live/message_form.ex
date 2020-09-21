@@ -4,6 +4,7 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   alias Glimesh.Chat
   alias Glimesh.Presence
   alias Glimesh.Streams
+  alias Glimesh.Accounts
 
   @impl true
   def update(%{chat_message: chat_message, user: user} = assigns, socket) do

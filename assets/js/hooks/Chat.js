@@ -71,15 +71,39 @@ export default {
             pritty.innerHTML = value;
         });
 
+        const chatWindow = document.getElementById("chat-column");
+        const chatFooter = chatWindow.querySelector(".chat-footer");
+        const chatScroll = chatWindow.querySelector(".chat-conversation-box");
+        const videoWindow = document.getElementById("video-column").children[0];
+        let scrollY = 0;
+        let chatScrollY = 0;
+        let chatScrollSize = 0;
+        let chatScrollHeight = 0;
+        let text = "";
+        let chatFooterHeight = 0;
+
+        chatScroll.addEventListener('scroll', (e) => {
+            chatScrollY = e.target.scrollTop;
+            chatScrollSize = e.target.scrollHeight;
+        });
+
         pritty.oninput = (event) => {
             twemoji.replace(event.target.innerHTML, (match) => pritty.innerHTML.replace(match, twemoji.parse(match)));
-            chat.value = unparse(event.target.innerHTML);
+            text = unparse(event.target.innerHTML);
+        
+            if (chatFooterHeight !== chatFooter.clientHeight){ 
+                chatScrollHeight = videoWindow.clientHeight - chatFooter.clientHeight;
+                chatScroll.style.height = `${chatScrollHeight}px`;
+                chatFooterHeight = chatFooter.clientHeight;
+            }
+            window.scroll(0, scrollY);
         }
 
         const form = document.getElementById('chat_message-form');
 
         pritty.addEventListener('keydown', (e) => {
             if(e.key == "Enter"){
+                chat.value = text;
                 var view = window.liveSocket.getViewByEl(document.getElementById("chat"))
                 view.submitForm(form, form, "send");
                 e.preventDefault();
@@ -103,17 +127,22 @@ export default {
         const targetNode = document.getElementById("chat-messages")
         const config = { childList: true }
         const modifyFunction = function(addedNodes, target){
-            console.log(target)
             for(const node of addedNodes){
                 if(!isNaN(node.id)){
-                    const message = Array.from(target.querySelectorAll(`.chat-message`)).find(t => t.parentElement.id == node.id);
-                    message.innerHTML = twemoji.parse(message.innerHTML, function(iconId, options) {
-                        return 'https://twemoji.maxcdn.com/v/13.0.0/svg/' + iconId + '.svg';
-                    });
+                    const message = Array.from(target.querySelector(`.chat-message`)).find(t => t.parentElement.id == node.id);
+                    if(message !== undefined){
+                        message.innerHTML = twemoji.parse(message.innerHTML, function(iconId, options) {
+                            return 'https://twemoji.maxcdn.com/v/13.0.0/svg/' + iconId + '.svg';
+                        });
+                    }
                 }
             }
+            if (chatScrollSize - chatScrollHeight - chatScrollY < 10) {
+                chatScroll.scroll(0, chatScroll.scrollHeight);
+            }
+            chatScrollSize = chatScroll.scrollHeight;
         }
-        const mutationCallback = function(mutationsList, _){
+        const mutationCallback = function(mutationsList, e){
             for(const mutation of mutationsList){
                 modifyFunction(mutation.addedNodes, mutation.target);
             }
@@ -121,5 +150,30 @@ export default {
         const observer = new MutationObserver(mutationCallback);
         observer.observe(targetNode, config);
         modifyFunction(Array.from(targetNode.childNodes).filter(t => t.nodeType === 1 && t.classList.contains("bubble")), targetNode);
+
+        window.addEventListener('resize', () => {
+            const height = videoWindow.clientHeight;
+            chatWindow.style.height = `${height + 30}px`;
+            chatScrollHeight = height - chatFooter.clientHeight;
+            chatScroll.style.height = `${chatScrollHeight}px`;
+            if (chatFooterHeight !== chatFooter.clientHeight){ 
+                chatFooterHeight = chatFooter.clientHeight;
+            }
+        });
+
+        window.addEventListener('scroll', (e) => {
+            scrollY = window.scrollY;
+        });
+
+        window.dispatchEvent(new Event('resize'));
+
+        window.setInterval(() => {
+            const messageList = Array.from(chatScroll.querySelectorAll(".bubble"));
+            if(messageList.length > 200){
+                for(const node of messageList.slice(0, messageList.length - 200)){
+                    node.remove();
+                }
+            }
+        }, 1000);
     }
 };
