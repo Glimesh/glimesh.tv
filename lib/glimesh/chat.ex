@@ -115,15 +115,7 @@ defmodule Glimesh.Chat do
       |> Repo.insert()
       |> broadcast(:chat_message)
     else
-      {:error, %Ecto.Changeset{
-        action: :validate,
-        changes: %{message: attrs["message"]},
-        errors: [
-          message: {gettext("can't have link"), [validation: :required]}
-        ],
-        data: %Glimesh.Chat.ChatMessage{},
-        valid?: false
-        }}
+      throw_error_on_chat(gettext("This channel has links disabled!"), attrs)
     end
   end
 
@@ -305,4 +297,16 @@ defmodule Glimesh.Chat do
   defp flatten_list([head | tail]), do: flatten_list(head) ++ flatten_list(tail)
   defp flatten_list([]), do: []
   defp flatten_list(element), do: [element]
+
+  def throw_error_on_chat(error_message, attrs) do
+    {:error, %Ecto.Changeset{
+        action: :validate,
+        changes: %{message: attrs["message"]},
+        errors: [
+          message: {error_message, [validation: :required]}
+        ],
+        data: %Glimesh.Chat.ChatMessage{},
+        valid?: false
+      }}
+  end
 end
