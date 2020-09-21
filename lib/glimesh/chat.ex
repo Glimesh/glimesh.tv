@@ -4,6 +4,7 @@ defmodule Glimesh.Chat do
   """
 
   import Ecto.Query, warn: false
+  import GlimeshWeb.Gettext
 
   alias Glimesh.Accounts.User
   alias Glimesh.Chat.ChatMessage
@@ -91,13 +92,31 @@ defmodule Glimesh.Chat do
       [] -> true
     end
 
-    %ChatMessage{
-      channel: channel,
-      user: user
-    }
-    |> ChatMessage.changeset(attrs)
-    |> Repo.insert()
-    |> broadcast(:chat_message)
+    create_message = case message_contains_link(attrs["message"]) do
+      [true] ->
+        if channel.block_links, do: false, else: true
+      _ -> true
+    end
+
+    if create_message do
+      %ChatMessage{
+        channel: channel,
+        user: user
+      }
+      |> ChatMessage.changeset(attrs)
+      |> Repo.insert()
+      |> broadcast(:chat_message)
+    else
+      {:error, %Ecto.Changeset{
+        action: :validate,
+        changes: %{message: attrs["message"]},
+        errors: [
+          message: {gettext("can't have link"), [validation: :required]}
+        ],
+        data: %Glimesh.Chat.ChatMessage{},
+        valid?: false
+        }}
+    end
   end
 
   @doc """
@@ -241,6 +260,23 @@ defmodule Glimesh.Chat do
         end
       else
         message <> " "
+      end
+    end
+  end
+
+  def message_contains_link(chat_message) do
+    regex_string = ~r/ (?:(?:https?|ftp)
+                        :\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))
+                        ?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?
+                      /xi
+
+    found_uris = flatten_list(Regex.scan(regex_string, chat_message))
+
+    for message <- found_uris do
+      case URI.parse(message).scheme do
+        "https" -> true
+        "http" -> true
+        _ -> false
       end
     end
   end
