@@ -11,7 +11,7 @@ defmodule GlimeshWeb.UserLive.Stream do
         # Keep track of viewers using their socket ID, but later we'll keep track of chatters by their user
         Presence.track_presence(
           self(),
-          Streams.get_subscribe_topic(:viewers, channel.user.id),
+          Streams.get_subscribe_topic(:viewers, channel.id),
           socket.id,
           %{}
         )
