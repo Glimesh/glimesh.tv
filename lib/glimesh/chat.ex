@@ -14,6 +14,11 @@ defmodule Glimesh.Chat do
   alias Phoenix.HTML.Link
   alias Phoenix.HTML.Tag
 
+  @hyperlink_regex ~r/ (?:(?:https?|ftp)
+                        :\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))
+                        ?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?
+                      /xi
+
   @doc """
   Returns the list of chat_messages.
 
@@ -92,19 +97,22 @@ defmodule Glimesh.Chat do
       [] -> true
     end
 
-    #Need to add this since phoenix likes strings and our tests don't use them :)
-    message_contain_link_helper = if attrs["message"] do
-      message_contains_link(attrs["message"])
-    else
-      if attrs.message, do: message_contains_link(attrs.message), else: [true]
-    end
+    # Need to add this since phoenix likes strings and our tests don't use them :)
+    message_contain_link_helper =
+      if attrs["message"] do
+        message_contains_link(attrs["message"])
+      else
+        if attrs.message, do: message_contains_link(attrs.message), else: [true]
+      end
 
+    create_message =
+      case message_contain_link_helper do
+        [true] ->
+          if channel.block_links, do: false, else: true
 
-    create_message = case message_contain_link_helper do
-      [true] ->
-        if channel.block_links, do: false, else: true
-      _ -> true
-    end
+        _ ->
+          true
+      end
 
     if create_message do
       %ChatMessage{
@@ -244,12 +252,7 @@ defmodule Glimesh.Chat do
   end
 
   def hyperlink_message(chat_message) do
-    regex_string = ~r/ (?:(?:https?|ftp)
-                        :\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))
-                        ?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?
-                      /xi
-
-    found_uris = flatten_list(Regex.scan(regex_string, chat_message))
+    found_uris = flatten_list(Regex.scan(@hyperlink_regex, chat_message))
 
     for message <- String.split(chat_message) do
       if Enum.member?(found_uris, message) do
@@ -265,12 +268,7 @@ defmodule Glimesh.Chat do
   end
 
   def message_contains_link(chat_message) do
-    regex_string = ~r/ (?:(?:https?|ftp)
-                        :\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))
-                        ?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?
-                      /xi
-
-    found_uris = flatten_list(Regex.scan(regex_string, chat_message))
+    found_uris = flatten_list(Regex.scan(@hyperlink_regex, chat_message))
 
     for message <- found_uris do
       case URI.parse(message).scheme do
@@ -299,14 +297,15 @@ defmodule Glimesh.Chat do
   defp flatten_list(element), do: [element]
 
   def throw_error_on_chat(error_message, attrs) do
-    {:error, %Ecto.Changeset{
-        action: :validate,
-        changes: %{message: attrs["message"]},
-        errors: [
-          message: {error_message, [validation: :required]}
-        ],
-        data: %Glimesh.Chat.ChatMessage{},
-        valid?: false
-      }}
+    {:error,
+     %Ecto.Changeset{
+       action: :validate,
+       changes: %{message: attrs["message"]},
+       errors: [
+         message: {error_message, [validation: :required]}
+       ],
+       data: %Glimesh.Chat.ChatMessage{},
+       valid?: false
+     }}
   end
 end
