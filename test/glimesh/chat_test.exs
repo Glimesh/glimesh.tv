@@ -3,12 +3,14 @@ defmodule Glimesh.ChatTest do
 
   import Glimesh.AccountsFixtures
   alias Glimesh.Chat
+  alias Glimesh.Streams
 
   describe "chat_messages" do
     alias Glimesh.Chat.ChatMessage
 
     @valid_attrs %{message: "some message"}
     @update_attrs %{message: "some updated message"}
+    @link_containing_attrs %{message: "https://glimesh.tv is cool"}
     @invalid_attrs %{message: nil}
 
     def chat_message_fixture(attrs \\ %{}) do
@@ -39,9 +41,32 @@ defmodule Glimesh.ChatTest do
       assert chat_message.message == "some message"
     end
 
+    test "create_chat_message/1 with valid data when the channel has links blocked creates a chat_message" do
+      channel = channel_fixture()
+      {:ok, channel} = Streams.update_channel(channel, %{block_links: true})
+      assert {:ok, %ChatMessage{} = chat_message} =
+               Chat.create_chat_message(channel_fixture(), user_fixture(), @valid_attrs)
+
+      assert chat_message.message == "some message"
+    end
+
     test "create_chat_message/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} =
                Chat.create_chat_message(channel_fixture(), user_fixture(), @invalid_attrs)
+    end
+
+    test "create_chat_message/1 with a link when channel has links blocked returns error changeset" do
+      channel = channel_fixture()
+      {:ok, channel} = Streams.update_channel(channel, %{block_links: true})
+      assert {:error, %Ecto.Changeset{}} =
+               Chat.create_chat_message(channel, user_fixture(), @link_containing_attrs)
+    end
+
+    test "create_chat_message/1 with a link when channel allows links returns a chat_message" do
+      assert {:ok, %ChatMessage{} = chat_message} =
+              Chat.create_chat_message(channel_fixture(), user_fixture(), @link_containing_attrs)
+
+      assert chat_message.message == @link_containing_attrs.message
     end
 
     test "update_chat_message/2 with valid data updates the chat_message" do
