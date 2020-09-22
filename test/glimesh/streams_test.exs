@@ -6,19 +6,21 @@ defmodule Glimesh.StreamsTest do
   alias Glimesh.Chat
   alias Glimesh.Streams
 
-  describe "timeout_user/3" do
+  describe "timeout_user/4" do
     setup do
       %{
         channel: channel_fixture(),
         moderator: user_fixture(),
-        user: user_fixture()
+        user: user_fixture(),
+        time: Time.new(0,5,0)
       }
     end
 
     test "times out a user and removes messages successfully", %{
       channel: channel,
       moderator: moderator,
-      user: user
+      user: user,
+      time: time
     } do
       {:ok, _} = Chat.create_chat_message(channel, user, %{message: "bad message"})
       {:ok, _} = Chat.create_chat_message(channel, moderator, %{message: "good message"})
@@ -26,13 +28,13 @@ defmodule Glimesh.StreamsTest do
 
       {:ok, _} = Glimesh.Streams.add_moderator(channel, moderator)
 
-      {:ok, _} = Streams.timeout_user(channel, moderator, user)
+      {:ok, _} = Streams.timeout_user(channel, moderator, user, time)
       assert length(Chat.list_chat_messages(channel)) == 1
     end
 
-    test "adds log of timeout action", %{channel: channel, moderator: moderator, user: user} do
+    test "adds log of timeout action", %{channel: channel, moderator: moderator, user: user, time: time} do
       {:ok, _} = Glimesh.Streams.add_moderator(channel, moderator)
-      {:ok, record} = Streams.timeout_user(channel, moderator, user)
+      {:ok, record} = Streams.timeout_user(channel, moderator, user, time)
 
       assert record.channel.id == channel.id
       assert record.moderator.id == moderator.id
@@ -43,11 +45,12 @@ defmodule Glimesh.StreamsTest do
     test "moderation privileges are required to timeout", %{
       channel: channel,
       moderator: moderator,
-      user: user
+      user: user,
+      time: time
     } do
       assert_raise RuntimeError,
                    "User does not have permission to moderate.",
-                   fn -> Streams.timeout_user(channel, moderator, user) end
+                   fn -> Streams.timeout_user(channel, moderator, user, time) end
     end
   end
 

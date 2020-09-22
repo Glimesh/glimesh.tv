@@ -44,21 +44,6 @@ defmodule Glimesh.ChatTest do
                Chat.create_chat_message(channel_fixture(), user_fixture(), @invalid_attrs)
     end
 
-    test "update_chat_message/2 with valid data updates the chat_message" do
-      chat_message = chat_message_fixture()
-
-      assert {:ok, %ChatMessage{} = chat_message} =
-               Chat.update_chat_message(chat_message, @update_attrs)
-
-      assert chat_message.message == "some updated message"
-    end
-
-    test "update_chat_message/2 with invalid data returns error changeset" do
-      chat_message = chat_message_fixture()
-      assert {:error, %Ecto.Changeset{}} = Chat.update_chat_message(chat_message, @invalid_attrs)
-      assert chat_message.id == Chat.get_chat_message!(chat_message.id).id
-    end
-
     #    test "delete_chat_message/1 deletes the chat_message" do
     #      chat_message = chat_message_fixture()
     #      assert {:ok, %ChatMessage{}} = Chat.delete_chat_message(chat_message)
