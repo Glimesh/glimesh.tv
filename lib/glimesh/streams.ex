@@ -214,7 +214,7 @@ defmodule Glimesh.Streams do
       |> ChannelModerationLog.changeset(%{action: "timeout"})
       |> Repo.insert()
 
-    :ets.insert(:timedout_list, {user_to_timeout.username, {streamer.id, time}})
+    :ets.insert(:timedout_list, {user_to_timeout.username, {channel.id, time}})
 
     Chat.delete_chat_messages_for_user(channel, user_to_timeout)
 
