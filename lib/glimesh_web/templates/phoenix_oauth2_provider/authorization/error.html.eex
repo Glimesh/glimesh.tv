@@ -1,5 +1,0 @@
-<h1>An error has occurred</h1>
-
-<div>
-  <p><%= @error[:error_description] %></p>
-</div>
