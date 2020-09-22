@@ -50,7 +50,7 @@ defmodule GlimeshWeb.Router do
 
     forward "/", Absinthe.Plug.GraphiQL,
       schema: Glimesh.Schema,
-      socket: GlimeshWeb.UserSocket,
+      socket: GlimeshWeb.ApiSocket,
       default_url: {__MODULE__, :graphiql_default_url},
       socket_url: {__MODULE__, :graphiql_socket_url}
   end
@@ -165,7 +165,7 @@ defmodule GlimeshWeb.Router do
   end
 
   def graphiql_socket_url(conn) do
-    (Routes.url(conn) <> "/socket")
+    (Routes.url(conn) <> "/api/socket")
     |> String.replace("http", "ws")
     |> String.replace("https", "wss")
   end
