@@ -11,6 +11,7 @@
     <i class="far fa-smile-beam emoji-activator"></i>
     <%= text_input f, :message, class: ["mail-write-box form-control"], autocomplete: "off", disabled: @disabled, style: "display:none;" %>
     <div id="chat_message_pritty" contenteditable="<%= !@disabled %>"></div>
+    <i class="fas fa-external-link-alt pop-out"></i>
     <%= error_tag f, :message %>
   </form>
 </div>

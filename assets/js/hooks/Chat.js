@@ -50,6 +50,18 @@ export default {
         });
 
         const trigger = document.querySelector('.emoji-activator');
+        const popout = document.querySelector('#chat_message-form > .pop-out');
+
+        if(window.location.href.split("/").length > 4){
+            popout.remove();
+        }
+        else{
+            popout.style.display = "block";
+            popout.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.open(window.location.href + "/chat", "_blank", "location=no,menubar=no,toolbar=no");
+            });
+        }
 
         trigger.addEventListener('click', () => picker.togglePicker(trigger));
 

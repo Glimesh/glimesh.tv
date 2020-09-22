@@ -153,5 +153,6 @@ defmodule GlimeshWeb.Router do
     live "/:username", UserLive.Stream, :index
     live "/:username/profile", UserLive.Profile, :index
     live "/:username/profile/followers", UserLive.Followers, :index
+    live "/:username/chat", ChatLive.PopOut, :index
   end
 end
