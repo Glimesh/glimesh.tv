@@ -200,7 +200,7 @@ defmodule Glimesh.Streams do
     |> Repo.insert()
   end
 
-  def timeout_user(%Channel{} = channel, %User{} = moderator, user_to_timeout) do
+  def timeout_user(%Channel{} = channel, %User{} = moderator, user_to_timeout, time) do
     if Chat.can_moderate?(channel, moderator) === false do
       raise "User does not have permission to moderate."
     end
@@ -232,7 +232,7 @@ defmodule Glimesh.Streams do
       %ChannelModerationLog{
         channel: channel,
         moderator: moderator,
-        user: user_to_timeout
+        user: user_to_ban
       }
       |> ChannelModerationLog.changeset(%{action: "ban"})
       |> Repo.insert()

@@ -96,7 +96,7 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
       {:ok, _chat_message} ->
         Presence.update_presence(
           self(),
-          Streams.get_subscribe_topic(:chatters, streamer.id),
+          Streams.get_subscribe_topic(:chatters, channel.id),
           user.id,
           fn x ->
             %{x | size: x.size + 2}

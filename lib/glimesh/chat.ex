@@ -10,7 +10,7 @@ defmodule Glimesh.Chat do
   alias Glimesh.Repo
   alias Glimesh.Streams
   alias Glimesh.Streams.Channel
-  alias Glimesh.Streams.UserModerationLog
+  alias Glimesh.Streams.ChannelModerationLog
   alias Phoenix.HTML
   alias Phoenix.HTML.Link
   alias Phoenix.HTML.Tag
@@ -89,8 +89,8 @@ defmodule Glimesh.Chat do
     username = user.username
 
     case :ets.lookup(:banned_list, username) do
-      [{^username, {streamid, banned}}] ->
-        if streamid === streamer.id and banned do
+      [{^username, {channelid, banned}}] ->
+        if channelid === channel.id and banned do
           raise ArgumentError, message: "user must not be banned"
         else
           true
@@ -99,8 +99,8 @@ defmodule Glimesh.Chat do
     end
 
     case :ets.lookup(:timedout_list, username) do
-      [{^username, {streamid, time}}] ->
-        if streamid === streamer.id and DateTime.compare(DateTime.utc_now(), time) !== :gt do
+      [{^username, {channelid, time}}] ->
+        if channelid === channel.id and DateTime.compare(DateTime.utc_now(), time) !== :gt do
           raise ArgumentError, message: "user must not be timedout"
         else
           true
@@ -197,7 +197,7 @@ defmodule Glimesh.Chat do
       Repo.exists?(
         from m in ChannelModerator, where: m.channel_id == ^channel.id and m.user_id == ^user.id
       ) ||
-      streamer.id == user.id
+      channel.user.id == user.id
   end
 
   def can_create_chat_message?(%Channel{} = _, %User{} = user) do
@@ -217,11 +217,11 @@ defmodule Glimesh.Chat do
     end
   end
 
-  def render_stream_badge(stream, user) do
+  def render_stream_badge(channel, user) do
     cond do
-      stream.id === user.id and user.is_admin === false ->
+      channel.user.id === user.id and user.is_admin === false ->
         Tag.content_tag(:span, "Streamer", class: "badge badge-light")
-      can_moderate?(stream, user) and user.is_admin === false ->
+      can_moderate?(channel, user) and user.is_admin === false ->
         Tag.content_tag(:span, "Moderator", class: "badge badge-info")
       user.id === 0 ->
         Tag.content_tag(:span, "System", class: "badge badge-danger")
@@ -269,90 +269,90 @@ defmodule Glimesh.Chat do
   end
 
 
-  def timeout_user(streamer, moderator, user_to_timeout, time) do
-    if can_moderate?(streamer, moderator) === false do
+  def timeout_user(channel, moderator, user_to_timeout, time) do
+    if can_moderate?(channel, moderator) === false do
       raise "User does not have permission to moderate."
     end
 
     log =
-      %UserModerationLog{
-        streamer: streamer,
+      %ChannelModerationLog{
+        channel: channel,
         moderator: moderator,
         user: user_to_timeout
       }
-      |> UserModerationLog.changeset(%{action: "timeout"})
+      |> ChannelModerationLog.changeset(%{action: "timeout"})
       |> Repo.insert()
 
-    :ets.insert(:timedout_list, {user_to_timeout.username, {streamer.id, time}})
+    :ets.insert(:timedout_list, {user_to_timeout.username, {channel.id, time}})
 
-    delete_chat_messages_for_user(streamer, user_to_timeout)
+    delete_chat_messages_for_user(channel, user_to_timeout)
 
-    broadcast({:ok, %{streamer: streamer, user: user_to_timeout, moderator: moderator}}, :user_timedout)
+    broadcast({:ok, %{channel: channel, user: user_to_timeout, moderator: moderator}}, :user_timedout)
 
     log
   end
 
-  def ban_user(streamer, moderator, user_to_ban) do
-    if can_moderate?(streamer, moderator) === false do
+  def ban_user(channel, moderator, user_to_ban) do
+    if can_moderate?(channel, moderator) === false do
       raise "User does not have permission to moderate."
     end
 
     log =
-      %UserModerationLog{
-        streamer: streamer,
+      %ChannelModerationLog{
+        channel: channel,
         moderator: moderator,
         user: user_to_ban
       }
-      |> UserModerationLog.changeset(%{action: "ban"})
+      |> ChannelModerationLog.changeset(%{action: "ban"})
       |> Repo.insert()
 
-    :ets.insert(:banned_list, {user_to_ban.username, {streamer.id, true}})
+    :ets.insert(:banned_list, {user_to_ban.username, {channel.id, true}})
 
-    delete_chat_messages_for_user(streamer, user_to_ban)
+    delete_chat_messages_for_user(channel, user_to_ban)
 
-    broadcast({:ok, %{streamer: streamer, user: user_to_ban, moderator: moderator}}, :user_banned)
+    broadcast({:ok, %{channel: channel, user: user_to_ban, moderator: moderator}}, :user_banned)
 
     log
   end
 
-  def unban_user(streamer, moderator, user_to_unban) do
-    if can_moderate?(streamer, moderator) === false do
+  def unban_user(channel, moderator, user_to_unban) do
+    if can_moderate?(channel, moderator) === false do
       raise "User does not have permission to moderate."
     end
 
     log =
-      %UserModerationLog{
-        streamer: streamer,
+      %ChannelModerationLog{
+        channel: channel,
         moderator: moderator,
         user: user_to_unban
       }
-      |> UserModerationLog.changeset(%{action: "unban"})
+      |> ChannelModerationLog.changeset(%{action: "unban"})
       |> Repo.insert()
 
     :ets.delete(:banned_list, user_to_unban.username)
 
-    broadcast({:ok, %{streamer: streamer, user: user_to_unban, moderator: moderator}}, :user_unbanned)
+    broadcast({:ok, %{channel: channel, user: user_to_unban, moderator: moderator}}, :user_unbanned)
 
     log
   end
 
-  def clear_chat(streamer, moderator) do
-    if can_moderate?(streamer, moderator) === false do
+  def clear_chat(channel, moderator) do
+    if can_moderate?(channel, moderator) === false do
       raise "User does not have permission to moderate."
     end
 
     log =
-      %UserModerationLog{
-        streamer: streamer,
+      %ChannelModerationLog{
+        channel: channel,
         moderator: moderator,
         user: moderator
       }
-      |> UserModerationLog.changeset(%{action: "clear_chat"})
+      |> ChannelModerationLog.changeset(%{action: "clear_chat"})
       |> Repo.insert()
 
-    delete_all_chat_messages(streamer)
+    delete_all_chat_messages(channel)
 
-    broadcast({:ok, %{streamer: streamer, moderator: moderator}}, :chat_cleared)
+    broadcast({:ok, %{channel: channel, moderator: moderator}}, :chat_cleared)
 
     log
   end
