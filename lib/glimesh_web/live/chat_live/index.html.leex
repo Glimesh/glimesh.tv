@@ -3,7 +3,7 @@
         <div class="chat-conversation-box">
             <div id="chat-conversation-box-scroll" class="chat-conversation-box-scroll">
                 <div id="chat-messages" class="chat" phx-update="<%= @update_action %>">
-                    <div class="conversation-start" id="shut-up-phoenix">
+                    <div class="conversation-start" id="phx-stop-getting-mad">
                         <span>Welcome to the chat! Follow the rules.</span>
                     </div>
                     <%= if @chat_clear === false do %>
@@ -14,7 +14,7 @@
                                     <i class="fas fa-clock" phx-click="timeout_user" phx-value-user="<%= chat_message.user.username %>"></i>
                                 <% end %>
                                 <%= Glimesh.Chat.render_global_badge(chat_message.user) %>
-                                <%= Glimesh.Chat.render_stream_badge(@streamer, chat_message.user) %>
+                                <%= Glimesh.Chat.render_stream_badge(@channel, chat_message.user) %>
                                 <%= if chat_message.user.id !== 0 do %>
                                     <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>" width="20" height="20" class="img-chat-avatar" />
                                     <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white" %>:

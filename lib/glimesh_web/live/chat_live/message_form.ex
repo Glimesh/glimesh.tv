@@ -87,12 +87,12 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
         |> put_flash(:info, "Command recived")
         |> assign(:changeset, Chat.empty_chat_message())}
     else
-      save_chat_message(socket, socket.assigns.streamer, socket.assigns.user, chat_message_params)
+      save_chat_message(socket, socket.assigns.channel, socket.assigns.user, chat_message_params)
     end
   end
 
-  defp save_chat_message(socket, streamer, user, chat_message_params) do
-    case Chat.create_chat_message(streamer, user, chat_message_params) do
+  defp save_chat_message(socket, channel, user, chat_message_params) do
+    case Chat.create_chat_message(channel, user, chat_message_params) do
       {:ok, _chat_message} ->
         Presence.update_presence(
           self(),

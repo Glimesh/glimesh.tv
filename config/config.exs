@@ -36,6 +36,7 @@ config :glimesh, GlimeshWeb.Gettext,
   locales: ~w(en es ja de nb es_MX es_AR fr sv vi ru ko it)
 
 config :ex_oauth2_provider, namespace: Glimesh
+
 config :ex_oauth2_provider, ExOauth2Provider,
   repo: Glimesh.Repo,
   resource_owner: Glimesh.Accounts.User,

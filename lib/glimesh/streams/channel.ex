@@ -18,6 +18,9 @@ defmodule Glimesh.Streams.Channel do
 
     field :chat_rules_md, :string
     field :chat_rules_html, :string
+
+    has_many :chat_messages, Glimesh.Chat.ChatMessage
+
     timestamps()
   end
 

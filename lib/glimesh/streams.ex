@@ -9,37 +9,42 @@ defmodule Glimesh.Streams do
   alias Glimesh.Repo
   alias Glimesh.Streams.Category
   alias Glimesh.Streams.Channel
+  alias Glimesh.Streams.ChannelModerationLog
+  alias Glimesh.Streams.ChannelModerator
   alias Glimesh.Streams.Followers
-  alias Glimesh.Streams.UserModerationLog
-  alias Glimesh.Streams.UserModerator
 
   ## Broadcasting Functions
 
-  def get_subscribe_topic(:channel, streamer_id), do: "streams:channel:#{streamer_id}"
-  def get_subscribe_topic(:chat, streamer_id), do: "streams:chat:#{streamer_id}"
-  def get_subscribe_topic(:chatters, streamer_id), do: "streams:chatters:#{streamer_id}"
-  def get_subscribe_topic(:viewers, streamer_id), do: "streams:viewers:#{streamer_id}"
+  def get_subscribe_topic(:channel), do: "streams:channel"
+  def get_subscribe_topic(:chat), do: "streams:chat"
+  def get_subscribe_topic(:chatters), do: "streams:chatters"
+  def get_subscribe_topic(:viewers), do: "streams:viewers"
+  def get_subscribe_topic(:channel, channel_id), do: "streams:channel:#{channel_id}"
+  def get_subscribe_topic(:chat, channel_id), do: "streams:chat:#{channel_id}"
+  def get_subscribe_topic(:chatters, channel_id), do: "streams:chatters:#{channel_id}"
+  def get_subscribe_topic(:viewers, channel_id), do: "streams:viewers:#{channel_id}"
 
-  def subscribe_to(topic_atom, streamer_id),
-    do: sub_and_return(get_subscribe_topic(topic_atom, streamer_id))
+  def subscribe_to(topic_atom, channel_id),
+    do: sub_and_return(get_subscribe_topic(topic_atom, channel_id))
 
   defp sub_and_return(topic), do: {Phoenix.PubSub.subscribe(Glimesh.PubSub, topic), topic}
 
   defp broadcast({:error, _reason} = error, _event), do: error
 
-  defp broadcast({:ok, data}, :update_channel = event) do
-    Phoenix.PubSub.broadcast(
-      Glimesh.PubSub,
-      get_subscribe_topic(:channel, data.user.id),
-      {event, data}
+  defp broadcast({:ok, %Channel{} = channel}, :channel = event) do
+    Glimesh.Events.broadcast(
+      get_subscribe_topic(:channel, channel.id),
+      get_subscribe_topic(:channel),
+      event,
+      channel
     )
 
-    {:ok, data}
+    {:ok, channel}
   end
 
   defp broadcast_chats({:error, _reason} = error, _event), do: error
 
-  defp broadcast_chats({:ok, data}, event, streamer) do
+  defp broadcast_chats({:ok, data}, event, %Channel{} = channel) do
     Phoenix.PubSub.broadcast(
       Glimesh.PubSub,
       get_subscribe_topic(:chat, streamer.id),
@@ -51,11 +56,12 @@ defmodule Glimesh.Streams do
 
   defp broadcast_timeout({:error, _reason} = error, _event), do: error
 
-  defp broadcast_timeout({:ok, streamer_id, bad_user}, :user_timedout) do
-    Phoenix.PubSub.broadcast(
-      Glimesh.PubSub,
-      get_subscribe_topic(:chat, streamer_id),
-      {:user_timedout, bad_user}
+  defp broadcast_timeout({:ok, channel_id, bad_user}, :user_timedout) do
+    Glimesh.Events.broadcast(
+      get_subscribe_topic(:chat, channel_id),
+      get_subscribe_topic(:chat),
+      :user_timedout,
+      bad_user
     )
 
     {:ok, bad_user}
@@ -141,7 +147,7 @@ defmodule Glimesh.Streams do
     |> Repo.insert()
   end
 
-  def delete_channel(channel) do
+  def delete_channel(%Channel{} = channel) do
     attrs = %{inaccessible: true}
 
     channel
@@ -156,12 +162,12 @@ defmodule Glimesh.Streams do
       |> Repo.update()
 
     case new_channel do
-      {:error, changeset} ->
+      {:error, _changeset} ->
         new_channel
 
       {:ok, changeset} ->
         broadcast_message = Repo.preload(changeset, :category, force: true)
-        broadcast({:ok, broadcast_message}, :update_channel)
+        broadcast({:ok, broadcast_message}, :channel)
     end
   end
 
@@ -169,14 +175,22 @@ defmodule Glimesh.Streams do
     Channel.changeset(channel, attrs)
   end
 
+  def can_change_channel?(_, nil) do
+    false
+  end
+
+  def can_change_channel?(%Channel{} = channel, user) do
+    user.is_admin || channel.user.id == user.id
+  end
+
   ## Moderation
 
-  def add_moderator(streamer, moderator) do
-    %UserModerator{
-      streamer: streamer,
+  def add_moderator(%Channel{} = channel, %User{} = moderator) do
+    %ChannelModerator{
+      channel: channel,
       user: moderator
     }
-    |> UserModerator.changeset(%{
+    |> ChannelModerator.changeset(%{
       :can_short_timeout => true,
       :can_long_timeout => true,
       :can_un_timeout => true,
@@ -186,48 +200,48 @@ defmodule Glimesh.Streams do
     |> Repo.insert()
   end
 
-  def timeout_user(streamer, moderator, user_to_timeout, time) do
-    if Chat.can_moderate?(streamer, moderator) === false do
+  def timeout_user(%Channel{} = channel, %User{} = moderator, user_to_timeout) do
+    if Chat.can_moderate?(channel, moderator) === false do
       raise "User does not have permission to moderate."
     end
 
     log =
-      %UserModerationLog{
-        streamer: streamer,
+      %ChannelModerationLog{
+        channel: channel,
         moderator: moderator,
         user: user_to_timeout
       }
-      |> UserModerationLog.changeset(%{action: "timeout"})
+      |> ChannelModerationLog.changeset(%{action: "timeout"})
       |> Repo.insert()
 
     :ets.insert(:timedout_list, {user_to_timeout.username, {streamer.id, time}})
 
-    Chat.delete_chat_messages_for_user(streamer, user_to_timeout)
+    Chat.delete_chat_messages_for_user(channel, user_to_timeout)
 
-    broadcast_timeout({:ok, streamer.id, user_to_timeout}, :user_timedout)
+    broadcast_timeout({:ok, channel.id, user_to_timeout}, :user_timedout)
 
     log
   end
 
-  def ban_user(streamer, moderator, user_to_ban) do
+  def ban_user(%Channel{} = channel, %User{} = moderator, user_to_ban) do
     if Chat.can_moderate?(streamer, moderator) === false do
       raise "User does not have permission to moderate."
     end
 
     log =
-      %UserModerationLog{
-        streamer: streamer,
+      %ChannelModerationLog{
+        channel: channel,
         moderator: moderator,
-        user: user_to_ban
+        user: user_to_timeout
       }
-      |> UserModerationLog.changeset(%{action: "ban"})
+      |> ChannelModerationLog.changeset(%{action: "ban"})
       |> Repo.insert()
 
     :ets.insert(:banned_list, {user_to_ban.username, {streamer.id, true}})
 
     Chat.delete_chat_messages_for_user(streamer, user_to_ban)
 
-    broadcast_chats({:ok, user_to_ban}, :user_banned, streamer)
+    broadcast_chats({:ok, user_to_ban}, :user_banned, channel)
 
     log
   end
@@ -256,7 +270,9 @@ defmodule Glimesh.Streams do
       |> Followers.changeset(attrs)
       |> Repo.insert()
 
-    broadcast_chats({:ok, "#{user.displayname} just followed the stream"}, :user_follow, streamer)
+    channel = get_channel_for_user!(streamer)
+
+    broadcast_chats({:ok, "#{user.displayname} just followed the stream"}, :user_follow, channel)
     # Glimesh.Chat.create_chat_message(streamer, user, %{message: "just followed the stream!"})
 
     results
@@ -410,7 +426,7 @@ defmodule Glimesh.Streams do
   Only called very intentionally by Janus after stream authentication
   Also sends notifications
   """
-  def start_stream(channel) do
+  def start_stream(%Channel{} = channel) do
     channel
   end
 
@@ -419,11 +435,11 @@ defmodule Glimesh.Streams do
   Called either intentionally by Janus when the stream ends, or manually by the platform on a timer
   Archives the stream
   """
-  def end_stream(channel) do
+  def end_stream(%Channel{} = channel) do
     channel
   end
 
-  def create_stream(channel, attrs \\ %{}) do
+  def create_stream(%Channel{} = channel, attrs \\ %{}) do
     %Glimesh.Streams.Stream{
       channel: channel
     }

@@ -16,8 +16,9 @@ defmodule Glimesh.Application do
       # Who and where are you?
       Glimesh.Presence,
       # Start the Endpoint (http/https)
-      GlimeshWeb.Endpoint
+      GlimeshWeb.Endpoint,
       # Start a worker by calling: Glimesh.Worker.start_link(arg)
+      {Absinthe.Subscription, GlimeshWeb.Endpoint}
       # {Glimesh.Worker, arg}
     ]
 

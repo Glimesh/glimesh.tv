@@ -6,6 +6,7 @@ defmodule Glimesh.Schema.ChannelTypes do
 
   alias Glimesh.Repo
   alias Glimesh.Resolvers.StreamsResolver
+  alias Glimesh.Streams
 
   object :streams_queries do
     @desc "List all channels"
@@ -77,6 +78,30 @@ defmodule Glimesh.Schema.ChannelTypes do
     end
   end
 
+  object :streams_subscriptions do
+    field :channel, :channel do
+      arg(:id, :id)
+
+      config(fn args, _ ->
+        case Map.get(args, :id) do
+          nil -> {:ok, topic: [Streams.get_subscribe_topic(:channel)]}
+          channel_id -> {:ok, topic: [Streams.get_subscribe_topic(:channel, channel_id)]}
+        end
+      end)
+    end
+
+    field :chat_message, :chat_message do
+      arg(:channel_id, :id)
+
+      config(fn args, _ ->
+        case Map.get(args, :channel_id) do
+          nil -> {:ok, topic: [Streams.get_subscribe_topic(:chat)]}
+          channel_id -> {:ok, topic: [Streams.get_subscribe_topic(:chat, channel_id)]}
+        end
+      end)
+    end
+  end
+
   enum :channel_status do
     value(:live, as: "live")
     value(:offline, as: "offline")
@@ -122,10 +147,14 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :stream, :stream, resolve: dataloader(Repo)
 
     field :streamer, non_null(:user), resolve: dataloader(Repo)
+    field :chat_messages, list_of(:chat_message), resolve: dataloader(Repo)
 
     field :user, non_null(:user),
       resolve: dataloader(Repo),
       deprecate: "Please use the streamer field"
+
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
   end
 
   @desc "A stream is a single live stream in, either current or historical."
@@ -152,6 +181,9 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :avg_chatters, :integer
     field :new_subscribers, :integer
     field :resub_subscribers, :integer
+
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
   end
 
   @desc "A chat message sent to a channel by a user."
@@ -159,11 +191,11 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :id, :id
     field :message, :string, description: "The chat message."
 
-    field :inserted_at, non_null(:datetime)
-    field :updated_at, non_null(:datetime)
-
     field :channel, non_null(:channel), resolve: dataloader(Repo)
     field :user, non_null(:user), resolve: dataloader(Repo)
+
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
   end
 
   @desc "A follower is a user who subscribes to notifications for a particular channel."
@@ -190,7 +222,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :streamer, non_null(:user), resolve: dataloader(Repo)
     field :user, non_null(:user), resolve: dataloader(Repo)
 
-    field :inserted_at, non_null(:datetime)
-    field :updated_at, non_null(:datetime)
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
   end
 end

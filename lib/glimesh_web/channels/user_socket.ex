@@ -1,8 +1,13 @@
 defmodule GlimeshWeb.UserSocket do
   use Phoenix.Socket
 
+  use Absinthe.Phoenix.Socket,
+    schema: Glimesh.Schema
+
+  alias Glimesh.Accounts.User
+
   ## Channels
-  channel "chat:*", GlimeshWeb.ChatChannel
+  # channel "room:*", GlimeshWeb.RoomChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -16,8 +21,25 @@ defmodule GlimeshWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   @impl true
-  def connect(_params, socket, _connect_info) do
-    {:ok, socket}
+  def connect(%{"token" => token}, socket, _connect_info) do
+    case Glimesh.Oauth.TokenResolver.resolve_user(token) do
+      {:ok, %User{} = user} ->
+        {:ok,
+         socket
+         |> assign(:user_id, user.id)
+         |> Absinthe.Phoenix.Socket.put_options(
+           context: %{
+             current_user: user
+           }
+         )}
+
+      _ ->
+        :error
+    end
+  end
+
+  def connect(_, _, _) do
+    :error
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
@@ -31,5 +53,5 @@ defmodule GlimeshWeb.UserSocket do
   #
   # Returning `nil` makes this socket anonymous.
   @impl true
-  def id(_socket), do: nil
+  def id(socket), do: "user_socket:#{socket.assigns.user_id}"
 end
