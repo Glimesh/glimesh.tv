@@ -212,6 +212,8 @@ defmodule Glimesh.Chat do
         Tag.content_tag(:span, "Streamer", class: "badge badge-light")
       can_moderate?(stream, user) and user.is_admin === false ->
         Tag.content_tag(:span, "Moderator", class: "badge badge-info")
+      user.id === 0 ->
+        Tag.content_tag(:span, "System", class: "badge badge-danger")
       true ->
         ""
     end
@@ -224,9 +226,10 @@ defmodule Glimesh.Chat do
   def user_in_message(user, chat_message) do
     username = user.username
 
-    !(username == chat_message.user.username) &&
-      (String.match?(chat_message.message, ~r/\b#{username}\b/i) ||
-         String.match?(chat_message.message, ~r/\b#{"@" <> username}\b/i))
+    !(username == chat_message.user.username ||
+      chat_message.user.id == 0) &&
+        (String.match?(chat_message.message, ~r/\b#{username}\b/i) ||
+          String.match?(chat_message.message, ~r/\b#{"@" <> username}\b/i))
   end
 
   def hyperlink_message(chat_message) do

@@ -2,6 +2,7 @@ defmodule GlimeshWeb.ChatLive.Index do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Accounts
+  alias Glimesh.Accounts.User
   alias Glimesh.Chat
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Presence
@@ -109,6 +110,17 @@ defmodule GlimeshWeb.ChatLive.Index do
       |> assign(:update_action, "replace")
       |> assign(:chat_messages, list_chat_messages(socket.assigns.streamer))
       |> assign(:chat_clear, true)}
+  end
+
+  @impl true
+  def handle_info({:user_follow, message}, socket) do
+    final_message = %ChatMessage{user: %User{id: 0, is_admin: false}, message: message, id: DateTime.to_unix(DateTime.utc_now())}
+    {:noreply,
+      socket
+      |> assign(:update_action, "append")
+      |> update(:chat_messages, fn messages -> [final_message | messages] end)
+      |> assign(:chat_clear, false)}
+      |> IO.inspect()
   end
 
   defp list_chat_messages(streamer) do

@@ -256,7 +256,8 @@ defmodule Glimesh.Streams do
       |> Followers.changeset(attrs)
       |> Repo.insert()
 
-    Glimesh.Chat.create_chat_message(streamer, user, %{message: "just followed the stream!"})
+    broadcast_chats({:ok, "#{user.displayname} just followed the stream"}, :user_follow, streamer)
+    # Glimesh.Chat.create_chat_message(streamer, user, %{message: "just followed the stream!"})
 
     results
   end

@@ -9,14 +9,16 @@
                     <%= if @chat_clear === false do %>
                         <%= for chat_message <- @chat_messages do %>
                             <div id="<%= chat_message.id %>" class="<%=if Glimesh.Chat.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble"%>">
-                                <%= if @is_moderator do %>
+                                <%= if @is_moderator && chat_message.user.id !== 0 do %>
                                     <i class="fas fa-times-circle" phx-click="ban_user" phx-value-user="<%= chat_message.user.username %>"></i>
                                     <i class="fas fa-clock" phx-click="timeout_user" phx-value-user="<%= chat_message.user.username %>"></i>
                                 <% end %>
                                 <%= Glimesh.Chat.render_global_badge(chat_message.user) %>
                                 <%= Glimesh.Chat.render_stream_badge(@streamer, chat_message.user) %>
-                                <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>" width="20" height="20" class="img-chat-avatar" />
-                                <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white" %>:
+                                <%= if chat_message.user.id !== 0 do %>
+                                    <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>" width="20" height="20" class="img-chat-avatar" />
+                                    <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white" %>:
+                                <% end %>
                                 <br>
                                 <div class="chat-message">
                                     <%= raw(Glimesh.Chat.hyperlink_message(Glimesh.Emote.parse(chat_message.message))) %>
