@@ -10,8 +10,22 @@
     phx_submit: "send" %>
     <i class="far fa-smile-beam emoji-activator"></i>
     <%= text_input f, :message, class: ["mail-write-box form-control"], autocomplete: "off", disabled: @disabled, style: "display:none;" %>
-    <div id="chat_message_pritty" contenteditable="<%= !@disabled %>"></div>
-    <i class="fas fa-external-link-alt pop-out"></i>
+    <div id="chat_message-pritty" contenteditable="<%= !@disabled %>"></div>
+    <i class="fas fa-ellipsis-v settings"></i>
     <%= error_tag f, :message %>
   </form>
+
+  <div class="chat-settings">
+    <h5>Style settings</h5>
+    <span>Font size: <input id="chat-font-size"/></span>
+    <span>Emoji size: <input id="chat-emoji-size"/></span>
+    <span>Avatar size: <input id="chat-avatar-size"/></span>
+    <span>Chat text color: <input id="chat-text-color"/></span>
+    <span>Chat mention color: <input id="chat-mention-color"/></span>
+    <span>Chat default color: <input id="chat-default-color"/></span>
+    <span>Edit color: <input id="chat-edit-color"/></span>
+    <span>Chat background: <input id="chat-background"/></span>
+    <h5>Misc actions</h5>
+    <span class="pop-out">Popout chat: <i class="fas fa-external-link-alt"></i></span>
+  </div>
 </div>

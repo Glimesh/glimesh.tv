@@ -22,6 +22,10 @@ $box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.3);
     z-index: 10000000;
 }
 
+.emoji-picker__wrapper{
+    z-index: 100000000;
+}
+
 #chat {
     height: 100%;
 
@@ -43,14 +47,16 @@ $box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.3);
 
             .chat-conversation-box {
                 width: 100%;
-                max-height: calc(100% - calc(1.4em + 1.4rem + 14px));
+                height: calc(100% - calc(1.4em + 1.4rem + 21px));
+                max-height: calc(100% - calc(1.4em + 1.4rem + 21px));
                 overflow: auto;
                 display: inline-flex;
                 position: absolute;
                 top: 0;
+                flex-direction: column-reverse;
 
                 .chat {
-                    padding: 0 5px 7px;
+                    padding: 0 5px;
                 }
 
                 #chat-conversation-box-scroll{
@@ -69,17 +75,16 @@ $box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.3);
                     cursor: pointer;
                 }
 
-                .pop-out {
+                .settings {
                     font-size: 24px;
                     position: absolute;
                     color: var(--gray);
                     right: 11px;
                     top: 12px;
                     cursor: pointer;
-                    display: none;
                 }
     
-                #chat_message_pritty {
+                #chat_message-pritty {
                     min-height: calc(1.4em + 1.4rem + 2px);
                     font-size: 16px;
                     width: 100%;
@@ -93,6 +98,43 @@ $box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.3);
                 
                     ::selection {
                         background: #1b55e2;
+                    }
+                }
+
+                .chat-settings {
+                    position: absolute;
+                    background-color: #0e1726;
+                    width: 328px;
+                    padding: 14px;
+                    bottom: calc(1.4em + 1.4rem + 20px);
+                    right: 13px;
+                    border-radius: $border-radius;
+                    box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.3),-3px 3px 6px 0px rgba(0, 0, 0, 0.15),3px -3px 6px 0px rgba(0, 0, 0, 0.15),-3px -3px 6px 0px rgba(0, 0, 0, 0.3);
+                    display: none;
+
+                    h5 {
+                        &:not(:first-child){
+                            margin-top: 21px;
+                        }
+                        
+                        border-bottom: solid 2px #1c2e4b;
+                    }
+
+                    span{
+                        width: 100%;
+                        display: inline-block;
+                        margin-bottom: 4px;
+
+                        input {
+                            float:right;
+                        }
+
+                        &.pop-out i {
+                            font-size: 16px;
+                            position: relative;
+                            cursor: pointer;
+                            float:right;
+                        }
                     }
                 }
             }
@@ -149,7 +191,7 @@ $box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.3);
             .chat-footer {
                 display: block;
                 padding: 6px 13px 6px 5px;
-                background: var(--chat-message-background);
+                background: #0e1726;
                 border-bottom-left-radius: $border-radius;
                 border-bottom-right-radius: $border-radius;
                 -webkit-box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.3);
