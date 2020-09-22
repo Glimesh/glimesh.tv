@@ -48,10 +48,6 @@ config :ex_oauth2_provider, ExOauth2Provider,
   access_token_expires_in: 21600,
   grant_flows: ~w(authorization_code client_credentials implicit_grant)
 
-config :glimesh, ExOauth2Provider,
-  repo: Glimesh.Repo,
-  resource_owner: Glimesh.Users.User
-
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
