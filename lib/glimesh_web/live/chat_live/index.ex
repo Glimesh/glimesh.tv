@@ -54,7 +54,9 @@ defmodule GlimeshWeb.ChatLive.Index do
 
   @impl true
   def handle_event("timeout_user", %{"user" => to_ban_user}, socket) do
-    dt = DateTime.add(DateTime.utc_now(), 300, :second) # for some reason add can only accept seconds and lower so this will equate to 5 minutes in the future
+    # for some reason add can only accept seconds and lower so this will equate to 5 minutes in the future
+    dt = DateTime.add(DateTime.utc_now(), 300, :second)
+
     Streams.timeout_user(
       socket.assigns.channel,
       socket.assigns.user,
@@ -79,50 +81,56 @@ defmodule GlimeshWeb.ChatLive.Index do
   @impl true
   def handle_info({:chat_message, message}, socket) do
     {:noreply,
-      socket
-      |> assign(:update_action, "append")
-      |> update(:chat_messages, fn messages -> [message | messages] end)
-      |> assign(:chat_clear, false)}
+     socket
+     |> assign(:update_action, "append")
+     |> update(:chat_messages, fn messages -> [message | messages] end)
+     |> assign(:chat_clear, false)}
   end
 
   @impl true
   def handle_info({:user_timedout, _bad_user}, socket) do
-    messages = list_chat_messages(socket.assigns.channel);
+    messages = list_chat_messages(socket.assigns.channel)
+
     {:noreply,
-      socket
-      |> assign(:update_action, "replace")
-      |> assign(:chat_messages, messages)
-      |> assign(:chat_clear, !Enum.any?(messages))}
+     socket
+     |> assign(:update_action, "replace")
+     |> assign(:chat_messages, messages)
+     |> assign(:chat_clear, !Enum.any?(messages))}
   end
 
   @impl true
   def handle_info({:user_banned, _}, socket) do
-    messages = list_chat_messages(socket.assigns.channel);
+    messages = list_chat_messages(socket.assigns.channel)
+
     {:noreply,
-      socket
-      |> assign(:update_action, "replace")
-      |> assign(:chat_messages, messages)
-      |> assign(:chat_clear, !Enum.any?(messages))}
+     socket
+     |> assign(:update_action, "replace")
+     |> assign(:chat_messages, messages)
+     |> assign(:chat_clear, !Enum.any?(messages))}
   end
 
   @impl true
   def handle_info({:chat_cleared, _}, socket) do
     {:noreply,
-      socket
-      |> assign(:update_action, "replace")
-      |> assign(:chat_messages, list_chat_messages(socket.assigns.streamer))
-      |> assign(:chat_clear, true)}
+     socket
+     |> assign(:update_action, "replace")
+     |> assign(:chat_messages, list_chat_messages(socket.assigns.streamer))
+     |> assign(:chat_clear, true)}
   end
 
   @impl true
   def handle_info({:user_follow, message}, socket) do
-    final_message = %ChatMessage{user: %User{id: 0, is_admin: false}, message: message, id: DateTime.to_unix(DateTime.utc_now())}
+    final_message = %ChatMessage{
+      user: %User{id: 0, is_admin: false},
+      message: message,
+      id: DateTime.to_unix(DateTime.utc_now())
+    }
+
     {:noreply,
-      socket
-      |> assign(:update_action, "append")
-      |> update(:chat_messages, fn messages -> [final_message | messages] end)
-      |> assign(:chat_clear, false)}
-      |> IO.inspect()
+     socket
+     |> assign(:update_action, "append")
+     |> update(:chat_messages, fn messages -> [final_message | messages] end)
+     |> assign(:chat_clear, false)}
   end
 
   defp list_chat_messages(streamer) do

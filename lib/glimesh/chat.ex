@@ -95,7 +95,9 @@ defmodule Glimesh.Chat do
         else
           true
         end
-      [] -> true
+
+      [] ->
+        true
     end
 
     case :ets.lookup(:timedout_list, username) do
@@ -105,7 +107,9 @@ defmodule Glimesh.Chat do
         else
           true
         end
-      [] -> true
+
+      [] ->
+        true
     end
 
     %ChatMessage{
@@ -221,10 +225,13 @@ defmodule Glimesh.Chat do
     cond do
       channel.user.id === user.id and user.is_admin === false ->
         Tag.content_tag(:span, "Streamer", class: "badge badge-light")
+
       can_moderate?(channel, user) and user.is_admin === false ->
         Tag.content_tag(:span, "Moderator", class: "badge badge-info")
+
       user.id === 0 ->
         Tag.content_tag(:span, "System", class: "badge badge-danger")
+
       true ->
         ""
     end
@@ -238,9 +245,9 @@ defmodule Glimesh.Chat do
     username = user.username
 
     !(username == chat_message.user.username ||
-      chat_message.user.id == 0) &&
-        (String.match?(chat_message.message, ~r/\b#{username}\b/i) ||
-          String.match?(chat_message.message, ~r/\b#{"@" <> username}\b/i))
+        chat_message.user.id == 0) &&
+      (String.match?(chat_message.message, ~r/\b#{username}\b/i) ||
+         String.match?(chat_message.message, ~r/\b#{"@" <> username}\b/i))
   end
 
   def hyperlink_message(chat_message) do
@@ -254,9 +261,14 @@ defmodule Glimesh.Chat do
     for message <- String.split(chat_message) do
       if Enum.member?(found_uris, message) do
         case URI.parse(message).scheme do
-          "https" -> Link.link(message <> " ", to: message, target: "_blank") |> HTML.safe_to_string()
-          "http" -> Link.link(message <> " ", to: message, target: "_blank") |> HTML.safe_to_string()
-          _ -> message <> " "
+          "https" ->
+            Link.link(message <> " ", to: message, target: "_blank") |> HTML.safe_to_string()
+
+          "http" ->
+            Link.link(message <> " ", to: message, target: "_blank") |> HTML.safe_to_string()
+
+          _ ->
+            message <> " "
         end
       else
         message <> " "
@@ -267,7 +279,6 @@ defmodule Glimesh.Chat do
   def subscribe(user) do
     Phoenix.PubSub.subscribe(Glimesh.PubSub, "chats:#{user.id}")
   end
-
 
   def timeout_user(channel, moderator, user_to_timeout, time) do
     if can_moderate?(channel, moderator) === false do
@@ -287,7 +298,10 @@ defmodule Glimesh.Chat do
 
     delete_chat_messages_for_user(channel, user_to_timeout)
 
-    broadcast({:ok, %{channel: channel, user: user_to_timeout, moderator: moderator}}, :user_timedout)
+    broadcast(
+      {:ok, %{channel: channel, user: user_to_timeout, moderator: moderator}},
+      :user_timedout
+    )
 
     log
   end
@@ -331,7 +345,10 @@ defmodule Glimesh.Chat do
 
     :ets.delete(:banned_list, user_to_unban.username)
 
-    broadcast({:ok, %{channel: channel, user: user_to_unban, moderator: moderator}}, :user_unbanned)
+    broadcast(
+      {:ok, %{channel: channel, user: user_to_unban, moderator: moderator}},
+      :user_unbanned
+    )
 
     log
   end

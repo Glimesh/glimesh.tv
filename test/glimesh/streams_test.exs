@@ -12,7 +12,7 @@ defmodule Glimesh.StreamsTest do
         channel: channel_fixture(),
         moderator: user_fixture(),
         user: user_fixture(),
-        time: Time.new(0,5,0)
+        time: DateTime.add(DateTime.utc_now(), 300)
       }
     end
 
@@ -32,7 +32,12 @@ defmodule Glimesh.StreamsTest do
       assert length(Chat.list_chat_messages(channel)) == 1
     end
 
-    test "adds log of timeout action", %{channel: channel, moderator: moderator, user: user, time: time} do
+    test "adds log of timeout action", %{
+      channel: channel,
+      moderator: moderator,
+      user: user,
+      time: time
+    } do
       {:ok, _} = Glimesh.Streams.add_moderator(channel, moderator)
       {:ok, record} = Streams.timeout_user(channel, moderator, user, time)
 
