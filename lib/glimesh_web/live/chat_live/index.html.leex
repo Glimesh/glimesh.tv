@@ -17,7 +17,7 @@
                                 <%= Glimesh.Chat.render_stream_badge(@channel, chat_message.user) %>
                                 <%= if chat_message.user.id !== 0 do %>
                                     <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>" width="20" height="20" class="img-chat-avatar" />
-                                    <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white" %>:
+                                    <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username) %>:
                                 <% end %>
                                 <br>
                                 <div class="chat-message">
