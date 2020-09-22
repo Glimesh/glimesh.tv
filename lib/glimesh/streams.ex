@@ -47,7 +47,7 @@ defmodule Glimesh.Streams do
   defp broadcast_chats({:ok, data}, event, %Channel{} = channel) do
     Phoenix.PubSub.broadcast(
       Glimesh.PubSub,
-      get_subscribe_topic(:chat, streamer.id),
+      get_subscribe_topic(:chat, channel.id),
       {event, data}
     )
 
@@ -224,7 +224,7 @@ defmodule Glimesh.Streams do
   end
 
   def ban_user(%Channel{} = channel, %User{} = moderator, user_to_ban) do
-    if Chat.can_moderate?(streamer, moderator) === false do
+    if Chat.can_moderate?(channel, moderator) === false do
       raise "User does not have permission to moderate."
     end
 
@@ -237,9 +237,9 @@ defmodule Glimesh.Streams do
       |> ChannelModerationLog.changeset(%{action: "ban"})
       |> Repo.insert()
 
-    :ets.insert(:banned_list, {user_to_ban.username, {streamer.id, true}})
+    :ets.insert(:banned_list, {user_to_ban.username, {channel.id, true}})
 
-    Chat.delete_chat_messages_for_user(streamer, user_to_ban)
+    Chat.delete_chat_messages_for_user(channel, user_to_ban)
 
     broadcast_chats({:ok, user_to_ban}, :user_banned, channel)
 
