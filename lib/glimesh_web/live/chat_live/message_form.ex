@@ -34,7 +34,7 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
       case command do
         {:timeout, components} ->
           timeout_user(
-            socket.assigns.streamer,
+            socket.assigns.channel,
             socket.assigns.user,
             components
           )
@@ -43,7 +43,7 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
           [user] = components
 
           Chat.ban_user(
-            socket.assigns.streamer,
+            socket.assigns.channel,
             socket.assigns.user,
             Accounts.get_by_username!(String.replace(user, "@", ""))
           )
@@ -52,13 +52,13 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
           [user] = components
 
           Chat.unban_user(
-            socket.assigns.streamer,
+            socket.assigns.channel,
             socket.assigns.user,
             Accounts.get_by_username!(String.replace(user, "@", ""))
           )
 
         {:clear, _} ->
-          Chat.clear_chat(socket.assigns.streamer, socket.assigns.user)
+          Chat.clear_chat(socket.assigns.channel, socket.assigns.user)
 
         _ ->
           command

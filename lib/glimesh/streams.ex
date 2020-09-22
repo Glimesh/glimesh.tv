@@ -246,15 +246,6 @@ defmodule Glimesh.Streams do
     log
   end
 
-  def list_followed_streams(user) do
-    Repo.all(
-      from f in Followers,
-        where: f.user_id == ^user.id,
-        join: streamer in assoc(f, :streamer),
-        select: streamer
-    )
-  end
-
   ## Following
 
   def follow(streamer, user, live_notifications \\ false) do

@@ -16,7 +16,7 @@ defmodule GlimeshWeb.ChatLive.PopOut do
 
         {:ok,
          socket
-         |> assign(:streamer, channel.user)
+         |> assign(:channel, channel.user)
          |> assign(:user, maybe_user)}
 
       nil ->

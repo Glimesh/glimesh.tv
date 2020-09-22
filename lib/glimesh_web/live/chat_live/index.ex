@@ -49,7 +49,7 @@ defmodule GlimeshWeb.ChatLive.Index do
     chat_message = Chat.get_chat_message!(id)
     {:ok, _} = Chat.delete_chat_message(chat_message)
 
-    {:noreply, assign(socket, :chat_messages, list_chat_messages(socket.assigns.streamer))}
+    {:noreply, assign(socket, :chat_messages, list_chat_messages(socket.assigns.channel))}
   end
 
   @impl true
@@ -75,7 +75,7 @@ defmodule GlimeshWeb.ChatLive.Index do
       Accounts.get_by_username!(to_ban_user)
     )
 
-    {:noreply, assign(socket, :chat_messages, list_chat_messages(socket.assigns.streamer))}
+    {:noreply, assign(socket, :chat_messages, list_chat_messages(socket.assigns.channel))}
   end
 
   @impl true
@@ -114,7 +114,7 @@ defmodule GlimeshWeb.ChatLive.Index do
     {:noreply,
      socket
      |> assign(:update_action, "replace")
-     |> assign(:chat_messages, list_chat_messages(socket.assigns.streamer))
+     |> assign(:chat_messages, list_chat_messages(socket.assigns.channel))
      |> assign(:chat_clear, true)}
   end
 
@@ -133,7 +133,7 @@ defmodule GlimeshWeb.ChatLive.Index do
      |> assign(:chat_clear, false)}
   end
 
-  defp list_chat_messages(streamer) do
-    Chat.list_chat_messages(streamer)
+  defp list_chat_messages(channel) do
+    Chat.list_chat_messages(channel)
   end
 end

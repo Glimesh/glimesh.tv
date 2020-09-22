@@ -163,14 +163,14 @@ defmodule Glimesh.Chat do
   end
 
   @doc """
-  Deletes all chat messages for the streamers chat
+  Deletes all chat messages for the channel's chat
   """
-  def delete_all_chat_messages(streamer) do
+  def delete_all_chat_messages(channel) do
     query =
       from m in ChatMessage,
         where:
           m.is_visible == true and
-            m.streamer_id == ^streamer.id
+            m.channel_id == ^channel.id
 
     Repo.update_all(query, set: [is_visible: false])
   end
