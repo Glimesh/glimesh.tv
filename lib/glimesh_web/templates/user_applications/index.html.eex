@@ -21,7 +21,7 @@
       <div class="card">
         <div class="card-body">
           <p>
-            <%= gettext("Want to build a chat bot, a online tool, or other service that integrates with Glimesh? You're in the right place! Create an Application to get started and check out our API documentation if you need some guidance.") %>
+            <%= gettext("Want to build a chat bot, an online tool, or other service that integrates with Glimesh? You're in the right place! Create an Application to get started and check out our API documentation if you need some guidance.") %>
           </p>
           <p>
             <%= link gettext("API Documentation"), to: "https://github.com/Glimesh/glimesh.tv/wiki/GraphQL-API", class: "btn btn-sm btn-info", target: "_blank" %>
