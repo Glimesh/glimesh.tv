@@ -5,12 +5,11 @@ defmodule Glimesh.ChatTest do
   alias Ecto.Changeset
   alias Glimesh.Accounts.User
   alias Glimesh.Chat
+  alias Glimesh.Chat.ChatMessage
   alias Glimesh.Streams
   alias Glimesh.Streams.ChannelModerationLog
 
   describe "chat_messages" do
-    alias Glimesh.Chat.ChatMessage
-
     @valid_attrs %{message: "some message"}
     @link_containing_attrs %{message: "https://glimesh.tv is cool"}
     @invalid_attrs %{message: nil}

@@ -57,7 +57,7 @@ defmodule GlimeshWeb.ChatLive.Index do
     # for some reason add can only accept seconds and lower so this will equate to 5 minutes in the future
     dt = DateTime.add(DateTime.utc_now(), 300, :second)
 
-    Streams.timeout_user(
+    Chat.timeout_user(
       socket.assigns.channel,
       socket.assigns.user,
       Accounts.get_by_username!(to_ban_user),
