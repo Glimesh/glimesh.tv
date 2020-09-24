@@ -4,6 +4,82 @@ import twemoji from 'twemoji';
 export default {
     mounted() {
 
+        // Get chatWindow selection
+        var chatWindow = document.getElementById("chat-column");
+        if (chatWindow === null) chatWindow = document.querySelector('.pop-out-chat')
+
+        // Force chat to be same height as player as vh breaks on different scaled monitors
+        let chatScrollHeight = 0, chatFooterHeight = 0;
+        const chatFooter = chatWindow.querySelector(".chat-footer");
+        const chatScroll = chatWindow.querySelector(".chat-conversation-box");
+        const videoWindow = document.getElementById("video-column") !== null ? document.getElementById("video-column").children[0] : null;
+
+        const chatResizeFix = function () {
+            if (videoWindow !== null) {
+                const height = videoWindow.clientHeight;
+                chatWindow.style.height = `${height + 30}px`;
+                chatScrollHeight = height - chatFooter.clientHeight;
+                chatScroll.style.height = `${chatScrollHeight}px`;
+                if (chatFooterHeight !== chatFooter.clientHeight) {
+                    chatFooterHeight = chatFooter.clientHeight;
+                }
+            }
+            else {
+                chatResizeFixSlim()
+            }
+        }
+
+        const chatResizeFixSlim = function () {
+            chatScrollHeight = chatWindow.clientHeight - chatFooter.clientHeight;
+            chatScroll.style.height = `${chatScrollHeight}px`;
+            chatFooterHeight = chatFooter.clientHeight;
+        }
+        window.addEventListener('resize', chatResizeFix);
+
+        window.dispatchEvent(new Event('resize'));
+
+        // Remove messages if the list gets over 200 entries triggeres every ish second
+
+        window.setInterval(() => {
+            const messageList = Array.from(chatScroll.querySelectorAll(".bubble"));
+            if (messageList.length > 200) {
+                for (const node of messageList.slice(0, messageList.length - 200)) {
+                    node.remove();
+                }
+            }
+        }, 1000);
+
+        // Popout handler
+        const popout = chatWindow.querySelector('.pop-out');
+
+        if (window.location.href.split("/").length > 4) {
+            popout.remove();
+        }
+        else {
+            popout.style.display = "block";
+            popout.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.open(window.location.href + "/chat", "_blank", "location=no,menubar=no,toolbar=no");
+            });
+        }
+
+        // Emoji unparser
+        function unparse(value) {
+            var out = "";
+            value.split("<").map(v => v.split(">")).flat().forEach(element => {
+                if (element.includes('img class="emoji" draggable="false" alt="')) {
+                    var index = element.indexOf('"', element.indexOf("alt")) + 1;
+                    out += element.substring(index, element.indexOf('"', index));
+                }
+                else {
+                    out += element;
+                }
+            });
+            return out.replace(/&nbsp;/g, " ");
+        }
+
+        // Emoji start
+        // Emoji Picker Start
         const custom = [{
             name: ":glimangry",
             emoji: "/emotes/svg/glimangry.svg"
@@ -50,25 +126,11 @@ export default {
         });
 
         const trigger = document.querySelector('.emoji-activator');
-        var chatWindow = document.getElementById("chat-column");
-        if (chatWindow === null) chatWindow = document.querySelector('.pop-out-chat')
-        const popout = chatWindow.querySelector('.pop-out');
-
-        if (window.location.href.split("/").length > 4) {
-            popout.remove();
-        }
-        else {
-            popout.style.display = "block";
-            popout.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.open(window.location.href + "/chat", "_blank", "location=no,menubar=no,toolbar=no");
-            });
-        }
 
         trigger.addEventListener('click', () => picker.togglePicker(trigger));
 
-        const chat = document.getElementById('chat_message_message');
         const pritty = document.getElementById('chat_message-pritty');
+        let text = "";
 
         picker.on('emoji', selection => {
             var value = "";
@@ -78,143 +140,80 @@ export default {
             else {
                 value = pritty.innerHTML + selection.emoji;
             }
-            value = twemoji.parse(value, function (iconId, options) {
+            text = unparse(value);
+            value = twemoji.parse(text, function (iconId, options) {
                 return 'https://twemoji.maxcdn.com/v/13.0.0/svg/' + iconId + '.svg';
             });
             custom.forEach(emoji => value = value.replaceAll(emoji.name, `<img class="emoji" draggable="false" src="${emoji.emoji}" alt="${emoji.name}">`));
             pritty.innerHTML = value;
         });
 
-        const chatFooter = chatWindow.querySelector(".chat-footer");
-        const chatScroll = chatWindow.querySelector(".chat-conversation-box");
-        const videoWindow = document.getElementById("video-column") !== null ? document.getElementById("video-column").children[0] : null;
-        let scrollY = 0;
-        let chatScrollY = 0;
-        let chatScrollSize = 0;
-        let chatScrollHeight = 0;
-        let text = "";
-        let chatFooterHeight = 0;
-
-        chatScroll.addEventListener('scroll', (e) => {
-            chatScrollY = e.target.scrollTop;
-            chatScrollSize = e.target.scrollHeight;
-        });
-
         pritty.oninput = (event) => {
             twemoji.replace(event.target.innerHTML, (match) => pritty.innerHTML.replace(match, twemoji.parse(match)));
             text = unparse(event.target.innerHTML);
 
-            if (chatFooterHeight !== chatFooter.clientHeight && videoWindow !== null) {
-                chatScrollHeight = chatScroll.clientHeight - chatFooter.clientHeight;
-                chatScroll.style.height = `${chatScrollHeight}px`;
-                chatFooterHeight = chatFooter.clientHeight;
+            if (chatFooterHeight !== chatFooter.clientHeight) {
+                chatResizeFixSlim()
             }
-            else {
-                chatScrollHeight = chatWindow.clientHeight - chatFooter.clientHeight;
-                chatScroll.style.height = `${chatScrollHeight}px`;
-                chatFooterHeight = chatFooter.clientHeight;
-            }
-            window.scroll(0, scrollY);
         }
 
         const form = document.getElementById('chat_message-form');
+        const view = window.liveSocket.getViewByEl(document.getElementById("chat"));
+        const chat = document.getElementById('chat_message_message');
 
         pritty.addEventListener('keydown', (e) => {
             if (e.key == "Enter") {
                 chat.value = text;
-                var view = window.liveSocket.getViewByEl(document.getElementById("chat"))
                 view.submitForm(form, form, "send");
                 e.preventDefault();
             }
         })
 
-        function unparse(value) {
-            var out = "";
-            value.replace("<div><br></div>", "\n").split("<").map(v => v.split(">")).flat().forEach(element => {
-                if (element.includes('img class="emoji" draggable="false" alt="')) {
-                    var index = element.indexOf('"', element.indexOf("alt")) + 1;
-                    out += element.substring(index, element.indexOf('"', index));
-                }
-                else {
-                    out += element;
-                }
-            });
-            return out.replace(/&nbsp;/g, " ");
-        }
+        // Emoji Picker end
 
+        // Twemoji parser for messages as elixir does not want to use the regex required for this parser
         const targetNode = document.getElementById("chat-messages")
-        const config = { childList: true }
-        const modifyFunction = function (addedNodes, _) {
+        const modifyFunction = function (addedNodes) {
             for (const node of addedNodes) {
                 if (!isNaN(node.id)) {
                     const message = node.querySelector(`.chat-message`);
                     if (message !== undefined) {
-                        console.log(message.innerHTML);
                         message.innerHTML = twemoji.parse(message.innerHTML, function (iconId, options) {
                             return 'https://twemoji.maxcdn.com/v/13.0.0/svg/' + iconId + '.svg';
                         });
                     }
                 }
             }
-            if (chatScrollSize - chatScrollHeight - chatScrollY < 10) {
-                chatScroll.scroll(0, chatScroll.scrollHeight);
-            }
-            if (videoWindow !== null) {
-                const height = videoWindow.clientHeight;
-                chatWindow.style.height = `${height + 30}px`;
-                chatScrollHeight = height - chatFooter.clientHeight;
-                chatScroll.style.height = `${chatScrollHeight}px`;
-                if (chatFooterHeight !== chatFooter.clientHeight) {
-                    chatFooterHeight = chatFooter.clientHeight;
-                }
-            }
-            else {
-                chatScrollHeight = chatWindow.clientHeight - chatFooter.clientHeight;
-                chatScroll.style.height = `${chatScrollHeight}px`;
-                chatFooterHeight = chatFooter.clientHeight;
-            }
-            chatScrollSize = chatScroll.scrollHeight;
+            chatResizeFix();
         }
-        const mutationCallback = function (mutationsList, e) {
-            for (const mutation of mutationsList) {
-                modifyFunction(mutation.addedNodes, mutation.target);
-            }
-        }
-        const observer = new MutationObserver(mutationCallback);
-        observer.observe(targetNode, config);
-        modifyFunction(Array.from(targetNode.childNodes).filter(t => t.nodeType === 1 && t.classList.contains("bubble")), targetNode);
-
-        window.addEventListener('resize', () => {
-            if (videoWindow !== null) {
-                const height = videoWindow.clientHeight;
-                chatWindow.style.height = `${height + 30}px`;
-                chatScrollHeight = height - chatFooter.clientHeight;
-                chatScroll.style.height = `${chatScrollHeight}px`;
-                if (chatFooterHeight !== chatFooter.clientHeight) {
-                    chatFooterHeight = chatFooter.clientHeight;
+        modifyFunction(Array.from(targetNode.childNodes).filter(t => t.nodeType === 1 && t.classList.contains("bubble")));
+        view.channel.on("diff", (event) => {
+            setTimeout(() => {
+                if (event["0"] === undefined) {
+                    if (targetNode.getAttribute("phx-update")) {
+                        if (event["1"]["0"] !== undefined)
+                            for (const element of event["1"]["0"].d) {
+                                modifyFunction([document.getElementById(element[0])])
+                            }
+                    }
+                    else {
+                        modifyFunction(Array.from(targetNode.childNodes).filter(t => t.nodeType === 1 && t.classList.contains("bubble")))
+                    }
                 }
-            }
-            else {
-                chatScrollHeight = chatWindow.clientHeight - chatFooter.clientHeight;
-                chatScroll.style.height = `${chatScrollHeight}px`;
-                chatFooterHeight = chatFooter.clientHeight;
-            }
-        });
-
-        window.addEventListener('scroll', (e) => {
-            scrollY = window.scrollY;
-        });
-
-        window.dispatchEvent(new Event('resize'));
-
-        window.setInterval(() => {
-            const messageList = Array.from(chatScroll.querySelectorAll(".bubble"));
-            if (messageList.length > 200) {
-                for (const node of messageList.slice(0, messageList.length - 200)) {
-                    node.remove();
+                else {
+                    if (event["0"] === "replace") modifyFunction(Array.from(targetNode.childNodes).filter(t => t.nodeType === 1 && t.classList.contains("bubble")))
+                    else {
+                        if (event["1"]["0"] !== undefined)
+                            for (const element of event["1"]["0"].d) {
+                                modifyFunction([document.getElementById(element[0])])
+                            }
+                    }
                 }
-            }
-        }, 1000);
+            }, 1)
+        });
+        // Twemoji parser end
+
+        // CSS custom saving start
 
         const varMap = { "chat-font-size": "--chat-size", "chat-emoji-size": "--emoji-size", "chat-avatar-size": "--avatar-size", "chat-text-color": "--chat-color", "chat-mention-color": "--chat-mention", "chat-default-color": "--chat-message-background", "chat-background": "--chat-background", "chat-edit-color": "--type-color" };
 
@@ -222,7 +221,7 @@ export default {
         const comutedStyle = getComputedStyle(chatSettings);
 
         var storedVarValues = JSON.parse(window.localStorage.getItem("chat-style-values"));
-        if(storedVarValues === null){
+        if (storedVarValues === null) {
             storedVarValues = {};
         }
 
@@ -263,5 +262,7 @@ export default {
                 settingsOpen = !settingsOpen;
             }
         })
+
+        // CSS custom saving end
     }
 };

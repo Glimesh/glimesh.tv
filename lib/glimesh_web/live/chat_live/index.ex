@@ -110,6 +110,11 @@ defmodule GlimeshWeb.ChatLive.Index do
   end
 
   @impl true
+  def handle_info({:user_unbanned, _}, socket) do
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_info({:chat_cleared, _}, socket) do
     {:noreply,
      socket
