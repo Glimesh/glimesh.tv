@@ -172,7 +172,7 @@ defmodule Glimesh.Chat do
   ## Examples
 
       iex> delete_chat_messages_for_user(chat_message)
-      {:ok, %ChatMessage{}}
+      {:ok, [%ChatMessage{}]}
 
       iex> delete_chat_messages_for_user(chat_message)
       {:error, %Ecto.Changeset{}}
@@ -192,7 +192,7 @@ defmodule Glimesh.Chat do
   @doc """
   Deletes all chat messages for the channel's chat
   """
-  def delete_all_chat_messages(channel) do
+  def delete_all_chat_messages(%Channel{} = channel) do
     query =
       from m in ChatMessage,
         where:
@@ -310,63 +310,61 @@ defmodule Glimesh.Chat do
     end
   end
 
-  def subscribe(user) do
-    Phoenix.PubSub.subscribe(Glimesh.PubSub, "chats:#{user.id}")
-  end
-
   def timeout_user(channel, moderator, user_to_timeout, time) do
     if can_moderate?(channel, moderator) === false do
-      raise "User does not have permission to moderate."
+      throw_error_on_chat(gettext("You do not have permission to moderate."))
+    else
+
+      log =
+        %ChannelModerationLog{
+          channel: channel,
+          moderator: moderator,
+          user: user_to_timeout
+        }
+        |> ChannelModerationLog.changeset(%{action: "timeout"})
+        |> Repo.insert()
+
+      :ets.insert(:timedout_list, {user_to_timeout.username, {channel.id, time}})
+
+      delete_chat_messages_for_user(channel, user_to_timeout)
+
+      broadcast(
+        {:ok, %{channel: channel, user: user_to_timeout, moderator: moderator}},
+        :user_timedout
+      )
+
+      log
     end
-
-    log =
-      %ChannelModerationLog{
-        channel: channel,
-        moderator: moderator,
-        user: user_to_timeout
-      }
-      |> ChannelModerationLog.changeset(%{action: "timeout"})
-      |> Repo.insert()
-
-    :ets.insert(:timedout_list, {user_to_timeout.username, {channel.id, time}})
-
-    delete_chat_messages_for_user(channel, user_to_timeout)
-
-    broadcast(
-      {:ok, %{channel: channel, user: user_to_timeout, moderator: moderator}},
-      :user_timedout
-    )
-
-    log
   end
 
   def ban_user(channel, moderator, user_to_ban) do
     if can_moderate?(channel, moderator) === false do
-      raise "User does not have permission to moderate."
+      throw_error_on_chat(gettext("You do not have permission to moderate."))
+    else
+
+      log =
+        %ChannelModerationLog{
+          channel: channel,
+          moderator: moderator,
+          user: user_to_ban
+        }
+        |> ChannelModerationLog.changeset(%{action: "ban"})
+        |> Repo.insert()
+
+      :ets.insert(:banned_list, {user_to_ban.username, {channel.id, true}})
+
+      delete_chat_messages_for_user(channel, user_to_ban)
+
+      broadcast({:ok, %{channel: channel, user: user_to_ban, moderator: moderator}}, :user_banned)
+
+      log
     end
-
-    log =
-      %ChannelModerationLog{
-        channel: channel,
-        moderator: moderator,
-        user: user_to_ban
-      }
-      |> ChannelModerationLog.changeset(%{action: "ban"})
-      |> Repo.insert()
-
-    :ets.insert(:banned_list, {user_to_ban.username, {channel.id, true}})
-
-    delete_chat_messages_for_user(channel, user_to_ban)
-
-    broadcast({:ok, %{channel: channel, user: user_to_ban, moderator: moderator}}, :user_banned)
-
-    log
   end
 
   def unban_user(channel, moderator, user_to_unban) do
     if can_moderate?(channel, moderator) === false do
-      raise "User does not have permission to moderate."
-    end
+      throw_error_on_chat(gettext("You do not have permission to moderate."))
+    else
 
     log =
       %ChannelModerationLog{
@@ -385,12 +383,13 @@ defmodule Glimesh.Chat do
     )
 
     log
+    end
   end
 
   def clear_chat(channel, moderator) do
     if can_moderate?(channel, moderator) === false do
-      raise "User does not have permission to moderate."
-    end
+      throw_error_on_chat(gettext("You do not have permission to moderate."))
+    else
 
     log =
       %ChannelModerationLog{
@@ -406,26 +405,32 @@ defmodule Glimesh.Chat do
     broadcast({:ok, %{channel: channel, moderator: moderator}}, :chat_cleared)
 
     log
+    end
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error
 
-  defp broadcast({:ok, chat_message}, event) do
+  defp broadcast({:ok, data}, event) do
+    channel_id =
+      case data do
+        %ChatMessage{} -> data.channel_id
+        _ -> data.channel.id
+      end
     Glimesh.Events.broadcast(
-      Streams.get_subscribe_topic(:chat, chat_message.channel_id),
+      Streams.get_subscribe_topic(:chat, channel_id),
       Streams.get_subscribe_topic(:chat),
       event,
-      chat_message
+      data
     )
 
-    {:ok, chat_message}
+    {:ok, data}
   end
 
   defp flatten_list([head | tail]), do: flatten_list(head) ++ flatten_list(tail)
   defp flatten_list([]), do: []
   defp flatten_list(element), do: [element]
 
-  def throw_error_on_chat(error_message, attrs) do
+  defp throw_error_on_chat(error_message, attrs) do
     {:error,
      %Ecto.Changeset{
        action: :validate,
@@ -436,5 +441,18 @@ defmodule Glimesh.Chat do
        data: %Glimesh.Chat.ChatMessage{},
        valid?: false
      }}
+  end
+
+  defp throw_error_on_chat(error_message) do
+    {:error,
+      %Ecto.Changeset{
+        action: :validate,
+        changes: %{message: ""},
+        errors: [
+          message: {error_message, [validation: :required]}
+        ],
+        data: %Glimesh.Chat.ChatMessage{},
+        valid?: false
+      }}
   end
 end
