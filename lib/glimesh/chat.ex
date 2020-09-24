@@ -4,6 +4,7 @@ defmodule Glimesh.Chat do
   """
 
   import Ecto.Query, warn: false
+  import GlimeshWeb.Gettext
 
   alias Glimesh.Accounts.User
   alias Glimesh.Chat.ChatMessage
@@ -14,6 +15,11 @@ defmodule Glimesh.Chat do
   alias Phoenix.HTML
   alias Phoenix.HTML.Link
   alias Phoenix.HTML.Tag
+
+  @hyperlink_regex ~r/ (?:(?:https?|ftp)
+                        :\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))
+                        ?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?
+                      /xi
 
   @doc """
   Returns the list of chat_messages.
@@ -112,13 +118,34 @@ defmodule Glimesh.Chat do
         true
     end
 
-    %ChatMessage{
-      channel: channel,
-      user: user
-    }
-    |> ChatMessage.changeset(attrs)
-    |> Repo.insert()
-    |> broadcast(:chat_message)
+    # Need to add this since phoenix likes strings and our tests don't use them :)
+    message_contain_link_helper =
+      if attrs["message"] do
+        message_contains_link(attrs["message"])
+      else
+        if attrs.message, do: message_contains_link(attrs.message), else: [true]
+      end
+
+    create_message =
+      case message_contain_link_helper do
+        [true] ->
+          if channel.block_links, do: false, else: true
+
+        _ ->
+          true
+      end
+
+    if create_message do
+      %ChatMessage{
+        channel: channel,
+        user: user
+      }
+      |> ChatMessage.changeset(attrs)
+      |> Repo.insert()
+      |> broadcast(:chat_message)
+    else
+      throw_error_on_chat(gettext("This channel has links disabled!"), attrs)
+    end
   end
 
   @doc """
@@ -221,12 +248,12 @@ defmodule Glimesh.Chat do
     end
   end
 
-  def render_stream_badge(channel, user) do
+  def render_stream_badge(stream, user) do
     cond do
-      channel.user.id === user.id and user.is_admin === false ->
+      stream.id === user.id and user.is_admin === false ->
         Tag.content_tag(:span, "Streamer", class: "badge badge-light")
 
-      can_moderate?(channel, user) and user.is_admin === false ->
+      can_moderate?(stream, user) and user.is_admin === false ->
         Tag.content_tag(:span, "Moderator", class: "badge badge-info")
 
       user.id === 0 ->
@@ -251,12 +278,7 @@ defmodule Glimesh.Chat do
   end
 
   def hyperlink_message(chat_message) do
-    regex_string = ~r/ (?:(?:https?|ftp)
-                        :\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))
-                        ?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?
-                      /xi
-
-    found_uris = flatten_list(Regex.scan(regex_string, chat_message))
+    found_uris = flatten_list(Regex.scan(@hyperlink_regex, chat_message))
 
     for message <- String.split(chat_message) do
       if Enum.member?(found_uris, message) do
@@ -272,6 +294,18 @@ defmodule Glimesh.Chat do
         end
       else
         message <> " "
+      end
+    end
+  end
+
+  def message_contains_link(chat_message) do
+    found_uris = flatten_list(Regex.scan(@hyperlink_regex, chat_message))
+
+    for message <- found_uris do
+      case URI.parse(message).scheme do
+        "https" -> true
+        "http" -> true
+        _ -> false
       end
     end
   end
@@ -390,4 +424,17 @@ defmodule Glimesh.Chat do
   defp flatten_list([head | tail]), do: flatten_list(head) ++ flatten_list(tail)
   defp flatten_list([]), do: []
   defp flatten_list(element), do: [element]
+
+  def throw_error_on_chat(error_message, attrs) do
+    {:error,
+     %Ecto.Changeset{
+       action: :validate,
+       changes: %{message: attrs["message"]},
+       errors: [
+         message: {error_message, [validation: :required]}
+       ],
+       data: %Glimesh.Chat.ChatMessage{},
+       valid?: false
+     }}
+  end
 end

@@ -38,6 +38,18 @@
                         <%= error_tag f, :chat_rules_md %>
                     </div>
                 </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <%= label f, gettext("Should links automatically be clickable?") %>
+                        <%= select f, :disable_hyperlinks, [Yes: false, No: true], [class: "form-control", disabled: @channel.block_links] %>
+                        <%= error_tag f, :disable_hyperlinks %>
+                    </div>
+                    <div class="form-group">
+                        <%= label f, gettext("Block viewers from posting links?") %>
+                        <%= select f, :block_links, [Yes: true, No: false],[class: "form-control"] %>
+                        <%= error_tag f, :block_links %>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-sm-6">

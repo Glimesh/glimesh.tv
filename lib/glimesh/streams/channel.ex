@@ -15,6 +15,8 @@ defmodule Glimesh.Streams.Channel do
     field :stream_key, :string
     field :inaccessible, :boolean, default: false
     field :backend, :string
+    field :disable_hyperlinks, :boolean, default: false
+    field :block_links, :boolean, default: false
 
     field :chat_rules_md, :string
     field :chat_rules_html, :string
@@ -41,7 +43,9 @@ defmodule Glimesh.Streams.Channel do
       :stream_key,
       :chat_rules_md,
       :inaccessible,
-      :status
+      :status,
+      :disable_hyperlinks,
+      :block_links
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> set_chat_rules_content_html()

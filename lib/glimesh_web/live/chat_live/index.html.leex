@@ -21,7 +21,9 @@
                                 <% end %>
                                 <br>
                                 <div class="chat-message">
-                                    <%= raw(Glimesh.Chat.hyperlink_message(Glimesh.Emote.parse(chat_message.message))) %>
+                                    <%= unless @channel.disable_hyperlinks || @channel.block_links,
+                                    do: raw(Glimesh.Chat.hyperlink_message(Glimesh.Emote.parse(chat_message.message))),
+                                    else: raw(Glimesh.Emote.parse(chat_message.message)) %>
                                 </div>
                             </div>
                         <% end %>
