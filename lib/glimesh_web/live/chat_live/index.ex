@@ -69,7 +69,7 @@ defmodule GlimeshWeb.ChatLive.Index do
 
   @impl true
   def handle_event("ban_user", %{"user" => to_ban_user}, socket) do
-    Streams.ban_user(
+    Chat.ban_user(
       socket.assigns.channel,
       socket.assigns.user,
       Accounts.get_by_username!(to_ban_user)
