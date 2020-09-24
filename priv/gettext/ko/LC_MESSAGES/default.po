@@ -709,7 +709,7 @@ msgstr "구독 해제"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:144
-#: lib/glimesh_web/templates/user_settings/stream.html.eex:56
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:44
 msgid "Update Settings"
 msgstr "설정 적용"
 
@@ -964,7 +964,7 @@ msgid "Create Channel"
 msgstr "채널 생성"
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/stream.html.eex:62
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:50
 msgid "Delete Channel"
 msgstr "채널 삭제"
 
@@ -1254,39 +1254,13 @@ msgstr ""
 msgid "Unordered List"
 msgstr ""
 
-#, elixir-format
+#, elixir-format, fuzzy
+#: lib/glimesh_web/templates/user_applications/index.html.eex:24
+msgid "Want to build a chat bot, a online tool, or other service that integrates with Glimesh? You're in the right place! Create an Application to get started and check out our API documentation if you need some guidance."
+msgstr "채팅 봇, 온라인 도구 등 각종 서비스를 글리메쉬에 구축해보고 싶으시다고요? 잘 오셨습니다! 애플리케이션을 생성하여 시작해보세요. 궁금한 게 있거나 설명이 필요하면 API 문서를 참고해주세요."
+
+#, elixir-format, fuzzy
 #: lib/glimesh_web/live/user_live/profile.html.leex:125
 #: lib/glimesh_web/live/user_live/stream.html.leex:78
 msgid "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the right hand corner!"
 msgstr "프로필에 오신 것을 환영합니다! 아직 꾸미지 않았지만, 우측 상단의 유저명을 클릭하여 손쉽게 편집할 수 있답니다!"
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_settings/stream.html.eex:48
-msgid "Block viewers from posting links?"
-msgstr ""
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_settings/stream.html.eex:43
-msgid "Should links automatically be clickable?"
-msgstr ""
-
-#, elixir-format
-#: lib/glimesh/chat.ex:122
-msgid "This channel has links disabled!"
-msgstr ""
-
-#, elixir-format, fuzzy
-#: lib/glimesh_web/templates/user_applications/index.html.eex:24
-msgid "Want to build a chat bot, an online tool, or other service that integrates with Glimesh? You're in the right place! Create an Application to get started and check out our API documentation if you need some guidance."
-msgstr "채팅 봇, 온라인 도구 등 각종 서비스를 글리메쉬에 구축해보고 싶으시다고요? 잘 오셨습니다! 애플리케이션을 생성하여 시작해보세요. 궁금한 게 있거나 설명이 필요하면 API 문서를 참고해주세요."
-
-#, elixir-format
-#: lib/glimesh/chat.ex:125
-msgid "You are currently banned or timedout."
-msgstr ""
-
-#, elixir-format
-#: lib/glimesh/chat.ex:323 lib/glimesh/chat.ex:349 lib/glimesh/chat.ex:372
-#: lib/glimesh/chat.ex:396
-msgid "You do not have permission to moderate."
-msgstr ""
