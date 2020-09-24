@@ -1,0 +1,8 @@
+Hi <%= @user.displayname %>,
+
+Welcome to Glimesh and thank you for creating your
+account! We can't wait for you to get to know us, but
+first please confirm that this email address is a good
+way to reach you!
+
+<%= @url %>
