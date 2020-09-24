@@ -709,7 +709,7 @@ msgstr "Termina Abbonamento"
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:144
-#: lib/glimesh_web/templates/user_settings/stream.html.eex:44
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:56
 msgid "Update Settings"
 msgstr "Modifica Impostazioni"
 
@@ -970,7 +970,7 @@ msgid "Create Channel"
 msgstr "Crea Canale"
 
 #, elixir-format
-#: lib/glimesh_web/templates/user_settings/stream.html.eex:50
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:62
 msgid "Delete Channel"
 msgstr "Elimina Canale"
 
@@ -1260,13 +1260,39 @@ msgstr ""
 msgid "Unordered List"
 msgstr ""
 
-#, elixir-format, fuzzy
-#: lib/glimesh_web/templates/user_applications/index.html.eex:24
-msgid "Want to build a chat bot, a online tool, or other service that integrates with Glimesh? You're in the right place! Create an Application to get started and check out our API documentation if you need some guidance."
-msgstr "Vorresti costruire un bot per le chat, uno strumento online, o un altro servizio integrabile a Glimesh? Sei nel posto giusto! Crea un'applicazione per iniziare, e se ti serve una mano controlla la nostra documentazione API."
-
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:125
 #: lib/glimesh_web/live/user_live/stream.html.leex:78
 msgid "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the right hand corner!"
 msgstr "Benvenuto nel mio profilo! Non l'ho ancora personalizzato, ma posso farlo facilmente premendo il mio nome utente in alto a destra!"
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:48
+msgid "Block viewers from posting links?"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:43
+msgid "Should links automatically be clickable?"
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh/chat.ex:122
+msgid "This channel has links disabled!"
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/glimesh_web/templates/user_applications/index.html.eex:24
+msgid "Want to build a chat bot, an online tool, or other service that integrates with Glimesh? You're in the right place! Create an Application to get started and check out our API documentation if you need some guidance."
+msgstr "Vorresti costruire un bot per le chat, uno strumento online, o un altro servizio integrabile a Glimesh? Sei nel posto giusto! Crea un'applicazione per iniziare, e se ti serve una mano controlla la nostra documentazione API."
+
+#, elixir-format
+#: lib/glimesh/chat.ex:125
+msgid "You are currently banned or timedout."
+msgstr ""
+
+#, elixir-format
+#: lib/glimesh/chat.ex:323 lib/glimesh/chat.ex:349 lib/glimesh/chat.ex:372
+#: lib/glimesh/chat.ex:396
+msgid "You do not have permission to moderate."
+msgstr ""

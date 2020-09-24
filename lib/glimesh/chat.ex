@@ -92,12 +92,6 @@ defmodule Glimesh.Chat do
 
   """
   def create_chat_message(%Channel{} = channel, user, attrs \\ %{}) do
-    username = user.username
-
-    check_ban(channel, username)
-
-    check_timeout(channel, username)
-
     # Need to add this since phoenix likes strings and our tests don't use them :)
     message_contain_link_helper =
       if attrs["message"] do
@@ -115,16 +109,20 @@ defmodule Glimesh.Chat do
           true
       end
 
-    if create_message do
-      %ChatMessage{
-        channel: channel,
-        user: user
-      }
-      |> ChatMessage.changeset(attrs)
-      |> Repo.insert()
-      |> broadcast(:chat_message)
+    if can_create_chat_message(channel, user) do
+      if create_message do
+        %ChatMessage{
+          channel: channel,
+          user: user
+        }
+        |> ChatMessage.changeset(attrs)
+        |> Repo.insert()
+        |> broadcast(:chat_message)
+      else
+        throw_error_on_chat(gettext("This channel has links disabled!"), attrs)
+      end
     else
-      throw_error_on_chat(gettext("This channel has links disabled!"), attrs)
+      throw_error_on_chat(gettext("You are currently banned or timedout."), attrs)
     end
   end
 
@@ -132,7 +130,7 @@ defmodule Glimesh.Chat do
     case :ets.lookup(:banned_list, username) do
       [{^username, {channelid, banned}}] ->
         if channelid === channel.id and banned do
-          raise ArgumentError, message: "user must not be banned"
+          false
         else
           true
         end
@@ -146,7 +144,7 @@ defmodule Glimesh.Chat do
     case :ets.lookup(:timedout_list, username) do
       [{^username, {channelid, time}}] ->
         if channelid === channel.id and DateTime.compare(DateTime.utc_now(), time) !== :gt do
-          raise ArgumentError, message: "user must not be timedout"
+          false
         else
           true
         end
@@ -239,12 +237,14 @@ defmodule Glimesh.Chat do
       channel.user.id == user.id
   end
 
-  def can_create_chat_message?(%Channel{} = _, %User{} = user) do
+  def can_create_chat_message(%Channel{} = channel, %User{} = user) do
     username = user.username
+    not_baned = check_ban(channel, username)
+    not_timedout = check_timeout(channel, username)
 
-    case :ets.lookup(:banned_list, username) do
-      [{^username, _}] -> false
-      [] -> true
+    case [not_baned, not_timedout] do
+      [true, true] -> true
+      [_, _] -> false
     end
   end
 

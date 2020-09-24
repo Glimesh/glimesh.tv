@@ -81,6 +81,11 @@ defmodule Glimesh.ChatTest do
                  message: "#{@valid_attrs.message} #{user.username}"
                })
 
+      assert {:ok, %ChatMessage{} = chat_message} =
+               Chat.create_chat_message(channel_fixture(), user_fixture(), %{
+                 message: "#{@valid_attrs.message} @#{user.username}"
+               })
+
       assert Chat.user_in_message(user, chat_message)
     end
 
@@ -90,6 +95,11 @@ defmodule Glimesh.ChatTest do
       assert {:ok, %ChatMessage{} = chat_message} =
                Chat.create_chat_message(channel_fixture(), user, %{
                  message: "#{@valid_attrs.message} #{user.username}"
+               })
+
+      assert {:ok, %ChatMessage{} = chat_message} =
+               Chat.create_chat_message(channel_fixture(), user, %{
+                 message: "#{@valid_attrs.message} @#{user.username}"
                })
 
       assert false == Chat.user_in_message(user, chat_message)
@@ -169,7 +179,6 @@ defmodule Glimesh.ChatTest do
     end
 
     test "render_global_badge/1 check if badge should be Team Glimesh" do
-      channel = channel_fixture()
       assert {:safe, html_list} = Chat.render_global_badge(%User{id: 0, is_admin: true})
 
       assert [
@@ -281,7 +290,7 @@ defmodule Glimesh.ChatTest do
     end
 
     test "empty_chat_message/0 returns an empty chat_message" do
-      assert %Changeset{} = chat_message = Chat.empty_chat_message()
+      assert %Changeset{} = Chat.empty_chat_message()
     end
 
     test "ban_user/3 try and post while banned" do
@@ -290,9 +299,12 @@ defmodule Glimesh.ChatTest do
       assert {:ok, %ChannelModerationLog{} = moderation_log} =
                Chat.ban_user(channel, channel.user, user_fixture())
 
-      assert_raise ArgumentError, "user must not be banned", fn ->
-        Chat.create_chat_message(channel, moderation_log.user, @valid_attrs)
-      end
+      assert {:error, %Changeset{} = changeset} =
+               Chat.create_chat_message(channel, moderation_log.user, @valid_attrs)
+
+      assert [message: message] = changeset.errors
+      assert {error_text, [validation: :required]} = message
+      assert error_text == "You are currently banned or timedout."
     end
 
     test "ban_user/3 and then unban_user/3 and try to post" do
@@ -354,9 +366,12 @@ defmodule Glimesh.ChatTest do
                  DateTime.add(DateTime.utc_now(), 300)
                )
 
-      assert_raise ArgumentError, "user must not be timedout", fn ->
-        Chat.create_chat_message(channel, moderation_log.user, @valid_attrs)
-      end
+      assert {:error, %Changeset{} = changeset} =
+               Chat.create_chat_message(channel, moderation_log.user, @valid_attrs)
+
+      assert [message: message] = changeset.errors
+      assert {error_text, [validation: :required]} = message
+      assert error_text == "You are currently banned or timedout."
     end
 
     test "timeout_user/4 but does not have moderator privilegies" do
@@ -379,12 +394,26 @@ defmodule Glimesh.ChatTest do
       user_one = user_fixture()
       user_two = user_fixture()
       channel = channel_fixture()
-      chat_message_one = Chat.create_chat_message(channel, user_one, @valid_attrs)
-      chat_message_two = Chat.create_chat_message(channel, user_one, @valid_attrs)
-      chat_message_three = Chat.create_chat_message(channel, user_two, @valid_attrs)
-      chat_message_four = Chat.create_chat_message(channel, user_two, @valid_attrs)
+      Chat.create_chat_message(channel, user_one, @valid_attrs)
+      Chat.create_chat_message(channel, user_one, @valid_attrs)
+      Chat.create_chat_message(channel, user_two, @valid_attrs)
+      Chat.create_chat_message(channel, user_two, @valid_attrs)
       assert length(Chat.list_chat_user_messages(channel, user_one)) == 2
       assert length(Chat.list_chat_user_messages(channel, user_two)) == 2
+    end
+
+    test "can_create_chat_message/2 check if user can post" do
+      assert Chat.can_create_chat_message(channel_fixture(), user_fixture())
+    end
+
+    test "can_create_chat_message/2 check if user cannot post" do
+      channel = channel_fixture()
+      user = user_fixture()
+      Chat.ban_user(channel, channel.user, user)
+      assert Chat.can_create_chat_message(channel, user) == false
+      Chat.unban_user(channel, channel.user, user)
+      Chat.timeout_user(channel, channel.user, user, DateTime.add(DateTime.utc_now(), 300))
+      assert Chat.can_create_chat_message(channel, user) == false
     end
   end
 end
