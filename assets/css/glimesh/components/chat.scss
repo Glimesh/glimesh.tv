@@ -166,6 +166,13 @@ $box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.3);
                     border-radius: 50%;
                 }
 
+                a {
+                    color: var(--chat-color);
+                    &:hover{
+                        color: var(--chat-color);
+                    }
+                }
+
                 &.mention {
                     background-color: var(--chat-mention);
                 }

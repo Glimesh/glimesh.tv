@@ -248,12 +248,12 @@ defmodule Glimesh.Chat do
     end
   end
 
-  def render_stream_badge(stream, user) do
+  def render_stream_badge(channel, user) do
     cond do
-      stream.id === user.id and user.is_admin === false ->
+      channel.user.id === user.id and user.is_admin === false ->
         Tag.content_tag(:span, "Streamer", class: "badge badge-light")
 
-      can_moderate?(stream, user) and user.is_admin === false ->
+      can_moderate?(channel, user) and user.is_admin === false ->
         Tag.content_tag(:span, "Moderator", class: "badge badge-info")
 
       user.id === 0 ->
