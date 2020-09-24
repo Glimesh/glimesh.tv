@@ -94,29 +94,9 @@ defmodule Glimesh.Chat do
   def create_chat_message(%Channel{} = channel, user, attrs \\ %{}) do
     username = user.username
 
-    case :ets.lookup(:banned_list, username) do
-      [{^username, {channelid, banned}}] ->
-        if channelid === channel.id and banned do
-          raise ArgumentError, message: "user must not be banned"
-        else
-          true
-        end
+    check_ban(channel, username)
 
-      [] ->
-        true
-    end
-
-    case :ets.lookup(:timedout_list, username) do
-      [{^username, {channelid, time}}] ->
-        if channelid === channel.id and DateTime.compare(DateTime.utc_now(), time) !== :gt do
-          raise ArgumentError, message: "user must not be timedout"
-        else
-          true
-        end
-
-      [] ->
-        true
-    end
+    check_timeout(channel, username)
 
     # Need to add this since phoenix likes strings and our tests don't use them :)
     message_contain_link_helper =
@@ -145,6 +125,34 @@ defmodule Glimesh.Chat do
       |> broadcast(:chat_message)
     else
       throw_error_on_chat(gettext("This channel has links disabled!"), attrs)
+    end
+  end
+
+  defp check_ban(channel, username) do
+    case :ets.lookup(:banned_list, username) do
+      [{^username, {channelid, banned}}] ->
+        if channelid === channel.id and banned do
+          raise ArgumentError, message: "user must not be banned"
+        else
+          true
+        end
+
+      [] ->
+        true
+    end
+  end
+
+  defp check_timeout(channel, username) do
+    case :ets.lookup(:timedout_list, username) do
+      [{^username, {channelid, time}}] ->
+        if channelid === channel.id and DateTime.compare(DateTime.utc_now(), time) !== :gt do
+          raise ArgumentError, message: "user must not be timedout"
+        else
+          true
+        end
+
+      [] ->
+        true
     end
   end
 
@@ -314,7 +322,6 @@ defmodule Glimesh.Chat do
     if can_moderate?(channel, moderator) === false do
       throw_error_on_chat(gettext("You do not have permission to moderate."))
     else
-
       log =
         %ChannelModerationLog{
           channel: channel,
@@ -341,7 +348,6 @@ defmodule Glimesh.Chat do
     if can_moderate?(channel, moderator) === false do
       throw_error_on_chat(gettext("You do not have permission to moderate."))
     else
-
       log =
         %ChannelModerationLog{
           channel: channel,
@@ -365,24 +371,23 @@ defmodule Glimesh.Chat do
     if can_moderate?(channel, moderator) === false do
       throw_error_on_chat(gettext("You do not have permission to moderate."))
     else
+      log =
+        %ChannelModerationLog{
+          channel: channel,
+          moderator: moderator,
+          user: user_to_unban
+        }
+        |> ChannelModerationLog.changeset(%{action: "unban"})
+        |> Repo.insert()
 
-    log =
-      %ChannelModerationLog{
-        channel: channel,
-        moderator: moderator,
-        user: user_to_unban
-      }
-      |> ChannelModerationLog.changeset(%{action: "unban"})
-      |> Repo.insert()
+      :ets.delete(:banned_list, user_to_unban.username)
 
-    :ets.delete(:banned_list, user_to_unban.username)
+      broadcast(
+        {:ok, %{channel: channel, user: user_to_unban, moderator: moderator}},
+        :user_unbanned
+      )
 
-    broadcast(
-      {:ok, %{channel: channel, user: user_to_unban, moderator: moderator}},
-      :user_unbanned
-    )
-
-    log
+      log
     end
   end
 
@@ -390,21 +395,20 @@ defmodule Glimesh.Chat do
     if can_moderate?(channel, moderator) === false do
       throw_error_on_chat(gettext("You do not have permission to moderate."))
     else
+      log =
+        %ChannelModerationLog{
+          channel: channel,
+          moderator: moderator,
+          user: moderator
+        }
+        |> ChannelModerationLog.changeset(%{action: "clear_chat"})
+        |> Repo.insert()
 
-    log =
-      %ChannelModerationLog{
-        channel: channel,
-        moderator: moderator,
-        user: moderator
-      }
-      |> ChannelModerationLog.changeset(%{action: "clear_chat"})
-      |> Repo.insert()
+      delete_all_chat_messages(channel)
 
-    delete_all_chat_messages(channel)
+      broadcast({:ok, %{channel: channel, moderator: moderator}}, :chat_cleared)
 
-    broadcast({:ok, %{channel: channel, moderator: moderator}}, :chat_cleared)
-
-    log
+      log
     end
   end
 
@@ -416,6 +420,7 @@ defmodule Glimesh.Chat do
         %ChatMessage{} -> data.channel_id
         _ -> data.channel.id
       end
+
     Glimesh.Events.broadcast(
       Streams.get_subscribe_topic(:chat, channel_id),
       Streams.get_subscribe_topic(:chat),
@@ -445,14 +450,14 @@ defmodule Glimesh.Chat do
 
   defp throw_error_on_chat(error_message) do
     {:error,
-      %Ecto.Changeset{
-        action: :validate,
-        changes: %{message: ""},
-        errors: [
-          message: {error_message, [validation: :required]}
-        ],
-        data: %Glimesh.Chat.ChatMessage{},
-        valid?: false
-      }}
+     %Ecto.Changeset{
+       action: :validate,
+       changes: %{message: ""},
+       errors: [
+         message: {error_message, [validation: :required]}
+       ],
+       data: %Glimesh.Chat.ChatMessage{},
+       valid?: false
+     }}
   end
 end

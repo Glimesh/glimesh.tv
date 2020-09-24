@@ -46,6 +46,7 @@ defmodule Glimesh.ChatTest do
     test "create_chat_message/1 with valid data when the channel has links blocked creates a chat_message" do
       channel = channel_fixture()
       {:ok, channel} = Streams.update_channel(channel, %{block_links: true})
+
       assert {:ok, %ChatMessage{} = chat_message} =
                Chat.create_chat_message(channel_fixture(), user_fixture(), @valid_attrs)
 
@@ -60,41 +61,53 @@ defmodule Glimesh.ChatTest do
     test "create_chat_message/1 with a link when channel has links blocked returns error changeset" do
       channel = channel_fixture()
       {:ok, channel} = Streams.update_channel(channel, %{block_links: true})
+
       assert {:error, %Changeset{}} =
                Chat.create_chat_message(channel, user_fixture(), @link_containing_attrs)
     end
 
     test "create_chat_message/1 with a link when channel allows links returns a chat_message" do
       assert {:ok, %ChatMessage{} = chat_message} =
-              Chat.create_chat_message(channel_fixture(), user_fixture(), @link_containing_attrs)
+               Chat.create_chat_message(channel_fixture(), user_fixture(), @link_containing_attrs)
 
       assert chat_message.message == @link_containing_attrs.message
     end
 
     test "user_in_message/2 check if user is in message" do
       user = user_fixture()
+
       assert {:ok, %ChatMessage{} = chat_message} =
-        Chat.create_chat_message(channel_fixture(), user_fixture(), %{message: "#{@valid_attrs.message} #{user.username}"})
+               Chat.create_chat_message(channel_fixture(), user_fixture(), %{
+                 message: "#{@valid_attrs.message} #{user.username}"
+               })
+
       assert Chat.user_in_message(user, chat_message)
     end
 
     test "user_in_message/2 check if user is in message but is same user" do
       user = user_fixture()
+
       assert {:ok, %ChatMessage{} = chat_message} =
-        Chat.create_chat_message(channel_fixture(), user, %{message: "#{@valid_attrs.message} #{user.username}"})
+               Chat.create_chat_message(channel_fixture(), user, %{
+                 message: "#{@valid_attrs.message} #{user.username}"
+               })
+
       assert false == Chat.user_in_message(user, chat_message)
     end
 
     test "user_in_message/2 check if user is not in message" do
       user = user_fixture()
+
       assert {:ok, %ChatMessage{} = chat_message} =
-        Chat.create_chat_message(channel_fixture(), user, @valid_attrs)
+               Chat.create_chat_message(channel_fixture(), user, @valid_attrs)
+
       assert false == Chat.user_in_message(user, chat_message)
     end
 
     test "user_in_message/2 check if right response on nil user" do
       assert {:ok, %ChatMessage{} = chat_message} =
-        Chat.create_chat_message(channel_fixture(), user_fixture(), @valid_attrs)
+               Chat.create_chat_message(channel_fixture(), user_fixture(), @valid_attrs)
+
       assert false == Chat.user_in_message(nil, chat_message)
     end
 
@@ -103,8 +116,20 @@ defmodule Glimesh.ChatTest do
     end
 
     test "render_stream_badge/2 check if badge should be system" do
-      assert {:safe, html_list} = Chat.render_stream_badge(channel_fixture(), %User{id: 0, is_admin: false})
-      assert [60, "span", [[32, "class", 61, 34, "badge badge-danger", 34]], 62, "System", 60, 47, "span", 62] = html_list
+      assert {:safe, html_list} =
+               Chat.render_stream_badge(channel_fixture(), %User{id: 0, is_admin: false})
+
+      assert [
+               60,
+               "span",
+               [[32, "class", 61, 34, "badge badge-danger", 34]],
+               62,
+               "System",
+               60,
+               47,
+               "span",
+               62
+             ] = html_list
     end
 
     test "render_stream_badge/2 check if badge should be moderator" do
@@ -112,19 +137,52 @@ defmodule Glimesh.ChatTest do
       user = user_fixture()
       assert {:ok, _channel_moderator} = Streams.add_moderator(channel, user)
       assert {:safe, html_list} = Chat.render_stream_badge(channel, user)
-      assert [60, "span", [[32, "class", 61, 34, "badge badge-info", 34]], 62, "Moderator", 60, 47, "span", 62] = html_list
+
+      assert [
+               60,
+               "span",
+               [[32, "class", 61, 34, "badge badge-info", 34]],
+               62,
+               "Moderator",
+               60,
+               47,
+               "span",
+               62
+             ] = html_list
     end
 
     test "render_stream_badge/2 check if badge should be streamer" do
       channel = channel_fixture()
       assert {:safe, html_list} = Chat.render_stream_badge(channel, channel.user)
-      assert [60, "span", [[32, "class", 61, 34, "badge badge-light", 34]], 62, "Streamer", 60, 47, "span", 62] = html_list
+
+      assert [
+               60,
+               "span",
+               [[32, "class", 61, 34, "badge badge-light", 34]],
+               62,
+               "Streamer",
+               60,
+               47,
+               "span",
+               62
+             ] = html_list
     end
 
     test "render_global_badge/1 check if badge should be Team Glimesh" do
       channel = channel_fixture()
       assert {:safe, html_list} = Chat.render_global_badge(%User{id: 0, is_admin: true})
-      assert [60, "span", [[32, "class", 61, 34, "badge badge-danger", 34]], 62, "Team Glimesh", 60, 47, "span", 62] = html_list
+
+      assert [
+               60,
+               "span",
+               [[32, "class", 61, 34, "badge badge-danger", 34]],
+               62,
+               "Team Glimesh",
+               60,
+               47,
+               "span",
+               62
+             ] = html_list
     end
 
     test "render_global_badge/1 check if badge should be nothing" do
@@ -164,33 +222,57 @@ defmodule Glimesh.ChatTest do
     test "delete_chat_messages_for_user/2 check if chat_messages from user are removed" do
       channel = channel_fixture()
       user = user_fixture()
-      assert {:ok, %ChatMessage{} = chat_message_one} = Chat.create_chat_message(channel, user, @valid_attrs)
-      assert {:ok, %ChatMessage{} = chat_message_two} = Chat.create_chat_message(channel, user, @valid_attrs)
-      assert {:ok, %ChatMessage{} = chat_message_three} = Chat.create_chat_message(channel, user, @valid_attrs)
-      assert {:ok, %ChatMessage{} = chat_message_flour} = Chat.create_chat_message(channel, user, @valid_attrs)
-      assert {:ok, %ChatMessage{} = chat_message_five} = Chat.create_chat_message(channel, user, @valid_attrs)
+
+      assert {:ok, %ChatMessage{} = chat_message_one} =
+               Chat.create_chat_message(channel, user, @valid_attrs)
+
+      assert {:ok, %ChatMessage{} = chat_message_two} =
+               Chat.create_chat_message(channel, user, @valid_attrs)
+
+      assert {:ok, %ChatMessage{} = chat_message_three} =
+               Chat.create_chat_message(channel, user, @valid_attrs)
+
+      assert {:ok, %ChatMessage{} = chat_message_flour} =
+               Chat.create_chat_message(channel, user, @valid_attrs)
+
+      assert {:ok, %ChatMessage{} = chat_message_five} =
+               Chat.create_chat_message(channel, user, @valid_attrs)
+
       assert {5, nil} = Chat.delete_chat_messages_for_user(channel, user)
+
       assert Chat.get_chat_message!(chat_message_one.id).is_visible == false &&
-        Chat.get_chat_message!(chat_message_two.id).is_visible == false &&
-        Chat.get_chat_message!(chat_message_three.id).is_visible == false &&
-        Chat.get_chat_message!(chat_message_flour.id).is_visible == false &&
-        Chat.get_chat_message!(chat_message_five.id).is_visible == false
+               Chat.get_chat_message!(chat_message_two.id).is_visible == false &&
+               Chat.get_chat_message!(chat_message_three.id).is_visible == false &&
+               Chat.get_chat_message!(chat_message_flour.id).is_visible == false &&
+               Chat.get_chat_message!(chat_message_five.id).is_visible == false
     end
 
     test "delete_all_chat_messages/1 check if chat_messages from channel are removed" do
       channel = channel_fixture()
       user = user_fixture()
-      assert {:ok, %ChatMessage{} = chat_message_one} = Chat.create_chat_message(channel, user, @valid_attrs)
-      assert {:ok, %ChatMessage{} = chat_message_two} = Chat.create_chat_message(channel, user, @valid_attrs)
-      assert {:ok, %ChatMessage{} = chat_message_three} = Chat.create_chat_message(channel, channel.user, @valid_attrs)
-      assert {:ok, %ChatMessage{} = chat_message_four} = Chat.create_chat_message(channel, channel.user, @valid_attrs)
-      assert {:ok, %ChatMessage{} = chat_message_five} = Chat.create_chat_message(channel, user, @valid_attrs)
+
+      assert {:ok, %ChatMessage{} = chat_message_one} =
+               Chat.create_chat_message(channel, user, @valid_attrs)
+
+      assert {:ok, %ChatMessage{} = chat_message_two} =
+               Chat.create_chat_message(channel, user, @valid_attrs)
+
+      assert {:ok, %ChatMessage{} = chat_message_three} =
+               Chat.create_chat_message(channel, channel.user, @valid_attrs)
+
+      assert {:ok, %ChatMessage{} = chat_message_four} =
+               Chat.create_chat_message(channel, channel.user, @valid_attrs)
+
+      assert {:ok, %ChatMessage{} = chat_message_five} =
+               Chat.create_chat_message(channel, user, @valid_attrs)
+
       assert {5, nil} = Chat.delete_all_chat_messages(channel)
+
       assert Chat.get_chat_message!(chat_message_one.id).is_visible == false &&
-        Chat.get_chat_message!(chat_message_two.id).is_visible == false &&
-        Chat.get_chat_message!(chat_message_three.id).is_visible == false &&
-        Chat.get_chat_message!(chat_message_four.id).is_visible == false &&
-        Chat.get_chat_message!(chat_message_five.id).is_visible == false
+               Chat.get_chat_message!(chat_message_two.id).is_visible == false &&
+               Chat.get_chat_message!(chat_message_three.id).is_visible == false &&
+               Chat.get_chat_message!(chat_message_four.id).is_visible == false &&
+               Chat.get_chat_message!(chat_message_five.id).is_visible == false
     end
 
     test "change_chat_message/1 returns a chat_message changeset" do
@@ -204,20 +286,34 @@ defmodule Glimesh.ChatTest do
 
     test "ban_user/3 try and post while banned" do
       channel = channel_fixture()
-      assert {:ok, %ChannelModerationLog{} = moderation_log} = Chat.ban_user(channel, channel.user, user_fixture())
-      assert_raise ArgumentError, "user must not be banned", fn -> Chat.create_chat_message(channel, moderation_log.user, @valid_attrs) end
+
+      assert {:ok, %ChannelModerationLog{} = moderation_log} =
+               Chat.ban_user(channel, channel.user, user_fixture())
+
+      assert_raise ArgumentError, "user must not be banned", fn ->
+        Chat.create_chat_message(channel, moderation_log.user, @valid_attrs)
+      end
     end
 
     test "ban_user/3 and then unban_user/3 and try to post" do
       channel = channel_fixture()
-      assert {:ok, %ChannelModerationLog{} = moderation_log} = Chat.ban_user(channel, channel.user, user_fixture())
-      assert {:ok, %ChannelModerationLog{}} = Chat.unban_user(channel, channel.user, moderation_log.user)
-      assert {:ok, %ChatMessage{}} = Chat.create_chat_message(channel, moderation_log.user, @valid_attrs)
+
+      assert {:ok, %ChannelModerationLog{} = moderation_log} =
+               Chat.ban_user(channel, channel.user, user_fixture())
+
+      assert {:ok, %ChannelModerationLog{}} =
+               Chat.unban_user(channel, channel.user, moderation_log.user)
+
+      assert {:ok, %ChatMessage{}} =
+               Chat.create_chat_message(channel, moderation_log.user, @valid_attrs)
     end
 
     test "ban_user/3 but does not have moderator privilegies" do
       channel = channel_fixture()
-      assert {:error, %Changeset{} = changeset} = Chat.ban_user(channel, user_fixture(), user_fixture())
+
+      assert {:error, %Changeset{} = changeset} =
+               Chat.ban_user(channel, user_fixture(), user_fixture())
+
       assert [message: message] = changeset.errors
       assert {error_text, [validation: :required]} = message
       assert error_text == "You do not have permission to moderate."
@@ -225,7 +321,10 @@ defmodule Glimesh.ChatTest do
 
     test "unban_user/3 but does not have moderator privilegies" do
       channel = channel_fixture()
-      assert {:error, %Changeset{} = changeset} = Chat.unban_user(channel, user_fixture(), user_fixture())
+
+      assert {:error, %Changeset{} = changeset} =
+               Chat.unban_user(channel, user_fixture(), user_fixture())
+
       assert [message: message] = changeset.errors
       assert {error_text, [validation: :required]} = message
       assert error_text == "You do not have permission to moderate."
@@ -246,13 +345,31 @@ defmodule Glimesh.ChatTest do
 
     test "timeout_user/4 try and post while timedout" do
       channel = channel_fixture()
-      assert {:ok, %ChannelModerationLog{} = moderation_log} = Chat.timeout_user(channel, channel.user, user_fixture(), DateTime.add(DateTime.utc_now(), 300))
-      assert_raise ArgumentError, "user must not be timedout", fn -> Chat.create_chat_message(channel, moderation_log.user, @valid_attrs) end
+
+      assert {:ok, %ChannelModerationLog{} = moderation_log} =
+               Chat.timeout_user(
+                 channel,
+                 channel.user,
+                 user_fixture(),
+                 DateTime.add(DateTime.utc_now(), 300)
+               )
+
+      assert_raise ArgumentError, "user must not be timedout", fn ->
+        Chat.create_chat_message(channel, moderation_log.user, @valid_attrs)
+      end
     end
 
     test "timeout_user/4 but does not have moderator privilegies" do
       channel = channel_fixture()
-      assert {:error, %Changeset{} = changeset} = Chat.timeout_user(channel, user_fixture(), user_fixture(), DateTime.add(DateTime.utc_now(), 300))
+
+      assert {:error, %Changeset{} = changeset} =
+               Chat.timeout_user(
+                 channel,
+                 user_fixture(),
+                 user_fixture(),
+                 DateTime.add(DateTime.utc_now(), 300)
+               )
+
       assert [message: message] = changeset.errors
       assert {error_text, [validation: :required]} = message
       assert error_text == "You do not have permission to moderate."
