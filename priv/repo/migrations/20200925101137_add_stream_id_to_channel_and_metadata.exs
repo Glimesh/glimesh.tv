@@ -11,6 +11,7 @@ defmodule Glimesh.Repo.Migrations.AddStreamIdToChannelAndMetadata do
 
       add :ingest_server, :string
       add :ingest_viewers, :integer
+      add :stream_time_seconds, :integer
 
       add :source_bitrate, :integer
       add :source_ping, :integer

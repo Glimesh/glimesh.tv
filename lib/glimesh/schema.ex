@@ -15,6 +15,7 @@ defmodule Glimesh.Schema do
   input_object :stream_metadata_input do
     field :ingest_server, :string
     field :ingest_viewers, :integer
+    field :stream_time_seconds, :integer
 
     field :source_bitrate, :integer
     field :source_ping, :integer

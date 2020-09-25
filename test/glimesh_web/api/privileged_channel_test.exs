@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.Api.ProtectedChannelTest do
+defmodule GlimeshWeb.Api.PrivilegedChannelTest do
   use GlimeshWeb.ConnCase
 
   alias Glimesh.Streams
@@ -199,6 +199,7 @@ defmodule GlimeshWeb.Api.ProtectedChannelTest do
               audioCodec: "mp3",
               ingestServer: "test",
               ingestViewers: 32,
+              streamTimeSeconds: 1024,
               lostPackets: 0,
               nackPackets: 0,
               recvPackets: 100,

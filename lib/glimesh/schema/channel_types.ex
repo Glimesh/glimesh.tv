@@ -173,6 +173,7 @@ defmodule Glimesh.Schema.ChannelTypes do
 
     field :title, :string, description: "The title of the stream."
     field :category, non_null(:category), resolve: dataloader(Repo)
+    field :metadata, list_of(:stream_metadata), resolve: dataloader(Repo)
 
     field :started_at, non_null(:naive_datetime)
     field :ended_at, :naive_datetime
@@ -202,6 +203,7 @@ defmodule Glimesh.Schema.ChannelTypes do
 
     field :ingest_server, :string
     field :ingest_viewers, :string
+    field :stream_time_seconds, :integer
 
     field :source_bitrate, :integer
     field :source_ping, :integer

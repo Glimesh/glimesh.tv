@@ -8,6 +8,7 @@ defmodule Glimesh.Streams.StreamMetadata do
 
     field :ingest_server, :string
     field :ingest_viewers, :integer
+    field :stream_time_seconds, :integer
 
     field :source_bitrate, :integer
     field :source_ping, :integer
@@ -32,6 +33,7 @@ defmodule Glimesh.Streams.StreamMetadata do
     |> cast(attrs, [
       :ingest_server,
       :ingest_viewers,
+      :stream_time_seconds,
       :source_bitrate,
       :source_ping,
       :recv_packets,

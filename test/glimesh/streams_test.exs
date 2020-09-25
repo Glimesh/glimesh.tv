@@ -203,6 +203,7 @@ defmodule Glimesh.StreamsTest do
         audio_codec: "mp3",
         ingest_server: "test",
         ingest_viewers: 32,
+        stream_time_seconds: 1024,
         lost_packets: 0,
         nack_packets: 0,
         recv_packets: 100,
