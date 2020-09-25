@@ -22,6 +22,8 @@ defmodule Glimesh.Streams.Stream do
     field :new_subscribers, :integer
     field :resub_subscribers, :integer
 
+    has_many :metadata, Glimesh.Streams.StreamMetadata
+
     timestamps()
   end
 

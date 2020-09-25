@@ -10,7 +10,7 @@ defmodule Glimesh.Repo.Migrations.AddStreamIdToChannelAndMetadata do
       add :stream_id, references(:streams, on_delete: :delete_all), null: false
 
       add :ingest_server, :string
-      add :ingest_viewers, :string
+      add :ingest_viewers, :integer
 
       add :source_bitrate, :integer
       add :source_ping, :integer

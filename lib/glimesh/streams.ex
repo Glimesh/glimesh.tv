@@ -445,4 +445,18 @@ defmodule Glimesh.Streams do
     |> Glimesh.Streams.Stream.changeset(attrs)
     |> Repo.update()
   end
+
+  alias Glimesh.Streams.StreamMetadata
+
+  def log_stream_metadata(%Channel{} = channel, attrs \\ %{}) do
+    channel = Repo.preload(channel, [:stream])
+
+    %StreamMetadata{
+      stream: channel.stream
+    }
+    |> StreamMetadata.changeset(attrs)
+    |> Repo.insert()
+
+    {:ok, channel.stream |> Repo.preload([:metadata])}
+  end
 end

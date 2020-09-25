@@ -63,19 +63,27 @@ defmodule Glimesh.Schema.ChannelTypes do
       resolve(&StreamsResolver.end_stream/3)
     end
 
-    @desc "Create a stream"
-    field :create_stream, type: :stream do
+    @desc "Update a stream's metadata"
+    field :log_stream_metadata, type: :stream do
       arg(:channel_id, non_null(:id))
+      arg(:metadata, non_null(:stream_metadata_input))
 
-      resolve(&StreamsResolver.create_stream/3)
+      resolve(&StreamsResolver.log_stream_metadata/3)
     end
 
-    @desc "Update a stream"
-    field :update_stream, type: :stream do
-      arg(:id, non_null(:id))
+    # @desc "Create a stream"
+    # field :create_stream, type: :stream do
+    #   arg(:channel_id, non_null(:id))
 
-      resolve(&StreamsResolver.update_stream/3)
-    end
+    #   resolve(&StreamsResolver.create_stream/3)
+    # end
+
+    # @desc "Update a stream"
+    # field :update_stream, type: :stream do
+    #   arg(:id, non_null(:id))
+
+    #   resolve(&StreamsResolver.update_stream/3)
+    # end
   end
 
   object :streams_subscriptions do
@@ -181,6 +189,34 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :avg_chatters, :integer
     field :new_subscribers, :integer
     field :resub_subscribers, :integer
+
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+  end
+
+  @desc "A single instance of stream metadata."
+  object :stream_metadata do
+    field :id, :id
+
+    field :stream, non_null(:stream), resolve: dataloader(Repo)
+
+    field :ingest_server, :string
+    field :ingest_viewers, :string
+
+    field :source_bitrate, :integer
+    field :source_ping, :integer
+
+    field :recv_packets, :integer
+    field :lost_packets, :integer
+    field :nack_packets, :integer
+
+    field :vendor_name, :string
+    field :vendor_version, :string
+
+    field :video_codec, :string
+    field :video_height, :integer
+    field :video_width, :integer
+    field :audio_codec, :string
 
     field :inserted_at, non_null(:naive_datetime)
     field :updated_at, non_null(:naive_datetime)

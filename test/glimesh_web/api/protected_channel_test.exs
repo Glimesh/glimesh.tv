@@ -29,23 +29,37 @@ defmodule GlimeshWeb.Api.ProtectedChannelTest do
   }
   """
 
-  @create_stream_mutation """
-  mutation createStream($channelId: ID!) {
-    createStream(channelId: $channelId) {
-      id
+  @start_stream_query """
+  mutation StartStream($channelId: ID!) {
+    startStream(channelId: $channelId) {
+      channel {
+        id
+      }
     }
   }
   """
 
-  @update_stream_mutation """
-  mutation updateStream($streamId: ID!) {
-    updateStream(id: $streamId) {
-      id
+  @end_stream_query """
+  mutation EndStream($channelId: ID!) {
+    endStream(channelId: $channelId) {
+      channel {
+        id
+      }
     }
   }
   """
 
-  describe "media server api is unavailable unless admin" do
+  @log_stream_metadata_query """
+  mutation LogStreamMetadata($channelId: ID!, $metadata: ChannelMetadataInput!) {
+    logStreamMetadata(channelId: $channelId, metadata: $metadata) {
+      channel {
+        id
+      }
+    }
+  }
+  """
+
+  describe "channel update apis are unavailable unless admin" do
     setup [:register_and_set_user_token, :create_channel]
 
     test "does not return a stream key value unless user is admin", %{
@@ -85,9 +99,28 @@ defmodule GlimeshWeb.Api.ProtectedChannelTest do
                }
              ] = json_response(conn, 200)["errors"]
     end
+
+    test "cannot access a mutation unless user is admin", %{
+      conn: conn,
+      channel: channel
+    } do
+      conn =
+        post(conn, "/api", %{
+          "query" => @start_stream_query,
+          "variables" => %{channelId: "#{channel.id}"}
+        })
+
+      assert [
+               %{
+                 "locations" => _,
+                 "message" => "Access denied",
+                 "path" => _
+               }
+             ] = json_response(conn, 200)["errors"]
+    end
   end
 
-  describe "media server api" do
+  describe "privileged channel query api" do
     setup [:register_admin_and_set_user_token, :create_channel]
 
     test "returns a channel by id", %{conn: conn, channel: channel} do
@@ -123,33 +156,65 @@ defmodule GlimeshWeb.Api.ProtectedChannelTest do
                }
              }
     end
+  end
 
-    test "creates a stream by channel id", %{conn: conn, channel: channel} do
+  describe "privileged start stop stream functions" do
+    setup [:register_admin_and_set_user_token, :create_channel]
+
+    test "can start stream", %{conn: conn, channel: channel} do
       conn =
         post(conn, "/api", %{
-          "query" => @create_stream_mutation,
-          "variables" => %{channelId: channel.id}
+          "query" => @start_stream_query,
+          "variables" => %{channelId: "#{channel.id}"}
         })
 
-      assert %{"createStream" => %{"id" => _}} = json_response(conn, 200)["data"]
+      assert json_response(conn, 200)["data"]["startStream"] == %{
+               "channel" => %{"id" => "#{channel.id}"}
+             }
     end
 
-    test "updates a stream by channel id", %{conn: conn, channel: channel} do
-      {:ok, stream} = Streams.create_stream(channel)
+    test "can end stream", %{conn: conn, channel: channel} do
+      {:ok, _} = Streams.start_stream(channel)
 
       conn =
         post(conn, "/api", %{
-          "query" => @update_stream_mutation,
-          "variables" => %{streamId: stream.id}
+          "query" => @end_stream_query,
+          "variables" => %{channelId: "#{channel.id}"}
         })
 
-      assert json_response(conn, 200) == %{
-               "data" => %{
-                 "updateStream" => %{
-                   # ID's come back as strings
-                   "id" => "#{stream.id}"
-                 }
-               }
+      assert json_response(conn, 200)["data"]["endStream"] == %{
+               "channel" => %{"id" => "#{channel.id}"}
+             }
+    end
+
+    test "can log stream metadata", %{conn: conn, channel: channel} do
+      {:ok, _} = Streams.start_stream(channel)
+
+      conn =
+        post(conn, "/api", %{
+          "query" => @log_stream_metadata_query,
+          "variables" => %{
+            channelId: "#{channel.id}",
+            metadata: %{
+              audioCodec: "mp3",
+              ingestServer: "test",
+              ingestViewers: 32,
+              lostPackets: 0,
+              nackPackets: 0,
+              recvPackets: 100,
+              sourceBitrate: 5000,
+              sourcePing: 100,
+              vendorName: "OBS",
+              vendorVersion: "1.0.0",
+              videoCodec: "mp4",
+              videoHeight: 1024,
+              videoWidth: 768
+            }
+          }
+        })
+
+      assert json_response(conn, 200)["data"]["logStreamMetadata"] == %{
+               "channel" => %{"id" => "#{channel.id}"}
              }
     end
   end

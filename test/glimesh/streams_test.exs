@@ -195,5 +195,30 @@ defmodule Glimesh.StreamsTest do
       assert new_channel.status == "offline"
       assert new_channel.stream_id == nil
     end
+
+    test "log_stream_metadata/1 successfully logs some metadata", %{channel: channel} do
+      {:ok, _} = Streams.start_stream(channel)
+
+      incoming_attrs = %{
+        audio_codec: "mp3",
+        ingest_server: "test",
+        ingest_viewers: 32,
+        lost_packets: 0,
+        nack_packets: 0,
+        recv_packets: 100,
+        source_bitrate: 5000,
+        source_ping: 100,
+        vendor_name: "OBS",
+        vendor_version: "1.0.0",
+        video_codec: "mp4",
+        video_height: 1024,
+        video_width: 768
+      }
+
+      fresh_channel = Streams.get_channel!(channel.id)
+      {:ok, stream} = Streams.log_stream_metadata(fresh_channel, incoming_attrs)
+
+      assert incoming_attrs = hd(stream.metadata)
+    end
   end
 end
