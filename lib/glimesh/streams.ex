@@ -390,7 +390,26 @@ defmodule Glimesh.Streams do
   Also sends notifications
   """
   def start_stream(%Channel{} = channel) do
+    # 1. Create Stream
+    {:ok, stream} =
+      create_stream(channel, %{
+        title: channel.title,
+        category_id: channel.category_id,
+        started_at: DateTime.utc_now() |> DateTime.to_naive()
+      })
+
+    # 2. Change Channel to use Stream
+    # 3. Change Channel to Live
     channel
+    |> Channel.start_changeset(%{
+      stream_id: stream.id
+    })
+    |> Repo.update()
+
+    # 4. Send Notifications
+    # Todo
+
+    {:ok, stream}
   end
 
   @doc """
@@ -399,7 +418,18 @@ defmodule Glimesh.Streams do
   Archives the stream
   """
   def end_stream(%Channel{} = channel) do
+    channel = Repo.preload(channel, [:stream])
+
+    {:ok, stream} =
+      update_stream(channel.stream, %{
+        ended_at: DateTime.utc_now() |> DateTime.to_naive()
+      })
+
     channel
+    |> Channel.stop_changeset(%{})
+    |> Repo.update()
+
+    {:ok, stream}
   end
 
   def create_stream(%Channel{} = channel, attrs \\ %{}) do

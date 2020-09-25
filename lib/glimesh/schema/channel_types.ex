@@ -166,8 +166,8 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :title, :string, description: "The title of the stream."
     field :category, non_null(:category), resolve: dataloader(Repo)
 
-    field :started_at, non_null(:datetime)
-    field :ended_at, :datetime
+    field :started_at, non_null(:naive_datetime)
+    field :ended_at, :naive_datetime
 
     # field :viewers, :viewers, resolve: dataloader(Repo)
     # field :chatters, :chatters, resolve: dataloader(Repo)

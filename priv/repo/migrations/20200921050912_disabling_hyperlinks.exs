@@ -6,6 +6,5 @@ defmodule Glimesh.Repo.Migrations.DisablingHyperlinks do
       add :disable_hyperlinks, :boolean, default: false
       add :block_links, :boolean, default: false
     end
-
   end
 end

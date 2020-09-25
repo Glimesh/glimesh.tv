@@ -7,6 +7,8 @@ defmodule Glimesh.Streams.Channel do
     belongs_to :user, Glimesh.Accounts.User
     belongs_to :category, Glimesh.Streams.Category
     belongs_to :streamer, Glimesh.Accounts.User, source: :user_id
+    belongs_to :stream, Glimesh.Streams.Stream
+    has_many :streams, Glimesh.Streams.Stream
 
     field :title, :string, default: "Live Stream!"
     field :status, :string
@@ -33,11 +35,25 @@ defmodule Glimesh.Streams.Channel do
     |> put_change(:stream_key, generate_stream_key())
   end
 
+  def start_changeset(channel, attrs \\ %{}) do
+    channel
+    |> changeset(attrs)
+    |> put_change(:status, "live")
+  end
+
+  def stop_changeset(channel, attrs \\ %{}) do
+    channel
+    |> changeset(attrs)
+    |> put_change(:stream_id, nil)
+    |> put_change(:status, "offline")
+  end
+
   def changeset(channel, attrs \\ %{}) do
     channel
     |> cast(attrs, [
       :title,
       :category_id,
+      :stream_id,
       :language,
       :thumbnail,
       :stream_key,

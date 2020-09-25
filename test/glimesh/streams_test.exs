@@ -167,4 +167,33 @@ defmodule Glimesh.StreamsTest do
       assert %Ecto.Changeset{} = Streams.change_category(category)
     end
   end
+
+  describe "ingest stream api" do
+    setup do
+      {:ok, channel: channel_fixture()}
+    end
+
+    test "start_stream/1 successfully starts a stream", %{channel: channel} do
+      {:ok, stream} = Streams.start_stream(channel)
+      new_channel = Streams.get_channel!(channel.id)
+
+      assert stream.started_at != nil
+      assert stream.ended_at == nil
+      assert stream.id == new_channel.stream_id
+      assert stream.category_id == new_channel.category_id
+      assert new_channel.status == "live"
+    end
+
+    test "end_stream/1 successfully stops a stream", %{channel: channel} do
+      {:ok, _} = Streams.start_stream(channel)
+      fresh_channel = Streams.get_channel!(channel.id)
+      {:ok, stream} = Streams.end_stream(fresh_channel)
+      new_channel = Streams.get_channel!(channel.id)
+
+      assert stream.started_at != nil
+      assert stream.ended_at != nil
+      assert new_channel.status == "offline"
+      assert new_channel.stream_id == nil
+    end
+  end
 end
