@@ -1,0 +1,9 @@
+<%= @inner_content %>
+
+==================================
+
+Glimesh, Inc.
+<%= Application.get_env(:glimesh, :email_physical_address) %>
+United States of America
+
+==================================

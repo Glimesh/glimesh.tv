@@ -10,7 +10,8 @@ defmodule Glimesh.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -38,6 +39,7 @@ defmodule Glimesh.MixProject do
       {:faker, "~> 0.14", only: :dev},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:floki, ">= 0.0.0", only: :test},
+      {:excoveralls, "~> 0.13.1", only: :test},
       {:bcrypt_elixir, "~> 2.0"},
       {:phoenix, "~> 1.5.3"},
       {:phoenix_ecto, "~> 4.1"},
@@ -63,8 +65,10 @@ defmodule Glimesh.MixProject do
       {:slugify, "~> 1.3"},
       {:absinthe, "~> 1.5"},
       {:absinthe_plug, "~> 1.5"},
+      {:absinthe_phoenix, "~> 2.0"},
       {:dataloader, "~> 1.0.0"},
-      {:plug_canonical_host, "~> 2.0"}
+      {:plug_canonical_host, "~> 2.0"},
+      {:ex_oauth2_provider, "~> 0.5.6"}
     ]
   end
 
@@ -80,7 +84,12 @@ defmodule Glimesh.MixProject do
       "ecto.seed": ["run priv/repo/seeds.#{Mix.env()}.exs"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      test: [
+        "ecto.create --quiet",
+        "ecto.migrate --quiet",
+        "run priv/repo/seeds/categories.exs",
+        "test"
+      ],
       code_quality: ["format", "credo --strict"]
     ]
   end

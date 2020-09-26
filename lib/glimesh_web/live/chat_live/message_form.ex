@@ -27,21 +27,12 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   end
 
   def handle_event("send", %{"chat_message" => chat_message_params}, socket) do
-    save_chat_message(socket, socket.assigns.streamer, socket.assigns.user, chat_message_params)
+    save_chat_message(socket, socket.assigns.channel, socket.assigns.user, chat_message_params)
   end
 
-  defp save_chat_message(socket, streamer, user, chat_message_params) do
-    case Chat.create_chat_message(streamer, user, chat_message_params) do
+  defp save_chat_message(socket, channel, user, chat_message_params) do
+    case Chat.create_chat_message(channel, user, chat_message_params) do
       {:ok, _chat_message} ->
-        Presence.update_presence(
-          self(),
-          Streams.get_subscribe_topic(:chatters, streamer.id),
-          user.id,
-          fn x ->
-            %{x | size: x.size + 2}
-          end
-        )
-
         {:noreply,
          socket
          |> put_flash(:info, "Chat message created successfully")

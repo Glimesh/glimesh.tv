@@ -27,6 +27,29 @@ defmodule Glimesh.Payments do
 
   def get_stripe_config(key) do
     Application.get_env(:glimesh, :stripe_config)[key]
+
+  def list_all_subscriptions do
+    Repo.all(
+      from s in Subscription,
+        where: s.is_active == true
+    )
+    |> Repo.preload([:user, :streamer])
+  end
+
+  def list_streamer_subscribers(streamer) do
+    Repo.all(
+      from s in Subscription,
+        where: s.streamer_id == ^streamer.id and s.is_active == true
+    )
+    |> Repo.preload([:user, :streamer])
+  end
+
+  def list_user_subscriptions(user) do
+    Repo.all(
+      from s in Subscription,
+        where: s.user_id == ^user.id and s.is_active == true and not is_nil(s.streamer_id)
+    )
+    |> Repo.preload([:user, :streamer])
   end
 
   def set_payment_method(user, payment_method_id) do

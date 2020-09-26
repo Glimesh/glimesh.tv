@@ -8,7 +8,7 @@
         <div class="widget-heading">
           <div class="row">
             <div class="col-8">
-              <%= live_render(@socket, GlimeshWeb.UserLive.Components.StreamerTitle, id: "streamer-title", session: %{"user" => @user, "streamer" => @streamer}) %>
+              <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
             </div>
             <div class="col-4">
               <div class="float-right">
@@ -22,7 +22,7 @@
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                   </div>
                   <div class="btn-group" role="group" aria-label="Third group">
-                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"streamer_id" => @streamer.id}) %>
+                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
                   </div>
                 </div>
               </div>
@@ -32,10 +32,14 @@
 
         <div class="widget-content">
           <div class="embed-responsive embed-responsive-16by9">
-            <div id="player-container" class="embed-responsive-item" phx-hook="LoadVideo"
-              data-playback-url="<%= @playback_url %>">
+            <%= if @backend == "ftl" do %>
+            <video id="video-player" phx-hook="FtlVideo" data-janus-server-uri="<%= @janus_uri %>"
+              data-channel-id="<%= @channel_id %>" poster="/images/stream-not-started.jpg" autoplay controls></video>
+            <% else %>
+            <div id="player-container" class="embed-responsive-item" phx-hook="OvenVideo">
               <div id="player"></div>
             </div>
+            <% end %>
           </div>
 
           <div class="d-none d-sm-block mt-4">
@@ -55,7 +59,7 @@
     </div>
 
     <div id="chat-column" class="col-xl-3 layout-spacing">
-      <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "streamer" => @streamer} %>
+      <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id} %>
     </div>
 
   </div>
@@ -68,19 +72,22 @@
         </div>
         <div class="widget-content">
           <%= if @streamer.profile_content_html do %>
-              <%= raw(@streamer.profile_content_html) %>
+          <%= raw(@streamer.profile_content_html) %>
           <% else %>
-              <p><%= gettext("Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the left hand corner!") %></p>
+          <p>
+            <%= gettext("Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the right hand corner!") %>
+          </p>
           <% end %>
         </div>
       </div>
     </div>
     <div class="col-xl-3 layout-spacing">
       <div class="widget widget-chart-one">
-        <div class="widget-heading">
+        <div class="widget-content user-content-body">
+          <%= if @channel.chat_rules_html do %>
+          <%= raw(@channel.chat_rules_html) %>
+          <% else %>
           <h3>Chat Rules</h3>
-        </div>
-        <div class="widget-content">
           <p>1. <strong>Hate Speech</strong> - Hate Speech is not tolerated by Glimesh under any circumstances. Any
             message that promotes, encourages, or facilitates discrimination, denigration, objectification, harassment,
             or violence based on race, age, sexuality, physical characteristics, gender identity, disability, military
@@ -100,12 +107,13 @@
           <p>4. <strong>Spam</strong> - No one likes spam. Spam is considered posting large amounts of repetitive,
             unwanted messages in a short amount of time.</p>
           <p>5. <strong>Personal Information</strong> - Posting personal information about others without their consent
-            ( “doxxing") is not allowed. It is prohibited to share content that may reveal private personal information
+            (“doxxing") is not allowed. It is prohibited to share content that may reveal private personal information
             about individuals, or their private property, without permission.</p>
 
           <p>Any violation to the above rules will result in your comment being removed from the chat and an automatic
             <strong>ban for the remainder of the charity stream event</strong>. Serious violations may result in a ban
             from future events.</p>
+          <% end %>
         </div>
       </div>
     </div>
