@@ -45,6 +45,12 @@ defmodule GlimeshWeb.Router do
     post "/introspec", Oauth2Provider.TokenController, :introspec
   end
 
+  scope "/api/webhook", GlimeshWeb do
+    pipe_through :api
+
+    post "/stripe", WebhookController, :stripe
+  end
+
   scope "/api" do
     pipe_through :graphql
 
