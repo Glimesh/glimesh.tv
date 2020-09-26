@@ -44,6 +44,7 @@ defmodule Glimesh.ChatTest do
     test "create_chat_message/1 with valid data when the channel has links blocked creates a chat_message" do
       channel = channel_fixture()
       {:ok, channel} = Streams.update_channel(channel, %{block_links: true})
+
       assert {:ok, %ChatMessage{} = chat_message} =
                Chat.create_chat_message(channel_fixture(), user_fixture(), @valid_attrs)
 
@@ -58,13 +59,14 @@ defmodule Glimesh.ChatTest do
     test "create_chat_message/1 with a link when channel has links blocked returns error changeset" do
       channel = channel_fixture()
       {:ok, channel} = Streams.update_channel(channel, %{block_links: true})
+
       assert {:error, %Ecto.Changeset{}} =
                Chat.create_chat_message(channel, user_fixture(), @link_containing_attrs)
     end
 
     test "create_chat_message/1 with a link when channel allows links returns a chat_message" do
       assert {:ok, %ChatMessage{} = chat_message} =
-              Chat.create_chat_message(channel_fixture(), user_fixture(), @link_containing_attrs)
+               Chat.create_chat_message(channel_fixture(), user_fixture(), @link_containing_attrs)
 
       assert chat_message.message == @link_containing_attrs.message
     end

@@ -167,4 +167,59 @@ defmodule Glimesh.StreamsTest do
       assert %Ecto.Changeset{} = Streams.change_category(category)
     end
   end
+
+  describe "ingest stream api" do
+    setup do
+      {:ok, channel: channel_fixture()}
+    end
+
+    test "start_stream/1 successfully starts a stream", %{channel: channel} do
+      {:ok, stream} = Streams.start_stream(channel)
+      new_channel = Streams.get_channel!(channel.id)
+
+      assert stream.started_at != nil
+      assert stream.ended_at == nil
+      assert stream.id == new_channel.stream_id
+      assert stream.category_id == new_channel.category_id
+      assert new_channel.status == "live"
+    end
+
+    test "end_stream/1 successfully stops a stream", %{channel: channel} do
+      {:ok, _} = Streams.start_stream(channel)
+      fresh_channel = Streams.get_channel!(channel.id)
+      {:ok, stream} = Streams.end_stream(fresh_channel)
+      new_channel = Streams.get_channel!(channel.id)
+
+      assert stream.started_at != nil
+      assert stream.ended_at != nil
+      assert new_channel.status == "offline"
+      assert new_channel.stream_id == nil
+    end
+
+    test "log_stream_metadata/1 successfully logs some metadata", %{channel: channel} do
+      {:ok, _} = Streams.start_stream(channel)
+
+      incoming_attrs = %{
+        audio_codec: "mp3",
+        ingest_server: "test",
+        ingest_viewers: 32,
+        stream_time_seconds: 1024,
+        lost_packets: 0,
+        nack_packets: 0,
+        recv_packets: 100,
+        source_bitrate: 5000,
+        source_ping: 100,
+        vendor_name: "OBS",
+        vendor_version: "1.0.0",
+        video_codec: "mp4",
+        video_height: 1024,
+        video_width: 768
+      }
+
+      fresh_channel = Streams.get_channel!(channel.id)
+      {:ok, stream} = Streams.log_stream_metadata(fresh_channel, incoming_attrs)
+
+      assert incoming_attrs = hd(stream.metadata)
+    end
+  end
 end
