@@ -97,7 +97,7 @@ defmodule Glimesh.Chat do
       [] -> true
     end
 
-    if Accounts.is_user_banned_by_username(username) do
+    if Glimesh.Accounts.is_user_banned_by_username(username) do
       raise ArgumentError, message: "User must not be banned"
     end
 
