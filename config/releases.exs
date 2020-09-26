@@ -4,6 +4,7 @@
 # remember to add this file to your .gitignore.
 import Config
 
+# Database Configuration
 database_url =
   System.get_env("DATABASE_URL") ||
     raise """
@@ -16,6 +17,7 @@ config :glimesh, Glimesh.Repo,
   url: database_url,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
+# Endpoint Configuration
 secret_key_base =
   System.get_env("SECRET_KEY_BASE") ||
     raise """
@@ -77,6 +79,7 @@ if https_port !== "" do
     ]
 end
 
+# Email Configuration
 mailgun_api_key =
   System.get_env("MAILGUN_API_KEY") ||
     raise """
@@ -94,6 +97,7 @@ config :glimesh, GlimeshWeb.Emails.Mailer,
   api_key: mailgun_api_key,
   domain: mailgun_domain
 
+# Stripe Configuration
 stripe_public_api_key =
   System.get_env("STRIPE_PUBLIC_API_KEY") ||
     raise "environment variable STRIPE_PUBLIC_API_KEY is missing."
@@ -114,6 +118,14 @@ config :stripity_stripe,
   api_key: stripe_api_key,
   connect_client_id: stripe_connect_client_id,
   webhook_secret: stripe_webhook_secret
+
+# Glimesh Configuraiton
+email_physical_address =
+  System.get_env("GLIMESH_EMAIL_PHYSICAL_ADDRESS") ||
+    raise "environment variable GLIMESH_EMAIL_PHYSICAL_ADDRESS is missing."
+
+config :glimesh,
+  email_physical_address: email_physical_address
 
 # ## Using releases (Elixir v1.9+)
 #

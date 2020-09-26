@@ -27,21 +27,38 @@ defmodule Glimesh.Resolvers.StreamsResolver do
   end
 
   # Streams
-  def start_stream(_parent, %{channel_id: _}, %{context: %{is_admin: true}}) do
-    # stub
-    {:ok, nil}
+  def start_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
+    channel = Streams.get_channel!(channel_id)
+    {:ok, stream} = Streams.start_stream(channel)
+
+    {:ok, stream}
   end
 
   def start_stream(_parent, _args, _resolution) do
     {:error, "Access denied"}
   end
 
-  def end_stream(_parent, %{channel_id: _}, %{context: %{is_admin: true}}) do
-    # stub
-    {:ok, nil}
+  def end_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
+    channel = Streams.get_channel!(channel_id)
+    {:ok, stream} = Streams.end_stream(channel)
+
+    {:ok, stream}
   end
 
   def end_stream(_parent, _args, _resolution) do
+    {:error, "Access denied"}
+  end
+
+  def log_stream_metadata(_parent, %{channel_id: channel_id, metadata: metadata}, %{
+        context: %{is_admin: true}
+      }) do
+    channel = Streams.get_channel!(channel_id)
+    {:ok, stream} = Streams.log_stream_metadata(channel, metadata)
+
+    {:ok, stream}
+  end
+
+  def log_stream_metadata(_parent, _args, _resolution) do
     {:error, "Access denied"}
   end
 

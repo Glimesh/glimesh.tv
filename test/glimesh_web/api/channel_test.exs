@@ -129,6 +129,7 @@ defmodule GlimeshWeb.Api.ChannelTest do
   """
 
   def create_channel(%{user: user}) do
-    %{channel: Streams.create_channel(user)}
+    {:ok, channel} = Streams.create_channel(user)
+    %{channel: channel}
   end
 end
