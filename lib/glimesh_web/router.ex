@@ -80,6 +80,12 @@ defmodule GlimeshWeb.Router do
   scope "/", GlimeshWeb do
     pipe_through [:browser, :require_authenticated_user]
 
+    live "/platform_subscriptions", PlatformSubscriptionLive.Index, :index
+
+    get "/users/payments", UserPaymentsController, :index
+    get "/users/payments/connect", UserPaymentsController, :connect
+    put "/users/payments/delete_default_payment", UserPaymentsController, :delete_default_payment
+
     get "/users/settings/profile", UserSettingsController, :profile
     get "/users/settings/stream", UserSettingsController, :stream
     put "/users/settings/create_channel", UserSettingsController, :create_channel
@@ -114,12 +120,6 @@ defmodule GlimeshWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     live_dashboard "/phoenix/dashboard", metrics: GlimeshWeb.Telemetry
-
-    live "/platform_subscriptions", PlatformSubscriptionLive.Index, :index
-
-    get "/users/payments", UserPaymentsController, :index
-    get "/users/payments/connect", UserPaymentsController, :connect
-    put "/users/payments/delete_default_payment", UserPaymentsController, :delete_default_payment
 
     get "/blog/new", ArticleController, :new
     get "/blog/:slug/edit", ArticleController, :edit

@@ -8,14 +8,14 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
   def render(assigns) do
     ~L"""
     <div id="subscription-magic">
-        <%= if @user do %>
+        <%= if @can_subscribe do %>
             <%= if @subscribed do %>
                 <button class="btn btn-secondary" phx-click="unsubscribe"><%= gettext("Unsubscribe") %></button>
             <% else %>
                 <button class="btn btn-secondary" phx-click="show_modal"><%= gettext("Subscribe") %></button>
             <% end %>
         <% else %>
-            <%= link gettext("Subscribe"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary" %>
+            <%= link gettext("Subscribe"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary disabled" %>
         <% end %>
 
         <%= if @show_subscription do %>
@@ -51,6 +51,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
     {:ok,
      socket
      |> assign(:streamer, streamer)
+     |> assign(:can_subscribe, false)
      |> assign(:user, nil)
      |> assign(:subscribed, false)
      |> assign(:show_subscription, false)}
@@ -72,6 +73,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
      |> assign(:show_subscription, false)
      |> assign(:streamer, streamer)
      |> assign(:user, user)
+     |> assign(:can_subscribe, Accounts.can_use_payments?(user))
      |> assign(:subscribed, subscribed)}
   end
 

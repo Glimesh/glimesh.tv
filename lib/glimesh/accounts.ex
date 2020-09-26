@@ -486,4 +486,12 @@ defmodule Glimesh.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  def can_stream?(user) do
+    user.can_stream
+  end
+
+  def can_use_payments?(user) do
+    user.can_payments
+  end
 end

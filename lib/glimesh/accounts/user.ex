@@ -16,6 +16,7 @@ defmodule Glimesh.Accounts.User do
     field :confirmed_at, :naive_datetime
 
     field :can_stream, :boolean, default: false
+    field :can_payments, :boolean, default: false
     field :is_admin, :boolean, default: false
 
     field :avatar, Glimesh.Avatar.Type

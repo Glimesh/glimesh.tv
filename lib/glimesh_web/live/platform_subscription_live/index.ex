@@ -14,6 +14,7 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
     {:ok,
      socket
      |> assign(:user, user)
+     |> assign(:can_payments, Accounts.can_use_payments?(user))
      |> assign(:stripe_error, nil)
      |> assign(:product_id, Payments.get_platform_sub_founder_product_id())
      |> assign(:price_id, Payments.get_platform_sub_founder_price_id())
