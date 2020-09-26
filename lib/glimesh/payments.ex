@@ -27,6 +27,7 @@ defmodule Glimesh.Payments do
 
   def get_stripe_config(key) do
     Application.get_env(:glimesh, :stripe_config)[key]
+  end
 
   def list_all_subscriptions do
     Repo.all(

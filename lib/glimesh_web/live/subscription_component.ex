@@ -2,7 +2,6 @@ defmodule GlimeshWeb.SubscriptionComponent do
   use GlimeshWeb, :live_component
 
   alias Glimesh.Accounts
-  alias Glimesh.Payments
 
   @impl true
   def render(assigns) do
