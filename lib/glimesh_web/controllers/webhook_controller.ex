@@ -1,11 +1,9 @@
 defmodule GlimeshWeb.WebhookController do
   use GlimeshWeb, :controller
 
-  def stripe(conn, _params) do
-    [signature] = Plug.Conn.get_req_header(conn, "stripe-signature")
+  def stripe(%Plug.Conn{assigns: %{stripe_event: stripe_event}} = conn, _params) do
+    Glimesh.Payments.Providers.Stripe.handle_webhook(stripe_event)
 
-    Glimesh.Payments.Providers.Stripe.incoming_webhook(conn.private[:raw_body], signature)
-
-    conn
+    send_resp(conn, :ok, "")
   end
 end

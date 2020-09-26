@@ -55,6 +55,9 @@ defmodule GlimeshWeb.Endpoint do
   plug Plug.RequestId
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 
+  # Pluck out the stripe webhook request if it exists
+  plug GlimeshWeb.StripeWebhookPlug
+
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
