@@ -27,9 +27,8 @@ export default {
         return new Promise((resolve, reject) => {
             this.pushEvent("subscriptions.subscribe", {
                 customerId: customerId,
-                paymentMethodId: paymentMethodId,
-                priceId: priceId,
-            }, function(results) {
+                paymentMethodId: paymentMethodId
+            }, function (results) {
                 resolve(results);
             });
         })
@@ -46,6 +45,13 @@ export default {
         })
     },
 
+    productId() {
+        return this.el.dataset.stripeProductId
+    },
+    priceId() {
+        return this.el.dataset.stripePriceId
+    },
+
     stripePublicKey() {
         return this.el.dataset.stripePublicKey
     },
@@ -56,14 +62,22 @@ export default {
         return this.el.dataset.stripePaymentMethod
     },
 
+    updated() {
+        console.log("updated")
+    },
+
     mounted() {
         let backend = this;
+
+        console.log("mounted")
+        console.log(this.priceId())
+        console.log(this.productId())
 
         backend.stripe = Stripe(this.stripePublicKey());
 
         let form = document.getElementById('subscription-form');
 
-        if( ! this.stripePaymentMethod()) {
+        if (!this.stripePaymentMethod()) {
             // No default payment method
             // Let's figure out payment details
             let billingName = document.getElementById("paymentName");
@@ -74,7 +88,6 @@ export default {
             var style = {
                 base: {
                     color: "#009688",
-                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
                     fontSmoothing: "antialiased",
                     fontSize: "16px",
                     "::placeholder": {
@@ -90,7 +103,7 @@ export default {
             var card = elements.create("card", {
                 style: style
             });
-            if(document.getElementById("card-element")) {
+            if (document.getElementById("card-element")) {
                 card.mount("#card-element");
             }
             card.on('change', backend.showCardError);
@@ -100,14 +113,16 @@ export default {
             ev.preventDefault();
 
             if (backend.stripePaymentMethod()) {
-                backend.createSubscription(backend.customerId(), backend.stripePaymentMethod(), "price_1H8TwGBLNaYgaiU5uwYJO2Vb")
+                backend.createSubscription(backend.customerId(), backend.stripePaymentMethod(), backend.priceId())
                     .then(backend.onSubscriptionComplete.bind(backend));
             } else {
                 // Create a payment method first if we don't have one...
                 let billingName = document.getElementById("paymentName");
 
-                backend.createPaymentMethod(card, billingName.value).then(function({paymentMethod}) {
-                    backend.createSubscription(backend.customerId(), paymentMethod.id, "price_1H8TwGBLNaYgaiU5uwYJO2Vb")
+                backend.createPaymentMethod(card, billingName.value).then(function ({
+                    paymentMethod
+                }) {
+                    backend.createSubscription(backend.customerId(), paymentMethod.id, backend.priceId())
                         .then(backend.onSubscriptionComplete.bind(backend));
                 });
             }

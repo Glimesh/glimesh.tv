@@ -7,12 +7,12 @@
                 <div class="widget-content">
                     <div class="w-content">
                         <div class="w-info">
-                            <h6 class="value">$ 0</h6>
-                            <p class=""><%= gettext("Received") %></p>
+                            <h6 class="value">$<%= format_price(@incoming) %></h6>
+                            <p class=""><%= gettext("Receiving Monthly") %></p>
                         </div>
                         <div class="">
                             <div class="w-icon">
-                                <i class="fas fa-chevron-up"></i>
+                                <i class="fas fa-wallet"></i>
                             </div>
                         </div>
                     </div>
@@ -23,12 +23,12 @@
                 <div class="widget-content">
                     <div class="w-content">
                         <div class="w-info">
-                            <h6 class="value">$ 0</h6>
-                            <p class=""><%= gettext("Sent") %></p>
+                            <h6 class="value">$<%= format_price(@outgoing) %></h6>
+                            <p class=""><%= gettext("Giving Monthly") %></p>
                         </div>
                         <div class="">
                             <div class="w-icon">
-                                <i class="fas fa-chevron-down"></i>
+                                <i class="fas fa-gift"></i>
                             </div>
                         </div>
                     </div>
@@ -101,12 +101,12 @@
 
     <h4 class="mt-4"><%= gettext("Your Subscriptions") %></h4>
     <div class="row">
-        <%= if @has_platform_subscription do %>
+        <%= if @platform_subscription do %>
         <div class="col-md-3">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title"><%= gettext("Glimesh Sub!") %></h5>
-                <p class="card-text"><%= gettext("Subscribed since ?.") %></p>
+                <h5 class="card-title"><%= @platform_subscription.product_name %></h5>
+                <p class="card-text"><%= gettext("Subscribed since %{date}.", date: format_datetime(@platform_subscription.started_at)) %></p>
                 <%= link gettext("Unsubscribe"), to: Routes.platform_subscription_index_path(@conn, :index), class: "btn btn-danger btn-sm" %>
               </div>
             </div>
@@ -117,7 +117,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h5 class="card-title"><%= sub.streamer.displayname %></h5>
-                    <p class="card-text"><%= gettext("Subscribed since %{date}", date: sub.started_at) %></p>
+                    <p class="card-text"><%= gettext("Subscribed since %{date}", date: format_datetime(sub.started_at)) %></p>
                     <%= link "Unsubscribe", to: Routes.user_stream_path(@conn, :index, sub.streamer.displayname), class: "btn btn-danger btn-sm" %>
                   </div>
                 </div>
@@ -126,10 +126,25 @@
     </div>
     <div class="card mt-4">
         <div class="card-header">
-            <h5><%= gettext("Income History") %> </h5>
+            <h5><%= gettext("Payout History") %> </h5>
         </div>
         <div class="card-body">
-
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date / Time</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <%= for payout <- @payout_history do %>
+                    <tr>
+                        <td><%= format_datetime(payout.created) %></td>
+                        <td>$<%= format_price(payout.amount) %></td>
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="card mt-4">
@@ -137,7 +152,27 @@
             <h5><%= gettext("Payment History") %></h5>
         </div>
         <div class="card-body">
-
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date / Time</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <%= for payment <- @payment_history do %>
+                    <tr>
+                        <td><%= format_datetime(payment.created) %></td>
+                        <td><%= payment.description %></td>
+                        <td>$<%= format_price(payment.amount) %></td>
+                        <td><%= payment.status %></td>
+                        <td><a href="<%= payment.receipt_url %>" target="_blank">Receipt</a></td>
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

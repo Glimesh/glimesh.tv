@@ -15,8 +15,12 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
      socket
      |> assign(:user, user)
      |> assign(:stripe_error, nil)
+     |> assign(:product_id, Payments.get_platform_sub_founder_product_id())
+     |> assign(:price_id, Payments.get_platform_sub_founder_price_id())
+     |> assign(:price, Payments.get_platform_sub_founder_price())
      |> assign(:stripe_public_key, Application.get_env(:stripity_stripe, :public_api_key))
      |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
+     |> assign(:subscription, Payments.get_platform_subscription!(user))
      |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
   end
 
@@ -31,20 +35,37 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
     |> assign(:platform_subscription, nil)
   end
 
+  def handle_event("select-platform-supporter", _, socket) do
+    {:noreply,
+     socket
+     |> assign(:product_id, Payments.get_platform_sub_supporter_product_id())
+     |> assign(:price_id, Payments.get_platform_sub_supporter_price_id())
+     |> assign(:price, Payments.get_platform_sub_supporter_price())}
+  end
+
+  def handle_event("select-platform-founder", _, socket) do
+    {:noreply,
+     socket
+     |> assign(:product_id, Payments.get_platform_sub_founder_product_id())
+     |> assign(:price_id, Payments.get_platform_sub_founder_price_id())
+     |> assign(:price, Payments.get_platform_sub_founder_price())}
+  end
+
   @impl true
   def handle_event(
         "subscriptions.subscribe",
-        %{"paymentMethodId" => payment_method, "priceId" => price_id},
+        %{"paymentMethodId" => payment_method},
         socket
       ) do
     user = socket.assigns.user
 
     with {:ok, _} <- Payments.set_payment_method(user, payment_method),
          {:ok, subscription} <-
-           Payments.subscribe(:platform, user, "prod_HhtjnDMhfliLrf", price_id) do
+           Payments.subscribe(:platform, user, socket.assigns.product_id, socket.assigns.price_id) do
       {:reply, subscription,
        socket
        |> assign(:show_subscription, false)
+       |> assign(:subscription, Payments.get_platform_subscription!(user))
        |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
     else
       {:pending_requires_action, error_msg} ->
@@ -73,4 +94,7 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
         {:noreply, socket |> assign(:stripe_error, error_msg)}
     end
   end
+
+  def format_price(nil), do: "0.00"
+  def format_price(iprice), do: :erlang.float_to_binary(iprice / 100, decimals: 2)
 end

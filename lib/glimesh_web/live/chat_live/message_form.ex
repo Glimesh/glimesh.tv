@@ -2,8 +2,6 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   use GlimeshWeb, :live_component
 
   alias Glimesh.Chat
-  alias Glimesh.Presence
-  alias Glimesh.Streams
 
   @impl true
   def update(%{chat_message: chat_message, user: user} = assigns, socket) do

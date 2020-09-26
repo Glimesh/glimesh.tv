@@ -9,6 +9,26 @@ defmodule Glimesh.Payments do
   alias Glimesh.Payments.Subscription
   alias Glimesh.Repo
 
+  def get_platform_sub_supporter_product_id,
+    do: get_stripe_config(:platform_sub_supporter_product_id)
+
+  def get_platform_sub_supporter_price_id, do: get_stripe_config(:platform_sub_supporter_price_id)
+  def get_platform_sub_supporter_price, do: get_stripe_config(:platform_sub_supporter_price)
+
+  def get_platform_sub_founder_product_id,
+    do: get_stripe_config(:platform_sub_founder_product_id)
+
+  def get_platform_sub_founder_price_id, do: get_stripe_config(:platform_sub_founder_price_id)
+  def get_platform_sub_founder_price, do: get_stripe_config(:platform_sub_founder_price)
+
+  def get_channel_sub_base_product_id, do: get_stripe_config(:platform_sub_supporter_product_id)
+  def get_channel_sub_base_price_id, do: get_stripe_config(:platform_sub_supporter_price_id)
+  def get_channel_sub_base_price, do: get_stripe_config(:platform_sub_supporter_price)
+
+  def get_stripe_config(key) do
+    Application.get_env(:glimesh, :stripe_config)[key]
+  end
+
   def list_all_subscriptions do
     Repo.all(
       from s in Subscription,
@@ -55,6 +75,9 @@ defmodule Glimesh.Payments do
 
     stripe_input = %{customer: customer_id, items: [%{price: price_id}]}
 
+    {:ok, product} = Stripe.Product.retrieve(product_id)
+    {:ok, price} = Stripe.Price.retrieve(price_id)
+
     with {:ok, sub} <-
            Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"]),
          {:ok, platform_sub} <-
@@ -64,6 +87,8 @@ defmodule Glimesh.Payments do
              stripe_product_id: product_id,
              stripe_price_id: price_id,
              stripe_current_period_end: sub.current_period_end,
+             price: price.unit_amount,
+             product_name: product.name,
              is_active: true,
              started_at: NaiveDateTime.utc_now(),
              ended_at: NaiveDateTime.utc_now()
@@ -83,6 +108,9 @@ defmodule Glimesh.Payments do
     # "application_fee_percent" => 10,
     customer_id = Accounts.get_stripe_customer_id(user)
 
+    {:ok, product} = Stripe.Product.retrieve(product_id)
+    {:ok, price} = Stripe.Price.retrieve(price_id)
+
     stripe_input = %{
       customer: customer_id,
       items: [%{price: price_id}],
@@ -100,6 +128,8 @@ defmodule Glimesh.Payments do
              stripe_product_id: product_id,
              stripe_price_id: price_id,
              stripe_current_period_end: stripe_sub.current_period_end,
+             price: price.unit_amount,
+             product_name: product.name,
              is_active: true,
              started_at: NaiveDateTime.utc_now(),
              ended_at: NaiveDateTime.utc_now()
@@ -168,6 +198,34 @@ defmodule Glimesh.Payments do
       {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
       {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
     end
+  end
+
+  def sum_incoming(user) do
+    Repo.one(
+      from s in Subscription,
+        select: sum(s.price),
+        where: s.streamer_id == ^user.id and s.is_active == true
+    )
+  end
+
+  def sum_outgoing(user) do
+    Repo.one(
+      from s in Subscription,
+        select: sum(s.price),
+        where: s.user_id == ^user.id and s.is_active == true
+    )
+  end
+
+  def list_payment_history(user) do
+    {:ok, payment_history} = Stripe.Charge.list(%{customer: user.stripe_customer_id})
+
+    payment_history.data
+  end
+
+  def list_payout_history(user) do
+    {:ok, payout_history} = Stripe.Transfer.list(%{destination: user.stripe_user_id})
+
+    payout_history.data
   end
 
   @doc """
