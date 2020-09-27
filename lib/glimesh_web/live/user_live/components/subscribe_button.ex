@@ -11,9 +11,9 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
         <%= if @user do %>
             <%= if @can_subscribe do %>
                 <%= if @subscribed do %>
-                    <button class="btn btn-secondary" phx-click="unsubscribe"><%= gettext("Unsubscribe") %></button>
+                    <button class="btn btn-secondary" phx-click="unsubscribe" phx-throttle="5000"><%= gettext("Unsubscribe") %></button>
                 <% else %>
-                    <button class="btn btn-secondary" phx-click="show_modal"><%= gettext("Subscribe") %></button>
+                    <button class="btn btn-secondary" phx-click="show_modal" phx-throttle="5000"><%= gettext("Subscribe") %></button>
                 <% end %>
             <% else %>
                 <button class="btn btn-secondary disabled"><%= gettext("Subscribe") %></button>
@@ -39,6 +39,12 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
                     </div>
 
                     <div class="modal-body">
+                        <%= if @stripe_error do %>
+                          <div class="alert alert-danger" role="alert">
+                            <%= @stripe_error %>
+                          </div>
+                        <% end %>
+
                         <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :channel, user: @user, streamer: @streamer, product_id: @product_id, price_id: @price_id, price: @price %>
                         <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider."
                         class="img-fluid mt-4 mx-auto d-block">

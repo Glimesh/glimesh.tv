@@ -17,22 +17,16 @@ defmodule GlimeshWeb.SubscriptionComponent do
             <p><%= gettext("Payment method already attached!") %> </p>
           <% else %>
             <div id="subscription-form-ignore" phx-update="ignore">
-            <div class="form-group">
-              <label for="paymentName"><%= gettext("Your Name") %></label>
-              <input id="paymentName" name="name" placeholder="Name on Your Card" required class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="card-element"><%= gettext("Payment Details") %></label>
-              <div id="card-element" class="form-control">
-              <!-- Elements will create input elements here -->
+              <div class="form-group">
+                <label for="paymentName"><%= gettext("Your Name") %></label>
+                <input id="paymentName" name="name" placeholder="Name on Your Card" required class="form-control">
               </div>
-            </div>
-            </div>
-          <% end %>
-
-          <%= if @stripe_error do %>
-            <div class="alert alert-danger" role="alert">
-              <%= @stripe_error %>
+              <div class="form-group">
+                <label for="card-element"><%= gettext("Payment Details") %></label>
+                <div id="card-element" class="form-control">
+                <!-- Elements will create input elements here -->
+                </div>
+              </div>
             </div>
           <% end %>
 
@@ -42,6 +36,12 @@ defmodule GlimeshWeb.SubscriptionComponent do
           </div>
 
           <div id="card-errors" role="alert"></div>
+
+          <div class="text-center">
+            <div class="show-on-loading spinner-border mb-4" style="width: 3rem; height: 3rem;" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
 
           <button type="submit" class="btn btn-primary btn-block btn-lg"><%= gettext("Subscribe") %></button>
       </form>
