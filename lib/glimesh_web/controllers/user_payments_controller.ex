@@ -25,6 +25,7 @@ defmodule GlimeshWeb.UserPaymentsController do
     render(
       conn,
       "index.html",
+      can_payments: Accounts.can_use_payments?(user),
       incoming: Payments.sum_incoming(user),
       outgoing: Payments.sum_outgoing(user),
       is_sub_ready_streamer: !is_nil(user.stripe_user_id),

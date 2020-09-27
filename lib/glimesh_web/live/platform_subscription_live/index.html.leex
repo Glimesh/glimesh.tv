@@ -1,3 +1,4 @@
+<!--
 <div class="container">
     <h2><%= gettext("Glimesh Funding Progress") %></h2>
     <div class="progress progress-bar-stack mb-4 br-30" style="height: 32px">
@@ -7,9 +8,14 @@
             aria-valuemax="100"><%= gettext("Streamer Subs") %></div>
     </div>
 </div>
+-->
 
 <div class="container">
-    <div class="row">
+    <h2 class="mt-4"><%= gettext("Glimesh Platform Subscriptions") %></h2>
+    <p><%= gettext("Support the platform directly and get a couple of extra perks to really stand out!") %></p>
+
+    <%= if @can_payments do %>
+    <div class="row mt-4">
         <div class="col-lg-8">
             <div class="pricing-plans-container mt-5 d-md-flex d-block">
                 <!-- Plan -->
@@ -92,4 +98,9 @@
             </div>
         </div>
     </div>
+    <% else %>
+    <div class="alert alert-primary" role="alert">
+        <%= gettext("We're not quite ready to accept payments yet. Once we launch the platform, you'll be able to access this page!") %>
+    </div>
+    <% end %>
 </div>
