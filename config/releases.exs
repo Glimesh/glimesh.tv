@@ -127,12 +127,14 @@ email_physical_address =
 config :glimesh,
   email_physical_address: email_physical_address
 
-# ## Using releases (Elixir v1.9+)
-#
-# If you are doing OTP releases, you need to instruct Phoenix
-# to start each relevant endpoint:
-#
-#     config :glimesh, GlimeshWeb.Endpoint, server: true
-#
-# Then you can assemble a release by calling `mix release`.
-# See `mix help release` for more information.
+# Default App Config
+config :glimesh, :stripe_config,
+  platform_sub_supporter_product_id: "prod_I60rR8YatfJpEV",
+  platform_sub_supporter_price_id: "price_1HVoq1BLNaYgaiU5EMayvTwj",
+  platform_sub_supporter_price: 500,
+  platform_sub_founder_product_id: "prod_I60rQdgrge5imp",
+  platform_sub_founder_price_id: "price_1HVopMBLNaYgaiU5drbv5cVL",
+  platform_sub_founder_price: 2500,
+  channel_sub_base_product_id: "prod_I60qVBVw8n1Y1e",
+  channel_sub_base_price_id: "price_1HVoopBLNaYgaiU5r5JTEEoj",
+  channel_sub_base_price: 500
