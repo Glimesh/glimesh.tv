@@ -60,10 +60,15 @@ config :phoenix, :json_library, Jason
 config :phoenix, :template_engines, md: PhoenixMarkdown.Engine
 
 config :stripity_stripe,
-  api_key: "YOUR SECRET KEY",
+  api_key: "sk_test_123",
   public_api_key: "YOUR PUBLIC KEY",
   connect_client_id: "YOUR CLIENT ID",
   webhook_secret: "YOUR WEBHOOK SECRET"
+
+config :glimesh, :stripe_config,
+  platform_sub_supporter_price: 500,
+  platform_sub_founder_price: 2500,
+  channel_sub_base_price: 500
 
 import_config "badwords.exs"
 # Import environment specific config. This must remain at the bottom

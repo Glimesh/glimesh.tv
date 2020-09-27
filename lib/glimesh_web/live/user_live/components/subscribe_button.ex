@@ -8,14 +8,18 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
   def render(assigns) do
     ~L"""
     <div id="subscription-magic">
-        <%= if @can_subscribe do %>
-            <%= if @subscribed do %>
-                <button class="btn btn-secondary" phx-click="unsubscribe"><%= gettext("Unsubscribe") %></button>
+        <%= if @user do %>
+            <%= if @can_subscribe do %>
+                <%= if @subscribed do %>
+                    <button class="btn btn-secondary" phx-click="unsubscribe"><%= gettext("Unsubscribe") %></button>
+                <% else %>
+                    <button class="btn btn-secondary" phx-click="show_modal"><%= gettext("Subscribe") %></button>
+                <% end %>
             <% else %>
-                <button class="btn btn-secondary" phx-click="show_modal"><%= gettext("Subscribe") %></button>
+                <button class="btn btn-secondary disabled"><%= gettext("Subscribe") %></button>
             <% end %>
         <% else %>
-            <%= link gettext("Subscribe"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary disabled" %>
+            <%= link gettext("Subscribe"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary" %>
         <% end %>
 
         <%= if @show_subscription do %>
@@ -36,6 +40,8 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
 
                     <div class="modal-body">
                         <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :channel, user: @user, streamer: @streamer, product_id: @product_id, price_id: @price_id, price: @price %>
+                        <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider."
+                        class="img-fluid mt-4 mx-auto d-block">
                     </div>
 
                 </div>
@@ -61,6 +67,8 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
   def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
     subscribed = Glimesh.Payments.has_channel_subscription?(user, streamer)
 
+    can_subscribe = if Accounts.can_use_payments?(user), do: user.id != streamer.id, else: false
+
     {:ok,
      socket
      |> assign(:stripe_public_key, Application.get_env(:stripity_stripe, :public_api_key))
@@ -73,7 +81,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
      |> assign(:show_subscription, false)
      |> assign(:streamer, streamer)
      |> assign(:user, user)
-     |> assign(:can_subscribe, Accounts.can_use_payments?(user))
+     |> assign(:can_subscribe, can_subscribe)
      |> assign(:subscribed, subscribed)}
   end
 
