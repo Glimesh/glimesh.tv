@@ -16,7 +16,7 @@ defmodule GlimeshWeb.SubscriptionComponent do
           <%= if @stripe_payment_method do %>
             <p><%= gettext("Payment method already attached!") %> </p>
           <% else %>
-            <div phx-update="ignore">
+            <div id="subscription-form-ignore" phx-update="ignore">
             <div class="form-group">
               <label for="paymentName"><%= gettext("Your Name") %></label>
               <input id="paymentName" name="name" placeholder="Name on Your Card" required class="form-control">

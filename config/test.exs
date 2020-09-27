@@ -25,3 +25,6 @@ config :glimesh, GlimeshWeb.Emails.Mailer, adapter: Bamboo.TestAdapter
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+config :stripity_stripe, :api_base_url, "http://localhost:12111/v1/"
+config :stripe_mock, StripeMockWeb.Endpoint, http: [port: 12111], server: true

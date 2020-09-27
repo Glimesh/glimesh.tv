@@ -40,6 +40,7 @@ defmodule Glimesh.MixProject do
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:floki, ">= 0.0.0", only: :test},
       {:excoveralls, "~> 0.13.1", only: :test},
+      {:stripe_mock, "~> 0.1.0", only: :test},
       {:bcrypt_elixir, "~> 2.0"},
       {:phoenix, "~> 1.5.3"},
       {:phoenix_ecto, "~> 4.1"},
