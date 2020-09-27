@@ -6,6 +6,7 @@ defmodule Glimesh.Payments do
   import Ecto.Query, warn: false
 
   alias Glimesh.Accounts
+  alias Glimesh.Accounts.User
   alias Glimesh.Payments.Subscription
   alias Glimesh.Repo
 
@@ -216,14 +217,18 @@ defmodule Glimesh.Payments do
     )
   end
 
-  def list_payment_history(user) do
-    {:ok, payment_history} = Stripe.Charge.list(%{customer: user.stripe_customer_id})
+  def list_payment_history(%User{stripe_customer_id: nil}), do: []
+
+  def list_payment_history(%User{stripe_customer_id: stripe_customer_id}) do
+    {:ok, payment_history} = Stripe.Charge.list(%{customer: stripe_customer_id})
 
     payment_history.data
   end
 
-  def list_payout_history(user) do
-    {:ok, payout_history} = Stripe.Transfer.list(%{destination: user.stripe_user_id})
+  def list_payout_history(%User{stripe_user_id: nil}), do: []
+
+  def list_payout_history(%User{stripe_user_id: stripe_user_id}) do
+    {:ok, payout_history} = Stripe.Transfer.list(%{destination: stripe_user_id})
 
     payout_history.data
   end
