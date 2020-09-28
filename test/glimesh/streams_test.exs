@@ -196,6 +196,17 @@ defmodule Glimesh.StreamsTest do
       assert new_channel.stream_id == nil
     end
 
+    test "end_stream/1 successfully stops a stream with stream", %{channel: channel} do
+      {:ok, stream} = Streams.start_stream(channel)
+      {:ok, stream} = Streams.end_stream(stream)
+      new_channel = Streams.get_channel!(channel.id)
+
+      assert stream.started_at != nil
+      assert stream.ended_at != nil
+      assert new_channel.status == "offline"
+      assert new_channel.stream_id == nil
+    end
+
     test "log_stream_metadata/1 successfully logs some metadata", %{channel: channel} do
       {:ok, _} = Streams.start_stream(channel)
 

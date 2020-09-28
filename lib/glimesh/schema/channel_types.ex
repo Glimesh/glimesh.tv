@@ -58,7 +58,8 @@ defmodule Glimesh.Schema.ChannelTypes do
 
     @desc "End a stream"
     field :end_stream, type: :stream do
-      arg(:channel_id, non_null(:id))
+      arg(:channel_id, :id)
+      arg(:stream_id, :id)
 
       resolve(&StreamsResolver.end_stream/3)
     end

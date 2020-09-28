@@ -38,11 +38,21 @@ defmodule Glimesh.Resolvers.StreamsResolver do
     {:error, "Access denied"}
   end
 
+  def end_stream(_parent, %{stream_id: stream_id}, %{context: %{is_admin: true}}) do
+    stream = Streams.get_stream!(stream_id)
+
+    Streams.end_stream(stream)
+  end
+
   def end_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
     channel = Streams.get_channel!(channel_id)
     {:ok, stream} = Streams.end_stream(channel)
 
     {:ok, stream}
+  end
+
+  def end_stream(_parent, _args, %{context: %{is_admin: true}}) do
+    {:error, "Must specify channelId or streamId"}
   end
 
   def end_stream(_parent, _args, _resolution) do

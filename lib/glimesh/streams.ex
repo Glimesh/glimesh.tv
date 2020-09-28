@@ -432,6 +432,19 @@ defmodule Glimesh.Streams do
     {:ok, stream}
   end
 
+  def end_stream(%Glimesh.Streams.Stream{} = stream) do
+    {:ok, stream} =
+      update_stream(stream, %{
+        ended_at: DateTime.utc_now() |> DateTime.to_naive()
+      })
+
+    get_channel!(stream.channel_id)
+    |> Channel.stop_changeset(%{})
+    |> Repo.update()
+
+    {:ok, stream}
+  end
+
   def create_stream(%Channel{} = channel, attrs \\ %{}) do
     %Glimesh.Streams.Stream{
       channel: channel
