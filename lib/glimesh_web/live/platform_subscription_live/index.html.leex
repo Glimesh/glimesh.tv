@@ -81,14 +81,17 @@
                         <img src="/images/glimcons/GlimberryPie.png" alt="" class="img-fluid">
                     </div>
 
-                    <%= if @stripe_error do %>
-                    <p><%= @stripe_error %></p>
-                    <% end %>
-
                     <button class="btn btn-danger btn-block" phx-click="cancel-subscription"
                         phx-throttle="1000"><%= gettext("Cancel Subscription") %></button>
 
                     <% else %>
+
+                    <%= if @stripe_error do %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= @stripe_error %>
+                    </div>
+                    <% end %>
+
                     <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :platform, user: @user, product_id: @product_id, price_id: @price_id, price: @price %>
 
                     <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider."

@@ -51,5 +51,6 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "glimesh/components/live-modal";
 @import "glimesh/components/img-avatar";
 @import "glimesh/components/card-stream";
-@import "glimesh/components/oauth-template.scss";
-@import "glimesh/components/user-content-body.scss";
+@import "glimesh/components/oauth-template";
+@import "glimesh/components/user-content-body";
+@import "glimesh/components/loading";

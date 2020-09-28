@@ -2,16 +2,28 @@ import BSN from "bootstrap.native";
 
 export default {
     stripe: null,
+    formDisabled: false,
+
+    savingForm() {
+        this.formDisabled = true;
+        this.el.querySelector("button[type=submit]").disabled = true;
+        this.el.classList.add("loading");
+    },
+
+    resetForm() {
+        this.formDisabled = false;
+        this.el.querySelector("button[type=submit]").disabled = false;
+        this.el.classList.remove("loading");
+    },
 
     onSubscriptionComplete(result) {
         // Don't really need to do anything here since it's all handled by the backend
-        console.log(result);
+        this.resetForm();
     },
 
     displayError(err) {
         console.error(err);
     },
-
 
     showCardError(event) {
         let displayError = document.getElementById('card-errors');
@@ -69,10 +81,6 @@ export default {
     mounted() {
         let backend = this;
 
-        console.log("mounted")
-        console.log(this.priceId())
-        console.log(this.productId())
-
         backend.stripe = Stripe(this.stripePublicKey());
 
         let form = document.getElementById('subscription-form');
@@ -111,6 +119,10 @@ export default {
 
         form.addEventListener('submit', function (ev) {
             ev.preventDefault();
+            if (backend.formDisabled) {
+                return;
+            }
+            backend.savingForm();
 
             if (backend.stripePaymentMethod()) {
                 backend.createSubscription(backend.customerId(), backend.stripePaymentMethod(), backend.priceId())

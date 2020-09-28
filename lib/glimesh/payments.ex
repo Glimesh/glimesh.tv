@@ -22,9 +22,9 @@ defmodule Glimesh.Payments do
   def get_platform_sub_founder_price_id, do: get_stripe_config(:platform_sub_founder_price_id)
   def get_platform_sub_founder_price, do: get_stripe_config(:platform_sub_founder_price)
 
-  def get_channel_sub_base_product_id, do: get_stripe_config(:platform_sub_supporter_product_id)
-  def get_channel_sub_base_price_id, do: get_stripe_config(:platform_sub_supporter_price_id)
-  def get_channel_sub_base_price, do: get_stripe_config(:platform_sub_supporter_price)
+  def get_channel_sub_base_product_id, do: get_stripe_config(:channel_sub_base_product_id)
+  def get_channel_sub_base_price_id, do: get_stripe_config(:channel_sub_base_price_id)
+  def get_channel_sub_base_price, do: get_stripe_config(:channel_sub_base_price)
 
   def get_stripe_config(key) do
     Application.get_env(:glimesh, :stripe_config)[key]
@@ -66,12 +66,22 @@ defmodule Glimesh.Payments do
          {:ok, _} <- Accounts.set_stripe_default_payment(user, payment_method_id) do
       {:ok, "Successfully saved and set payment method as default."}
     else
-      {:error, %Stripe.Error{user_message: user_message}} -> {:error, user_message}
-      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
+      {:error, %Stripe.Error{message: message}} ->
+        {:error, message}
+
+      {:error, %Stripe.Error{user_message: user_message}} ->
+        {:error, user_message}
+
+      {:error, %Ecto.Changeset{errors: errors}} ->
+        {:error, errors}
     end
   end
 
   def subscribe(:platform, user, product_id, price_id) do
+    if has_platform_subscription?(user) do
+      raise ArgumentError, "You already have an active subscription to this streamer."
+    end
+
     customer_id = Accounts.get_stripe_customer_id(user)
 
     stripe_input = %{customer: customer_id, items: [%{price: price_id}]}
@@ -104,6 +114,10 @@ defmodule Glimesh.Payments do
   def subscribe(:channel, user, streamer, product_id, price_id) do
     if user.id == streamer.id do
       raise ArgumentError, "You cannot subscribe to yourself."
+    end
+
+    if has_channel_subscription?(user, streamer) do
+      raise ArgumentError, "You already have an active subscription to this streamer."
     end
 
     # Basically the same as subscribe(:platform) but with
