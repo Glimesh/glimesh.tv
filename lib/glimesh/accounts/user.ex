@@ -60,7 +60,8 @@ defmodule Glimesh.Accounts.User do
       :password,
       :displayname,
       :is_admin,
-      :can_payments
+      :can_payments,
+      :is_banned
     ])
     |> validate_username()
     |> validate_email()
