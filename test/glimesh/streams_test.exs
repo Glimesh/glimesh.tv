@@ -184,6 +184,24 @@ defmodule Glimesh.StreamsTest do
       assert new_channel.status == "live"
     end
 
+    test "start_stream/1 stops any other streams that still are lingering", %{channel: channel} do
+      %Glimesh.Streams.Stream{channel: channel}
+      |> Glimesh.Streams.Stream.changeset(%{})
+      |> Glimesh.Repo.insert()
+
+      %Glimesh.Streams.Stream{channel: channel}
+      |> Glimesh.Streams.Stream.changeset(%{})
+      |> Glimesh.Repo.insert()
+
+      {:ok, _} = Streams.start_stream(channel)
+
+      assert Repo.one(
+               from s in Glimesh.Streams.Stream,
+                 where: s.channel_id == ^channel.id and is_nil(s.ended_at),
+                 select: count(s.id)
+             ) == 1
+    end
+
     test "end_stream/1 successfully stops a stream", %{channel: channel} do
       {:ok, _} = Streams.start_stream(channel)
       fresh_channel = Streams.get_channel!(channel.id)
@@ -196,8 +214,19 @@ defmodule Glimesh.StreamsTest do
       assert new_channel.stream_id == nil
     end
 
+    test "end_stream/1 successfully stops a stream with stream", %{channel: channel} do
+      {:ok, stream} = Streams.start_stream(channel)
+      {:ok, stream} = Streams.end_stream(stream)
+      new_channel = Streams.get_channel!(channel.id)
+
+      assert stream.started_at != nil
+      assert stream.ended_at != nil
+      assert new_channel.status == "offline"
+      assert new_channel.stream_id == nil
+    end
+
     test "log_stream_metadata/1 successfully logs some metadata", %{channel: channel} do
-      {:ok, _} = Streams.start_stream(channel)
+      {:ok, stream} = Streams.start_stream(channel)
 
       incoming_attrs = %{
         audio_codec: "mp3",
@@ -216,8 +245,7 @@ defmodule Glimesh.StreamsTest do
         video_width: 768
       }
 
-      fresh_channel = Streams.get_channel!(channel.id)
-      {:ok, stream} = Streams.log_stream_metadata(fresh_channel, incoming_attrs)
+      {:ok, stream} = Streams.log_stream_metadata(stream, incoming_attrs)
 
       assert incoming_attrs = hd(stream.metadata)
     end

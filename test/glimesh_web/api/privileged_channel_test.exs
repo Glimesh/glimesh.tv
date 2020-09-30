@@ -39,9 +39,9 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
   }
   """
 
-  @end_stream_query """
-  mutation EndStream($channelId: ID!) {
-    endStream(channelId: $channelId) {
+  @end_stream_by_stream_id_query """
+  mutation EndStream($streamId: ID!) {
+    endStream(streamId: $streamId) {
       channel {
         id
       }
@@ -50,11 +50,9 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
   """
 
   @log_stream_metadata_query """
-  mutation LogStreamMetadata($channelId: ID!, $metadata: ChannelMetadataInput!) {
-    logStreamMetadata(channelId: $channelId, metadata: $metadata) {
-      channel {
-        id
-      }
+  mutation LogStreamMetadata($streamId: ID!, $metadata: ChannelMetadataInput!) {
+    logStreamMetadata(streamId: $streamId, metadata: $metadata) {
+      id
     }
   }
   """
@@ -173,13 +171,13 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
              }
     end
 
-    test "can end stream", %{conn: conn, channel: channel} do
-      {:ok, _} = Streams.start_stream(channel)
+    test "can end stream by stream_id", %{conn: conn, channel: channel} do
+      {:ok, stream} = Streams.start_stream(channel)
 
       conn =
         post(conn, "/api", %{
-          "query" => @end_stream_query,
-          "variables" => %{channelId: "#{channel.id}"}
+          "query" => @end_stream_by_stream_id_query,
+          "variables" => %{streamId: "#{stream.id}"}
         })
 
       assert json_response(conn, 200)["data"]["endStream"] == %{
@@ -188,13 +186,13 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
     end
 
     test "can log stream metadata", %{conn: conn, channel: channel} do
-      {:ok, _} = Streams.start_stream(channel)
+      {:ok, stream} = Streams.start_stream(channel)
 
       conn =
         post(conn, "/api", %{
           "query" => @log_stream_metadata_query,
           "variables" => %{
-            channelId: "#{channel.id}",
+            streamId: "#{stream.id}",
             metadata: %{
               audioCodec: "mp3",
               ingestServer: "test",
@@ -214,9 +212,7 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
           }
         })
 
-      assert json_response(conn, 200)["data"]["logStreamMetadata"] == %{
-               "channel" => %{"id" => "#{channel.id}"}
-             }
+      assert json_response(conn, 200)["data"]["logStreamMetadata"] == %{"id" => "#{stream.id}"}
     end
   end
 
