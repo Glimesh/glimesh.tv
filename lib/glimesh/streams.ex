@@ -390,6 +390,9 @@ defmodule Glimesh.Streams do
   Also sends notifications
   """
   def start_stream(%Channel{} = channel) do
+    # 0. End all current streams
+    stop_active_streams(channel)
+
     # 1. Create Stream
     {:ok, stream} =
       create_stream(channel, %{
@@ -445,6 +448,14 @@ defmodule Glimesh.Streams do
     {:ok, stream}
   end
 
+  def stop_active_streams(%Channel{} = channel) do
+    from(
+      s in Glimesh.Streams.Stream,
+      where: s.channel_id == ^channel.id and is_nil(s.ended_at)
+    )
+    |> Glimesh.Repo.update_all(set: [ended_at: DateTime.utc_now() |> DateTime.to_naive()])
+  end
+
   def create_stream(%Channel{} = channel, attrs \\ %{}) do
     %Glimesh.Streams.Stream{
       channel: channel
@@ -461,15 +472,13 @@ defmodule Glimesh.Streams do
 
   alias Glimesh.Streams.StreamMetadata
 
-  def log_stream_metadata(%Channel{} = channel, attrs \\ %{}) do
-    channel = Repo.preload(channel, [:stream])
-
+  def log_stream_metadata(%Glimesh.Streams.Stream{} = stream, attrs \\ %{}) do
     %StreamMetadata{
-      stream: channel.stream
+      stream: stream
     }
     |> StreamMetadata.changeset(attrs)
     |> Repo.insert()
 
-    {:ok, channel.stream |> Repo.preload([:metadata])}
+    {:ok, stream |> Repo.preload([:metadata])}
   end
 end

@@ -58,15 +58,14 @@ defmodule Glimesh.Schema.ChannelTypes do
 
     @desc "End a stream"
     field :end_stream, type: :stream do
-      arg(:channel_id, :id)
-      arg(:stream_id, :id)
+      arg(:stream_id, non_null(:id))
 
       resolve(&StreamsResolver.end_stream/3)
     end
 
     @desc "Update a stream's metadata"
     field :log_stream_metadata, type: :stream do
-      arg(:channel_id, non_null(:id))
+      arg(:stream_id, non_null(:id))
       arg(:metadata, non_null(:stream_metadata_input))
 
       resolve(&StreamsResolver.log_stream_metadata/3)
