@@ -28,6 +28,7 @@ import Choices from "./hooks/Choices";
 import FtlVideo from "./hooks/FtlVideo";
 import OvenVideo from "./hooks/OvenVideo";
 import ClickToCopy from "./hooks/ClickToCopy";
+import LineChart from "./hooks/charts/LineChart";
 
 // https://github.com/github/markdown-toolbar-element
 import "@github/markdown-toolbar-element";
@@ -39,6 +40,7 @@ Hooks.Choices = Choices;
 Hooks.FtlVideo = FtlVideo;
 Hooks.OvenVideo = OvenVideo;
 Hooks.ClickToCopy = ClickToCopy;
+Hooks.LineChart = LineChart;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
