@@ -28,3 +28,7 @@ config :logger, level: :warn
 
 config :stripity_stripe, :api_base_url, "http://localhost:12111/v1/"
 config :stripe_mock, StripeMockWeb.Endpoint, http: [port: 12111], server: true
+
+config :hcaptcha,
+  http_client: Hcaptcha.Http.MockClient,
+  secret: "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"

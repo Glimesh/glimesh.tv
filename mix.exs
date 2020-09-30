@@ -69,7 +69,8 @@ defmodule Glimesh.MixProject do
       {:absinthe_phoenix, "~> 2.0"},
       {:dataloader, "~> 1.0.0"},
       {:plug_canonical_host, "~> 2.0"},
-      {:ex_oauth2_provider, "~> 0.5.6"}
+      {:ex_oauth2_provider, "~> 0.5.6"},
+      {:hcaptcha, "~> 0.0.1"}
     ]
   end
 

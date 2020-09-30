@@ -9,8 +9,8 @@
                 var vendors = ['ms', 'moz', 'webkit', 'o'];
                 for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
                     window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-                    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame']
-                        || window[vendors[x] + 'CancelRequestAnimationFrame'];
+                    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] ||
+                        window[vendors[x] + 'CancelRequestAnimationFrame'];
                 }
 
                 if (!window.requestAnimationFrame)
@@ -43,7 +43,10 @@
             function initHeader() {
                 width = largeHeader.offsetWidth;
                 height = largeHeader.offsetHeight;
-                target = {x: width, y: height};
+                target = {
+                    x: width,
+                    y: height
+                };
 
                 largeHeader = document.getElementById('large-header');
                 largeHeader.style.height = height + 'px';
@@ -59,7 +62,12 @@
                     for (var y = 0; y < height; y = y + height / 20) {
                         var px = x + Math.random() * width / 20;
                         var py = y + Math.random() * height / 20;
-                        var p = {x: px, originX: px, y: py, originY: py};
+                        var p = {
+                            x: px,
+                            originX: px,
+                            y: py,
+                            originY: py
+                        };
                         points.push(p);
                     }
                 }
@@ -118,7 +126,8 @@
                     posx = e.pageX - leftPage.offsetWidth;
                     posy = e.pageY;
                 } else if (e.clientX || e.clientY) {
-                    posx = (e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft) - leftPage.offsetWidth;
+                    posx = (e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft) -
+                        leftPage.offsetWidth;
                     posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
                 }
                 target.x = posx;
@@ -175,7 +184,8 @@
             function shiftPoint(p) {
                 TweenLite.to(p, 1 + 1 * Math.random(), {
                     x: p.originX - 50 + Math.random() * 100,
-                    y: p.originY - 50 + Math.random() * 100, ease: Circ.easeInOut,
+                    y: p.originY - 50 + Math.random() * 100,
+                    ease: Circ.easeInOut,
                     onComplete: function () {
                         shiftPoint(p);
                     }
@@ -236,42 +246,48 @@
 
                     <h3>Register for our Alpha!</h3>
                     <%= form_for @changeset, Routes.user_registration_path(@conn, :create), [class: "text-left"], fn f -> %>
-                          <%= if @changeset.action do %>
-                            <div class="alert alert-danger">
-                              <p>Oops, something went wrong! Please check the errors below.</p>
-                            </div>
-                          <% end %>
+                    <%= if @changeset.action do %>
+                    <div class="alert alert-danger">
+                        <p>Oops, something went wrong! Please check the errors below.</p>
+                    </div>
+                    <% end %>
 
-                        <div class="coming-soon">
-                            <p>By creating an account you agree to our <%= link "Terms of Service", to: Routes.about_path(@conn, :terms) %>! <br></p>
-                            <div class="">
-                                <div id="username-field" class="field-wrapper input">
-                                    <i class="fas fa-user"></i>
-                                    <%= text_input f, :username, class: "form-control", placeholder: "Username", autofocus: "true", required: true %>
-                                </div>
-                                <%= error_tag f, :username %>
+                    <div class="coming-soon">
+                        <p>By creating an account you agree to our
+                            <%= link "Terms of Service", to: Routes.about_path(@conn, :terms) %>! <br></p>
+                        <div class="">
+                            <div id="username-field" class="field-wrapper input">
+                                <i class="fas fa-user"></i>
+                                <%= text_input f, :username, class: "form-control", placeholder: "Username", autofocus: "true", required: true %>
                             </div>
-                            <br>
-                            <div class="">
-                                <div id="email-field" class="field-wrapper input">
-                                    <i class="fas fa-at"></i>
-                                    <%= email_input f, :email, class: "form-control", placeholder: "Email", autofocus: "true", required: true %>
-                                </div>
-                                <%= error_tag f, :email %>
-                            </div>
-                            <br>
-                            <div class="">
-                                <div id="password-field" class="field-wrapper input">
-                                    <i class="fas fa-lock"></i>
-
-                                    <%= password_input f, :password, class: "form-control", placeholder: "Password", required: true %>
-
-                                    <%= submit "Register", class: "btn btn-success" %>
-                                </div>
-                                <%= error_tag f, :password %>
-                            </div>
-
+                            <%= error_tag f, :username %>
                         </div>
+                        <br>
+                        <div class="">
+                            <div id="email-field" class="field-wrapper input">
+                                <i class="fas fa-at"></i>
+                                <%= email_input f, :email, class: "form-control", placeholder: "Email", autofocus: "true", required: true, autocomplete: "username" %>
+                            </div>
+                            <%= error_tag f, :email %>
+                        </div>
+                        <br>
+                        <div class="">
+                            <div id="password-field" class="field-wrapper input">
+                                <i class="fas fa-lock"></i>
+
+                                <%= password_input f, :password, class: "form-control", placeholder: "Password", required: true, autocomplete: "new-password" %>
+                            </div>
+                            <%= error_tag f, :password %>
+                        </div>
+                        <br>
+                        <div class="text-center">
+                            <%= raw Hcaptcha.Template.display(theme: "dark") %>
+
+                            <%= submit "Register", class: "btn btn-primary btn-lg mt-2" %>
+                        </div>
+
+
+                    </div>
                     <% end %>
 
                     <p class="mt-4">

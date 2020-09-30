@@ -70,6 +70,10 @@ config :glimesh, :stripe_config,
   platform_sub_founder_price: 2500,
   channel_sub_base_price: 500
 
+config :hcaptcha,
+  public_key: "10000000-ffff-ffff-ffff-000000000001",
+  secret: "0x0000000000000000000000000000000000000000"
+
 import_config "badwords.exs"
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
