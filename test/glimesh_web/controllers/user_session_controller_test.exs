@@ -4,7 +4,7 @@ defmodule GlimeshWeb.UserSessionControllerTest do
   import Glimesh.AccountsFixtures
 
   setup do
-    %{user: user_fixture()}
+    %{user: user_fixture(), banned_user: banned_fixture()}
   end
 
   describe "GET /users/log_in" do
@@ -64,6 +64,23 @@ defmodule GlimeshWeb.UserSessionControllerTest do
       response = html_response(conn, 200)
       assert response =~ "<h3>Login to our Alpha!</h3>"
       assert response =~ "Invalid email or password"
+    end
+
+    test "emits error message with banned user", %{conn: conn, banned_user: banned_user} do
+      conn =
+        post(conn, Routes.user_session_path(conn, :create), %{
+          "user" => %{
+            "email" => banned_user.email,
+            "password" => valid_user_password(),
+            "tfa" => nil
+          }
+        })
+
+      response = html_response(conn, 200)
+      assert response =~ "<h3>Login to our Alpha!</h3>"
+
+      assert response =~
+               "User account is banned. Please contact support at support@glimesh.tv for more information."
     end
   end
 

@@ -46,12 +46,12 @@ defmodule Glimesh.Accounts do
       nil
 
   """
-  def get_by_username(username) when is_binary(username) do
-    Repo.get_by(User, username: username)
+  def get_by_username(username, ignore_banned \\ false) when is_binary(username) do
+    Repo.get_by(User, username: username, is_banned: ignore_banned)
   end
 
-  def get_by_username!(username) when is_binary(username) do
-    Repo.get_by!(User, username: username)
+  def get_by_username!(username, ignore_banned \\ false) when is_binary(username) do
+    Repo.get_by!(User, username: username, is_banned: ignore_banned)
   end
 
   @doc """
@@ -87,6 +87,11 @@ defmodule Glimesh.Accounts do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
+
+  def is_user_banned_by_username?(username) do
+    user = Repo.get_by(User, username: username)
+    user.is_banned
+  end
 
   ## User registration
 

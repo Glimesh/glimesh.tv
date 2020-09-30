@@ -3,6 +3,7 @@ defmodule GlimeshWeb.UserAuth do
   import Phoenix.Controller
 
   alias Glimesh.Accounts
+  alias GlimeshWeb.Endpoint
   alias GlimeshWeb.Router.Helpers, as: Routes
 
   # Make the remember me cookie valid for 60 days.
@@ -76,13 +77,26 @@ defmodule GlimeshWeb.UserAuth do
     user_token && Accounts.delete_session_token(user_token)
 
     if live_socket_id = get_session(conn, :live_socket_id) do
-      GlimeshWeb.Endpoint.broadcast(live_socket_id, "disconnect", %{})
+      Endpoint.broadcast(live_socket_id, "disconnect", %{})
     end
 
     conn
     |> renew_session()
     |> delete_resp_cookie(@remember_me_cookie)
     |> redirect(to: "/")
+  end
+
+  def ban_user(conn) do
+    user_token = get_session(conn, :user_token)
+    user_token && Accounts.delete_session_token(user_token)
+
+    if live_socket_id = get_session(conn, :live_socket_id) do
+      Endpoint.broadcast(live_socket_id, "disconnect", %{})
+    end
+
+    conn
+    |> renew_session()
+    |> delete_resp_cookie(@remember_me_cookie)
   end
 
   @doc """

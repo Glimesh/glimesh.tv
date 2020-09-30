@@ -104,7 +104,7 @@ msgid "Invalid Password"
 msgstr "無効なパスワード"
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_session_controller.ex:22
+#: lib/glimesh_web/controllers/user_session_controller.ex:34
 msgid "Invalid e-mail or password"
 msgstr "メールアドレスまたはパスワードが無効です。"
 
@@ -443,7 +443,7 @@ msgid "Level the playing field."
 msgstr "公平な競争の場。"
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_session_controller.ex:43
+#: lib/glimesh_web/controllers/user_session_controller.ex:55
 msgid "Logged out successfully."
 msgstr "正常にログアウトしました。"
 
@@ -930,7 +930,7 @@ msgid "Enter your 2FA code!"
 msgstr ""
 
 #, elixir-format
-#: lib/glimesh_web/controllers/user_session_controller.ex:33
+#: lib/glimesh_web/controllers/user_session_controller.ex:45
 msgid "Invalid 2FA code, if you need help please email %{email}"
 msgstr ""
 

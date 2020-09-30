@@ -18,6 +18,8 @@ defmodule Glimesh.Accounts.User do
     field :can_stream, :boolean, default: false
     field :can_payments, :boolean, default: false
     field :is_admin, :boolean, default: false
+    field :is_banned, :boolean, default: false
+    field :ban_reason, :string
 
     field :avatar, Glimesh.Avatar.Type
     field :social_twitter, :string
@@ -58,7 +60,8 @@ defmodule Glimesh.Accounts.User do
       :password,
       :displayname,
       :is_admin,
-      :can_payments
+      :can_payments,
+      :is_banned
     ])
     |> validate_username()
     |> validate_email()

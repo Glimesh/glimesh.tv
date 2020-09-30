@@ -246,11 +246,11 @@
 
                     <h3>Login to our Alpha!</h3>
                     <%= form_for @conn, Routes.user_session_path(@conn, :create), [as: :user, class: "text-left"], fn f -> %>
-                    <%= if @error_message do %>
-                    <div class="alert alert-danger">
-                        <p><%= @error_message %></p>
-                    </div>
-                    <% end %>
+                        <%= if @error_message do %>
+                            <div class="alert alert-danger">
+                              <div class="text-center"><%= @error_message %></div>
+                            </div>
+                        <% end %>
 
                     <div class="coming-soon">
                         <div class="">

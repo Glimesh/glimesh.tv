@@ -41,6 +41,10 @@ defmodule Glimesh.AccountsFixtures do
     user_fixture(%{is_admin: true})
   end
 
+  def banned_fixture(_attrs \\ %{}) do
+    user_fixture(%{is_banned: true})
+  end
+
   def extract_user_token(fun) do
     {:ok, captured} = fun.(&"[TOKEN]#{&1}[TOKEN]")
     [_, token, _] = String.split(captured.body, "[TOKEN]")

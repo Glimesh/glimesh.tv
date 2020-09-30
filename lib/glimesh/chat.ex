@@ -97,24 +97,11 @@ defmodule Glimesh.Chat do
       [] -> true
     end
 
-    # Need to add this since phoenix likes strings and our tests don't use them :)
-    message_contain_link_helper =
-      if attrs["message"] do
-        message_contains_link(attrs["message"])
-      else
-        if attrs.message, do: message_contains_link(attrs.message), else: [true]
-      end
+    if Glimesh.Accounts.is_user_banned_by_username?(username) do
+      raise ArgumentError, message: "User must not be banned"
+    end
 
-    create_message =
-      case message_contain_link_helper do
-        [true] ->
-          if channel.block_links, do: false, else: true
-
-        _ ->
-          true
-      end
-
-    if create_message do
+    if allow_link_in_message(channel, attrs) do
       %ChatMessage{
         channel: channel,
         user: user
@@ -221,6 +208,25 @@ defmodule Glimesh.Chat do
       [{^username, _}] -> false
       [] -> true
     end
+  end
+
+  def allow_link_in_message(channel, attrs) do
+    # Need to add this since phoenix likes strings and our tests don't use them :)
+    message_contain_link_helper =
+      if attrs["message"] do
+        message_contains_link(attrs["message"])
+      else
+        if attrs.message, do: message_contains_link(attrs.message), else: [true]
+      end
+
+    create_message =
+      case message_contain_link_helper do
+        [true] ->
+          if channel.block_links, do: false, else: true
+
+        _ ->
+          true
+      end
   end
 
   def render_global_badge(user) do

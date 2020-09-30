@@ -12,6 +12,7 @@ defmodule GlimeshWeb.Router do
     plug :put_secure_browser_headers
     plug :fetch_current_user
     plug GlimeshWeb.Plugs.Locale
+    plug GlimeshWeb.Plugs.Ban
   end
 
   pipeline :api do
