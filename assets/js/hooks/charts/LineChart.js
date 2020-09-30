@@ -46,7 +46,7 @@ export default {
             xaxis: data.label,
             tooltip: {
                 x: {
-                    format: 'dd/MM/yy HH:mm'
+                    format: 'MM/dd/yyyy'
                 },
             }
         }
