@@ -119,7 +119,20 @@ config :stripity_stripe,
   connect_client_id: stripe_connect_client_id,
   webhook_secret: stripe_webhook_secret
 
-# Glimesh Configuraiton
+# hCaptcha Configuration
+hcaptcha_public_key =
+  System.get_env("HCAPTCHA_PUBLIC_KEY") ||
+    raise "environment variable HCAPTCHA_PUBLIC_KEY is missing."
+
+hcaptcha_secret =
+  System.get_env("HCAPTCHA_SECRET") ||
+    raise "environment variable HCAPTCHA_SECRET is missing."
+
+config :hcaptcha,
+  public_key: hcaptcha_public_key,
+  secret: hcaptcha_secret
+
+# Glimesh Configuration
 email_physical_address =
   System.get_env("GLIMESH_EMAIL_PHYSICAL_ADDRESS") ||
     raise "environment variable GLIMESH_EMAIL_PHYSICAL_ADDRESS is missing."

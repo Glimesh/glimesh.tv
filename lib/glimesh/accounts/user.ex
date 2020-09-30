@@ -52,7 +52,14 @@ defmodule Glimesh.Accounts.User do
   """
   def registration_changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :email, :password, :displayname, :is_admin, :can_payments])
+    |> cast(attrs, [
+      :username,
+      :email,
+      :password,
+      :displayname,
+      :is_admin,
+      :can_payments
+    ])
     |> validate_username()
     |> validate_email()
     |> validate_password()

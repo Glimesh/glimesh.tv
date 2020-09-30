@@ -9,8 +9,8 @@
                 var vendors = ['ms', 'moz', 'webkit', 'o'];
                 for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
                     window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-                    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame']
-                        || window[vendors[x] + 'CancelRequestAnimationFrame'];
+                    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] ||
+                        window[vendors[x] + 'CancelRequestAnimationFrame'];
                 }
 
                 if (!window.requestAnimationFrame)
@@ -43,7 +43,10 @@
             function initHeader() {
                 width = largeHeader.offsetWidth;
                 height = largeHeader.offsetHeight;
-                target = {x: width, y: height};
+                target = {
+                    x: width,
+                    y: height
+                };
 
                 largeHeader = document.getElementById('large-header');
                 largeHeader.style.height = height + 'px';
@@ -59,7 +62,12 @@
                     for (var y = 0; y < height; y = y + height / 20) {
                         var px = x + Math.random() * width / 20;
                         var py = y + Math.random() * height / 20;
-                        var p = {x: px, originX: px, y: py, originY: py};
+                        var p = {
+                            x: px,
+                            originX: px,
+                            y: py,
+                            originY: py
+                        };
                         points.push(p);
                     }
                 }
@@ -118,7 +126,8 @@
                     posx = e.pageX - leftPage.offsetWidth;
                     posy = e.pageY;
                 } else if (e.clientX || e.clientY) {
-                    posx = (e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft) - leftPage.offsetWidth;
+                    posx = (e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft) -
+                        leftPage.offsetWidth;
                     posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
                 }
                 target.x = posx;
@@ -175,7 +184,8 @@
             function shiftPoint(p) {
                 TweenLite.to(p, 1 + 1 * Math.random(), {
                     x: p.originX - 50 + Math.random() * 100,
-                    y: p.originY - 50 + Math.random() * 100, ease: Circ.easeInOut,
+                    y: p.originY - 50 + Math.random() * 100,
+                    ease: Circ.easeInOut,
                     onComplete: function () {
                         shiftPoint(p);
                     }
@@ -236,36 +246,37 @@
 
                     <h3>Login to our Alpha!</h3>
                     <%= form_for @conn, Routes.user_session_path(@conn, :create), [as: :user, class: "text-left"], fn f -> %>
-                        <%= if @error_message do %>
-                            <div class="alert alert-danger">
-                                <p><%= @error_message %></p>
-                            </div>
-                        <% end %>
+                    <%= if @error_message do %>
+                    <div class="alert alert-danger">
+                        <p><%= @error_message %></p>
+                    </div>
+                    <% end %>
 
-                        <div class="coming-soon">
-                            <div class="">
-                                <div id="email-field" class="field-wrapper input">
-                                    <i class="fas fa-at"></i>
-                                    <%= email_input f, :email, class: "form-control", placeholder: "Email", required: true, autofocus: true %>
-                                </div>
-                                <%= error_tag f, :email %>
+                    <div class="coming-soon">
+                        <div class="">
+                            <div id="email-field" class="field-wrapper input">
+                                <i class="fas fa-at"></i>
+                                <%= email_input f, :email, class: "form-control", placeholder: "Email", required: true, autofocus: true, autocomplete: "username" %>
                             </div>
-                            <br>
-                            <div class="">
-                                <div id="password-field" class="field-wrapper input">
-                                    <i class="fas fa-lock"></i>
-                                    <%= password_input f, :password, class: "form-control", placeholder: "Password", required: true %>
-                                    <%= submit "Login", class: "btn btn-success" %>
-                                </div>
-                                <%= error_tag f, :password %>
-                            </div>
-                            <%= label f, :remember_me, "Keep me logged in for 60 days" %>
-                            <%= checkbox f, :remember_me %>
+                            <%= error_tag f, :email %>
                         </div>
+                        <br>
+                        <div class="">
+                            <div id="password-field" class="field-wrapper input">
+                                <i class="fas fa-lock"></i>
+                                <%= password_input f, :password, class: "form-control", placeholder: "Password", required: true, autocomplete: "current-password" %>
+                                <%= submit "Login", class: "btn btn-success" %>
+                            </div>
+                            <%= error_tag f, :password %>
+                        </div>
+                        <%= label f, :remember_me, "Keep me logged in for 60 days" %>
+                        <%= checkbox f, :remember_me %>
+                    </div>
                     <% end %>
 
                     <p class="mt-4">
-                        Don't have an account? <%= link "Register", to: Routes.user_registration_path(@conn, :new) %>! <br>
+                        Don't have an account? <%= link "Register", to: Routes.user_registration_path(@conn, :new) %>!
+                        <br>
                         <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
                     </p>
 

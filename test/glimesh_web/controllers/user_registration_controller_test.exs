@@ -26,6 +26,7 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
 
       conn =
         post(conn, Routes.user_registration_path(conn, :create), %{
+          "h-captcha-response" => "valid_response",
           "user" => %{
             "username" => username,
             "email" => email,
@@ -47,6 +48,7 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
     test "render errors for invalid data", %{conn: conn} do
       conn =
         post(conn, Routes.user_registration_path(conn, :create), %{
+          "h-captcha-response" => "valid_response",
           "user" => %{"email" => "with spaces", "password" => "short"}
         })
 

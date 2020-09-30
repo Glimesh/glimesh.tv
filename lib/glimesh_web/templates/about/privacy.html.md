@@ -89,13 +89,8 @@ Glimesh stores and processes personal information in the United States.
 
 We may also share your personal information with these third party vendors who work on our behalf:
 
--   [reCAPTCHA](https://www.google.com/recaptcha/intro/v3.html) - anti-robot service for preventing spam.
+-   [hCaptcha](https://hcaptcha.com/) - anti-robot service for preventing spam.
 -   [Plausible.io](https://plausible.io/) - privacy focused analytics provider
-
-We may also share your personal information with these third parties during our charity streams:
--   [Tiltify](https://tiltify.com/) - charity organization & donation service
--   [Pusher](https://pusher.com/) - live update service for donation widget from Tiltify
--   [Google Analytics](https://analytics.google.com/) - analytics service used by Tiltify
 
 We may also share your information as follows:
 
