@@ -71,7 +71,9 @@ defmodule Glimesh.Accounts.User do
   defp validate_username(changeset) do
     changeset
     |> validate_required([:username])
-    |> validate_format(:username, ~r/^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/i)
+    |> validate_format(:username, ~r/^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/i,
+      message: "Use only alphanumeric characters, no spaces"
+    )
     |> validate_length(:username, min: 3, max: 50)
     |> unsafe_validate_unique(:username, Glimesh.Repo)
     |> unique_constraint(:username)
