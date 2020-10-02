@@ -1,316 +1,74 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.9.4/easing/EasePack.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.13.1/TweenLite.min.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        (function () {
+<div class="container mt-4">
+    <div class="row align-items-center justify-content-md-center">
+        <div class="col-md-7 col-lg-5">
 
-            (function () {
-                var lastTime = 0;
-                var vendors = ['ms', 'moz', 'webkit', 'o'];
-                for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-                    window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-                    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] ||
-                        window[vendors[x] + 'CancelRequestAnimationFrame'];
-                }
-
-                if (!window.requestAnimationFrame)
-                    window.requestAnimationFrame = function (callback, element) {
-                        var currTime = new Date().getTime();
-                        var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-                        var id = window.setTimeout(function () {
-                                callback(currTime + timeToCall);
-                            },
-                            timeToCall);
-                        lastTime = currTime + timeToCall;
-                        return id;
-                    };
-
-                if (!window.cancelAnimationFrame)
-                    window.cancelAnimationFrame = function (id) {
-                        clearTimeout(id);
-                    };
-            }());
-
-            var width, height, canvas, ctx, points, target, animateHeader = true;
-
-            var largeHeader = document.getElementById('large-header');
-
-            // Main
-            initHeader();
-            initAnimation();
-            addListeners();
-
-            function initHeader() {
-                width = largeHeader.offsetWidth;
-                height = largeHeader.offsetHeight;
-                target = {
-                    x: width,
-                    y: height
-                };
-
-                largeHeader = document.getElementById('large-header');
-                largeHeader.style.height = height + 'px';
-
-                canvas = document.getElementById('demo-canvas');
-                canvas.width = width;
-                canvas.height = height;
-                ctx = canvas.getContext('2d');
-
-                // create points
-                points = [];
-                for (var x = 0; x < width; x = x + width / 20) {
-                    for (var y = 0; y < height; y = y + height / 20) {
-                        var px = x + Math.random() * width / 20;
-                        var py = y + Math.random() * height / 20;
-                        var p = {
-                            x: px,
-                            originX: px,
-                            y: py,
-                            originY: py
-                        };
-                        points.push(p);
-                    }
-                }
-
-                // for each point find the 5 closest points
-                for (var i = 0; i < points.length; i++) {
-                    var closest = [];
-                    var p1 = points[i];
-                    for (var j = 0; j < points.length; j++) {
-                        var p2 = points[j]
-                        if (!(p1 == p2)) {
-                            var placed = false;
-                            for (var k = 0; k < 5; k++) {
-                                if (!placed) {
-                                    if (closest[k] == undefined) {
-                                        closest[k] = p2;
-                                        placed = true;
-                                    }
-                                }
-                            }
-
-                            for (var k = 0; k < 5; k++) {
-                                if (!placed) {
-                                    if (getDistance(p1, p2) < getDistance(p1, closest[k])) {
-                                        closest[k] = p2;
-                                        placed = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    p1.closest = closest;
-                }
-
-                // assign a circle to each point
-                for (var i in points) {
-                    var c = new Circle(points[i], 2 + Math.random() * 2, 'rgba(255,255,255,0.3)');
-                    points[i].circle = c;
-                }
-            }
-
-            // Event handling
-            function addListeners() {
-                if (!('ontouchstart' in window)) {
-                    window.addEventListener('mousemove', mouseMove);
-                }
-                window.addEventListener('scroll', scrollCheck);
-                window.addEventListener('resize', resize);
-            }
-
-            function mouseMove(e) {
-                var leftPage = document.querySelector('.coming-soon-cont');
-
-                var posx = posy = 0;
-                if (e.pageX || e.pageY) {
-                    posx = e.pageX - leftPage.offsetWidth;
-                    posy = e.pageY;
-                } else if (e.clientX || e.clientY) {
-                    posx = (e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft) -
-                        leftPage.offsetWidth;
-                    posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-                }
-                target.x = posx;
-                target.y = posy;
-            }
-
-            function scrollCheck() {
-                if (document.body.scrollTop > height) animateHeader = false;
-                else animateHeader = true;
-            }
-
-            function resize() {
-                width = largeHeader.offsetWidth;
-                height = largeHeader.offsetHeight;
-                largeHeader.style.height = height + 'px';
-                canvas.width = width;
-                canvas.height = height;
-            }
-
-            // animation
-            function initAnimation() {
-                animate();
-                for (var i in points) {
-                    shiftPoint(points[i]);
-                }
-            }
-
-            function animate() {
-                if (animateHeader) {
-                    ctx.clearRect(0, 0, width, height);
-                    for (var i in points) {
-                        // detect points in range
-                        if (Math.abs(getDistance(target, points[i])) < 4000) {
-                            points[i].active = 0.3;
-                            points[i].circle.active = 0.8;
-                        } else if (Math.abs(getDistance(target, points[i])) < 20000) {
-                            points[i].active = 0.1;
-                            points[i].circle.active = 0.3;
-                        } else if (Math.abs(getDistance(target, points[i])) < 40000) {
-                            points[i].active = 0.02;
-                            points[i].circle.active = 0.1;
-                        } else {
-                            points[i].active = 0;
-                            points[i].circle.active = 0;
-                        }
-
-                        drawLines(points[i]);
-                        points[i].circle.draw();
-                    }
-                }
-                requestAnimationFrame(animate);
-            }
-
-            function shiftPoint(p) {
-                TweenLite.to(p, 1 + 1 * Math.random(), {
-                    x: p.originX - 50 + Math.random() * 100,
-                    y: p.originY - 50 + Math.random() * 100,
-                    ease: Circ.easeInOut,
-                    onComplete: function () {
-                        shiftPoint(p);
-                    }
-                });
-            }
-
-            // Canvas manipulation
-            function drawLines(p) {
-                if (!p.active) return;
-                for (var i in p.closest) {
-                    ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(p.closest[i].x, p.closest[i].y);
-                    ctx.strokeStyle = 'rgba(27,46,75,' + p.active + ')';
-                    ctx.stroke();
-                }
-            }
-
-            function Circle(pos, rad, color) {
-                var _this = this;
-
-                // constructor
-                (function () {
-                    _this.pos = pos || null;
-                    _this.radius = rad || null;
-                    _this.color = color || null;
-                })();
-
-                this.draw = function () {
-                    if (!_this.active) return;
-                    ctx.beginPath();
-                    ctx.arc(_this.pos.x, _this.pos.y, _this.radius, 0, 2 * Math.PI, false);
-                    ctx.fillStyle = 'rgba(48,74,202,' + _this.active + ')';
-                    ctx.fill();
-                };
-            }
-
-            // Util
-            function getDistance(p1, p2) {
-                return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
-            }
-
-        }());
-    });
-</script>
-
-<div class="coming-soon-container">
-    <div class="coming-soon-cont">
-        <div class="coming-soon-wrap">
-            <div class="coming-soon-container">
-                <div class="coming-soon-content">
-
-                    <h4 class="">Community-built Streaming</h4>
-                    <p class="">
-                        People first streaming, with discoverability as a primary feature. Let's build the next
-                        generation of streaming. <%= link "Learn More", to: Routes.about_path(@conn, :faq) %>
-                    </p>
-
+            <div class="card">
+                <div class="card-body">
                     <h3>Register for our Alpha!</h3>
-                    <%= form_for @changeset, Routes.user_registration_path(@conn, :create), [class: "text-left"], fn f -> %>
+                    <%= form_for @changeset, Routes.user_registration_path(@conn, :create), fn f -> %>
                     <%= if @changeset.action do %>
                     <div class="alert alert-danger">
                         <p>Oops, something went wrong! Please check the errors below.</p>
                     </div>
                     <% end %>
 
-                    <div class="coming-soon">
-                        <p>By creating an account you agree to our
-                            <%= link "Terms of Service", to: Routes.about_path(@conn, :terms) %>! <br></p>
-                        <div class="">
-                            <div id="username-field" class="field-wrapper input">
-                                <i class="fas fa-user"></i>
-                                <%= text_input f, :username, class: "form-control", placeholder: "Username", autofocus: "true", required: true %>
-                            </div>
-                            <%= error_tag f, :username %>
-                        </div>
-                        <br>
-                        <div class="">
-                            <div id="email-field" class="field-wrapper input">
-                                <i class="fas fa-at"></i>
-                                <%= email_input f, :email, class: "form-control", placeholder: "Email", autofocus: "true", required: true, autocomplete: "username" %>
-                            </div>
-                            <%= error_tag f, :email %>
-                        </div>
-                        <br>
-                        <div class="">
-                            <div id="password-field" class="field-wrapper input">
-                                <i class="fas fa-lock"></i>
+                    <p>By creating an account you agree to our
+                        <%= link "Terms of Service", to: Routes.about_path(@conn, :terms) %>! <br></p>
 
-                                <%= password_input f, :password, class: "form-control", placeholder: "Password", required: true, autocomplete: "new-password" %>
-                            </div>
-                            <%= error_tag f, :password %>
+                    <div class="input-group mt-3 mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user fa-fw"></i></span>
                         </div>
-                        <br>
-                        <div class="text-center">
-                            <%= raw Hcaptcha.Template.display(theme: "dark") %>
-
-                            <%= submit "Register", class: "btn btn-primary btn-lg mt-2" %>
-                        </div>
-
-
+                        <%= text_input f, :username, class: "form-control", placeholder: "Username", autofocus: "true", required: true, "aria-label": "Username" %>
+                        <%= error_tag f, :username %>
                     </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-at fa-fw"></i></span>
+                        </div>
+                        <%= email_input f, :email, class: "form-control", placeholder: "Email", autofocus: "true", required: true, autocomplete: "username", "aria-label": "Email"  %>
+                        <%= error_tag f, :email %>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-lock fa-fw"></i></span>
+                        </div>
+                        <%= password_input f, :password, class: "form-control", placeholder: "Password", required: true, autocomplete: "new-password", "aria-label": "Password"  %>
+                        <%= error_tag f, :password %>
+                    </div>
+
+                    <div class="text-center">
+                        <%= raw Hcaptcha.Template.display(theme: "dark") %>
+
+                        <%= submit "Register", class: "btn btn-primary btn-lg mt-2" %>
+
+                        <div class="mt-4">
+                            <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
+                        </div>
+                    </div>
+
                     <% end %>
-
-                    <p class="mt-4">
-                        Have an account? <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>! <br>
-                        <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
-                    </p>
-
-
-                    <ul class="social list-inline">
-                        <li class="list-inline-item"><a href="https://twitter.com/Glimesh"><i
-                                    class="fab fa-twitter"></i></a></li>
-                        <li class="list-inline-item"><a href="https://discord.gg/Glimesh"><i
-                                    class="fab fa-discord"></i></a></li>
-                        <li class="list-inline-item"><a href="https://github.com/Glimesh"><i
-                                    class="fab fa-github"></i></a></li>
-                    </ul>
-
                 </div>
             </div>
+
         </div>
-    </div>
-    <div class="coming-soon-image" id="large-header">
-        <canvas id="demo-canvas"></canvas>
-        <img src="/images/logos/logo-no-text.png" alt="Glimesh Logo" />
+        <div class="col-md-5 col-lg-4">
+            <h4 class="mt-4">What is Glimesh?</h4>
+            <p class="">
+                People first streaming, with discoverability as a primary feature. Let's build the next
+                generation of streaming. <%= link "Learn More", to: Routes.about_path(@conn, :faq) %>
+            </p>
+            <h4 class="mt-4">Why register an account?</h4>
+            <p>Signing up for a Glimesh account gets you immediate access to engage with your favorite streamers, follow
+                the ones you love to stay up to date, and even subscribe to them for support and extra cosmetic perks!
+                You can also create a channel and start streaming your own content, with your own chat and
+                subscriptions, instantly.
+            </p>
+
+            <h5 class="mt-4">Have an account?</h5>
+            <%= link "Log in", class: "btn btn-primary", to: Routes.user_session_path(@conn, :new) %>
+        </div>
     </div>
 </div>

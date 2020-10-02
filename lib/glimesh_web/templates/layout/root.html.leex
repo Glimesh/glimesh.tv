@@ -63,14 +63,18 @@
   </div>
 
   <footer class="container mt-4 mb-4">
-    <div class="row">
-      <div class="col-md-3">
-        <img src="/images/logos/logo-with-text.png" alt="" style="width: 100%" class="mb-2">
-        <small class="d-block mb-3 text-muted text-center">Copyright © 2020 Glimesh, Inc.<br>All rights reserved</small>
-      </div>
-      <div class="col-md-9">
-        <div class="row">
-          <div class="col-6 col-md-3 offset-md-3">
+    <div class="row justify-content-sm-center">
+      <div class="col-sm-11 col-md-8">
+        <div class="row text-center">
+          <div class="col-4">
+            <h5><%= gettext("About") %></h5>
+            <ul class="list-unstyled text-small">
+              <li><%= link gettext("About Us"), to: Routes.about_path(@conn, :index), class: "text-muted" %></li>
+              <li><%= link gettext("F.A.Qs"), to: Routes.about_path(@conn, :faq), class: "text-muted" %></li>
+              <li><%= link gettext("Open Data"), to: Routes.open_data_path(@conn, :index), class: "text-muted" %></li>
+            </ul>
+          </div>
+          <div class="col-4">
             <h5><%= gettext("Social") %></h5>
             <ul class="list-unstyled text-small">
               <li><a class="text-muted" href="https://twitter.com/Glimesh">Twitter</a></li>
@@ -81,21 +85,7 @@
               <li><a class="text-muted" href="https://github.com/Glimesh">GitHub</a></li>
             </ul>
           </div>
-          <div class="col-6 col-md-3">
-            <h5><%= gettext("About") %></h5>
-            <ul class="list-unstyled text-small">
-              <li><%= link "About Us", to: Routes.about_path(@conn, :index), class: "text-muted" %></li>
-              <li><%= link "F.A.Qs", to: Routes.about_path(@conn, :faq), class: "text-muted" %></li>
-              <li><%= link "Open Data", to: Routes.open_data_path(@conn, :index), class: "text-muted" %></li>
-            </ul>
-            <h5><%= gettext("Legal") %></h5>
-            <ul class="list-unstyled text-small">
-              <li><%= link "Terms of Service", to: Routes.about_path(@conn, :terms), class: "text-muted" %></li>
-              <li><%= link "Privacy & Cookie Policy", to: Routes.about_path(@conn, :privacy), class: "text-muted" %>
-              </li>
-            </ul>
-          </div>
-          <div class="col-md-3">
+          <div class="col-4">
             <h5><%= gettext("Blog") %></h5>
             <ul class="list-unstyled text-small">
               <%= for article <- Glimesh.Blog.list_some_articles(6) do %>
@@ -107,6 +97,12 @@
         </div>
       </div>
     </div>
+
+    <p class="text-center mt-4">
+      <%= gettext("Copyright © 2020 Glimesh, Inc.") %> <%= gettext("All rights reserved.") %><br>
+      <%= link "Terms of Service", to: Routes.about_path(@conn, :terms), class: "text-muted" %> &
+      <%= link "Privacy & Cookie Policy", to: Routes.about_path(@conn, :privacy), class: "text-muted" %>
+    </p>
   </footer>
 
 </body>
