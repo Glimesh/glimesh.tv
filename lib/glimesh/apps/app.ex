@@ -37,9 +37,47 @@ defmodule Glimesh.Apps.App do
     # Manually set the owner
     %{application | owner: params.owner}
     |> ExOauth2Provider.Applications.Application.changeset(params, otp_app: :glimesh)
+    |> validate_localhost_http_redirect_urls(:redirect_uri)
   end
 
   def oauth_changset(application, params) do
     ExOauth2Provider.Applications.Application.changeset(application, params, otp_app: :glimesh)
+  end
+
+  def validate_localhost_http_redirect_urls(changeset, field) when is_atom(field) do
+    changeset
+    |> Ecto.Changeset.get_field(field)
+    |> Kernel.||("")
+    |> String.split()
+    |> Enum.reduce(changeset, fn url, changeset ->
+      url
+      |> validate_localhost_http_url()
+      |> case do
+        {:error, error} -> Ecto.Changeset.add_error(changeset, :redirect_uri, error)
+        {:ok, _} -> changeset
+      end
+    end)
+  end
+
+  def validate_localhost_http_url(url) do
+    %URI{host: host, scheme: scheme} = URI.parse(url)
+
+    case [scheme, host] do
+      ["http", "localhost"] ->
+        {:ok, host}
+
+      ["http", "127.0.0.1"] ->
+        {:ok, host}
+
+      ["http", "::1"] ->
+        {:ok, host}
+
+      ["https", _] ->
+        {:ok, host}
+
+      _ ->
+        {:error,
+         "If using unsecure http, you must be using a local loopback address like [localhost, 127.0.0.1, ::1]"}
+    end
   end
 end
