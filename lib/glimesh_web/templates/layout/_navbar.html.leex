@@ -64,8 +64,12 @@
                     <i class="fas fa-money-bill fa-fw"></i>
                     <%= gettext("Payments") %>
                     <% end %>
-                    <%= link class: "dropdown-item", to: Routes.user_settings_path(@conn, :profile) do %>
+                    <%= link class: "dropdown-item", to: Routes.user_profile_path(@conn, :index, @current_user.username) do %>
                     <i class="fas fa-user fa-fw"></i>
+                    <%= gettext("Profile") %>
+                    <% end %>
+                    <%= link class: "dropdown-item", to: Routes.user_settings_path(@conn, :profile) do %>
+                    <i class="fas fa-cog fa-fw"></i>
                     <%= gettext("Settings") %>
                     <% end %>
                     <%= link class: "dropdown-item", to: Routes.user_session_path(@conn, :delete), method: :delete do %>
