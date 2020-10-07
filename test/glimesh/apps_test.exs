@@ -16,7 +16,7 @@ defmodule Glimesh.AppsTest do
       description: "some description",
       homepage_url: "https://glimesh.tv/",
       oauth_application: %{
-        redirect_uri: "https://glimesh.tv/something"
+        redirect_uri: "https://glimesh.tv/something\nhttp://localhost:8080/redirect"
       }
     }
     @update_attrs %{
@@ -131,8 +131,51 @@ defmodule Glimesh.AppsTest do
       assert app.name == Apps.get_app!(app.id).name
     end
 
+    test "create/2 with non-localhost non-ssl fails", %{user: user} do
+      assert {:error, %Ecto.Changeset{} = changeset} =
+               Apps.create_app(user, %{
+                 name: "some name",
+                 description: "some description",
+                 homepage_url: "https://glimesh.tv/",
+                 oauth_application: %{
+                   redirect_uri: "http://example.com/something"
+                 }
+               })
+
+      assert changeset.changes[:oauth_application].errors[:redirect_uri] ==
+               {"If using unsecure http, you must be using a local loopback address like [localhost, 127.0.0.1, ::1]",
+                []}
+    end
+
     test "change_app/1 returns a app changeset" do
       assert %Ecto.Changeset{} = Apps.change_app(%App{})
+    end
+  end
+
+  describe "core apps validators" do
+    @redirect_uri_validators [
+      {"http://localhost/", {:ok, "localhost"}},
+      {"http://127.0.0.1/", {:ok, "127.0.0.1"}},
+      {"http://[::1]/", {:ok, "::1"}},
+      {"http://localhost:8080/", {:ok, "localhost"}},
+      {"http://example.com/",
+       {:error,
+        "If using unsecure http, you must be using a local loopback address like [localhost, 127.0.0.1, ::1]"}},
+      {"https://example.com/", {:ok, "example.com"}}
+    ]
+
+    ExUnit.Case.register_attribute(__ENV__, :pair)
+
+    for {lhs, rhs} <- @redirect_uri_validators do
+      @pair {lhs, rhs}
+
+      test "validate_localhost_http_url: #{lhs}", context do
+        {l, r} = context.registered.pair
+
+        out = Glimesh.Apps.App.validate_localhost_http_url(l)
+
+        assert out == r
+      end
     end
   end
 end
