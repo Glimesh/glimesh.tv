@@ -1,5 +1,5 @@
 <div class="container">
-    <h2 class="mt-4"><%= gettext("Glimesh Community Team Dashboard") %></h2>
+    <h2 class="mt-4 text-center"><%= gettext("Glimesh Community Team Dashboard | Your access level is: %{level}", level: Glimesh.CommunityTeam.access_level_to_title(@conn.assigns.current_user.gct_level)) %></h2>
     <div class="card col-sm-6">
         <div class="card-body">
             <%= form_for @conn, Routes.gct_path(@conn, :username_lookup), [multipart: true, class: "form", method: :get], fn f -> %>

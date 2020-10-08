@@ -19,6 +19,7 @@ defmodule Glimesh.Accounts.User do
     field :can_payments, :boolean, default: false
     field :is_admin, :boolean, default: false
     field :is_gct, :boolean, default: false
+    field :gct_level, :integer
     field :is_banned, :boolean, default: false
     field :ban_reason, :string
 
