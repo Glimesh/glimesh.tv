@@ -306,6 +306,10 @@ defmodule Glimesh.Accounts do
     User.profile_changeset(user, attrs)
   end
 
+  def change_user(user, attrs \\ %{}) do
+    User.user_changeset(user, attrs)
+  end
+
   @doc """
   Updates the user password.
 
@@ -321,6 +325,12 @@ defmodule Glimesh.Accounts do
   def update_user_profile(user, attrs) do
     user
     |> User.profile_changeset(attrs)
+    |> Repo.update()
+  end
+
+  def update_user(user, attrs) do
+    user
+    |> User.user_changeset(attrs)
     |> Repo.update()
   end
 

@@ -211,6 +211,27 @@ defmodule Glimesh.Accounts.User do
     |> cast_attachments(attrs, [:avatar])
   end
 
+  def user_changeset(user, attrs) do
+    user
+    |> cast(attrs, [
+      :displayname,
+      :username,
+      :email,
+      :locale,
+      :is_admin,
+      :can_stream,
+      :stripe_user_id,
+      :stripe_customer_id,
+      :stripe_payment_method,
+      :tfa_token,
+      :is_banned,
+      :ban_reason,
+      :can_payments,
+      :is_gct,
+      :gct_level
+    ])
+  end
+
   @doc """
   A user changeset for changing the stripe customer id.
   """
