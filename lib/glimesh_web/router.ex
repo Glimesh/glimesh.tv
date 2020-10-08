@@ -149,6 +149,12 @@ defmodule GlimeshWeb.Router do
     live "/categories/:id/show/edit", Admin.CategoryLive.Show, :edit
   end
 
+  scope "/gct", GlimeshWeb do
+    pipe_through [:browser, :require_gct_user]
+
+    live "/", Gct.DashLive.Index, :index
+  end
+
   scope "/", GlimeshWeb do
     pipe_through [:browser]
 

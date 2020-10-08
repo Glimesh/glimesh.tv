@@ -68,6 +68,12 @@
                     <%= gettext("Profile") %>
                     <% end %>
                     <div class="dropdown-divider"></div>
+                    <%= if @current_user.is_gct do %>
+                        <%= link class: "dropdown-item", to: Routes.dash_index_path(@conn, :index) do %>
+                            <i class="fas fa-user fa-fw"></i>
+                            <%= gettext("GCT Dash") %>
+                        <% end %>
+                    <% end %>
                     <%= live_redirect class: "dropdown-item text-warning", to: Routes.platform_subscription_index_path(@conn, :index) do %>
                     <i class="fas fa-cookie fa-fw"></i>
                     <%= gettext("Upgrade!") %>

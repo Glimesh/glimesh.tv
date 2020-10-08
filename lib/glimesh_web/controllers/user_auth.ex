@@ -185,6 +185,19 @@ defmodule GlimeshWeb.UserAuth do
     end
   end
 
+  def require_gct_user(conn, _opts) do
+    if conn.assigns[:current_user] && conn.assigns[:current_user].is_gct do
+      conn
+    else
+      conn
+      |> redirect(to: Routes.user_session_path(conn, :new))
+      |> halt()
+      #|> put_flash(:error, "You must be part of the Glimesh Community Team to access this page.")
+      #|> maybe_store_return_to()
+      #|> redirect(to: Routes.user_session_path(conn, :new))
+    end
+  end
+
   @doc """
   Used for api routes that require authentication.
   """
