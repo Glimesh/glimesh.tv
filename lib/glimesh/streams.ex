@@ -131,7 +131,7 @@ defmodule Glimesh.Streams do
         on: c.user_id == u.id,
         where: u.id == ^user.id,
         where: c.inaccessible == false
-    )
+    ) |> Repo.preload([:category, :user])
   end
 
   def create_channel(user, attrs \\ %{category_id: Enum.at(list_categories(), 0).id}) do
