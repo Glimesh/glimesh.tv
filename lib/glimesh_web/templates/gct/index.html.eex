@@ -1,0 +1,16 @@
+<div class="container">
+    <h2 class="mt-4"><%= gettext("Glimesh Community Team Dashboard") %></h2>
+    <div class="card col-sm-6">
+        <div class="card-body">
+            <%= form_for @conn, Routes.gct_path(@conn, :username_lookup), [multipart: true, class: "form", method: :get], fn f -> %>
+                <div class="row">
+                    <%= label f, gettext("Lookup Username") %>
+                    <%= search_input f, :query, [class: "form-control"] %>
+                </div>
+                <div class="row">
+                    <%= submit gettext("Search"), class: "btn btn-primary mt-1" %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>

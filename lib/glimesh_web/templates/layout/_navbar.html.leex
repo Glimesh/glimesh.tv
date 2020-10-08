@@ -69,7 +69,7 @@
                     <% end %>
                     <div class="dropdown-divider"></div>
                     <%= if @current_user.is_gct do %>
-                        <%= link class: "dropdown-item", to: Routes.dash_index_path(@conn, :index) do %>
+                        <%= link class: "dropdown-item", to: Routes.gct_path(@conn, :index) do %>
                             <i class="fas fa-user fa-fw"></i>
                             <%= gettext("GCT Dash") %>
                         <% end %>

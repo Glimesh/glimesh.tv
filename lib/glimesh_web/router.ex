@@ -152,7 +152,10 @@ defmodule GlimeshWeb.Router do
   scope "/gct", GlimeshWeb do
     pipe_through [:browser, :require_gct_user]
 
-    live "/", Gct.DashLive.Index, :index
+    get "/", GctController, :index
+
+    get "/lookup", GctController, :username_lookup
+
   end
 
   scope "/", GlimeshWeb do
