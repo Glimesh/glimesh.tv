@@ -8,6 +8,7 @@ defmodule Glimesh.CommunityTeam do
       3 -> "Team Lead"
       2 -> "Team Member"
       1 -> "Trial Member"
+      _ -> "None"
     end
   end
 

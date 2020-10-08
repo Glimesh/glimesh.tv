@@ -192,9 +192,6 @@ defmodule GlimeshWeb.UserAuth do
       conn
       |> redirect(to: Routes.user_session_path(conn, :new))
       |> halt()
-      #|> put_flash(:error, "You must be part of the Glimesh Community Team to access this page.")
-      #|> maybe_store_return_to()
-      #|> redirect(to: Routes.user_session_path(conn, :new))
     end
   end
 
