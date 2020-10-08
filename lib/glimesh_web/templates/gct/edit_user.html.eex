@@ -1,5 +1,7 @@
 <div class="container">
-    <h2 class="mt-4"><%= gettext("WARNING YOU'RE CURRENTLY EDITING %{user}'s PROFILE SETTINGS", user: @user.displayname) %></h2>
+    <div class="alert alert-danger mt-4 mb-1"><h2 class="mb-0"><%= gettext("WARNING YOU'RE CURRENTLY EDITING %{user}'s PROFILE SETTINGS", user: @user.username) %></h2></div>
+
+    <%= live_redirect gettext("Go Back"), class: "btn btn-primary mb-4", to: Routes.gct_path(@conn, :username_lookup, query: @user.username) %>
 
     <%= form_for @user_changeset, Routes.gct_path(@conn, :update_user_profile, @user.username), [multipart: true, class: "form", method: :put], fn f -> %>
 

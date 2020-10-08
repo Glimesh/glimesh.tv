@@ -2,6 +2,7 @@
     <h2 class="mt-4"><%= gettext("Information for %{user}", user: @user.displayname) %></h2>
     <div class="form-group">
         <span class="form-group-btn"><%= live_redirect gettext("Edit Profile"), class: (if Glimesh.CommunityTeam.can_edit_user(@conn.assigns.current_user), do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@conn, :edit_user_profile, @user.username) %></span>
+        <span class="form-group-btn"><%= live_redirect gettext("Edit User"), class: (if Glimesh.CommunityTeam.can_edit_user(@conn.assigns.current_user), do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@conn, :edit_user, @user.username) %></span>
         <span class="form-group-btn"><%= live_redirect gettext("Ban User"), class: (if Glimesh.CommunityTeam.can_ban_user(@conn.assigns.current_user), do: "btn btn-danger", else: "btn btn-danger disabled"), to: "#" %></span>
         <span class="form-group-btn"><%= live_redirect gettext("Delete User"), class: (if Glimesh.CommunityTeam.can_delete_user(@conn.assigns.current_user), do: "btn btn-danger", else: "btn btn-danger disabled"), to: "#" %></span>
     </div>
