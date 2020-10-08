@@ -1,5 +1,10 @@
 <div class="container">
     <h2 class="mt-4"><%= gettext("Information for %{user}", user: @user.displayname) %></h2>
+    <div class="form-group">
+        <span class="form-group-btn"><%= live_redirect gettext("Edit User"), class: (if Glimesh.CommunityTeam.can_edit_user(@conn.assigns.current_user), do: "btn btn-primary", else: "btn btn-primary disabled"), to: "#" %></span>
+        <span class="form-group-btn"><%= live_redirect gettext("Ban User"), class: (if Glimesh.CommunityTeam.can_ban_user(@conn.assigns.current_user), do: "btn btn-danger", else: "btn btn-danger disabled"), to: "#" %></span>
+        <span class="form-group-btn"><%= live_redirect gettext("Delete User"), class: (if Glimesh.CommunityTeam.can_delete_user(@conn.assigns.current_user), do: "btn btn-danger", else: "btn btn-danger disabled"), to: "#" %></span>
+    </div>
     <div class="card">
         <div class="card-body">
         <div class="row">
@@ -9,6 +14,7 @@
                 <img src="<%= Glimesh.Avatar.url({@user.avatar, @user}, :original) %>" class="img-fluid mb-4 img-avatar">
                 <div>
                     <p><%= gettext("User ID: %{value}", value: @user.id) %></p>
+                    <p><%= gettext("Has Channel: %{value}", value: (if Glimesh.Streams.get_channel_for_user!(@user), do: "✅", else: "❌")) %>
                     <p><%= gettext("Banned: %{value}", value: (if @user.is_banned, do: "✅", else: "❌")) %></p>
                     <p><%= gettext("GCT: %{value}", value: (if @user.is_gct, do: "✅", else: "❌")) %></p>
                     <p><%= gettext("Access Level: %{value}", value: Glimesh.CommunityTeam.access_level_to_title(@user.gct_level)) %></p>
