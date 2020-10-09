@@ -12,7 +12,7 @@
     phx_submit: "send" %>
 
   <i class="far fa-smile-beam emoji-activator"></i>
-  <%= text_input f, :message, class: "mail-write-box form-control", disabled: @disabled %>
+  <%= text_input f, :message, class: "mail-write-box form-control", autocomplete: "off", maxlength: "255", disabled: @disabled %>
   <%= error_tag f, :message %>
   </form>
 </div>

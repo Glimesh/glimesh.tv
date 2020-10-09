@@ -21,7 +21,7 @@
                                 width="20" height="20" class="img-chat-avatar" />
                             <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white", target: "_blank" %>:
                             <br>
-                            <%= Glimesh.Chat.Parser.parse(chat_message.message, @channel_chat_parser_config) %>
+                            <%= Glimesh.Chat.Parser.parse_and_render(chat_message.message, @channel_chat_parser_config) %>
                         </div>
                         <% end %>
                     </div>

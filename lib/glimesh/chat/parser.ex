@@ -32,6 +32,13 @@ defmodule Glimesh.Chat.Parser do
     msg
   end
 
+  def parse_and_render(chat_message, %Config{} = config \\ %Config{}) do
+    chat_message
+    |> parse(config)
+    |> to_raw_html()
+    |> raw()
+  end
+
   def message_contains_link(chat_message) do
     found_uris = flatten_list(Regex.scan(@hyperlink_regex, chat_message))
 
@@ -89,7 +96,6 @@ defmodule Glimesh.Chat.Parser do
   defp flatten_list(element), do: [element]
 
   # Renderer
-
   def string_to_raw(input) do
     input
     |> parse()
@@ -108,6 +114,6 @@ defmodule Glimesh.Chat.Parser do
   end
 
   defp map_to_safe(inp) do
-    inp
+    inp |> html_escape() |> map_to_safe()
   end
 end

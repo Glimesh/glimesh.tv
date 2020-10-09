@@ -89,5 +89,18 @@ defmodule Glimesh.ChatParserTest do
 
       assert Glimesh.Chat.Parser.to_raw_html(parsed) == ":glimwow:"
     end
+
+    test "html cannot be injected" do
+      parsed = Glimesh.Chat.Parser.parse_and_render("<h2>Hello world</h2>")
+
+      assert Phoenix.HTML.safe_to_string(parsed) == "&lt;h2&gt;Hello world&lt;/h2&gt;"
+    end
+
+    test "html cannot be injected with a functional parser" do
+      parsed = Glimesh.Chat.Parser.parse_and_render("<h2>Hello :glimwow: world</h2>")
+
+      assert Phoenix.HTML.safe_to_string(parsed) ==
+               "&lt;h2&gt;Hello <img alt=\":glimwow:\" draggable=\"false\" height=\"32px\" src=\"/emotes/svg/glimwow.svg\" width=\"32px\"> world&lt;/h2&gt;"
+    end
   end
 end
