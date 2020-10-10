@@ -1,6 +1,7 @@
-<div id="chat-form" phx-hook="Chat">
+<div id="chat-form" phx-hook="Chat" data-emotes="<%= Glimesh.Emote.list_emotes_for_js() %>">
   <%= if @disabled do %>
-    <p class="text-center">You must be logged in to chat. <%= link "Register", to: Routes.user_registration_path(@socket, :new) %></p>
+  <p class="text-center">You must be logged in to chat.
+    <%= link "Register", to: Routes.user_registration_path(@socket, :new) %></p>
   <% end %>
 
   <%= f = form_for @changeset, "#",
@@ -9,8 +10,9 @@
     phx_target: @myself,
     phx_change: "validate",
     phx_submit: "send" %>
-    <i class="far fa-smile-beam emoji-activator"></i>
-    <%= text_input f, :message, class: ["mail-write-box form-control"], autocomplete: "off", disabled: @disabled %>
-    <%= error_tag f, :message %>
+
+  <i class="far fa-smile-beam emoji-activator"></i>
+  <%= text_input f, :message, class: "mail-write-box form-control", autocomplete: "off", maxlength: "255", disabled: @disabled %>
+  <%= error_tag f, :message %>
   </form>
 </div>
