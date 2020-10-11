@@ -27,7 +27,7 @@ defmodule Glimesh.Chat do
       from m in ChatMessage,
         where: m.is_visible == true and m.channel_id == ^channel.id,
         order_by: [desc: :inserted_at],
-        limit: 50
+        limit: 5
     )
     |> Repo.preload([:user, :channel])
     |> Enum.reverse()

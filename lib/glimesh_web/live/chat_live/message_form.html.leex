@@ -1,7 +1,8 @@
 <div id="chat-form" phx-hook="Chat" data-emotes="<%= Glimesh.Emote.list_emotes_for_js() %>">
   <%= if @disabled do %>
-  <p class="text-center">You must be logged in to chat.
-    <%= link "Register", to: Routes.user_registration_path(@socket, :new) %></p>
+  <div id="channel-footer" class="channel-footer">
+    <span>You must be logged in to chat. <%= link "Register", to: Routes.user_registration_path(@socket, :new) %></span>
+  </div>
   <% end %>
 
   <%= f = form_for @changeset, "#",
@@ -11,8 +12,31 @@
     phx_change: "validate",
     phx_submit: "send" %>
 
-  <i class="far fa-smile-beam emoji-activator"></i>
-  <%= text_input f, :message, class: "mail-write-box form-control", autocomplete: "off", maxlength: "255", disabled: @disabled %>
-  <%= error_tag f, :message %>
+  <%= if message = f.errors[:message] do %>
+  <div id="channel-footer" class="channel-footer ">
+    <span class="text-danger"><%= translate_error(message) %></span>
+  </div>
+  <% end %>
+
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text <%= if @disabled, do: "", else: "emoji-activator" %>">
+        <i class="far fa-smile-beam"></i>
+      </span>
+    </div>
+    <%= text_input f, :message, class: "mail-write-box form-control", placeholder: "Send a message", autocomplete: "off", maxlength: "255", disabled: @disabled %>
+
+    <div class="input-group-append dropup">
+      <a href="#" class="input-group-text dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false"><i class="fas fa-cog"></i></a>
+      <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="#"
+          onclick="window.open('<%= Routes.chat_pop_out_url(@socket, :index, @channel_username) %>', '_blank', 'width=400,height=600,location=no,menubar=no,toolbar=no')">Pop-out
+          Chat</a>
+      </div>
+    </div>
+
+  </div>
+
   </form>
 </div>

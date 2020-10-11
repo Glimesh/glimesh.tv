@@ -1,9 +1,7 @@
-<div class="layout-px-spacing">
+<div class="container-fluid">
+  <div class="row layout-top-spacing">
 
-
-  <div class="row sales layout-top-spacing display-flex">
-
-    <div id="video-column" class="col-xl-9 layout-spacing">
+    <div id="video-column" class="col-lg-9 layout-spacing">
       <div class="widget widget-chart-one">
         <div class="widget-heading">
           <div class="row">
@@ -58,14 +56,14 @@
       </div>
     </div>
 
-    <div id="chat-column" class="col-xl-3 layout-spacing">
+    <div id="chat-column" class="col-lg-3 layout-spacing">
       <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id} %>
     </div>
 
   </div>
 
   <div class="row">
-    <div class="col-xl-9 layout-spacing">
+    <div class="col-lg-9 layout-spacing">
       <div class="widget widget-chart-one">
         <div class="widget-heading">
           <h3>About <%= @streamer.displayname %>'s Stream</h3>
@@ -81,7 +79,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-3 layout-spacing">
+    <div class="col-lg-3 layout-spacing">
       <div class="widget widget-chart-one">
         <div class="widget-content user-content-body">
           <%= if @channel.chat_rules_html do %>
