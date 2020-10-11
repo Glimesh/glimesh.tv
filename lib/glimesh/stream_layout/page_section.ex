@@ -11,9 +11,9 @@ defmodule Glimesh.StreamLayout.PageSection do
         bs_parent_class: "col-md-6",
         # Size of the bootstrap columns for the individiual streams
         bs_child_class: "col-md-6",
-        # Streams that should be shown in order
-        streams: Glimesh.Streams.list_streams()
+        # Channels that should be shown in order
+        channels: Glimesh.Streams.list_live_channels()
       }
   """
-  defstruct [:title, :layout, :bs_parent_class, :bs_child_class, :streams]
+  defstruct [:title, :layout, :bs_parent_class, :bs_child_class, :channels]
 end

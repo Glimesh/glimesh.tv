@@ -82,7 +82,7 @@ defmodule Glimesh.Streams do
         where: c.status == "live",
         where: cat.id == ^category.id or cat.parent_id == ^category.id
     )
-    |> Repo.preload([:category, :user])
+    |> Repo.preload([:category, :user, :stream])
   end
 
   def list_all_follows do
@@ -105,7 +105,7 @@ defmodule Glimesh.Streams do
         where: c.status == "live",
         where: f.user_id == ^user.id
     )
-    |> Repo.preload([:category, :user])
+    |> Repo.preload([:category, :user, :stream])
   end
 
   def get_channel!(id) do

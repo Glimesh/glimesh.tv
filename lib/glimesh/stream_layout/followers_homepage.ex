@@ -23,7 +23,7 @@ defmodule Glimesh.StreamLayout.FollowersHomepage do
   end
 
   def set_section(page, user) do
-    streams = Streams.list_followed_channels(user)
+    channels = Streams.list_followed_channels(user)
 
     sections = [
       %PageSection{
@@ -35,7 +35,7 @@ defmodule Glimesh.StreamLayout.FollowersHomepage do
         bs_child_class: "col-md-3",
 
         # Streams that should be shown in order
-        streams: streams
+        channels: channels
       }
     ]
 

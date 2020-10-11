@@ -1,4 +1,7 @@
 defmodule Glimesh.Workers.StreamMetrics do
+  @moduledoc """
+  Periodic metric aggregator for live stream information
+  """
   use GenServer
 
   require Logger
@@ -16,7 +19,6 @@ defmodule Glimesh.Workers.StreamMetrics do
   end
 
   def handle_info(:count_viewers, _state) do
-    Logger.info("Counting live channel viewers")
     count_current_viewers()
     Process.send_after(self(), :count_viewers, @interval)
 
@@ -25,13 +27,12 @@ defmodule Glimesh.Workers.StreamMetrics do
 
   defp count_current_viewers do
     channels = Streams.list_live_channels()
+    Logger.info("Counting live viewers for #{length(channels)} channels")
 
     Enum.map(channels, fn channel ->
       count_viewers =
         Streams.get_subscribe_topic(:viewers, channel.id)
-        |> IO.inspect()
         |> Glimesh.Presence.list_presences()
-        |> IO.inspect()
         |> Enum.count()
 
       Streams.update_stream(channel.stream, %{
