@@ -66,6 +66,14 @@ defmodule Glimesh.Streams do
     |> Repo.preload([:category, :user])
   end
 
+  def list_live_channels do
+    Repo.all(
+      from c in Channel,
+        where: c.status == "live"
+    )
+    |> Repo.preload([:category, :user, :stream])
+  end
+
   def list_in_category(category) do
     Repo.all(
       from c in Channel,
