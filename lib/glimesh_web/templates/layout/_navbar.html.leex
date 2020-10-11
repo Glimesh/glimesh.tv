@@ -64,8 +64,19 @@
                     <i class="fas fa-money-bill fa-fw"></i>
                     <%= gettext("Payments") %>
                     <% end %>
-                    <%= link class: "dropdown-item", to: Routes.user_settings_path(@conn, :profile) do %>
+                    <!-- Check for a channel and display an option to go to it -->
+                    <%= if Glimesh.Streams.get_channel_for_user!(@current_user) do %>
+                        <%= link class: "dropdown-item", to: Routes.user_stream_path(@conn, :index, @current_user.username) do %>
+                            <i class="fas fa-tv fa-fw"></i>
+                            <%= gettext("Channel") %>
+                        <% end %>
+                    <% end %>
+                    <%= link class: "dropdown-item", to: Routes.user_profile_path(@conn, :index, @current_user.username) do %>
                     <i class="fas fa-user fa-fw"></i>
+                    <%= gettext("Profile") %>
+                    <% end %>
+                    <%= link class: "dropdown-item", to: Routes.user_settings_path(@conn, :profile) do %>
+                    <i class="fas fa-cog fa-fw"></i>
                     <%= gettext("Settings") %>
                     <% end %>
                     <%= link class: "dropdown-item", to: Routes.user_session_path(@conn, :delete), method: :delete do %>
