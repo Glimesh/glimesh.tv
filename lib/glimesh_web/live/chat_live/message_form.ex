@@ -4,13 +4,14 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   alias Glimesh.Chat
 
   @impl true
-  def update(%{chat_message: chat_message, user: user} = assigns, socket) do
+  def update(%{chat_message: chat_message, user: user, channel: channel} = assigns, socket) do
     changeset = Chat.change_chat_message(chat_message)
 
     {:ok,
      socket
      |> assign(assigns)
      |> assign(:changeset, changeset)
+     |> assign(:channel_username, channel.user.username)
      |> assign(:disabled, is_nil(user))}
   end
 

@@ -4,6 +4,21 @@ import {
 
 export default {
 
+    maybeScrollToBottom(el) {
+        if (this.isUserNearBottom(el)) {
+            this.scrollToBottom(el);
+        }
+    },
+    scrollToBottom(el) {
+        el.scrollTop = el.scrollHeight;
+    },
+    isUserNearBottom(el) {
+        const threshold = document.body.scrollHeight / 2;
+        const position = el.scrollTop + el.offsetHeight;
+        const height = el.scrollHeight;
+        return position > height - threshold;
+    },
+
     emotes() {
         return JSON.parse(this.el.dataset.emotes);
     },
@@ -17,9 +32,7 @@ export default {
         return leading + emoji + trailing;
     },
     mounted() {
-
         const glimeshEmojis = this.emotes();
-        console.log(glimeshEmojis)
 
         const picker = new EmojiButton({
             theme: 'dark',
@@ -32,6 +45,7 @@ export default {
 
         const trigger = document.querySelector('.emoji-activator');
         const chat = document.getElementById('chat_message_message');
+        const chatMessages = document.getElementById('chat-messages');
 
         picker.on('emoji', selection => {
             let value = '';
@@ -51,5 +65,9 @@ export default {
 
         trigger.addEventListener('click', () => picker.togglePicker(trigger));
 
+        this.scrollToBottom(chatMessages);
+        this.handleEvent("scroll_chat", () => {
+            this.maybeScrollToBottom(chatMessages);
+        });
     }
 };

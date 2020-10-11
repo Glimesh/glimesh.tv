@@ -57,11 +57,14 @@
 
 <body>
   <div id="app">
+    <%= if Map.get(assigns, :render_nav, true) do %>
     <%= render("_navbar.html", assigns) %>
+    <% end %>
 
     <%= @inner_content %>
   </div>
 
+  <%= if Map.get(assigns, :render_footer, true) do %>
   <footer class="container mt-4 mb-4">
     <div class="row justify-content-sm-center">
       <div class="col-sm-11 col-md-8">
@@ -104,6 +107,7 @@
       <%= link "Privacy & Cookie Policy", to: Routes.about_path(@conn, :privacy), class: "text-muted" %>
     </p>
   </footer>
+  <% end %>
 
 </body>
 
