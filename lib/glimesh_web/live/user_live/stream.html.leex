@@ -2,8 +2,8 @@
   <div class="row layout-top-spacing">
 
     <div id="video-column" class="col-lg-9 layout-spacing">
-      <div class="widget widget-chart-one">
-        <div class="widget-heading">
+      <div class="card">
+        <div class="card-header">
           <div class="row">
             <div class="col-8">
               <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
@@ -27,12 +27,12 @@
             </div>
           </div>
         </div>
-
-        <div class="widget-content">
+        <div class="card-body">
           <div class="embed-responsive embed-responsive-16by9">
             <%= if @backend == "ftl" do %>
-            <video id="video-player" phx-hook="FtlVideo" data-janus-server-uri="<%= @janus_uri %>"
-              data-channel-id="<%= @channel_id %>" poster="/images/stream-not-started.jpg" autoplay controls></video>
+            <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo"
+              data-janus-server-uri="<%= @janus_uri %>" data-channel-id="<%= @channel_id %>"
+              poster="/images/stream-not-started.jpg" autoplay controls></video>
             <% else %>
             <div id="player-container" class="embed-responsive-item" phx-hook="OvenVideo">
               <div id="player"></div>
