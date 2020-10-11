@@ -60,10 +60,10 @@ defmodule Glimesh.StreamLayout.CategoryHomepage do
   end
 
   def build_subcategories([category | tail], sections) do
-    streams = Glimesh.Streams.list_in_category(category)
-    layout = if length(streams) < 5, do: "half", else: "full"
-    bs_parent_class = if length(streams) < 5, do: "col-md-6", else: "col-md-12"
-    bs_child_class = if length(streams) < 5, do: "col-md-6", else: "col-md-3"
+    channels = Glimesh.Streams.list_in_category(category)
+    layout = if length(channels) < 5, do: "half", else: "full"
+    bs_parent_class = if length(channels) < 5, do: "col-md-6", else: "col-md-12"
+    bs_child_class = if length(channels) < 5, do: "col-md-6", else: "col-md-3"
 
     section = %PageSection{
       # Title of the section
@@ -74,10 +74,10 @@ defmodule Glimesh.StreamLayout.CategoryHomepage do
       bs_child_class: bs_child_class,
 
       # Streams that should be shown in order
-      streams: streams
+      channels: channels
     }
 
-    if length(streams) > 0 do
+    if length(channels) > 0 do
       build_subcategories(tail, [section | sections])
     else
       build_subcategories(tail, sections)

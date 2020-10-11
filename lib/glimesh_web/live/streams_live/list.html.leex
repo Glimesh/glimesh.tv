@@ -1,66 +1,73 @@
-
-
 <div class="layout-px-spacing">
 
     <%= if @page.layout == "none" do %>
-        <div class="container">
-            <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
-                <div class="col-md-12 p-lg-5 mx-auto my-5">
-                    <h1 class="display-4 font-weight-normal"><%= gettext("%{category} Streams Coming Soon", category: @category.name) %></h1>
-                    <p class="lead font-weight-normal"><%= gettext("We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!") %></p>
-                </div>
+    <div class="container">
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
+            <div class="col-md-12 p-lg-5 mx-auto my-5">
+                <h1 class="display-4 font-weight-normal">
+                    <%= gettext("%{category} Streams Coming Soon", category: @category.name) %></h1>
+                <p class="lead font-weight-normal">
+                    <%= gettext("We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!") %>
+                </p>
             </div>
         </div>
+    </div>
     <% else %>
 
-        <div class="container">
-            <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
-                <div class="col-md-12 mx-auto ">
-                    <h1 class="display-4 font-weight-normal"><%= gettext("%{category} Streams", category: @page.title) %></h1>
-                </div>
+    <div class="container">
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
+            <div class="col-md-12 mx-auto ">
+                <h1 class="display-4 font-weight-normal"><%= gettext("%{category} Streams", category: @page.title) %>
+                </h1>
             </div>
         </div>
+    </div>
 
 
-        <div class="row">
+    <div class="row">
 
 
         <%= for section <- @page.sections do %>
-            <%= if section.layout == "full" do %>
+        <%= if section.layout == "full" do %>
 
-            <% end %>
+        <% end %>
 
-            <div class="<%= section.bs_parent_class %> mt-4">
-                <div class="card">
-                    <div class="card-body">
+        <div class="<%= section.bs_parent_class %> mt-4">
+            <div class="card">
+                <div class="card-body">
                     <h4><%= section.title %></h4>
-                        <div class="row">
-                            <%= for stream <- section.streams do %>
-                            <div class="<%= section.bs_child_class %> mt-4">
-                                <%= live_redirect to: Routes.user_stream_path(@socket, :index, stream.user.displayname) do %>
-                                    <div class="card card-stream">
-                                        <img src="https://picsum.photos/320/180?random=<%= stream.user.id %>" alt="" class="card-img">
-                                        <div class="card-img-overlay">
-                                            <h6 class="card-title"><%= stream.title %></h5>
-                                            <p class="card-text card-stream-live">
-                                                <span class="badge badge-danger"><%= :rand.uniform(100) %> <i class="fas fa-user"></i></span>
-                                            </p>
-                                            <p class="card-text card-stream-streamer <%= if stream.user.stripe_user_id, do: "sub-ready", else: "" %>">
-                                                <span class="card-stream-username"><%= stream.user.displayname %></span>
-                                                <img src="<%= Glimesh.Avatar.url({stream.user.avatar, stream.user}, :original) %>" alt="<%= stream.user.displayname%>" width="35" height="35" class="img-avatar <%= if stream.user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
-                                            </p>
-                                        </div>
-                                    </div>
-                                <% end %>
+                    <div class="row">
+                        <%= for channel <- section.channels do %>
+                        <div class="<%= section.bs_child_class %> mt-4">
+                            <%= live_redirect to: Routes.user_stream_path(@socket, :index, channel.user.displayname) do %>
+                            <div class="card card-stream">
+                                <img src="https://picsum.photos/320/180?random=<%= channel.user.id %>" alt=""
+                                    class="card-img">
+                                <div class="card-img-overlay">
+                                    <h6 class="card-title"><%= channel.title %></h5>
+                                        <p class="card-text card-stream-live">
+                                            <span class="badge badge-danger"><%= channel.stream.count_viewers %> <i
+                                                    class="fas fa-user"></i></span>
+                                        </p>
+                                        <p
+                                            class="card-text card-stream-streamer <%= if channel.user.stripe_user_id, do: "sub-ready", else: "" %>">
+                                            <span class="card-stream-username"><%= channel.user.displayname %></span>
+                                            <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>"
+                                                alt="<%= channel.user.displayname%>" width="35" height="35"
+                                                class="img-avatar <%= if channel.user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+                                        </p>
+                                </div>
                             </div>
                             <% end %>
                         </div>
+                        <% end %>
                     </div>
                 </div>
             </div>
+        </div>
         <% end %>
 
-        </div>
+    </div>
     <% end %>
 
 </div>

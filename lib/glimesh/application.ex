@@ -18,7 +18,8 @@ defmodule Glimesh.Application do
       # Start the Endpoint (http/https)
       GlimeshWeb.Endpoint,
       # Start a worker by calling: Glimesh.Worker.start_link(arg)
-      {Absinthe.Subscription, GlimeshWeb.Endpoint}
+      {Absinthe.Subscription, GlimeshWeb.Endpoint},
+      Glimesh.Workers.StreamMetrics
       # {Glimesh.Worker, arg}
     ]
 
