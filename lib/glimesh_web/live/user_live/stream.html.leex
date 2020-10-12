@@ -56,19 +56,23 @@
       </div>
     </div>
 
-    <div id="chat-column" class="col-lg-3 layout-spacing">
-      <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id} %>
+    <div id="chat-column" class="col-lg-3 d-flex flex-column position-relative layout-spacing">
+      <div class="chat-flex">
+        <div class="chat-absolute">
+          <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id} %>
+        </div>
+      </div>
     </div>
 
   </div>
 
   <div class="row">
     <div class="col-lg-9 layout-spacing">
-      <div class="widget widget-chart-one">
-        <div class="widget-heading">
+      <div class="card">
+        <div class="card-header">
           <h3>About <%= @streamer.displayname %>'s Stream</h3>
         </div>
-        <div class="widget-content">
+        <div class="card-body">
           <%= if @streamer.profile_content_html do %>
           <%= raw(@streamer.profile_content_html) %>
           <% else %>
@@ -80,8 +84,8 @@
       </div>
     </div>
     <div class="col-lg-3 layout-spacing">
-      <div class="widget widget-chart-one">
-        <div class="widget-content user-content-body">
+      <div class="card">
+        <div class="card-body">
           <%= if @channel.chat_rules_html do %>
           <%= raw(@channel.chat_rules_html) %>
           <% else %>
