@@ -1,5 +1,27 @@
-#video-column,
+// Initial sizing for mobile, quickly overwritten any time we have columns
 #chat-column {
-    // max-height: 1205px;
-    max-height: 80vh;
+    #chat {
+        max-height: 400px;
+    }
+}
+
+@media (min-width: 992px) {
+    #chat-column {
+        #chat {
+            max-height: initial;
+        }
+    }
+
+    .chat-flex {
+        position: relative;
+        flex: 1 1 auto;
+    }
+
+    .chat-absolute {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        overflow-y: auto;
+        width: 100%;
+    }
 }
