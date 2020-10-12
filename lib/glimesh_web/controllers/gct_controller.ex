@@ -4,19 +4,21 @@ defmodule GlimeshWeb.GctController do
   alias Glimesh.Accounts
   alias Glimesh.Payments
 
-  #General Routes
+  # General Routes
   def index(conn, _params) do
     render(conn, "index.html")
   end
 
   def username_lookup(conn, params) do
     user = Accounts.get_by_username(params["query"], true)
+
     render(
       conn,
       "lookup_user.html",
       user: user,
       payout_history: Payments.list_payout_history(user),
-      payment_history: Payments.list_payment_history(user))
+      payment_history: Payments.list_payment_history(user)
+    )
   end
 
   def edit_user_profile(conn, %{"username" => username}) do
@@ -37,6 +39,7 @@ defmodule GlimeshWeb.GctController do
     case Accounts.update_user_profile(user, user_params) do
       {:ok, user} ->
         user_changeset = Accounts.change_user_profile(user)
+
         conn
         |> put_flash(:info, gettext("User updated successfully"))
         |> render("edit_user_profile.html", user_changeset: user_changeset, user: user)
@@ -50,7 +53,6 @@ defmodule GlimeshWeb.GctController do
     user = Accounts.get_by_username(username)
     user_changeset = Accounts.change_user(user)
 
-    IO.inspect(user_changeset)
     render(
       conn,
       "edit_user.html",
@@ -65,6 +67,7 @@ defmodule GlimeshWeb.GctController do
     case Accounts.update_user(user, user_params) do
       {:ok, user} ->
         user_changeset = Accounts.change_user(user)
+
         conn
         |> put_flash(:info, gettext("User updated successfully"))
         |> render("edit_user.html", user: user, user_changeset: user_changeset)
@@ -73,5 +76,4 @@ defmodule GlimeshWeb.GctController do
         render(conn, "edit_user.html", user: user, user_changeset: changeset)
     end
   end
-
 end

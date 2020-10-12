@@ -1,7 +1,9 @@
 defmodule Glimesh.CommunityTeam do
+  @moduledoc """
+  The Community Team context :)
+  """
 
   def access_level_to_title(level) do
-
     case level do
       5 -> "Admin"
       4 -> "Manager"

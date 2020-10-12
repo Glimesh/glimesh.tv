@@ -164,7 +164,6 @@ defmodule GlimeshWeb.Router do
     # Editing user scopes
     get "/edit/:username", GctController, :edit_user
     put "/edit/:username/update", GctController, :update_user
-
   end
 
   scope "/", GlimeshWeb do
