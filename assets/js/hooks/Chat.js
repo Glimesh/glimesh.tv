@@ -44,6 +44,10 @@ export default {
         });
 
         const trigger = document.querySelector('.emoji-activator');
+        if (trigger) {
+            trigger.addEventListener('click', () => picker.togglePicker(trigger));
+        }
+
         const chat = document.getElementById('chat_message_message');
         const chatMessages = document.getElementById('chat-messages');
 
@@ -63,7 +67,6 @@ export default {
             );
         });
 
-        trigger.addEventListener('click', () => picker.togglePicker(trigger));
 
         this.scrollToBottom(chatMessages);
         this.handleEvent("scroll_chat", () => {
