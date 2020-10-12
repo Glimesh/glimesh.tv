@@ -307,7 +307,7 @@ defmodule Glimesh.Accounts do
   end
 
   def change_user(user, attrs \\ %{}) do
-    User.user_changeset(user, attrs)
+    User.big_scary_changeset(user, attrs)
   end
 
   @doc """
@@ -330,7 +330,7 @@ defmodule Glimesh.Accounts do
 
   def update_user(user, attrs) do
     user
-    |> User.user_changeset(attrs)
+    |> User.big_scary_changeset(attrs)
     |> Repo.update()
   end
 
