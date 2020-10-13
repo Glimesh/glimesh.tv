@@ -41,8 +41,8 @@
                         <div class="<%= section.bs_child_class %> mt-4">
                             <%= live_redirect to: Routes.user_stream_path(@socket, :index, channel.user.displayname) do %>
                             <div class="card card-stream">
-                                <img src="https://picsum.photos/320/180?random=<%= channel.user.id %>" alt=""
-                                    class="card-img">
+                                <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>"
+                                    alt="<%= channel.title %>" class="card-img">
                                 <div class="card-img-overlay">
                                     <h6 class="card-title"><%= channel.title %></h5>
                                         <p class="card-text card-stream-live">

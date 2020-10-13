@@ -65,6 +65,20 @@ defmodule Glimesh.Resolvers.StreamsResolver do
     {:error, "Access denied"}
   end
 
+  def upload_stream_thumbnail(_parent, %{stream_id: stream_id, thumbnail: thumbnail}, %{
+        context: %{is_admin: true}
+      }) do
+    stream = Streams.get_stream!(stream_id)
+
+    Streams.update_stream(stream, %{
+      thumbnail: thumbnail
+    })
+  end
+
+  def upload_stream_thumbnail(_parent, _args, _resolution) do
+    {:error, "Access denied"}
+  end
+
   def create_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
     channel = Streams.get_channel!(channel_id)
     {:ok, stream} = Streams.create_stream(channel)

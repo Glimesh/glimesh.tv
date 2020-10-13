@@ -1,6 +1,7 @@
 defmodule Glimesh.Streams.Stream do
   @moduledoc false
   use Ecto.Schema
+  use Waffle.Ecto.Schema
   import Ecto.Changeset
 
   schema "streams" do
@@ -21,6 +22,8 @@ defmodule Glimesh.Streams.Stream do
     field :avg_chatters, :integer
     field :new_subscribers, :integer
     field :resub_subscribers, :integer
+
+    field :thumbnail, Glimesh.StreamThumbnail.Type
 
     has_many :metadata, Glimesh.Streams.StreamMetadata
 
@@ -43,5 +46,6 @@ defmodule Glimesh.Streams.Stream do
       :new_subscribers,
       :resub_subscribers
     ])
+    |> cast_attachments(attrs, [:thumbnail])
   end
 end
