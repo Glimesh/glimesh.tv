@@ -186,7 +186,7 @@ defmodule GlimeshWeb.UserAuth do
   end
 
   def require_gct_user(conn, _opts) do
-    if conn.assigns[:current_user] && conn.assigns[:current_user].is_gct do
+    if conn.assigns[:current_user] && conn.assigns[:current_user].is_gct && conn.assigns[:current_user].tfa_token do
       conn
     else
       conn
