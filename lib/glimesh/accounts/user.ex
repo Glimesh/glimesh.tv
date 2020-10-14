@@ -66,7 +66,9 @@ defmodule Glimesh.Accounts.User do
       :is_admin,
       :can_payments,
       :is_banned,
-      :is_gct
+      :is_gct,
+      :gct_level,
+      :tfa_token
     ])
     |> validate_username()
     |> validate_email()
