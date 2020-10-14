@@ -1,10 +1,7 @@
 <div class="container">
     <h2 class="mt-4"><%= gettext("Information for %{user}", user: @user.displayname) %></h2>
     <div class="form-group">
-        <span class="form-group-btn"><%= live_redirect gettext("Edit Profile"), class: (if Glimesh.CommunityTeam.can_edit_user(@conn.assigns.current_user), do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@conn, :edit_user_profile, @user.username) %></span>
-        <span class="form-group-btn"><%= live_redirect gettext("Edit User"), class: (if Glimesh.CommunityTeam.can_edit_user(@conn.assigns.current_user), do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@conn, :edit_user, @user.username) %></span>
-        <span class="form-group-btn"><%= live_redirect gettext("Ban User"), class: (if Glimesh.CommunityTeam.can_ban_user(@conn.assigns.current_user), do: "btn btn-danger", else: "btn btn-danger disabled"), to: "#" %></span>
-        <span class="form-group-btn"><%= live_redirect gettext("Delete User"), class: (if Glimesh.CommunityTeam.can_delete_user(@conn.assigns.current_user), do: "btn btn-danger", else: "btn btn-danger disabled"), to: "#" %></span>
+        <span class="form-group-btn"><%= live_render(@conn, GlimeshWeb.GctLive.Components.ButtonArray, id: "button-array", session: %{"admin" => @conn.assigns.current_user, "user" => @user}) %></span>
     </div>
     <div class="card">
         <div class="card-body">
@@ -88,6 +85,14 @@
                     <div class="col-sm-6">
                         <%= label :user, gettext("Locale") %>
                         <%= text_input :user, :locale, [value: @user.locale, class: "form-control", disabled: true] %>
+                    </div>
+                </div>
+                <!-- Row end -->
+                <!-- Row start -->
+                <div class="row mt-1">
+                    <div class="col">
+                        <%= label :user, gettext("Profile Content") %>
+                        <%= textarea :user, :profile_content_md, [value: @user.profile_content_md ,class: "form-control mb-4", id: "textarea_edit", rows: 10, disabled: true]  %>
                     </div>
                 </div>
                 <!-- Row end -->

@@ -18,6 +18,10 @@ defmodule Glimesh.CommunityTeam do
     if user.gct_level >= 3, do: true, else: false
   end
 
+  def can_edit_user_profile(user) do
+    if user.gct_level >= 2, do: true, else: false
+  end
+
   def can_ban_user(user) do
     if user.gct_level >= 4, do: true, else: false
   end
