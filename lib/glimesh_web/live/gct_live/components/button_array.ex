@@ -8,7 +8,11 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
     ~L"""
     <%= live_redirect gettext("Edit Profile"), class: (if Glimesh.CommunityTeam.can_edit_user(@admin), do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_user_profile, @user.username) %>
     <%= live_redirect gettext("Edit User"), class: (if Glimesh.CommunityTeam.can_edit_user_profile(@admin), do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_user, @user.username) %>
-    <button class="btn btn-danger" phx-click="show_ban_modal"><%= gettext("Ban User") %></button>
+    <%= unless @user.is_banned do %>
+      <button class="btn btn-danger" phx-click="show_ban_modal"><%= gettext("Ban User") %></button>
+    <%= else %>
+      <button class="btn btn-danger" phx-click="unban_user"><%= gettext("Unban User") %></button>
+    <% end %>
     <button class="btn btn-danger"><%= gettext("Delete User") %></button>
 
     <%= if @show_ban do %>
@@ -31,7 +35,7 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
               <%= form_for :user, "#", [phx_submit: :ban] %>
               <div class="form-group ">
                 <label for="banReason"><%= gettext("Ban Reason") %></label>
-                <textarea rows="5" class="form-control" name="ban_reason" id="banReason" placeholder="A descriptive reason to why this user is being banned."></textarea>
+                <textarea rows="5" class="form-control" name="ban_reason" id="banReason" placeholder="A descriptive reason to why this user is being banned. This is required, if you don't provide one then the user will not be banned."></textarea>
               </div>
 
               <button class="btn btn-danger btn-block mt-4"><%= gettext("Ban User") %></button>
@@ -57,6 +61,13 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
     {:ok, _} = Accounts.ban_user(socket.assigns.user, ban_reason)
     {:noreply,
      socket |> assign(:show_ban, false) |> put_flash(:info, "User has been banned!")}
+  end
+
+  @impl true
+  def handle_event("unban_user", _value, socket) do
+    {:ok, user} = Accounts.unban_user(socket.assigns.user)
+    {:noreply,
+     socket |> assign(user: user) |> put_flash(:info, "User has been unbanned!")}
   end
 
   @impl true

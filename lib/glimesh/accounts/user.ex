@@ -230,6 +230,9 @@ defmodule Glimesh.Accounts.User do
       :is_gct,
       :gct_level
     ])
+    |> validate_length(:ban_reason, max: 8192)
+    |> validate_username()
+    |> validate_email()
   end
 
   @doc """

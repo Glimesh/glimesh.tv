@@ -92,10 +92,20 @@
                 <div class="row mt-1">
                     <div class="col">
                         <%= label :user, gettext("Profile Content") %>
-                        <%= textarea :user, :profile_content_md, [value: @user.profile_content_md ,class: "form-control mb-4", id: "textarea_edit", rows: 10, disabled: true]  %>
+                        <%= textarea :user, :profile_content_md, [value: @user.profile_content_md ,class: "form-control mb-4", id: "textarea_edit", rows: 7, disabled: true]  %>
                     </div>
                 </div>
                 <!-- Row end -->
+                <%= if @user.ban_reason do %>
+                <!-- Row start -->
+                <div class="row mt-1">
+                    <div class="col">
+                        <%= label :user, gettext("Ban Reason") %>
+                        <%= textarea :user, :ban_reason, [value: @user.ban_reason,class: "form-control mb-4", id: "textarea_edit", rows: 5, disabled: true]  %>
+                    </div>
+                </div>
+                <!-- Row end -->
+                <% end %>
             </div>
         </div>
         </div>

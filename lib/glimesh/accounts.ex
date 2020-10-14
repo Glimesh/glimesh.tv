@@ -555,8 +555,32 @@ defmodule Glimesh.Accounts do
   end
 
   def ban_user(user, reason) do
+    IO.inspect(reason)
+    case reason do
+      "" -> throw_error_on_action("Ban reason required", %{is_banned: true, ban_reason: reason}, :ban) #Doesn't actually do anything since the ban popup doesn't handle errors. Will eventually do something. For now it just stops the ban going through if the reason is blank.
+      _ ->
+        user
+        |> User.big_scary_changeset(%{is_banned: true, ban_reason: reason})
+        |> Repo.update()
+    end
+  end
+
+  def unban_user(user) do
     user
-    |> User.big_scary_changeset(%{is_banned: true, ban_reason: reason})
+    |> User.big_scary_changeset(%{is_banned: false, ban_reason: nil})
     |> Repo.update()
+  end
+
+  def throw_error_on_action(error_message, attrs, action) do
+    {:error,
+     %Ecto.Changeset{
+       action: action,
+       changes: attrs,
+       errors: [
+         message: {error_message, [validation: :required]}
+       ],
+       data: %User{},
+       valid?: false
+     }}
   end
 end
