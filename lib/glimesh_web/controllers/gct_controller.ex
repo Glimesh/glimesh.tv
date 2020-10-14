@@ -2,6 +2,7 @@ defmodule GlimeshWeb.GctController do
   use GlimeshWeb, :controller
 
   alias Glimesh.Accounts
+  alias Glimesh.CommunityTeam
   alias Glimesh.Payments
 
   # General Routes
@@ -24,6 +25,10 @@ defmodule GlimeshWeb.GctController do
   def edit_user_profile(conn, %{"username" => username}) do
     user = Accounts.get_by_username(username, true)
     user_changeset = Accounts.change_user_profile(user)
+
+    unless CommunityTeam.can_edit_user_profile(conn.assigns.current_user) do
+      redirect(conn, to: Routes.gct_path(conn, :username_lookup, query: username))
+    end
 
     render(
       conn,
@@ -52,6 +57,10 @@ defmodule GlimeshWeb.GctController do
   def edit_user(conn, %{"username" => username}) do
     user = Accounts.get_by_username(username, true)
     user_changeset = Accounts.change_user(user)
+
+    unless CommunityTeam.can_edit_user(conn.assigns.current_user) do
+      redirect(conn, to: Routes.gct_path(conn, :username_lookup, query: username))
+    end
 
     render(
       conn,

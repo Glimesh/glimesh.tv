@@ -2,18 +2,18 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Accounts
+  alias Glimesh.CommunityTeam
 
   @impl true
   def render(assigns) do
     ~L"""
-    <%= live_redirect gettext("Edit Profile"), class: (if Glimesh.CommunityTeam.can_edit_user(@admin), do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_user_profile, @user.username) %>
-    <%= live_redirect gettext("Edit User"), class: (if Glimesh.CommunityTeam.can_edit_user_profile(@admin), do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_user, @user.username) %>
+    <%= live_redirect gettext("Edit Profile"), class: (if @can_edit_user, do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_user_profile, @user.username) %>
+    <%= live_redirect gettext("Edit User"), class: (if @can_edit_profile, do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_user, @user.username) %>
     <%= unless @user.is_banned do %>
-      <button class="btn btn-danger" phx-click="show_ban_modal"><%= gettext("Ban User") %></button>
+      <button class="btn btn-danger" phx-click="show_ban_modal" <%= unless @can_ban, do: "disabled" %> ><%= gettext("Ban User") %></button>
     <%= else %>
-      <button class="btn btn-danger" phx-click="unban_user"><%= gettext("Unban User") %></button>
+      <button class="btn btn-danger" phx-click="unban_user" <%= unless @can_ban, do: "disabled" %> ><%= gettext("Unban User") %></button>
     <% end %>
-    <button class="btn btn-danger"><%= gettext("Delete User") %></button>
 
     <%= if @show_ban do %>
       <div id="ban-modal" class="live-modal"
@@ -53,21 +53,34 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
      socket
      |> assign(:admin, admin)
      |> assign(:user, user)
-     |> assign(:show_ban, false)}
+     |> assign(:show_ban, false)
+     |> assign(:can_ban, CommunityTeam.can_ban_user(admin))
+     |> assign(:can_edit_user, CommunityTeam.can_edit_user(admin))
+     |> assign(:can_edit_profile, CommunityTeam.can_edit_user_profile(admin))}
   end
 
   @impl true
   def handle_event("ban", %{"ban_reason" => ban_reason}, socket) do
     {:ok, _} = Accounts.ban_user(socket.assigns.user, ban_reason)
+
     {:noreply,
-     socket |> assign(:show_ban, false) |> put_flash(:info, "User has been banned!")}
+     socket
+     |> assign(:show_ban, false)
+     |> redirect(
+       to: Routes.gct_path(socket, :username_lookup, query: socket.assigns.user.username)
+     )}
   end
 
   @impl true
   def handle_event("unban_user", _value, socket) do
     {:ok, user} = Accounts.unban_user(socket.assigns.user)
+
     {:noreply,
-     socket |> assign(user: user) |> put_flash(:info, "User has been unbanned!")}
+     socket
+     |> assign(user: user)
+     |> redirect(
+       to: Routes.gct_path(socket, :username_lookup, query: socket.assigns.user.username)
+     )}
   end
 
   @impl true
@@ -79,5 +92,4 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
   def handle_event("hide_ban_modal", _value, socket) do
     {:noreply, socket |> assign(:show_ban, false)}
   end
-
 end
