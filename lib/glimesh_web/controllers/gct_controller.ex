@@ -22,7 +22,7 @@ defmodule GlimeshWeb.GctController do
   end
 
   def edit_user_profile(conn, %{"username" => username}) do
-    user = Accounts.get_by_username(username)
+    user = Accounts.get_by_username(username, true)
     user_changeset = Accounts.change_user_profile(user)
 
     render(
@@ -34,7 +34,7 @@ defmodule GlimeshWeb.GctController do
   end
 
   def update_user_profile(conn, %{"user" => user_params, "username" => username}) do
-    user = Accounts.get_by_username(username)
+    user = Accounts.get_by_username(username, true)
 
     case Accounts.update_user_profile(user, user_params) do
       {:ok, user} ->
@@ -50,7 +50,7 @@ defmodule GlimeshWeb.GctController do
   end
 
   def edit_user(conn, %{"username" => username}) do
-    user = Accounts.get_by_username(username)
+    user = Accounts.get_by_username(username, true)
     user_changeset = Accounts.change_user(user)
 
     render(
@@ -62,7 +62,7 @@ defmodule GlimeshWeb.GctController do
   end
 
   def update_user(conn, %{"user" => user_params, "username" => username}) do
-    user = Accounts.get_by_username(username)
+    user = Accounts.get_by_username(username, true)
 
     case Accounts.update_user(user, user_params) do
       {:ok, user} ->
