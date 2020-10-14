@@ -19,7 +19,8 @@ defmodule Glimesh.Application do
       GlimeshWeb.Endpoint,
       # Start a worker by calling: Glimesh.Worker.start_link(arg)
       {Absinthe.Subscription, GlimeshWeb.Endpoint},
-      Glimesh.Workers.StreamMetrics
+      Glimesh.Workers.StreamMetrics,
+      Glimesh.Workers.StreamPruner
       # {Glimesh.Worker, arg}
     ]
 

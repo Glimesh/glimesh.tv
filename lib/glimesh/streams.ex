@@ -139,7 +139,8 @@ defmodule Glimesh.Streams do
         on: c.user_id == u.id,
         where: u.id == ^user.id,
         where: c.inaccessible == false
-    ) |> Repo.preload([:category, :user])
+    )
+    |> Repo.preload([:category, :user])
   end
 
   def create_channel(user, attrs \\ %{category_id: Enum.at(list_categories(), 0).id}) do
@@ -486,6 +487,15 @@ defmodule Glimesh.Streams do
   end
 
   alias Glimesh.Streams.StreamMetadata
+
+  def get_last_stream_metadata(%Glimesh.Streams.Stream{} = stream) do
+    Repo.one(
+      from sm in StreamMetadata,
+        where: sm.stream_id == ^stream.id,
+        limit: 1,
+        order_by: [desc: sm.inserted_at]
+    )
+  end
 
   def log_stream_metadata(%Glimesh.Streams.Stream{} = stream, attrs \\ %{}) do
     %StreamMetadata{
