@@ -3,6 +3,7 @@ defmodule Glimesh.Schema.ChannelTypes do
   use Absinthe.Schema.Notation
 
   import Absinthe.Resolution.Helpers
+  import_types(Absinthe.Plug.Types)
 
   alias Glimesh.Repo
   alias Glimesh.Resolvers.StreamsResolver
@@ -69,6 +70,14 @@ defmodule Glimesh.Schema.ChannelTypes do
       arg(:metadata, non_null(:stream_metadata_input))
 
       resolve(&StreamsResolver.log_stream_metadata/3)
+    end
+
+    @desc "Update a stream's thumbnail"
+    field :upload_stream_thumbnail, type: :stream do
+      arg(:stream_id, non_null(:id))
+      arg(:thumbnail, non_null(:upload))
+
+      resolve(&StreamsResolver.upload_stream_thumbnail/3)
     end
 
     # @desc "Create a stream"
@@ -190,6 +199,12 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :avg_chatters, :integer
     field :new_subscribers, :integer
     field :resub_subscribers, :integer
+
+    field :thumbnail, :string do
+      resolve(fn stream, _, _ ->
+        {:ok, Glimesh.StreamThumbnail.url({stream.thumbnail, stream})}
+      end)
+    end
 
     field :inserted_at, non_null(:naive_datetime)
     field :updated_at, non_null(:naive_datetime)

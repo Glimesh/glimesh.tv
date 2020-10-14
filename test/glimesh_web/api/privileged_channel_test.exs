@@ -57,6 +57,15 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
   }
   """
 
+  @upload_stream_thumbnail """
+  mutation UploadStreamThumbnail($streamId: ID!, $thumbnail: Upload!) {
+    uploadStreamThumbnail(streamId: $streamId, thumbnail: $thumbnail) {
+      id
+      thumbnail
+    }
+  }
+  """
+
   describe "channel update apis are unavailable unless admin" do
     setup [:register_and_set_user_token, :create_channel]
 
@@ -213,6 +222,31 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
         })
 
       assert json_response(conn, 200)["data"]["logStreamMetadata"] == %{"id" => "#{stream.id}"}
+    end
+
+    test "can upload stream thumbnails", %{conn: conn, channel: channel} do
+      {:ok, stream} = Streams.start_stream(channel)
+
+      stream_thumbnail = %Plug.Upload{
+        content_type: "image/png",
+        path: "test/assets/bbb-splash.png",
+        filename: "bbb-splash.png"
+      }
+
+      conn =
+        post(conn, "/api", %{
+          "query" => @upload_stream_thumbnail,
+          "variables" => %{
+            streamId: "#{stream.id}",
+            thumbnail: "thumbnail"
+          },
+          thumbnail: stream_thumbnail
+        })
+
+      resp = json_response(conn, 200)["data"]["uploadStreamThumbnail"]
+
+      assert resp["id"] == "#{stream.id}"
+      assert resp["thumbnail"] =~ "#{stream.id}.jpg"
     end
   end
 
