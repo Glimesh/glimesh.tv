@@ -261,6 +261,13 @@ defmodule Glimesh.Streams do
     Repo.get_by(Followers, streamer_id: streamer.id, user_id: user.id) |> Repo.delete()
   end
 
+  def update_following(%Followers{} = following, attrs \\ %{}) do
+    following
+    |> Repo.preload([:user, :streamer])
+    |> Followers.changeset(attrs)
+    |> Repo.update()
+  end
+
   def is_following?(streamer, user) do
     Repo.exists?(
       from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id
@@ -268,7 +275,7 @@ defmodule Glimesh.Streams do
   end
 
   def get_following(streamer, user) do
-    Repo.one!(from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id)
+    Repo.one(from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id)
   end
 
   def count_followers(user) do
