@@ -6,6 +6,8 @@ defmodule Glimesh.StreamThumbnail do
 
   @versions [:original]
 
+  def acl(:original, _), do: :public_read
+
   # Whitelist file extensions:
   def validate({file, _}) do
     ~w(.jpg .jpeg .png) |> Enum.member?(Path.extname(file.file_name))
