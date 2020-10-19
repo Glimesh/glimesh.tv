@@ -115,6 +115,12 @@ defmodule GlimeshWeb.Router do
     delete "/oauth/authorize", Oauth2Provider.AuthorizationController, :delete
   end
 
+  scope "/", GlimeshWeb do
+    pipe_through [:browser, :require_authenticated_user, :require_user_has_channel]
+
+    resources "/users/settings/channel/mods", ChannelModeratorController
+  end
+
   scope "/admin", GlimeshWeb do
     pipe_through [:browser, :require_admin_user]
 

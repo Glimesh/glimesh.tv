@@ -192,13 +192,31 @@ defmodule Glimesh.Chat do
   end
 
   alias Glimesh.Streams.ChannelModerator
-  def can_moderate?(nil, nil), do: false
-  def can_moderate?(_channel, nil), do: false
+  def can_moderate?(_action, nil, nil), do: false
+  def can_moderate?(_action, _channel, nil), do: false
 
-  def can_moderate?(channel, user) do
-    user.is_admin ||
+  def can_moderate?(action, channel, user) do
+    moderator =
+      Repo.one(
+        from m in ChannelModerator,
+          where: m.channel_id == ^channel.id and m.user_id == ^user.id
+      )
+
+    if moderator do
+      user.is_admin || channel.streamer_id == user.id || Map.get(moderator, action, false)
+    else
+      false
+    end
+  end
+
+  def is_moderator?(nil, nil), do: false
+  def is_moderator?(_channel, nil), do: false
+
+  def is_moderator?(channel, user) do
+    user.is_admin || channel.streamer_id == user.id ||
       Repo.exists?(
-        from m in ChannelModerator, where: m.channel_id == ^channel.id and m.user_id == ^user.id
+        from m in ChannelModerator,
+          where: m.channel_id == ^channel.id and m.user_id == ^user.id
       )
   end
 
@@ -237,7 +255,7 @@ defmodule Glimesh.Chat do
   end
 
   def render_stream_badge(stream, user) do
-    if can_moderate?(stream, user) and user.is_admin === false do
+    if is_moderator?(stream, user) and user.is_admin === false do
       Tag.content_tag(:span, "Moderator", class: "badge badge-info")
     else
       ""

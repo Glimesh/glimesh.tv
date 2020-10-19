@@ -24,14 +24,21 @@ defmodule Glimesh.StreamsTest do
       {:ok, _} = Chat.create_chat_message(channel, moderator, %{message: "good message"})
       assert length(Chat.list_chat_messages(channel)) == 2
 
-      {:ok, _} = Glimesh.Streams.add_moderator(channel, moderator)
+      {:ok, _} =
+        Glimesh.Streams.create_channel_moderator(channel, moderator, %{
+          can_short_timeout: true
+        })
 
       {:ok, _} = Streams.timeout_user(channel, moderator, user)
       assert length(Chat.list_chat_messages(channel)) == 1
     end
 
     test "adds log of timeout action", %{channel: channel, moderator: moderator, user: user} do
-      {:ok, _} = Glimesh.Streams.add_moderator(channel, moderator)
+      {:ok, _} =
+        Glimesh.Streams.create_channel_moderator(channel, moderator, %{
+          can_short_timeout: true
+        })
+
       {:ok, record} = Streams.timeout_user(channel, moderator, user)
 
       assert record.channel.id == channel.id

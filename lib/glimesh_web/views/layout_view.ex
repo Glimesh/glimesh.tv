@@ -22,13 +22,17 @@ defmodule GlimeshWeb.LayoutView do
   end
 
   def active_user_applications_path(conn) do
-    truthy_active(controller_module(conn) == GlimeshWeb.UserApplicationsController)
+    truthy_active(hd(controller_action(conn)) == GlimeshWeb.UserApplicationsController)
   end
 
   def active_user_authorizations_path(conn) do
     truthy_active(
-      controller_module(conn) == GlimeshWeb.Oauth2Provider.AuthorizedApplicationController
+      hd(controller_action(conn)) == GlimeshWeb.Oauth2Provider.AuthorizedApplicationController
     )
+  end
+
+  def active_channel_moderator_path(conn) do
+    truthy_active(hd(controller_action(conn)) == GlimeshWeb.ChannelModeratorController)
   end
 
   defp controller_action(conn) do

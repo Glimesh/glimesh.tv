@@ -36,7 +36,7 @@ defmodule GlimeshWeb.ChatLive.Index do
       |> assign(:update_action, "replace")
       |> assign(:channel, channel)
       |> assign(:user, session["user"])
-      |> assign(:is_moderator, Glimesh.Chat.can_moderate?(channel, session["user"]))
+      |> assign(:is_moderator, Glimesh.Chat.is_moderator?(channel, session["user"]))
       |> assign(:chat_messages, list_chat_messages(channel))
       |> assign(:chat_message, %ChatMessage{})
 
