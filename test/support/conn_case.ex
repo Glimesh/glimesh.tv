@@ -55,6 +55,18 @@ defmodule GlimeshWeb.ConnCase do
   end
 
   @doc """
+  Setup helper that registers and logs in a streamer.
+
+      setup :register_and_log_in_streamer
+
+  """
+  def register_and_log_in_streamer(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.streamer_fixture()
+    channel = Glimesh.Streams.get_channel_for_user(user)
+    %{conn: log_in_user(conn, user), user: user, channel: channel}
+  end
+
+  @doc """
   Setup helper that registers and logs in admin user.
 
       setup :register_and_log_in_admin_user

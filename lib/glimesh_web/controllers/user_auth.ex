@@ -155,6 +155,21 @@ defmodule GlimeshWeb.UserAuth do
   end
 
   @doc """
+  Used for routes that require the user to have a channel.
+  """
+  def require_user_has_channel(conn, _opts) do
+    if Map.has_key?(conn.assigns, :current_user) and
+         Glimesh.Streams.get_channel_for_user(conn.assigns[:current_user]) do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must have a channel to access this page.")
+      |> redirect(to: Routes.user_settings_path(conn, :stream))
+      |> halt()
+    end
+  end
+
+  @doc """
   Used for routes that require the user to be an administrator.
   """
   def require_admin_user(conn, _opts) do

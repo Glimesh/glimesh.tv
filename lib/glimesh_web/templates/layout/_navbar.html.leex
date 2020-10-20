@@ -56,6 +56,18 @@
                         class="img-avatar <%= if @current_user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
                 </a>
                 <div class="dropdown-menu" aria-labelledby="userProfileDropdown">
+                    <!-- Check for a channel and display an option to go to it -->
+                    <%= if Glimesh.Streams.get_channel_for_user(@current_user) do %>
+                    <%= link class: "dropdown-item", to: Routes.user_stream_path(@conn, :index, @current_user.username) do %>
+                    <i class="fas fa-tv fa-fw"></i>
+                    <%= gettext("Channel") %>
+                    <% end %>
+                    <% end %>
+                    <%= link class: "dropdown-item", to: Routes.user_profile_path(@conn, :index, @current_user.username) do %>
+                    <i class="fas fa-user fa-fw"></i>
+                    <%= gettext("Profile") %>
+                    <% end %>
+                    <div class="dropdown-divider"></div>
                     <%= live_redirect class: "dropdown-item text-warning", to: Routes.platform_subscription_index_path(@conn, :index) do %>
                     <i class="fas fa-cookie fa-fw"></i>
                     <%= gettext("Upgrade!") %>
@@ -63,17 +75,6 @@
                     <%= link class: "dropdown-item", to: Routes.user_payments_path(@conn, :index) do %>
                     <i class="fas fa-money-bill fa-fw"></i>
                     <%= gettext("Payments") %>
-                    <% end %>
-                    <!-- Check for a channel and display an option to go to it -->
-                    <%= if Glimesh.Streams.get_channel_for_user!(@current_user) do %>
-                        <%= link class: "dropdown-item", to: Routes.user_stream_path(@conn, :index, @current_user.username) do %>
-                            <i class="fas fa-tv fa-fw"></i>
-                            <%= gettext("Channel") %>
-                        <% end %>
-                    <% end %>
-                    <%= link class: "dropdown-item", to: Routes.user_profile_path(@conn, :index, @current_user.username) do %>
-                    <i class="fas fa-user fa-fw"></i>
-                    <%= gettext("Profile") %>
                     <% end %>
                     <%= link class: "dropdown-item", to: Routes.user_settings_path(@conn, :profile) do %>
                     <i class="fas fa-cog fa-fw"></i>

@@ -10,6 +10,7 @@ defmodule Glimesh.Streams.ChannelModerator do
   schema "channel_moderators" do
     belongs_to :channel, Channel
     belongs_to :user, User
+
     field :can_short_timeout, :boolean
     field :can_long_timeout, :boolean
     field :can_un_timeout, :boolean

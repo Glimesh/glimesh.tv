@@ -132,7 +132,7 @@ defmodule Glimesh.Streams do
     |> Repo.preload([:category, :user])
   end
 
-  def get_channel_for_user!(user) do
+  def get_channel_for_user(user) do
     Repo.one(
       from c in Channel,
         join: u in User,
@@ -188,24 +188,63 @@ defmodule Glimesh.Streams do
   end
 
   ## Moderation
+  def list_channel_moderators(%Channel{} = channel) do
+    Repo.all(ChannelModerator, channel_id: channel.id) |> Repo.preload([:user])
+  end
 
-  def add_moderator(%Channel{} = channel, %User{} = moderator) do
-    %ChannelModerator{
-      channel: channel,
-      user: moderator
-    }
-    |> ChannelModerator.changeset(%{
-      :can_short_timeout => true,
-      :can_long_timeout => true,
-      :can_un_timeout => true,
-      :can_ban => true,
-      :can_unban => true
-    })
-    |> Repo.insert()
+  def list_channel_moderation_log(%Channel{} = channel) do
+    Repo.all(
+      from ml in ChannelModerationLog,
+        where: ml.channel_id == ^channel.id,
+        order_by: [desc: :inserted_at]
+    )
+    |> Repo.preload([:moderator, :user])
+  end
+
+  def list_channel_moderation_log_for_mod(%ChannelModerator{} = chan_mod) do
+    Repo.all(
+      from ml in ChannelModerationLog,
+        where: ml.channel_id == ^chan_mod.channel_id and ml.moderator_id == ^chan_mod.user_id,
+        order_by: [desc: :inserted_at]
+    )
+    |> Repo.preload([:user])
+  end
+
+  def get_channel_moderator!(id) do
+    Repo.get!(ChannelModerator, id) |> Repo.preload([:channel, :user])
+  end
+
+  def create_channel_moderator(%Channel{} = channel, user, attrs \\ %{}) do
+    change =
+      %ChannelModerator{
+        channel: channel,
+        user: user
+      }
+      |> ChannelModerator.changeset(attrs)
+
+    if is_nil(user) or channel.streamer_id == user.id do
+      {:error_no_user, change}
+    else
+      change |> Repo.insert()
+    end
+  end
+
+  def change_channel_moderator(%ChannelModerator{} = mod, attrs \\ %{}) do
+    ChannelModerator.changeset(mod, attrs)
+  end
+
+  def update_channel_moderator(%ChannelModerator{} = mod, attrs \\ %{}) do
+    mod
+    |> ChannelModerator.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_channel_moderator(%ChannelModerator{} = mod) do
+    Repo.delete(mod)
   end
 
   def timeout_user(%Channel{} = channel, %User{} = moderator, user_to_timeout) do
-    if Chat.can_moderate?(channel, moderator) === false do
+    if Chat.can_moderate?(:can_short_timeout, channel, moderator) === false do
       raise "User does not have permission to moderate."
     end
 
@@ -246,7 +285,7 @@ defmodule Glimesh.Streams do
       |> Followers.changeset(attrs)
       |> Repo.insert()
 
-    channel = get_channel_for_user!(streamer)
+    channel = get_channel_for_user(streamer)
 
     if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
       Glimesh.Chat.create_chat_message(channel, user, %{
