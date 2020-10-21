@@ -189,7 +189,8 @@ defmodule Glimesh.Streams do
 
   ## Moderation
   def list_channel_moderators(%Channel{} = channel) do
-    Repo.all(ChannelModerator, channel_id: channel.id) |> Repo.preload([:user])
+    Repo.all(from cm in ChannelModerator, where: cm.channel_id == ^channel.id)
+    |> Repo.preload([:user])
   end
 
   def list_channel_moderation_log(%Channel{} = channel) do
