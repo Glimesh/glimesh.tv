@@ -17,5 +17,4 @@ defmodule Glimesh.CommunityTeam.AuditLog do
     audit_log
     |> cast(attrs, [:action, :target, :verbose_required?])
   end
-
 end

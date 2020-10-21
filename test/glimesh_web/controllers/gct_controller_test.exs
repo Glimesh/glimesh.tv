@@ -4,7 +4,6 @@ defmodule GlimeshWeb.GctControllerTest do
   alias Glimesh.CommunityTeam
   import Glimesh.AccountsFixtures
 
-
   describe "index while gct" do
     setup :register_and_log_in_gct_user
 
@@ -15,7 +14,6 @@ defmodule GlimeshWeb.GctControllerTest do
   end
 
   describe "index while not gct" do
-
     test "redirect user", %{conn: conn} do
       conn = get(conn, Routes.gct_path(conn, :index))
       assert html_response(conn, 302) =~ "You are being"

@@ -46,10 +46,17 @@ defmodule Glimesh.CommunityTeam do
   end
 
   def list_all_audit_entries(include_verbose?, params \\ []) do
-    entries = case include_verbose? do
-      true -> AuditLog |> order_by(desc: :inserted_at) |> preload(:user) |> Repo.paginate(params)
-      false -> AuditLog |> order_by(desc: :inserted_at) |> where([al], al.verbose_required? == false) |> preload(:user) |> Repo.paginate(params)
-    end
-  end
+    entries =
+      case include_verbose? do
+        true ->
+          AuditLog |> order_by(desc: :inserted_at) |> preload(:user) |> Repo.paginate(params)
 
+        false ->
+          AuditLog
+          |> order_by(desc: :inserted_at)
+          |> where([al], al.verbose_required? == false)
+          |> preload(:user)
+          |> Repo.paginate(params)
+      end
+  end
 end

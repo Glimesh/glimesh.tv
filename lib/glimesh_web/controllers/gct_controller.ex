@@ -2,8 +2,8 @@ defmodule GlimeshWeb.GctController do
   use GlimeshWeb, :controller
 
   alias Glimesh.Accounts
-  alias Glimesh.CommunityTeam.AuditLog
   alias Glimesh.CommunityTeam
+  alias Glimesh.CommunityTeam.AuditLog
   alias Glimesh.Payments
 
   # General Routes
@@ -15,14 +15,22 @@ defmodule GlimeshWeb.GctController do
     unless CommunityTeam.can_view_audit_log(conn.assigns.current_user) do
       redirect(conn, to: Routes.gct_path(conn, :index))
     end
+
     render(
       conn,
       "audit_log.html"
-      )
+    )
   end
 
   def username_lookup(conn, params) do
-    unless params["query"] == "", do: CommunityTeam.create_audit_entry(conn.assigns.current_user, %{action: "lookup", target: params["query"], verbose_required?: true})
+    unless params["query"] == "",
+      do:
+        CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
+          action: "lookup",
+          target: params["query"],
+          verbose_required?: true
+        })
+
     user = Accounts.get_by_username(params["query"], true)
 
     if user do
@@ -36,19 +44,24 @@ defmodule GlimeshWeb.GctController do
     else
       render(conn, "invalid_user.html")
     end
-
   end
 
   def edit_user_profile(conn, %{"username" => username}) do
     unless CommunityTeam.can_edit_user_profile(conn.assigns.current_user) do
       redirect(conn, to: Routes.gct_path(conn, :username_lookup, query: username))
     end
-    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{action: "view edit profile", target: username, verbose_required?: true})
+
+    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
+      action: "view edit profile",
+      target: username,
+      verbose_required?: true
+    })
 
     user = Accounts.get_by_username(username, true)
 
     if user do
       user_changeset = Accounts.change_user_profile(user)
+
       render(
         conn,
         "edit_user_profile.html",
@@ -61,7 +74,12 @@ defmodule GlimeshWeb.GctController do
   end
 
   def update_user_profile(conn, %{"user" => user_params, "username" => username}) do
-    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{action: "edited profile", target: username, verbose_required?: false})
+    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
+      action: "edited profile",
+      target: username,
+      verbose_required?: false
+    })
+
     user = Accounts.get_by_username(username, true)
 
     case Accounts.update_user_profile(user, user_params) do
@@ -81,12 +99,18 @@ defmodule GlimeshWeb.GctController do
     unless CommunityTeam.can_edit_user(conn.assigns.current_user) do
       redirect(conn, to: Routes.gct_path(conn, :username_lookup, query: username))
     end
-    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{action: "view edit user", target: username, verbose_required?: true})
+
+    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
+      action: "view edit user",
+      target: username,
+      verbose_required?: true
+    })
 
     user = Accounts.get_by_username(username, true)
 
     if user do
       user_changeset = Accounts.change_user(user)
+
       render(
         conn,
         "edit_user.html",
@@ -99,7 +123,12 @@ defmodule GlimeshWeb.GctController do
   end
 
   def update_user(conn, %{"user" => user_params, "username" => username}) do
-    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{action: "edited user", target: username, verbose_required?: false})
+    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
+      action: "edited user",
+      target: username,
+      verbose_required?: false
+    })
+
     user = Accounts.get_by_username(username, true)
 
     case Accounts.update_user(user, user_params) do

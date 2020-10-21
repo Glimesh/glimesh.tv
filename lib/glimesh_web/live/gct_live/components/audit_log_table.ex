@@ -46,8 +46,14 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
     """
   end
 
-  def mount(_params, session, socket) do
-    %{entries: entries, page_number: page_number, page_size: page_size, total_entries: total_entries, total_pages: total_pages} =
+  def mount(_params, _session, socket) do
+    %{
+      entries: entries,
+      page_number: page_number,
+      page_size: page_size,
+      total_entries: total_entries,
+      total_pages: total_pages
+    } =
       if connected?(socket) do
         CommunityTeam.list_all_audit_entries(false)
       else
@@ -96,5 +102,4 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
       total_pages: total_pages
     ]
   end
-
 end
