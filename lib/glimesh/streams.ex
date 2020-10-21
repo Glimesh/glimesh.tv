@@ -258,33 +258,6 @@ defmodule Glimesh.Streams do
     Repo.delete(mod)
   end
 
-  def timeout_user(%Channel{} = channel, %User{} = moderator, user_to_timeout) do
-    if Chat.can_moderate?(:can_short_timeout, channel, moderator) === false do
-      raise "User does not have permission to moderate."
-    end
-
-    log =
-      %ChannelModerationLog{
-        channel: channel,
-        moderator: moderator,
-        user: user_to_timeout
-      }
-      |> ChannelModerationLog.changeset(%{action: "timeout"})
-      |> Repo.insert()
-
-    :ets.insert(:banned_list, {user_to_timeout.username, true})
-
-    Chat.delete_chat_messages_for_user(channel, user_to_timeout)
-
-    broadcast_timeout({:ok, channel.id, user_to_timeout}, :user_timedout)
-
-    log
-  end
-
-  def ban_user(streamer, moderator, user_to_ban) do
-    timeout_user(streamer, moderator, user_to_ban)
-  end
-
   ## Following
 
   def follow(streamer, user, live_notifications \\ false) do

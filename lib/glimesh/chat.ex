@@ -220,6 +220,77 @@ defmodule Glimesh.Chat do
       )
   end
 
+  alias Glimesh.Streams.ChannelModerationLog
+
+  def short_timeout_user(%Channel{} = channel, %User{} = moderator, user_to_timeout) do
+    if Chat.can_moderate?(:can_short_timeout, channel, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
+    log =
+      %ChannelModerationLog{
+        channel: channel,
+        moderator: moderator,
+        user: user_to_timeout
+      }
+      |> ChannelModerationLog.changeset(%{action: "timeout"})
+      |> Repo.insert()
+
+    :ets.insert(:banned_list, {user_to_timeout.username, true})
+
+    Chat.delete_chat_messages_for_user(channel, user_to_timeout)
+
+    Streams.broadcast_timeout({:ok, channel.id, user_to_timeout}, :user_timedout)
+
+    log
+  end
+
+  def long_timeout_user(%Channel{} = channel, %User{} = moderator, user_to_timeout) do
+    if Chat.can_moderate?(:can_short_timeout, channel, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
+    log =
+      %ChannelModerationLog{
+        channel: channel,
+        moderator: moderator,
+        user: user_to_timeout
+      }
+      |> ChannelModerationLog.changeset(%{action: "timeout"})
+      |> Repo.insert()
+
+    :ets.insert(:banned_list, {user_to_timeout.username, true})
+
+    Chat.delete_chat_messages_for_user(channel, user_to_timeout)
+
+    Streams.broadcast_timeout({:ok, channel.id, user_to_timeout}, :user_timedout)
+
+    log
+  end
+
+  def ban_user(%Channel{} = channel, %User{} = moderator, user_to_ban) do
+    if Chat.can_moderate?(:can_ban, channel, moderator) === false do
+      raise "User does not have permission to moderate."
+    end
+
+    log =
+      %ChannelModerationLog{
+        channel: channel,
+        moderator: moderator,
+        user: user_to_timeout
+      }
+      |> ChannelModerationLog.changeset(%{action: "timeout"})
+      |> Repo.insert()
+
+    :ets.insert(:banned_list, {user_to_timeout.username, true})
+
+    Chat.delete_chat_messages_for_user(channel, user_to_timeout)
+
+    Streams.broadcast_timeout({:ok, channel.id, user_to_timeout}, :user_timedout)
+
+    log
+  end
+
   def can_create_chat_message?(%Channel{} = _, %User{} = user) do
     username = user.username
 
