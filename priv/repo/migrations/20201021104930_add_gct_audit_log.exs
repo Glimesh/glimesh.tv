@@ -7,6 +7,7 @@ defmodule Glimesh.Repo.Migrations.AddGctAuditLog do
       add :action, :string, null: false
       add :target, :string, null: false
       add :verbose_required?, :boolean
+      add :more_details, :string, default: "None"
 
       timestamps()
     end

@@ -1,5 +1,5 @@
 <div class="container">
-    <h2 class="text-center mt-4">Audit Log</h2>
+    <h2 class="text-center mt-4">GCT Audit Log</h2>
 
     <%= live_render @conn, GlimeshWeb.GctLive.Components.AuditLogTable %>
 </div>

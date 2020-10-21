@@ -63,10 +63,11 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
   def handle_event("ban", %{"ban_reason" => ban_reason}, socket) do
     {:ok, _} = Accounts.ban_user(socket.assigns.user, ban_reason)
 
-    CommunityTeam.create_audit_entry(socket.assigns.current_user, %{
+    CommunityTeam.create_audit_entry(socket.assigns.admin, %{
       action: "banned",
       target: socket.assigns.user.username,
-      verbose_required?: false
+      verbose_required?: false,
+      more_details: "Ban reason: " <> ban_reason
     })
 
     {:noreply,
@@ -81,7 +82,7 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
   def handle_event("unban_user", _value, socket) do
     {:ok, user} = Accounts.unban_user(socket.assigns.user)
 
-    CommunityTeam.create_audit_entry(socket.assigns.current_user, %{
+    CommunityTeam.create_audit_entry(socket.assigns.admin, %{
       action: "unbanned",
       target: socket.assigns.user.username,
       verbose_required?: false
