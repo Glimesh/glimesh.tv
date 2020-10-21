@@ -2,6 +2,7 @@ defmodule GlimeshWeb.GctController do
   use GlimeshWeb, :controller
 
   alias Glimesh.Accounts
+  alias Glimesh.CommunityTeam.AuditLog
   alias Glimesh.CommunityTeam
   alias Glimesh.Payments
 
@@ -15,11 +16,15 @@ defmodule GlimeshWeb.GctController do
     unless CommunityTeam.can_view_audit_log(conn.assigns.current_user) do
       redirect(conn, to: Routes.gct_path(conn, :index))
     end
-    render(conn, "audit_log.html")
+    render(
+      conn,
+      "audit_log.html",
+      audit_log: CommunityTeam.list_all_audit_entries()
+      )
   end
 
   def username_lookup(conn, params) do
-    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{action: "lookup", target: params["query"]})
+    unless params["query"] == "", do: CommunityTeam.create_audit_entry(conn.assigns.current_user, %{action: "lookup", target: params["query"]})
     user = Accounts.get_by_username(params["query"], true)
 
     if user do

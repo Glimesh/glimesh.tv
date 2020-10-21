@@ -2,6 +2,7 @@ defmodule Glimesh.CommunityTeam do
   @moduledoc """
   The Community Team context :)
   """
+  import Ecto.Query, warn: false
   alias Glimesh.CommunityTeam.AuditLog
   alias Glimesh.Repo
 
@@ -42,5 +43,13 @@ defmodule Glimesh.CommunityTeam do
     }
     |> AuditLog.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def list_all_audit_entries() do
+    Repo.all(
+      from al in AuditLog,
+      order_by: [desc: :inserted_at]
+    )
+    |> Repo.preload([:user])
   end
 end
