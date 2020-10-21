@@ -18,8 +18,7 @@ defmodule GlimeshWeb.GctController do
     end
     render(
       conn,
-      "audit_log.html",
-      audit_log: CommunityTeam.list_all_audit_entries()
+      "audit_log.html"
       )
   end
 

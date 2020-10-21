@@ -45,11 +45,7 @@ defmodule Glimesh.CommunityTeam do
     |> Repo.insert()
   end
 
-  def list_all_audit_entries() do
-    Repo.all(
-      from al in AuditLog,
-      order_by: [desc: :inserted_at]
-    )
-    |> Repo.preload([:user])
+  def list_all_audit_entries(params \\ []) do
+    entries = AuditLog |> order_by(desc: :inserted_at) |> preload(:user) |> Repo.paginate(params)
   end
 end

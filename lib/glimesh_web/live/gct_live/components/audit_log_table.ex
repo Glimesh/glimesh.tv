@@ -31,17 +31,56 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
               <% end %>
               </tbody>
           </table>
+          <button class="btn btn-primary" phx-click="nav" phx-value-page="<%= @page_number - 1%>" <%= if @page_number <= 1, do: "disabled" %>>Previous</button>
+          <%= for idx <- Enum.to_list(1..@total_pages) do %>
+          <button class="btn btn-primary" phx-click="nav" phx-value-page="<%= idx %>" <%= if @page_number == idx, do: "disabled" %>><%= idx %></button>
+          <% end %>
+          <button class="btn btn-primary" phx-click="nav" phx-value-page="<%= @page_number + 1%>" <%= if @page_number >= @total_pages, do: "disabled" %>>Next</button>
       </div>
     </div>
     """
   end
 
-  def mount(_params, _conn, socket) do
-    audit_entries = if connected?(socket), do: CommunityTeam.list_all_audit_entries(), else: []
+  def mount(_params, session, socket) do
+    %{entries: entries, page_number: page_number, page_size: page_size, total_entries: total_entries, total_pages: total_pages} =
+      if connected?(socket) do
+        CommunityTeam.list_all_audit_entries()
+      else
+        %Scrivener.Page{}
+      end
 
-    {:ok,
-    socket
-    |> assign(:audit_log, audit_entries)}
+    assigns = [
+      conn: socket,
+      audit_log: entries,
+      page_number: page_number || 0,
+      page_size: page_size || 0,
+      total_entries: total_entries || 0,
+      total_pages: total_pages || 0
+    ]
+
+    {:ok, assign(socket, assigns)}
+  end
+
+  def handle_event("nav", %{"page" => page}, socket) do
+    {:noreply, assign(socket, get_and_assign_page(page))}
+  end
+
+  def get_and_assign_page(page_number) do
+    %{
+      entries: entries,
+      page_number: page_number,
+      page_size: page_size,
+      total_entries: total_entries,
+      total_pages: total_pages
+    } = CommunityTeam.list_all_audit_entries(page: page_number)
+
+    [
+      audit_log: entries,
+      page_number: page_number,
+      page_size: page_size,
+      total_entries: total_entries,
+      total_pages: total_pages
+    ]
   end
 
 end

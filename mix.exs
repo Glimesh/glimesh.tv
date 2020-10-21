@@ -69,6 +69,7 @@ defmodule Glimesh.MixProject do
       # HTTP Helpers
       {:plug_canonical_host, "~> 2.0"},
       {:ex_oauth2_provider, "~> 0.5.6"},
+      {:hcaptcha, "~> 0.0.1"},
       {:slugify, "~> 1.3"},
       {:phoenix_markdown, "~> 1.0"},
       {:html_sanitize_ex, "~> 1.4.1"},
@@ -83,7 +84,8 @@ defmodule Glimesh.MixProject do
       # Other
       {:hcaptcha, "~> 0.0.1"},
       {:stripity_stripe, "~> 2.0"},
-      {:eqrcode, "~> 0.1.7"}
+      {:eqrcode, "~> 0.1.7"},
+      {:scrivener_ecto, "~> 2.0"}
     ]
   end
 
