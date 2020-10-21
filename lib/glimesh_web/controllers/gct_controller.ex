@@ -7,10 +7,19 @@ defmodule GlimeshWeb.GctController do
 
   # General Routes
   def index(conn, _params) do
+    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{action: "view index", target: "N/A"})
     render(conn, "index.html")
   end
 
+  def audit_log(conn, _params) do
+    unless CommunityTeam.can_view_audit_log(conn.assigns.current_user) do
+      redirect(conn, to: Routes.gct_path(conn, :index))
+    end
+    render(conn, "audit_log.html")
+  end
+
   def username_lookup(conn, params) do
+    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{action: "lookup", target: params["query"]})
     user = Accounts.get_by_username(params["query"], true)
 
     if user do
@@ -31,6 +40,7 @@ defmodule GlimeshWeb.GctController do
     unless CommunityTeam.can_edit_user_profile(conn.assigns.current_user) do
       redirect(conn, to: Routes.gct_path(conn, :username_lookup, query: username))
     end
+    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{action: "view edit profile", target: username})
 
     user = Accounts.get_by_username(username, true)
 
@@ -48,6 +58,7 @@ defmodule GlimeshWeb.GctController do
   end
 
   def update_user_profile(conn, %{"user" => user_params, "username" => username}) do
+    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{action: "edited profile", target: username})
     user = Accounts.get_by_username(username, true)
 
     case Accounts.update_user_profile(user, user_params) do
@@ -67,6 +78,7 @@ defmodule GlimeshWeb.GctController do
     unless CommunityTeam.can_edit_user(conn.assigns.current_user) do
       redirect(conn, to: Routes.gct_path(conn, :username_lookup, query: username))
     end
+    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{action: "view edit user", target: username})
 
     user = Accounts.get_by_username(username, true)
 
@@ -84,6 +96,7 @@ defmodule GlimeshWeb.GctController do
   end
 
   def update_user(conn, %{"user" => user_params, "username" => username}) do
+    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{action: "edited user", target: username})
     user = Accounts.get_by_username(username, true)
 
     case Accounts.update_user(user, user_params) do

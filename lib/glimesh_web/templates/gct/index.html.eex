@@ -1,5 +1,14 @@
 <div class="container">
     <h2 class="mt-4 text-center"><%= gettext("Glimesh Community Team Dashboard | Your access level is: %{level}", level: Glimesh.CommunityTeam.access_level_to_title(@conn.assigns.current_user.gct_level)) %></h2>
+    <%= if Glimesh.CommunityTeam.can_view_audit_log(@conn.assigns.current_user) do %>
+    <div class="card mb-4">
+        <div class="card-body">
+        <center>
+        <%= live_redirect gettext("Audit Log"), to: Routes.gct_path(@conn, :audit_log), class: "btn btn-primary" %>
+        </center>
+        </div>
+    </div>
+    <% end %>
     <div class="card col-sm-6">
         <div class="card-body">
             <%= form_for @conn, Routes.gct_path(@conn, :username_lookup), [multipart: true, class: "form", method: :get], fn f -> %>
