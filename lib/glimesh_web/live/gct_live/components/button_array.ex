@@ -63,6 +63,8 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
   def handle_event("ban", %{"ban_reason" => ban_reason}, socket) do
     {:ok, _} = Accounts.ban_user(socket.assigns.user, ban_reason)
 
+    CommunityTeam.create_audit_entry(socket.assigns.current_user, %{action: "banned", target: socket.assigns.user.username, verbose_required?: false})
+
     {:noreply,
      socket
      |> assign(:show_ban, false)
@@ -74,6 +76,8 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
   @impl true
   def handle_event("unban_user", _value, socket) do
     {:ok, user} = Accounts.unban_user(socket.assigns.user)
+
+    CommunityTeam.create_audit_entry(socket.assigns.current_user, %{action: "unbanned", target: socket.assigns.user.username, verbose_required?: false})
 
     {:noreply,
      socket

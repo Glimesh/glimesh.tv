@@ -8,13 +8,14 @@ defmodule Glimesh.CommunityTeam.AuditLog do
 
     field :action, :string
     field :target, :string
+    field :verbose_required?, :boolean
 
     timestamps()
   end
 
   def changeset(audit_log, attrs \\ %{}) do
     audit_log
-    |> cast(attrs, [:action, :target])
+    |> cast(attrs, [:action, :target, :verbose_required?])
   end
 
 end
