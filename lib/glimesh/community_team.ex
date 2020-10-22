@@ -67,23 +67,7 @@ defmodule Glimesh.CommunityTeam do
     ) |> Repo.preload([:user])
   end
 
-  def list_all_audit_entries_for_username(username, include_verbose? \\ false, params \\ []) do
-    entries =
-      case include_verbose? do
-        true ->
-          AuditLog
-          |> order_by(desc: :inserted_at)
-          |> join(:inner, [al], u in User)
-          |> preload(:user)
-          |> Repo.paginate(params)
+  def generate_update_user_profile_more_details(user, user_params) do
 
-        false ->
-          AuditLog
-          |> order_by(desc: :inserted_at)
-          |> where([al], al.verbose_required? == false)
-          |> join(:inner, [al], u in User)
-          |> preload(:user)
-          |> Repo.paginate(params)
-      end
   end
 end

@@ -8,11 +8,12 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
     ~L"""
     <div class="card mt-4">
       <div class="card-header">
+      <!--
             <%= form_for :user, "#", [phx_submit: :search] %>
             <div class="input-group">
               <input type="text" class="form-control col-sm-6" name="search_param" id="searchParam"></input>
               <button class="btn btn-primary">Search</button>
-            </div>
+            </div> -->
       </div>
       <div class="card-body">
           <table class="table">
@@ -41,11 +42,11 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
               <% end %>
               </tbody>
           </table>
-          <button class="btn btn-primary btn-sm" phx-click="nav" phx-value-page="<%= @page_number - 1%>" <%= if @page_number <= 1, do: "disabled" %>>Previous</button>
+          <button class="btn btn-primary btn-sm" phx-click="nav" phx-value-page="<%= @page_number - 1%>" <%= if @page_number <= 1, do: "disabled" %>><</button>
           <%= for idx <- Enum.to_list(1..@total_pages) do %>
           <button class="btn btn-primary btn-sm" phx-click="nav" phx-value-page="<%= idx %>" <%= if @page_number == idx, do: "disabled" %>><%= idx %></button>
           <% end %>
-          <button class="btn btn-primary btn-sm" phx-click="nav" phx-value-page="<%= @page_number + 1%>" <%= if @page_number >= @total_pages, do: "disabled" %>>Next</button>
+          <button class="btn btn-primary btn-sm" phx-click="nav" phx-value-page="<%= @page_number + 1%>" <%= if @page_number >= @total_pages, do: "disabled" %>>></button>
           <%= unless @verbose do %>
             <button class="btn btn-primary float-right" phx-click="show-verbose">Show Verbose Entries</button>
           <% else %>
@@ -140,11 +141,21 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
     {:noreply, socket |> assign(:show_details, false)}
   end
 
+  """
   def handle_event("search", %{"search_param" => search_param}, socket) do
     search_param_split = String.split(search_param, ":", trim: true)
-    IO.inspect(search_param_split)
+    unless Enum.empty?(search_param_split) || Enum.count(search_param_split) < 2 do
+      assign = case String.downcase(Enum.fetch!(search_param_split, 0)) do
+        "action" -> IO.inspect("Action detected")
+        "id" -> assign_page_from_map(CommunityTeam.search_for_log_using_id!(String.to_integer(Enum.fetch!(search_param_split, 1))))
+        "user" -> IO.inspect("User detected")
+        "target" -> IO.inspect("Target detected")
+        _ -> IO.inspect("Something else")
+      end
+    end
     {:noreply, socket}
   end
+  """
 
   def get_and_assign_page(page_number, verbose \\ false) do
     %{
