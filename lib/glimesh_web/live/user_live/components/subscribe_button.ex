@@ -98,8 +98,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
 
     with {:ok, _} <- Payments.set_payment_method(user, payment_method),
          {:ok, subscription} <-
-           Payments.subscribe(
-             :channel,
+           Payments.subscribe_to_channel(
              user,
              streamer,
              socket.assigns.product_id,

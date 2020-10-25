@@ -77,7 +77,7 @@ defmodule Glimesh.Payments do
     end
   end
 
-  def subscribe(:platform, user, product_id, price_id) do
+  def subscribe_to_platform(user, product_id, price_id) do
     if has_platform_subscription?(user) do
       raise ArgumentError, "You already have an active subscription to this streamer."
     end
@@ -113,7 +113,7 @@ defmodule Glimesh.Payments do
     end
   end
 
-  def subscribe(:channel, user, streamer, product_id, price_id) do
+  def subscribe_to_channel(user, streamer, product_id, price_id) do
     if user.id == streamer.id do
       raise ArgumentError, "You cannot subscribe to yourself."
     end
@@ -122,7 +122,7 @@ defmodule Glimesh.Payments do
       raise ArgumentError, "You already have an active subscription to this streamer."
     end
 
-    # Basically the same as subscribe(:platform) but with
+    # Basically the same as subscribe_to_platform/3 but with
     # "transfer_data" => [
     #    "destination" => "{{CONNECTED_STRIPE_ACCOUNT_ID}}",
     #  ],
