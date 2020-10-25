@@ -11,6 +11,8 @@ defmodule Glimesh.Payments.Subscription do
              :stripe_price_id,
              :stripe_current_period_end,
              :price,
+             :fee,
+             :payout,
              :product_name,
              :is_active,
              :started_at,
@@ -25,6 +27,8 @@ defmodule Glimesh.Payments.Subscription do
     field :stripe_price_id, :string
     field :stripe_current_period_end, :integer
     field :price, :integer
+    field :fee, :integer
+    field :payout, :integer
     field :product_name, :string
 
     field :is_active, :boolean
@@ -43,6 +47,8 @@ defmodule Glimesh.Payments.Subscription do
       :stripe_price_id,
       :stripe_current_period_end,
       :price,
+      :fee,
+      :payout,
       :product_name,
       :started_at,
       :ended_at,
@@ -57,6 +63,8 @@ defmodule Glimesh.Payments.Subscription do
       :stripe_price_id,
       :stripe_current_period_end,
       :price,
+      :fee,
+      :payout,
       :product_name,
       :started_at,
       :ended_at

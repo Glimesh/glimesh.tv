@@ -99,6 +99,8 @@ defmodule Glimesh.Payments do
              stripe_price_id: price_id,
              stripe_current_period_end: sub.current_period_end,
              price: price.unit_amount,
+             fee: 0,
+             payout: price.unit_amount,
              product_name: product.name,
              is_active: true,
              started_at: NaiveDateTime.utc_now(),
@@ -148,6 +150,11 @@ defmodule Glimesh.Payments do
              stripe_price_id: price_id,
              stripe_current_period_end: stripe_sub.current_period_end,
              price: price.unit_amount,
+             fee: trunc(stripe_sub.application_fee_percent / 100 * price.unit_amount),
+             payout:
+               trunc(
+                 price.unit_amount - stripe_sub.application_fee_percent / 100 * price.unit_amount
+               ),
              product_name: product.name,
              is_active: true,
              started_at: NaiveDateTime.utc_now(),
@@ -219,10 +226,19 @@ defmodule Glimesh.Payments do
     end
   end
 
+  def get_stripe_dashboard_url(%User{stripe_user_id: nil}), do: nil
+
+  def get_stripe_dashboard_url(%User{stripe_user_id: stripe_user_id}) do
+    case Stripe.Account.create_login_link(stripe_user_id, %{}) do
+      {:ok, %Stripe.LoginLink{url: stripe_dashboard_url}} -> stripe_dashboard_url
+      {:error, _} -> nil
+    end
+  end
+
   def sum_incoming(user) do
     Repo.one(
       from s in Subscription,
-        select: sum(s.price),
+        select: sum(s.payout),
         where: s.streamer_id == ^user.id and s.is_active == true
     )
   end
