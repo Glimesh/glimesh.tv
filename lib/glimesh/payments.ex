@@ -77,7 +77,7 @@ defmodule Glimesh.Payments do
     end
   end
 
-  def subscribe(:platform, user, product_id, price_id) do
+  def subscribe_to_platform(user, product_id, price_id) do
     if has_platform_subscription?(user) do
       raise ArgumentError, "You already have an active subscription to this streamer."
     end
@@ -99,6 +99,8 @@ defmodule Glimesh.Payments do
              stripe_price_id: price_id,
              stripe_current_period_end: sub.current_period_end,
              price: price.unit_amount,
+             fee: 0,
+             payout: price.unit_amount,
              product_name: product.name,
              is_active: true,
              started_at: NaiveDateTime.utc_now(),
@@ -111,7 +113,7 @@ defmodule Glimesh.Payments do
     end
   end
 
-  def subscribe(:channel, user, streamer, product_id, price_id) do
+  def subscribe_to_channel(user, streamer, product_id, price_id) do
     if user.id == streamer.id do
       raise ArgumentError, "You cannot subscribe to yourself."
     end
@@ -120,7 +122,7 @@ defmodule Glimesh.Payments do
       raise ArgumentError, "You already have an active subscription to this streamer."
     end
 
-    # Basically the same as subscribe(:platform) but with
+    # Basically the same as subscribe_to_platform/3 but with
     # "transfer_data" => [
     #    "destination" => "{{CONNECTED_STRIPE_ACCOUNT_ID}}",
     #  ],
@@ -148,6 +150,11 @@ defmodule Glimesh.Payments do
              stripe_price_id: price_id,
              stripe_current_period_end: stripe_sub.current_period_end,
              price: price.unit_amount,
+             fee: trunc(stripe_sub.application_fee_percent / 100 * price.unit_amount),
+             payout:
+               trunc(
+                 price.unit_amount - stripe_sub.application_fee_percent / 100 * price.unit_amount
+               ),
              product_name: product.name,
              is_active: true,
              started_at: NaiveDateTime.utc_now(),
@@ -219,10 +226,19 @@ defmodule Glimesh.Payments do
     end
   end
 
+  def get_stripe_dashboard_url(%User{stripe_user_id: nil}), do: nil
+
+  def get_stripe_dashboard_url(%User{stripe_user_id: stripe_user_id}) do
+    case Stripe.Account.create_login_link(stripe_user_id, %{}) do
+      {:ok, %Stripe.LoginLink{url: stripe_dashboard_url}} -> stripe_dashboard_url
+      {:error, _} -> nil
+    end
+  end
+
   def sum_incoming(user) do
     Repo.one(
       from s in Subscription,
-        select: sum(s.price),
+        select: sum(s.payout),
         where: s.streamer_id == ^user.id and s.is_active == true
     )
   end

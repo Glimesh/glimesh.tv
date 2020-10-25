@@ -62,7 +62,6 @@
                     <% else %>
                     <div class="info">
                         <h5 class=""><%= gettext("Setup Payment Method") %></h5>
-                        <!--<p class="inv-balance">$10,344</p>-->
                     </div>
                     <div class="acc-action">
                         <div class="">
@@ -81,7 +80,6 @@
                         <%= if @is_sub_ready_streamer do %>
                         <div class="info">
                             <h5 class=""><%= gettext("Sub-ready Streamer") %></h5>
-                            <!--<p class="inv-balance">$10,344</p>-->
                         </div>
                         <div class="acc-action">
                             <div class="">
@@ -91,7 +89,6 @@
                         <% else %>
                         <div class="info">
                             <h5 class=""><%= gettext("Streamer") %></h5>
-                            <!--<p class="inv-balance">$10,344</p>-->
                         </div>
                         <div class="acc-action">
                             <div class="">
@@ -134,27 +131,18 @@
         </div>
         <% end %>
     </div>
+
     <div class="card mt-4">
         <div class="card-header">
             <h5><%= gettext("Payout History") %> </h5>
         </div>
         <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Date / Time</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%= for payout <- @payout_history do %>
-                    <tr>
-                        <td><%= format_datetime(payout.created) %></td>
-                        <td>$<%= format_price(payout.amount) %></td>
-                    </tr>
-                    <% end %>
-                </tbody>
-            </table>
+            <%= if @stripe_dashboard_url do %>
+            <a href="<%= @stripe_dashboard_url %>" class="btn btn-primary"
+                target="_blank"><%= gettext("View on Stripe") %></a>
+            <% else %>
+            <%= gettext("Not available") %>
+            <% end %>
         </div>
     </div>
     <div class="card mt-4">
@@ -162,13 +150,16 @@
             <h5><%= gettext("Payment History") %></h5>
         </div>
         <div class="card-body">
+            <p><%= gettext("See something you don't expect? Need a refund? Please email us at %{email} and we'll be happy to help!",
+              email: "support@glimesh.tv"
+            ) %></p>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Date / Time</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-                        <th>Status</th>
+                        <th><%= gettext("Date / Time") %></th>
+                        <th><%= gettext("Description") %></th>
+                        <th><%= gettext("Amount") %></th>
+                        <th><%= gettext("Status") %></th>
                     </tr>
                 </thead>
                 <tbody>

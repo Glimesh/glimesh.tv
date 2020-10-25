@@ -62,7 +62,11 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
 
     with {:ok, _} <- Payments.set_payment_method(user, payment_method),
          {:ok, subscription} <-
-           Payments.subscribe(:platform, user, socket.assigns.product_id, socket.assigns.price_id) do
+           Payments.subscribe_to_platform(
+             user,
+             socket.assigns.product_id,
+             socket.assigns.price_id
+           ) do
       {:reply, subscription,
        socket
        |> assign(:show_subscription, false)
