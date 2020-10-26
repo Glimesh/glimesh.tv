@@ -37,7 +37,16 @@ defmodule GlimeshWeb.Endpoint do
     only:
       ~w(css fonts images videos js ovenplayer cache_manifest.json favicons emotes browserconfig.xml favicon.ico robots.txt site.webmanifest)
 
-  plug Plug.Static, at: "/uploads", from: Application.get_env(:waffle, :storage_dir)
+  if Application.get_env(:waffle, :asset_host) do
+    # If we're using an asset host, we just want to redirect requests
+    plug GlimeshWeb.Plugs.Redirect,
+      from: "/uploads",
+      to: Application.get_env(:waffle, :asset_host)
+  else
+    plug Plug.Static,
+      at: "/uploads",
+      from: Application.get_env(:waffle, :storage_dir)
+  end
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -61,7 +70,6 @@ defmodule GlimeshWeb.Endpoint do
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
-    #    body_reader: {GlimeshWeb.BodySaver, :read_body, []},
     json_decoder: Phoenix.json_library()
 
   plug Plug.MethodOverride
