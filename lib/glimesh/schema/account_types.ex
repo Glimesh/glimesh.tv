@@ -2,6 +2,7 @@ defmodule Glimesh.Schema.AccountTypes do
   @moduledoc false
   use Absinthe.Schema.Notation
 
+  alias Glimesh.Avatar
   alias Glimesh.Resolvers.AccountsResolver
 
   object :accounts_queries do
@@ -36,8 +37,38 @@ defmodule Glimesh.Schema.AccountTypes do
     field :confirmed_at, :naive_datetime
 
     field :avatar, :string do
+      # Need to strip the asset_host url from this property
       resolve(fn user, _, _ ->
-        {:ok, Glimesh.Avatar.url({user.avatar, user})}
+        avatar_path =
+          case Application.get_env(:waffle, :asset_host) do
+            nil ->
+              Avatar.url({user.avatar, user})
+
+            asset_host ->
+              asset_host = String.trim_trailing(asset_host, "/")
+              full_url = Avatar.url({user.avatar, user})
+              String.replace(full_url, asset_host, "")
+          end
+
+        {:ok, avatar_path}
+      end)
+    end
+
+    field :avatar_url, :string do
+      resolve(fn user, _, _ ->
+        avatar_url =
+          case Application.get_env(:waffle, :asset_host) do
+            nil ->
+              GlimeshWeb.Router.Helpers.static_url(
+                GlimeshWeb.Endpoint,
+                Avatar.url({user.avatar, user})
+              )
+
+            _ ->
+              Avatar.url({user.avatar, user})
+          end
+
+        {:ok, avatar_url}
       end)
     end
 
