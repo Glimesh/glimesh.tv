@@ -17,8 +17,7 @@ defmodule GlimeshWeb.UserLive.Profile do
 
         profile_url = Routes.user_profile_url(socket, :index, streamer.username)
 
-        avatar_url =
-          Routes.static_url(socket, Glimesh.Avatar.url({streamer.avatar, streamer}, :original))
+        avatar_url = Glimesh.Avatar.url({streamer.avatar, streamer}, :original)
 
         streamer_share_text = Profile.streamer_share_text(streamer, profile_url)
         viewer_share_text = Profile.viewer_share_text(streamer, profile_url)
