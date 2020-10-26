@@ -70,7 +70,12 @@ defmodule Glimesh.MixProject do
       {:dataloader, "~> 1.0.0"},
       {:plug_canonical_host, "~> 2.0"},
       {:ex_oauth2_provider, "~> 0.5.6"},
-      {:hcaptcha, "~> 0.0.1"}
+      {:hcaptcha, "~> 0.0.1"},
+      # Waffle Deps
+      {:ex_aws, "~> 2.1.2"},
+      {:ex_aws_s3, "~> 2.0"},
+      {:hackney, "~> 1.9"},
+      {:sweet_xml, "~> 0.6"}
     ]
   end
 

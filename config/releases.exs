@@ -132,6 +132,38 @@ config :hcaptcha,
   public_key: hcaptcha_public_key,
   secret: hcaptcha_secret
 
+# Waffle Configuration
+do_spaces_public_key =
+  System.get_env("DO_SPACES_PUBLIC_KEY") ||
+    raise "environment variable DO_SPACES_PUBLIC_KEY is missing."
+
+do_spaces_private_key =
+  System.get_env("DO_SPACES_PRIVATE_KEY") ||
+    raise "environment variable DO_SPACES_PRIVATE_KEY is missing."
+
+do_spaces_bucket =
+  System.get_env("DO_SPACES_BUCKET") ||
+    raise "environment variable DO_SPACES_BUCKET is missing."
+
+waffle_asset_host =
+  System.get_env("WAFFLE_ASSET_HOST") ||
+    raise "environment variable WAFFLE_ASSET_HOST is missing."
+
+config :waffle,
+  storage: Waffle.Storage.S3,
+  bucket: do_spaces_bucket,
+  asset_host: waffle_asset_host
+
+config :ex_aws,
+  access_key_id: do_spaces_public_key,
+  secret_access_key: do_spaces_private_key,
+  region: "us-east-1",
+  s3: [
+    scheme: "https://",
+    host: "nyc3.digitaloceanspaces.com",
+    region: "us-east-1"
+  ]
+
 # Glimesh Configuration
 email_physical_address =
   System.get_env("GLIMESH_EMAIL_PHYSICAL_ADDRESS") ||

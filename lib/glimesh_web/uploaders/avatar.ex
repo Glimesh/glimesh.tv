@@ -8,13 +8,7 @@ defmodule Glimesh.Avatar do
 
   @versions [:original]
 
-  # To add a thumbnail version:
-  # @versions [:original, :thumb]
-
-  # Override the bucket on a per definition basis:
-  # def bucket do
-  #   :custom_bucket_name
-  # end
+  def acl(:original, _), do: :public_read
 
   # Whitelist file extensions:
   def validate({file, _}) do
@@ -40,13 +34,4 @@ defmodule Glimesh.Avatar do
   def default_url(_version, _scope) do
     "/images/200x200.jpg"
   end
-
-  # Specify custom headers for s3 objects
-  # Available options are [:cache_control, :content_disposition,
-  #    :content_encoding, :content_length, :content_type,
-  #    :expect, :expires, :storage_class, :website_redirect_location]
-  #
-  # def s3_object_headers(version, {file, scope}) do
-  #   [content_type: MIME.from_path(file.file_name)]
-  # end
 end
