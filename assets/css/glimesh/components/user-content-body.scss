@@ -12,3 +12,18 @@
         color: $color-bone-white;
     }
 }
+
+.text-heavy-content {
+    h2 {
+        margin-top: 50px;
+        margin-bottom: 10px;
+    }
+
+    h2:first-child {
+        margin-top: 0px;
+    }
+
+    h5 {
+        margin-top: 15px;
+    }
+}
