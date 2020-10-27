@@ -1,8 +1,9 @@
 <div class="container">
     <h2 class="mt-4"><%= gettext("Stream Settings") %></h2>
     <%= if !@channel do %>
-        <h5><%= gettext("You currently don't have a channel setup. Press the button below if you'd like to setup your channel!") %></h5>
-        <%= button gettext("Create Channel"), class: "btn btn-primary", to: Routes.user_settings_path(@conn, :create_channel), method: "put"%>
+    <h5><%= gettext("You currently don't have a channel setup. Press the button below if you'd like to setup your channel!") %>
+    </h5>
+    <%= button gettext("Create Channel"), class: "btn btn-primary", to: Routes.user_settings_path(@conn, :create_channel), method: "put"%>
     <% else %>
     <%= form_for @channel_changeset, Routes.user_settings_path(@conn, :update_channel), [multipart: true, class: "form"], fn f -> %>
     <div class="card">
@@ -15,6 +16,22 @@
                 <% end %>
             </div>
             <div class="row">
+                <div class="col-sm-6">
+                    <h6><%= gettext("Channel Poster") %></h6>
+                    <div class="custom-file">
+                        <%= file_input f, :poster, class: "custom-file-input", accept: "image/png, image/jpeg" %>
+                        <%= label f, :poster, gettext("Choose file"), class: "custom-file-label" %>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h6><%= gettext("Chat Background") %></h6>
+                    <div class="custom-file">
+                        <%= file_input f, :chat_bg, class: "custom-file-input", accept: "image/png, image/jpeg" %>
+                        <%= label f, :chat_bg, gettext("Choose file"), class: "custom-file-label" %>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
                 <div class="col-sm-6">
                     <div class="form-group">
                         <%= label f, gettext("Stream Title") %>

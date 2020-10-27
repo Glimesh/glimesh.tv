@@ -34,4 +34,10 @@ defmodule GlimeshWeb.UserLive.Stream do
         {:ok, redirect(socket, to: "/#{streamer_username}/profile")}
     end
   end
+
+  defp background_style(channel) do
+    url = Glimesh.ChatBackground.url({channel.chat_bg, channel}, :original)
+
+    "--chat-bg-image: url('#{url}');"
+  end
 end

@@ -9,7 +9,9 @@
     flex-flow: column;
     overflow: hidden;
 
-    background-image: url(/images/bg.png);
+    --chat-bg-image: url('/images/bg.png');
+    background-image: var(--chat-bg-image);
+
     border-radius: 6px;
 
     .chat-messages {
