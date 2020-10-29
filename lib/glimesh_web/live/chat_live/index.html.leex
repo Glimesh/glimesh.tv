@@ -1,4 +1,5 @@
-<div id="chat-messages" class="chat-messages" phx-update="<%= @update_action %>">
+<div id="chat-messages" class="chat-messages" phx-update="<%= @update_action %>"
+    style="<%= background_style(@channel) %>">
     <div id="channel-header" class="channel-header">
         <span>Welcome to chat! Follow the rules.</span>
     </div>

@@ -1,6 +1,8 @@
 defmodule Glimesh.Streams.Channel do
   @moduledoc false
   use Ecto.Schema
+  use Waffle.Ecto.Schema
+
   import Ecto.Changeset
 
   schema "channels" do
@@ -22,6 +24,9 @@ defmodule Glimesh.Streams.Channel do
 
     field :chat_rules_md, :string
     field :chat_rules_html, :string
+
+    field :poster, Glimesh.ChannelPoster.Type
+    field :chat_bg, Glimesh.ChatBackground.Type
 
     has_many :chat_messages, Glimesh.Chat.ChatMessage
 
@@ -65,6 +70,7 @@ defmodule Glimesh.Streams.Channel do
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> set_chat_rules_content_html()
+    |> cast_attachments(attrs, [:poster, :chat_bg])
   end
 
   def maybe_put_assoc(changeset, key, value) do

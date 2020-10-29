@@ -9,7 +9,6 @@
     flex-flow: column;
     overflow: hidden;
 
-    background-image: url(/images/bg.png);
     border-radius: 6px;
 
     .chat-messages {
@@ -18,6 +17,9 @@
         flex-direction: column;
         // justify-content: flex-end;
         overflow-y: scroll;
+
+        --chat-bg-image: url('/images/bg.png');
+        background-image: var(--chat-bg-image);
 
         .channel-header {
             align-self: center;

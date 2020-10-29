@@ -32,7 +32,8 @@
             <%= if @backend == "ftl" do %>
             <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo"
               data-janus-server-uri="<%= @janus_uri %>" data-channel-id="<%= @channel_id %>"
-              poster="/images/stream-not-started.jpg" autoplay controls></video>
+              poster="<%= Glimesh.ChannelPoster.url({@channel.poster, @channel}, :original) %>" autoplay
+              controls></video>
             <% else %>
             <div id="player-container" class="embed-responsive-item" phx-hook="OvenVideo">
               <div id="player"></div>

@@ -45,7 +45,10 @@ export default {
 
         const trigger = document.querySelector('.emoji-activator');
         if (trigger) {
-            trigger.addEventListener('click', () => picker.togglePicker(trigger));
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                picker.togglePicker(trigger)
+            });
         }
 
         const chat = document.getElementById('chat_message_message');

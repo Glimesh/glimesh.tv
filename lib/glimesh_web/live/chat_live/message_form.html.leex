@@ -20,9 +20,9 @@
 
   <div class="input-group">
     <div class="input-group-prepend">
-      <span class="input-group-text <%= if @disabled, do: "", else: "emoji-activator" %>">
+      <a href="#" class="input-group-text <%= if @disabled, do: "", else: "emoji-activator" %>" type="button">
         <i class="far fa-smile-beam"></i>
-      </span>
+      </a>
     </div>
     <%= text_input f, :message, class: "mail-write-box form-control", placeholder: "Send a message", autocomplete: "off", maxlength: "255", disabled: @disabled %>
 
