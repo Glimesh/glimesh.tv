@@ -5,17 +5,21 @@ defmodule Glimesh.ChatBackground do
   use Waffle.Ecto.Definition
 
   @versions [:original]
+  @max_file_size 100_000
 
   def acl(:original, _), do: :public_read
 
   # Whitelist file extensions:
   def validate({file, _}) do
-    ~w(.jpg .jpeg .png) |> Enum.member?(Path.extname(file.file_name))
+    extension_passes = ~w(.jpg .jpeg .png) |> Enum.member?(Path.extname(file.file_name))
+    size_passes = file_size(file) <= @max_file_size
+
+    extension_passes && size_passes
   end
 
   # Define a thumbnail transformation:
   def transform(:original, _) do
-    {:convert, "-strip -thumbnail 300x300^ -gravity center -extent 300x300 -format png", :png}
+    {:convert, "-strip -format png", :png}
   end
 
   # Override the persisted filenames:
@@ -31,5 +35,9 @@ defmodule Glimesh.ChatBackground do
   # Provide a default URL if there hasn't been a file uploaded
   def default_url(_version, _scope) do
     "/images/bg.png"
+  end
+
+  defp file_size(%Waffle.File{} = file) do
+    File.stat!(file.path) |> Map.get(:size)
   end
 end

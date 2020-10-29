@@ -95,4 +95,10 @@ defmodule GlimeshWeb.ChatLive.Index do
   defp list_chat_messages(channel) do
     Chat.list_chat_messages(channel)
   end
+
+  defp background_style(channel) do
+    url = Glimesh.ChatBackground.url({channel.chat_bg, channel}, :original)
+
+    "--chat-bg-image: url('#{url}');"
+  end
 end

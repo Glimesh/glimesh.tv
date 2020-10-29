@@ -60,7 +60,7 @@
     <div id="chat-column" class="col-lg-3 d-flex flex-column position-relative layout-spacing">
       <div class="chat-flex">
         <div class="chat-absolute">
-          <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", container: {:div, style: background_style(@channel)}, session: %{"user" => @user, "channel_id" => @channel.id} %>
+          <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id} %>
         </div>
       </div>
     </div>
