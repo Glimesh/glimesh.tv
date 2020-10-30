@@ -40,7 +40,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <%= label f, gettext("Language") %>
-                                <%= select f, :locale, [English: "en", Español: "es", "Español rioplatense": "es_AR", "Español mexicano": "es_MX", Deutsche: "de", 日本語: "ja", "Norsk Bokmål": "nb", Français: "fr", Svenska: "sv", "Tiếng Việt": "vi", "Русский": "ru", 한국어: "ko", "Italiano": "it" ], [class: "form-control"] %>
+                                <%= select f, :locale, [English: "en", Español: "es", "Español rioplatense": "es_AR", "Español mexicano": "es_MX", Deutsche: "de", 日本語: "ja", "Norsk Bokmål": "nb", Français: "fr", Svenska: "sv", "Tiếng Việt": "vi", "Русский": "ru", "한국어": "ko", "Italiano": "it" ], [class: "form-control"] %>
                                 <!-- This will manually need to be populated as languages are completed. Format: Displayname: "locale_code"-->
                                 <%= error_tag f, :email %>
                             </div>
@@ -93,6 +93,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group social-guilded mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="guilded"><i
+                                                class="fab fa-guilded"></i></span>
+                                    </div>
+                                    <%= text_input f, :social_guilded, [class: "form-control", placeholder: gettext("Guilded Server URL")] %>
+                                    <%= error_tag f, :social_guilded %>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -103,7 +115,7 @@
 
                     <div class="form-group">
                         <label>
-                            <%= raw(gettext("Profile Content (%{a_start}Markdown%{a_end} supported)", a_start: '<a href="https://www.markdownguide.org/">', a_end: '</a>')) %>
+                            <%= raw(gettext("Profile Content (%{a_start}Markdown%{a_end} supported)", a_start: '<a href="https://www.markdownguide.org/" target="_blank">', a_end: '</a>')) %>
                         </label>
 
                         <ul class="nav nav-pills" id="markdown-editor" role="tablist">
