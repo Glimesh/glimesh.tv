@@ -95,6 +95,19 @@
                     </div>
                 </div>
 
+     			<div class="col-md-6">
+                            <div class="input-group social-guilded mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="guilded"><i
+                                                class="fab fa-guilded"></i></span>
+                                </div>
+                                <%= text_input f, :social_guilded, [class: "form-control", placeholder: gettext("Guilded Server URL")] %>
+                                <%= error_tag f, :social_guilded %>
+                            </div>
+                        </div>
+                    </div>
+                </div>				    
+				    
                 <div class="form-group">
                     <%= label f, :youtube_intro_url, gettext("YouTube Teaser URL") %>
                     <%= text_input f, :youtube_intro_url, [class: "form-control mb-4", placeholder: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"] %>
