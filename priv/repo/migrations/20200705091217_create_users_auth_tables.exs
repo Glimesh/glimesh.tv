@@ -15,7 +15,6 @@ defmodule Glimesh.Repo.Migrations.CreateUsersAuthTables do
       add :social_youtube, :string
       add :social_instagram, :string
       add :social_discord, :string
-      add :social_guilded, :string
 
       timestamps()
     end
