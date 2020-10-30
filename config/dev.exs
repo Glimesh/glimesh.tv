@@ -5,7 +5,7 @@ config :glimesh, Glimesh.Repo,
   username: "postgres",
   password: "postgres",
   database: "glimesh_dev",
-  hostname: "localhost",
+  hostname: System.get_env("DATABASE_URL") || "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
@@ -28,18 +28,17 @@ config :glimesh, GlimeshWeb.Endpoint,
       cd: Path.expand("../assets", __DIR__)
     ]
   ],
-  url: [host: "glimesh.dev", port: 443],
+  url: [host: "localhost", port: 4001],
   http: [port: 4000],
   https: [
-   port: 4001,
-   cipher_suite: :strong,
-   keyfile: "priv/cert/selfsigned_key.pem",
-   certfile: "priv/cert/selfsigned.pem",
-   transport_options: [socket_opts: [:inet6]]
+    port: 4001,
+    cipher_suite: :strong,
+    keyfile: "priv/cert/selfsigned_key.pem",
+    certfile: "priv/cert/selfsigned.pem",
+    transport_options: [socket_opts: [:inet6]]
   ]
 
-config :glimesh, GlimeshWeb.Emails.Mailer,
-       adapter: Bamboo.LocalAdapter
+config :glimesh, GlimeshWeb.Emails.Mailer, adapter: Bamboo.LocalAdapter
 
 # ## SSL Support
 #
@@ -85,3 +84,7 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+if File.exists?("config/local.exs") do
+  import_config "local.exs"
+end

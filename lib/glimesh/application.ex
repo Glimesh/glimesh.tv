@@ -14,10 +14,13 @@ defmodule Glimesh.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Glimesh.PubSub},
       # Who and where are you?
-      Glimesh.Presence ,
+      Glimesh.Presence,
       # Start the Endpoint (http/https)
-      GlimeshWeb.Endpoint
+      GlimeshWeb.Endpoint,
       # Start a worker by calling: Glimesh.Worker.start_link(arg)
+      {Absinthe.Subscription, GlimeshWeb.Endpoint},
+      Glimesh.Workers.StreamMetrics,
+      Glimesh.Workers.StreamPruner
       # {Glimesh.Worker, arg}
     ]
 

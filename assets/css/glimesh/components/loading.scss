@@ -1,0 +1,9 @@
+.show-on-loading {
+    display: none;
+}
+
+.loading {
+    .show-on-loading {
+        display: inline-block;
+    }
+}

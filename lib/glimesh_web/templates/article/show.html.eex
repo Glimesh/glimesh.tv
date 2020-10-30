@@ -1,0 +1,16 @@
+<div class="container mt-4">
+  <h1 class="text-center"><%= @article.title %></h1>
+
+  <div class="row justify-content-md-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body user-content-body">
+          <%= raw(@article.body_html) %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-center mt-4 mb-4"><%= link "<- Read more articles!", to: Routes.article_path(@conn, :index) %></p>
+
+</div>

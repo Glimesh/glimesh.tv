@@ -1,0 +1,58 @@
+// this is to lock the footer on the bottom without having to deal with position
+html,
+body {
+    height: 100%;
+
+    // this is the final part to lock the fotter to the bottom you are welcome to try and figure out the best dynamic way to set this but have fun with that function
+    #app {
+        @media(min-height: 558px) {
+            min-height: 51.6073%;
+        }
+
+        @media(min-height: 675px) {
+            min-height: 59.9953%;
+        }
+
+        @media(min-height: 937px) {
+            min-height: 71.1812%;
+        }
+
+        @media(min-height: 1297px) {
+            min-height: 79.18%;
+        }
+    }
+}
+
+
+@font-face {
+    font-family: "Quicksand";
+    font-style: normal;
+    font-weight: 400;
+    src: local(""), url("../fonts/quicksand-v21-latin-regular.woff2") format("woff2"),
+        url("../fonts/quicksand-v21-latin-regular.woff") format("woff");
+}
+
+// We encourage everyone to use bootstrap as our UI framework, and make stylistic changes as necessary.
+@import "glimesh/variables";
+@import "~bootstrap";
+
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/brands";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/brands";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+
+// Cork SCSS
+// You must have the correct repo access to use this code.
+@import "cork/cork";
+
+// Glimesh SCSS
+@import "glimesh/components/live-modal";
+@import "glimesh/components/img-avatar";
+@import "glimesh/components/card-stream";
+@import "glimesh/components/oauth-template";
+@import "glimesh/components/user-content-body";
+@import "glimesh/components/loading";
+@import "glimesh/components/chat";
+@import "glimesh/components/stream";

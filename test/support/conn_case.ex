@@ -55,6 +55,29 @@ defmodule GlimeshWeb.ConnCase do
   end
 
   @doc """
+  Setup helper that registers and logs in a streamer.
+
+      setup :register_and_log_in_streamer
+
+  """
+  def register_and_log_in_streamer(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.streamer_fixture()
+    channel = Glimesh.Streams.get_channel_for_user(user)
+    %{conn: log_in_user(conn, user), user: user, channel: channel}
+  end
+
+  @doc """
+  Setup helper that registers and logs in admin user.
+
+      setup :register_and_log_in_admin_user
+
+  """
+  def register_and_log_in_admin_user(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.admin_fixture()
+    %{conn: log_in_user(conn, user), user: user}
+  end
+
+  @doc """
   Logs the given `user` into the `conn`.
 
   It returns an updated `conn`.
@@ -65,5 +88,28 @@ defmodule GlimeshWeb.ConnCase do
     conn
     |> Phoenix.ConnTest.init_test_session(%{})
     |> Plug.Conn.put_session(:user_token, token)
+  end
+
+  def register_admin_and_set_user_token(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.admin_fixture()
+
+    create_token_and_return_context(conn, user)
+  end
+
+  def register_and_set_user_token(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.user_fixture()
+
+    create_token_and_return_context(conn, user)
+  end
+
+  defp create_token_and_return_context(conn, user) do
+    {:ok, %{token: token}} =
+      ExOauth2Provider.AccessTokens.create_token(user, %{}, otp_app: :glimesh)
+
+    %{
+      conn: conn |> Plug.Conn.put_req_header("authorization", "Bearer #{token}"),
+      user: user,
+      token: token
+    }
   end
 end

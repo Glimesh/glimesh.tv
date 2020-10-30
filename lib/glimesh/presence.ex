@@ -1,4 +1,6 @@
 defmodule Glimesh.Presence do
+  @moduledoc false
+
   use Phoenix.Presence,
     otp_app: :glimesh,
     pubsub_server: Glimesh.PubSub
@@ -15,7 +17,8 @@ defmodule Glimesh.Presence do
 
   def list_presences(topic) do
     Presence.list(topic)
-      |> Enum.map(fn {_user_id, data} -> data[:metas]
+    |> Enum.map(fn {_user_id, data} ->
+      data[:metas]
       |> List.first()
     end)
   end

@@ -1,0 +1,97 @@
+<div class="container">
+    <h2 class="mt-4"><%= gettext("Channel Settings") %></h2>
+    <%= if !@channel do %>
+    <h5><%= gettext("You currently don't have a channel setup. Press the button below if you'd like to setup your channel!") %>
+    </h5>
+    <%= button gettext("Create Channel"), class: "btn btn-primary", to: Routes.user_settings_path(@conn, :create_channel), method: "put"%>
+    <% else %>
+    <%= form_for @channel_changeset, Routes.user_settings_path(@conn, :update_channel), [multipart: true, class: "form"], fn f -> %>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <%= if @channel_changeset.action do %>
+                <div class="alert alert-danger">
+                    <p> <%= gettext("Oops, something went wrong! Please check the errors below.") %></p>
+                </div>
+                <% end %>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <%= label f, :poster, gettext("Channel Poster") %>
+                        <p class="text-muted form-text">
+                            <%= gettext("An image for your channel that will be shown whenever you are offline. Will be resized or cropped to 1920x1080.") %>
+                        </p>
+
+                        <div class="custom-file">
+                            <%= file_input f, :poster, class: "custom-file-input", accept: "image/png, image/jpeg" %>
+                            <%= label f, gettext("Choose file"), class: "custom-file-label" %>
+                        </div>
+
+                        <%= error_tag f, :poster %>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <%= label f, :chat_bg, gettext("Chat Background") %>
+                        <p class="text-muted form-text">
+                            <%= gettext("A repeatable background for your chat. Make sure it's not too noisy, and it's an image that can repeat nicely right and down. Max Size: 100Kb") %>
+                        </p>
+
+                        <div class="custom-file">
+                            <%= file_input f, :chat_bg, class: "custom-file-input", accept: "image/png, image/jpeg" %>
+                            <%= label f, :chat_bg, gettext("Choose file"), class: "custom-file-label" %>
+                        </div>
+
+                        <%= error_tag f, :chat_bg %>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <%= label f, gettext("Channel Title") %>
+                        <%= text_input f, :title, [class: "form-control"] %>
+                        <%= error_tag f, :title %>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <%= label f, gettext("Channel Category") %>
+                        <%= select f, :category_id, @categories, [class: "form-control", "phx-hook": "Choices", "phx-update": "ignore"] %>
+                        <%= error_tag f, :category_id %>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <%= label f, gettext("Chat Rules (Markdown Supported)") %>
+                        <%= textarea f, :chat_rules_md, [class: "form-control mb-4", rows: 20] %>
+                        <%= error_tag f, :chat_rules_md %>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <%= label f, gettext("Should links automatically be clickable?") %>
+                        <%= select f, :disable_hyperlinks, [Yes: false, No: true], [class: "form-control", disabled: @channel.block_links] %>
+                        <%= error_tag f, :disable_hyperlinks %>
+                    </div>
+                    <div class="form-group">
+                        <%= label f, gettext("Block viewers from posting links?") %>
+                        <%= select f, :block_links, [Yes: true, No: false],[class: "form-control"] %>
+                        <%= error_tag f, :block_links %>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <%= submit gettext("Update Settings"), class: "btn btn-primary" %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% end %>
+    <%= button(gettext("Delete Channel"), to: Routes.user_settings_path(@conn, :delete_channel), method: "put", class: "btn btn-danger mt-4", data: [confirm: "Pressing OK will: \n - Delete your channel \n - Wipe all settings tied to the channel \n - Clear all followers for the channel \n\nPressing OK will NOT: \n- Delete your Glimesh account \n- Remove all profile related settings \n\nAre you sure you want to do this?"]) %>
+    <% end %>
+</div>

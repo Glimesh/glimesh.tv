@@ -4,22 +4,26 @@ defmodule GlimeshWeb.ModalComponent do
   @impl true
   def render(assigns) do
     ~L"""
-    <div id="<%= @id %>" class="phx-modal modal"
+    <div id="<%= @id %>" class="live-modal"
       phx-capture-click="close"
       phx-window-keydown="close"
       phx-key="escape"
       phx-target="#<%= @id %>"
       phx-page-loading>
 
-      <div class="phx-modal-content modal-dialog" role="document">
-        <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <%= live_patch raw("&times;"), to: @return_to, class: "phx-modal-close" %>
-          </button>
-        </div>
-        <div class="modal-body">
-          <%= live_component @socket, @component, @opts %>
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <%= if @title != nil do %>
+                  <h5 class="modal-title">
+                    <%= @title %>
+                  </h5>
+                <% end %>
+                <%= live_patch raw("&times;"), to: @return_to, class: "close" %>
+            </div>
+            <div class="modal-body">
+                <%= live_component @socket, @component, @opts %>
+            </div>
         </div>
       </div>
     </div>

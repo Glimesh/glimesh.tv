@@ -70,7 +70,7 @@ When you visit our Sites or use our Services, some information is automatically 
         
 
 11.  Web Beacons  
-    We may also collect information using "Web Beacons". Web Beacons are electronic images that are utilized by our sites, our services, and by our emails. We utilize Web Beacons to deliver cookies, count page visits, understand campaign usage and effectiveness, and check the engagement of emails that we send out. If you'd like more information on Web Beacons please see (insert source article for someone to read regarding web beacons)
+    We may also collect information using "Web Beacons". Web Beacons are electronic images that are utilized by our sites, our services, and by our emails. We utilize Web Beacons to deliver cookies, count page visits, understand campaign usage and effectiveness, and check the engagement of emails that we send out. If you'd like more information on Web Beacons please see [Wikipedia Web Beacon Article](https://en.wikipedia.org/wiki/Web_beacon)
 
 #### Use of Personal Information We Collect
 
@@ -89,13 +89,8 @@ Glimesh stores and processes personal information in the United States.
 
 We may also share your personal information with these third party vendors who work on our behalf:
 
--   [reCAPTCHA](https://www.google.com/recaptcha/intro/v3.html) - anti-robot service for preventing spam.
+-   [hCaptcha](https://hcaptcha.com/) - anti-robot service for preventing spam.
 -   [Plausible.io](https://plausible.io/) - privacy focused analytics provider
-
-We may also share your personal information with these third parties during our charity streams:
--   [Tiltify](https://tiltify.com/) - charity organization & donation service
--   [Pusher](https://pusher.com/) - live update service for donation widget from Tiltify
--   [Google Analytics](https://analytics.google.com/) - analytics service used by Tiltify
 
 We may also share your information as follows:
 
@@ -106,7 +101,7 @@ We may also share your information as follows:
 
 #### Security of Your Personal Information
 
-Glimesh takes measures to help protect your personal information in an effort to prevent loss, misuse, unauthorized access, disclosure, alteration and destruction.We are committed to keep your information safe and secure to the best of our ability. If you feel that your Information may have been compromised please reach out to (appropriate email).
+Glimesh takes measures to help protect your personal information in an effort to prevent loss, misuse, unauthorized access, disclosure, alteration and destruction.We are committed to keep your information safe and secure to the best of our ability. If you feel that your Information may have been compromised please reach out to [support@glimesh.tv](mailto:support@glimesh.tv).
 
 ## Children
 

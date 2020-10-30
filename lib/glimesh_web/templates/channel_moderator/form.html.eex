@@ -1,0 +1,49 @@
+<%= form_for @changeset, @action, fn f -> %>
+<%= if @changeset.action do %>
+<div class="alert alert-danger">
+  <p><%= gettext("Oops, something went wrong! Please check the errors below.") %></p>
+</div>
+<% end %>
+
+<%= if !@changeset.data.id do %>
+<div class="form-group">
+  <%= label f, :username %>
+  <%= text_input f, :username, class: "form-control" %>
+  <%= error_tag f, :username %>
+</div>
+<% end %>
+
+<h5><%= gettext("Permissions") %></h5>
+
+<div class="custom-control custom-checkbox">
+  <%= checkbox f, :can_short_timeout, class: "custom-control-input" %>
+  <%= label f, :can_short_timeout, gettext("Short Timeout"), class: "custom-control-label" %>
+  <%= error_tag f, :can_short_timeout %>
+</div>
+
+<div class="custom-control custom-checkbox">
+  <%= checkbox f, :can_long_timeout, class: "custom-control-input" %>
+  <%= label f, :can_long_timeout, gettext("Long Timeout"), class: "custom-control-label" %>
+  <%= error_tag f, :can_long_timeout %>
+</div>
+
+<div class="custom-control custom-checkbox">
+  <%= checkbox f, :can_ban, class: "custom-control-input" %>
+  <%= label f, :can_ban, gettext("Ban"), class: "custom-control-label" %>
+  <%= error_tag f, :can_ban %>
+</div>
+
+<div class="custom-control custom-checkbox">
+  <%= checkbox f, :can_un_timeout, class: "custom-control-input" %>
+  <%= label f, :can_un_timeout, gettext("Remove Timeout"), class: "custom-control-label" %>
+  <%= error_tag f, :can_un_timeout %>
+</div>
+
+<div class="custom-control custom-checkbox">
+  <%= checkbox f, :can_unban, class: "custom-control-input" %>
+  <%= label f, :can_unban, gettext("Remove Ban"), class: "custom-control-label" %>
+  <%= error_tag f, :can_unban %>
+</div>
+
+<%= submit gettext("Save"), class: "btn btn-primary", role: "button" %>
+<% end %>

@@ -2,64 +2,24 @@ defmodule GlimeshWeb.UserSettingsController do
   use GlimeshWeb, :controller
 
   alias Glimesh.Accounts
+  alias Glimesh.Streams
   alias GlimeshWeb.UserAuth
 
-  plug :assign_email_and_password_changesets
+  plug :put_layout, "user-sidebar.html"
 
-  def edit(conn, _params) do
-    render(conn, "edit.html")
+  plug :assign_profile_changesets
+  plug :assign_channel_changesets
+
+  def profile(conn, _params) do
+    render(conn, "profile.html")
   end
 
-  def update_email(conn, %{"current_password" => password, "user" => user_params}) do
-    user = conn.assigns.current_user
-
-    case Accounts.apply_user_email(user, password, user_params) do
-      {:ok, applied_user} ->
-        Accounts.deliver_update_email_instructions(
-          applied_user,
-          user.email,
-          &Routes.user_settings_url(conn, :confirm_email, &1)
-        )
-
-        conn
-        |> put_flash(
-          :info,
-          "A link to confirm your e-mail change has been sent to the new address."
-        )
-        |> redirect(to: Routes.user_settings_path(conn, :edit))
-
-      {:error, changeset} ->
-        render(conn, "edit.html", email_changeset: changeset)
-    end
+  def stream(conn, _params) do
+    render(conn, "stream.html")
   end
 
-  def confirm_email(conn, %{"token" => token}) do
-    case Accounts.update_user_email(conn.assigns.current_user, token) do
-      :ok ->
-        conn
-        |> put_flash(:info, "E-mail changed successfully.")
-        |> redirect(to: Routes.user_settings_path(conn, :edit))
-
-      :error ->
-        conn
-        |> put_flash(:error, "Email change link is invalid or it has expired.")
-        |> redirect(to: Routes.user_settings_path(conn, :edit))
-    end
-  end
-
-  def update_password(conn, %{"current_password" => password, "user" => user_params}) do
-    user = conn.assigns.current_user
-
-    case Accounts.update_user_password(user, password, user_params) do
-      {:ok, user} ->
-        conn
-        |> put_flash(:info, "Password updated successfully.")
-        |> put_session(:user_return_to, Routes.user_settings_path(conn, :edit))
-        |> UserAuth.log_in_user(user)
-
-      {:error, changeset} ->
-        render(conn, "edit.html", password_changeset: changeset)
-    end
+  def settings(conn, _params) do
+    render(conn, "settings.html")
   end
 
   def update_profile(conn, %{"user" => user_params}) do
@@ -68,22 +28,77 @@ defmodule GlimeshWeb.UserSettingsController do
     case Accounts.update_user_profile(user, user_params) do
       {:ok, user} ->
         conn
-        |> put_flash(:info, "Profile updated successfully.")
-        |> put_session(:user_return_to, Routes.user_settings_path(conn, :edit))
+        |> put_flash(:info, gettext("Profile updated successfully."))
+        |> put_session(:user_return_to, Routes.user_settings_path(conn, :profile))
         |> UserAuth.log_in_user(user)
 
       {:error, changeset} ->
-        render(conn, "edit.html", profile_changeset: changeset)
+        render(conn, "profile.html", profile_changeset: changeset)
     end
   end
 
-  defp assign_email_and_password_changesets(conn, _opts) do
+  def create_channel(conn, _params) do
+    user = conn.assigns.current_user
+
+    case Streams.create_channel(user) do
+      {:ok, channel} ->
+        conn
+        |> put_session(:user_return_to, Routes.user_settings_path(conn, :stream))
+        |> redirect(to: "/users/settings/stream")
+
+      {:error, changeset} ->
+        render(conn, "stream.html", channel_changeset: changeset)
+    end
+  end
+
+  def delete_channel(conn, _params) do
+    user = conn.assigns.current_user
+    channel = Streams.get_channel_for_username!(user.username)
+
+    case Streams.delete_channel(channel) do
+      {:ok, callback} ->
+        conn
+        |> put_session(:user_return_to, Routes.user_settings_path(conn, :stream))
+        |> UserAuth.log_in_user(user)
+
+      {:error, changeset} ->
+        render(conn, "stream.html", channel_changeset: changeset)
+    end
+  end
+
+  def update_channel(conn, %{"channel" => channel_params}) do
+    channel = conn.assigns.channel
+
+    case Streams.update_channel(channel, channel_params) do
+      {:ok, channel} ->
+        conn
+        |> put_flash(:info, gettext("Stream settings updated successfully"))
+        |> put_session(:user_return_to, Routes.user_settings_path(conn, :stream))
+        |> UserAuth.log_in_user(conn.assigns.current_user)
+
+      {:error, changeset} ->
+        render(conn, "stream.html", channel_changeset: changeset)
+    end
+  end
+
+  defp assign_profile_changesets(conn, _opts) do
     user = conn.assigns.current_user
 
     conn
-      |> assign(:user, user)
-      |> assign(:profile_changeset, Accounts.change_user_profile(user))
-      |> assign(:email_changeset, Accounts.change_user_email(user))
-      |> assign(:password_changeset, Accounts.change_user_password(user))
+    |> assign(:user, user)
+    |> assign(:profile_changeset, Accounts.change_user_profile(user))
+  end
+
+  defp assign_channel_changesets(conn, _opts) do
+    channel = Streams.get_channel_for_username!(conn.assigns.current_user.username)
+
+    if channel do
+      conn
+      |> assign(:channel, channel)
+      |> assign(:channel_changeset, Streams.change_channel(channel))
+      |> assign(:categories, Streams.list_categories_for_select())
+    else
+      conn |> assign(:channel, channel)
+    end
   end
 end

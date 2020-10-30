@@ -1,11 +1,4 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     Glimesh.Repo.insert!(%Glimesh.SomeSchema{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+# In this file we load all seeds from the seeds subdirectory
+for seed <- "seeds/*.exs" |> Path.expand(__DIR__) |> Path.wildcard() do
+  Code.require_file(seed)
+end

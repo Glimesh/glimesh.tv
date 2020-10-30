@@ -1,14 +1,18 @@
 defmodule Glimesh.Chat.ChatMessage do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 
   alias Glimesh.Accounts.User
+  alias Glimesh.Streams.Channel
 
   schema "chat_messages" do
-    belongs_to :streamer, User
-    belongs_to :user, User
     field :message, :string
     field :is_visible, :boolean, default: true
+
+    belongs_to :channel, Channel
+    belongs_to :user, User
 
     timestamps()
   end
@@ -17,6 +21,6 @@ defmodule Glimesh.Chat.ChatMessage do
   def changeset(chat_message, attrs) do
     chat_message
     |> cast(attrs, [:message, :is_visible])
-    |> validate_required([:streamer, :user, :message])
+    |> validate_required([:channel, :user, :message])
   end
 end

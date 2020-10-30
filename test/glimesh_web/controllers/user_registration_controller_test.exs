@@ -26,7 +26,12 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
 
       conn =
         post(conn, Routes.user_registration_path(conn, :create), %{
-          "user" => %{"username" => username, "email" => email, "password" => valid_user_password()}
+          "h-captcha-response" => "valid_response",
+          "user" => %{
+            "username" => username,
+            "email" => email,
+            "password" => valid_user_password()
+          }
         })
 
       assert get_session(conn, :user_token)
@@ -36,20 +41,21 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
       conn = get(conn, "/")
       response = html_response(conn, 200)
       assert response =~ username
-      assert response =~ "My Profile\n</a>"
-      assert response =~ "Sign Out\n</a>"
+      assert response =~ "\nSettings</a>"
+      assert response =~ "\nSign Out</a>"
     end
 
     test "render errors for invalid data", %{conn: conn} do
       conn =
         post(conn, Routes.user_registration_path(conn, :create), %{
+          "h-captcha-response" => "valid_response",
           "user" => %{"email" => "with spaces", "password" => "short"}
         })
 
       response = html_response(conn, 200)
       assert response =~ "<h3>Register for our Alpha!</h3>"
       assert response =~ "must have the @ sign and no spaces"
-      assert response =~ "should be at least 8 character(s)"
+      assert response =~ "Must be at least 8 characters"
     end
   end
 end

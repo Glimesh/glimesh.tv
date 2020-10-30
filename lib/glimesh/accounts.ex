@@ -4,10 +4,19 @@ defmodule Glimesh.Accounts do
   """
 
   import Ecto.Query, warn: false
+
   alias Glimesh.Repo
-  alias Glimesh.Accounts.{User, UserToken, UserNotifier}
+  alias Glimesh.Accounts.{User, UserNotifier, UserToken}
 
   ## Database getters
+
+  def list_users do
+    Repo.all(from u in User, where: not is_nil(u.confirmed_at))
+  end
+
+  def list_admins do
+    Repo.all(from u in User, where: u.is_admin == true)
+  end
 
   @doc """
   Gets a user by email.
@@ -37,12 +46,12 @@ defmodule Glimesh.Accounts do
       nil
 
   """
-  def get_by_username(username) when is_binary(username) do
-    Repo.get_by(User, username: username)
+  def get_by_username(username, ignore_banned \\ false) when is_binary(username) do
+    Repo.get_by(User, username: username, is_banned: ignore_banned)
   end
 
-  def get_by_username!(username) when is_binary(username) do
-    Repo.get_by!(User, username: username)
+  def get_by_username!(username, ignore_banned \\ false) when is_binary(username) do
+    Repo.get_by!(User, username: username, is_banned: ignore_banned)
   end
 
   @doc """
@@ -79,6 +88,11 @@ defmodule Glimesh.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def is_user_banned_by_username?(username) do
+    user = Repo.get_by(User, username: username)
+    user.is_banned
+  end
+
   ## User registration
 
   @doc """
@@ -94,6 +108,14 @@ defmodule Glimesh.Accounts do
 
   """
   def register_user(attrs) do
+    # Check to see if the register_user function was called from a test or the live site
+    attrs =
+      cond do
+        attrs["username"] -> Map.merge(attrs, %{"displayname" => attrs["username"]})
+        attrs[:username] -> Map.merge(attrs, %{displayname: attrs[:username]})
+        true -> attrs
+      end
+
     %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
@@ -226,11 +248,10 @@ defmodule Glimesh.Accounts do
     |> Ecto.Multi.delete_all(:tokens, UserToken.user_and_contexts_query(user, :all))
     |> Repo.transaction()
     |> case do
-         {:ok, %{user: user}} -> {:ok, user}
-         {:error, :user, changeset, _} -> {:error, changeset}
-       end
+      {:ok, %{user: user}} -> {:ok, user}
+      {:error, :user, changeset, _} -> {:error, changeset}
+    end
   end
-
 
   @doc """
   Returns an `%Ecto.Changeset{}` for changing the users profile.
@@ -259,8 +280,78 @@ defmodule Glimesh.Accounts do
   """
   def update_user_profile(user, attrs) do
     user
-      |> User.profile_changeset(attrs)
-      |> Repo.update()
+    |> User.profile_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Gets or creates the user's stripe_customer_id.
+  """
+  def get_stripe_customer_id(user) do
+    case user.stripe_customer_id do
+      nil ->
+        new_customer = %{
+          email: user.email,
+          description: user.username
+        }
+
+        {:ok, stripe_customer} = Stripe.Customer.create(new_customer)
+
+        {:ok, _} =
+          user
+          |> User.stripe_changeset(%{stripe_customer_id: stripe_customer.id})
+          |> Repo.update()
+
+        stripe_customer.id
+
+      stripe_customer_id ->
+        stripe_customer_id
+    end
+  end
+
+  def set_stripe_user_id(user, user_id) do
+    user
+    |> User.stripe_changeset(%{stripe_user_id: user_id})
+    |> Repo.update()
+  end
+
+  def change_stripe_default_payment(%User{} = user, attrs \\ %{}) do
+    User.stripe_changeset(user, attrs)
+  end
+
+  def set_stripe_default_payment(user, default_payment) do
+    user
+    |> User.stripe_changeset(%{stripe_payment_method: default_payment})
+    |> Repo.update()
+  end
+
+  def change_tfa(user, attrs \\ %{}) do
+    User.tfa_changeset(user, attrs)
+  end
+
+  def update_tfa(user, pin, password, attrs) do
+    changeset =
+      case password != "" do
+        true ->
+          user
+          |> User.tfa_changeset(attrs)
+          |> User.validate_current_password(password)
+          |> User.validate_tfa(pin, attrs.tfa_token)
+
+        false ->
+          user
+          |> User.tfa_changeset(attrs)
+          |> User.validate_tfa(pin, user.tfa_token)
+      end
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:user, changeset)
+    |> Ecto.Multi.delete_all(:tokens, UserToken.user_and_contexts_query(user, :all))
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{user: user}} -> {:ok, user}
+      {:error, :user, changeset, _} -> {:error, changeset}
+    end
   end
 
   ## Session
@@ -278,6 +369,7 @@ defmodule Glimesh.Accounts do
   Gets the user with the given signed token.
   """
   def get_user_by_session_token(token) when is_nil(token), do: nil
+
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
     Repo.one(query)
@@ -398,5 +490,13 @@ defmodule Glimesh.Accounts do
       {:ok, %{user: user}} -> {:ok, user}
       {:error, :user, changeset, _} -> {:error, changeset}
     end
+  end
+
+  def can_stream?(user) do
+    user.can_stream
+  end
+
+  def can_use_payments?(user) do
+    user.can_payments
   end
 end

@@ -1,4 +1,8 @@
 defmodule GlimeshWeb.LiveHelpers do
+  @moduledoc """
+  Inject methods into live views to provide common functionality.
+  """
+
   import Phoenix.LiveView.Helpers
 
   @doc """
@@ -17,7 +21,15 @@ defmodule GlimeshWeb.LiveHelpers do
   """
   def live_modal(socket, component, opts) do
     path = Keyword.fetch!(opts, :return_to)
-    modal_opts = [id: :modal, return_to: path, component: component, opts: opts]
+
+    modal_opts = [
+      id: :modal,
+      title: Keyword.fetch!(opts, :title),
+      return_to: path,
+      component: component,
+      opts: opts
+    ]
+
     live_component(socket, GlimeshWeb.ModalComponent, modal_opts)
   end
 end

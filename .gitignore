@@ -25,8 +25,11 @@ glimesh-*.tar
 # If NPM crashes, it generates a log, let's ignore it too.
 npm-debug.log
 
-# The directory NPM downloads your dependencies sources to.
+# The directory NPM/Yarn downloads your dependencies sources to.
 /assets/node_modules/
+
+# Remove yarn lock file
+yarn.lock
 
 # Since we are building assets from assets/,
 # we ignore priv/static. You may want to comment
@@ -36,8 +39,16 @@ npm-debug.log
 # Don't commit the SSL keys. Generate them with the mix phx.gen.cert command
 /priv/cert/
 
-glimesh.iml
-.idea/
+# OS Files
+.DS_Store
+
+# Development
 .elixir_ls/
+.idea/
+glimesh.iml
+.vscode/
+
+# App files
+config/local.exs
 uploads/
 .env

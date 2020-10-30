@@ -1,24 +1,45 @@
 defmodule Glimesh.Accounts.User do
+  @moduledoc false
+
   use Ecto.Schema
   use Waffle.Ecto.Schema
+  import GlimeshWeb.Gettext
   import Ecto.Changeset
 
   @derive {Inspect, except: [:password]}
   schema "users" do
     field :username, :string
+    field :displayname, :string
     field :email, :string
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
 
     field :can_stream, :boolean, default: false
+    field :can_payments, :boolean, default: false
     field :is_admin, :boolean, default: false
+    field :is_banned, :boolean, default: false
+    field :ban_reason, :string
 
     field :avatar, Glimesh.Avatar.Type
     field :social_twitter, :string
     field :social_youtube, :string
     field :social_instagram, :string
     field :social_discord, :string
+
+    field :stripe_user_id, :string
+    field :stripe_customer_id, :string
+    field :stripe_payment_method, :string
+
+    field :youtube_intro_url, :string
+    field :profile_content_md, :string
+    field :profile_content_html, :string
+
+    field :tfa_token, :string
+
+    field :locale, :string, default: "en"
+
+    has_one :channel, Glimesh.Streams.Channel
 
     timestamps()
   end
@@ -33,7 +54,15 @@ defmodule Glimesh.Accounts.User do
   """
   def registration_changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :email, :password])
+    |> cast(attrs, [
+      :username,
+      :email,
+      :password,
+      :displayname,
+      :is_admin,
+      :can_payments,
+      :is_banned
+    ])
     |> validate_username()
     |> validate_email()
     |> validate_password()
@@ -42,19 +71,22 @@ defmodule Glimesh.Accounts.User do
   defp validate_username(changeset) do
     changeset
     |> validate_required([:username])
-    |> validate_format(:username, ~r/^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/i)
+    |> validate_format(:username, ~r/^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/i,
+      message: "Use only alphanumeric characters, no spaces"
+    )
     |> validate_length(:username, min: 3, max: 50)
     |> unsafe_validate_unique(:username, Glimesh.Repo)
     |> unique_constraint(:username)
     |> validate_username_reserved_words(:username)
     |> validate_username_no_bad_words(:username)
+
     # Disabled for now
     # |> validate_username_contains_no_bad_words(:username)
   end
 
   def validate_username_reserved_words(changeset, field) when is_atom(field) do
-    validate_change(changeset, field, fn (current_field, value) ->
-      if Enum.member?(Application.get_env(:glimesh, :reserved_words), value) do
+    validate_change(changeset, field, fn current_field, value ->
+      if Enum.member?(Application.get_env(:glimesh, :reserved_words), String.downcase(value)) do
         [{current_field, "This username is reserved"}]
       else
         []
@@ -63,8 +95,8 @@ defmodule Glimesh.Accounts.User do
   end
 
   def validate_username_no_bad_words(changeset, field) when is_atom(field) do
-    validate_change(changeset, field, fn (current_field, value) ->
-      if Enum.member?(Application.get_env(:glimesh, :bad_words), value) do
+    validate_change(changeset, field, fn current_field, value ->
+      if Enum.member?(Application.get_env(:glimesh, :bad_words), String.downcase(value)) do
         [{current_field, "This username contains a bad word"}]
       else
         []
@@ -73,8 +105,11 @@ defmodule Glimesh.Accounts.User do
   end
 
   def validate_username_contains_no_bad_words(changeset, field) when is_atom(field) do
-    validate_change(changeset, field, fn (current_field, value) ->
-      if Enum.any?(Application.get_env(:glimesh, :bad_words), fn w -> String.contains?(value, w) end) do
+    validate_change(changeset, field, fn current_field, value ->
+      # credo:disable-for-next-line
+      if Enum.any?(Application.get_env(:glimesh, :bad_words), fn w ->
+           String.contains?(String.downcase(value), w)
+         end) do
         [{current_field, "This username contains a bad word"}]
       else
         []
@@ -109,6 +144,16 @@ defmodule Glimesh.Accounts.User do
     |> delete_change(:password)
   end
 
+  def validate_displayname(changeset) do
+    validate_change(changeset, :displayname, fn current_field, value ->
+      if String.downcase(value) !== String.downcase(get_field(changeset, :username)) do
+        [{current_field, gettext("Display name must match Username")}]
+      else
+        []
+      end
+    end)
+  end
+
   @doc """
   A user changeset for changing the e-mail.
 
@@ -120,7 +165,7 @@ defmodule Glimesh.Accounts.User do
     |> validate_email()
     |> case do
       %{changes: %{email: _}} = changeset -> changeset
-      %{} = changeset -> add_error(changeset, :email, "did not change")
+      %{} = changeset -> add_error(changeset, :email, gettext("Email is the same"))
     end
   end
 
@@ -130,7 +175,7 @@ defmodule Glimesh.Accounts.User do
   def password_changeset(user, attrs) do
     user
     |> cast(attrs, [:password])
-    |> validate_confirmation(:password, message: "does not match password")
+    |> validate_confirmation(:password, message: gettext("Password does not match"))
     |> validate_password()
   end
 
@@ -139,8 +184,29 @@ defmodule Glimesh.Accounts.User do
   """
   def profile_changeset(user, attrs) do
     user
-    |> cast(attrs, [:social_twitter, :social_youtube, :social_instagram, :social_discord])
+    |> cast(attrs, [
+      :displayname,
+      :locale,
+      :social_twitter,
+      :social_youtube,
+      :social_instagram,
+      :social_discord,
+      :youtube_intro_url,
+      :profile_content_md
+    ])
+    |> validate_length(:profile_content_md, max: 8192)
+    |> validate_youtube_url(:youtube_intro_url)
+    |> validate_displayname()
+    |> set_profile_content_html()
     |> cast_attachments(attrs, [:avatar])
+  end
+
+  @doc """
+  A user changeset for changing the stripe customer id.
+  """
+  def stripe_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:stripe_customer_id, :stripe_user_id, :stripe_payment_method])
   end
 
   @doc """
@@ -149,6 +215,14 @@ defmodule Glimesh.Accounts.User do
   def confirm_changeset(user) do
     now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     change(user, confirmed_at: now)
+  end
+
+  @doc """
+  A user changeset for setting 2FA
+  """
+  def tfa_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:tfa_token])
   end
 
   @doc """
@@ -174,7 +248,44 @@ defmodule Glimesh.Accounts.User do
     if valid_password?(changeset.data, password) do
       changeset
     else
-      add_error(changeset, :current_password, "is not valid")
+      add_error(changeset, :current_password, gettext("Invalid Password"))
+    end
+  end
+
+  def validate_youtube_url(changeset, field) when is_atom(field) do
+    validate_change(changeset, field, fn current_field, value ->
+      matches = Regex.run(~r/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/, value)
+
+      if matches < 2 do
+        [{current_field, gettext("Incorrect YouTube URL format")}]
+      else
+        []
+      end
+    end)
+  end
+
+  def set_profile_content_html(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{profile_content_md: profile_content_md}} ->
+        put_change(
+          changeset,
+          :profile_content_html,
+          Glimesh.Accounts.Profile.safe_user_markdown_to_html(profile_content_md)
+        )
+
+      _ ->
+        changeset
+    end
+  end
+
+  @doc """
+  Validates the sent 2FA code otherwise adds an error to the changeset.
+  """
+  def validate_tfa(changeset, pin, secret) do
+    if Glimesh.Tfa.validate_pin(pin, secret) do
+      changeset
+    else
+      add_error(changeset, :tfa, "Invalid 2FA code")
     end
   end
 end

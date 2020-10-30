@@ -1,82 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <%= csrf_meta_tag() %>
-    <%= live_title_tag if (assigns[:page_title]), do: assigns[:page_title] <> " - Glimesh", else: "Glimesh" %>
 
-    <meta name="description" content="Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish.">
-    <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <%= csrf_meta_tag() %>
+  <%= live_title_tag if (assigns[:page_title]), do: assigns[:page_title] <> " - Glimesh", else: "Glimesh" %>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="<%= Routes.static_path(@conn, "/favicons/apple-touch-icon.png") %>">
-    <link rel="icon" type="image/png" sizes="32x32" href="<%= Routes.static_path(@conn, "/favicons/favicon-32x32.png") %>">
-    <link rel="icon" type="image/png" sizes="16x16" href="<%= Routes.static_path(@conn, "/favicons/favicon-16x16.png") %>">
-    <link rel="manifest" href="<%= Routes.static_path(@conn, "/favicons/site.webmanifest") %>">
-    <link rel="mask-icon" href="<%= Routes.static_path(@conn, "/favicons/safari-pinned-tab.svg") %>" color="#0e1726">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#0E1726">
+  <meta name="description"
+    content="<%= if (assigns[:page_description]), do: assigns[:page_description], else: "Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish." %>">
+  <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>" />
 
-    <meta property="og:url" content="https://glimesh.tv/" />
-    <meta property="og:title" content="Your Next Generation Streaming Platform" />
-    <meta property="og:description" content="Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish." />
-    <meta property="og:image" content="https://glimesh.tv/images/website-lander.jpg" />
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@Glimesh">
-    <meta name="twitter:title" content="Your Next Generation Streaming Platform">
-    <meta name="twitter:description" content="Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish.">
-    <meta name="twitter:image" content="https://glimesh.tv/images/website-lander.jpg">
+  <link rel="apple-touch-icon" sizes="180x180"
+    href="<%= Routes.static_path(@conn, "/favicons/apple-touch-icon.png") %>">
+  <link rel="icon" type="image/png" sizes="32x32"
+    href="<%= Routes.static_path(@conn, "/favicons/favicon-32x32.png") %>">
+  <link rel="icon" type="image/png" sizes="16x16"
+    href="<%= Routes.static_path(@conn, "/favicons/favicon-16x16.png") %>">
+  <link rel="manifest" href="<%= Routes.static_path(@conn, "/favicons/site.webmanifest") %>">
+  <link rel="mask-icon" href="<%= Routes.static_path(@conn, "/favicons/safari-pinned-tab.svg") %>" color="#0e1726">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#0E1726">
 
-    <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
-    <%= if Application.get_env(:glimesh, :environment) !== :dev do %>
-    <script async defer data-domain="glimesh.tv" src="https://s.glimesh.tv/js/index.js"></script>
+  <%= if assigns[:custom_meta] do %>
+  <meta property="og:url" content="https://glimesh.tv/" />
+  <meta property="og:title" content="<%= assigns.custom_meta.title %>" />
+  <meta property="og:description" content="<%= assigns.custom_meta.description %>" />
+  <meta property="og:image" content="<%= assigns.custom_meta.image_url %>" />
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@Glimesh">
+  <meta name="twitter:title" content="<%= assigns.custom_meta.title %>">
+  <meta name="twitter:description" content="<%= assigns.custom_meta.description %>">
+  <meta name="twitter:image" content="<%= assigns.custom_meta.image_url %>">
+  <% else %>
+  <meta property="og:url" content="https://glimesh.tv/" />
+  <meta property="og:title" content="Glimesh - Next-Gen Live Streaming" />
+  <meta property="og:description"
+    content="Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish." />
+  <meta property="og:image" content="https://glimesh.tv/images/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@Glimesh">
+  <meta name="twitter:title" content="Glimesh - Next-Gen Live Streaming">
+  <meta name="twitter:description"
+    content="Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish.">
+  <meta name="twitter:image" content="https://glimesh.tv/images/og-image.jpg">
+  <% end %>
+
+  <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+  <%= if Application.get_env(:glimesh, :environment) !== :dev do %>
+  <script async defer data-domain="glimesh.tv" src="https://s.glimesh.tv/js/index.js"></script>
+  <% end %>
+
+  <script async defer src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body>
+  <div id="app">
+    <%= if Map.get(assigns, :render_nav, true) do %>
+    <%= render("_navbar.html", assigns) %>
     <% end %>
-  </head>
-  <body>
-    <div id="app">
-        <%= render("_navbar.html", assigns) %>
 
-        <%= @inner_content %>
-    </div>
+    <%= @inner_content %>
+  </div>
 
-    <footer class="container mt-4 mb-4">
-      <div class="row">
-        <div class="col-md-3">
-          <img src="/images/logos/logo-with-text.png" alt="" style="width: 100%" class="mb-2">
-          <small class="d-block mb-3 text-muted text-center">Copyright © 2020 Glimesh<br>All rights reserved</small>
-        </div>
-        <div class="col-md-9">
-          <div class="row">
-            <div class="col-6 col-md-3 offset-md-3">
-              <h5>Social</h5>
-              <ul class="list-unstyled text-small">
-                <li><a class="text-muted" href="https://twitter.com/Glimesh">Twitter</a></li>
-                <li><a class="text-muted" href="https://discord.gg/Glimesh">Discord</a></li>
-                <li><a class="text-muted" href="https://facebook.com/Glimesh">Facebook</a></li>
-                <li><a class="text-muted" href="https://instagram.com/Glimesh">Instagram</a></li>
-                <li><a class="text-muted" href="https://reddit.com/r/Glimesh">Reddit</a></li>
-                <li><a class="text-muted" href="https://github.com/Glimesh">GitHub</a></li>
-              </ul>
-            </div>
-            <div class="col-6 col-md-3">
-              <h5>About</h5>
-              <ul class="list-unstyled text-small">
-                <li><%= link "About Us", to: Routes.about_path(@conn, :index), class: "text-muted" %></li>
-                <li><%= link "F.A.Qs", to: Routes.about_path(@conn, :faq), class: "text-muted" %></li>
-              </ul>
-            </div>
-            <div class="col-md-3">
-              <h5>Legal</h5>
-              <ul class="list-unstyled text-small">
-                <li><%= link "Terms of Service", to: Routes.about_path(@conn, :terms), class: "text-muted" %></li>
-                <li><%= link "Privacy & Cookie Policy", to: Routes.about_path(@conn, :privacy), class: "text-muted" %></li>
-              </ul>
-            </div>
+  <%= if Map.get(assigns, :render_footer, true) do %>
+  <footer class="container mt-4 mb-4">
+    <div class="row justify-content-sm-center">
+      <div class="col-sm-11 col-md-8">
+        <div class="row text-center">
+          <div class="col-4">
+            <h5><%= gettext("About") %></h5>
+            <ul class="list-unstyled text-small">
+              <li><%= link gettext("About Us"), to: Routes.about_path(@conn, :index), class: "text-muted" %></li>
+              <li><%= link gettext("F.A.Qs"), to: Routes.about_path(@conn, :faq), class: "text-muted" %></li>
+              <li><%= link gettext("Open Data"), to: Routes.open_data_path(@conn, :index), class: "text-muted" %></li>
+            </ul>
+          </div>
+          <div class="col-4">
+            <h5><%= gettext("Social") %></h5>
+            <ul class="list-unstyled text-small">
+              <li><a class="text-muted" href="https://twitter.com/Glimesh">Twitter</a></li>
+              <li><a class="text-muted" href="https://discord.gg/Glimesh">Discord</a></li>
+              <li><a class="text-muted" href="https://facebook.com/Glimesh">Facebook</a></li>
+              <li><a class="text-muted" href="https://instagram.com/Glimesh">Instagram</a></li>
+              <li><a class="text-muted" href="https://reddit.com/r/Glimesh">Reddit</a></li>
+              <li><a class="text-muted" href="https://github.com/Glimesh">GitHub</a></li>
+            </ul>
+          </div>
+          <div class="col-4">
+            <h5><%= gettext("Blog") %></h5>
+            <ul class="list-unstyled text-small">
+              <%= for article <- Glimesh.Blog.list_some_articles(6) do %>
+              <li><%= link article.title, to: Routes.article_path(@conn, :show, article.slug), class: "text-muted" %>
+              </li>
+              <% end %>
+            </ul>
           </div>
         </div>
       </div>
-    </footer>
+    </div>
 
-  </body>
+    <p class="text-center mt-4">
+      <%= gettext("Copyright © 2020 Glimesh, Inc.") %> <%= gettext("All rights reserved.") %><br>
+      <%= link "Terms of Service", to: Routes.about_path(@conn, :terms), class: "text-muted" %> &
+      <%= link "Privacy & Cookie Policy", to: Routes.about_path(@conn, :privacy), class: "text-muted" %>
+    </p>
+  </footer>
+  <% end %>
+
+</body>
+
 </html>

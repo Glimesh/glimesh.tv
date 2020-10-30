@@ -1,14 +1,42 @@
-<%= if @disabled do %>
-  <p class="text-center">You must be logged in to chat. <%= link "Register", to: Routes.user_registration_path(@socket, :new) %></p>
-<% end %>
+<div id="chat-form" phx-hook="Chat" data-emotes="<%= Glimesh.Emote.list_emotes_for_js() %>">
+  <%= if @disabled do %>
+  <div id="channel-footer" class="channel-footer">
+    <span>You must be logged in to chat. <%= link "Register", to: Routes.user_registration_path(@socket, :new) %></span>
+  </div>
+  <% end %>
 
-<%= f = form_for @changeset, "#",
-  id: "chat_message-form",
-  class: ["chat-form"],
-  phx_target: @myself,
-  phx_change: "validate",
-  phx_submit: "send" %>
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-  <%= text_input f, :message, class: ["mail-write-box form-control"], autocomplete: "off", disabled: @disabled %>
-  <%= error_tag f, :message %>
-</form>
+  <%= f = form_for @changeset, "#",
+    id: "chat_message-form",
+    class: ["chat-form"],
+    phx_target: @myself,
+    phx_change: "validate",
+    phx_submit: "send" %>
+
+  <%= if message = f.errors[:message] do %>
+  <div id="channel-footer" class="channel-footer ">
+    <span class="text-danger"><%= translate_error(message) %></span>
+  </div>
+  <% end %>
+
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <a href="#" class="input-group-text <%= if @disabled, do: "", else: "emoji-activator" %>" type="button">
+        <i class="far fa-smile-beam"></i>
+      </a>
+    </div>
+    <%= text_input f, :message, class: "mail-write-box form-control", placeholder: "Send a message", autocomplete: "off", maxlength: "255", disabled: @disabled %>
+
+    <div class="input-group-append dropup">
+      <a href="#" class="input-group-text dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false"><i class="fas fa-cog"></i></a>
+      <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="#"
+          onclick="window.open('<%= Routes.chat_pop_out_url(@socket, :index, @channel_username) %>', '_blank', 'width=400,height=600,location=no,menubar=no,toolbar=no')">Pop-out
+          Chat</a>
+      </div>
+    </div>
+
+  </div>
+
+  </form>
+</div>
