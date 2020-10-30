@@ -79,6 +79,8 @@ defmodule Glimesh.Schema.AccountTypes do
       description: "Qualified URL for the user's Instagram account"
 
     field :social_discord, :string, description: "Qualified URL for the user's Discord server"
+    
+    field :social_guilded, :string, description: "Qualified URL for the user's Guilded server"
 
     field :youtube_intro_url, :string, description: "YouTube Intro URL for the user's profile"
     field :profile_content_md, :string, description: "Markdown version of the user's profile"
