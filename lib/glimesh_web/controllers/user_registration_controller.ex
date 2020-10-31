@@ -29,7 +29,7 @@ defmodule GlimeshWeb.UserRegistrationController do
             render(conn, "new.html", changeset: changeset)
         end
 
-      {:error, errors} ->
+      {:error, _} ->
         conn
         |> put_flash(
           :error,

@@ -111,22 +111,23 @@ defmodule GlimeshWeb.Api.ChannelTest do
     end
   end
 
-  @subscriptions_query """
-  query getSubscriptions {
-    subscriptions {
-      streamer { username }
-      user { username }
-    }
-  }
-  """
-  @followers_query """
-  query getFollowers {
-    followers {
-      streamer { username }
-      user { username }
-    }
-  }
-  """
+  # Todo: Test subscriptions.
+  # @subscriptions_query """
+  # query getSubscriptions {
+  #   subscriptions {
+  #     streamer { username }
+  #     user { username }
+  #   }
+  # }
+  # """
+  # @followers_query """
+  # query getFollowers {
+  #   followers {
+  #     streamer { username }
+  #     user { username }
+  #   }
+  # }
+  # """
 
   def create_channel(%{user: user}) do
     {:ok, channel} = Streams.create_channel(user)

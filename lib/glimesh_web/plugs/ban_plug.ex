@@ -1,6 +1,4 @@
 defmodule GlimeshWeb.Plugs.Ban do
-  import Plug.Conn
-
   alias GlimeshWeb.UserAuth
 
   def init(_opts), do: nil
