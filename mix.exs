@@ -34,6 +34,7 @@ defmodule Glimesh.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      # Dev & Test Libs
       {:phx_gen_auth, "~> 0.4.0", only: :dev, runtime: false},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:faker, "~> 0.14", only: :dev},
@@ -41,6 +42,7 @@ defmodule Glimesh.MixProject do
       {:floki, ">= 0.0.0", only: :test},
       {:excoveralls, "~> 0.13.1", only: :test},
       {:stripe_mock, "~> 0.1.0", only: :test},
+      # Core
       {:bcrypt_elixir, "~> 2.0"},
       {:phoenix, "~> 1.5.3"},
       {:phoenix_ecto, "~> 4.1"},
@@ -54,28 +56,33 @@ defmodule Glimesh.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      # Authentication
       {:comeonin, "~> 5.3"},
-      {:waffle, "~> 1.1"},
-      {:waffle_ecto, "~> 0.0.9"},
+      # Email
       {:bamboo, "~> 1.5"},
-      {:phoenix_markdown, "~> 1.0"},
-      {:stripity_stripe, "~> 2.0"},
-      {:html_sanitize_ex, "~> 1.4.1"},
-      {:earmark, "~> 1.4"},
-      {:eqrcode, "~> 0.1.7"},
-      {:slugify, "~> 1.3"},
+      # GraphQL API
       {:absinthe, "~> 1.5"},
       {:absinthe_plug, "~> 1.5"},
       {:absinthe_phoenix, "~> 2.0"},
       {:dataloader, "~> 1.0.0"},
+      # HTTP Helpers
       {:plug_canonical_host, "~> 2.0"},
       {:ex_oauth2_provider, "~> 0.5.6"},
-      {:hcaptcha, "~> 0.0.1"},
-      # Waffle Deps
+      {:slugify, "~> 1.3"},
+      {:phoenix_markdown, "~> 1.0"},
+      {:html_sanitize_ex, "~> 1.4.1"},
+      {:earmark, "~> 1.4"},
+      # Uploads
+      {:waffle, "~> 1.1"},
+      {:waffle_ecto, "~> 0.0.9"},
       {:ex_aws, "~> 2.1.2"},
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.9"},
-      {:sweet_xml, "~> 0.6"}
+      {:sweet_xml, "~> 0.6"},
+      # Other
+      {:hcaptcha, "~> 0.0.1"},
+      {:stripity_stripe, "~> 2.0"},
+      {:eqrcode, "~> 0.1.7"}
     ]
   end
 

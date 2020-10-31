@@ -9,7 +9,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
     ~L"""
     <%= if @can_change do %>
       <%= if !@editing do %>
-        <h5 class=""><span class="badge badge-danger">Live!</span> <span class="badge badge-primary"><%= @channel.category.tag_name %></span> <%= @channel.title %> <a class="fas fa-edit" phx-click="toggle-edit" href="#"></a></h5>
+        <h5><%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.tag_name %></span> <%= @channel.title %> <a class="fas fa-edit" phx-click="toggle-edit" href="#" aria-label="<%= gettext("Edit") %>"></a></h5>
       <% else %>
         <%= f = form_for @changeset, "#", [phx_submit: :save] %>
           <div class="input-group">
@@ -27,9 +27,19 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
         </form>
       <% end %>
     <% else %>
-      <h5 class=""><span class="badge badge-danger">Live!</span> <span class="badge badge-primary"><%= @channel.category.tag_name %></span> <%= @channel.title %> </h5>
+      <h5><%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.tag_name %></span> <%= @channel.title %> </h5>
     <% end %>
     """
+  end
+
+  def render_badge(channel) do
+    if channel.status == "live" do
+      raw("""
+      <span class="badge badge-danger">Live!</span>
+      """)
+    else
+      raw("")
+    end
   end
 
   @impl true
@@ -74,6 +84,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
         {:noreply,
          socket
          |> assign(:editing, false)
+         |> assign(:channel, changeset)
          |> assign(:changeset, Streams.change_channel(changeset))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
