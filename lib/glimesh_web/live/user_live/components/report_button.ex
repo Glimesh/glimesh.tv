@@ -99,7 +99,6 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
   end
 
   @impl true
-  @spec handle_event(<<_::32, _::_*48>>, any, Phoenix.LiveView.Socket.t()) :: {:noreply, map}
   def handle_event("save", %{"report_reason" => report_reason, "notes" => notes}, socket) do
     {:ok, _} =
       Glimesh.Accounts.UserNotifier.deliver_user_report_alert(

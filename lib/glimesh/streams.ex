@@ -97,12 +97,22 @@ defmodule Glimesh.Streams do
     Repo.all(from f in Followers, where: f.user_id == ^user.id)
   end
 
-  def list_followed_channels(user) do
+  def list_live_followed_channels(user) do
     Repo.all(
       from c in Channel,
         join: f in Followers,
         on: c.user_id == f.streamer_id,
         where: c.status == "live",
+        where: f.user_id == ^user.id
+    )
+    |> Repo.preload([:category, :user, :stream])
+  end
+
+  def list_all_followed_channels(user) do
+    Repo.all(
+      from c in Channel,
+        join: f in Followers,
+        on: c.user_id == f.streamer_id,
         where: f.user_id == ^user.id
     )
     |> Repo.preload([:category, :user, :stream])
@@ -141,6 +151,10 @@ defmodule Glimesh.Streams do
         where: c.inaccessible == false
     )
     |> Repo.preload([:category, :user])
+  end
+
+  def is_live?(%Channel{} = channel) do
+    channel.status == "live"
   end
 
   def create_channel(user, attrs \\ %{category_id: Enum.at(list_categories(), 0).id}) do
@@ -466,14 +480,19 @@ defmodule Glimesh.Streams do
 
     # 2. Change Channel to use Stream
     # 3. Change Channel to Live
-    channel
-    |> Channel.start_changeset(%{
-      stream_id: stream.id
-    })
-    |> Repo.update()
+    {:ok, channel} =
+      channel
+      |> Channel.start_changeset(%{
+        stream_id: stream.id
+      })
+      |> Repo.update()
 
     # 4. Send Notifications
     # Todo
+
+    # 5. Broadcast to anyone who's listening
+    broadcast_message = Repo.preload(channel, :category, force: true)
+    broadcast({:ok, broadcast_message}, :channel)
 
     {:ok, stream}
   end

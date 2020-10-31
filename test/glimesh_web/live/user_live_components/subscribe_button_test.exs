@@ -14,7 +14,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButtonTest do
     setup :create_streamer
 
     test "shows a subscription button that links to register", %{conn: conn, streamer: streamer} do
-      {:ok, view, html} =
+      {:ok, _, html} =
         live_isolated(conn, @component, session: %{"user" => nil, "streamer" => streamer})
 
       assert html =~ "href=\"/users/register\""
@@ -30,7 +30,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButtonTest do
       user: user,
       streamer: streamer
     } do
-      {:ok, view, html} =
+      {:ok, _, html} =
         live_isolated(conn, @component, session: %{"user" => user, "streamer" => streamer})
 
       assert html =~ "Subscribe"
@@ -39,10 +39,9 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButtonTest do
 
     test "shows a disabled subscription button for when the user is the streamer", %{
       conn: conn,
-      user: user,
       streamer: streamer
     } do
-      {:ok, view, html} =
+      {:ok, _, html} =
         live_isolated(conn, @component, session: %{"user" => streamer, "streamer" => streamer})
 
       assert html =~ "Subscribe"
