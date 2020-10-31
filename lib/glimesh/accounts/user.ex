@@ -192,6 +192,7 @@ defmodule Glimesh.Accounts.User do
       :social_youtube,
       :social_instagram,
       :social_discord,
+      :social_guilded,
       :youtube_intro_url,
       :profile_content_md
     ])
