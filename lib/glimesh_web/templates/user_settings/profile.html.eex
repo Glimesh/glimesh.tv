@@ -102,13 +102,15 @@
                 </div>
 
                 <div class="form-group">
-                    <%= label f, :profile_content_md, gettext("Profile Content (%{a_start}Markdown%{a_end} supported)", a_start: '<a href="https://www.markdownguide.org/">', a_end: '</a>') %>
+                    <label>
+                        <%= raw(gettext("Profile Content (%{a_start}Markdown%{a_end} supported)", a_start: '<a href="https://www.markdownguide.org/">', a_end: '</a>')) %>
+                    </label>
 
 		    <ul class="nav nav-pills" id="markdown-editor" role="tablist">
 		      <li class="nav-item"><a class="nav-link active" href="#editor" data-toggle="tab"><%= gettext("Edit") %></a></li>
 		      <li class="nav-item"><a class="nav-link" href="#preview" data-toggle="tab"><%= gettext("Preview") %></a></li>
 		    </ul>
-		    
+
 		    <div class="tab-content mt-4">
 		      <div class="tab-pane active" id="editor">
 			<markdown-toolbar for="textarea_edit">
@@ -130,14 +132,14 @@
 			    </div>
 			  </div>
 			</markdown-toolbar>
-			
+
 			<%= textarea f, :profile_content_md, [class: "form-control mb-4", id: "textarea_edit", rows: 20] %>
 		      </div>
 		      <div class="tab-pane form-control mb-4" id="preview">
 			<p><%= gettext("Coming soon!") %></p>
 		      </div>
 		    </div>
-		    
+
 		    <%= error_tag f, :profile_content_md %>
                 </div>
 
