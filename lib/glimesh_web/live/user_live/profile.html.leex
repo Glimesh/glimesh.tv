@@ -46,6 +46,14 @@
                             </a>
                         </li>
                         <%  end %>
+                        <%= if @streamer.social_guilded do %>
+                        <li class="list-inline-item">
+                            <a rel="ugc" href="https://guilded.gg/<%= @streamer.social_guilded %>" target="_blank"
+                                class="social-icon">
+                                <i class="fab fa-guilded"></i>
+                            </a>
+                        </li>
+                        <%  end %>
                     </ul>
 
                     <div class="simple--counter-container mt-4">

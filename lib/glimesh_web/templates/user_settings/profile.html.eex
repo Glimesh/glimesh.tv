@@ -93,6 +93,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group social-guilded mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="guilded"><i
+                                                class="fab fa-guilded"></i></span>
+                                    </div>
+                                    <%= text_input f, :social_guilded, [class: "form-control", placeholder: gettext("Guilded Server URL")] %>
+                                    <%= error_tag f, :social_guilded %>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -103,7 +115,7 @@
 
                     <div class="form-group">
                         <label>
-                            <%= raw(gettext("Profile Content (%{a_start}Markdown%{a_end} supported)", a_start: '<a href="https://www.markdownguide.org/">', a_end: '</a>')) %>
+                            <%= raw(gettext("Profile Content (%{a_start}Markdown%{a_end} supported)", a_start: '<a href="https://www.markdownguide.org/" target="_blank">', a_end: '</a>')) %>
                         </label>
 
                         <ul class="nav nav-pills" id="markdown-editor" role="tablist">

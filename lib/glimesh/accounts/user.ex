@@ -26,6 +26,7 @@ defmodule Glimesh.Accounts.User do
     field :social_youtube, :string
     field :social_instagram, :string
     field :social_discord, :string
+    field :social_guilded, :string
 
     field :stripe_user_id, :string
     field :stripe_customer_id, :string
@@ -191,6 +192,7 @@ defmodule Glimesh.Accounts.User do
       :social_youtube,
       :social_instagram,
       :social_discord,
+      :social_guilded,
       :youtube_intro_url,
       :profile_content_md
     ])
