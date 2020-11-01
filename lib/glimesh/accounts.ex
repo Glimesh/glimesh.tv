@@ -88,6 +88,8 @@ defmodule Glimesh.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def is_user_banned?(%User{} = user), do: user.is_banned
+
   def is_user_banned_by_username?(username) do
     user = Repo.get_by(User, username: username)
     user.is_banned
@@ -492,11 +494,7 @@ defmodule Glimesh.Accounts do
     end
   end
 
-  def can_stream?(user) do
-    user.can_stream
-  end
+  def can_stream?(user), do: user.can_stream
 
-  def can_use_payments?(user) do
-    user.can_payments
-  end
+  def can_use_payments?(user), do: user.can_payments
 end

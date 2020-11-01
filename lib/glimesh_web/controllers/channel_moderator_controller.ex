@@ -10,11 +10,30 @@ defmodule GlimeshWeb.ChannelModeratorController do
     channel = Streams.get_channel_for_user(conn.assigns.current_user)
     channel_moderators = Streams.list_channel_moderators(channel)
     moderation_log = Streams.list_channel_moderation_log(channel)
+    channel_bans = Streams.list_channel_bans(channel)
 
     render(conn, "index.html",
       channel_moderators: channel_moderators,
-      moderation_log: moderation_log
+      moderation_log: moderation_log,
+      channel_bans: channel_bans
     )
+  end
+
+  def unban_user(conn, %{"username" => username}) do
+    channel = Streams.get_channel_for_user(conn.assigns.current_user)
+    unban_user = Glimesh.Accounts.get_by_username!(username)
+
+    case Glimesh.Chat.unban_user(channel, conn.assigns.current_user, unban_user) do
+      {:ok, _} ->
+        conn
+        |> put_flash(:info, "User unbanned successfully.")
+        |> redirect(to: Routes.channel_moderator_path(conn, :index))
+
+      {:error, _} ->
+        conn
+        |> put_flash(:error, "Unable to unban user.")
+        |> redirect(to: Routes.channel_moderator_path(conn, :index))
+    end
   end
 
   def new(conn, _params) do

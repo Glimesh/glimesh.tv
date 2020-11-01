@@ -5,7 +5,6 @@ defmodule Glimesh.Streams do
 
   import Ecto.Query, warn: false
   alias Glimesh.Accounts.User
-  alias Glimesh.Chat
   alias Glimesh.Repo
   alias Glimesh.Streams.Category
   alias Glimesh.Streams.Channel
@@ -40,19 +39,6 @@ defmodule Glimesh.Streams do
     )
 
     {:ok, channel}
-  end
-
-  defp broadcast_timeout({:error, _reason} = error, _event), do: error
-
-  defp broadcast_timeout({:ok, channel_id, bad_user}, :user_timedout) do
-    Glimesh.Events.broadcast(
-      get_subscribe_topic(:chat, channel_id),
-      get_subscribe_topic(:chat),
-      :user_timedout,
-      bad_user
-    )
-
-    {:ok, bad_user}
   end
 
   ## Database getters
@@ -225,6 +211,17 @@ defmodule Glimesh.Streams do
     |> Repo.preload([:user])
   end
 
+  alias Glimesh.Streams.ChannelBan
+
+  def list_channel_bans(%Channel{} = channel) do
+    Repo.all(
+      from cb in ChannelBan,
+        where: cb.channel_id == ^channel.id and is_nil(cb.expires_at),
+        order_by: [desc: :inserted_at]
+    )
+    |> Repo.preload([:user])
+  end
+
   def get_channel_moderator!(id) do
     Repo.get!(ChannelModerator, id) |> Repo.preload([:channel, :user])
   end
@@ -237,7 +234,7 @@ defmodule Glimesh.Streams do
       }
       |> ChannelModerator.changeset(attrs)
 
-    if is_nil(user) or channel.streamer_id == user.id do
+    if is_nil(user) or channel.user_id == user.id do
       {:error_no_user, change}
     else
       change |> Repo.insert()

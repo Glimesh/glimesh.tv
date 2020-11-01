@@ -45,6 +45,32 @@
   </div>
   <div class="card mt-4">
     <div class="card-header">
+      <h5><%= gettext("Channel Bans") %></h5>
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th><%= gettext("User") %></th>
+            <th><%= gettext("Banned At") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for ban <- @channel_bans do %>
+          <tr>
+            <td><%= ban.user.displayname %></td>
+            <td><%= ban.inserted_at %></td>
+            <td>
+              <%= link gettext("Unban"), to: Routes.channel_moderator_path(@conn, :unban_user, ban.user.username), method: :delete, class: "btn btn-danger btn-sm" %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card mt-4">
+    <div class="card-header">
       <h5><%= gettext("Channel Moderation Log") %></h5>
     </div>
     <div class="card-body">
