@@ -96,7 +96,7 @@ defmodule Glimesh.Chat do
 
           throw_error_on_chat(
             gettext("You are banned from this channel for %{minutes} more minutes.",
-              minutes: round(seconds / 60)
+              minutes: round(Float.ceil(seconds / 60))
             ),
             attrs
           )

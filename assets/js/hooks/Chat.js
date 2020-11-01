@@ -1,6 +1,7 @@
 import {
     EmojiButton
 } from '@joeattardi/emoji-button';
+import BSN from "bootstrap.native";
 
 export default {
 
@@ -70,10 +71,13 @@ export default {
             );
         });
 
-
         this.scrollToBottom(chatMessages);
-        this.handleEvent("scroll_chat", () => {
+        this.handleEvent("new_chat_message", () => {
+            // Scroll if we need to
             this.maybeScrollToBottom(chatMessages);
+
+            // Init bootstrap in case dom has changed
+            BSN.initCallback(chatMessages);
         });
     }
 };

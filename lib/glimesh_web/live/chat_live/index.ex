@@ -90,7 +90,7 @@ defmodule GlimeshWeb.ChatLive.Index do
     {:noreply,
      socket
      |> assign(:update_action, "append")
-     |> push_event("scroll_chat", %{})
+     |> push_event("new_chat_message", %{})
      |> update(:chat_messages, fn messages -> [message | messages] end)}
   end
 
