@@ -21,7 +21,7 @@ defmodule GlimeshWeb.UserSecurityController do
         Accounts.deliver_update_email_instructions(
           applied_user,
           user.email,
-          &Routes.user_security_path(conn, :confirm_email, &1)
+          &Routes.user_security_url(conn, :confirm_email, &1)
         )
 
         conn
