@@ -4,6 +4,7 @@ defmodule Glimesh.ChatTest do
   import Glimesh.AccountsFixtures
   alias Glimesh.Chat
   alias Glimesh.Streams
+  alias Glimesh.Streams.ChannelModerationLog
 
   describe "chat_messages" do
     alias Glimesh.Chat.ChatMessage
@@ -95,6 +96,206 @@ defmodule Glimesh.ChatTest do
     test "change_chat_message/1 returns a chat_message changeset" do
       chat_message = chat_message_fixture()
       assert %Ecto.Changeset{} = Chat.change_chat_message(chat_message)
+    end
+  end
+
+  describe "get_moderator_permissions/2" do
+    setup do
+      [channel, streamer] = channel_streamer_fixture()
+
+      %{
+        channel: channel,
+        streamer: streamer,
+        moderator: user_fixture(),
+        user: user_fixture()
+      }
+    end
+
+    test "random user has no permissions", %{channel: channel, user: user} do
+      assert %{can_short_timeout: false, can_long_timeout: false, can_ban: false} =
+               Chat.get_moderator_permissions(channel, user)
+    end
+
+    test "streamer has all permissions", %{channel: channel, streamer: streamer} do
+      assert %{can_short_timeout: true, can_long_timeout: true, can_ban: true} =
+               Chat.get_moderator_permissions(channel, streamer)
+    end
+
+    test "moderator has permissions based on grants", %{channel: channel, moderator: moderator} do
+      {:ok, _} =
+        Glimesh.Streams.create_channel_moderator(channel, moderator, %{
+          can_short_timeout: true,
+          can_long_timeout: true,
+          can_ban: false
+        })
+
+      assert %{can_short_timeout: true, can_long_timeout: true, can_ban: false} =
+               Chat.get_moderator_permissions(channel, moderator)
+    end
+  end
+
+  describe "is_moderator/2" do
+    setup do
+      [channel, streamer] = channel_streamer_fixture()
+
+      %{
+        channel: channel,
+        streamer: streamer,
+        moderator: user_fixture(),
+        user: user_fixture()
+      }
+    end
+
+    test "random user is not moderator", %{channel: channel, user: user} do
+      refute Chat.is_moderator?(channel, user)
+    end
+
+    test "streamer is a moderator", %{channel: channel, streamer: streamer} do
+      assert Chat.is_moderator?(channel, streamer)
+    end
+
+    test "moderator is a moderator", %{channel: channel, moderator: moderator} do
+      {:ok, _} =
+        Glimesh.Streams.create_channel_moderator(channel, moderator, %{
+          can_short_timeout: true,
+          can_long_timeout: false,
+          can_ban: false
+        })
+
+      assert Chat.is_moderator?(channel, moderator)
+    end
+  end
+
+  describe "bans and timeouts" do
+    setup do
+      [channel, streamer] = channel_streamer_fixture()
+      moderator = user_fixture()
+
+      {:ok, _} =
+        Glimesh.Streams.create_channel_moderator(channel, moderator, %{
+          can_short_timeout: true,
+          can_long_timeout: true,
+          can_ban: true
+        })
+
+      %{
+        channel: channel,
+        streamer: streamer,
+        moderator: moderator,
+        user: user_fixture()
+      }
+    end
+
+    test "times out a user and removes messages successfully", %{
+      channel: channel,
+      moderator: moderator,
+      user: user
+    } do
+      {:ok, _} = Chat.create_chat_message(channel, user, %{message: "bad message"})
+      {:ok, _} = Chat.create_chat_message(channel, moderator, %{message: "good message"})
+      assert length(Chat.list_chat_messages(channel)) == 2
+
+      {:ok, _} = Chat.short_timeout_user(channel, moderator, user)
+      assert length(Chat.list_chat_messages(channel)) == 1
+    end
+
+    test "short_timeout_user prevents a new message", %{
+      channel: channel,
+      moderator: moderator,
+      user: user
+    } do
+      {:ok, _} = Chat.short_timeout_user(channel, moderator, user)
+
+      assert {:error, changeset} =
+               Chat.create_chat_message(channel, user, %{message: "not allowed?"})
+
+      assert {"You are banned from this channel for 5 more minutes.", _} =
+               changeset.errors[:message]
+    end
+
+    test "long_timeout_user prevents a new message", %{
+      channel: channel,
+      moderator: moderator,
+      user: user
+    } do
+      {:ok, _} = Chat.long_timeout_user(channel, moderator, user)
+
+      assert {:error, changeset} =
+               Chat.create_chat_message(channel, user, %{message: "not allowed?"})
+
+      assert {"You are banned from this channel for 15 more minutes.", _} =
+               changeset.errors[:message]
+    end
+
+    test "ban_user prevents a new message", %{
+      channel: channel,
+      moderator: moderator,
+      user: user
+    } do
+      {:ok, _} = Chat.ban_user(channel, moderator, user)
+
+      assert {:error, changeset} =
+               Chat.create_chat_message(channel, user, %{message: "not allowed?"})
+
+      assert {"You are permanently banned from this channel.", _} = changeset.errors[:message]
+    end
+
+    test "adds log of mod actions", %{channel: channel, moderator: moderator, user: user} do
+      assert {:ok, record} = Chat.short_timeout_user(channel, moderator, user)
+
+      assert record.channel.id == channel.id
+      assert record.moderator.id == moderator.id
+      assert record.user.id == user.id
+      assert record.action == "short_timeout"
+
+      assert {:ok, %ChannelModerationLog{action: "long_timeout"}} =
+               Chat.long_timeout_user(channel, moderator, user)
+
+      assert {:ok, %ChannelModerationLog{action: "ban"}} = Chat.ban_user(channel, moderator, user)
+    end
+
+    test "moderation privileges are required to timeout", %{
+      channel: channel,
+      user: user
+    } do
+      assert_raise RuntimeError,
+                   "User does not have permission to moderate.",
+                   fn -> Chat.short_timeout_user(channel, user, user) end
+
+      assert_raise RuntimeError,
+                   "User does not have permission to moderate.",
+                   fn -> Chat.long_timeout_user(channel, user, user) end
+
+      assert_raise RuntimeError,
+                   "User does not have permission to moderate.",
+                   fn -> Chat.ban_user(channel, user, user) end
+
+      assert_raise RuntimeError,
+                   "User does not have permission to moderate.",
+                   fn -> Chat.unban_user(channel, user, user) end
+    end
+
+    test "admin can perform all mod actions", %{
+      channel: channel,
+      user: user
+    } do
+      admin = admin_fixture()
+
+      assert {:ok, _} = Chat.short_timeout_user(channel, admin, user)
+      assert {:ok, _} = Chat.long_timeout_user(channel, admin, user)
+      assert {:ok, _} = Chat.ban_user(channel, admin, user)
+      assert {:ok, _} = Chat.unban_user(channel, admin, user)
+    end
+
+    test "streamer can perform all mod actions", %{
+      channel: channel,
+      streamer: streamer,
+      user: user
+    } do
+      assert {:ok, _} = Chat.short_timeout_user(channel, streamer, user)
+      assert {:ok, _} = Chat.long_timeout_user(channel, streamer, user)
+      assert {:ok, _} = Chat.ban_user(channel, streamer, user)
+      assert {:ok, _} = Chat.unban_user(channel, streamer, user)
     end
   end
 end

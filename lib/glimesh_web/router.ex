@@ -118,6 +118,10 @@ defmodule GlimeshWeb.Router do
   scope "/", GlimeshWeb do
     pipe_through [:browser, :require_authenticated_user, :require_user_has_channel]
 
+    delete "/users/settings/channel/mods/unban_user/:username",
+           ChannelModeratorController,
+           :unban_user
+
     resources "/users/settings/channel/mods", ChannelModeratorController
   end
 

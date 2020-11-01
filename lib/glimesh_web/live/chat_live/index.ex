@@ -32,11 +32,12 @@ defmodule GlimeshWeb.ChatLive.Index do
 
     new_socket =
       socket
-      |> assign(:channel_chat_parser_config, Glimesh.Chat.get_chat_parser_config(channel))
+      |> assign(:channel_chat_parser_config, Chat.get_chat_parser_config(channel))
       |> assign(:update_action, "replace")
       |> assign(:channel, channel)
       |> assign(:user, session["user"])
-      |> assign(:is_moderator, Glimesh.Chat.is_moderator?(channel, session["user"]))
+      |> assign(:is_moderator, Chat.is_moderator?(channel, session["user"]))
+      |> assign(:permissions, Chat.get_moderator_permissions(channel, session["user"]))
       |> assign(:chat_messages, list_chat_messages(channel))
       |> assign(:chat_message, %ChatMessage{})
 
@@ -52,8 +53,19 @@ defmodule GlimeshWeb.ChatLive.Index do
   end
 
   @impl true
-  def handle_event("timeout_user", %{"user" => to_ban_user}, socket) do
-    Streams.timeout_user(
+  def handle_event("short_timeout_user", %{"user" => to_ban_user}, socket) do
+    Chat.short_timeout_user(
+      socket.assigns.channel,
+      socket.assigns.user,
+      Accounts.get_by_username!(to_ban_user)
+    )
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("long_timeout_user", %{"user" => to_ban_user}, socket) do
+    Chat.long_timeout_user(
       socket.assigns.channel,
       socket.assigns.user,
       Accounts.get_by_username!(to_ban_user)
@@ -64,7 +76,7 @@ defmodule GlimeshWeb.ChatLive.Index do
 
   @impl true
   def handle_event("ban_user", %{"user" => to_ban_user}, socket) do
-    Streams.timeout_user(
+    Chat.ban_user(
       socket.assigns.channel,
       socket.assigns.user,
       Accounts.get_by_username!(to_ban_user)

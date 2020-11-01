@@ -24,8 +24,6 @@ defmodule Glimesh.Application do
       # {Glimesh.Worker, arg}
     ]
 
-    :ets.new(:banned_list, [:named_table, :public])
-
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Glimesh.Supervisor]

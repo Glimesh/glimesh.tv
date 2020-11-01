@@ -5,7 +5,6 @@ defmodule Glimesh.Streams do
 
   import Ecto.Query, warn: false
   alias Glimesh.Accounts.User
-  alias Glimesh.Chat
   alias Glimesh.Repo
   alias Glimesh.Streams.Category
   alias Glimesh.Streams.Channel
@@ -40,19 +39,6 @@ defmodule Glimesh.Streams do
     )
 
     {:ok, channel}
-  end
-
-  defp broadcast_timeout({:error, _reason} = error, _event), do: error
-
-  defp broadcast_timeout({:ok, channel_id, bad_user}, :user_timedout) do
-    Glimesh.Events.broadcast(
-      get_subscribe_topic(:chat, channel_id),
-      get_subscribe_topic(:chat),
-      :user_timedout,
-      bad_user
-    )
-
-    {:ok, bad_user}
   end
 
   ## Database getters
@@ -225,6 +211,17 @@ defmodule Glimesh.Streams do
     |> Repo.preload([:user])
   end
 
+  alias Glimesh.Streams.ChannelBan
+
+  def list_channel_bans(%Channel{} = channel) do
+    Repo.all(
+      from cb in ChannelBan,
+        where: cb.channel_id == ^channel.id and is_nil(cb.expires_at),
+        order_by: [desc: :inserted_at]
+    )
+    |> Repo.preload([:user])
+  end
+
   def get_channel_moderator!(id) do
     Repo.get!(ChannelModerator, id) |> Repo.preload([:channel, :user])
   end
@@ -237,7 +234,7 @@ defmodule Glimesh.Streams do
       }
       |> ChannelModerator.changeset(attrs)
 
-    if is_nil(user) or channel.streamer_id == user.id do
+    if is_nil(user) or channel.user_id == user.id do
       {:error_no_user, change}
     else
       change |> Repo.insert()
@@ -256,33 +253,6 @@ defmodule Glimesh.Streams do
 
   def delete_channel_moderator(%ChannelModerator{} = mod) do
     Repo.delete(mod)
-  end
-
-  def timeout_user(%Channel{} = channel, %User{} = moderator, user_to_timeout) do
-    if Chat.can_moderate?(:can_short_timeout, channel, moderator) === false do
-      raise "User does not have permission to moderate."
-    end
-
-    log =
-      %ChannelModerationLog{
-        channel: channel,
-        moderator: moderator,
-        user: user_to_timeout
-      }
-      |> ChannelModerationLog.changeset(%{action: "timeout"})
-      |> Repo.insert()
-
-    :ets.insert(:banned_list, {user_to_timeout.username, true})
-
-    Chat.delete_chat_messages_for_user(channel, user_to_timeout)
-
-    broadcast_timeout({:ok, channel.id, user_to_timeout}, :user_timedout)
-
-    log
-  end
-
-  def ban_user(streamer, moderator, user_to_ban) do
-    timeout_user(streamer, moderator, user_to_ban)
   end
 
   ## Following

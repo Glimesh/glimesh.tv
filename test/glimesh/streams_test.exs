@@ -3,60 +3,7 @@ defmodule Glimesh.StreamsTest do
   use Bamboo.Test
 
   import Glimesh.AccountsFixtures
-  alias Glimesh.Chat
   alias Glimesh.Streams
-
-  describe "timeout_user/3" do
-    setup do
-      %{
-        channel: channel_fixture(),
-        moderator: user_fixture(),
-        user: user_fixture()
-      }
-    end
-
-    test "times out a user and removes messages successfully", %{
-      channel: channel,
-      moderator: moderator,
-      user: user
-    } do
-      {:ok, _} = Chat.create_chat_message(channel, user, %{message: "bad message"})
-      {:ok, _} = Chat.create_chat_message(channel, moderator, %{message: "good message"})
-      assert length(Chat.list_chat_messages(channel)) == 2
-
-      {:ok, _} =
-        Glimesh.Streams.create_channel_moderator(channel, moderator, %{
-          can_short_timeout: true
-        })
-
-      {:ok, _} = Streams.timeout_user(channel, moderator, user)
-      assert length(Chat.list_chat_messages(channel)) == 1
-    end
-
-    test "adds log of timeout action", %{channel: channel, moderator: moderator, user: user} do
-      {:ok, _} =
-        Glimesh.Streams.create_channel_moderator(channel, moderator, %{
-          can_short_timeout: true
-        })
-
-      {:ok, record} = Streams.timeout_user(channel, moderator, user)
-
-      assert record.channel.id == channel.id
-      assert record.moderator.id == moderator.id
-      assert record.user.id == user.id
-      assert record.action == "timeout"
-    end
-
-    test "moderation privileges are required to timeout", %{
-      channel: channel,
-      moderator: moderator,
-      user: user
-    } do
-      assert_raise RuntimeError,
-                   "User does not have permission to moderate.",
-                   fn -> Streams.timeout_user(channel, moderator, user) end
-    end
-  end
 
   describe "followers" do
     @valid_attrs %{has_live_notifications: true}

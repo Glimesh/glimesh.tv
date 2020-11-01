@@ -1,24 +1,40 @@
 <div id="chat-messages" class="chat-messages" phx-update="<%= @update_action %>"
     style="<%= background_style(@channel) %>">
     <div id="channel-header" class="channel-header">
-        <span>Welcome to chat! Follow the rules.</span>
+        <span><%= gettext("Welcome to chat! Follow the rules.") %></span>
     </div>
     <%= for chat_message <- @chat_messages do %>
     <div id="<%= chat_message.id %>"
         class="<%=if Glimesh.Chat.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>">
         <div class="user-message-header">
             <%= if @is_moderator do %>
-            <i class="fas fa-times-circle" phx-click="timeout_user"
-                phx-value-user="<%= chat_message.user.username %>"></i>
+            <%= if Map.get(@permissions, :can_short_timeout, false) do %>
+            <i class="fas fa-trash-alt fa-fw" phx-click="short_timeout_user"
+                phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip"
+                title="<%= gettext("Timeout user for 5 minutes.") %>"></i>
             <% end %>
+            <%= if Map.get(@permissions, :can_long_timeout, false)  do %>
+            <i class="far fa-clock fa-fw" phx-click="long_timeout_user"
+                phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip"
+                title="<%= gettext("Timeout user for 15 minutes.") %>"></i>
+            <% end %>
+            <%= if Map.get(@permissions, :can_ban, false)  do %>
+            <i class="far fa-times-circle fa-fw" phx-click="ban_user" phx-value-user="<%= chat_message.user.username %>"
+                data-confirm="<%= gettext("Are you sure you wish to permanently ban %{username}?", username: chat_message.user.displayname) %>"
+                data-toggle="tooltip" title="<%= gettext("Ban user from channel.") %>"></i>
+            <% end %>
+            <% end %>
+
             <%= Glimesh.Chat.render_global_badge(chat_message.user) %>
             <%= Glimesh.Chat.render_stream_badge(@channel, chat_message.user) %>
+
             <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>" width="20"
                 height="20" class="img-chat-avatar" />
             <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white", target: "_blank" %>:
         </div>
         <div class="user-message">
-            <%= Glimesh.Chat.Parser.parse_and_render(chat_message.message, @channel_chat_parser_config) %></div>
+            <%= Glimesh.Chat.Parser.parse_and_render(chat_message.message, @channel_chat_parser_config) %>
+        </div>
     </div>
     <% end %>
 </div>
