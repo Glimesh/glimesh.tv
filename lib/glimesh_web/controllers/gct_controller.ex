@@ -91,7 +91,7 @@ defmodule GlimeshWeb.GctController do
 
         conn
         |> put_flash(:info, gettext("User updated successfully"))
-        |> render("edit_user_profile.html", user_changeset: user_changeset, user: user)
+        |> redirect(to: Routes.gct_path(conn, :edit_user_profile, user.username))
 
       {:error, changeset} ->
         render(conn, "edit_user_profile.html", user_changeset: changeset, user: user)
@@ -141,7 +141,7 @@ defmodule GlimeshWeb.GctController do
 
         conn
         |> put_flash(:info, gettext("User updated successfully"))
-        |> render("edit_user.html", user: user, user_changeset: user_changeset)
+        |> redirect(to: Routes.gct_path(conn, :edit_user, user.username))
 
       {:error, changeset} ->
         render(conn, "edit_user.html", user: user, user_changeset: changeset)
@@ -217,7 +217,7 @@ defmodule GlimeshWeb.GctController do
 
         conn
         |> put_flash(:info, gettext("Channel updated successfully"))
-        |> render("edit_channel.html", channel: channel, channel_changeset: channel_changeset, categories: Streams.list_categories_for_select())
+        |> redirect(to: Routes.gct_path(conn, :edit_channel, channel.id))
 
       {:error, changeset} ->
         render(conn, "edit_user.html", channel: channel, channel_changeset: changeset, categories: Streams.list_categories_for_select())
