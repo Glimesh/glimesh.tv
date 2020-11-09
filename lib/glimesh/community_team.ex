@@ -68,6 +68,35 @@ defmodule Glimesh.CommunityTeam do
   end
 
   def generate_update_user_profile_more_details(user, user_params) do
+    fancy_string =
+      """
+      Display name changed from #{user.displayname} to #{user_params["displayname"]}
+      Language changed from #{user.locale} to #{user_params["locale"]}
+      Twitter social changed from #{user.social_twitter} to #{user_params["social_twitter"]}
+      YouTube social changed from #{user.social_youtube} to #{user_params["social_youtube"]}
+      Instagram social changed from #{user.social_instagram} to #{user_params["social_instagram"]}
+      Discord social changed from #{user.social_discord} to #{user_params["social_discord"]}
+      YouTube URL changed from #{user.youtube_intro_url} to #{user_params["youtube_intro_url"]}
+      """
+  end
 
+  def generate_update_user_more_details(user, user_params) do
+    fancy_string =
+      """
+      Display name changed from #{user.displayname} to #{user_params["displayname"]}
+      Username changed from #{user.username} to #{user_params["username"]}
+      Email changed from #{user.email} to #{user_params["email"]}
+      Language changed from #{user.locale} to #{user_params["locale"]}
+      Admin changed from #{user.is_admin} to #{user_params["is_admin"]}
+      Can stream changed from #{user.can_stream} to #{user_params["can_stream"]}
+      Stripe user id changed from #{user.stripe_user_id} to #{user_params["stripe_user_id"]}
+      Stripe customer id changed from #{user.stripe_customer_id} to #{user_params["stripe_customer_id"]}
+      Stripe payment method changed from #{user.stripe_payment_method} to #{user_params["stripe_payment_method"]}
+      2FA changed from #{user.tfa_token} to #{user_params["tfa_token"]}
+      Payments enabled changed from #{user.can_payments} to #{user_params["can_payments"]}
+      GCT changed from #{user.is_gct} to #{user_params["is_gct"]}
+      GCT Access changed from #{user.gct_level} to #{user_params["gct_level"]}
+      Banned changed from #{user.is_banned} to #{user_params["is_banned"]}
+      """
   end
 end

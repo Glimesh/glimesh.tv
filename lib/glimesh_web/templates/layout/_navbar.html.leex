@@ -56,6 +56,12 @@
                         class="img-avatar <%= if @current_user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userProfileDropdown">
+                    <%= if @current_user.is_gct do %>
+                        <%= link class: "dropdown-item", to: Routes.gct_path(@conn, :index) do %>
+                            <i class="fas fa-user fa-fw"></i>
+                            <%= gettext("GCT Dash") %>
+                        <% end %>
+                    <% end %>
                     <!-- Check for a channel and display an option to go to it -->
                     <%= if Glimesh.Streams.get_channel_for_user(@current_user) do %>
                     <%= link class: "dropdown-item", to: Routes.user_stream_path(@conn, :index, @current_user.username) do %>
@@ -68,12 +74,6 @@
                     <%= gettext("Profile") %>
                     <% end %>
                     <div class="dropdown-divider"></div>
-                    <%= if @current_user.is_gct do %>
-                        <%= link class: "dropdown-item", to: Routes.gct_path(@conn, :index) do %>
-                            <i class="fas fa-user fa-fw"></i>
-                            <%= gettext("GCT Dash") %>
-                        <% end %>
-                    <% end %>
                     <%= live_redirect class: "dropdown-item text-warning", to: Routes.platform_subscription_index_path(@conn, :index) do %>
                     <i class="fas fa-cookie fa-fw"></i>
                     <%= gettext("Upgrade!") %>

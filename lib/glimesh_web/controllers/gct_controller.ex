@@ -124,13 +124,14 @@ defmodule GlimeshWeb.GctController do
   end
 
   def update_user(conn, %{"user" => user_params, "username" => username}) do
+    user = Accounts.get_by_username(username, true)
+
     CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
       action: "edited user",
       target: username,
-      verbose_required?: false
+      verbose_required?: false,
+      more_details: CommunityTeam.generate_update_user_more_details(user, user_params)
     })
-
-    user = Accounts.get_by_username(username, true)
 
     case Accounts.update_user(user, user_params) do
       {:ok, user} ->

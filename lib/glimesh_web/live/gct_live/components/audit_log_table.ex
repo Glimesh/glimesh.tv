@@ -44,7 +44,9 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
           </table>
           <button class="btn btn-primary btn-sm" phx-click="nav" phx-value-page="<%= @page_number - 1%>" <%= if @page_number <= 1, do: "disabled" %>><</button>
           <%= for idx <- Enum.to_list(1..@total_pages) do %>
-          <button class="btn btn-primary btn-sm" phx-click="nav" phx-value-page="<%= idx %>" <%= if @page_number == idx, do: "disabled" %>><%= idx %></button>
+            <%= unless idx > @page_number + 2 || idx < @page_number - 2 do %>
+              <button class="btn btn-primary btn-sm" phx-click="nav" phx-value-page="<%= idx %>" <%= if @page_number == idx, do: "disabled" %>><%= idx %></button>
+            <% end %>
           <% end %>
           <button class="btn btn-primary btn-sm" phx-click="nav" phx-value-page="<%= @page_number + 1%>" <%= if @page_number >= @total_pages, do: "disabled" %>>></button>
           <%= unless @verbose do %>
@@ -82,7 +84,7 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
                 <input type="text" class="form-control" disabled value="<%= @detailed_log.target%>"></input>
 
                 <label for="changes" class="mt-1"><%= gettext("More Details") %></label>
-                <textarea rows="5" class="form-control" disabled><%= @detailed_log.more_details%></textarea>
+                <textarea rows="15" class="form-control" disabled><%= @detailed_log.more_details%></textarea>
               </div>
             </div>
           </div>
