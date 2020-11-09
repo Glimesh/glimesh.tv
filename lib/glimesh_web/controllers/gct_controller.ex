@@ -5,6 +5,7 @@ defmodule GlimeshWeb.GctController do
   alias Glimesh.CommunityTeam
   alias Glimesh.CommunityTeam.AuditLog
   alias Glimesh.Payments
+  alias Glimesh.Streams
 
   # General Routes
   def index(conn, _params) do
@@ -21,6 +22,8 @@ defmodule GlimeshWeb.GctController do
       "audit_log.html"
     )
   end
+
+  # Looking up/editing a user
 
   def username_lookup(conn, params) do
     unless params["query"] == "",
@@ -143,6 +146,30 @@ defmodule GlimeshWeb.GctController do
 
       {:error, changeset} ->
         render(conn, "edit_user.html", user: user, user_changeset: changeset)
+    end
+  end
+
+  # Looking up/editing a channel
+
+  def channel_lookup(conn, params) do
+    unless params["query"] == "",
+      do:
+        CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
+          action: "lookup channel",
+          target: params["query"],
+          verbose_required?: true
+        })
+
+    channel = Streams.get_channel_for_username!(params["query"], true)
+
+    if channel do
+      render(
+        conn,
+        "lookup_channel.html",
+        channel: channel
+      )
+    else
+      render(conn, "invalid_user.html")
     end
   end
 end

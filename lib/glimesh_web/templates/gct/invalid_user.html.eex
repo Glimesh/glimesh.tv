@@ -1,6 +1,6 @@
 <div class="container">
     <div class="form-group mt-4">
-        <h2 class="text-center"><%= gettext("User does not exist")%></h2>
+        <h2 class="text-center"><%= gettext("Does not exist")%></h2>
         <center><%= live_redirect gettext("Go Back"), class: "btn btn-primary mb-4", to: Routes.gct_path(@conn, :index) %></center>
     </div>
 </div>

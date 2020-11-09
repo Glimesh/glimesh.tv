@@ -156,6 +156,7 @@ defmodule GlimeshWeb.Router do
 
     # Lookup scopes
     get "/lookup/username", GctController, :username_lookup
+    get "/lookup/channel", GctController, :channel_lookup
 
     # Editing profile scopes
     get "/edit/profile/:username", GctController, :edit_user_profile
