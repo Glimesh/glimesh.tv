@@ -3,7 +3,6 @@ defmodule GlimeshWeb.GctController do
 
   alias Glimesh.Accounts
   alias Glimesh.CommunityTeam
-  alias Glimesh.CommunityTeam.AuditLog
   alias Glimesh.Payments
   alias Glimesh.Streams
 
@@ -166,10 +165,62 @@ defmodule GlimeshWeb.GctController do
       render(
         conn,
         "lookup_channel.html",
-        channel: channel
+        channel: channel,
+        categories: Streams.list_categories_for_select()
       )
     else
       render(conn, "invalid_user.html")
+    end
+  end
+
+  def edit_channel(conn, %{"channel_id" => channel_id}) do
+    unless CommunityTeam.can_edit_channel(conn.assigns.current_user) do
+      redirect(conn, to: Routes.gct_path(conn, :index))
+    end
+
+    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
+      action: "view edit channel",
+      target: channel_id,
+      verbose_required?: true
+    })
+
+    channel = Streams.get_channel(channel_id)
+
+    if channel do
+      channel_changeset = Streams.change_channel(channel)
+
+      render(
+        conn,
+        "edit_channel.html",
+        channel: channel,
+        channel_changeset: channel_changeset,
+        categories: Streams.list_categories_for_select()
+      )
+    else
+      render(conn, "invalid_user.html")
+    end
+  end
+
+  def update_channel(conn, %{"channel" => channel_params, "channel_id" => channel_id}) do
+    channel = Streams.get_channel(channel_id)
+
+    CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
+      action: "edited channel",
+      target: channel_id,
+      verbose_required?: false,
+      more_details: CommunityTeam.generate_update_channel_more_details(channel, channel_params)
+    })
+
+    case Streams.update_channel(channel, channel_params) do
+      {:ok, channel} ->
+        channel_changeset = Streams.change_channel(channel)
+
+        conn
+        |> put_flash(:info, gettext("Channel updated successfully"))
+        |> render("edit_channel.html", channel: channel, channel_changeset: channel_changeset, categories: Streams.list_categories_for_select())
+
+      {:error, changeset} ->
+        render(conn, "edit_user.html", channel: channel, channel_changeset: changeset, categories: Streams.list_categories_for_select())
     end
   end
 end

@@ -143,22 +143,6 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
     {:noreply, socket |> assign(:show_details, false)}
   end
 
-  """
-  def handle_event("search", %{"search_param" => search_param}, socket) do
-    search_param_split = String.split(search_param, ":", trim: true)
-    unless Enum.empty?(search_param_split) || Enum.count(search_param_split) < 2 do
-      assign = case String.downcase(Enum.fetch!(search_param_split, 0)) do
-        "action" -> IO.inspect("Action detected")
-        "id" -> assign_page_from_map(CommunityTeam.search_for_log_using_id!(String.to_integer(Enum.fetch!(search_param_split, 1))))
-        "user" -> IO.inspect("User detected")
-        "target" -> IO.inspect("Target detected")
-        _ -> IO.inspect("Something else")
-      end
-    end
-    {:noreply, socket}
-  end
-  """
-
   def get_and_assign_page(page_number, verbose \\ false) do
     %{
       entries: entries,

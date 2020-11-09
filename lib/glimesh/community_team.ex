@@ -21,6 +21,10 @@ defmodule Glimesh.CommunityTeam do
     if user.gct_level >= 3, do: true, else: false
   end
 
+  def can_edit_channel(user) do
+    if user.gct_level >= 3, do: true, else: false
+  end
+
   def can_edit_user_profile(user) do
     if user.gct_level >= 2, do: true, else: false
   end
@@ -68,7 +72,7 @@ defmodule Glimesh.CommunityTeam do
   end
 
   def generate_update_user_profile_more_details(user, user_params) do
-    fancy_string =
+    _fancy_string =
       """
       Display name changed from #{user.displayname} to #{user_params["displayname"]}
       Language changed from #{user.locale} to #{user_params["locale"]}
@@ -81,7 +85,7 @@ defmodule Glimesh.CommunityTeam do
   end
 
   def generate_update_user_more_details(user, user_params) do
-    fancy_string =
+    _fancy_string =
       """
       Display name changed from #{user.displayname} to #{user_params["displayname"]}
       Username changed from #{user.username} to #{user_params["username"]}
@@ -97,6 +101,16 @@ defmodule Glimesh.CommunityTeam do
       GCT changed from #{user.is_gct} to #{user_params["is_gct"]}
       GCT Access changed from #{user.gct_level} to #{user_params["gct_level"]}
       Banned changed from #{user.is_banned} to #{user_params["is_banned"]}
+      """
+  end
+
+  def generate_update_channel_more_details(channel, channel_params) do
+    _fancy_string =
+      """
+      Title changed from #{channel.title} to #{channel_params["title"]}
+      Category changed from #{channel.category_id} to #{channel_params["category_id"]}
+      Disable hyperlinks changed from #{channel.disable_hyperlinks} to #{channel_params["disable_hyperlinks"]}
+      Block links changed from #{channel.block_links} to #{channel_params["block_links"]}
       """
   end
 end

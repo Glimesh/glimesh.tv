@@ -40,8 +40,24 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "invalid user returns an invalid user page", %{conn: conn} do
       conn = get(conn, Routes.gct_path(conn, :username_lookup, query: "invalid_user"))
-      assert html_response(conn, 200) =~ "User does not exist"
+      assert html_response(conn, 200) =~ "Does not exist"
     end
+  end
+
+  describe "lookup channel" do
+    setup :register_and_log_in_gct_user
+
+    test "valid channel returns information", %{conn: conn} do
+      lookup_channel = channel_fixture()
+      conn = get(conn, Routes.gct_path(conn, :channel_lookup, query: lookup_channel.user.username))
+      assert html_response(conn, 200) =~ "Information for " <> lookup_channel.user.displayname
+    end
+
+    test "invalid channel returns an invalid channel page", %{conn: conn} do
+      conn = get(conn, Routes.gct_path(conn, :channel_lookup, query: "@"))
+      assert html_response(conn, 200) =~ "Does not exist"
+    end
+
   end
 
   describe "edit user profile" do
@@ -55,7 +71,7 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "invalid user returns invalid user page", %{conn: conn} do
       conn = get(conn, Routes.gct_path(conn, :edit_user_profile, "invalid_user"))
-      assert html_response(conn, 200) =~ "User does not exist"
+      assert html_response(conn, 200) =~ "Does not exist"
     end
   end
 
@@ -70,7 +86,22 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "invalid user returns invalid user page", %{conn: conn} do
       conn = get(conn, Routes.gct_path(conn, :edit_user, "invalid_user"))
-      assert html_response(conn, 200) =~ "User does not exist"
+      assert html_response(conn, 200) =~ "Does not exist"
+    end
+  end
+
+  describe "edit channel" do
+    setup :register_and_log_in_gct_user
+
+    test "valid user returns edit page", %{conn: conn} do
+      valid_channel = channel_fixture()
+      conn = get(conn, Routes.gct_path(conn, :edit_channel, valid_channel.id))
+      assert html_response(conn, 200) =~ valid_channel.user.username
+    end
+
+    test "invalid user returns invalid channel page", %{conn: conn} do
+      conn = get(conn, Routes.gct_path(conn, :edit_channel, 0))
+      assert html_response(conn, 200) =~ "Does not exist"
     end
   end
 end
