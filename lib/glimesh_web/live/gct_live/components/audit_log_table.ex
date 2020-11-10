@@ -34,7 +34,7 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
                   <td><%= log.user.displayname %></td>
                   <td><%= log.action %></td>
                   <td><%= link log.target, to: Routes.gct_path(@conn, :username_lookup, query: log.target) %></td>
-                  <td><%= log.inserted_at %></td>
+                  <td><%= log.inserted_at %> UTC</td>
                   <td>
                     <button class="btn btn-primary btn-sm" phx-click="show-details" phx-value-log-id=<%= log.id%>>Details</button>
                   </td>

@@ -206,7 +206,7 @@ defmodule GlimeshWeb.GctController do
 
     CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
       action: "edited channel",
-      target: channel_id,
+      target: channel.user.username,
       verbose_required?: false,
       more_details: CommunityTeam.generate_update_channel_more_details(channel, channel_params)
     })
