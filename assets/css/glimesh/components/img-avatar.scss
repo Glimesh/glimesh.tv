@@ -1,10 +1,70 @@
-.img-avatar {
-    border-radius: 50%;
-    border: 2px solid #3b3f5c;
-    max-width: 200px;
-    max-height: 200px;
-}
+// .img-avatar {
+//     border-radius: 50%;
+//     border: 2px solid #3b3f5c;
+//     max-width: 200px;
+//     max-height: 200px;
+// }
 
 .img-verified-streamer {
     border: 2px solid $secondary;
+}
+
+.avatar-ring {
+  display: inline-block;
+  height: 27px;
+  width: 27px;
+
+  > img {
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    margin: 1px 0 0 1px;
+  }
+
+  &, > img {
+    border-radius: 50%;
+  }
+}
+
+.avatar-animated-ring {
+  animation-name: spin;
+
+  > img {
+    animation-name: spin-reverse;
+  }
+
+  &, > img {
+    border-radius: 50%;
+    animation-duration: 3000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+}
+
+.platform-admin-ring {
+  background-color: red;
+}
+
+.platform-founder-ring {
+  background-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, gold 100%);
+}
+
+.platform-supporter-ring {
+  background-color: gold;
+}
+
+@keyframes spin { 
+  from { 
+    transform: rotate(0deg); 
+  } 
+  to { 
+    transform: rotate(360deg); 
+  }
+}
+@keyframes spin-reverse { 
+  from { 
+    transform: rotate(0deg); 
+  }
+  to { 
+    transform: rotate(-360deg); 
+  }
 }

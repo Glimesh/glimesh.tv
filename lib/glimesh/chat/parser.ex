@@ -10,7 +10,7 @@ defmodule Glimesh.Chat.Parser do
     @moduledoc """
     Configuration for the parser
     """
-    defstruct allow_links: true, allow_glimojis: true
+    defstruct allow_links: true, allow_glimojis: true, allow_animated_glimjois: false
   end
 
   import Phoenix.HTML
@@ -26,14 +26,27 @@ defmodule Glimesh.Chat.Parser do
   def parse(chat_message, %Config{} = config \\ %Config{}) do
     msg = String.split(chat_message)
 
-    msg = if config.allow_glimojis, do: replace_glimojies(msg), else: msg
+    glimojis = Glimesh.Emote.list_emotes_by_key_and_image(config.allow_animated_glimjois)
+
+    msg = if config.allow_glimojis, do: replace_glimojies(glimojis, msg), else: msg
     msg = if config.allow_links, do: replace_links(msg), else: msg
 
     msg
   end
 
-  def parse_and_render(chat_message, %Config{} = config \\ %Config{}) do
-    chat_message
+  def parse_and_render(
+        %Glimesh.Chat.ChatMessage{} = chat_message,
+        %Config{} = config \\ %Config{}
+      ) do
+    # If the user who posted the ChatMessage has a platform subscription, we allow animated emotes
+    config =
+      Map.put(
+        config,
+        :allow_animated_glimjois,
+        Glimesh.Payments.has_platform_subscription?(chat_message.user)
+      )
+
+    chat_message.message
     |> parse(config)
     |> to_raw_html()
     |> raw()
@@ -51,28 +64,28 @@ defmodule Glimesh.Chat.Parser do
     end
   end
 
-  defp replace_glimojies(inputs) when length(inputs) == 1 do
-    [hd(inputs) |> glimoji_to_img("128px")]
+  defp replace_glimojies(glimojis, inputs) when length(inputs) == 1 do
+    [glimoji_to_img(glimojis, hd(inputs), "128px")]
   end
 
-  defp replace_glimojies(inputs) do
-    Enum.map(inputs, &glimoji_to_img(&1))
+  defp replace_glimojies(glimojis, inputs) do
+    Enum.map(inputs, &glimoji_to_img(glimojis, &1))
   end
 
   defp replace_links(inputs) do
     Enum.map(inputs, &link_to_a(&1))
   end
 
-  defp glimoji_to_img(word, size \\ "32px")
-  defp glimoji_to_img({:safe, _} = inp, _), do: inp
+  defp glimoji_to_img(glimojis, word, size \\ "32px")
+  defp glimoji_to_img(_, {:safe, _} = inp, _), do: inp
 
-  defp glimoji_to_img(word, size) do
-    case Glimesh.Emote.get_svg_by_identifier(word) do
+  defp glimoji_to_img(glimojis, word, size) do
+    case Map.get(glimojis, word) do
       nil ->
         word
 
-      svg ->
-        img_tag(GlimeshWeb.Router.Helpers.static_path(GlimeshWeb.Endpoint, svg),
+      img_path ->
+        img_tag(GlimeshWeb.Router.Helpers.static_path(GlimeshWeb.Endpoint, img_path),
           width: size,
           height: size,
           draggable: "false",

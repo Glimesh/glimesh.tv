@@ -1,4 +1,4 @@
-<div id="chat-form" phx-hook="Chat" data-emotes="<%= Glimesh.Emote.list_emotes_for_js() %>">
+<div id="chat-form" phx-hook="Chat" data-emotes="<%= @emotes %>">
   <%= if @disabled do %>
   <div id="channel-footer" class="channel-footer">
     <span>You must be logged in to chat. <%= link "Register", to: Routes.user_registration_path(@socket, :new) %></span>

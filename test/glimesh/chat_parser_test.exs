@@ -1,6 +1,9 @@
 defmodule Glimesh.ChatParserTest do
   use Glimesh.DataCase
 
+  import Glimesh.AccountsFixtures
+  alias Glimesh.Chat.ChatMessage
+
   describe "chat parser" do
     test "parses a simple chat message" do
       parsed = Glimesh.Chat.Parser.parse("Hello world")
@@ -36,6 +39,16 @@ defmodule Glimesh.ChatParserTest do
 
       assert Glimesh.Chat.Parser.to_raw_html(parsed) ==
                "Hello <img alt=\":glimwow:\" draggable=\"false\" height=\"32px\" src=\"/emotes/svg/glimwow.svg\" width=\"32px\">"
+    end
+
+    test "parses an an animated emoji when the config allows" do
+      parsed =
+        Glimesh.Chat.Parser.parse("Hello :glimfury:", %Glimesh.Chat.Parser.Config{
+          allow_animated_glimjois: true
+        })
+
+      assert Glimesh.Chat.Parser.to_raw_html(parsed) ==
+               "Hello <img alt=\":glimfury:\" draggable=\"false\" height=\"32px\" src=\"/emotes/gif/glimfury.gif\" width=\"32px\">"
     end
 
     test "DOES NOT parse a glimoji chat message with no spaces" do
@@ -90,14 +103,30 @@ defmodule Glimesh.ChatParserTest do
       assert Glimesh.Chat.Parser.to_raw_html(parsed) == ":glimwow:"
     end
 
-    test "html cannot be injected" do
-      parsed = Glimesh.Chat.Parser.parse_and_render("<h2>Hello world</h2>")
+    setup do
+      %{
+        user: user_fixture()
+      }
+    end
+
+    test "html cannot be injected", %{user: user} do
+      message = %ChatMessage{
+        message: "<h2>Hello world</h2>",
+        user: user
+      }
+
+      parsed = Glimesh.Chat.Parser.parse_and_render(message)
 
       assert Phoenix.HTML.safe_to_string(parsed) == "&lt;h2&gt;Hello world&lt;/h2&gt;"
     end
 
-    test "html cannot be injected with a functional parser" do
-      parsed = Glimesh.Chat.Parser.parse_and_render("<h2>Hello :glimwow: world</h2>")
+    test "html cannot be injected with a functional parser", %{user: user} do
+      message = %ChatMessage{
+        message: "<h2>Hello :glimwow: world</h2>",
+        user: user
+      }
+
+      parsed = Glimesh.Chat.Parser.parse_and_render(message)
 
       assert Phoenix.HTML.safe_to_string(parsed) ==
                "&lt;h2&gt;Hello <img alt=\":glimwow:\" draggable=\"false\" height=\"32px\" src=\"/emotes/svg/glimwow.svg\" width=\"32px\"> world&lt;/h2&gt;"

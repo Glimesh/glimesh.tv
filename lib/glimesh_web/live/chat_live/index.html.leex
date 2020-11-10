@@ -7,7 +7,6 @@
     <div id="<%= chat_message.id %>"
         class="<%=if Glimesh.Chat.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>">
         <div class="user-message-header">
-            <%= if @is_moderator do %>
             <%= if Map.get(@permissions, :can_short_timeout, false) do %>
             <i class="fas fa-trash-alt fa-fw" phx-click="short_timeout_user"
                 phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip"
@@ -23,17 +22,14 @@
                 data-confirm="<%= gettext("Are you sure you wish to permanently ban %{username}?", username: chat_message.user.displayname) %>"
                 data-toggle="tooltip" title="<%= gettext("Ban user from channel.") %>"></i>
             <% end %>
-            <% end %>
 
             <%= Glimesh.Chat.render_global_badge(chat_message.user) %>
-            <%= Glimesh.Chat.render_stream_badge(@channel, chat_message.user) %>
+            <%= Glimesh.Chat.render_channel_badge(@channel, chat_message.user) %>
 
-            <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>" width="20"
-                height="20" class="img-chat-avatar" />
-            <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white", target: "_blank" %>:
+            <%= Glimesh.Chat.render_username_and_avatar(chat_message.user) %>
         </div>
         <div class="user-message">
-            <%= Glimesh.Chat.Parser.parse_and_render(chat_message.message, @channel_chat_parser_config) %>
+            <%= Glimesh.Chat.Parser.parse_and_render(chat_message, @channel_chat_parser_config) %>
         </div>
     </div>
     <% end %>

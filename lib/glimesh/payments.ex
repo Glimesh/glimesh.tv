@@ -9,6 +9,7 @@ defmodule Glimesh.Payments do
   alias Glimesh.Accounts.User
   alias Glimesh.Payments.Subscription
   alias Glimesh.Repo
+  alias Glimesh.Streams.Channel
 
   def get_platform_sub_supporter_product_id,
     do: get_stripe_config(:platform_sub_supporter_product_id)
@@ -196,6 +197,28 @@ defmodule Glimesh.Payments do
     )
   end
 
+  def is_platform_supporter_subscriber?(user) do
+    Repo.exists?(
+      from s in Subscription,
+        where:
+          s.user_id == ^user.id and
+            s.is_active == true and
+            is_nil(s.streamer_id) and
+            s.stripe_product_id == ^get_platform_sub_supporter_product_id()
+    )
+  end
+
+  def is_platform_founder_subscriber?(user) do
+    Repo.exists?(
+      from s in Subscription,
+        where:
+          s.user_id == ^user.id and
+            s.is_active == true and
+            is_nil(s.streamer_id) and
+            s.stripe_product_id == ^get_platform_sub_founder_product_id()
+    )
+  end
+
   def get_channel_subscriptions(user) do
     Repo.all(
       from s in Subscription,
@@ -213,6 +236,13 @@ defmodule Glimesh.Payments do
     Repo.exists?(
       from s in Subscription,
         where: s.user_id == ^user.id and s.is_active == true and s.streamer_id == ^streamer.id
+    )
+  end
+
+  def is_subscribed?(%Channel{} = channel, %User{} = user) do
+    Repo.exists?(
+      from s in Subscription,
+        where: s.user_id == ^user.id and s.is_active == true and s.streamer_id == ^channel.user_id
     )
   end
 
