@@ -7,10 +7,16 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   def update(%{chat_message: chat_message, user: user, channel: channel} = assigns, socket) do
     changeset = Chat.change_chat_message(chat_message)
 
+    include_animated = if user, do: Glimesh.Payments.has_platform_subscription?(user), else: false
+
     {:ok,
      socket
      |> assign(assigns)
      |> assign(:changeset, changeset)
+     |> assign(
+       :emotes,
+       Glimesh.Emote.list_emotes_for_js(include_animated)
+     )
      |> assign(:channel_username, channel.user.username)
      |> assign(:disabled, is_nil(user))}
   end

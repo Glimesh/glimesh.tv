@@ -7,26 +7,41 @@ defmodule Glimesh.Emote do
     Application.get_env(:glimesh, :emotes)
   end
 
-  def list_emotes_for_js do
-    Application.get_env(:glimesh, :emotes)
-    |> Enum.map(fn {name, svg, _png} ->
-      %{
-        name: name,
-        emoji: GlimeshWeb.Router.Helpers.static_url(GlimeshWeb.Endpoint, svg)
-      }
+  def list_animated_emotes do
+    Application.get_env(:glimesh, :animated_emotes)
+  end
+
+  def list_emotes_for_js(include_animated \\ false) do
+    list_emotes_by_key_and_image(include_animated)
+    |> Enum.map(fn {name, img} ->
+      %{name: name, emoji: GlimeshWeb.Router.Helpers.static_url(GlimeshWeb.Endpoint, img)}
     end)
     |> Jason.encode!()
   end
 
+  def list_emotes_by_key_and_image(include_animated \\ false) do
+    regular =
+      list_emotes()
+      |> Enum.into(%{}, fn {name, images} -> {name, Map.get(images, :svg)} end)
+
+    animated =
+      if include_animated do
+        list_animated_emotes()
+        |> Enum.into(%{}, fn {name, images} -> {name, Map.get(images, :gif)} end)
+      else
+        %{}
+      end
+
+    Map.merge(regular, animated)
+  end
+
   def list_emote_identifiers do
     list_emotes()
-    |> Enum.map(& &1)
+    |> Map.keys()
   end
 
   def get_svg_by_identifier(id) do
-    case Enum.find(list_emotes(), fn {name, _, _} -> name == id end) do
-      {_, svg, _} -> svg
-      _ -> nil
-    end
+    list_emotes()
+    |> get_in([id, :svg])
   end
 end
