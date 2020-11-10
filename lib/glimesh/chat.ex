@@ -401,12 +401,12 @@ defmodule Glimesh.Chat do
     end
   end
 
-  def render_global_badge(user) do
-    if user.is_admin do
-      Tag.content_tag(:span, "Team Glimesh", class: "badge badge-danger")
-    else
-      ""
-    end
+  def render_global_badge(_user) do
+    # if user.is_admin do
+    #   Tag.content_tag(:span, "Team Glimesh", class: "badge badge-danger")
+    # else
+    #   ""
+    # end
 
     ""
   end
@@ -486,11 +486,18 @@ defmodule Glimesh.Chat do
 
   def render_channel_badge(channel, user) do
     cond do
+      channel.user_id == user.id ->
+        Tag.content_tag(:span, "Streamer", class: "badge badge-info")
+
       is_moderator?(channel, user) ->
-        Tag.content_tag(:span, "Moderator", class: "badge badge-info")
+        Tag.content_tag(:span, "Mod", class: "badge badge-info")
 
       Payments.is_subscribed?(channel, user) ->
-        Tag.content_tag(:span, "Subscriber", class: "badge badge-info")
+        Tag.content_tag(:span, Tag.content_tag(:i, "", class: "fas fa-trophy"),
+          class: "badge badge-secondary",
+          "data-toggle": "tooltip",
+          title: gettext("Channel Subscriber")
+        )
 
       true ->
         ""

@@ -336,9 +336,16 @@ defmodule Glimesh.ChatTest do
     test "renders appropriate tags for moderator", %{channel: channel, moderator: moderator} do
       {:ok, _} = Glimesh.Streams.create_channel_moderator(channel, moderator, %{})
 
-      assert safe_to_string(Glimesh.Chat.render_channel_badge(channel, moderator)) =~ "Moderator"
+      assert safe_to_string(Glimesh.Chat.render_channel_badge(channel, moderator)) =~ "Mod"
 
       assert safe_to_string(Glimesh.Chat.render_channel_badge(channel, moderator)) =~
+               "badge badge-info"
+    end
+
+    test "renders appropriate tags for streamer", %{channel: channel, streamer: streamer} do
+      assert safe_to_string(Glimesh.Chat.render_channel_badge(channel, streamer)) =~ "Streamer"
+
+      assert safe_to_string(Glimesh.Chat.render_channel_badge(channel, streamer)) =~
                "badge badge-info"
     end
   end

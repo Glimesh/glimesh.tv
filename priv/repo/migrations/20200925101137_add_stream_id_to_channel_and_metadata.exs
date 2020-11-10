@@ -28,7 +28,7 @@ defmodule Glimesh.Repo.Migrations.AddStreamIdToChannelAndMetadata do
       add :video_width, :integer
       add :audio_codec, :string
 
-      timestamps
+      timestamps()
     end
   end
 end
