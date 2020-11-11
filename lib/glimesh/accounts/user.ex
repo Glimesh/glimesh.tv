@@ -235,6 +235,7 @@ defmodule Glimesh.Accounts.User do
     |> validate_length(:ban_reason, max: 8192)
     |> validate_username()
     |> validate_email()
+    |> validate_gct_level(2)
   end
 
   @doc """
@@ -323,5 +324,21 @@ defmodule Glimesh.Accounts.User do
     else
       add_error(changeset, :tfa, "Invalid 2FA code")
     end
+  end
+
+  @doc """
+  Validates the GCT access level
+  """
+  def validate_gct_level(changeset, needed_amount) do
+    validate_change(changeset, :gct_level, fn current_field, value ->
+      amount_of_digits = Enum.count(Integer.digits(value))
+      if amount_of_digits = needed_amount do
+        []
+      else
+        padded_value = Kernel.to_string(value) <> String.duplicate("0", needed_amount - amount_of_digits)
+        new_value = String.to_integer(padded_value)
+        [gct_level: gettext("Access level must be %{count} digits(Add zeros till at the amount)", count: needed_amount)]
+      end
+    end)
   end
 end

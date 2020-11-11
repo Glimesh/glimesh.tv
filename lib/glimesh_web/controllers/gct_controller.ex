@@ -44,7 +44,7 @@ defmodule GlimeshWeb.GctController do
         user: user,
         payout_history: Payments.list_payout_history(user),
         payment_history: Payments.list_payment_history(user),
-        view_billing?: CommunityTeam.can_view_billing_info(user)
+        view_billing?: CommunityTeam.can_view_billing_info(conn.assigns.current_user)
       )
     else
       render(conn, "invalid_user.html")
@@ -79,6 +79,9 @@ defmodule GlimeshWeb.GctController do
   end
 
   def update_user_profile(conn, %{"user" => user_params, "username" => username}) do
+    unless CommunityTeam.can_edit_user_profile(conn.assigns.current_user) do
+      redirect(conn, to: Routes.gct_path(conn, :username_lookup, query: username))
+    end
     user = Accounts.get_by_username(username, true)
 
     CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
@@ -119,7 +122,8 @@ defmodule GlimeshWeb.GctController do
         conn,
         "edit_user.html",
         user: user,
-        user_changeset: user_changeset
+        user_changeset: user_changeset,
+        view_billing?: CommunityTeam.can_view_billing_info(conn.assigns.current_user)
       )
     else
       render(conn, "invalid_user.html")
@@ -127,6 +131,9 @@ defmodule GlimeshWeb.GctController do
   end
 
   def update_user(conn, %{"user" => user_params, "username" => username}) do
+    unless CommunityTeam.can_edit_user(conn.assigns.current_user) do
+      redirect(conn, to: Routes.gct_path(conn, :username_lookup, query: username))
+    end
     user = Accounts.get_by_username(username, true)
 
     CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
@@ -143,7 +150,7 @@ defmodule GlimeshWeb.GctController do
         |> redirect(to: Routes.gct_path(conn, :edit_user, user.username))
 
       {:error, changeset} ->
-        render(conn, "edit_user.html", user: user, user_changeset: changeset)
+        render(conn, "edit_user.html", user: user, user_changeset: changeset, view_billing?: CommunityTeam.can_view_billing_info(conn.assigns.current_user))
     end
   end
 
@@ -201,6 +208,9 @@ defmodule GlimeshWeb.GctController do
   end
 
   def update_channel(conn, %{"channel" => channel_params, "channel_id" => channel_id}) do
+    unless CommunityTeam.can_edit_channel(conn.assigns.current_user) do
+      redirect(conn, to: Routes.gct_path(conn, :index))
+    end
     channel = Streams.get_channel(channel_id)
 
     CommunityTeam.create_audit_entry(conn.assigns.current_user, %{

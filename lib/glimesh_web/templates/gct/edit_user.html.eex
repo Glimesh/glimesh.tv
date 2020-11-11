@@ -9,6 +9,7 @@
     <%= form_for @user_changeset, Routes.gct_path(@conn, :update_user, @user.username), [multipart: true, class: "form", method: :put], fn f -> %>
         <div class="card">
             <div class="card-body">
+                <h5><%= gettext("General Settings") %></h5>
                 <div class="row mt-1">
                     <div class="col-sm-6">
                         <%= label f, gettext("Display Name") %>
@@ -47,6 +48,17 @@
                 </div>
                 <div class="row mt-1">
                     <div class="col-sm-6">
+                        <%= label f, gettext("2FA Token") %>
+                        <%= text_input f, :tfa_token, [class: "form-control"] %>
+                        <%= error_tag f, :tfa_token %>
+                    </div>
+                </div>
+                <!-- Billing section of the user -->
+                <%= if @view_billing? do %>
+                <hr>
+                <h5><%= gettext("Billing Settings") %></h5>
+                <div class="row mt-1">
+                    <div class="col-sm-6">
                         <%= label f, gettext("Stripe User ID") %>
                         <%= text_input f, :stripe_user_id, [class: "form-control"] %>
                         <%= error_tag f, :stripe_user_id %>
@@ -64,32 +76,29 @@
                         <%= error_tag f, :stripe_payment_method %>
                     </div>
                     <div class="col-sm-6">
-                        <%= label f, gettext("2FA Token") %>
-                        <%= text_input f, :tfa_token, [class: "form-control"] %>
-                        <%= error_tag f, :tfa_token %>
-                    </div>
-                </div>
-                <div class="row mt-1">
-                    <div class="col-sm-6">
                         <%= label f, gettext("Payments Enabled") %>
                         <%= select f, :can_payments, [Yes: true, No: false], [class: "form-control"] %>
                         <%= error_tag f, :can_payments %>
                     </div>
+                </div>
+                <% end %>
+                <%= if @conn.assigns.current_user.gct_level >= 4 do %>
+                <hr>
+                <h5><%= gettext("GCT Settings") %></h5>
+                <div class="row mt-1">
                     <div class="col-sm-6">
                         <%= label f, gettext("Is GCT") %>
                         <%= select f, :is_gct, [Yes: true, No: false], [class: "form-control"] %>
                         <%= error_tag f, :is_gct %>
                     </div>
-                </div>
-                <div class="row mt-1">
                     <div class="col-sm-6">
                         <%= label f, gettext("GCT Access Level") %>
                         <%= number_input f, :gct_level, [class: "form-control"] %>
                         <%= error_tag f, :gct_level %>
                     </div>
-                    <div class="col-sm-6">
-                    </div>
                 </div>
+                <% end %>
+                <hr>
                 <div class="row mt-1">
                     <div class="col-sm-6">
                         <%= label f, gettext("Banned") %>

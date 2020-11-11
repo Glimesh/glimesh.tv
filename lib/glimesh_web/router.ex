@@ -153,6 +153,7 @@ defmodule GlimeshWeb.Router do
     pipe_through [:browser, :require_gct_user]
 
     get "/", GctController, :index
+    get "/me", GctController, :edit_self
 
     # Lookup scopes
     get "/lookup/user", GctController, :username_lookup

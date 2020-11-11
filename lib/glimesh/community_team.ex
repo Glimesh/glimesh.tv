@@ -7,7 +7,7 @@ defmodule Glimesh.CommunityTeam do
   alias Glimesh.Repo
 
   def access_level_to_title(level) do
-    case level do
+    case get_global_access_level(level) do
       5 -> "Admin"
       4 -> "Manager"
       3 -> "Team Lead"
@@ -18,27 +18,27 @@ defmodule Glimesh.CommunityTeam do
   end
 
   def can_edit_user(user) do
-    if user.gct_level >= 3, do: true, else: false
+    if get_global_access_level(user.gct_level) >= 3, do: true, else: false
   end
 
   def can_edit_channel(user) do
-    if user.gct_level >= 2, do: true, else: false
+    if get_global_access_level(user.gct_level) >= 2, do: true, else: false
   end
 
   def can_edit_user_profile(user) do
-    if user.gct_level >= 2, do: true, else: false
+    if get_global_access_level(user.gct_level) >= 2, do: true, else: false
   end
 
   def can_ban_user(user) do
-    if user.gct_level >= 2, do: true, else: false
+    if get_global_access_level(user.gct_level) >= 2, do: true, else: false
   end
 
   def can_view_audit_log(user) do
-    if user.gct_level >= 3, do: true, else: false
+    if get_global_access_level(user.gct_level) >= 3, do: true, else: false
   end
 
   def can_view_billing_info(user) do
-    if user.gct_level >= 4, do: true, else: false
+    if get_global_access_level(user.gct_level) >= 4, do: true, else: false
   end
 
   def create_audit_entry(user, attrs \\ %{action: "None", target: "None"}) do
@@ -69,6 +69,14 @@ defmodule Glimesh.CommunityTeam do
       from al in AuditLog,
       where: al.id == ^id
     ) |> Repo.preload([:user])
+  end
+
+  defp get_global_access_level(level_int) do
+    Enum.at(Integer.digits(level_int), 0, 0)
+  end
+
+  defp get_billing_override(level_int) do
+    Enum.at(Integer.digits(level_int), 1, 0)
   end
 
   def generate_update_user_profile_more_details(user, user_params) do
