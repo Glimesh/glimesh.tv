@@ -1,0 +1,18 @@
+<div class="sidebar">
+    <%= link class: "list-group-item list-group-item-action " <> active_gct_dashboard_path(@conn), to: Routes.gct_path(@conn, :index) do %>
+    <i class="fas fa-tools fa-fw"></i> <%= gettext("Dashboard") %>
+    <% end %>
+    <%= link class: "list-group-item list-group-item-action " <> active_gct_audit_log_path(@conn), to: Routes.gct_path(@conn, :audit_log) do %>
+    <i class="fas fa-clipboard-list fa-fw"></i> <%= gettext("Audit Log") %>
+    <% end %>
+</div>
+<div class="content">
+    <%= if get_flash(@conn, :info) do %>
+    <p class="alert alert-info mx-4 mt-1" role="alert"><%= get_flash(@conn, :info) %></p>
+    <% end %>
+    <%= if get_flash(@conn, :error) do %>
+    <p class="alert alert-danger mx-4 mt-1" role="alert"><%= get_flash(@conn, :error) %></p>
+    <% end %>
+
+    <%= @inner_content %>
+</div>
