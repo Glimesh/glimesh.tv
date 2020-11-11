@@ -71,11 +71,11 @@ defmodule Glimesh.CommunityTeam do
     ) |> Repo.preload([:user])
   end
 
-  defp get_global_access_level(level_int) do
+  def get_global_access_level(level_int) do
     if level_int, do: Enum.at(Integer.digits(level_int), 0, 0), else: 0
   end
 
-  defp get_billing_override(level_int) do
+  def get_billing_override(level_int) do
     if level_int, do: Enum.at(Integer.digits(level_int), 1, 0), else: 0
   end
 

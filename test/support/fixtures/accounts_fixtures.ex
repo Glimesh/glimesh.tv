@@ -46,8 +46,15 @@ defmodule Glimesh.AccountsFixtures do
     user_fixture(%{is_admin: true})
   end
 
-  def gct_fixture(tfa \\ "Fake 2fa token", access_level \\ 5, _attrs \\ %{}) do
-    user_fixture(%{is_gct: true, gct_level: access_level, tfa_token: tfa})
+  def gct_fixture(attrs \\ %{}) do
+    user =
+      attrs
+      |> Enum.into(%{
+        is_gct: true
+      })
+      |> user_fixture()
+
+    user
   end
 
   def banned_fixture(_attrs \\ %{}) do
