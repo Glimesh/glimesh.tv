@@ -246,6 +246,26 @@ defmodule Glimesh.Payments do
     )
   end
 
+  def list_platform_founder_subscribers do
+    Repo.all(
+      from s in Subscription,
+        where:
+          s.is_active == true and is_nil(s.streamer_id) and
+            s.stripe_product_id == ^get_platform_sub_founder_product_id()
+    )
+    |> Repo.preload(:user)
+  end
+
+  def list_platform_supporter_subscribers do
+    Repo.all(
+      from s in Subscription,
+        where:
+          s.is_active == true and is_nil(s.streamer_id) and
+            s.stripe_product_id == ^get_platform_sub_supporter_product_id()
+    )
+    |> Repo.preload(:user)
+  end
+
   def oauth_connect(user, code) do
     with {:ok, resp} <- Stripe.Connect.OAuth.token(code),
          {:ok, _} <- Accounts.set_stripe_user_id(user, resp.stripe_user_id) do

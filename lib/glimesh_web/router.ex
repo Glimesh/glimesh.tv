@@ -154,6 +154,7 @@ defmodule GlimeshWeb.Router do
     get "/about/faq", AboutController, :faq
     get "/about/privacy", AboutController, :privacy
     get "/about/terms", AboutController, :terms
+    get "/about/credits", AboutController, :credits
 
     live "/about/open-data", About.OpenDataLive, :index
     live "/about/open-data/subscriptions", About.OpenDataLive, :subscriptions
