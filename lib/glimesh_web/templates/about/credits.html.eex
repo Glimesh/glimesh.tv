@@ -38,7 +38,7 @@
 </div>
 
 <h2><%= gettext("Open Source Libraries") %></h2>
-<p><%= gettext("We use numerous open source projects to power Glimesh, and without them this project would never have been possible. This is not a comprehensive list unfortunately. You can find a full list by browsing our core repositories:") %>
+<p><%= gettext("We use numerous open source projects to power Glimesh, and without them this project would never have been possible. This is not a comprehensive list, unfortunately. You can find a full list by browsing our core repositories:") %>
 </p>
 <nav class="nav nav-fill mt-4 mb-4">
     <a class="nav-item nav-link" href="https://github.com/Glimesh/glimesh.tv" target="_blank">glimesh.tv</a>
