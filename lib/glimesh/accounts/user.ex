@@ -213,7 +213,7 @@ defmodule Glimesh.Accounts.User do
     |> cast_attachments(attrs, [:avatar])
   end
 
-  def big_scary_changeset(user, attrs) do
+  def gct_user_changeset(user, attrs) do
     user
     |> cast(attrs, [
       :displayname,
