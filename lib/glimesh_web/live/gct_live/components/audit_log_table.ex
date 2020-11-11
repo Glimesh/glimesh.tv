@@ -94,6 +94,7 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
     """
   end
 
+  @impl true
   def mount(_params, _session, socket) do
     %{
       entries: entries,
@@ -123,22 +124,27 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
     {:ok, assign(socket, assigns)}
   end
 
+  @impl true
   def handle_event("nav", %{"page" => page}, socket) do
     {:noreply, assign(socket, get_and_assign_page(page, socket.assigns.verbose))}
   end
 
+  @impl true
   def handle_event("show-verbose", _params, socket) do
     {:noreply, socket |> assign(get_and_assign_page(1, true)) |> assign(:verbose, true)}
   end
 
+  @impl true
   def handle_event("hide-verbose", _params, socket) do
     {:noreply, socket |> assign(get_and_assign_page(1, false)) |> assign(:verbose, false)}
   end
 
+  @impl true
   def handle_event("show-details", %{"log-id" => log_id}, socket) do
     {:noreply, socket |> assign(:show_details, true) |> assign(:detailed_log, CommunityTeam.get_audit_log_entry_from_id!(log_id))}
   end
 
+  @impl true
   def handle_event("hide_details_modal", _params, socket) do
     {:noreply, socket |> assign(:show_details, false)}
   end

@@ -6,6 +6,8 @@ defmodule GlimeshWeb.GctController do
   alias Glimesh.Payments
   alias Glimesh.Streams
 
+  plug :put_layout, "gct-sidebar.html"
+
   # General Routes
   def index(conn, _params) do
     render(conn, "index.html")
@@ -41,7 +43,8 @@ defmodule GlimeshWeb.GctController do
         "lookup_user.html",
         user: user,
         payout_history: Payments.list_payout_history(user),
-        payment_history: Payments.list_payment_history(user)
+        payment_history: Payments.list_payment_history(user),
+        view_billing?: CommunityTeam.can_view_billing_info(user)
       )
     else
       render(conn, "invalid_user.html")
@@ -87,8 +90,6 @@ defmodule GlimeshWeb.GctController do
 
     case Accounts.update_user_profile(user, user_params) do
       {:ok, user} ->
-        user_changeset = Accounts.change_user_profile(user)
-
         conn
         |> put_flash(:info, gettext("User updated successfully"))
         |> redirect(to: Routes.gct_path(conn, :edit_user_profile, user.username))
@@ -137,8 +138,6 @@ defmodule GlimeshWeb.GctController do
 
     case Accounts.update_user(user, user_params) do
       {:ok, user} ->
-        user_changeset = Accounts.change_user(user)
-
         conn
         |> put_flash(:info, gettext("User updated successfully"))
         |> redirect(to: Routes.gct_path(conn, :edit_user, user.username))
@@ -213,8 +212,6 @@ defmodule GlimeshWeb.GctController do
 
     case Streams.update_channel(channel, channel_params) do
       {:ok, channel} ->
-        channel_changeset = Streams.change_channel(channel)
-
         conn
         |> put_flash(:info, gettext("Channel updated successfully"))
         |> redirect(to: Routes.gct_path(conn, :edit_channel, channel.id))

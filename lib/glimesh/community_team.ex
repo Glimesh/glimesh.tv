@@ -22,7 +22,7 @@ defmodule Glimesh.CommunityTeam do
   end
 
   def can_edit_channel(user) do
-    if user.gct_level >= 3, do: true, else: false
+    if user.gct_level >= 2, do: true, else: false
   end
 
   def can_edit_user_profile(user) do
@@ -30,15 +30,15 @@ defmodule Glimesh.CommunityTeam do
   end
 
   def can_ban_user(user) do
-    if user.gct_level >= 4, do: true, else: false
-  end
-
-  def can_delete_user(user) do
-    if user.gct_level >= 5, do: true, else: false
+    if user.gct_level >= 2, do: true, else: false
   end
 
   def can_view_audit_log(user) do
     if user.gct_level >= 3, do: true, else: false
+  end
+
+  def can_view_billing_info(user) do
+    if user.gct_level >= 4, do: true, else: false
   end
 
   def create_audit_entry(user, attrs \\ %{action: "None", target: "None"}) do
@@ -50,7 +50,7 @@ defmodule Glimesh.CommunityTeam do
   end
 
   def list_all_audit_entries(include_verbose? \\ false, params \\ []) do
-    entries =
+    _entries =
       case include_verbose? do
         true ->
           AuditLog |> order_by(desc: :inserted_at) |> preload(:user) |> Repo.paginate(params)

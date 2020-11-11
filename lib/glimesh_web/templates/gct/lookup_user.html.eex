@@ -20,7 +20,7 @@
                     <%= if @user.stripe_user_id do %>
                         <p><%= gettext("Stripe User ID: %{value}", value: @user.stripe_user_id) %></p>
                     <% end %>
-                    <%= if @user.stripe_customer_id && @conn.assigns.current_user.gct_level >= 4 do %>
+                    <%= if @user.stripe_customer_id && @view_billing? do %>
                         <p><%= gettext("Stripe Customer ID: %{value}", value: @user.stripe_customer_id) %></p>
                         <p><%= gettext("Stripe Payment Method: %{value}", value: @user.stripe_payment_method) %></p>
                     <% end %>
@@ -110,7 +110,7 @@
         </div>
         </div>
     </div>
-    <%= if @conn.assigns.current_user.gct_level >= 4 do %>
+    <%= if @view_billing? do %>
     <div class="card mt-4">
         <div class="card-header">
             <h5><%= gettext("Payout History") %> </h5>

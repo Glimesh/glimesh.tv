@@ -2,7 +2,6 @@ defmodule GlimeshWeb.GctLive.Components.ChannelButtonArray do
   use GlimeshWeb, :live_view
 
   alias Glimesh.CommunityTeam
-  alias Glimesh.Streams
 
   @impl true
   def render(assigns) do
