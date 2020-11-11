@@ -72,11 +72,11 @@ defmodule Glimesh.CommunityTeam do
   end
 
   defp get_global_access_level(level_int) do
-    Enum.at(Integer.digits(level_int), 0, 0)
+    if level_int, do: Enum.at(Integer.digits(level_int), 0, 0), else: 0
   end
 
   defp get_billing_override(level_int) do
-    Enum.at(Integer.digits(level_int), 1, 0)
+    if level_int, do: Enum.at(Integer.digits(level_int), 1, 0), else: 0
   end
 
   def generate_update_user_profile_more_details(user, user_params) do
