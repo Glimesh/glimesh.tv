@@ -32,7 +32,7 @@ defmodule Glimesh.Credits do
       {"libssl",
        "OpenSSL is a robust, commercial-grade, and full-featured toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols."},
       {"libavcodec",
-       "Generic encoding/decoding framework and contains multiple decoders and encoders for audio, video and subtitle streams, and several bitstream filters."},
+       "Library from ffmpeg providing a encoding/decoding framework and multiple decoders and encoders for audio, video and subtitle streams, and several bitstream filters."},
       {"spdlog", "Very fast, header-only/compiled, C++ logging library."},
       {"cpp-httplib", "A C++11 single-file header-only cross platform HTTP/HTTPS library."},
       {"Catch2",
