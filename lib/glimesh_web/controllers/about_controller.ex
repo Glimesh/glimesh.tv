@@ -21,4 +21,25 @@ defmodule GlimeshWeb.AboutController do
   def terms(conn, _param) do
     render(conn, "terms.html", page_title: "Terms of Service", subtitle: "")
   end
+
+  def credits(conn, _param) do
+    %{
+      ftl: ftl_credits,
+      node: node_credits,
+      elixir: elixir_credits
+    } = Glimesh.Credits.get_dependencies()
+
+    founder_subscribers = Glimesh.Payments.list_platform_founder_subscribers()
+    supporter_subscribers = Glimesh.Payments.list_platform_supporter_subscribers()
+
+    render(conn, "credits.html",
+      page_title: "Credits",
+      subtitle: "",
+      ftl_credits: ftl_credits,
+      elixir_credits: elixir_credits,
+      node_credits: node_credits,
+      founder_subscribers: founder_subscribers,
+      supporter_subscribers: supporter_subscribers
+    )
+  end
 end
