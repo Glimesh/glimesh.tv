@@ -31,10 +31,12 @@ defmodule Glimesh.Credits do
       {"jansson", "Jansson is a C library for encoding, decoding and manipulating JSON data."},
       {"libssl",
        "OpenSSL is a robust, commercial-grade, and full-featured toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols."},
-      {"libcrypto", "General-purpose cryptography library"},
       {"libavcodec",
        "Generic encoding/decoding framework and contains multiple decoders and encoders for audio, video and subtitle streams, and several bitstream filters."},
-      {"spdlog", "Very fast, header-only/compiled, C++ logging library."}
+      {"spdlog", "Very fast, header-only/compiled, C++ logging library."},
+      {"cpp-httplib", "A C++11 single-file header-only cross platform HTTP/HTTPS library."},
+      {"Catch2",
+       "A modern, C++-native, header-only, test framework for unit-tests, TDD and BDD - using C++11 or later."}
     ]
   end
 
