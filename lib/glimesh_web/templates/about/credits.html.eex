@@ -6,7 +6,7 @@
 <div class="row">
     <%= for sub <- @founder_subscribers do %>
 
-    <div class="col-md-3 mb-4">
+    <div class="col-4 col-md-3 mb-4">
         <%= live_redirect to: Routes.user_profile_path(@conn, :index, sub.user.username) do %>
         <div class="text-md-center">
             <p><%= sub.user.displayname %></p>
@@ -21,21 +21,15 @@
 
 <h4><%= gettext("Supporters") %></h4>
 
-<div class="row">
-    <%= for sub <- @supporter_subscribers do %>
+<%= for sub <- @supporter_subscribers do %>
 
-    <div class="col-md-2 mb-4">
-        <%= live_redirect to: Routes.user_profile_path(@conn, :index, sub.user.username) do %>
-        <div class="text-md-center">
-            <p><%= sub.user.displayname %></p>
-            <img src="<%= Glimesh.Avatar.url({sub.user.avatar, sub.user}, :original) %>" alt="Your Profile Picture"
-                style="width: 80% !important;" class="img-fluid mb-2 img-avatar">
-        </div>
-        <% end %>
-    </div>
+<%= live_redirect to: Routes.user_profile_path(@conn, :index, sub.user.username), class: "text-white nowrap" do %>
+<img src="<%= Glimesh.Avatar.url({sub.user.avatar, sub.user}, :original) %>" alt="<%= sub.user.displayname %>"
+    class="img-avatar" height="20" width="20"> <%= sub.user.displayname %>
 
-    <% end %>
-</div>
+<% end %>
+
+<% end %>
 
 <h2><%= gettext("Open Source Libraries") %></h2>
 <p><%= gettext("We use numerous open source projects to power Glimesh, and without them this project would never have been possible. This is not a comprehensive list, unfortunately. You can find a full list by browsing our core repositories:") %>
@@ -49,55 +43,61 @@
 </nav>
 
 <h4><%= gettext("FTL Libraries") %></h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Library</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <%= for {lib, vsn} <- @ftl_credits do %>
-        <tr>
-            <td><%= lib %></td>
-            <td><%= vsn %></td>
-        </tr>
-        <% end %>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Library</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%= for {lib, vsn} <- @ftl_credits do %>
+            <tr>
+                <td><%= lib %></td>
+                <td><%= vsn %></td>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
 
 <h4><%= gettext("Elixir Libraries") %></h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Library</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <%= for {lib, desc, vsn} <- @elixir_credits do %>
-        <tr>
-            <td><%= lib %>@<%= vsn %></td>
-            <td><%= desc %></td>
-        </tr>
-        <% end %>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Library</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%= for {lib, desc, vsn} <- @elixir_credits do %>
+            <tr>
+                <td><%= lib %>@<%= vsn %></td>
+                <td><%= desc %></td>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
 
 <h4><%= gettext("NodeJS Libraries") %></h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Library</th>
-            <th>Version</th>
-        </tr>
-    </thead>
-    <tbody>
-        <%= for {lib, vsn} <- @node_credits do %>
-        <tr>
-            <td><%= lib %></td>
-            <td><%= vsn %></td>
-        </tr>
-        <% end %>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Library</th>
+                <th>Version</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%= for {lib, vsn} <- @node_credits do %>
+            <tr>
+                <td><%= lib %></td>
+                <td><%= vsn %></td>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
