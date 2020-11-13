@@ -110,6 +110,26 @@ defmodule Glimesh.Apps do
   end
 
   @doc """
+  Rotate public / secret keys for an oauth app.
+
+    ## Examples
+
+      iex> rotate_oauth_app(app)
+      {:ok, %ExOauth2Provider.Applications.Application{}}
+
+      iex> rotate_oauth_app(app)
+      {:error, %Ecto.Changeset{}}
+  """
+  def rotate_oauth_app(%App{} = app) do
+    app.oauth_application
+    |> Ecto.Changeset.change(%{
+      uid: ExOauth2Provider.Utils.generate_token(),
+      secret: ExOauth2Provider.Utils.generate_token()
+    })
+    |> Repo.update()
+  end
+
+  @doc """
   Returns an `%Ecto.Changeset{}` for tracking app changes.
 
   ## Examples

@@ -54,6 +54,14 @@ defmodule GlimeshWeb.UserApplicationsTest do
       conn = put(conn, Routes.user_applications_path(conn, :update, app), app: @update_attrs)
       assert response(conn, 403)
     end
+
+    test "cannot rotate the keys", %{conn: conn} do
+      # Fixture for a different random user
+      {:ok, app} = Apps.create_app(user_fixture(), @create_attrs)
+
+      conn = put(conn, Routes.user_applications_path(conn, :rotate, app))
+      assert response(conn, 403)
+    end
   end
 
   setup :register_and_log_in_user
@@ -110,6 +118,16 @@ defmodule GlimeshWeb.UserApplicationsTest do
       conn = get(conn, Routes.user_applications_path(conn, :show, app))
       assert html_response(conn, 200) =~ "some updated name"
       assert html_response(conn, 200) =~ app.oauth_application.secret
+    end
+
+    test "rotates the keys when user requests", %{conn: conn, app: app} do
+      conn = put(conn, Routes.user_applications_path(conn, :rotate, app))
+      assert redirected_to(conn) == Routes.user_applications_path(conn, :show, app)
+
+      new_app = Glimesh.Apps.get_app!(app.id)
+      conn = get(conn, Routes.user_applications_path(conn, :show, app))
+      refute html_response(conn, 200) =~ app.oauth_application.secret
+      assert html_response(conn, 200) =~ new_app.oauth_application.secret
     end
 
     test "renders errors when data is invalid", %{conn: conn, app: app} do

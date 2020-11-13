@@ -73,6 +73,26 @@ defmodule GlimeshWeb.UserApplicationsController do
     end
   end
 
+  def rotate(conn, %{"id" => id}) do
+    application = Apps.get_app!(id)
+
+    if Apps.can_edit_app?(conn.assigns.user, application) do
+      case Apps.rotate_oauth_app(application) do
+        {:ok, _} ->
+          application = Apps.get_app!(id)
+
+          conn
+          |> put_flash(:info, "Application updated successfully.")
+          |> redirect(to: Routes.user_applications_path(conn, :show, application))
+
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "edit.html", application: application, changeset: changeset)
+      end
+    else
+      unauthorized(conn)
+    end
+  end
+
   defp assign_user(conn, _opts) do
     user = conn.assigns.current_user
 

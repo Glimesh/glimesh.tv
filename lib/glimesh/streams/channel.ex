@@ -53,6 +53,11 @@ defmodule Glimesh.Streams.Channel do
     |> put_change(:status, "offline")
   end
 
+  def stream_key_changeset(channel) do
+    channel
+    |> put_change(:stream_key, generate_stream_key())
+  end
+
   def changeset(channel, attrs \\ %{}) do
     channel
     |> cast(attrs, [

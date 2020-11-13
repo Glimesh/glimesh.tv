@@ -175,6 +175,13 @@ defmodule Glimesh.Streams do
     end
   end
 
+  def rotate_stream_key(%Channel{} = channel) do
+    channel
+    |> change_channel()
+    |> Channel.stream_key_changeset()
+    |> Repo.update()
+  end
+
   def change_channel(%Channel{} = channel, attrs \\ %{}) do
     Channel.changeset(channel, attrs)
   end

@@ -103,6 +103,7 @@ defmodule GlimeshWeb.Router do
     get "/users/settings/get_tfa", UserSecurityController, :get_tfa
     get "/users/settings/tfa_registered", UserSecurityController, :tfa_registered
 
+    put "/users/settings/applications/:id/rotate", UserApplicationsController, :rotate
     resources "/users/settings/applications", UserApplicationsController
 
     resources "/users/settings/authorizations", Oauth2Provider.AuthorizedApplicationController,
