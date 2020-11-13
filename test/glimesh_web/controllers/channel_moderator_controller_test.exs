@@ -4,8 +4,6 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
   import Glimesh.AccountsFixtures
   alias Glimesh.Streams
 
-  setup :register_and_log_in_streamer
-
   @create_attrs %{
     can_ban: true,
     can_long_timeout: true,
@@ -28,6 +26,45 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
     can_unban: nil,
     username: "fake user"
   }
+
+  describe "unauthorized user" do
+    setup [:register_and_log_in_user]
+
+    test "does not render edit form", %{conn: conn} do
+      # Fixture for a different random user
+      {:ok, mod} =
+        Streams.create_channel_moderator(channel_fixture(), user_fixture(), @create_attrs)
+
+      conn = get(conn, Routes.channel_moderator_path(conn, :show, mod.id))
+      assert response(conn, 403)
+    end
+
+    test "does not allow updating", %{conn: conn} do
+      # Fixture for a different random user
+      {:ok, mod} =
+        Streams.create_channel_moderator(channel_fixture(), user_fixture(), @create_attrs)
+
+      conn =
+        patch(
+          conn,
+          Routes.channel_moderator_path(conn, :update, mod.id),
+          channel_moderator: @update_attrs
+        )
+
+      assert response(conn, 403)
+    end
+
+    test "does not allow deleting", %{conn: conn} do
+      # Fixture for a different random user
+      {:ok, mod} =
+        Streams.create_channel_moderator(channel_fixture(), user_fixture(), @create_attrs)
+
+      conn = delete(conn, Routes.channel_moderator_path(conn, :delete, mod.id))
+      assert response(conn, 403)
+    end
+  end
+
+  setup :register_and_log_in_streamer
 
   describe "index" do
     test "lists all channel_moderators", %{conn: conn} do

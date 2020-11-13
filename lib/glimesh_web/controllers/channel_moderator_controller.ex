@@ -62,36 +62,50 @@ defmodule GlimeshWeb.ChannelModeratorController do
 
   def show(conn, %{"id" => id}) do
     channel_moderator = Streams.get_channel_moderator!(id)
-    moderation_log = Streams.list_channel_moderation_log_for_mod(channel_moderator)
-    changeset = Streams.change_channel_moderator(channel_moderator)
 
-    render(conn, "show.html",
-      channel_moderator: channel_moderator,
-      changeset: changeset,
-      moderation_log: moderation_log
-    )
+    if Streams.can_show_mod?(conn.assigns.current_user, channel_moderator) do
+      moderation_log = Streams.list_channel_moderation_log_for_mod(channel_moderator)
+      changeset = Streams.change_channel_moderator(channel_moderator)
+
+      render(conn, "show.html",
+        channel_moderator: channel_moderator,
+        changeset: changeset,
+        moderation_log: moderation_log
+      )
+    else
+      unauthorized(conn)
+    end
   end
 
   def update(conn, %{"id" => id, "channel_moderator" => channel_moderator_params}) do
     channel_moderator = Streams.get_channel_moderator!(id)
 
-    case Streams.update_channel_moderator(channel_moderator, channel_moderator_params) do
-      {:ok, channel_moderator} ->
-        conn
-        |> put_flash(:info, "Channel moderator updated successfully.")
-        |> redirect(to: Routes.channel_moderator_path(conn, :show, channel_moderator))
+    if Streams.can_edit_mod?(conn.assigns.current_user, channel_moderator) do
+      case Streams.update_channel_moderator(channel_moderator, channel_moderator_params) do
+        {:ok, channel_moderator} ->
+          conn
+          |> put_flash(:info, "Channel moderator updated successfully.")
+          |> redirect(to: Routes.channel_moderator_path(conn, :show, channel_moderator))
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", channel_moderator: channel_moderator, changeset: changeset)
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "edit.html", channel_moderator: channel_moderator, changeset: changeset)
+      end
+    else
+      unauthorized(conn)
     end
   end
 
   def delete(conn, %{"id" => id}) do
     channel_moderator = Streams.get_channel_moderator!(id)
-    {:ok, _channel_moderator} = Streams.delete_channel_moderator(channel_moderator)
 
-    conn
-    |> put_flash(:info, "Channel moderator deleted successfully.")
-    |> redirect(to: Routes.channel_moderator_path(conn, :index))
+    if Streams.can_edit_mod?(conn.assigns.current_user, channel_moderator) do
+      {:ok, _channel_moderator} = Streams.delete_channel_moderator(channel_moderator)
+
+      conn
+      |> put_flash(:info, "Channel moderator deleted successfully.")
+      |> redirect(to: Routes.channel_moderator_path(conn, :index))
+    else
+      unauthorized(conn)
+    end
   end
 end

@@ -24,6 +24,13 @@ defmodule GlimeshWeb do
       import Plug.Conn
       import GlimeshWeb.Gettext
       alias GlimeshWeb.Router.Helpers, as: Routes
+
+      def unauthorized(conn) do
+        conn
+        |> put_status(403)
+        |> send_resp(403, "Unauthorized")
+        |> halt()
+      end
     end
   end
 

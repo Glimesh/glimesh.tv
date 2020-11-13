@@ -4,8 +4,17 @@ defmodule Glimesh.Apps do
   """
 
   import Ecto.Query, warn: false
+  alias Glimesh.Accounts.User
   alias Glimesh.Apps.App
   alias Glimesh.Repo
+
+  def can_show_app?(%User{} = user, %App{} = app) do
+    user.id == app.user_id
+  end
+
+  def can_edit_app?(%User{} = user, %App{} = app) do
+    user.id == app.user_id
+  end
 
   @doc """
   Returns the list of apps.
