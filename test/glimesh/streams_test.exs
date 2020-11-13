@@ -122,6 +122,17 @@ defmodule Glimesh.StreamsTest do
     end
   end
 
+  describe "channels" do
+    setup do
+      {:ok, channel: channel_fixture()}
+    end
+
+    test "rotate_stream_key/1 changes a stream key", %{channel: channel} do
+      {:ok, new_channel} = Streams.rotate_stream_key(channel)
+      assert new_channel.stream_key != channel.stream_key
+    end
+  end
+
   describe "ingest stream api" do
     setup do
       {:ok, channel: channel_fixture()}

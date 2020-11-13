@@ -103,6 +103,8 @@
         </div>
         <div class="card-footer">
           <%= link gettext("Edit Application"), class: "btn btn-primary", to: Routes.user_applications_path(@conn, :edit, @application) %>
+          &nbsp;
+          <%= button gettext("Rotate Keys"), class: "btn btn-danger", method: :put, to: Routes.user_applications_path(@conn, :rotate, @application), "data-confirm": "Are you sure you want to rotate the Client ID and Secret Key? This will require updating your applications as well." %>
         </div>
       </div>
     </div>

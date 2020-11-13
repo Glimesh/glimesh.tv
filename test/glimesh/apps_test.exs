@@ -131,6 +131,13 @@ defmodule Glimesh.AppsTest do
       assert app.name == Apps.get_app!(app.id).name
     end
 
+    test "rotate_app/1 rotates public / secret keys", %{user: user} do
+      app = app_fixture(user)
+      {:ok, new_oauth_app} = Apps.rotate_oauth_app(app)
+      assert app.oauth_application.uid != new_oauth_app.uid
+      assert app.oauth_application.secret != new_oauth_app.secret
+    end
+
     test "create/2 with non-localhost non-ssl fails", %{user: user} do
       assert {:error, %Ecto.Changeset{} = changeset} =
                Apps.create_app(user, %{
