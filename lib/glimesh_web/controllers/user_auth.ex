@@ -178,7 +178,6 @@ defmodule GlimeshWeb.UserAuth do
     else
       conn
       |> put_flash(:error, "You must be an administrator to access this page.")
-      |> maybe_store_return_to()
       |> redirect(to: Routes.user_session_path(conn, :new))
       |> halt()
     end

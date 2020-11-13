@@ -213,6 +213,14 @@ defmodule Glimesh.Streams do
 
   alias Glimesh.Streams.ChannelBan
 
+  def can_show_mod?(%User{} = user, %ChannelModerator{} = mod) do
+    user.id == mod.channel.user_id
+  end
+
+  def can_edit_mod?(%User{} = user, %ChannelModerator{} = mod) do
+    user.id == mod.channel.user_id
+  end
+
   def list_channel_bans(%Channel{} = channel) do
     Repo.all(
       from cb in ChannelBan,
