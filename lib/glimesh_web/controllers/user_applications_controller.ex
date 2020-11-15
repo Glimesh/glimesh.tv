@@ -1,10 +1,10 @@
 defmodule GlimeshWeb.UserApplicationsController do
   use GlimeshWeb, :controller
 
-  action_fallback GlimeshWeb.FallbackController
-
   alias Glimesh.Apps
   alias Glimesh.Apps.App
+
+  action_fallback GlimeshWeb.FallbackController
 
   plug :put_layout, "user-sidebar.html"
 
@@ -80,9 +80,6 @@ defmodule GlimeshWeb.UserApplicationsController do
           conn
           |> put_flash(:info, gettext("OAuth Client ID & Client Secret rotated successfully."))
           |> redirect(to: Routes.user_applications_path(conn, :show, app))
-
-        {:error, %Ecto.Changeset{} = changeset} ->
-          render(conn, "edit.html", application: app, changeset: changeset)
 
         {:error, :unauthorized} ->
           conn

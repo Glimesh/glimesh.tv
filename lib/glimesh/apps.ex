@@ -118,9 +118,6 @@ defmodule Glimesh.Apps do
 
       iex> rotate_oauth_app(app)
       {:ok, %ExOauth2Provider.Applications.Application{}}
-
-      iex> rotate_oauth_app(app)
-      {:error, %Ecto.Changeset{}}
   """
   def rotate_oauth_app(%User{} = user, %App{} = app) do
     with :ok <- Bodyguard.permit(__MODULE__, :update_app, user, app) do
