@@ -45,14 +45,15 @@ defmodule Glimesh.AppsTest do
       assert Enum.map(Apps.list_apps(), fn x -> x.name end) == [app.name]
     end
 
-    test "list_apps_for_user/1 returns user apps", %{user: user} do
+    test "list_apps/1 returns user apps", %{user: user} do
       app = app_fixture(user)
-      assert Enum.map(Apps.list_apps_for_user(user), fn x -> x.name end) == [app.name]
+      assert Enum.map(Apps.list_apps(user), fn x -> x.name end) == [app.name]
     end
 
     test "get_app!/1 returns the app with given id", %{user: user} do
       app = app_fixture(user)
-      assert Apps.get_app!(app.id).name == app.name
+      {:ok, found_app} = Apps.get_app(user, app.id)
+      assert found_app.name == app.name
     end
 
     test "create_app/1 with valid data creates a app", %{user: user} do
@@ -97,13 +98,9 @@ defmodule Glimesh.AppsTest do
       assert {:error, %Ecto.Changeset{}} = Apps.create_app(user, @invalid_attrs)
     end
 
-    test "create_app/1 with no user returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Apps.create_app(nil, @invalid_attrs)
-    end
-
     test "update_app/2 with valid data updates the app", %{user: user} do
       app = app_fixture(user)
-      assert {:ok, %App{} = app} = Apps.update_app(app, @update_attrs)
+      assert {:ok, %App{} = app} = Apps.update_app(user, app, @update_attrs)
       assert app.name == "some updated name"
       assert app.description == "some updated description"
       assert app.homepage_url == "https://dev.glimesh.tv/"
@@ -111,7 +108,7 @@ defmodule Glimesh.AppsTest do
 
     test "update_app/2 with valid data updates the oauth app", %{user: user} do
       app = app_fixture(user)
-      assert {:ok, %App{} = app} = Apps.update_app(app, @update_attrs)
+      assert {:ok, %App{} = app} = Apps.update_app(user, app, @update_attrs)
       assert app.oauth_application.name == "some updated name"
       assert app.oauth_application.redirect_uri == "https://glimesh.tv/something-new"
       assert app.oauth_application.scopes == "public email chat streamkey"
@@ -119,7 +116,7 @@ defmodule Glimesh.AppsTest do
 
     test "update_app/2 with invalid data returns error changeset with all errors", %{user: user} do
       app = app_fixture(user)
-      update = Apps.update_app(app, @invalid_attrs)
+      update = Apps.update_app(user, app, @invalid_attrs)
       assert {:error, %Ecto.Changeset{} = changeset} = update
 
       assert changeset.errors[:name] == {"can't be blank", [validation: :required]}
@@ -128,12 +125,13 @@ defmodule Glimesh.AppsTest do
       assert changeset.changes[:oauth_application].errors[:redirect_uri] ==
                {"can't be blank", [validation: :required]}
 
-      assert app.name == Apps.get_app!(app.id).name
+      {:ok, found_app} = Apps.get_app(user, app.id)
+      assert app.name == found_app.name
     end
 
     test "rotate_app/1 rotates public / secret keys", %{user: user} do
       app = app_fixture(user)
-      {:ok, new_oauth_app} = Apps.rotate_oauth_app(app)
+      {:ok, new_oauth_app} = Apps.rotate_oauth_app(user, app)
       assert app.oauth_application.uid != new_oauth_app.uid
       assert app.oauth_application.secret != new_oauth_app.secret
     end

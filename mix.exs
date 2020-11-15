@@ -56,8 +56,9 @@ defmodule Glimesh.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      # Authentication
+      # Authentication & Authorization
       {:comeonin, "~> 5.3"},
+      {:bodyguard, "~> 2.4"},
       # Email
       {:bamboo, "~> 1.5"},
       # GraphQL API

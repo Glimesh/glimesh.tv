@@ -120,11 +120,11 @@ defmodule GlimeshWeb.UserApplicationsTest do
       assert html_response(conn, 200) =~ app.oauth_application.secret
     end
 
-    test "rotates the keys when user requests", %{conn: conn, app: app} do
+    test "rotates the keys when user requests", %{conn: conn, user: user, app: app} do
       conn = put(conn, Routes.user_applications_path(conn, :rotate, app))
       assert redirected_to(conn) == Routes.user_applications_path(conn, :show, app)
 
-      new_app = Glimesh.Apps.get_app!(app.id)
+      {:ok, new_app} = Glimesh.Apps.get_app(user, app.id)
       conn = get(conn, Routes.user_applications_path(conn, :show, app))
       refute html_response(conn, 200) =~ app.oauth_application.secret
       assert html_response(conn, 200) =~ new_app.oauth_application.secret

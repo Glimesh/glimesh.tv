@@ -8,28 +8,20 @@ defmodule Glimesh.Apps do
   alias Glimesh.Apps.App
   alias Glimesh.Repo
 
-  def can_show_app?(%User{} = user, %App{} = app) do
-    user.id == app.user_id
-  end
+  defdelegate authorize(action, user, params), to: Glimesh.Apps.Policy
 
-  def can_edit_app?(%User{} = user, %App{} = app) do
-    user.id == app.user_id
-  end
+  # User API Calls
 
   @doc """
-  Returns the list of apps.
+  Returns the list of apps for the user.
 
   ## Examples
 
-      iex> list_apps()
+      iex> list_apps(%User{})
       [%App{}, ...]
 
   """
-  def list_apps do
-    Repo.all(from(a in App)) |> Repo.preload(:oauth_application)
-  end
-
-  def list_apps_for_user(user) do
+  def list_apps(%User{} = user) do
     Repo.all(from a in App, where: a.user_id == ^user.id) |> Repo.preload(:oauth_application)
   end
 
@@ -40,14 +32,20 @@ defmodule Glimesh.Apps do
 
   ## Examples
 
-      iex> get_app!(123)
+      iex> get_app!(%User{}, 123)
       %App{}
 
-      iex> get_app!(456)
+      iex> get_app!(%User{}, 456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_app!(id), do: Repo.get!(App, id) |> Repo.preload(:oauth_application)
+  def get_app(%User{} = user, id) do
+    app = Repo.get(App, id) |> Repo.preload(:oauth_application)
+
+    with :ok <- Bodyguard.permit(__MODULE__, :show_app, user, app) do
+      {:ok, app}
+    end
+  end
 
   @doc """
   Creates a application for Glimesh, and creates an associated OAuthApplication.
@@ -61,27 +59,29 @@ defmodule Glimesh.Apps do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_app(user, attrs \\ %{}) do
-    attrs = key_to_atom(attrs)
-    config = Application.fetch_env!(:ex_oauth2_provider, ExOauth2Provider)
+  def create_app(%User{} = user, attrs \\ %{}) do
+    with :ok <- Bodyguard.permit(__MODULE__, :create_app, user) do
+      attrs = key_to_atom(attrs)
+      config = Application.fetch_env!(:ex_oauth2_provider, ExOauth2Provider)
 
-    scopes =
-      List.flatten([
-        Keyword.get(config, :default_scopes, []),
-        Keyword.get(config, :optional_scopes, [])
-      ])
+      scopes =
+        List.flatten([
+          Keyword.get(config, :default_scopes, []),
+          Keyword.get(config, :optional_scopes, [])
+        ])
 
-    attrs =
-      attrs
-      |> put_in([:oauth_application, :name], Map.get(attrs, :name))
-      |> put_in([:oauth_application, :owner], user)
-      |> put_in([:oauth_application, :scopes], Enum.join(scopes, " "))
+      attrs =
+        attrs
+        |> put_in([:oauth_application, :name], Map.get(attrs, :name))
+        |> put_in([:oauth_application, :owner], user)
+        |> put_in([:oauth_application, :scopes], Enum.join(scopes, " "))
 
-    %App{
-      user: user
-    }
-    |> App.changeset(attrs)
-    |> Repo.insert()
+      %App{
+        user: user
+      }
+      |> App.changeset(attrs)
+      |> Repo.insert()
+    end
   end
 
   @doc """
@@ -96,17 +96,19 @@ defmodule Glimesh.Apps do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_app(%App{} = app, attrs) do
-    attrs = key_to_atom(attrs)
+  def update_app(%User{} = user, %App{} = app, attrs) do
+    with :ok <- Bodyguard.permit(__MODULE__, :update_app, user, app) do
+      attrs = key_to_atom(attrs)
 
-    attrs =
-      attrs
-      |> put_in([:oauth_application, :id], app.oauth_application_id)
-      |> put_in([:oauth_application, :name], Map.get(attrs, :name))
+      attrs =
+        attrs
+        |> put_in([:oauth_application, :id], app.oauth_application_id)
+        |> put_in([:oauth_application, :name], Map.get(attrs, :name))
 
-    app
-    |> App.changeset(attrs)
-    |> Repo.update()
+      app
+      |> App.changeset(attrs)
+      |> Repo.update()
+    end
   end
 
   @doc """
@@ -120,13 +122,30 @@ defmodule Glimesh.Apps do
       iex> rotate_oauth_app(app)
       {:error, %Ecto.Changeset{}}
   """
-  def rotate_oauth_app(%App{} = app) do
-    app.oauth_application
-    |> Ecto.Changeset.change(%{
-      uid: ExOauth2Provider.Utils.generate_token(),
-      secret: ExOauth2Provider.Utils.generate_token()
-    })
-    |> Repo.update()
+  def rotate_oauth_app(%User{} = user, %App{} = app) do
+    with :ok <- Bodyguard.permit(__MODULE__, :update_app, user, app) do
+      app.oauth_application
+      |> Ecto.Changeset.change(%{
+        uid: ExOauth2Provider.Utils.generate_token(),
+        secret: ExOauth2Provider.Utils.generate_token()
+      })
+      |> Repo.update()
+    end
+  end
+
+  # System API Calls
+
+  @doc """
+  Returns the list of apps.
+
+  ## Examples
+
+      iex> list_apps()
+      [%App{}, ...]
+
+  """
+  def list_apps do
+    Repo.all(from(a in App)) |> Repo.preload(:oauth_application)
   end
 
   @doc """
@@ -141,6 +160,8 @@ defmodule Glimesh.Apps do
   def change_app(%App{} = app, attrs \\ %{}) do
     App.changeset(app, attrs)
   end
+
+  # Private Functions
 
   defp key_to_atom(%Plug.Upload{} = map) do
     map
