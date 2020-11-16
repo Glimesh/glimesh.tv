@@ -10,7 +10,7 @@ defmodule Glimesh.Chat.Policy do
   import GlimeshWeb.Gettext
 
   alias Glimesh.Accounts.User
-  alias Glimesh.Apps.App
+  alias Glimesh.Chat
   alias Glimesh.Streams.Channel
 
   def authorize(:create_chat_message, %User{is_admin: true}, _channel), do: true
@@ -22,7 +22,7 @@ defmodule Glimesh.Chat.Policy do
   def authorize(:create_chat_message, %User{} = user, %Channel{} = channel) do
     cond do
       # Specific Channel Ban
-      expiry = Glimesh.Chat.is_banned_until(channel, user) ->
+      expiry = Chat.is_banned_until(channel, user) ->
         if expiry == :infinity do
           {:error, gettext("You are permanently banned from this channel.")}
         else
@@ -68,16 +68,16 @@ defmodule Glimesh.Chat.Policy do
 
   # Moderators
   def authorize(:ban, %User{} = user, %Channel{} = channel),
-    do: Glimesh.Chat.can_moderate?(:can_ban, channel, user)
+    do: Chat.can_moderate?(:can_ban, channel, user)
 
   def authorize(:unban, %User{} = user, %Channel{} = channel),
-    do: Glimesh.Chat.can_moderate?(:can_unban, channel, user)
+    do: Chat.can_moderate?(:can_unban, channel, user)
 
   def authorize(:short_timeout, %User{} = user, %Channel{} = channel),
-    do: Glimesh.Chat.can_moderate?(:can_short_timeout, channel, user)
+    do: Chat.can_moderate?(:can_short_timeout, channel, user)
 
   def authorize(:long_timeout, %User{} = user, %Channel{} = channel),
-    do: Glimesh.Chat.can_moderate?(:can_long_timeout, channel, user)
+    do: Chat.can_moderate?(:can_long_timeout, channel, user)
 
   def authorize(_, _, _), do: false
 end

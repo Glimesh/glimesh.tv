@@ -32,20 +32,16 @@ defmodule Glimesh.Chat do
   """
   def create_chat_message(%User{} = user, %Channel{} = channel, attrs \\ %{}) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_chat_message, user, channel) do
-      cond do
-        # If this message has a link, and it's not allowed in chat
-        !allow_link_in_message(channel, attrs) ->
-          throw_error_on_chat(gettext("This channel has links disabled!"), attrs)
-
-        # Finally allow them to create a message
-        true ->
-          %ChatMessage{
-            channel: channel,
-            user: user
-          }
-          |> ChatMessage.changeset(attrs)
-          |> Repo.insert()
-          |> broadcast(:chat_message)
+      if allow_link_in_message(channel, attrs) do
+        %ChatMessage{
+          channel: channel,
+          user: user
+        }
+        |> ChatMessage.changeset(attrs)
+        |> Repo.insert()
+        |> broadcast(:chat_message)
+      else
+        throw_error_on_chat(gettext("This channel has links disabled!"), attrs)
       end
     end
   end

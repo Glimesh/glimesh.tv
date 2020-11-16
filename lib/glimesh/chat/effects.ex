@@ -1,13 +1,13 @@
 defmodule Glimesh.Chat.Effects do
   @moduledoc """
-
+  Chat effects for rendering badges, usernames, etc.
   """
 
   import GlimeshWeb.Gettext
 
   alias Glimesh.Payments
-  alias Phoenix.HTML.Tag
   alias GlimeshWeb.Router.Helpers, as: Routes
+  alias Phoenix.HTML.Tag
 
   def render_global_badge(_user) do
     # if user.is_admin do
