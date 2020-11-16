@@ -12,6 +12,7 @@ defmodule Glimesh.Chat do
   alias Glimesh.Streams.Channel
   alias Glimesh.Streams.ChannelBan
   alias Glimesh.Streams.ChannelModerationLog
+  alias Glimesh.Streams.ChannelModerator
 
   defdelegate authorize(action, user, params), to: Glimesh.Chat.Policy
 
@@ -45,6 +46,15 @@ defmodule Glimesh.Chat do
     end
   end
 
+  @doc """
+  Short timeout (5 minutes) a user from a chat channel.
+
+  ## Examples
+
+      iex> short_timeout_user(%User{} = moderator, %Channel{} = channel, %User{})
+      {:ok, %ChannelModerationLog{}}
+
+  """
   def short_timeout_user(%User{} = moderator, %Channel{} = channel, %User{} = user_to_timeout) do
     with :ok <- Bodyguard.permit(__MODULE__, :short_timeout, moderator, channel) do
       five_minutes = NaiveDateTime.add(NaiveDateTime.utc_now(), 5 * 60, :second)
@@ -60,6 +70,15 @@ defmodule Glimesh.Chat do
     end
   end
 
+  @doc """
+  Long timeout (15 minutes) a user from a chat channel.
+
+  ## Examples
+
+      iex> long_timeout_user(%User{} = moderator, %Channel{} = channel, %User{})
+      {:ok, %ChannelModerationLog{}}
+
+  """
   def long_timeout_user(%User{} = moderator, %Channel{} = channel, %User{} = user_to_timeout) do
     with :ok <- Bodyguard.permit(__MODULE__, :long_timeout, moderator, channel) do
       fifteen_minutes = NaiveDateTime.add(NaiveDateTime.utc_now(), 15 * 60, :second)
@@ -75,6 +94,15 @@ defmodule Glimesh.Chat do
     end
   end
 
+  @doc """
+  Ban a user permanently from a chat channel.
+
+  ## Examples
+
+      iex> ban_user(%User{} = moderator, %Channel{} = channel, %User{})
+      {:ok, %ChannelModerationLog{}}
+
+  """
   def ban_user(%User{} = moderator, %Channel{} = channel, %User{} = user_to_ban) do
     with :ok <- Bodyguard.permit(__MODULE__, :ban, moderator, channel) do
       ban_user_until(channel, user_to_ban, nil)
@@ -89,6 +117,15 @@ defmodule Glimesh.Chat do
     end
   end
 
+  @doc """
+  Unban a user from a chat channel.
+
+  ## Examples
+
+      iex> unban_user(%User{} = moderator, %Channel{} = channel, %User{})
+      {:ok, %ChannelModerationLog{}}
+
+  """
   def unban_user(%User{} = moderator, %Channel{} = channel, %User{} = user_to_unban) do
     with :ok <- Bodyguard.permit(__MODULE__, :unban, moderator, channel) do
       Repo.one(
@@ -148,33 +185,6 @@ defmodule Glimesh.Chat do
   """
   def get_chat_message!(id), do: Repo.get!(ChatMessage, id) |> Repo.preload([:user, :channel])
 
-  # Private Calls
-  defp ban_user_until(%Channel{} = channel, %User{} = user, until) do
-    %ChannelBan{
-      channel: channel,
-      user: user
-    }
-    |> ChannelBan.changeset(%{expires_at: until})
-    |> Repo.insert()
-
-    delete_chat_messages_for_user(channel, user)
-
-    broadcast_timeout({:ok, channel.id, user}, :user_timedout)
-
-    {:ok, until}
-  end
-
-  defp delete_chat_messages_for_user(%Channel{} = channel, %User{} = user) do
-    query =
-      from m in ChatMessage,
-        where:
-          m.is_visible == true and
-            m.channel_id == ^channel.id and
-            m.user_id == ^user.id
-
-    Repo.update_all(query, set: [is_visible: false])
-  end
-
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking chat_message changes.
 
@@ -215,8 +225,6 @@ defmodule Glimesh.Chat do
       _ -> true
     end
   end
-
-  alias Glimesh.Streams.ChannelModerator
 
   @doc """
   get_moderator_permissions/2 is used to control the UI, and should not be used to do the final permission check
@@ -295,6 +303,34 @@ defmodule Glimesh.Chat do
 
   def can_create_chat_message?(%Channel{} = channel, %User{} = user) do
     is_banned_until(channel, user) == false
+  end
+
+  # Private Calls
+
+  defp ban_user_until(%Channel{} = channel, %User{} = user, until) do
+    %ChannelBan{
+      channel: channel,
+      user: user
+    }
+    |> ChannelBan.changeset(%{expires_at: until})
+    |> Repo.insert()
+
+    delete_chat_messages_for_user(channel, user)
+
+    broadcast_timeout({:ok, channel.id, user}, :user_timedout)
+
+    {:ok, until}
+  end
+
+  defp delete_chat_messages_for_user(%Channel{} = channel, %User{} = user) do
+    query =
+      from m in ChatMessage,
+        where:
+          m.is_visible == true and
+            m.channel_id == ^channel.id and
+            m.user_id == ^user.id
+
+    Repo.update_all(query, set: [is_visible: false])
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error

@@ -2,6 +2,12 @@ defmodule Glimesh.Chat.Policy do
   @moduledoc """
   Glimesh Chat Policy
 
+  :create_chat_message -> Should allow admins, streamers, and users who are not banned.
+
+  :ban -> Should allow admins, streamers, and moderators with permission.
+  :short_timeout -> Should allow admins, streamers, and moderators with permission.
+  :long_timeout -> Should allow admins, streamers, and moderators with permission.
+  :unban -> Should allow admins, streamers, and moderators with permission.
 
   """
 
