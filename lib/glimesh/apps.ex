@@ -158,7 +158,7 @@ defmodule Glimesh.Apps do
     App.changeset(app, attrs)
   end
 
-  # Private Functions
+  # Private Calls
 
   defp key_to_atom(%Plug.Upload{} = map) do
     map

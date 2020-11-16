@@ -23,7 +23,7 @@ defmodule GlimeshWeb.ChannelModeratorController do
     channel = Streams.get_channel_for_user(conn.assigns.current_user)
     unban_user = Glimesh.Accounts.get_by_username!(username)
 
-    case Glimesh.Chat.unban_user(channel, conn.assigns.current_user, unban_user) do
+    case Glimesh.Chat.unban_user(conn.assigns.current_user, channel, unban_user) do
       {:ok, _} ->
         conn
         |> put_flash(:info, "User unbanned successfully.")

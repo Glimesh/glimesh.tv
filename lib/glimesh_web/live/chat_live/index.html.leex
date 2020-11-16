@@ -5,7 +5,7 @@
     </div>
     <%= for chat_message <- @chat_messages do %>
     <div id="<%= chat_message.id %>"
-        class="<%=if Glimesh.Chat.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>">
+        class="<%=if Glimesh.Chat.Effects.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>">
         <div class="user-message-header">
             <%= if Map.get(@permissions, :can_short_timeout, false) do %>
             <i class="fas fa-trash-alt fa-fw" phx-click="short_timeout_user"
@@ -23,10 +23,10 @@
                 data-toggle="tooltip" title="<%= gettext("Ban user from channel.") %>"></i>
             <% end %>
 
-            <%= Glimesh.Chat.render_global_badge(chat_message.user) %>
-            <%= Glimesh.Chat.render_channel_badge(@channel, chat_message.user) %>
+            <%= Glimesh.Chat.Effects.render_global_badge(chat_message.user) %>
+            <%= Glimesh.Chat.Effects.render_channel_badge(@channel, chat_message.user) %>
 
-            <%= Glimesh.Chat.render_username_and_avatar(chat_message.user) %>
+            <%= Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %>
         </div>
         <div class="user-message">
             <%= Glimesh.Chat.Parser.parse_and_render(chat_message, @channel_chat_parser_config) %>

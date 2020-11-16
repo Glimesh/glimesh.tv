@@ -2,7 +2,6 @@ defmodule Glimesh.ChatTest do
   use Glimesh.DataCase
 
   import Glimesh.AccountsFixtures
-  import Phoenix.HTML, only: [safe_to_string: 1]
 
   alias Glimesh.Chat
   alias Glimesh.Streams
@@ -12,7 +11,6 @@ defmodule Glimesh.ChatTest do
     alias Glimesh.Chat.ChatMessage
 
     @valid_attrs %{message: "some message"}
-    @update_attrs %{message: "some updated message"}
     @link_containing_attrs %{message: "https://glimesh.tv is cool"}
     @invalid_attrs %{message: nil}
 
@@ -21,9 +19,13 @@ defmodule Glimesh.ChatTest do
       user = user_fixture()
 
       {:ok, chat_message} =
-        Chat.create_chat_message(channel, user, attrs |> Enum.into(@valid_attrs))
+        Chat.create_chat_message(user, channel, attrs |> Enum.into(@valid_attrs))
 
       chat_message
+    end
+
+    test "empty_chat_message/0 returns an empty changeset" do
+      assert %Ecto.Changeset{} = Chat.empty_chat_message()
     end
 
     test "list_chat_messages/0 returns all chat_messages" do
@@ -37,56 +39,46 @@ defmodule Glimesh.ChatTest do
       assert Chat.get_chat_message!(chat_message.id).message == chat_message.message
     end
 
-    test "create_chat_message/1 with valid data creates a chat_message" do
+    test "create_chat_message/3 with valid data creates a chat_message" do
       assert {:ok, %ChatMessage{} = chat_message} =
-               Chat.create_chat_message(channel_fixture(), user_fixture(), @valid_attrs)
+               Chat.create_chat_message(user_fixture(), channel_fixture(), @valid_attrs)
 
       assert chat_message.message == "some message"
     end
 
-    test "create_chat_message/1 with valid data when the channel has links blocked creates a chat_message" do
+    test "create_chat_message/3 with valid data when the channel has links blocked creates a chat_message" do
       channel = channel_fixture()
       {:ok, _} = Streams.update_channel(channel, %{block_links: true})
 
       assert {:ok, %ChatMessage{} = chat_message} =
-               Chat.create_chat_message(channel_fixture(), user_fixture(), @valid_attrs)
+               Chat.create_chat_message(user_fixture(), channel_fixture(), @valid_attrs)
 
       assert chat_message.message == "some message"
     end
 
-    test "create_chat_message/1 with invalid data returns error changeset" do
+    test "create_chat_message/3 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} =
-               Chat.create_chat_message(channel_fixture(), user_fixture(), @invalid_attrs)
+               Chat.create_chat_message(user_fixture(), channel_fixture(), @invalid_attrs)
     end
 
-    test "create_chat_message/1 with a link when channel has links blocked returns error changeset" do
+    test "create_chat_message/3 with a link when channel has links blocked returns error changeset" do
       channel = channel_fixture()
       {:ok, channel} = Streams.update_channel(channel, %{block_links: true})
 
-      assert {:error, %Ecto.Changeset{}} =
-               Chat.create_chat_message(channel, user_fixture(), @link_containing_attrs)
+      assert {:error, "This channel has links disabled!"} =
+               Chat.create_chat_message(user_fixture(), channel, @link_containing_attrs)
     end
 
     test "create_chat_message/1 with a link when channel allows links returns a chat_message" do
+      assert {:ok, %ChatMessage{}} =
+               Chat.create_chat_message(user_fixture(), channel_fixture(), %{
+                 "message" => "https://glimesh.tv is cool"
+               })
+
       assert {:ok, %ChatMessage{} = chat_message} =
-               Chat.create_chat_message(channel_fixture(), user_fixture(), @link_containing_attrs)
+               Chat.create_chat_message(user_fixture(), channel_fixture(), @link_containing_attrs)
 
       assert chat_message.message == @link_containing_attrs.message
-    end
-
-    test "update_chat_message/2 with valid data updates the chat_message" do
-      chat_message = chat_message_fixture()
-
-      assert {:ok, %ChatMessage{} = chat_message} =
-               Chat.update_chat_message(chat_message, @update_attrs)
-
-      assert chat_message.message == "some updated message"
-    end
-
-    test "update_chat_message/2 with invalid data returns error changeset" do
-      chat_message = chat_message_fixture()
-      assert {:error, %Ecto.Changeset{}} = Chat.update_chat_message(chat_message, @invalid_attrs)
-      assert chat_message.id == Chat.get_chat_message!(chat_message.id).id
     end
 
     #    test "delete_chat_message/1 deletes the chat_message" do
@@ -154,7 +146,7 @@ defmodule Glimesh.ChatTest do
 
     test "streamer is not a moderator but can moderate", %{channel: channel, streamer: streamer} do
       refute Chat.is_moderator?(channel, streamer)
-      assert Chat.can_moderate?(:can_short_timeout, channel, streamer)
+      assert Bodyguard.permit?(Glimesh.Chat, :short_timeout, streamer, channel)
     end
 
     test "moderator is a moderator", %{channel: channel, moderator: moderator} do
@@ -189,16 +181,23 @@ defmodule Glimesh.ChatTest do
       }
     end
 
+    test "global account ban prohibits chat", %{channel: channel} do
+      user = user_fixture(%{is_banned: true})
+
+      assert {:error, "You are banned from Glimesh."} =
+               Chat.create_chat_message(user, channel, %{message: "not allowed?"})
+    end
+
     test "times out a user and removes messages successfully", %{
       channel: channel,
       moderator: moderator,
       user: user
     } do
-      {:ok, _} = Chat.create_chat_message(channel, user, %{message: "bad message"})
-      {:ok, _} = Chat.create_chat_message(channel, moderator, %{message: "good message"})
+      {:ok, _} = Chat.create_chat_message(user, channel, %{message: "bad message"})
+      {:ok, _} = Chat.create_chat_message(moderator, channel, %{message: "good message"})
       assert length(Chat.list_chat_messages(channel)) == 2
 
-      {:ok, _} = Chat.short_timeout_user(channel, moderator, user)
+      {:ok, _} = Chat.short_timeout_user(moderator, channel, user)
       assert length(Chat.list_chat_messages(channel)) == 1
     end
 
@@ -207,13 +206,10 @@ defmodule Glimesh.ChatTest do
       moderator: moderator,
       user: user
     } do
-      {:ok, _} = Chat.short_timeout_user(channel, moderator, user)
+      {:ok, _} = Chat.short_timeout_user(moderator, channel, user)
 
-      assert {:error, changeset} =
-               Chat.create_chat_message(channel, user, %{message: "not allowed?"})
-
-      assert {"You are banned from this channel for 5 more minutes.", _} =
-               changeset.errors[:message]
+      assert {:error, "You are banned from this channel for 5 more minutes."} =
+               Chat.create_chat_message(user, channel, %{message: "not allowed?"})
     end
 
     test "long_timeout_user prevents a new message", %{
@@ -221,13 +217,10 @@ defmodule Glimesh.ChatTest do
       moderator: moderator,
       user: user
     } do
-      {:ok, _} = Chat.long_timeout_user(channel, moderator, user)
+      {:ok, _} = Chat.long_timeout_user(moderator, channel, user)
 
-      assert {:error, changeset} =
-               Chat.create_chat_message(channel, user, %{message: "not allowed?"})
-
-      assert {"You are banned from this channel for 15 more minutes.", _} =
-               changeset.errors[:message]
+      assert {:error, "You are banned from this channel for 15 more minutes."} =
+               Chat.create_chat_message(user, channel, %{message: "not allowed?"})
     end
 
     test "ban_user prevents a new message", %{
@@ -235,16 +228,14 @@ defmodule Glimesh.ChatTest do
       moderator: moderator,
       user: user
     } do
-      {:ok, _} = Chat.ban_user(channel, moderator, user)
+      {:ok, _} = Chat.ban_user(moderator, channel, user)
 
-      assert {:error, changeset} =
-               Chat.create_chat_message(channel, user, %{message: "not allowed?"})
-
-      assert {"You are permanently banned from this channel.", _} = changeset.errors[:message]
+      assert {:error, "You are permanently banned from this channel."} =
+               Chat.create_chat_message(user, channel, %{message: "not allowed?"})
     end
 
     test "adds log of mod actions", %{channel: channel, moderator: moderator, user: user} do
-      assert {:ok, record} = Chat.short_timeout_user(channel, moderator, user)
+      assert {:ok, record} = Chat.short_timeout_user(moderator, channel, user)
 
       assert record.channel.id == channel.id
       assert record.moderator.id == moderator.id
@@ -252,30 +243,19 @@ defmodule Glimesh.ChatTest do
       assert record.action == "short_timeout"
 
       assert {:ok, %ChannelModerationLog{action: "long_timeout"}} =
-               Chat.long_timeout_user(channel, moderator, user)
+               Chat.long_timeout_user(moderator, channel, user)
 
-      assert {:ok, %ChannelModerationLog{action: "ban"}} = Chat.ban_user(channel, moderator, user)
+      assert {:ok, %ChannelModerationLog{action: "ban"}} = Chat.ban_user(moderator, channel, user)
     end
 
     test "moderation privileges are required to timeout", %{
       channel: channel,
       user: user
     } do
-      assert_raise RuntimeError,
-                   "User does not have permission to moderate.",
-                   fn -> Chat.short_timeout_user(channel, user, user) end
-
-      assert_raise RuntimeError,
-                   "User does not have permission to moderate.",
-                   fn -> Chat.long_timeout_user(channel, user, user) end
-
-      assert_raise RuntimeError,
-                   "User does not have permission to moderate.",
-                   fn -> Chat.ban_user(channel, user, user) end
-
-      assert_raise RuntimeError,
-                   "User does not have permission to moderate.",
-                   fn -> Chat.unban_user(channel, user, user) end
+      assert {:error, :unauthorized} == Chat.short_timeout_user(user, channel, user)
+      assert {:error, :unauthorized} == Chat.long_timeout_user(user, channel, user)
+      assert {:error, :unauthorized} == Chat.ban_user(user, channel, user)
+      assert {:error, :unauthorized} == Chat.unban_user(user, channel, user)
     end
 
     test "admin can perform all mod actions", %{
@@ -284,10 +264,10 @@ defmodule Glimesh.ChatTest do
     } do
       admin = admin_fixture()
 
-      assert {:ok, _} = Chat.short_timeout_user(channel, admin, user)
-      assert {:ok, _} = Chat.long_timeout_user(channel, admin, user)
-      assert {:ok, _} = Chat.ban_user(channel, admin, user)
-      assert {:ok, _} = Chat.unban_user(channel, admin, user)
+      assert {:ok, _} = Chat.short_timeout_user(admin, channel, user)
+      assert {:ok, _} = Chat.long_timeout_user(admin, channel, user)
+      assert {:ok, _} = Chat.ban_user(admin, channel, user)
+      assert {:ok, _} = Chat.unban_user(admin, channel, user)
     end
 
     test "streamer can perform all mod actions", %{
@@ -295,58 +275,10 @@ defmodule Glimesh.ChatTest do
       streamer: streamer,
       user: user
     } do
-      assert {:ok, _} = Chat.short_timeout_user(channel, streamer, user)
-      assert {:ok, _} = Chat.long_timeout_user(channel, streamer, user)
-      assert {:ok, _} = Chat.ban_user(channel, streamer, user)
-      assert {:ok, _} = Chat.unban_user(channel, streamer, user)
-    end
-  end
-
-  describe "chat rendering" do
-    setup do
-      [channel, streamer] = channel_streamer_fixture()
-      moderator = user_fixture()
-
-      {:ok, _} =
-        Glimesh.Streams.create_channel_moderator(channel, moderator, %{
-          can_short_timeout: true,
-          can_long_timeout: true,
-          can_ban: true
-        })
-
-      %{
-        channel: channel,
-        streamer: streamer,
-        moderator: moderator,
-        user: user_fixture()
-      }
-    end
-
-    test "renders appropriate tags for admins", %{channel: channel} do
-      admin = admin_fixture()
-
-      assert safe_to_string(Glimesh.Chat.render_username(admin)) =~ "Glimesh Staff"
-
-      assert safe_to_string(Glimesh.Chat.render_avatar(admin)) =~
-               "avatar-ring platform-admin-ring"
-
-      assert Glimesh.Chat.render_channel_badge(channel, admin) == ""
-    end
-
-    test "renders appropriate tags for moderator", %{channel: channel, moderator: moderator} do
-      {:ok, _} = Glimesh.Streams.create_channel_moderator(channel, moderator, %{})
-
-      assert safe_to_string(Glimesh.Chat.render_channel_badge(channel, moderator)) =~ "Mod"
-
-      assert safe_to_string(Glimesh.Chat.render_channel_badge(channel, moderator)) =~
-               "badge badge-info"
-    end
-
-    test "renders appropriate tags for streamer", %{channel: channel, streamer: streamer} do
-      assert safe_to_string(Glimesh.Chat.render_channel_badge(channel, streamer)) =~ "Streamer"
-
-      assert safe_to_string(Glimesh.Chat.render_channel_badge(channel, streamer)) =~
-               "badge badge-info"
+      assert {:ok, _} = Chat.short_timeout_user(streamer, channel, user)
+      assert {:ok, _} = Chat.long_timeout_user(streamer, channel, user)
+      assert {:ok, _} = Chat.ban_user(streamer, channel, user)
+      assert {:ok, _} = Chat.unban_user(streamer, channel, user)
     end
   end
 end

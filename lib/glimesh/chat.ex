@@ -4,17 +4,150 @@ defmodule Glimesh.Chat do
   """
 
   import Ecto.Query, warn: false
-  import GlimeshWeb.Gettext
 
   alias Glimesh.Accounts.User
   alias Glimesh.Chat.ChatMessage
-  alias Glimesh.Payments
   alias Glimesh.Repo
   alias Glimesh.Streams
   alias Glimesh.Streams.Channel
   alias Glimesh.Streams.ChannelBan
   alias Glimesh.Streams.ChannelModerationLog
-  alias Phoenix.HTML.Tag
+  alias Glimesh.Streams.ChannelModerator
+
+  defdelegate authorize(action, user, params), to: Glimesh.Chat.Policy
+
+  # User API Calls
+
+  @doc """
+  Creates a chat_message.
+
+  ## Examples
+
+      iex> create_chat_message(%User{}, %Channel{}, %{field: value})
+      {:ok, %ChatMessage{}}
+
+      iex> create_chat_message(%User{}, %Channel{}, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_chat_message(%User{} = user, %Channel{} = channel, attrs \\ %{}) do
+    with :ok <- Bodyguard.permit(__MODULE__, :create_chat_message, user, channel) do
+      if allow_link_in_message(channel, attrs) do
+        %ChatMessage{
+          channel: channel,
+          user: user
+        }
+        |> ChatMessage.changeset(attrs)
+        |> Repo.insert()
+        |> broadcast(:chat_message)
+      else
+        {:error, "This channel has links disabled!"}
+      end
+    end
+  end
+
+  @doc """
+  Short timeout (5 minutes) a user from a chat channel.
+
+  ## Examples
+
+      iex> short_timeout_user(%User{} = moderator, %Channel{} = channel, %User{})
+      {:ok, %ChannelModerationLog{}}
+
+  """
+  def short_timeout_user(%User{} = moderator, %Channel{} = channel, %User{} = user_to_timeout) do
+    with :ok <- Bodyguard.permit(__MODULE__, :short_timeout, moderator, channel) do
+      five_minutes = NaiveDateTime.add(NaiveDateTime.utc_now(), 5 * 60, :second)
+      ban_user_until(channel, user_to_timeout, five_minutes)
+
+      %ChannelModerationLog{
+        channel: channel,
+        moderator: moderator,
+        user: user_to_timeout
+      }
+      |> ChannelModerationLog.changeset(%{action: "short_timeout"})
+      |> Repo.insert()
+    end
+  end
+
+  @doc """
+  Long timeout (15 minutes) a user from a chat channel.
+
+  ## Examples
+
+      iex> long_timeout_user(%User{} = moderator, %Channel{} = channel, %User{})
+      {:ok, %ChannelModerationLog{}}
+
+  """
+  def long_timeout_user(%User{} = moderator, %Channel{} = channel, %User{} = user_to_timeout) do
+    with :ok <- Bodyguard.permit(__MODULE__, :long_timeout, moderator, channel) do
+      fifteen_minutes = NaiveDateTime.add(NaiveDateTime.utc_now(), 15 * 60, :second)
+      ban_user_until(channel, user_to_timeout, fifteen_minutes)
+
+      %ChannelModerationLog{
+        channel: channel,
+        moderator: moderator,
+        user: user_to_timeout
+      }
+      |> ChannelModerationLog.changeset(%{action: "long_timeout"})
+      |> Repo.insert()
+    end
+  end
+
+  @doc """
+  Ban a user permanently from a chat channel.
+
+  ## Examples
+
+      iex> ban_user(%User{} = moderator, %Channel{} = channel, %User{})
+      {:ok, %ChannelModerationLog{}}
+
+  """
+  def ban_user(%User{} = moderator, %Channel{} = channel, %User{} = user_to_ban) do
+    with :ok <- Bodyguard.permit(__MODULE__, :ban, moderator, channel) do
+      ban_user_until(channel, user_to_ban, nil)
+
+      %ChannelModerationLog{
+        channel: channel,
+        moderator: moderator,
+        user: user_to_ban
+      }
+      |> ChannelModerationLog.changeset(%{action: "ban"})
+      |> Repo.insert()
+    end
+  end
+
+  @doc """
+  Unban a user from a chat channel.
+
+  ## Examples
+
+      iex> unban_user(%User{} = moderator, %Channel{} = channel, %User{})
+      {:ok, %ChannelModerationLog{}}
+
+  """
+  def unban_user(%User{} = moderator, %Channel{} = channel, %User{} = user_to_unban) do
+    with :ok <- Bodyguard.permit(__MODULE__, :unban, moderator, channel) do
+      Repo.one(
+        from m in ChannelBan,
+          where:
+            m.channel_id == ^channel.id and
+              m.user_id == ^user_to_unban.id and
+              is_nil(m.expires_at)
+      )
+      |> Repo.delete!()
+
+      %ChannelModerationLog{
+        channel: channel,
+        moderator: moderator,
+        user: user_to_unban
+      }
+      |> ChannelModerationLog.changeset(%{action: "unban"})
+      |> Repo.insert()
+    end
+  end
+
+  # System API Calls
 
   @doc """
   Returns the list of chat_messages.
@@ -37,28 +170,6 @@ defmodule Glimesh.Chat do
   end
 
   @doc """
-  Returns the list of chat_messages.
-
-  ## Examples
-
-      iex> list_chat_messages()
-      [%ChatMessage{}, ...]
-
-  """
-  def list_chat_user_messages(channel, user) do
-    Repo.all(
-      from m in ChatMessage,
-        where:
-          m.is_visible == true and
-            m.channel_id == ^channel.id and
-            m.user_id == ^user.id,
-        order_by: [desc: :inserted_at]
-    )
-    |> Repo.preload([:user, :channel])
-    |> Enum.reverse()
-  end
-
-  @doc """
   Gets a single chat_message.
 
   Raises `Ecto.NoResultsError` if the Chat message does not exist.
@@ -73,114 +184,6 @@ defmodule Glimesh.Chat do
 
   """
   def get_chat_message!(id), do: Repo.get!(ChatMessage, id) |> Repo.preload([:user, :channel])
-
-  @doc """
-  Creates a chat_message.
-
-  ## Examples
-
-      iex> create_chat_message(%{field: value})
-      {:ok, %ChatMessage{}}
-
-      iex> create_chat_message(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_chat_message(%Channel{} = channel, user, attrs \\ %{}) do
-    cond do
-      # Specific Channel Ban
-      expiry = is_banned_until(channel, user) ->
-        if expiry == :infinity do
-          throw_error_on_chat(gettext("You are permanently banned from this channel."), attrs)
-        else
-          seconds = NaiveDateTime.diff(expiry, NaiveDateTime.utc_now(), :second)
-
-          throw_error_on_chat(
-            gettext("You are banned from this channel for %{minutes} more minutes.",
-              minutes: round(Float.ceil(seconds / 60))
-            ),
-            attrs
-          )
-        end
-
-      # Global Account Ban
-      Glimesh.Accounts.is_user_banned?(user) ->
-        throw_error_on_chat(gettext("You are banned from Glimesh."), attrs)
-
-      # If this message has a link, and it's not allowed in chat
-      !allow_link_in_message(channel, attrs) ->
-        throw_error_on_chat(gettext("This channel has links disabled!"), attrs)
-
-      # Finally allow them to create a message
-      true ->
-        %ChatMessage{
-          channel: channel,
-          user: user
-        }
-        |> ChatMessage.changeset(attrs)
-        |> Repo.insert()
-        |> broadcast(:chat_message)
-    end
-  end
-
-  @doc """
-  Updates a chat_message.
-
-  ## Examples
-
-      iex> update_chat_message(chat_message, %{field: new_value})
-      {:ok, %ChatMessage{}}
-
-      iex> update_chat_message(chat_message, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_chat_message(%ChatMessage{} = chat_message, attrs) do
-    chat_message
-    |> ChatMessage.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a chat_message.
-
-  ## Examples
-
-      iex> delete_chat_message(chat_message)
-      {:ok, %ChatMessage{}}
-
-      iex> delete_chat_message(chat_message)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_chat_message(%ChatMessage{} = chat_message) do
-    chat_message
-    |> ChatMessage.changeset(%{is_visible: false})
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes chat messages for user.
-
-  ## Examples
-
-      iex> delete_chat_messages_for_user(chat_message)
-      {:ok, %ChatMessage{}}
-
-      iex> delete_chat_messages_for_user(chat_message)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_chat_messages_for_user(%Channel{} = channel, %User{} = user) do
-    query =
-      from m in ChatMessage,
-        where:
-          m.is_visible == true and
-            m.channel_id == ^channel.id and
-            m.user_id == ^user.id
-
-    Repo.update_all(query, set: [is_visible: false])
-  end
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking chat_message changes.
@@ -206,7 +209,22 @@ defmodule Glimesh.Chat do
     }
   end
 
-  alias Glimesh.Streams.ChannelModerator
+  def allow_link_in_message(%Channel{} = channel, attrs) do
+    # Need to add this since phoenix likes strings and our tests don't use them :)
+    message_contain_link_helper =
+      if attrs["message"] do
+        Glimesh.Chat.Parser.message_contains_link(attrs["message"])
+      else
+        if attrs.message,
+          do: Glimesh.Chat.Parser.message_contains_link(attrs.message),
+          else: [true]
+      end
+
+    case message_contain_link_helper do
+      [true] -> !channel.block_links
+      _ -> true
+    end
+  end
 
   @doc """
   get_moderator_permissions/2 is used to control the UI, and should not be used to do the final permission check
@@ -219,22 +237,12 @@ defmodule Glimesh.Chat do
     }
 
   def get_moderator_permissions(%Channel{} = channel, %User{} = user) do
-    super_perms = user.is_admin || channel.user_id == user.id
-
-    case Repo.one(
-           from m in ChannelModerator,
-             where: m.channel_id == ^channel.id and m.user_id == ^user.id
-         ) do
-      nil ->
-        %{
-          can_short_timeout: super_perms,
-          can_long_timeout: super_perms,
-          can_ban: super_perms
-        }
-
-      mod ->
-        Map.take(mod, [:can_short_timeout, :can_long_timeout, :can_ban])
-    end
+    %{
+      can_short_timeout: Bodyguard.permit?(__MODULE__, :short_timeout, user, channel),
+      can_long_timeout: Bodyguard.permit?(__MODULE__, :long_timeout, user, channel),
+      can_ban: Bodyguard.permit?(__MODULE__, :ban, user, channel),
+      can_unban: Bodyguard.permit?(__MODULE__, :unban, user, channel)
+    }
   end
 
   @doc """
@@ -256,7 +264,7 @@ defmodule Glimesh.Chat do
   def can_moderate?(_action, nil, nil), do: false
   def can_moderate?(_action, _channel, nil), do: false
 
-  def can_moderate?(action, channel, user) do
+  def can_moderate?(action, %Channel{} = channel, %User{} = user) do
     moderator =
       Repo.one(
         from m in ChannelModerator,
@@ -264,98 +272,11 @@ defmodule Glimesh.Chat do
       )
 
     if moderator do
-      Map.get(moderator, action, false)
+      possibly_nil = Map.get(moderator, action, false)
+      if is_nil(possibly_nil), do: false, else: possibly_nil
     else
-      user.is_admin || channel.user_id == user.id
+      false
     end
-  end
-
-  def short_timeout_user(%Channel{} = channel, %User{} = moderator, user_to_timeout) do
-    if can_moderate?(:can_short_timeout, channel, moderator) === false do
-      raise "User does not have permission to moderate."
-    end
-
-    five_minutes = NaiveDateTime.add(NaiveDateTime.utc_now(), 5 * 60, :second)
-    ban_user_until(channel, user_to_timeout, five_minutes)
-
-    %ChannelModerationLog{
-      channel: channel,
-      moderator: moderator,
-      user: user_to_timeout
-    }
-    |> ChannelModerationLog.changeset(%{action: "short_timeout"})
-    |> Repo.insert()
-  end
-
-  def long_timeout_user(%Channel{} = channel, %User{} = moderator, user_to_timeout) do
-    if can_moderate?(:can_long_timeout, channel, moderator) === false do
-      raise "User does not have permission to moderate."
-    end
-
-    fifteen_minutes = NaiveDateTime.add(NaiveDateTime.utc_now(), 15 * 60, :second)
-    ban_user_until(channel, user_to_timeout, fifteen_minutes)
-
-    %ChannelModerationLog{
-      channel: channel,
-      moderator: moderator,
-      user: user_to_timeout
-    }
-    |> ChannelModerationLog.changeset(%{action: "long_timeout"})
-    |> Repo.insert()
-  end
-
-  def ban_user(%Channel{} = channel, %User{} = moderator, user_to_ban) do
-    if can_moderate?(:can_ban, channel, moderator) === false do
-      raise "User does not have permission to moderate."
-    end
-
-    ban_user_until(channel, user_to_ban, nil)
-
-    %ChannelModerationLog{
-      channel: channel,
-      moderator: moderator,
-      user: user_to_ban
-    }
-    |> ChannelModerationLog.changeset(%{action: "ban"})
-    |> Repo.insert()
-  end
-
-  def unban_user(%Channel{} = channel, %User{} = moderator, %User{} = user_to_unban) do
-    if can_moderate?(:can_unban, channel, moderator) === false do
-      raise "User does not have permission to moderate."
-    end
-
-    Repo.one(
-      from m in ChannelBan,
-        where:
-          m.channel_id == ^channel.id and
-            m.user_id == ^user_to_unban.id and
-            is_nil(m.expires_at)
-    )
-    |> Repo.delete!()
-
-    %ChannelModerationLog{
-      channel: channel,
-      moderator: moderator,
-      user: user_to_unban
-    }
-    |> ChannelModerationLog.changeset(%{action: "unban"})
-    |> Repo.insert()
-  end
-
-  defp ban_user_until(channel, user, until) do
-    %ChannelBan{
-      channel: channel,
-      user: user
-    }
-    |> ChannelBan.changeset(%{expires_at: until})
-    |> Repo.insert()
-
-    delete_chat_messages_for_user(channel, user)
-
-    broadcast_timeout({:ok, channel.id, user}, :user_timedout)
-
-    {:ok, until}
   end
 
   @doc """
@@ -384,136 +305,32 @@ defmodule Glimesh.Chat do
     is_banned_until(channel, user) == false
   end
 
-  def allow_link_in_message(channel, attrs) do
-    # Need to add this since phoenix likes strings and our tests don't use them :)
-    message_contain_link_helper =
-      if attrs["message"] do
-        Glimesh.Chat.Parser.message_contains_link(attrs["message"])
-      else
-        if attrs.message,
-          do: Glimesh.Chat.Parser.message_contains_link(attrs.message),
-          else: [true]
-      end
+  # Private Calls
 
-    case message_contain_link_helper do
-      [true] -> !channel.block_links
-      _ -> true
-    end
+  defp ban_user_until(%Channel{} = channel, %User{} = user, until) do
+    %ChannelBan{
+      channel: channel,
+      user: user
+    }
+    |> ChannelBan.changeset(%{expires_at: until})
+    |> Repo.insert()
+
+    delete_chat_messages_for_user(channel, user)
+
+    broadcast_timeout({:ok, channel.id, user}, :user_timedout)
+
+    {:ok, until}
   end
 
-  def render_global_badge(_user) do
-    # if user.is_admin do
-    #   Tag.content_tag(:span, "Team Glimesh", class: "badge badge-danger")
-    # else
-    #   ""
-    # end
+  defp delete_chat_messages_for_user(%Channel{} = channel, %User{} = user) do
+    query =
+      from m in ChatMessage,
+        where:
+          m.is_visible == true and
+            m.channel_id == ^channel.id and
+            m.user_id == ^user.id
 
-    ""
-  end
-
-  alias GlimeshWeb.Router.Helpers, as: Routes
-
-  def render_username(user) do
-    tags =
-      cond do
-        user.is_admin ->
-          [class: "text-danger", "data-toggle": "tooltip", title: gettext("Glimesh Staff")]
-
-        Payments.is_platform_founder_subscriber?(user) ->
-          [
-            class: "text-warning",
-            "data-toggle": "tooltip",
-            title: gettext("Glimesh Founder Subscriber")
-          ]
-
-        Payments.is_platform_supporter_subscriber?(user) ->
-          [
-            class: "text-white",
-            "data-toggle": "tooltip",
-            title: gettext("Glimesh Supporter Subscriber")
-          ]
-
-        # Placeholder for GCT
-        false ->
-          [
-            class: "text-success",
-            "data-toggle": "tooltip",
-            title: gettext("Glimesh Community Team")
-          ]
-
-        true ->
-          [class: "text-white"]
-      end
-
-    default_tags = [
-      to: Routes.user_profile_path(GlimeshWeb.Endpoint, :index, user.username),
-      target: "_blank"
-    ]
-
-    Phoenix.HTML.Link.link(user.displayname, default_tags ++ tags)
-  end
-
-  def render_avatar(user) do
-    tags =
-      cond do
-        user.is_admin ->
-          [class: "avatar-ring platform-admin-ring"]
-
-        Payments.is_platform_founder_subscriber?(user) ->
-          [class: "avatar-ring avatar-animated-ring platform-founder-ring"]
-
-        Payments.is_platform_supporter_subscriber?(user) ->
-          [class: "avatar-ring platform-supporter-ring"]
-
-        true ->
-          [class: "avatar-ring"]
-      end
-
-    Phoenix.HTML.Tag.content_tag(
-      :div,
-      Phoenix.HTML.Tag.img_tag(
-        Glimesh.Avatar.url({user.avatar, user}, :original),
-        height: "20",
-        width: "20"
-      ),
-      tags
-    )
-  end
-
-  def render_username_and_avatar(user) do
-    [render_avatar(user), " ", render_username(user)]
-  end
-
-  def render_channel_badge(channel, user) do
-    cond do
-      channel.user_id == user.id ->
-        Tag.content_tag(:span, "Streamer", class: "badge badge-info")
-
-      is_moderator?(channel, user) ->
-        Tag.content_tag(:span, "Mod", class: "badge badge-info")
-
-      Payments.is_subscribed?(channel, user) ->
-        Tag.content_tag(:span, Tag.content_tag(:i, "", class: "fas fa-trophy"),
-          class: "badge badge-secondary",
-          "data-toggle": "tooltip",
-          title: gettext("Channel Subscriber")
-        )
-
-      true ->
-        ""
-    end
-  end
-
-  def user_in_message(nil, _msg) do
-    false
-  end
-
-  def user_in_message(user, chat_message) do
-    username = user.username
-
-    !(username == chat_message.user.username) &&
-      (String.match?(chat_message.message, ~r/\b#{username}\b/i) ||
-         String.match?(chat_message.message, ~r/\b#{"@" <> username}\b/i))
+    Repo.update_all(query, set: [is_visible: false])
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error
@@ -529,8 +346,6 @@ defmodule Glimesh.Chat do
     {:ok, chat_message}
   end
 
-  defp broadcast_timeout({:error, _reason} = error, _event), do: error
-
   defp broadcast_timeout({:ok, channel_id, bad_user}, :user_timedout) do
     Glimesh.Events.broadcast(
       Streams.get_subscribe_topic(:chat, channel_id),
@@ -540,18 +355,5 @@ defmodule Glimesh.Chat do
     )
 
     {:ok, bad_user}
-  end
-
-  def throw_error_on_chat(error_message, attrs) do
-    {:error,
-     %Ecto.Changeset{
-       action: :validate,
-       changes: %{message: attrs["message"]},
-       errors: [
-         message: {error_message, [validation: :required]}
-       ],
-       data: %Glimesh.Chat.ChatMessage{},
-       valid?: false
-     }}
   end
 end

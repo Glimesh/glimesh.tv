@@ -288,7 +288,7 @@ defmodule Glimesh.Streams do
     channel = get_channel_for_user(streamer)
 
     if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
-      Glimesh.Chat.create_chat_message(channel, user, %{
+      Glimesh.Chat.create_chat_message(user, channel, %{
         message: "just followed the stream!"
       })
     end

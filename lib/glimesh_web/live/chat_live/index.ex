@@ -44,18 +44,10 @@ defmodule GlimeshWeb.ChatLive.Index do
   end
 
   @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    chat_message = Chat.get_chat_message!(id)
-    {:ok, _} = Chat.delete_chat_message(chat_message)
-
-    {:noreply, assign(socket, :chat_messages, list_chat_messages(socket.assigns.channel))}
-  end
-
-  @impl true
   def handle_event("short_timeout_user", %{"user" => to_ban_user}, socket) do
     Chat.short_timeout_user(
-      socket.assigns.channel,
       socket.assigns.user,
+      socket.assigns.channel,
       Accounts.get_by_username!(to_ban_user)
     )
 
@@ -65,8 +57,8 @@ defmodule GlimeshWeb.ChatLive.Index do
   @impl true
   def handle_event("long_timeout_user", %{"user" => to_ban_user}, socket) do
     Chat.long_timeout_user(
-      socket.assigns.channel,
       socket.assigns.user,
+      socket.assigns.channel,
       Accounts.get_by_username!(to_ban_user)
     )
 
@@ -76,8 +68,8 @@ defmodule GlimeshWeb.ChatLive.Index do
   @impl true
   def handle_event("ban_user", %{"user" => to_ban_user}, socket) do
     Chat.ban_user(
-      socket.assigns.channel,
       socket.assigns.user,
+      socket.assigns.channel,
       Accounts.get_by_username!(to_ban_user)
     )
 

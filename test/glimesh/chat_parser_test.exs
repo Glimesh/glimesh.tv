@@ -85,6 +85,13 @@ defmodule Glimesh.ChatParserTest do
                "<a href=\"https://example.com/\" rel=\"ugc\" target=\"_blank\">https://example.com/</a>"
     end
 
+    test "parses a non-https link" do
+      parsed = Glimesh.Chat.Parser.parse("http://example.com/")
+
+      assert Glimesh.Chat.Parser.to_raw_html(parsed) ==
+               "<a href=\"http://example.com/\" rel=\"ugc\" target=\"_blank\">http://example.com/</a>"
+    end
+
     test "ignores a link when config disabled" do
       parsed =
         Glimesh.Chat.Parser.parse("https://example.com/", %Glimesh.Chat.Parser.Config{
