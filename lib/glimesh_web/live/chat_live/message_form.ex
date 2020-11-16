@@ -36,7 +36,7 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   end
 
   defp save_chat_message(socket, channel, user, chat_message_params) do
-    case Chat.create_chat_message(channel, user, chat_message_params) do
+    case Chat.create_chat_message(user, channel, chat_message_params) do
       {:ok, _chat_message} ->
         {:noreply,
          socket
