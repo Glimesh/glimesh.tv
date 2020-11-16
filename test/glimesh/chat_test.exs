@@ -2,7 +2,6 @@ defmodule Glimesh.ChatTest do
   use Glimesh.DataCase
 
   import Glimesh.AccountsFixtures
-  import Phoenix.HTML, only: [safe_to_string: 1]
 
   alias Glimesh.Chat
   alias Glimesh.Streams
@@ -66,7 +65,7 @@ defmodule Glimesh.ChatTest do
       channel = channel_fixture()
       {:ok, channel} = Streams.update_channel(channel, %{block_links: true})
 
-      assert {:error, %Ecto.Changeset{}} =
+      assert {:error, "This channel has links disabled!"} =
                Chat.create_chat_message(user_fixture(), channel, @link_containing_attrs)
     end
 
@@ -280,56 +279,6 @@ defmodule Glimesh.ChatTest do
       assert {:ok, _} = Chat.long_timeout_user(streamer, channel, user)
       assert {:ok, _} = Chat.ban_user(streamer, channel, user)
       assert {:ok, _} = Chat.unban_user(streamer, channel, user)
-    end
-  end
-
-  describe "chat rendering" do
-    setup do
-      [channel, streamer] = channel_streamer_fixture()
-      moderator = user_fixture()
-
-      {:ok, _} =
-        Glimesh.Streams.create_channel_moderator(channel, moderator, %{
-          can_short_timeout: true,
-          can_long_timeout: true,
-          can_ban: true
-        })
-
-      %{
-        channel: channel,
-        streamer: streamer,
-        moderator: moderator,
-        user: user_fixture()
-      }
-    end
-
-    test "renders appropriate tags for admins", %{channel: channel} do
-      admin = admin_fixture()
-
-      assert safe_to_string(Glimesh.Chat.Effects.render_username(admin)) =~ "Glimesh Staff"
-
-      assert safe_to_string(Glimesh.Chat.Effects.render_avatar(admin)) =~
-               "avatar-ring platform-admin-ring"
-
-      assert Glimesh.Chat.Effects.render_channel_badge(channel, admin) == ""
-    end
-
-    test "renders appropriate tags for moderator", %{channel: channel, moderator: moderator} do
-      {:ok, _} = Glimesh.Streams.create_channel_moderator(channel, moderator, %{})
-
-      assert safe_to_string(Glimesh.Chat.Effects.render_channel_badge(channel, moderator)) =~
-               "Mod"
-
-      assert safe_to_string(Glimesh.Chat.Effects.render_channel_badge(channel, moderator)) =~
-               "badge badge-info"
-    end
-
-    test "renders appropriate tags for streamer", %{channel: channel, streamer: streamer} do
-      assert safe_to_string(Glimesh.Chat.Effects.render_channel_badge(channel, streamer)) =~
-               "Streamer"
-
-      assert safe_to_string(Glimesh.Chat.Effects.render_channel_badge(channel, streamer)) =~
-               "badge badge-info"
     end
   end
 end

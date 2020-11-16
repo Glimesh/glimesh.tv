@@ -4,7 +4,6 @@ defmodule Glimesh.Chat do
   """
 
   import Ecto.Query, warn: false
-  import GlimeshWeb.Gettext
 
   alias Glimesh.Accounts.User
   alias Glimesh.Chat.ChatMessage
@@ -41,7 +40,7 @@ defmodule Glimesh.Chat do
         |> Repo.insert()
         |> broadcast(:chat_message)
       else
-        throw_error_on_chat(gettext("This channel has links disabled!"), attrs)
+        {:error, "This channel has links disabled!"}
       end
     end
   end
@@ -320,18 +319,5 @@ defmodule Glimesh.Chat do
     )
 
     {:ok, bad_user}
-  end
-
-  defp throw_error_on_chat(error_message, attrs) do
-    {:error,
-     %Ecto.Changeset{
-       action: :validate,
-       changes: %{message: attrs["message"]},
-       errors: [
-         message: {error_message, [validation: :required]}
-       ],
-       data: %Glimesh.Chat.ChatMessage{},
-       valid?: false
-     }}
   end
 end

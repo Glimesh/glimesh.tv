@@ -40,11 +40,24 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
       {:ok, _chat_message} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Chat message created successfully")
          |> assign(:changeset, Chat.empty_chat_message())}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
+
+      # Permissions errors
+      {:error, error_message} ->
+        error_changeset = %Ecto.Changeset{
+          action: :validate,
+          changes: chat_message_params,
+          errors: [
+            message: {error_message, [validation: :required]}
+          ],
+          data: %Glimesh.Chat.ChatMessage{},
+          valid?: false
+        }
+
+        {:noreply, assign(socket, changeset: error_changeset)}
     end
   end
 end

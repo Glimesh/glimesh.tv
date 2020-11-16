@@ -109,13 +109,6 @@ defmodule Glimesh.Chat.Parser do
   defp flatten_list(element), do: [element]
 
   # Renderer
-  def string_to_raw(input) do
-    input
-    |> parse()
-    |> to_raw_html()
-    |> raw()
-  end
-
   def to_raw_html(safe_list) do
     safe_list
     |> Enum.map(&map_to_safe(&1))
