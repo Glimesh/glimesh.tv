@@ -7,7 +7,8 @@ defmodule GlimeshWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_glimesh_key",
-    signing_salt: Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:live_view][:signing_salt]
+    signing_salt:
+      Application.compile_env(:glimesh, [GlimeshWeb.Endpoint, :live_view, :signing_salt])
   ]
 
   # Redirect to primary domain before doing anything

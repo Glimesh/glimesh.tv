@@ -210,9 +210,7 @@ defmodule Glimesh.StreamsTest do
         video_width: 768
       }
 
-      {:ok, stream} = Streams.log_stream_metadata(stream, incoming_attrs)
-
-      assert incoming_attrs = hd(stream.metadata)
+      assert {:ok, stream} = Streams.log_stream_metadata(stream, incoming_attrs)
     end
   end
 end
