@@ -26,7 +26,6 @@ import ProcessPayment from './hooks/ProcessPayment';
 import Chat from './hooks/Chat';
 import Choices from "./hooks/Choices";
 import FtlVideo from "./hooks/FtlVideo";
-import OvenVideo from "./hooks/OvenVideo";
 import ClickToCopy from "./hooks/ClickToCopy";
 import LineChart from "./hooks/charts/LineChart";
 
@@ -38,7 +37,6 @@ Hooks.ProcessPayment = ProcessPayment;
 Hooks.Chat = Chat;
 Hooks.Choices = Choices;
 Hooks.FtlVideo = FtlVideo;
-Hooks.OvenVideo = OvenVideo;
 Hooks.ClickToCopy = ClickToCopy;
 Hooks.LineChart = LineChart;
 
