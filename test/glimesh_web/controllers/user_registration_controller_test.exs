@@ -41,8 +41,8 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
       conn = get(conn, "/")
       response = html_response(conn, 200)
       assert response =~ username
-      assert response =~ "\nSettings</a>"
-      assert response =~ "\nSign Out</a>"
+      assert response =~ "Settings"
+      assert response =~ "Sign Out"
     end
 
     test "render errors for invalid data", %{conn: conn} do

@@ -30,7 +30,8 @@ defmodule GlimeshWeb.Plugs.Redirect do
   end
 
   @doc """
-  If we're dealing with a URL that matches the expected from, let's redirect it's request to the to
+  If we're dealing with a URL that matches the expected from, let's redirect it's request to the to new location.
+  Otherwise pass through any non-matching requests.
   """
   def call(%Plug.Conn{request_path: request_path, query_string: query_string} = conn, %{
         from: from,
@@ -47,9 +48,6 @@ defmodule GlimeshWeb.Plugs.Redirect do
     end
   end
 
-  @doc """
-  Pass through any non-matching requests
-  """
   def call(conn, _) do
     conn
   end
