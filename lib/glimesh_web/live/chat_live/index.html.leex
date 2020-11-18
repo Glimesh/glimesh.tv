@@ -28,7 +28,7 @@
 
             <%= Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %>
             <%= if @user.show_timestamps? do %>
-                <small class="text-muted"><local-time phx-update="ignore" datetime="<%= "#{chat_message.inserted_at}" <> "Z" %>" format="micro" hour="numeric" minute="2-digit" second="2-digit"></local-time></small>
+                <small class="text-muted"><local-time phx-update="ignore" datetime="<%= "#{chat_message.inserted_at}" <> "Z" %>" format="micro" hour="numeric" minute="2-digit" second="2-digit"><%= NaiveDateTime.to_time(chat_message.inserted_at) %></local-time></small>
             <% end %>
         </div>
         <div class="user-message">
