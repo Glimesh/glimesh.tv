@@ -8,9 +8,13 @@ defmodule Glimesh.Streams do
   alias Glimesh.Repo
   alias Glimesh.Streams.Category
   alias Glimesh.Streams.Channel
-  alias Glimesh.Streams.ChannelModerationLog
-  alias Glimesh.Streams.ChannelModerator
   alias Glimesh.Streams.Followers
+
+  alias Glimesh.Streams.StreamMetadata
+
+  alias Glimesh.Streams.Category
+
+  defdelegate authorize(action, user, params), to: Glimesh.Streams.Policy
 
   ## Broadcasting Functions
 
@@ -41,293 +45,56 @@ defmodule Glimesh.Streams do
     {:ok, channel}
   end
 
-  ## Database getters
+  # User API Calls
 
-  def list_channels do
-    Repo.all(
-      from c in Channel,
-        join: cat in Category,
-        on: cat.id == c.category_id
-    )
-    |> Repo.preload([:category, :user])
+  def create_channel(%User{} = user, attrs \\ %{category_id: Enum.at(list_categories(), 0).id}) do
+    with :ok <- Bodyguard.permit(__MODULE__, :create_channel, user) do
+      %Channel{
+        user: user
+      }
+      |> Channel.create_changeset(attrs)
+      |> Repo.insert()
+    end
   end
 
-  def list_live_channels do
-    Repo.all(
-      from c in Channel,
-        where: c.status == "live"
-    )
-    |> Repo.preload([:category, :user, :stream])
+  def update_channel(%User{} = user, %Channel{} = channel, attrs) do
+    with :ok <- Bodyguard.permit(__MODULE__, :update_channel, user, channel) do
+      new_channel =
+        channel
+        |> Channel.changeset(attrs)
+        |> Repo.update()
+
+      case new_channel do
+        {:error, _changeset} ->
+          new_channel
+
+        {:ok, changeset} ->
+          broadcast_message = Repo.preload(changeset, :category, force: true)
+          broadcast({:ok, broadcast_message}, :channel)
+      end
+    end
   end
 
-  def list_in_category(category) do
-    Repo.all(
-      from c in Channel,
-        join: cat in Category,
-        on: cat.id == c.category_id,
-        where: c.status == "live",
-        where: cat.id == ^category.id or cat.parent_id == ^category.id
-    )
-    |> Repo.preload([:category, :user, :stream])
+  def rotate_stream_key(%User{} = user, %Channel{} = channel) do
+    with :ok <- Bodyguard.permit(__MODULE__, :update_channel, user, channel) do
+      channel
+      |> change_channel()
+      |> Channel.stream_key_changeset()
+      |> Repo.update()
+    end
   end
 
-  def list_all_follows do
-    Repo.all(from(f in Followers))
-  end
+  def delete_channel(%User{} = user, %Channel{} = channel) do
+    with :ok <- Bodyguard.permit(__MODULE__, :delete_channel, user, channel) do
+      attrs = %{inaccessible: true}
 
-  def list_followers(user) do
-    Repo.all(from f in Followers, where: f.streamer_id == ^user.id) |> Repo.preload(:user)
-  end
-
-  def list_following(user) do
-    Repo.all(from f in Followers, where: f.user_id == ^user.id)
-  end
-
-  def list_live_followed_channels(user) do
-    Repo.all(
-      from c in Channel,
-        join: f in Followers,
-        on: c.user_id == f.streamer_id,
-        where: c.status == "live",
-        where: f.user_id == ^user.id
-    )
-    |> Repo.preload([:category, :user, :stream])
-  end
-
-  def list_all_followed_channels(user) do
-    Repo.all(
-      from c in Channel,
-        join: f in Followers,
-        on: c.user_id == f.streamer_id,
-        where: f.user_id == ^user.id
-    )
-    |> Repo.preload([:category, :user, :stream])
-  end
-
-  def get_channel!(id) do
-    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :user])
-  end
-
-  def get_channel_for_username!(username, ignore_banned \\ false) do
-    Repo.one(
-      from c in Channel,
-        join: u in User,
-        on: c.user_id == u.id,
-        where: u.username == ^username,
-        where: c.inaccessible == false,
-        where: u.is_banned == ^ignore_banned
-    )
-    |> Repo.preload([:category, :user])
-  end
-
-  def get_channel_for_stream_key!(stream_key) do
-    Repo.one(
-      from c in Channel,
-        where: c.stream_key == ^stream_key and c.inaccessible == false
-    )
-    |> Repo.preload([:category, :user])
-  end
-
-  def get_channel_for_user(user) do
-    Repo.one(
-      from c in Channel,
-        join: u in User,
-        on: c.user_id == u.id,
-        where: u.id == ^user.id,
-        where: c.inaccessible == false
-    )
-    |> Repo.preload([:category, :user])
-  end
-
-  def is_live?(%Channel{} = channel) do
-    channel.status == "live"
-  end
-
-  def create_channel(user, attrs \\ %{category_id: Enum.at(list_categories(), 0).id}) do
-    %Channel{
-      user: user
-    }
-    |> Channel.create_changeset(attrs)
-    |> Repo.insert()
-  end
-
-  def delete_channel(%Channel{} = channel) do
-    attrs = %{inaccessible: true}
-
-    channel
-    |> Channel.changeset(attrs)
-    |> Repo.update()
-  end
-
-  def update_channel(%Channel{} = channel, attrs) do
-    new_channel =
       channel
       |> Channel.changeset(attrs)
       |> Repo.update()
-
-    case new_channel do
-      {:error, _changeset} ->
-        new_channel
-
-      {:ok, changeset} ->
-        broadcast_message = Repo.preload(changeset, :category, force: true)
-        broadcast({:ok, broadcast_message}, :channel)
     end
-  end
-
-  def rotate_stream_key(%Channel{} = channel) do
-    channel
-    |> change_channel()
-    |> Channel.stream_key_changeset()
-    |> Repo.update()
-  end
-
-  def change_channel(%Channel{} = channel, attrs \\ %{}) do
-    Channel.changeset(channel, attrs)
-  end
-
-  def can_change_channel?(_, nil) do
-    false
-  end
-
-  def can_change_channel?(%Channel{} = channel, user) do
-    user.is_admin || channel.user.id == user.id
-  end
-
-  ## Moderation
-  def list_channel_moderators(%Channel{} = channel) do
-    Repo.all(from cm in ChannelModerator, where: cm.channel_id == ^channel.id)
-    |> Repo.preload([:user])
-  end
-
-  def list_channel_moderation_log(%Channel{} = channel) do
-    Repo.all(
-      from ml in ChannelModerationLog,
-        where: ml.channel_id == ^channel.id,
-        order_by: [desc: :inserted_at]
-    )
-    |> Repo.preload([:moderator, :user])
-  end
-
-  def list_channel_moderation_log_for_mod(%ChannelModerator{} = chan_mod) do
-    Repo.all(
-      from ml in ChannelModerationLog,
-        where: ml.channel_id == ^chan_mod.channel_id and ml.moderator_id == ^chan_mod.user_id,
-        order_by: [desc: :inserted_at]
-    )
-    |> Repo.preload([:user])
-  end
-
-  alias Glimesh.Streams.ChannelBan
-
-  def can_show_mod?(%User{} = user, %ChannelModerator{} = mod) do
-    user.id == mod.channel.user_id
-  end
-
-  def can_edit_mod?(%User{} = user, %ChannelModerator{} = mod) do
-    user.id == mod.channel.user_id
-  end
-
-  def list_channel_bans(%Channel{} = channel) do
-    Repo.all(
-      from cb in ChannelBan,
-        where: cb.channel_id == ^channel.id and is_nil(cb.expires_at),
-        order_by: [desc: :inserted_at]
-    )
-    |> Repo.preload([:user])
-  end
-
-  def get_channel_moderator!(id) do
-    Repo.get!(ChannelModerator, id) |> Repo.preload([:channel, :user])
-  end
-
-  def create_channel_moderator(%Channel{} = channel, user, attrs \\ %{}) do
-    change =
-      %ChannelModerator{
-        channel: channel,
-        user: user
-      }
-      |> ChannelModerator.changeset(attrs)
-
-    if is_nil(user) or channel.user_id == user.id do
-      {:error_no_user, change}
-    else
-      change |> Repo.insert()
-    end
-  end
-
-  def change_channel_moderator(%ChannelModerator{} = mod, attrs \\ %{}) do
-    ChannelModerator.changeset(mod, attrs)
-  end
-
-  def update_channel_moderator(%ChannelModerator{} = mod, attrs \\ %{}) do
-    mod
-    |> ChannelModerator.changeset(attrs)
-    |> Repo.update()
-  end
-
-  def delete_channel_moderator(%ChannelModerator{} = mod) do
-    Repo.delete(mod)
-  end
-
-  ## Following
-
-  def follow(streamer, user, live_notifications \\ false) do
-    attrs = %{
-      has_live_notifications: live_notifications
-    }
-
-    results =
-      %Followers{
-        streamer: streamer,
-        user: user
-      }
-      |> Followers.changeset(attrs)
-      |> Repo.insert()
-
-    channel = get_channel_for_user(streamer)
-
-    if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
-      Glimesh.Chat.create_chat_message(user, channel, %{
-        message: "just followed the stream!"
-      })
-    end
-
-    results
-  end
-
-  def unfollow(streamer, user) do
-    Repo.get_by(Followers, streamer_id: streamer.id, user_id: user.id) |> Repo.delete()
-  end
-
-  def update_following(%Followers{} = following, attrs \\ %{}) do
-    following
-    |> Repo.preload([:user, :streamer])
-    |> Followers.changeset(attrs)
-    |> Repo.update()
-  end
-
-  def is_following?(streamer, user) do
-    Repo.exists?(
-      from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id
-    )
-  end
-
-  def get_following(streamer, user) do
-    Repo.one(from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id)
-  end
-
-  def count_followers(user) do
-    Repo.one!(from f in Followers, select: count(f.id), where: f.streamer_id == ^user.id)
-  end
-
-  def count_following(user) do
-    Repo.one!(from f in Followers, select: count(f.id), where: f.user_id == ^user.id)
   end
 
   ## Categories
-
-  alias Glimesh.Streams.Category
 
   @doc """
   Returns the list of categories.
@@ -537,8 +304,6 @@ defmodule Glimesh.Streams do
     |> Repo.update()
   end
 
-  alias Glimesh.Streams.StreamMetadata
-
   def get_last_stream_metadata(%Glimesh.Streams.Stream{} = stream) do
     Repo.one(
       from sm in StreamMetadata,
@@ -557,4 +322,167 @@ defmodule Glimesh.Streams do
 
     {:ok, stream |> Repo.preload([:metadata])}
   end
+
+  # System API Calls
+
+  ## Following
+
+  def follow(%User{} = streamer, %User{} = user, live_notifications \\ false) do
+    attrs = %{
+      has_live_notifications: live_notifications
+    }
+
+    results =
+      %Followers{
+        streamer: streamer,
+        user: user
+      }
+      |> Followers.changeset(attrs)
+      |> Repo.insert()
+
+    channel = get_channel_for_user(streamer)
+
+    if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
+      Glimesh.Chat.create_chat_message(user, channel, %{
+        message: "just followed the stream!"
+      })
+    end
+
+    results
+  end
+
+  def unfollow(%User{} = streamer, %User{} = user) do
+    Repo.get_by(Followers, streamer_id: streamer.id, user_id: user.id) |> Repo.delete()
+  end
+
+  def update_following(%Followers{} = following, attrs \\ %{}) do
+    following
+    |> Repo.preload([:user, :streamer])
+    |> Followers.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def is_following?(%User{} = streamer, %User{} = user) do
+    Repo.exists?(
+      from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id
+    )
+  end
+
+  def get_following(%User{} = streamer, %User{} = user) do
+    Repo.one(from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id)
+  end
+
+  def count_followers(%User{} = user) do
+    Repo.one!(from f in Followers, select: count(f.id), where: f.streamer_id == ^user.id)
+  end
+
+  def count_following(%User{} = user) do
+    Repo.one!(from f in Followers, select: count(f.id), where: f.user_id == ^user.id)
+  end
+
+  def change_channel(%Channel{} = channel, attrs \\ %{}) do
+    Channel.changeset(channel, attrs)
+  end
+
+  def list_channels do
+    Repo.all(
+      from c in Channel,
+        join: cat in Category,
+        on: cat.id == c.category_id
+    )
+    |> Repo.preload([:category, :user])
+  end
+
+  def list_live_channels do
+    Repo.all(
+      from c in Channel,
+        where: c.status == "live"
+    )
+    |> Repo.preload([:category, :user, :stream])
+  end
+
+  def list_in_category(category) do
+    Repo.all(
+      from c in Channel,
+        join: cat in Category,
+        on: cat.id == c.category_id,
+        where: c.status == "live",
+        where: cat.id == ^category.id or cat.parent_id == ^category.id
+    )
+    |> Repo.preload([:category, :user, :stream])
+  end
+
+  def list_all_follows do
+    Repo.all(from(f in Followers))
+  end
+
+  def list_followers(user) do
+    Repo.all(from f in Followers, where: f.streamer_id == ^user.id) |> Repo.preload(:user)
+  end
+
+  def list_following(user) do
+    Repo.all(from f in Followers, where: f.user_id == ^user.id)
+  end
+
+  def list_live_followed_channels(user) do
+    Repo.all(
+      from c in Channel,
+        join: f in Followers,
+        on: c.user_id == f.streamer_id,
+        where: c.status == "live",
+        where: f.user_id == ^user.id
+    )
+    |> Repo.preload([:category, :user, :stream])
+  end
+
+  def list_all_followed_channels(user) do
+    Repo.all(
+      from c in Channel,
+        join: f in Followers,
+        on: c.user_id == f.streamer_id,
+        where: f.user_id == ^user.id
+    )
+    |> Repo.preload([:category, :user, :stream])
+  end
+
+  def get_channel!(id) do
+    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :user])
+  end
+
+  def get_channel_for_username!(username, ignore_banned \\ false) do
+    Repo.one(
+      from c in Channel,
+        join: u in User,
+        on: c.user_id == u.id,
+        where: u.username == ^username,
+        where: c.inaccessible == false,
+        where: u.is_banned == ^ignore_banned
+    )
+    |> Repo.preload([:category, :user])
+  end
+
+  def get_channel_for_stream_key!(stream_key) do
+    Repo.one(
+      from c in Channel,
+        where: c.stream_key == ^stream_key and c.inaccessible == false
+    )
+    |> Repo.preload([:category, :user])
+  end
+
+  def get_channel_for_user(user) do
+    Repo.one(
+      from c in Channel,
+        join: u in User,
+        on: c.user_id == u.id,
+        where: u.id == ^user.id,
+        where: c.inaccessible == false
+    )
+    |> Repo.preload([:category, :user])
+  end
+
+  def is_live?(%Channel{} = channel) do
+    channel.status == "live"
+  end
+
+  # Private Calls
 end
