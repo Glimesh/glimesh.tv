@@ -169,6 +169,17 @@ defmodule Glimesh.Chat do
     |> Enum.reverse()
   end
 
+  def list_chat_messages(channel, limit) do
+    Repo.all(
+      from m in ChatMessage,
+        where: m.is_visible == true and m.channel_id == ^channel.id,
+        order_by: [desc: :inserted_at],
+        limit: ^limit
+    )
+    |> Repo.preload([:user, :channel])
+    |> Enum.reverse()
+  end
+
   @doc """
   Gets a single chat_message.
 

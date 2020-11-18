@@ -41,7 +41,7 @@ defmodule GlimeshWeb.ChatLive.Index do
       |> assign(:chat_message, %ChatMessage{})
       |> assign(:show_timestamps?, session["user"].show_timestamps?)
 
-    {:ok, new_socket, temporary_assigns: [chat_messages: []]}
+    {:ok, new_socket}
   end
 
   @impl true
@@ -100,6 +100,16 @@ defmodule GlimeshWeb.ChatLive.Index do
     Chat.list_chat_messages(channel)
   end
 
+  defp list_chat_messages(channel, limit) do
+    # Only currently used when updating elements about the chat.
+    # Just makes sure that if the limit is above 50, it's set back to 50.
+    # Otherwise you could possibly load a few hundred messages when updating elements.
+    # The last 50 should do fine without anyone noticing.
+    # If the viewer's chat currently has less than 50 messages then it just gets however many there are.
+    limit = if limit > 50, do: 50, else: limit
+    Chat.list_chat_messages(channel, limit)
+  end
+
   defp background_style(channel) do
     url = Glimesh.ChatBackground.url({channel.chat_bg, channel}, :original)
 
@@ -108,17 +118,14 @@ defmodule GlimeshWeb.ChatLive.Index do
 
   @impl true
   def handle_event("toggle_timestamps", _params, socket) do
-    timestamp_state = case socket.assigns.show_timestamps? do
-      true -> false
-      false -> true
-    end
+    timestamp_state = Kernel.not(socket.assigns.show_timestamps?)
     {:ok, user} =
       Glimesh.Accounts.User.user_settings_changeset(socket.assigns.user, %{show_timestamps?: timestamp_state})
       |> Glimesh.Repo.update()
     {:noreply,
      socket
      |> assign(:update_action, "replace")
-     |> assign(:chat_messages, list_chat_messages(socket.assigns.channel))
+     |> assign(:chat_messages, list_chat_messages(socket.assigns.channel, Kernel.length(socket.assigns.chat_messages)))
      |> assign(:show_timestamps?, timestamp_state)
      |> assign(:user, user)}
   end
