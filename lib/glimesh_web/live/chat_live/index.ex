@@ -39,7 +39,7 @@ defmodule GlimeshWeb.ChatLive.Index do
       |> assign(:permissions, Chat.get_moderator_permissions(channel, session["user"]))
       |> assign(:chat_messages, list_chat_messages(channel))
       |> assign(:chat_message, %ChatMessage{})
-      |> assign(:show_timestamps?, session["user"].show_timestamps?)
+      |> assign(:show_timestamps?, (if session["user"], do: session["user"].show_timestamps?, else: false))
 
     {:ok, new_socket}
   end
