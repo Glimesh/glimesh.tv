@@ -33,6 +33,7 @@
         <a class="dropdown-item" href="#"
           onclick="window.open('<%= Routes.chat_pop_out_url(@socket, :index, @channel_username) %>', '_blank', 'width=400,height=600,location=no,menubar=no,toolbar=no')">Pop-out
           Chat</a>
+        <a class="dropdown-item", href="#" phx-click="toggle_timestamps">Toggle Timestamps</a>
       </div>
     </div>
 

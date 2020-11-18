@@ -39,6 +39,7 @@ defmodule GlimeshWeb.ChatLive.Index do
       |> assign(:permissions, Chat.get_moderator_permissions(channel, session["user"]))
       |> assign(:chat_messages, list_chat_messages(channel))
       |> assign(:chat_message, %ChatMessage{})
+      |> assign(:show_timestamps?, session["user"].show_timestamps?)
 
     {:ok, new_socket, temporary_assigns: [chat_messages: []]}
   end
@@ -103,5 +104,22 @@ defmodule GlimeshWeb.ChatLive.Index do
     url = Glimesh.ChatBackground.url({channel.chat_bg, channel}, :original)
 
     "--chat-bg-image: url('#{url}');"
+  end
+
+  @impl true
+  def handle_event("toggle_timestamps", _params, socket) do
+    timestamp_state = case socket.assigns.show_timestamps? do
+      true -> false
+      false -> true
+    end
+    {:ok, user} =
+      Glimesh.Accounts.User.user_settings_changeset(socket.assigns.user, %{show_timestamps?: timestamp_state})
+      |> Glimesh.Repo.update()
+    {:noreply,
+     socket
+     |> assign(:update_action, "replace")
+     |> assign(:chat_messages, list_chat_messages(socket.assigns.channel))
+     |> assign(:show_timestamps?, timestamp_state)
+     |> assign(:user, user)}
   end
 end
