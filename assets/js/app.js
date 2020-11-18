@@ -32,6 +32,9 @@ import LineChart from "./hooks/charts/LineChart";
 // https://github.com/github/markdown-toolbar-element
 import "@github/markdown-toolbar-element";
 
+// https://github.com/github/time-elements
+import "@github/time-elements";
+
 let Hooks = {};
 Hooks.ProcessPayment = ProcessPayment;
 Hooks.Chat = Chat;
