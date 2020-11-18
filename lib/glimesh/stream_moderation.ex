@@ -3,11 +3,13 @@ defmodule Glimesh.StreamModeration do
   The Streams Moderation Context.
   """
   import Ecto.Query, warn: false
+  alias Glimesh.Repo
 
   alias Glimesh.Streams.Channel
   alias Glimesh.Streams.ChannelModerator
   alias Glimesh.Streams.ChannelModerationLog
   alias Glimesh.Streams.ChannelBan
+  alias Glimesh.Accounts.User
 
   defdelegate authorize(action, user, params), to: Glimesh.Streams.Policy
 

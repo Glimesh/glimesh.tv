@@ -68,7 +68,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
      |> assign(:user, user)
      |> assign(:channel, channel)
      |> assign(:changeset, Streams.change_channel(channel))
-     |> assign(:can_change, Streams.can_change_channel?(channel, user))
+     |> assign(:can_change, Bodyguard.permit?(Glimesh.Streams, :update_channel, user, channel))
      |> assign(:editing, false)}
   end
 
@@ -79,7 +79,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
 
   @impl true
   def handle_event("save", %{"channel" => channel}, socket) do
-    case Streams.update_channel(socket.assigns.channel, channel) do
+    case Streams.update_channel(socket.assigns.user, socket.assigns.channel, channel) do
       {:ok, changeset} ->
         {:noreply,
          socket

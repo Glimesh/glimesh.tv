@@ -5,6 +5,7 @@ defmodule Glimesh.ChatTest do
 
   alias Glimesh.Chat
   alias Glimesh.Streams
+  alias Glimesh.StreamModeration
   alias Glimesh.Streams.ChannelModerationLog
 
   describe "chat_messages" do
@@ -47,8 +48,8 @@ defmodule Glimesh.ChatTest do
     end
 
     test "create_chat_message/3 with valid data when the channel has links blocked creates a chat_message" do
-      channel = channel_fixture()
-      {:ok, _} = Streams.update_channel(channel, %{block_links: true})
+      [channel, streamer] = channel_streamer_fixture()
+      {:ok, _} = Streams.update_channel(streamer, channel, %{block_links: true})
 
       assert {:ok, %ChatMessage{} = chat_message} =
                Chat.create_chat_message(user_fixture(), channel_fixture(), @valid_attrs)
@@ -62,8 +63,8 @@ defmodule Glimesh.ChatTest do
     end
 
     test "create_chat_message/3 with a link when channel has links blocked returns error changeset" do
-      channel = channel_fixture()
-      {:ok, channel} = Streams.update_channel(channel, %{block_links: true})
+      [channel, streamer] = channel_streamer_fixture()
+      {:ok, channel} = Streams.update_channel(streamer, channel, %{block_links: true})
 
       assert {:error, "This channel has links disabled!"} =
                Chat.create_chat_message(user_fixture(), channel, @link_containing_attrs)
@@ -117,7 +118,7 @@ defmodule Glimesh.ChatTest do
 
     test "moderator has permissions based on grants", %{channel: channel, moderator: moderator} do
       {:ok, _} =
-        Glimesh.Streams.create_channel_moderator(channel, moderator, %{
+        StreamModeration.create_channel_moderator(channel, moderator, %{
           can_short_timeout: true,
           can_long_timeout: true,
           can_ban: false
@@ -151,7 +152,7 @@ defmodule Glimesh.ChatTest do
 
     test "moderator is a moderator", %{channel: channel, moderator: moderator} do
       {:ok, _} =
-        Glimesh.Streams.create_channel_moderator(channel, moderator, %{
+        StreamModeration.create_channel_moderator(channel, moderator, %{
           can_short_timeout: true,
           can_long_timeout: false,
           can_ban: false
@@ -167,7 +168,7 @@ defmodule Glimesh.ChatTest do
       moderator = user_fixture()
 
       {:ok, _} =
-        Glimesh.Streams.create_channel_moderator(channel, moderator, %{
+        StreamModeration.create_channel_moderator(channel, moderator, %{
           can_short_timeout: true,
           can_long_timeout: true,
           can_ban: true

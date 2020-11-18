@@ -7,6 +7,7 @@ defmodule Glimesh.ChatEffectsTest do
 
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Chat.Effects
+  alias Glimesh.StreamModeration
 
   describe "chat rendering" do
     setup do
@@ -14,7 +15,7 @@ defmodule Glimesh.ChatEffectsTest do
       moderator = user_fixture()
 
       {:ok, _} =
-        Glimesh.Streams.create_channel_moderator(channel, moderator, %{
+        StreamModeration.create_channel_moderator(channel, moderator, %{
           can_short_timeout: true,
           can_long_timeout: true,
           can_ban: true
@@ -40,7 +41,7 @@ defmodule Glimesh.ChatEffectsTest do
     end
 
     test "renders appropriate tags for moderator", %{channel: channel, moderator: moderator} do
-      {:ok, _} = Glimesh.Streams.create_channel_moderator(channel, moderator, %{})
+      {:ok, _} = StreamModeration.create_channel_moderator(channel, moderator, %{})
 
       assert safe_to_string(Effects.render_channel_badge(channel, moderator)) =~
                "Mod"

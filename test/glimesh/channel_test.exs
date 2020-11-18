@@ -9,23 +9,23 @@ defmodule Glimesh.ChannelTest do
     @invalid_attrs %{title: nil}
 
     test "delete_channel/1 soft deletes channel successfully" do
-      channel = channel_fixture()
-      {:ok, channel} = Streams.delete_channel(channel)
+      [channel, streamer] = channel_streamer_fixture()
+      {:ok, channel} = Streams.delete_channel(streamer, channel)
       assert channel.inaccessible == true
     end
 
     test "update_channel/2 with valid data updates the channel" do
-      channel = channel_fixture()
+      [channel, streamer] = channel_streamer_fixture()
       assert channel.title == "Live Stream!"
       assert channel.category_id == 1
-      {:ok, channel} = Streams.update_channel(channel, @valid_attrs)
+      {:ok, channel} = Streams.update_channel(streamer, channel, @valid_attrs)
       assert channel.title == "Valid Title"
       assert channel.category_id == 2
     end
 
     test "update_channel/2 with invalid data defaults to default values" do
-      channel = channel_fixture()
-      {:ok, channel} = Streams.update_channel(channel, @invalid_attrs)
+      [channel, streamer] = channel_streamer_fixture()
+      {:ok, channel} = Streams.update_channel(streamer, channel, @invalid_attrs)
       assert channel.title == nil
     end
   end

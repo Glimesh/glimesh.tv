@@ -11,7 +11,7 @@ defmodule Glimesh.Streams.Policy do
   alias Glimesh.Chat
   alias Glimesh.Streams.Channel
 
-  def authorize(:create_channel, %User{}), do: true
+  def authorize(:create_channel, %User{}, _nothing), do: true
 
   # Admins
   def authorize(:update_channel, %User{is_admin: true}, _channel), do: true

@@ -2,7 +2,7 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
   use GlimeshWeb.ConnCase
 
   import Glimesh.AccountsFixtures
-  alias Glimesh.Streams
+  alias Glimesh.StreamModeration
 
   @create_attrs %{
     can_ban: true,
@@ -33,7 +33,11 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
     test "does not render edit form", %{conn: conn} do
       # Fixture for a different random user
       {:ok, mod} =
-        Streams.create_channel_moderator(channel_fixture(), user_fixture(), @create_attrs)
+        StreamModeration.create_channel_moderator(
+          channel_fixture(),
+          user_fixture(),
+          @create_attrs
+        )
 
       conn = get(conn, Routes.channel_moderator_path(conn, :show, mod.id))
       assert response(conn, 403)
@@ -42,7 +46,11 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
     test "does not allow updating", %{conn: conn} do
       # Fixture for a different random user
       {:ok, mod} =
-        Streams.create_channel_moderator(channel_fixture(), user_fixture(), @create_attrs)
+        StreamModeration.create_channel_moderator(
+          channel_fixture(),
+          user_fixture(),
+          @create_attrs
+        )
 
       conn =
         patch(
@@ -57,7 +65,11 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
     test "does not allow deleting", %{conn: conn} do
       # Fixture for a different random user
       {:ok, mod} =
-        Streams.create_channel_moderator(channel_fixture(), user_fixture(), @create_attrs)
+        StreamModeration.create_channel_moderator(
+          channel_fixture(),
+          user_fixture(),
+          @create_attrs
+        )
 
       conn = delete(conn, Routes.channel_moderator_path(conn, :delete, mod.id))
       assert response(conn, 403)
@@ -147,7 +159,10 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
 
   defp create_channel_moderator(%{channel: channel}) do
     new_mod = user_fixture()
-    {:ok, channel_moderator} = Streams.create_channel_moderator(channel, new_mod, @create_attrs)
+
+    {:ok, channel_moderator} =
+      StreamModeration.create_channel_moderator(channel, new_mod, @create_attrs)
+
     %{channel_moderator: channel_moderator}
   end
 end
