@@ -1,17 +1,21 @@
 defmodule GlimeshWeb.ChannelModeratorController do
   use GlimeshWeb, :controller
 
-  alias Glimesh.Streams
+  action_fallback GlimeshWeb.FallbackController
+
   alias Glimesh.StreamModeration
+  alias Glimesh.Streams
   alias Glimesh.Streams.ChannelModerator
 
   plug :put_layout, "user-sidebar.html"
 
   def index(conn, _params) do
+    user = conn.assigns.current_user
+
     channel = Streams.get_channel_for_user(conn.assigns.current_user)
-    channel_moderators = StreamModeration.list_channel_moderators(channel)
-    moderation_log = StreamModeration.list_channel_moderation_log(channel)
-    channel_bans = StreamModeration.list_channel_bans(channel)
+    channel_moderators = StreamModeration.list_channel_moderators(user, channel)
+    moderation_log = StreamModeration.list_channel_moderation_log(user, channel)
+    channel_bans = StreamModeration.list_channel_bans(user, channel)
 
     render(conn, "index.html",
       channel_moderators: channel_moderators,
@@ -21,10 +25,11 @@ defmodule GlimeshWeb.ChannelModeratorController do
   end
 
   def unban_user(conn, %{"username" => username}) do
+    user = conn.assigns.current_user
     channel = Streams.get_channel_for_user(conn.assigns.current_user)
     unban_user = Glimesh.Accounts.get_by_username!(username)
 
-    case Glimesh.Chat.unban_user(conn.assigns.current_user, channel, unban_user) do
+    case Glimesh.Chat.unban_user(user, channel, unban_user) do
       {:ok, _} ->
         conn
         |> put_flash(:info, "User unbanned successfully.")
@@ -43,10 +48,16 @@ defmodule GlimeshWeb.ChannelModeratorController do
   end
 
   def create(conn, %{"channel_moderator" => channel_moderator_params}) do
-    channel = Streams.get_channel_for_user(conn.assigns.current_user)
-    mod_user = Glimesh.Accounts.get_by_username(channel_moderator_params["username"])
+    user = conn.assigns.current_user
+    channel = Streams.get_channel_for_user(user)
+    new_mod_user = Glimesh.Accounts.get_by_username(channel_moderator_params["username"])
 
-    case StreamModeration.create_channel_moderator(channel, mod_user, channel_moderator_params) do
+    case StreamModeration.create_channel_moderator(
+           user,
+           channel,
+           new_mod_user,
+           channel_moderator_params
+         ) do
       {:ok, channel_moderator} ->
         conn
         |> put_flash(:info, "Channel moderator created successfully.")
@@ -62,27 +73,29 @@ defmodule GlimeshWeb.ChannelModeratorController do
   end
 
   def show(conn, %{"id" => id}) do
-    channel_moderator = StreamModeration.get_channel_moderator!(id)
+    user = conn.assigns.current_user
 
-    if StreamModeration.can_show_mod?(conn.assigns.current_user, channel_moderator) do
-      moderation_log = StreamModeration.list_channel_moderation_log_for_mod(channel_moderator)
+    with {:ok, channel_moderator} <- StreamModeration.get_channel_moderator(user, id) do
+      mod_log = StreamModeration.list_channel_moderation_log_for_mod(user, channel_moderator)
       changeset = StreamModeration.change_channel_moderator(channel_moderator)
 
       render(conn, "show.html",
         channel_moderator: channel_moderator,
         changeset: changeset,
-        moderation_log: moderation_log
+        moderation_log: mod_log
       )
-    else
-      unauthorized(conn)
     end
   end
 
   def update(conn, %{"id" => id, "channel_moderator" => channel_moderator_params}) do
-    channel_moderator = StreamModeration.get_channel_moderator!(id)
+    user = conn.assigns.current_user
 
-    if StreamModeration.can_edit_mod?(conn.assigns.current_user, channel_moderator) do
-      case StreamModeration.update_channel_moderator(channel_moderator, channel_moderator_params) do
+    with {:ok, channel_moderator} <- StreamModeration.get_channel_moderator(user, id) do
+      case StreamModeration.update_channel_moderator(
+             user,
+             channel_moderator,
+             channel_moderator_params
+           ) do
         {:ok, channel_moderator} ->
           conn
           |> put_flash(:info, "Channel moderator updated successfully.")
@@ -91,22 +104,19 @@ defmodule GlimeshWeb.ChannelModeratorController do
         {:error, %Ecto.Changeset{} = changeset} ->
           render(conn, "edit.html", channel_moderator: channel_moderator, changeset: changeset)
       end
-    else
-      unauthorized(conn)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    channel_moderator = StreamModeration.get_channel_moderator!(id)
+    user = conn.assigns.current_user
 
-    if StreamModeration.can_edit_mod?(conn.assigns.current_user, channel_moderator) do
-      {:ok, _channel_moderator} = StreamModeration.delete_channel_moderator(channel_moderator)
-
-      conn
-      |> put_flash(:info, "Channel moderator deleted successfully.")
-      |> redirect(to: Routes.channel_moderator_path(conn, :index))
-    else
-      unauthorized(conn)
+    with {:ok, channel_moderator} <- StreamModeration.get_channel_moderator(user, id) do
+      case StreamModeration.delete_channel_moderator(user, channel_moderator) do
+        {:ok, _} ->
+          conn
+          |> put_flash(:info, "Channel moderator deleted successfully.")
+          |> redirect(to: Routes.channel_moderator_path(conn, :index))
+      end
     end
   end
 end

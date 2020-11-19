@@ -116,9 +116,13 @@ defmodule Glimesh.ChatTest do
                Chat.get_moderator_permissions(channel, streamer)
     end
 
-    test "moderator has permissions based on grants", %{channel: channel, moderator: moderator} do
+    test "moderator has permissions based on grants", %{
+      channel: channel,
+      streamer: streamer,
+      moderator: moderator
+    } do
       {:ok, _} =
-        StreamModeration.create_channel_moderator(channel, moderator, %{
+        StreamModeration.create_channel_moderator(streamer, channel, moderator, %{
           can_short_timeout: true,
           can_long_timeout: true,
           can_ban: false
@@ -150,9 +154,9 @@ defmodule Glimesh.ChatTest do
       assert Bodyguard.permit?(Glimesh.Chat, :short_timeout, streamer, channel)
     end
 
-    test "moderator is a moderator", %{channel: channel, moderator: moderator} do
+    test "moderator is a moderator", %{channel: channel, streamer: streamer, moderator: moderator} do
       {:ok, _} =
-        StreamModeration.create_channel_moderator(channel, moderator, %{
+        StreamModeration.create_channel_moderator(streamer, channel, moderator, %{
           can_short_timeout: true,
           can_long_timeout: false,
           can_ban: false
@@ -168,7 +172,7 @@ defmodule Glimesh.ChatTest do
       moderator = user_fixture()
 
       {:ok, _} =
-        StreamModeration.create_channel_moderator(channel, moderator, %{
+        StreamModeration.create_channel_moderator(streamer, channel, moderator, %{
           can_short_timeout: true,
           can_long_timeout: true,
           can_ban: true

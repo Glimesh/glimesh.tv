@@ -15,7 +15,7 @@ defmodule Glimesh.ChatEffectsTest do
       moderator = user_fixture()
 
       {:ok, _} =
-        StreamModeration.create_channel_moderator(channel, moderator, %{
+        StreamModeration.create_channel_moderator(streamer, channel, moderator, %{
           can_short_timeout: true,
           can_long_timeout: true,
           can_ban: true
@@ -40,8 +40,12 @@ defmodule Glimesh.ChatEffectsTest do
       assert Effects.render_channel_badge(channel, admin) == ""
     end
 
-    test "renders appropriate tags for moderator", %{channel: channel, moderator: moderator} do
-      {:ok, _} = StreamModeration.create_channel_moderator(channel, moderator, %{})
+    test "renders appropriate tags for moderator", %{
+      channel: channel,
+      streamer: streamer,
+      moderator: moderator
+    } do
+      {:ok, _} = StreamModeration.create_channel_moderator(streamer, channel, moderator, %{})
 
       assert safe_to_string(Effects.render_channel_badge(channel, moderator)) =~
                "Mod"
