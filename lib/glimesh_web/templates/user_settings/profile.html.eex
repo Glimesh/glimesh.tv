@@ -16,6 +16,9 @@
                         <div class="mb-4 text-left">
                             <p><%= gettext("Click Update Settings down below when you've chosen the file.") %> </p>
                             <%= file_input f, :avatar, id: "customFile", class: "", accept: "image/png, image/jpeg" %>
+                            <%= if f.errors[:avatar] do %>
+                                <div><span class="text-danger"><%= gettext("Invalid image. Must be either png or jpg.")%></span></div>
+                            <% end %>
                         </div>
                     </div>
                 </div>
