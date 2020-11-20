@@ -56,7 +56,6 @@ module.exports = (env, options) => {
       new MiniCssExtractPlugin({filename: '../css/app.css'}),
       new CopyWebpackPlugin({
         patterns: [
-          {from: 'node_modules/OvenPlayer/dist/production/ovenplayer/', to: '../ovenplayer/'},
           {from: 'static/', to: '../'},
         ]
       })
