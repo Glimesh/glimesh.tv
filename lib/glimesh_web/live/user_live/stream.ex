@@ -26,7 +26,7 @@ defmodule GlimeshWeb.UserLive.Stream do
          |> assign(:streamer, channel.user)
          |> assign(:channel, channel)
          |> assign(:backend, channel.backend)
-         |> assign(:janus_uri, "http://janus-dev/janus")
+         |> assign(:janus_uri, "https://01-nyc3.ftl.live.glimesh.tv/janus")
          |> assign(:channel_id, channel.id)
          |> assign(:user, maybe_user)}
 
