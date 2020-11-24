@@ -1,20 +1,95 @@
-$font-family-base: "Quicksand";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@300;400;500&display=swap');
 
-$secondary: #5c1ac3;
 
+$color-secondary: #5c1ac3;
+
+$color-light-white: #e0e6ed;
 $color-bone-white: #f1f2f3;
 $color-navy-blue: #1b2e4b;
 $color-cosmic-blue: #0e1726;
 $color-teal: #009688;
+ 
+:root {
+    --body-bg-color: #060818;
+    --body-color: #fff; 
+
+    --navbar-bg-color: #0e1726;
+    --navbar-border-color: #3b3f5c;
+    --navbar-color: #fff;
+
+    --secondary-color: #009688; 
+    --secondary-bg-color: #0e1726; 
+    --secondary-hover-bg-color: #1b2e4b;
+
+    --input-bg-color: #1b2e4b;
+    --input-color: #009688;
+    --input-border-color: #1b2e4b;
+    --input-group-addon-bg-color: #191e3a;
+    --input-group-addon-color: #888ea8;
+    --input-group-addon-border-color: #1b2e4b;
+}
+
+[data-theme="light"] {
+    --body-bg-color: #ffffff;
+    --body-color: #000;
+
+    --navbar-bg-color: #fff;
+    --navbar-border-color: #fff;
+    --navbar-color: #000;
+
+    --secondary-color: #0e1726; 
+    --secondary-bg-color: #fff;  
+    --secondary-hover-bg-color: #e9ecef;
+
+    --input-bg-color: #fff;
+    --input-color: #fff;
+    --input-border-color: #fff;
+}
+
+$font-family-base: 'Roboto', sans-serif; 
+$font-weight-normal: 300;
+$headings-font-family: 'Noto Sans', sans-serif;
+$headings-font-weight: 700;
+ 
+$body-bg: var(--body-bg-color);
+$body-color: var(--body-color);
+
+$navbar-light-color: red;
+
 
 // List Groups
-$list-group-bg: $color-cosmic-blue;
-$list-group-hover-bg: $color-navy-blue;
+$list-group-bg: var(--secondary-bg-color);
+$list-group-hover-bg: var(--secondary-hover-bg-color);
 
-$list-group-active-bg: $color-navy-blue;
-$list-group-active-color: $color-teal;
+$list-group-active-bg: var(--secondary-hover-bg-color);
+$list-group-active-color: var(--body-color);
 
-$list-group-action-hover-color: $color-teal;
-$list-group-action-color: $color-bone-white;
-$list-group-action-active-color: $color-teal;
-$list-group-action-active-bg: $color-navy-blue;
+$list-group-action-hover-color: var(--secondary-color);
+$list-group-action-color: var(--body-color);
+$list-group-action-active-color: var(--secondary-color);
+$list-group-action-active-bg: var(--secondary-hover-bg-color);
+
+
+// Cards
+$card-bg: var(--secondary-bg-color);
+
+// Inputs
+$input-bg:                              var(--input-bg-color);
+$input-disabled-bg:                     var(--input-bg-color);
+$input-color: var(--input-color);
+$input-border-color: var(--input-border-color);
+
+$input-group-addon-color:               var(--input-group-addon-color);
+$input-group-addon-bg:                  var(--input-group-addon-bg-color);
+$input-group-addon-border-color:        var(--input-group-addon-border-color);
+
+// Navbar
+.navbar {
+    background-color: var(--navbar-bg-color);
+    border-color: var(--navbar-border-color);
+    color: var(--navbar-color);
+
+    a {
+        color: var(--navbar-color);
+    }
+}

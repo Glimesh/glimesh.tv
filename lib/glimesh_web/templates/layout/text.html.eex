@@ -1,25 +1,11 @@
-<div class="fq-header-wrapper">
-    <div class="container">
-
-        <div class="row">
-            <div class="col-md-6 align-self-center order-md-0 order-1">
-                <h1 class=""><%= @page_title %></h1>
-                <p class=""><%= @subtitle %></p>
-            </div>
-            <div class="col-md-6 order-md-0 order-0">
-                <a target="_blank" href="#" class="banner-img">
-                    <img src="/images/faq.svg" class="d-block" alt="header-image">
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="container container-pull-top">
     <div class="row justify-content-md-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body text-heavy-content">
+
+                    <h1 class=""><%= @page_title %></h1>
+                    <p class=""><%= @subtitle %></p>
 
                     <%= @inner_content %>
 

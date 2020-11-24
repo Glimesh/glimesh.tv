@@ -1,12 +1,11 @@
 <div class="container">
+    <h2 class="mt-4"><%= gettext("Security") %></h2>
 
-    <div class="row">
-        <div class="col-6">
-            <div class="card mt-4">
-                <div class="card-header">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
                     <h3><%= gettext "Change e-mail" %></h3>
-                </div>
-                <div class="card-body">
                     <%= form_for @email_changeset, Routes.user_security_path(@conn, :update_email), fn f -> %>
                     <%= if @email_changeset.action do %>
                     <div class="alert alert-danger">
@@ -36,12 +35,8 @@
                         <%= submit gettext("Change E-mail"), class: "btn btn-primary" %>
                     </div>
                     <% end %>
-                </div>
-            </div>
-            <div class="card mt-4">
-                <div class="card-body">
 
-                    <h3><%= gettext "Change password" %></h3>
+                    <h3 class="mt-4"><%= gettext "Change password" %></h3>
 
                     <%= form_for @password_changeset, Routes.user_security_path(@conn, :update_password), fn f -> %>
                     <%= if @password_changeset.action do %>
@@ -80,19 +75,16 @@
                     </div>
                     <% end %>
                 </div>
-            </div>
-        </div>
 
-        <div class="col-6">
-            <div class="card mt-4">
-                <div class="card-body">
+                <div class="col-6">
 
                     <h3><%= gettext "2FA Setup" %></h3>
 
                     <%= form_for @tfa_changeset, Routes.user_security_path(@conn, :update_tfa), fn f -> %>
                     <%= if @tfa_changeset.action do %>
                     <div class="alert alert-danger">
-                        <p style="margin-bottom: 0px;">Oops, something went wrong! Please check the errors below.</p>
+                        <p style="margin-bottom: 0px;">Oops, something went wrong! Please check the errors
+                            below.</p>
                     </div>
                     <% end %>
                     <div>
@@ -148,7 +140,9 @@
                         <% end %>
                     </div>
                 </div>
-            </div>
-        </div>
 
+            </div>
+
+        </div>
     </div>
+</div>

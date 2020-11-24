@@ -23,15 +23,6 @@ body {
     }
 }
 
-
-@font-face {
-    font-family: "Quicksand";
-    font-style: normal;
-    font-weight: 400;
-    src: local(""), url("../fonts/quicksand-v21-latin-regular.woff2") format("woff2"),
-        url("../fonts/quicksand-v21-latin-regular.woff") format("woff");
-}
-
 // We encourage everyone to use bootstrap as our UI framework, and make stylistic changes as necessary.
 @import "glimesh/variables";
 @import "~bootstrap";
@@ -45,7 +36,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
 // Cork SCSS
 // You must have the correct repo access to use this code.
-@import "cork/cork";
+// @import "cork/cork";
 
 // Glimesh SCSS
 @import "glimesh/components/live-modal";

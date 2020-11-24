@@ -1,6 +1,30 @@
 defmodule GlimeshWeb.LayoutView do
   use GlimeshWeb, :view
 
+  def html_root_tags(conn) do
+    []
+    |> dark_mode_attribute(conn)
+    |> lang_attribute(conn)
+  end
+
+  defp dark_mode_attribute(attributes, conn) do
+    if Plug.Conn.get_session(conn, :light_mode) do
+      ["data-theme=\"light\"" | attributes]
+    else
+      attributes
+    end
+  end
+
+  defp lang_attribute(attributes, conn) do
+    case Plug.Conn.get_session(conn, :locale) do
+      nil ->
+        ["lang=\"en\"" | attributes]
+
+      locale ->
+        ["lang=\"#{locale}\"" | attributes]
+    end
+  end
+
   def active_user_profile_path(conn) do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :profile])
   end

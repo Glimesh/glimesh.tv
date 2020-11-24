@@ -22,6 +22,22 @@ defmodule GlimeshWeb.UserSettingsController do
     render(conn, "settings.html")
   end
 
+  def update_settings(conn, %{"user_setting" => params}) do
+    user = conn.assigns.current_user
+    current_user_setting = Accounts.get_user_setting!(user)
+
+    case Accounts.update_user_settings(current_user_setting, params) do
+      {:ok, _} ->
+        conn
+        |> put_flash(:info, gettext("Settings updated successfully."))
+        |> put_session(:user_return_to, Routes.user_settings_path(conn, :settings))
+        |> UserAuth.log_in_user(user)
+
+      {:error, changeset} ->
+        render(conn, "settings.html", profile_changeset: changeset)
+    end
+  end
+
   def update_profile(conn, %{"user" => user_params}) do
     user = conn.assigns.current_user
 
@@ -83,10 +99,12 @@ defmodule GlimeshWeb.UserSettingsController do
 
   defp assign_profile_changesets(conn, _opts) do
     user = conn.assigns.current_user
+    user_setting = Accounts.get_user_setting!(user)
 
     conn
     |> assign(:user, user)
     |> assign(:profile_changeset, Accounts.change_user_profile(user))
+    |> assign(:settings_changeset, Accounts.change_user_settings(user_setting))
   end
 
   defp assign_channel_changesets(conn, _opts) do
