@@ -55,7 +55,7 @@ defmodule GlimeshWeb.UserSettingsController do
     user = conn.assigns.current_user
     channel = Streams.get_channel_for_username!(user.username)
 
-    case Streams.delete_channel(channel) do
+    case Streams.delete_channel(user, channel) do
       {:ok, _} ->
         conn
         |> put_session(:user_return_to, Routes.user_settings_path(conn, :stream))
@@ -68,8 +68,9 @@ defmodule GlimeshWeb.UserSettingsController do
 
   def update_channel(conn, %{"channel" => channel_params}) do
     channel = conn.assigns.channel
+    user = conn.assigns.current_user
 
-    case Streams.update_channel(channel, channel_params) do
+    case Streams.update_channel(user, channel, channel_params) do
       {:ok, _} ->
         conn
         |> put_flash(:info, gettext("Stream settings updated successfully"))

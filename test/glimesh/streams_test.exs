@@ -124,11 +124,12 @@ defmodule Glimesh.StreamsTest do
 
   describe "channels" do
     setup do
-      {:ok, channel: channel_fixture()}
+      [channel, streamer] = channel_streamer_fixture()
+      {:ok, channel: channel, streamer: streamer}
     end
 
-    test "rotate_stream_key/1 changes a stream key", %{channel: channel} do
-      {:ok, new_channel} = Streams.rotate_stream_key(channel)
+    test "rotate_stream_key/1 changes a stream key", %{channel: channel, streamer: streamer} do
+      {:ok, new_channel} = Streams.rotate_stream_key(streamer, channel)
       assert new_channel.stream_key != channel.stream_key
     end
   end
@@ -210,7 +211,7 @@ defmodule Glimesh.StreamsTest do
         video_width: 768
       }
 
-      assert {:ok, stream} = Streams.log_stream_metadata(stream, incoming_attrs)
+      assert {:ok, %{}} = Streams.log_stream_metadata(stream, incoming_attrs)
     end
   end
 end
