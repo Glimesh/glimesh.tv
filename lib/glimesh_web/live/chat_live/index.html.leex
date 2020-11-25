@@ -13,7 +13,7 @@
                 title="<%= gettext("Timeout user for 5 minutes.") %>"></i>
             <% end %>
             <%= if Map.get(@permissions, :can_long_timeout, false)  do %>
-            <i class="far fa-clock fa-fw" phx-click="long_timeout_user"
+            <i class="fas fa-clock fa-fw" phx-click="long_timeout_user"
                 phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip"
                 title="<%= gettext("Timeout user for 15 minutes.") %>"></i>
             <% end %>
