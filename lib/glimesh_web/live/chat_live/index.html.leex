@@ -18,7 +18,7 @@
                 title="<%= gettext("Timeout user for 15 minutes.") %>"></i>
             <% end %>
             <%= if Map.get(@permissions, :can_ban, false)  do %>
-            <i class="far fa-gavel fa-fw" phx-click="ban_user" phx-value-user="<%= chat_message.user.username %>"
+            <i class="fas fa-gavel fa-fw" phx-click="ban_user" phx-value-user="<%= chat_message.user.username %>"
                 data-confirm="<%= gettext("Are you sure you wish to permanently ban %{username}?", username: chat_message.user.displayname) %>"
                 data-toggle="tooltip" title="<%= gettext("Ban user from channel.") %>"></i>
             <% end %>
