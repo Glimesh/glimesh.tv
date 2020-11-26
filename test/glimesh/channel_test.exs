@@ -7,6 +7,7 @@ defmodule Glimesh.ChannelTest do
   describe "stream_settings" do
     @valid_attrs %{title: "Valid Title", category_id: 2}
     @invalid_attrs %{title: nil}
+    @blank_chat_rules %{chat_rules_md: ""}
 
     test "delete_channel/1 soft deletes channel successfully" do
       [channel, streamer] = channel_streamer_fixture()
@@ -27,6 +28,14 @@ defmodule Glimesh.ChannelTest do
       [channel, streamer] = channel_streamer_fixture()
       {:ok, channel} = Streams.update_channel(streamer, channel, @invalid_attrs)
       assert channel.title == nil
+    end
+
+    test "update_channel/2 with blank chat rules defaults to nil" do
+      [channel, streamer] = channel_streamer_fixture()
+      {:ok, channel} = Streams.update_channel(streamer, channel, %{chat_rules_md: "Test rules"})
+      assert channel.chat_rules_html =~ "<p>\nTest rules</p>\n"
+      {:ok, channel} = Streams.update_channel(streamer, channel, @blank_chat_rules)
+      assert channel.chat_rules_html == nil
     end
   end
 end
