@@ -5,6 +5,7 @@ defmodule GlimeshWeb.LayoutView do
     []
     |> site_them_attribute(conn)
     |> lang_attribute(conn)
+    |> Enum.join(" ")
   end
 
   defp site_them_attribute(attributes, conn) do
