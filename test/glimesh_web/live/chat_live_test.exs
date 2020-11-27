@@ -40,7 +40,7 @@ defmodule GlimeshWeb.ChatLiveTest do
       {:ok, view, _html} = live_isolated(conn, GlimeshWeb.ChatLive.Index, session: %{"user" => user, "channel_id" => channel.id})
 
       view
-      |> element("#short-timeout")
+      |> element("i.short-timeout")
       |> render_click()
 
       refute render(view) =~ "some message"
@@ -55,7 +55,7 @@ defmodule GlimeshWeb.ChatLiveTest do
       {:ok, view, _html} = live_isolated(conn, GlimeshWeb.ChatLive.Index, session: %{"user" => user, "channel_id" => channel.id})
 
       view
-      |> element("#long-timeout")
+      |> element("i.long-timeout")
       |> render_click()
 
       refute render(view) =~ "some message"
@@ -70,7 +70,7 @@ defmodule GlimeshWeb.ChatLiveTest do
       {:ok, view, _html} = live_isolated(conn, GlimeshWeb.ChatLive.Index, session: %{"user" => user, "channel_id" => channel.id})
 
       view
-      |> element("#ban")
+      |> element("i.ban")
       |> render_click()
 
       refute render(view) =~ "some message"

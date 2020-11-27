@@ -8,17 +8,17 @@
         class="<%=if Glimesh.Chat.Effects.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>">
         <div class="user-message-header">
             <%= if Map.get(@permissions, :can_short_timeout, false) do %>
-            <i id="short-timeout" class="fas fa-stopwatch fa-fw" phx-click="short_timeout_user"
+            <i class="short-timeout fas fa-stopwatch fa-fw" phx-click="short_timeout_user"
                 phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip"
                 title="<%= gettext("Timeout user for 5 minutes.") %>"></i>
             <% end %>
             <%= if Map.get(@permissions, :can_long_timeout, false)  do %>
-            <i id="long-timeout" class="fas fa-clock fa-fw" phx-click="long_timeout_user"
+            <i class="long-timeout fas fa-clock fa-fw" phx-click="long_timeout_user"
                 phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip"
                 title="<%= gettext("Timeout user for 15 minutes.") %>"></i>
             <% end %>
             <%= if Map.get(@permissions, :can_ban, false)  do %>
-            <i id="ban" class="fas fa-gavel fa-fw" phx-click="ban_user" phx-value-user="<%= chat_message.user.username %>"
+            <i class="ban fas fa-gavel fa-fw" phx-click="ban_user" phx-value-user="<%= chat_message.user.username %>"
                 data-confirm="<%= gettext("Are you sure you wish to permanently ban %{username}?", username: chat_message.user.displayname) %>"
                 data-toggle="tooltip" title="<%= gettext("Ban user from channel.") %>"></i>
             <% end %>
