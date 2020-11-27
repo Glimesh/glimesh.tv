@@ -41,7 +41,7 @@ defmodule GlimeshWeb.ChatLive.Index do
       |> assign(:chat_message, %ChatMessage{})
       |> assign(:show_timestamps, (if session["user"], do: session["user"].show_timestamps, else: false))
 
-    {:ok, new_socket}
+    {:ok, new_socket, temporary_assigns: [chat_messages: []]}
   end
 
   @impl true
