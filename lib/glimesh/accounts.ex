@@ -6,7 +6,7 @@ defmodule Glimesh.Accounts do
   import Ecto.Query, warn: false
 
   alias Glimesh.Repo
-  alias Glimesh.Accounts.{User, UserNotifier, UserToken, UserSetting}
+  alias Glimesh.Accounts.{User, UserNotifier, UserPreference, UserToken}
 
   ## Database getters
 
@@ -120,7 +120,7 @@ defmodule Glimesh.Accounts do
 
     user_insert =
       %User{
-        user_setting: %UserSetting{}
+        user_preference: %UserPreference{}
       }
       |> User.registration_changeset(attrs)
       |> Repo.insert()
@@ -143,23 +143,23 @@ defmodule Glimesh.Accounts do
 
   ## Settings
 
-  def get_user_setting!(%User{} = user) do
-    Repo.get_by!(UserSetting, user_id: user.id)
+  def get_user_preference!(%User{} = user) do
+    Repo.get_by!(UserPreference, user_id: user.id)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for changing user's settings.
+  Returns an `%Ecto.Changeset{}` for changing user's preference.
   """
-  def change_user_settings(%UserSetting{} = user_setting, attrs \\ %{}) do
-    UserSetting.changeset(user_setting, attrs)
+  def change_user_preference(%UserPreference{} = user_preference, attrs \\ %{}) do
+    UserPreference.changeset(user_preference, attrs)
   end
 
   @doc """
-  Updates a users settings
+  Updates a users preference
   """
-  def update_user_settings(%UserSetting{} = user_setting, attrs \\ %{}) do
-    user_setting
-    |> UserSetting.changeset(attrs)
+  def update_user_preference(%UserPreference{} = user_preference, attrs \\ %{}) do
+    user_preference
+    |> UserPreference.changeset(attrs)
     |> Repo.update()
   end
 

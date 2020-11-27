@@ -41,7 +41,7 @@ defmodule Glimesh.Accounts.User do
     field :locale, :string, default: "en"
 
     has_one :channel, Glimesh.Streams.Channel
-    has_one :user_setting, Glimesh.Accounts.UserSetting
+    has_one :user_preference, Glimesh.Accounts.UserPreference
 
     timestamps()
   end
@@ -68,7 +68,7 @@ defmodule Glimesh.Accounts.User do
     |> validate_username()
     |> validate_email()
     |> validate_password()
-    |> cast_assoc(:user_setting, required: true, with: &Glimesh.Accounts.UserSetting.changeset/2)
+    |> cast_assoc(:user_preference, required: true, with: &Glimesh.Accounts.UserPreference.changeset/2)
   end
 
   defp validate_username(changeset) do

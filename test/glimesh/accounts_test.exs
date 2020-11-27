@@ -152,7 +152,7 @@ defmodule Glimesh.AccountsTest do
       user = user_fixture()
 
       assert %Glimesh.Accounts.UserSetting{} = user.user_setting
-      assert user.user_setting.light_mode == false
+      assert user.user_setting.site_theme == "dark"
     end
   end
 

@@ -3,15 +3,14 @@ defmodule GlimeshWeb.LayoutView do
 
   def html_root_tags(conn) do
     []
-    |> dark_mode_attribute(conn)
+    |> site_them_attribute(conn)
     |> lang_attribute(conn)
   end
 
-  defp dark_mode_attribute(attributes, conn) do
-    if Plug.Conn.get_session(conn, :light_mode) do
-      ["data-theme=\"light\"" | attributes]
-    else
-      attributes
+  defp site_them_attribute(attributes, conn) do
+    case Plug.Conn.get_session(conn, :site_theme) do
+      nil -> attributes
+      theme -> ["data-theme=\"#{theme}\"" | attributes]
     end
   end
 
@@ -38,7 +37,7 @@ defmodule GlimeshWeb.LayoutView do
   end
 
   def active_user_settings_path(conn) do
-    truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :settings])
+    truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :preference])
   end
 
   def active_user_security_path(conn) do

@@ -7,7 +7,7 @@
             <%= link class: "list-group-item list-group-item-action " <> active_user_payments_path(@conn), to: Routes.user_payments_path(@conn, :index) do %>
             <i class="fas fa-money-bill fa-fw"></i> <%= gettext("Payments") %>
             <% end %>
-            <%= link class: "list-group-item list-group-item-action " <> active_user_settings_path(@conn), to: Routes.user_settings_path(@conn, :settings) do %>
+            <%= link class: "list-group-item list-group-item-action " <> active_user_settings_path(@conn), to: Routes.user_settings_path(@conn, :preference) do %>
             <i class="fas fa-cog fa-fw"></i> <%= gettext("Preferences") %>
             <% end %>
             <%= link class: "list-group-item list-group-item-action " <> active_user_security_path(@conn), to: Routes.user_security_path(@conn, :index) do %>

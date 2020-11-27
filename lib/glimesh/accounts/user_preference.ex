@@ -1,14 +1,14 @@
-defmodule Glimesh.Accounts.UserSetting do
+defmodule Glimesh.Accounts.UserPreference do
   @moduledoc false
 
   use Ecto.Schema
   use Waffle.Ecto.Schema
   import Ecto.Changeset
 
-  schema "user_settings" do
+  schema "user_preferences" do
     belongs_to :user, Glimesh.Accounts.User
 
-    field :light_mode, :boolean, default: false
+    field :site_theme, :string, default: "dark"
 
     timestamps()
   end
@@ -16,8 +16,8 @@ defmodule Glimesh.Accounts.UserSetting do
   @doc """
   A changeset for all of the user configurable options
   """
-  def changeset(user_setting, attrs) do
-    user_setting
-    |> cast(attrs, [:light_mode])
+  def changeset(user_preferences, attrs) do
+    user_preferences
+    |> cast(attrs, [:site_theme])
   end
 end
