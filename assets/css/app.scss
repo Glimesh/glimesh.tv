@@ -37,6 +37,9 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 // Cork SCSS
 // You must have the correct repo access to use this code.
 // @import "cork/cork";
+@import "cork/elements/choices";
+@import "cork/elements/counter";
+@import "cork/elements/pricing";
 
 // Glimesh SCSS
 @import "glimesh/components/live-modal";
@@ -50,4 +53,8 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
 .nowrap {
     white-space: nowrap;
+}
+
+.layout-spacing {
+    padding-bottom: 40px;
 }
