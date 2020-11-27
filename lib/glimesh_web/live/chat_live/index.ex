@@ -85,8 +85,6 @@ defmodule GlimeshWeb.ChatLive.Index do
       |> Glimesh.Repo.update()
     {:noreply,
      socket
-     |> assign(:update_action, "replace")
-     |> assign(:chat_messages, list_chat_messages(socket.assigns.channel, Kernel.length(socket.assigns.chat_messages)))
      |> assign(:show_timestamps, timestamp_state)
      |> assign(:user, user)}
   end
@@ -112,16 +110,6 @@ defmodule GlimeshWeb.ChatLive.Index do
 
   defp list_chat_messages(channel) do
     Chat.list_chat_messages(channel)
-  end
-
-  defp list_chat_messages(channel, limit) do
-    # Only currently used when updating elements about the chat.
-    # Just makes sure that if the limit is above 50, it's set back to 50.
-    # Otherwise you could possibly load a few hundred messages when updating elements.
-    # The last 50 should do fine without anyone noticing.
-    # If the viewer's chat currently has less than 50 messages then it just gets however many there are.
-    limit = if limit > 50, do: 50, else: limit
-    Chat.list_chat_messages(channel, limit)
   end
 
   defp background_style(channel) do

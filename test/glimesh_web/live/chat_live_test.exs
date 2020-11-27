@@ -87,13 +87,13 @@ defmodule GlimeshWeb.ChatLiveTest do
 
       {:ok, view, _html} = live_isolated(conn, GlimeshWeb.ChatLive.Index, session: %{"user" => user, "channel_id" => channel.id})
 
-      refute render(view) =~ Time.to_string(NaiveDateTime.to_time(chat_message.inserted_at))
+      assert render(view) =~ "text-muted d-none"
 
       view
       |> element("#toggle-timestamps")
       |> render_click()
 
-      assert render(view) =~ Time.to_string(NaiveDateTime.to_time(chat_message.inserted_at))
+      refute render(view) =~ "text-muted d-none"
 
     end
   end

@@ -27,9 +27,7 @@
             <%= Glimesh.Chat.Effects.render_channel_badge(@channel, chat_message.user) %>
 
             <%= Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %>
-            <%= if @show_timestamps do %>
-                <small class="text-muted"><local-time id="timestamp" phx-update="ignore" datetime="<%= "#{chat_message.inserted_at}" <> "Z" %>" format="micro" hour="numeric" minute="2-digit" second="2-digit"><%= NaiveDateTime.to_time(chat_message.inserted_at) %></local-time></small>
-            <% end %>
+            <small class="text-muted <%= unless @show_timestamps, do: "d-none"%>"><local-time id="timestamp" phx-update="ignore" datetime="<%= "#{chat_message.inserted_at}" <> "Z" %>" format="micro" hour="numeric" minute="2-digit" second="2-digit"><%= NaiveDateTime.to_time(chat_message.inserted_at) %></local-time></small>
         </div>
         <div class="user-message">
             <%= Glimesh.Chat.Parser.parse_and_render(chat_message, @channel_chat_parser_config) %>
