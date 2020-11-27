@@ -28,14 +28,11 @@ defmodule Glimesh.ChatTest do
     def multiple_chat_message_fixture(attrs \\ %{num_of_messages: 10}) do
       channel = channel_fixture()
       user = user_fixture()
-      num_of_messages = attrs.num_of_messages - 2
 
       # Pretty janky way of creating multiple chat messages but it works
-      Enum.each(0..num_of_messages, fn _i -> Chat.create_chat_message(user, channel, attrs |> Enum.into(@valid_attrs)) end)
+      created_messages = Enum.map(1..attrs.num_of_messages, fn _i -> Chat.create_chat_message(user, channel, attrs |> Enum.into(@valid_attrs)) end)
 
-      # Now one more time to get the final message object
-      {:ok, chat_message} =
-        Chat.create_chat_message(user, channel, attrs |> Enum.into(@valid_attrs))
+      {:ok, chat_message} = List.last(created_messages)
 
       chat_message
     end
