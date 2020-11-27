@@ -39,7 +39,7 @@ defmodule GlimeshWeb.ChatLive.Index do
       |> assign(:permissions, Chat.get_moderator_permissions(channel, session["user"]))
       |> assign(:chat_messages, list_chat_messages(channel))
       |> assign(:chat_message, %ChatMessage{})
-      |> assign(:show_timestamps?, (if session["user"], do: session["user"].show_timestamps?, else: false))
+      |> assign(:show_timestamps, (if session["user"], do: session["user"].show_timestamps, else: false))
 
     {:ok, new_socket}
   end
@@ -118,15 +118,15 @@ defmodule GlimeshWeb.ChatLive.Index do
 
   @impl true
   def handle_event("toggle_timestamps", _params, socket) do
-    timestamp_state = Kernel.not(socket.assigns.show_timestamps?)
+    timestamp_state = Kernel.not(socket.assigns.show_timestamps)
     {:ok, user} =
-      Glimesh.Accounts.User.user_settings_changeset(socket.assigns.user, %{show_timestamps?: timestamp_state})
+      Glimesh.Accounts.User.user_settings_changeset(socket.assigns.user, %{show_timestamps: timestamp_state})
       |> Glimesh.Repo.update()
     {:noreply,
      socket
      |> assign(:update_action, "replace")
      |> assign(:chat_messages, list_chat_messages(socket.assigns.channel, Kernel.length(socket.assigns.chat_messages)))
-     |> assign(:show_timestamps?, timestamp_state)
+     |> assign(:show_timestamps, timestamp_state)
      |> assign(:user, user)}
   end
 end
