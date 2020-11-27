@@ -78,6 +78,20 @@ defmodule GlimeshWeb.ChatLive.Index do
   end
 
   @impl true
+  def handle_event("toggle_timestamps", _params, socket) do
+    timestamp_state = Kernel.not(socket.assigns.show_timestamps)
+    {:ok, user} =
+      Glimesh.Accounts.User.user_settings_changeset(socket.assigns.user, %{show_timestamps: timestamp_state})
+      |> Glimesh.Repo.update()
+    {:noreply,
+     socket
+     |> assign(:update_action, "replace")
+     |> assign(:chat_messages, list_chat_messages(socket.assigns.channel, Kernel.length(socket.assigns.chat_messages)))
+     |> assign(:show_timestamps, timestamp_state)
+     |> assign(:user, user)}
+  end
+
+  @impl true
   def handle_info({:chat_message, message}, socket) do
     {:noreply,
      socket
@@ -114,19 +128,5 @@ defmodule GlimeshWeb.ChatLive.Index do
     url = Glimesh.ChatBackground.url({channel.chat_bg, channel}, :original)
 
     "--chat-bg-image: url('#{url}');"
-  end
-
-  @impl true
-  def handle_event("toggle_timestamps", _params, socket) do
-    timestamp_state = Kernel.not(socket.assigns.show_timestamps)
-    {:ok, user} =
-      Glimesh.Accounts.User.user_settings_changeset(socket.assigns.user, %{show_timestamps: timestamp_state})
-      |> Glimesh.Repo.update()
-    {:noreply,
-     socket
-     |> assign(:update_action, "replace")
-     |> assign(:chat_messages, list_chat_messages(socket.assigns.channel, Kernel.length(socket.assigns.chat_messages)))
-     |> assign(:show_timestamps, timestamp_state)
-     |> assign(:user, user)}
   end
 end
