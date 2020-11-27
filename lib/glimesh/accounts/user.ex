@@ -68,7 +68,10 @@ defmodule Glimesh.Accounts.User do
     |> validate_username()
     |> validate_email()
     |> validate_password()
-    |> cast_assoc(:user_preference, required: true, with: &Glimesh.Accounts.UserPreference.changeset/2)
+    |> cast_assoc(:user_preference,
+      required: true,
+      with: &Glimesh.Accounts.UserPreference.changeset/2
+    )
   end
 
   defp validate_username(changeset) do

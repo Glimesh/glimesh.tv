@@ -151,15 +151,15 @@ defmodule Glimesh.AccountsTest do
     test "creates settings for user when registered" do
       user = user_fixture()
 
-      assert %Glimesh.Accounts.UserSetting{} = user.user_setting
-      assert user.user_setting.site_theme == "dark"
+      assert %Glimesh.Accounts.UserPreference{} = user.user_preference
+      assert user.user_preference.site_theme == "dark"
     end
   end
 
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:user_setting, :password, :email, :username]
+      assert changeset.required == [:user_preference, :password, :email, :username]
     end
   end
 
