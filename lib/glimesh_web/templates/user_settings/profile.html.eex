@@ -1,6 +1,5 @@
 <div class="container">
     <h2 class="mt-4"><%= gettext "Your Profile" %></h2>
-    <%= live_redirect gettext("View Public Profile"), class: "btn btn-primary mb-4", to: Routes.user_profile_path(@conn, :index, @user.username) %>
 
     <%= form_for @profile_changeset, Routes.user_settings_path(@conn, :update_profile), [multipart: true, class: "form"], fn f -> %>
 
@@ -17,7 +16,9 @@
                             <p><%= gettext("Click Update Settings down below when you've chosen the file.") %> </p>
                             <%= file_input f, :avatar, id: "customFile", class: "", accept: "image/png, image/jpeg" %>
                             <%= if f.errors[:avatar] do %>
-                                <div><span class="text-danger"><%= gettext("Invalid image. Must be either png or jpg.")%></span></div>
+                            <div><span
+                                    class="text-danger"><%= gettext("Invalid image. Must be either png or jpg.")%></span>
+                            </div>
                             <% end %>
                         </div>
                     </div>
@@ -56,7 +57,8 @@
                             <div class="col-md-6">
                                 <div class="input-group social-tweet mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="tweet"><i class="fab fa-twitter"></i></span>
+                                        <span class="input-group-text" id="tweet"><i
+                                                class="fab fa-twitter fa-fw"></i></span>
                                     </div>
                                     <%= text_input f, :social_twitter, [class: "form-control", placeholder: gettext("Twitter Username")] %>
                                     <%= error_tag f, :social_twitter %>
@@ -67,7 +69,7 @@
                                 <div class="input-group social-instagram mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="instagram"><i
-                                                class="fab fa-instagram"></i></span>
+                                                class="fab fa-instagram fa-fw"></i></span>
                                     </div>
                                     <%= text_input f, :social_instagram, [class: "form-control", placeholder: gettext("Instagram Username")] %>
                                     <%= error_tag f, :social_instagram %>
@@ -78,7 +80,8 @@
                             <div class="col-md-6">
                                 <div class="input-group social-youtube mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="fb"><i class="fab fa-youtube"></i></span>
+                                        <span class="input-group-text" id="fb"><i
+                                                class="fab fa-youtube fa-fw"></i></span>
                                     </div>
                                     <%= text_input f, :social_youtube, [class: "form-control", placeholder: gettext("YouTube Username")] %>
                                     <%= error_tag f, :social_youtube %>
@@ -89,7 +92,7 @@
                                 <div class="input-group social-discord mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="discord"><i
-                                                class="fab fa-discord"></i></span>
+                                                class="fab fa-discord fa-fw"></i></span>
                                     </div>
                                     <%= text_input f, :social_discord, [class: "form-control", placeholder: gettext("Discord Server URL")] %>
                                     <%= error_tag f, :social_discord %>
@@ -101,7 +104,7 @@
                                 <div class="input-group social-guilded mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="guilded"><i
-                                                class="fab fa-guilded"></i></span>
+                                                class="fab fa-guilded fa-fw"></i></span>
                                     </div>
                                     <%= text_input f, :social_guilded, [class: "form-control", placeholder: gettext("Guilded Server URL")] %>
                                     <%= error_tag f, :social_guilded %>

@@ -1,41 +1,34 @@
-<div class="coming-soon-container">
-    <div class="coming-soon-cont">
-        <div class="coming-soon-wrap">
-            <div class="coming-soon-container">
-                <div class="coming-soon-content">
-
-                    <h3><%= gettext("Enter your 2FA code!") %></h3>
+<div class="container mt-4">
+    <div class="row align-items-center justify-content-md-center">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="text-center mb-4"><%= gettext("Enter your 2FA code!") %></h3>
                     <%= form_for @conn, Routes.user_session_path(@conn, :tfa), [as: :user, class: "text-left"], fn f -> %>
-                        <%= if @error_message do %>
-                        <div class="alert alert-danger">
-                            <p><%= @error_message %></p>
+                    <%= if @error_message do %>
+                    <div class="alert alert-danger">
+                        <p><%= @error_message %></p>
+                    </div>
+                    <% end %>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-lock fa-fw"></i></span>
                         </div>
-                        <% end %>
-
-                        <div class="coming-soon">
-                            <div class="">
-                                <div id="tfa-field" class="field-wrapper input">
-                                    <i class="fas fa-lock"></i>
-
-                                    <%= text_input f, :tfa, class: "form-control", placeholder: gettext("2FA Code"), autofocus: true %>
-
-                                    <%= submit "Login", class: "btn btn-success" %>
-                                </div>
-                                <%= error_tag f, :tfa %>
-                            </div>
+                        <%= text_input f, :tfa, class: "form-control", placeholder: gettext("2FA Code"), autofocus: true %>
+                        <%= error_tag f, :tfa %>
+                        <div class="input-group-append">
+                            <%= submit "Login", class: "btn btn-primary" %>
                         </div>
+                    </div>
                     <% end %>
 
                     <p class="mt-4">
                         <%= gettext("Don't have access anymore?") %><br><%= gettext("Please contact %{email}", email: "support@glimesh.tv") %>
                     </p>
-
                 </div>
             </div>
+
         </div>
-    </div>
-    <div class="coming-soon-image" id="large-header">
-        <canvas id="demo-canvas"></canvas>
-        <img src="/images/logos/logo-no-text.png" alt="Glimesh Logo" />
     </div>
 </div>

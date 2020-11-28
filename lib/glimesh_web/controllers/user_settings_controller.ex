@@ -18,8 +18,24 @@ defmodule GlimeshWeb.UserSettingsController do
     render(conn, "stream.html")
   end
 
-  def settings(conn, _params) do
-    render(conn, "settings.html")
+  def preference(conn, _params) do
+    render(conn, "preference.html")
+  end
+
+  def update_preference(conn, %{"user_preference" => params}) do
+    user = conn.assigns.current_user
+    current_user_pref = Accounts.get_user_preference!(user)
+
+    case Accounts.update_user_preference(current_user_pref, params) do
+      {:ok, _} ->
+        conn
+        |> put_flash(:info, gettext("Preferences updated successfully."))
+        |> put_session(:user_return_to, Routes.user_settings_path(conn, :preference))
+        |> UserAuth.log_in_user(user)
+
+      {:error, changeset} ->
+        render(conn, "preference.html", profile_changeset: changeset)
+    end
   end
 
   def update_profile(conn, %{"user" => user_params}) do
@@ -84,10 +100,12 @@ defmodule GlimeshWeb.UserSettingsController do
 
   defp assign_profile_changesets(conn, _opts) do
     user = conn.assigns.current_user
+    user_preference = Accounts.get_user_preference!(user)
 
     conn
     |> assign(:user, user)
     |> assign(:profile_changeset, Accounts.change_user_profile(user))
+    |> assign(:preference_changeset, Accounts.change_user_preference(user_preference))
   end
 
   defp assign_channel_changesets(conn, _opts) do

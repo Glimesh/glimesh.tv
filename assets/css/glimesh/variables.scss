@@ -1,20 +1,143 @@
-$font-family-base: "Quicksand";
 
-$secondary: #5c1ac3;
+$color-secondary: #5c1ac3;
 
+$secondary: $color-secondary;
+
+$color-light-white: #e0e6ed;
 $color-bone-white: #f1f2f3;
 $color-navy-blue: #1b2e4b;
 $color-cosmic-blue: #0e1726;
-$color-teal: #009688;
+$color-teal: #48D1BD;
+ 
+:root {
+    --body-bg-color: #060818;
+    --body-color: #fff; 
+
+    --navbar-bg-color: #0e1726;
+    --navbar-border-color: #3b3f5c;
+    --navbar-color: #fff;
+
+    --secondary-color: #48D1BD; 
+    --secondary-bg-color: #0e1726; 
+    --secondary-hover-bg-color: #1b2e4b;
+
+    --input-bg-color: #1b2e4b;
+    --input-color: #48D1BD;
+    --input-border-color: #1b2e4b;
+    --input-focus-border-color: #3b3f5c;
+
+    --input-group-addon-bg-color: #191e3a;
+    --input-group-addon-color: #888ea8;
+    --input-group-addon-border-color: #1b2e4b;
+}
+
+[data-theme="light"] {
+    --body-bg-color: #ffffff;
+    --body-color: #000;
+
+    --navbar-bg-color: #fff;
+    --navbar-border-color: #fff;
+    --navbar-color: #000;
+
+    --secondary-color: #0e1726; 
+    --secondary-bg-color: #fff;  
+    --secondary-hover-bg-color: #e9ecef;
+
+    --input-bg-color: #fff;
+    --input-color: #495057;
+    --input-border-color: #ced4da;
+    --input-focus-border-color: #ced4da;
+
+    --input-group-addon-bg-color: #e9ecef;
+    --input-group-addon-color: #495057;
+    --input-group-addon-border-color: #ced4da;
+}
+
+// Purely for Cork
+// Don't use for Glimesh CSS
+$m-color_1: #f1f2f3;
+$m-color_2: #ebedf2;
+$m-color_3: #e0e6ed;
+$m-color_4: #bfc9d4;
+$m-color_5: #d3d3d3;
+$m-color_6: #888ea8;
+$m-color_7: #506690;
+$m-color_8: #555555;
+$m-color_9: #515365;
+$m-color_10: #0e1726;
+$m-color_11: #607d8b;
+$m-color_12: #1b2e4b;
+$m-color_13: #25d5e4;
+$m-color_14: #009688;
+$m-color_15: #ffbb44;
+$m-color_16: #e95f2b;
+$m-color_17: #f8538d;
+$m-color_18: #191e3a;
+$m-color_19: #060818;
+$m-color_20: #fafafa;
+$m-color_21: #445ede;
+$m-color_22: #304aca;
+$l-dark: #e0e6ed;
+
+$font-family-base: 'Roboto', sans-serif; 
+$font-weight-normal: 300;
+$headings-font-family: 'Noto Sans', sans-serif;
+$headings-font-weight: 700;
+ 
+$body-bg: var(--body-bg-color);
+$body-color: var(--body-color);
+
+$dropdown-bg: var(--input-bg-color);
+
 
 // List Groups
-$list-group-bg: $color-cosmic-blue;
-$list-group-hover-bg: $color-navy-blue;
+$list-group-bg: var(--secondary-bg-color);
+$list-group-hover-bg: var(--secondary-hover-bg-color);
 
-$list-group-active-bg: $color-navy-blue;
-$list-group-active-color: $color-teal;
+$list-group-active-bg: var(--secondary-hover-bg-color);
+$list-group-active-color: var(--body-color);
 
-$list-group-action-hover-color: $color-teal;
-$list-group-action-color: $color-bone-white;
-$list-group-action-active-color: $color-teal;
-$list-group-action-active-bg: $color-navy-blue;
+$list-group-action-hover-color: var(--secondary-color);
+$list-group-action-color: var(--body-color);
+$list-group-action-active-color: var(--secondary-color);
+$list-group-action-active-bg: var(--secondary-hover-bg-color);
+
+
+// Cards
+$card-bg: var(--secondary-bg-color);
+
+// Inputs
+$input-bg:                              var(--input-bg-color);
+$input-disabled-bg:                     var(--input-bg-color);
+$input-color: var(--input-color);
+$input-border-color: var(--input-border-color);
+
+$input-group-addon-color:               var(--input-group-addon-color);
+$input-group-addon-bg:                  var(--input-group-addon-bg-color);
+$input-group-addon-border-color:        var(--input-group-addon-border-color);
+$input-focus-border-color:              var(--input-focus-border-color);
+
+// Tables
+$table-color:                 var(--body-color);
+$table-border-color:          var(--secondary-hover-bg-color);
+
+// Modals
+$modal-content-bg: var(--secondary-bg-color);
+$close-color: var(--secondary-color);
+
+
+// Navbar
+.navbar {
+    background-color: var(--navbar-bg-color);
+    border-color: var(--navbar-border-color);
+    color: var(--navbar-color);
+
+    a {
+        color: var(--navbar-color);
+    }
+}
+
+// Pricing page
+.pricing-plan h3 {
+    color: #fff;
+}

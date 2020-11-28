@@ -1,9 +1,13 @@
 <div class="container">
     <h2 class="mt-4"><%= gettext("Channel Settings") %></h2>
     <%= if !@channel do %>
-    <h5><%= gettext("You currently don't have a channel setup. Press the button below if you'd like to setup your channel!") %>
-    </h5>
-    <%= button gettext("Create Channel"), class: "btn btn-primary", to: Routes.user_settings_path(@conn, :create_channel), method: "put"%>
+    <div class="card">
+        <div class="card-body">
+            <p><%= gettext("You currently don't have a channel setup. Press the button below if you'd like to setup your channel!") %>
+            </p>
+            <%= button gettext("Create Channel"), class: "btn btn-primary", to: Routes.user_settings_path(@conn, :create_channel), method: "put"%>
+        </div>
+    </div>
     <% else %>
     <%= form_for @channel_changeset, Routes.user_settings_path(@conn, :update_channel), [multipart: true, class: "form"], fn f -> %>
     <div class="card">
@@ -86,12 +90,13 @@
             </div>
             <div class="row">
                 <div class="col-sm-6">
-                    <%= submit gettext("Update Settings"), class: "btn btn-primary" %>
+                    <%= submit gettext("Update Channel"), class: "btn btn-primary" %>
+                    <%= button(gettext("Delete Channel"), to: Routes.user_settings_path(@conn, :delete_channel), method: "put", class: "btn btn-danger", data: [confirm: "Pressing OK will: \n - Delete your channel \n - Wipe all settings tied to the channel \n - Clear all followers for the channel \n\nPressing OK will NOT: \n- Delete your Glimesh account \n- Remove all profile related settings \n\nAre you sure you want to do this?"]) %>
                 </div>
             </div>
         </div>
     </div>
     <% end %>
-    <%= button(gettext("Delete Channel"), to: Routes.user_settings_path(@conn, :delete_channel), method: "put", class: "btn btn-danger mt-4", data: [confirm: "Pressing OK will: \n - Delete your channel \n - Wipe all settings tied to the channel \n - Clear all followers for the channel \n\nPressing OK will NOT: \n- Delete your Glimesh account \n- Remove all profile related settings \n\nAre you sure you want to do this?"]) %>
+
     <% end %>
 </div>

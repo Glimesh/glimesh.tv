@@ -6,35 +6,19 @@
     <%= if @can_payments do %>
     <div class="row">
         <div class="col-md-4">
-            <div class="widget widget-card-four">
-                <div class="widget-content">
-                    <div class="w-content">
-                        <div class="w-info">
-                            <h6 class="value">$<%= format_price(@incoming) %></h6>
-                            <p class=""><%= gettext("Receiving Monthly") %></p>
-                        </div>
-                        <div class="">
-                            <div class="w-icon">
-                                <i class="fas fa-wallet"></i>
-                            </div>
-                        </div>
-                    </div>
+            <div class="card">
+                <div class="card-body">
+                    <i class="fas fa-wallet float-right"></i>
+                    <h6 class="value">$<%= format_price(@incoming) %></h6>
+                    <p class="mb-0"><%= gettext("Receiving Monthly") %></p>
                 </div>
             </div>
 
-            <div class="widget widget-card-four mt-2">
-                <div class="widget-content">
-                    <div class="w-content">
-                        <div class="w-info">
-                            <h6 class="value">$<%= format_price(@outgoing) %></h6>
-                            <p class=""><%= gettext("Giving Monthly") %></p>
-                        </div>
-                        <div class="">
-                            <div class="w-icon">
-                                <i class="fas fa-gift"></i>
-                            </div>
-                        </div>
-                    </div>
+            <div class="card mt-2">
+                <div class="card-body">
+                    <i class="fas fa-gift float-right"></i>
+                    <h6 class="value">$<%= format_price(@outgoing) %></h6>
+                    <p class="mb-0"><%= gettext("Giving Monthly") %></p>
                 </div>
             </div>
         </div>
@@ -74,30 +58,28 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="widget widget-account-invoice-two">
-                <div class="widget-content">
-                    <div class="account-box">
-                        <%= if @is_sub_ready_streamer do %>
-                        <div class="info">
-                            <h5 class=""><%= gettext("Sub-ready Streamer") %></h5>
-                        </div>
-                        <div class="acc-action">
-                            <div class="">
-                                <h6><%= gettext("Welcome to the sub club!") %></h6>
-                            </div>
-                        </div>
-                        <% else %>
-                        <div class="info">
-                            <h5 class=""><%= gettext("Streamer") %></h5>
-                        </div>
-                        <div class="acc-action">
-                            <div class="">
-                            </div>
-                            <a href="<%= @stripe_oauth_url %>"
-                                class="btn btn-light-default"><%= gettext("Enable Subscriptions") %></a>
-                        </div>
-                        <% end %>
+            <div class="card">
+                <div class="card-body">
+                    <%= if @is_sub_ready_streamer do %>
+                    <div class="info">
+                        <h5 class=""><%= gettext("Sub-ready Streamer") %></h5>
                     </div>
+                    <div class="acc-action">
+                        <div class="">
+                            <h6><%= gettext("Welcome to the sub club!") %></h6>
+                        </div>
+                    </div>
+                    <% else %>
+                    <div class="info">
+                        <h5 class=""><%= gettext("Streamer") %></h5>
+                    </div>
+                    <div class="acc-action">
+                        <div class="">
+                        </div>
+                        <a href="<%= @stripe_oauth_url %>"
+                            class="btn btn-secondary"><%= gettext("Enable Subscriptions") %></a>
+                    </div>
+                    <% end %>
                 </div>
             </div>
         </div>

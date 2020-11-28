@@ -1,6 +1,30 @@
 defmodule GlimeshWeb.LayoutView do
   use GlimeshWeb, :view
 
+  def html_root_tags(conn) do
+    []
+    |> site_them_attribute(conn)
+    |> lang_attribute(conn)
+    |> Enum.join(" ")
+  end
+
+  defp site_them_attribute(attributes, conn) do
+    case Plug.Conn.get_session(conn, :site_theme) do
+      nil -> attributes
+      theme -> ["data-theme=\"#{theme}\"" | attributes]
+    end
+  end
+
+  defp lang_attribute(attributes, conn) do
+    case Plug.Conn.get_session(conn, :locale) do
+      nil ->
+        ["lang=\"en\"" | attributes]
+
+      locale ->
+        ["lang=\"#{locale}\"" | attributes]
+    end
+  end
+
   def active_user_profile_path(conn) do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :profile])
   end
@@ -14,7 +38,7 @@ defmodule GlimeshWeb.LayoutView do
   end
 
   def active_user_settings_path(conn) do
-    truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :settings])
+    truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :preference])
   end
 
   def active_user_security_path(conn) do
