@@ -36,14 +36,9 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "~@fortawesome/fontawesome-free/scss/brands";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 
-// Cork SCSS
-// You must have the correct repo access to use this code.
-// @import "cork/cork";
-@import "cork/elements/choices";
-@import "cork/elements/counter";
-@import "cork/elements/pricing";
 
 // Glimesh SCSS
+@import "glimesh/components/choices";
 @import "glimesh/components/live-modal";
 @import "glimesh/components/img-avatar";
 @import "glimesh/components/card-stream";
@@ -59,4 +54,8 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
 .layout-spacing {
     padding-bottom: 40px;
+}
+
+.text-color-link {
+    color: var(--body-color);
 }
