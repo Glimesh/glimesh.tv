@@ -30,7 +30,10 @@ defmodule Glimesh.ChatTest do
       user = user_fixture()
 
       # Pretty janky way of creating multiple chat messages but it works
-      created_messages = Enum.map(1..attrs.num_of_messages, fn _i -> Chat.create_chat_message(user, channel, attrs |> Enum.into(@valid_attrs)) end)
+      created_messages =
+        Enum.map(1..attrs.num_of_messages, fn _i ->
+          Chat.create_chat_message(user, channel, attrs |> Enum.into(@valid_attrs))
+        end)
 
       {:ok, chat_message} = List.last(created_messages)
 
@@ -308,9 +311,11 @@ defmodule Glimesh.ChatTest do
     test "toggle timestamp button toggles timestamps" do
       user = user_fixture()
       assert user.show_timestamps == false
+
       {:ok, user} =
         Glimesh.Accounts.User.user_settings_changeset(user, %{show_timestamps: true})
         |> Glimesh.Repo.update()
+
       assert user.show_timestamps == true
     end
   end

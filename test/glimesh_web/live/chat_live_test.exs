@@ -10,9 +10,15 @@ defmodule GlimeshWeb.ChatLiveTest do
   describe "load chat" do
     setup :register_and_log_in_streamer
     @valid_chat_message %{message: "some message"}
+    @bad_chat_message %{message: "bad word"}
 
     defp generate_message_for_channel(user, channel, message) do
       Chat.create_chat_message(user, channel, message)
+    end
+
+    defp generate_message_for_removal_test(bad_user, streamer, channel, message) do
+      Chat.create_chat_message(streamer, channel, message)
+      Chat.create_chat_message(bad_user, channel, @bad_chat_message)
     end
 
     defp generate_proper_conn(conn) do
@@ -31,61 +37,80 @@ defmodule GlimeshWeb.ChatLiveTest do
   end
 
   describe "mod actions" do
+    test "short timeout removes chat message", %{conn: conn} do
+      streamer = streamer_fixture()
+      channel = Streams.get_channel_for_user(streamer)
 
-    test "short timneout removes chat message", %{conn: conn} do
-      user = streamer_fixture()
-      channel = Streams.get_channel_for_user(user)
-      generate_message_for_channel(user, channel, @valid_chat_message)
+      {:ok, chat_message} =
+        generate_message_for_removal_test(user_fixture(), streamer, channel, @valid_chat_message)
 
-      {:ok, view, _html} = live_isolated(conn, GlimeshWeb.ChatLive.Index, session: %{"user" => user, "channel_id" => channel.id})
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => streamer, "channel_id" => channel.id}
+        )
+
+      target = "##{chat_message.id} > div.user-message-header > i.short-timeout"
 
       view
-      |> element("i.short-timeout")
+      |> element(target)
       |> render_click()
 
-      refute render(view) =~ "some message"
-
+      refute render(view) =~ "bad word"
     end
 
-    test "long timneout removes chat message", %{conn: conn} do
-      user = streamer_fixture()
-      channel = Streams.get_channel_for_user(user)
-      generate_message_for_channel(user, channel, @valid_chat_message)
+    test "long timeout removes chat message", %{conn: conn} do
+      streamer = streamer_fixture()
+      channel = Streams.get_channel_for_user(streamer)
 
-      {:ok, view, _html} = live_isolated(conn, GlimeshWeb.ChatLive.Index, session: %{"user" => user, "channel_id" => channel.id})
+      {:ok, chat_message} =
+        generate_message_for_removal_test(user_fixture(), streamer, channel, @valid_chat_message)
+
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => streamer, "channel_id" => channel.id}
+        )
+
+      target = "##{chat_message.id} > div.user-message-header > i.long-timeout"
 
       view
-      |> element("i.long-timeout")
+      |> element(target)
       |> render_click()
 
-      refute render(view) =~ "some message"
-
+      refute render(view) =~ "bad word"
     end
 
     test "ban removes chat message", %{conn: conn} do
-      user = streamer_fixture()
-      channel = Streams.get_channel_for_user(user)
-      generate_message_for_channel(user, channel, @valid_chat_message)
+      streamer = streamer_fixture()
+      channel = Streams.get_channel_for_user(streamer)
 
-      {:ok, view, _html} = live_isolated(conn, GlimeshWeb.ChatLive.Index, session: %{"user" => user, "channel_id" => channel.id})
+      {:ok, chat_message} =
+        generate_message_for_removal_test(user_fixture(), streamer, channel, @valid_chat_message)
+
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => streamer, "channel_id" => channel.id}
+        )
+
+      target = "##{chat_message.id} > div.user-message-header > i.ban"
 
       view
-      |> element("i.ban")
+      |> element(target)
       |> render_click()
 
-      refute render(view) =~ "some message"
-
+      refute render(view) =~ "bad word"
     end
   end
 
   describe "chat preferences" do
-
     test "toggle timestamps button toggles them", %{conn: conn} do
       user = streamer_fixture()
       channel = Streams.get_channel_for_user(user)
       {:ok, chat_message} = generate_message_for_channel(user, channel, @valid_chat_message)
 
-      {:ok, view, _html} = live_isolated(conn, GlimeshWeb.ChatLive.Index, session: %{"user" => user, "channel_id" => channel.id})
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => user, "channel_id" => channel.id}
+        )
 
       assert render(view) =~ "text-muted d-none"
 
@@ -93,9 +118,7 @@ defmodule GlimeshWeb.ChatLiveTest do
       |> element("#toggle-timestamps")
       |> render_click()
 
-      refute render(view) =~ "text-muted d-none"
-
+      assert render(view) =~ "Disable Timestamps"
     end
   end
-
 end

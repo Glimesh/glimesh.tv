@@ -72,12 +72,32 @@ export default {
         });
 
         this.scrollToBottom(chatMessages);
-        this.handleEvent("new_chat_message", () => {
+        this.handleEvent("new_chat_message", (e) => {
             // Scroll if we need to
             this.maybeScrollToBottom(chatMessages);
 
             // Init bootstrap in case dom has changed
             BSN.initCallback(chatMessages);
+            
+            //Timestamp handler
+            if (e["show_timestamps"]) {
+                let timestamp = document.getElementById("small-" + e["message_id"]);
+                timestamp.classList.remove("d-none");
+            }
         });
+
+        /* 
+        For populating the initial X messages with the current timestamp state.
+        */
+        this.handleEvent("add_timestamp_to_initial_messages", (e) => {
+            if (e["show_timestamps"]) {
+                let childSmalls = chatMessages.getElementsByTagName("small");
+                for (let i = 0; i < childSmalls.length; i++) {
+                    let childSmall = childSmalls[i];
+                    childSmall.classList.remove("d-none");
+                }
+            }
+        });
+
     }
 };
