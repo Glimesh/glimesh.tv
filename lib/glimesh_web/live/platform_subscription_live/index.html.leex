@@ -7,15 +7,15 @@
         <div class="col-md-4">
             <div class="card border-secondary">
                 <div class="card-body">
-                    <h3>Supporter</h3>
-                    <p>Help us fund the platform & grow!</p>
+                    <h3><%= gettext("Supporter") %></h3>
+                    <p><%= gettext("Help us fund the platform & grow!") %></p>
 
-                    <h4>$5 / monthly</h4>
+                    <h4>$5 / <%= gettext("monthly") %></h4>
 
                     <ul>
-                        <li>Cosmetic Features</li>
-                        <li>Colored Avatar Ring</li>
-                        <li>Animated Emotes</li>
+                        <li><%= gettext("Cosmetic Features") %></li>
+                        <li><%= gettext("Colored Avatar Ring") %></li>
+                        <li><%= gettext("Animated Emotes") %></li>
                     </ul>
 
                     <%= if @has_platform_subscription == false do %>
@@ -28,17 +28,17 @@
         <div class="col-md-4">
             <div class="card border-warning">
                 <div class="card-body">
-                    <h3 class="text-warning">Founder</h3>
-                    <p>Support Glimesh's future with your wallet! Get special perks to show off.</p>
+                    <h3 class="text-warning"><%= gettext("Founder") %></h3>
+                    <p><%= gettext("Support Glimesh's future with your wallet! Get special perks to show off.") %></p>
 
-                    <h4>$25 / monthly</h4>
+                    <h4>$25 / <%= gettext("monthly") %></h4>
 
                     <ul>
-                        <li>Cosmetic Features</li>
-                        <li>Supporter Perks</li>
-                        <li>Founder Badge</li>
-                        <li>Animated Avatar Ring</li>
-                        <li>5 Custom Emotes</li>
+                        <li><%= gettext("Cosmetic Features") %></li>
+                        <li><%= gettext("Supporter Perks") %></li>
+                        <li><%= gettext("Founder Badge") %></li>
+                        <li><%= gettext("Animated Avatar Ring") %></li>
+                        <li><%= gettext("5 Custom Emotes") %></li>
                     </ul>
 
                     <%= if @has_platform_subscription == false do %>
@@ -78,8 +78,8 @@
 
                     <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :platform, user: @user, product_id: @product_id, price_id: @price_id, price: @price %>
 
-                    <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider."
-                        class="img-fluid mt-4">
+                    <img src="/images/stripe-badge-white.png"
+                        alt="<%= gettext("We use Stripe as our payment provider.") %>" class="img-fluid mt-4">
                     <% end %>
                 </div>
             </div>
