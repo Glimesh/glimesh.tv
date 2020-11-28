@@ -30,10 +30,9 @@ defmodule GlimeshWeb.SubscriptionComponent do
             </div>
           <% end %>
 
-          <h4><%= gettext("Total Charge") %></h4>
-            <div class="pricing-plan-label billed-monthly-label">
-            <strong>$<%= @price %></strong>/ <%= gettext("monthly") %>
-          </div>
+          <h4 class="text-center mt-4 mb-4"><small><%= gettext("Total Charge") %></small><br>
+            $<%= @price %> / <%= gettext("monthly") %>
+          </h4>
 
           <div id="card-errors" role="alert"></div>
 
