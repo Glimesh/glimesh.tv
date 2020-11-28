@@ -105,14 +105,13 @@ defmodule GlimeshWeb.ChatLiveTest do
     test "toggle timestamps button toggles them", %{conn: conn} do
       user = streamer_fixture()
       channel = Streams.get_channel_for_user(user)
-      {:ok, chat_message} = generate_message_for_channel(user, channel, @valid_chat_message)
 
       {:ok, view, _html} =
         live_isolated(conn, GlimeshWeb.ChatLive.Index,
           session: %{"user" => user, "channel_id" => channel.id}
         )
 
-      assert render(view) =~ "text-muted d-none"
+      assert render(view) =~ "Enable Timestamps"
 
       view
       |> element("#toggle-timestamps")
