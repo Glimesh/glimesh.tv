@@ -129,6 +129,10 @@ if email_physical_address = System.get_env("GLIMESH_EMAIL_PHYSICAL_ADDRESS") do
   config :glimesh,
     email_physical_address: email_physical_address
 end
+if show_staging_warning = System.get_env("GLIMESH_SHOW_STAGING_WARNING") do
+  config :glimesh,
+    show_staging_warning: show_staging_warning
+end
 
 # Default App Config
 config :glimesh, :stripe_config,

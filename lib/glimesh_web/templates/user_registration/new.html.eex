@@ -12,6 +12,14 @@
                     </div>
                     <% end %>
 
+                    <%= if Application.get_env(:glimesh, :show_staging_warning) do %>
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Danger!</strong> This is our public TESTING website, all data & streams are FAKE. You
+                        can find the real
+                        Glimesh at <a href="https://glimesh.tv/">https://glimesh.tv/</a>.
+                    </div>
+                    <% end %>
+
                     <p>By creating an account you agree to our
                         <%= link "Terms of Service", to: Routes.about_path(@conn, :terms) %>! <br></p>
 
