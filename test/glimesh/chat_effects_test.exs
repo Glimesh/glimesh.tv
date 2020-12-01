@@ -51,7 +51,7 @@ defmodule Glimesh.ChatEffectsTest do
                "Mod"
 
       assert safe_to_string(Effects.render_channel_badge(channel, moderator)) =~
-               "badge badge-info"
+               "badge badge-primary"
     end
 
     test "renders appropriate tags for platform founder subscribers", %{
@@ -95,7 +95,7 @@ defmodule Glimesh.ChatEffectsTest do
                "Streamer"
 
       assert safe_to_string(Effects.render_channel_badge(channel, streamer)) =~
-               "badge badge-info"
+               "badge badge-primary"
     end
 
     test "renders appropriate tags for regular viewer", %{user: user} do

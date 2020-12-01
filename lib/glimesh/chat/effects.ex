@@ -93,10 +93,10 @@ defmodule Glimesh.Chat.Effects do
   def render_channel_badge(channel, user) do
     cond do
       channel.user_id == user.id ->
-        Tag.content_tag(:span, "Streamer", class: "badge badge-info")
+        Tag.content_tag(:span, "Streamer", class: "badge badge-primary")
 
       Glimesh.Chat.is_moderator?(channel, user) ->
-        Tag.content_tag(:span, "Mod", class: "badge badge-info")
+        Tag.content_tag(:span, "Mod", class: "badge badge-primary")
 
       Payments.is_subscribed?(channel, user) ->
         Tag.content_tag(:span, Tag.content_tag(:i, "", class: "fas fa-trophy"),

@@ -62,7 +62,8 @@ $body-bg: var(--body-bg-color);
 $body-color: var(--body-color);
 
 $dropdown-bg: var(--input-bg-color);
-
+$dropdown-color: var(--input-color);
+$dropdown-link-color: var(--input-color);
 
 // List Groups
 $list-group-bg: var(--secondary-bg-color);
@@ -109,9 +110,4 @@ $close-color: var(--secondary-color);
     a {
         color: var(--navbar-color);
     }
-}
-
-// Pricing page
-.pricing-plan h3 {
-    color: #fff;
 }
