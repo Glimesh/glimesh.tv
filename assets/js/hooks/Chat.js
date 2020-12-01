@@ -52,7 +52,7 @@ export default {
             });
         }
 
-        const chat = document.getElementById('chat_message_message');
+        const chat = document.getElementById('chat_message-form_message');
         const chatMessages = document.getElementById('chat-messages');
 
         picker.on('emoji', selection => {
