@@ -3,6 +3,7 @@ defmodule Glimesh.ChatTest do
 
   import Glimesh.AccountsFixtures
 
+  alias Glimesh.Accounts
   alias Glimesh.Chat
   alias Glimesh.Streams
   alias Glimesh.StreamModeration
@@ -310,13 +311,13 @@ defmodule Glimesh.ChatTest do
   describe "chat settings button" do
     test "toggle timestamp button toggles timestamps" do
       user = user_fixture()
-      assert user.show_timestamps == false
+      user_preferences = Accounts.get_user_preference!(user)
+      assert user_preferences.show_timestamps == false
 
-      {:ok, user} =
-        Glimesh.Accounts.User.user_settings_changeset(user, %{show_timestamps: true})
-        |> Glimesh.Repo.update()
+      {:ok, user_preferences} =
+        Accounts.update_user_preference(user_preferences, %{show_timestamps: true})
 
-      assert user.show_timestamps == true
+      assert user_preferences.show_timestamps == true
     end
   end
 end

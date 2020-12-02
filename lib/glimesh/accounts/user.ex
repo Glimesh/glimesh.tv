@@ -40,9 +40,6 @@ defmodule Glimesh.Accounts.User do
 
     field :locale, :string, default: "en"
 
-    # Fields for the dedicated settings page
-    field :show_timestamps, :boolean, default: false
-
     has_one :channel, Glimesh.Streams.Channel
     has_one :user_preference, Glimesh.Accounts.UserPreference
 
@@ -209,16 +206,6 @@ defmodule Glimesh.Accounts.User do
     |> validate_displayname()
     |> set_profile_content_html()
     |> cast_attachments(attrs, [:avatar])
-  end
-
-  @doc """
-  A user changeset for changing user settings on the platform
-  """
-  def user_settings_changeset(user, attrs) do
-    user
-    |> cast(attrs, [
-      :show_timestamps
-    ])
   end
 
   @doc """

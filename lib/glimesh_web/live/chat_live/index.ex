@@ -13,6 +13,16 @@ defmodule GlimeshWeb.ChatLive.Index do
 
     channel = Streams.get_channel!(channel_id)
 
+    # Sets a default user_preferences map for the chat if the user is logged out
+    user_preferences =
+      if session["user"] do
+        Accounts.get_user_preference!(session["user"])
+      else
+        %{
+          show_timestamps: false
+        }
+      end
+
     if session["user"] do
       user = session["user"]
 
@@ -30,8 +40,6 @@ defmodule GlimeshWeb.ChatLive.Index do
       )
     end
 
-    show_timestamps = if session["user"], do: session["user"].show_timestamps, else: false
-
     new_socket =
       socket
       |> assign(:channel_chat_parser_config, Chat.get_chat_parser_config(channel))
@@ -41,8 +49,11 @@ defmodule GlimeshWeb.ChatLive.Index do
       |> assign(:permissions, Chat.get_moderator_permissions(channel, session["user"]))
       |> assign(:chat_messages, list_chat_messages(channel))
       |> assign(:chat_message, %ChatMessage{})
-      |> assign(:show_timestamps, show_timestamps)
-      |> push_event("add_timestamp_to_initial_messages", %{show_timestamps: show_timestamps})
+      |> assign(:show_timestamps, user_preferences.show_timestamps)
+      |> push_event("add_timestamp_to_initial_messages", %{
+        show_timestamps: user_preferences.show_timestamps
+      })
+      |> assign(:user_preferences, user_preferences)
 
     {:ok, new_socket, temporary_assigns: [chat_messages: []]}
   end
@@ -84,18 +95,17 @@ defmodule GlimeshWeb.ChatLive.Index do
   def handle_event("toggle_timestamps", _params, socket) do
     timestamp_state = Kernel.not(socket.assigns.show_timestamps)
 
-    {:ok, user} =
-      Glimesh.Accounts.User.user_settings_changeset(socket.assigns.user, %{
+    {:ok, user_preferences} =
+      Accounts.update_user_preference(socket.assigns.user_preferences, %{
         show_timestamps: timestamp_state
       })
-      |> Glimesh.Repo.update()
 
     {:noreply,
      socket
      # Needed so the chat doesn't empty and reload the DOM
      |> assign(:update_action, "append")
      |> assign(:show_timestamps, timestamp_state)
-     |> assign(:user, user)}
+     |> assign(:user_preferences, user_preferences)}
   end
 
   @impl true
@@ -104,7 +114,7 @@ defmodule GlimeshWeb.ChatLive.Index do
      socket
      |> assign(:update_action, "append")
      |> push_event("new_chat_message", %{
-       show_timestamps: socket.assigns.user.show_timestamps,
+       show_timestamps: socket.assigns.user_preferences.show_timestamps,
        message_id: message.id
      })
      |> update(:chat_messages, fn messages -> [message | messages] end)}
@@ -116,7 +126,10 @@ defmodule GlimeshWeb.ChatLive.Index do
     # {:noreply, socket |> assign(:update_action, "replace") |> update(:chat_messages, fn messages -> Enum.reject(messages, fn x -> x.user_id === bad_user.id end) |> IO.inspect() end)}
 
     # Must tell the JS function to re-assign the timestamps since a timeout seems to re-render the entire DOM.
-    show_timestamps = if socket.assigns.user, do: socket.assigns.user.show_timestamps, else: false
+    show_timestamps =
+      if socket.assigns.user,
+        do: Accounts.get_user_preference!(socket.assigns.user).show_timestamps,
+        else: false
 
     {:noreply,
      socket

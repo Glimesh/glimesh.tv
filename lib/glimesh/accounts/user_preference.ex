@@ -9,6 +9,7 @@ defmodule Glimesh.Accounts.UserPreference do
     belongs_to :user, Glimesh.Accounts.User
 
     field :site_theme, :string, default: "dark"
+    field :show_timestamps, :boolean, default: false
 
     timestamps()
   end
@@ -18,6 +19,9 @@ defmodule Glimesh.Accounts.UserPreference do
   """
   def changeset(user_preferences, attrs) do
     user_preferences
-    |> cast(attrs, [:site_theme])
+    |> cast(attrs, [
+      :site_theme,
+      :show_timestamps
+    ])
   end
 end
