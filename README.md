@@ -40,10 +40,8 @@ Other distributions likely have packages available for these tools as well.
 To clone a local copy of Glimesh.tv, run
 
 ```sh
-git clone --recursive git@github.com:Glimesh/glimesh.tv.git
+git clone git@github.com:Glimesh/glimesh.tv.git
 ```
-
-This will clone the repository, as well as the css submodule if you have access to it.
 
 **NOTE**: If you are using WSL2, ensure you are cloning inside of your WSL2 instance
 (ex. `/home/user/...`) and not inside of a mounted Windows drive (ex. `/mnt/c/Users/...`)
@@ -92,12 +90,10 @@ Then, run the following to set up the database:
 mix ecto.setup
 ```
 
-Then, `cd` into the assets directory and run `npm install` to pull front-end dependencies.
+Then, pull the front-end dependencies from the assets directory.
 
 ```sh
-pushd assets
-npm install
-popd
+npm ci --prefix=assets
 ```
 
 Then, run the following to generate local SSL certificates (for HTTPS)
