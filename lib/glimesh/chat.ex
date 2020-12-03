@@ -158,12 +158,12 @@ defmodule Glimesh.Chat do
       [%ChatMessage{}, ...]
 
   """
-  def list_chat_messages(channel) do
+  def list_chat_messages(channel, limit \\ 5) do
     Repo.all(
       from m in ChatMessage,
         where: m.is_visible == true and m.channel_id == ^channel.id,
         order_by: [desc: :inserted_at],
-        limit: 5
+        limit: ^limit
     )
     |> Repo.preload([:user, :channel])
     |> Enum.reverse()

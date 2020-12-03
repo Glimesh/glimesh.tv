@@ -3,6 +3,7 @@ defmodule Glimesh.ChatTest do
 
   import Glimesh.AccountsFixtures
 
+  alias Glimesh.Accounts
   alias Glimesh.Chat
   alias Glimesh.Streams
   alias Glimesh.StreamModeration
@@ -25,6 +26,21 @@ defmodule Glimesh.ChatTest do
       chat_message
     end
 
+    def multiple_chat_message_fixture(attrs \\ %{num_of_messages: 10}) do
+      channel = channel_fixture()
+      user = user_fixture()
+
+      # Pretty janky way of creating multiple chat messages but it works
+      created_messages =
+        Enum.map(1..attrs.num_of_messages, fn _i ->
+          Chat.create_chat_message(user, channel, attrs |> Enum.into(@valid_attrs))
+        end)
+
+      {:ok, chat_message} = List.last(created_messages)
+
+      chat_message
+    end
+
     test "empty_chat_message/0 returns an empty changeset" do
       assert %Ecto.Changeset{} = Chat.empty_chat_message()
     end
@@ -32,6 +48,11 @@ defmodule Glimesh.ChatTest do
     test "list_chat_messages/0 returns all chat_messages" do
       chat_message = chat_message_fixture()
       assert length(Chat.list_chat_messages(chat_message.channel)) == 1
+    end
+
+    test "list_chat_messages/2 returns all chat_messages within the specified limit" do
+      chat_message = multiple_chat_message_fixture()
+      assert length(Chat.list_chat_messages(chat_message.channel, 8)) == 8
     end
 
     test "get_chat_message!/1 returns the chat_message with given id" do
@@ -284,6 +305,19 @@ defmodule Glimesh.ChatTest do
       assert {:ok, _} = Chat.long_timeout_user(streamer, channel, user)
       assert {:ok, _} = Chat.ban_user(streamer, channel, user)
       assert {:ok, _} = Chat.unban_user(streamer, channel, user)
+    end
+  end
+
+  describe "chat settings button" do
+    test "toggle timestamp button toggles timestamps" do
+      user = user_fixture()
+      user_preferences = Accounts.get_user_preference!(user)
+      assert user_preferences.show_timestamps == false
+
+      {:ok, user_preferences} =
+        Accounts.update_user_preference(user_preferences, %{show_timestamps: true})
+
+      assert user_preferences.show_timestamps == true
     end
   end
 end
