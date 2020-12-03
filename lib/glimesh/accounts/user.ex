@@ -235,7 +235,6 @@ defmodule Glimesh.Accounts.User do
     |> validate_length(:ban_reason, max: 8192)
     |> validate_username()
     |> validate_email()
-    |> validate_gct_level(2)
   end
 
   @doc """
@@ -326,18 +325,4 @@ defmodule Glimesh.Accounts.User do
     end
   end
 
-  @doc """
-  Validates the GCT access level
-  """
-  def validate_gct_level(changeset, needed_amount) do
-    validate_change(changeset, :gct_level, fn current_field, value ->
-      amount_of_digits = Enum.count(Integer.digits(value))
-      if amount_of_digits == needed_amount do
-        []
-      else
-        padded_value = "5" <> String.duplicate("0", needed_amount - 1)
-        [gct_level: gettext("Access level must be %{count} digits(Example: %{example})", count: needed_amount, example: padded_value)]
-      end
-    end)
-  end
 end

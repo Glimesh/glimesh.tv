@@ -7,7 +7,7 @@ defmodule Glimesh.CommunityTeam do
   alias Glimesh.Repo
 
   def access_level_to_title(level) do
-    case get_global_access_level(level) do
+    case level do
       5 -> "Admin"
       4 -> "Manager"
       3 -> "Team Lead"
@@ -69,14 +69,6 @@ defmodule Glimesh.CommunityTeam do
       from al in AuditLog,
       where: al.id == ^id
     ) |> Repo.preload([:user])
-  end
-
-  def get_global_access_level(level_int) do
-    if level_int, do: Enum.at(Integer.digits(level_int), 0, 0), else: 0
-  end
-
-  def get_billing_override(level_int) do
-    if level_int, do: Enum.at(Integer.digits(level_int), 1, 0), else: 0
   end
 
   def generate_update_user_profile_more_details(user, user_params) do
