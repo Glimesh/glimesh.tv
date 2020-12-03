@@ -50,7 +50,7 @@ defmodule GlimeshWeb.ChatLive.Index do
       |> assign(:chat_messages, list_chat_messages(channel))
       |> assign(:chat_message, %ChatMessage{})
       |> assign(:show_timestamps, user_preferences.show_timestamps)
-      |> push_event("add_timestamp_to_initial_messages", %{
+      |> push_event("update_previous_messages_with_timestamp_state", %{
         show_timestamps: user_preferences.show_timestamps
       })
       |> assign(:user_preferences, user_preferences)
@@ -105,7 +105,10 @@ defmodule GlimeshWeb.ChatLive.Index do
      # Needed so the chat doesn't empty and reload the DOM
      |> assign(:update_action, "append")
      |> assign(:show_timestamps, timestamp_state)
-     |> assign(:user_preferences, user_preferences)}
+     |> assign(:user_preferences, user_preferences)
+     |> push_event("update_previous_messages_with_timestamp_state", %{
+       show_timestamps: timestamp_state
+     })}
   end
 
   @impl true
@@ -135,7 +138,7 @@ defmodule GlimeshWeb.ChatLive.Index do
      socket
      |> assign(:update_action, "replace")
      |> assign(:chat_messages, list_chat_messages(socket.assigns.channel))
-     |> push_event("add_timestamp_to_initial_messages", %{show_timestamps: show_timestamps})}
+     |> push_event("update_previous_messages_with_timestamp_state", %{show_timestamps: show_timestamps})}
   end
 
   defp list_chat_messages(channel) do

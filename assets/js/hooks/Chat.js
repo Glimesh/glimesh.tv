@@ -89,14 +89,17 @@ export default {
         /* 
         For populating the initial X messages with the current timestamp state.
         */
-        this.handleEvent("add_timestamp_to_initial_messages", (e) => {
-            if (e["show_timestamps"]) {
-                let childSmalls = chatMessages.getElementsByTagName("small");
-                for (let i = 0; i < childSmalls.length; i++) {
-                    let childSmall = childSmalls[i];
+        this.handleEvent("update_previous_messages_with_timestamp_state", (e) => {
+            let childSmalls = chatMessages.getElementsByTagName("small");
+            for (let i = 0; i < childSmalls.length; i++) {
+                let childSmall = childSmalls[i];
+                if (e["show_timestamps"]) {
                     childSmall.classList.remove("d-none");
+                } else {
+                    childSmall.classList.add("d-none");
                 }
             }
+            this.maybeScrollToBottom(chatMessages);
         });
 
     }
