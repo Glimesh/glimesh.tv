@@ -90,8 +90,15 @@ defmodule Glimesh.Payments do
     {:ok, product} = Stripe.Product.retrieve(product_id)
     {:ok, price} = Stripe.Price.retrieve(price_id)
 
+    # 4000 0000 0000 0341 status: "incomplete", ?
+    # 4242 4242 4242 4242 status: "active",
+
+    # The invoice.paid event type corresponds to the payment_intent.status
+    # of succeeded, so payment is complete, and the subscription status is active.
+
     with {:ok, sub} <-
-           Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"]),
+           Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"])
+           |> IO.inspect(),
          {:ok, platform_sub} <-
            create_subscription(%{
              user: user,
@@ -180,6 +187,26 @@ defmodule Glimesh.Payments do
       {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
       {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
     end
+  end
+
+  def process_successful_renewal(stripe_subscription_id, new_expiration_date) do
+    case get_subscription_by_stripe_id(stripe_subscription_id) do
+      %Subscription{} = sub ->
+        update_subscription(sub, %{
+          is_active: true,
+          ended_at: new_expiration_date |> DateTime.from_unix!() |> DateTime.to_naive()
+        })
+
+      _ ->
+        {:error, "Unable to find subscription by stripe_subscription_id"}
+    end
+  end
+
+  def get_subscription_by_stripe_id(subscription_id) do
+    Repo.one(
+      from s in Subscription,
+        where: s.stripe_subscription_id == ^subscription_id
+    )
   end
 
   def get_platform_subscription!(user) do
