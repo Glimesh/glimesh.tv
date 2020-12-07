@@ -92,6 +92,19 @@ defmodule GlimeshWeb.ChatLive.Index do
   end
 
   @impl true
+  def handle_event("toggle_timestamps", params, socket) when params == %{} do
+    timestamp_state = Kernel.not(socket.assigns.show_timestamps)
+    {:noreply,
+     socket
+     |> assign(:update_action, "append")
+     |> assign(:show_timestamps, timestamp_state)
+     |> assign(:user_preferences, %{show_timestamps: timestamp_state})
+     |> push_event("update_previous_messages_with_timestamp_state", %{
+       show_timestamps: timestamp_state
+     })}
+  end
+
+  @impl true
   def handle_event("toggle_timestamps", _params, socket) do
     timestamp_state = Kernel.not(socket.assigns.show_timestamps)
 
