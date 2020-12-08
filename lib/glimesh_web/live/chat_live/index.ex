@@ -92,7 +92,7 @@ defmodule GlimeshWeb.ChatLive.Index do
   end
 
   @impl true
-  def handle_event("toggle_timestamps", params, socket) when params == %{} do
+  def handle_event("toggle_timestamps", params, socket) when map_size(params) == 0 do
     timestamp_state = Kernel.not(socket.assigns.show_timestamps)
     {:noreply,
      socket
@@ -105,7 +105,7 @@ defmodule GlimeshWeb.ChatLive.Index do
   end
 
   @impl true
-  def handle_event("toggle_timestamps", _params, socket) do
+  def handle_event("toggle_timestamps", %{"user" => username}, socket) do
     timestamp_state = Kernel.not(socket.assigns.show_timestamps)
 
     {:ok, user_preferences} =
