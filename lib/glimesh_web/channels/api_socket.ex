@@ -1,4 +1,9 @@
 defmodule GlimeshWeb.ApiSocket do
+  @moduledoc """
+  Allow for connections to the API socket with either an API token or a client id.
+
+  Client ID is for read API access only.
+  """
   use Phoenix.Socket
 
   use Absinthe.Phoenix.Socket,
@@ -9,18 +14,25 @@ defmodule GlimeshWeb.ApiSocket do
   ## Channels
   # channel "room:*", GlimeshWeb.RoomChannel
 
-  # Socket params are passed from the client and can
-  # be used to verify and authenticate a user. After
-  # verification, you can put default assigns into
-  # the socket that will be set for all channels, ie
-  #
-  #     {:ok, assign(socket, :user_id, verified_user_id)}
-  #
-  # To deny connection, return `:error`.
-  #
-  # See `Phoenix.Token` documentation for examples in
-  # performing token verification on connect.
   @impl true
+  def connect(%{"client_id" => client_id}, socket, _connect_info) do
+    case Glimesh.Oauth.TokenResolver.resolve_app(client_id) do
+      %Glimesh.OauthApplications.OauthApplication{} ->
+        {:ok,
+         socket
+         |> assign(:user_id, nil)
+         |> Absinthe.Phoenix.Socket.put_options(
+           context: %{
+             is_admin: false,
+             current_user: nil
+           }
+         )}
+
+      _ ->
+        :error
+    end
+  end
+
   def connect(%{"token" => token}, socket, _connect_info) do
     case Glimesh.Oauth.TokenResolver.resolve_user(token) do
       {:ok, %User{} = user} ->
@@ -29,6 +41,7 @@ defmodule GlimeshWeb.ApiSocket do
          |> assign(:user_id, user.id)
          |> Absinthe.Phoenix.Socket.put_options(
            context: %{
+             is_admin: user.is_admin,
              current_user: user
            }
          )}

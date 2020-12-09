@@ -2,6 +2,7 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
   @behaviour Plug
 
   alias Glimesh.Accounts.User
+  alias Glimesh.Apps.App
 
   import Plug.Conn
   import Phoenix.Controller, only: [json: 2]
@@ -16,6 +17,14 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
             # Allows us to pattern match admin APIs
             is_admin: user.is_admin,
             current_user: user
+          }
+        )
+
+      {:ok, %App{} = app} ->
+        Absinthe.Plug.put_options(conn,
+          context: %{
+            is_admin: false,
+            current_user: nil
           }
         )
 
