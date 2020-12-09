@@ -100,7 +100,6 @@ $table-border-color:          var(--secondary-hover-bg-color);
 $modal-content-bg: var(--secondary-bg-color);
 $close-color: var(--secondary-color);
 
-
 // Navbar
 .navbar {
     background-color: var(--navbar-bg-color);
@@ -109,5 +108,9 @@ $close-color: var(--secondary-color);
 
     a {
         color: var(--navbar-color);
+    }
+
+    .navbar-toggler {
+        color: var(--body-color);
     }
 }
