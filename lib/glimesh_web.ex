@@ -51,6 +51,8 @@ defmodule GlimeshWeb do
           controller_module: 1
         ]
 
+      import Glimesh.Formatters
+
       # Include shared imports and aliases for views
       unquote(view_helpers())
     end
@@ -61,6 +63,8 @@ defmodule GlimeshWeb do
       use Phoenix.LiveView,
         layout: {GlimeshWeb.LayoutView, "live.html"}
 
+      import Glimesh.Formatters
+
       unquote(view_helpers())
     end
   end
@@ -68,6 +72,8 @@ defmodule GlimeshWeb do
   def live_component do
     quote do
       use Phoenix.LiveComponent
+
+      import Glimesh.Formatters
 
       unquote(view_helpers())
     end

@@ -99,7 +99,4 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
         {:noreply, socket |> assign(:stripe_error, error_msg)}
     end
   end
-
-  def format_price(nil), do: "0.00"
-  def format_price(iprice), do: :erlang.float_to_binary(iprice / 100, decimals: 2)
 end

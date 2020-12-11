@@ -14,6 +14,11 @@ defmodule Glimesh.Accounts do
     Repo.all(from u in User, where: not is_nil(u.confirmed_at))
   end
 
+  def search_users(query) do
+    like = "%#{query}%"
+    Repo.all(from u in User, where: ilike(u.username, ^like))
+  end
+
   def list_admins do
     Repo.all(from u in User, where: u.is_admin == true)
   end

@@ -10,7 +10,15 @@ defmodule GlimeshWeb.UserLive.Index do
 
     {:ok,
      socket
+     |> assign(:query, "")
      |> assign(:page_title, "Users")
      |> assign(:users, users)}
+  end
+
+  @impl true
+  def handle_event("search", %{"q" => query}, socket) do
+    users = Accounts.search_users(query)
+
+    {:noreply, assign(socket, users: users, query: query)}
   end
 end
