@@ -1,4 +1,10 @@
 defmodule Glimesh.Formatters do
+  @moduledoc """
+  Common Glimesh Frontend Formatters
+
+  Example uses: currency, date times, etc
+  """
+
   def format_price(nil), do: "0.00"
   def format_price(iprice), do: :erlang.float_to_binary(iprice / 100, decimals: 2)
 
