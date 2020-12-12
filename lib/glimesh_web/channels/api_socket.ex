@@ -17,7 +17,7 @@ defmodule GlimeshWeb.ApiSocket do
   @impl true
   def connect(%{"client_id" => client_id}, socket, _connect_info) do
     case Glimesh.Oauth.TokenResolver.resolve_app(client_id) do
-      %Glimesh.OauthApplications.OauthApplication{} ->
+      {:ok, %Glimesh.OauthApplications.OauthApplication{}} ->
         {:ok,
          socket
          |> assign(:user_id, nil)

@@ -11,9 +11,9 @@ defmodule GlimeshWeb.Api.ApiAuthTest do
   }
   """
 
-  @users_query """
-  query getUsers {
-    users {
+  @user_query """
+  query getUser($username: String!) {
+    user(username: $username) {
       username
     }
   }
@@ -31,8 +31,8 @@ defmodule GlimeshWeb.Api.ApiAuthTest do
     test "gets rejected even with query", %{conn: conn} do
       conn =
         post(conn, "/api", %{
-          "query" => @users_query,
-          "variables" => %{}
+          "query" => @user_query,
+          "variables" => %{"username" => "foobar"}
         })
 
       assert json_response(conn, 401) == %{
@@ -57,12 +57,14 @@ defmodule GlimeshWeb.Api.ApiAuthTest do
 
       %{
         conn:
-          conn |> Plug.Conn.put_req_header("authorization", "Bearer #{app.oauth_application.uid}"),
-        client_id: app.oauth_application.uid
+          conn
+          |> Plug.Conn.put_req_header("authorization", "Client-ID #{app.oauth_application.uid}"),
+        client_id: app.oauth_application.uid,
+        user: user
       }
     end
 
-    test "gets accepted", %{conn: conn, client_id: client_id} do
+    test "gets accepted", %{conn: conn} do
       conn = get(conn, "/api")
 
       assert json_response(conn, 400) == %{
@@ -70,18 +72,15 @@ defmodule GlimeshWeb.Api.ApiAuthTest do
              }
     end
 
-    test "returns myself", %{conn: conn, client_id: client_id} do
+    test "can get a user", %{conn: conn, user: user} do
       conn =
-        post(
-          conn,
-          "/api",
-          %{
-            "query" => @myself_query
-          }
-        )
+        post(conn, "/api", %{
+          "query" => @user_query,
+          "variables" => %{"username" => user.username}
+        })
 
       assert json_response(conn, 200) == %{
-               "data" => %{"myself" => nil}
+               "data" => %{"user" => %{"username" => user.username}}
              }
     end
   end

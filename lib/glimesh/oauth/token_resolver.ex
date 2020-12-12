@@ -4,31 +4,8 @@ defmodule Glimesh.Oauth.TokenResolver do
   """
 
   alias Glimesh.Accounts.User
+  alias Glimesh.OauthApplications.OauthApplication
   alias Glimesh.Repo
-
-  @doc """
-  Will resolve a token to either a user, or an app.
-  """
-  def resolve_token(token) do
-    with {:error, msg} <- resolve_user(token),
-         {:error, msg} <- resolve_app(token) do
-      {:error, msg}
-    else
-      {:ok, something} ->
-        {:ok, something}
-    end
-
-    cond do
-      {:ok, user} = resolve_user(token) ->
-        {:ok, user}
-
-      {:ok, app} = resolve_app(token) ->
-        {:ok, app}
-
-      true ->
-        nil
-    end
-  end
 
   def resolve_app(nil) do
     {:error, "No client id specified"}
@@ -38,6 +15,15 @@ defmodule Glimesh.Oauth.TokenResolver do
     config = [otp_app: :glimesh]
 
     ExOauth2Provider.Applications.get_application(client_id, config)
+    |> handle_app()
+  end
+
+  defp handle_app(%OauthApplication{} = app) do
+    {:ok, app}
+  end
+
+  defp handle_app(_) do
+    {:error, "Application not found."}
   end
 
   def resolve_user(nil) do

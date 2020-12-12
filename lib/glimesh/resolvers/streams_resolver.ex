@@ -27,6 +27,7 @@ defmodule Glimesh.Resolvers.StreamsResolver do
   end
 
   # Streams
+
   def start_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
     channel = Streams.get_channel!(channel_id)
     {:ok, stream} = Streams.start_stream(channel)
