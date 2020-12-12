@@ -11,12 +11,19 @@ defmodule Glimesh.Accounts do
   ## Database getters
 
   def list_users do
-    Repo.all(from u in User, where: not is_nil(u.confirmed_at))
+    Repo.all(from(u in User))
   end
 
-  def search_users(query) do
+  def search_users(query, current_page, per_page) do
     like = "%#{query}%"
-    Repo.all(from u in User, where: ilike(u.username, ^like))
+
+    Repo.all(
+      from u in User,
+        where: ilike(u.username, ^like),
+        order_by: [asc: u.id],
+        offset: ^((current_page - 1) * per_page),
+        limit: ^per_page
+    )
   end
 
   def list_admins do

@@ -80,7 +80,7 @@ defmodule Glimesh.Accounts.User do
     |> validate_format(:username, ~r/^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/i,
       message: "Use only alphanumeric characters, no spaces"
     )
-    |> validate_length(:username, min: 3, max: 50)
+    |> validate_length(:username, min: 3, max: 24)
     |> unsafe_validate_unique(:username, Glimesh.Repo)
     |> unique_constraint(:username)
     |> validate_username_reserved_words(:username)

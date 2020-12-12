@@ -1,16 +1,22 @@
 <div class="container">
-
     <h2 class="mt-4"><%= gettext("Our Users") %></h2>
 
-    <form phx-change="search">
-        <input type="text" name="q" value="<%= @query %>" placeholder="Search for usernames" list="results"
-            autocomplete="off" />
-    </form>
+    <div class="card">
+        <div class="card-body">
+            <form phx-change="search">
+                <div class="form-group mb-0">
+                    <input type="text" name="q" value="<%= @query %>"
+                        placeholder="<%= gettext("Search for usernames") %>" list="results" autocomplete="off" autofocus
+                        class="form-control form-control-lg" />
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <div class="row layout-top-spacing">
+    <div id="users" class="row mt-2" phx-update="<%= @update_mode %>" phx-hook="InfiniteScroll"
+        data-page="<%= @page %>">
         <%= for user <- @users do %>
-
-        <div class="col-md-4 mb-4">
+        <div id="user-<%= user.id %>" class="col-md-4 mb-4">
             <div class="card">
                 <div class="card-body">
                     <h4><%= Glimesh.Chat.Effects.render_username(user) %></h4>
@@ -20,19 +26,25 @@
                             class="mr-3 img-avatar <%= if user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
                         <div class="media-body">
                             <ul class="list-unstyled">
-                                <li><strong>Joined:</strong> <%= format_datetime(user.inserted_at) %></li>
-                                <li><strong>Following:</strong> 43</li>
-                                <li><strong>Followers:</strong> 142</li>
+                                <li>
+                                    <strong><%= gettext("Joined:") %></strong>
+                                    <%= format_datetime(user.inserted_at) %>
+                                </li>
+                                <li>
+                                    <strong><%= gettext("Followers:") %></strong>
+                                    <%= Glimesh.Streams.count_followers(user) %>
+                                </li>
+                                <li>
+                                    <strong><%= gettext("Following:") %></strong>
+                                    <%= Glimesh.Streams.count_following(user) %>
+                                </li>
                             </ul>
-                            <%= live_redirect to: Routes.user_profile_path(@socket, :index, user.username), class: "stretched-link" do %>
-                            Profile
-                            <% end %>
+                            <%= live_redirect gettext("Profile"), to: Routes.user_profile_path(@socket, :index, user.username), class: "stretched-link" %>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <% end %>
     </div>
 </div>
