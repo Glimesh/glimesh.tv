@@ -19,22 +19,33 @@ defmodule Glimesh.Chat.Effects do
     ""
   end
 
+  def get_username_color(user, default \\ "text-white") do
+    cond do
+      user.is_admin -> "text-danger"
+      Payments.is_platform_founder_subscriber?(user) -> "text-warning"
+      # Placeholder for GCT
+      false -> "text-success"
+      true -> default
+    end
+  end
+
   def render_username(user) do
     tags =
       cond do
         user.is_admin ->
-          [class: "text-danger", "data-toggle": "tooltip", title: gettext("Glimesh Staff")]
+          [
+            "data-toggle": "tooltip",
+            title: gettext("Glimesh Staff")
+          ]
 
         Payments.is_platform_founder_subscriber?(user) ->
           [
-            class: "text-warning",
             "data-toggle": "tooltip",
             title: gettext("Glimesh Founder Subscriber")
           ]
 
         Payments.is_platform_supporter_subscriber?(user) ->
           [
-            class: "text-white",
             "data-toggle": "tooltip",
             title: gettext("Glimesh Supporter Subscriber")
           ]
@@ -42,21 +53,22 @@ defmodule Glimesh.Chat.Effects do
         # Placeholder for GCT
         false ->
           [
-            class: "text-success",
             "data-toggle": "tooltip",
             title: gettext("Glimesh Community Team")
           ]
 
         true ->
-          [class: "text-white"]
+          []
       end
+
+    color_class = [class: get_username_color(user)]
 
     default_tags = [
       to: Routes.user_profile_path(GlimeshWeb.Endpoint, :index, user.username),
       target: "_blank"
     ]
 
-    Phoenix.HTML.Link.link(user.displayname, default_tags ++ tags)
+    Phoenix.HTML.Link.link(user.displayname, default_tags ++ color_class ++ tags)
   end
 
   def render_avatar(user) do
