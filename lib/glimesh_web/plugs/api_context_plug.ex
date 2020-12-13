@@ -2,6 +2,7 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
   @behaviour Plug
 
   alias Glimesh.Accounts.User
+  alias Glimesh.OauthApplications.OauthApplication
 
   import Plug.Conn
   import Phoenix.Controller, only: [json: 2]
@@ -19,6 +20,14 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
           }
         )
 
+      {:ok, %OauthApplication{}} ->
+        Absinthe.Plug.put_options(conn,
+          context: %{
+            is_admin: false,
+            current_user: nil
+          }
+        )
+
       {:error, _reason} ->
         conn
         |> put_status(:unauthorized)
@@ -30,12 +39,9 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
   def authorized(conn, opts) do
     case fetch_token(conn, opts) do
       false -> try_conn(conn, opts)
-      token -> try_token(token)
+      {:bearer, token} -> Glimesh.Oauth.TokenResolver.resolve_user(token)
+      {:client, token} -> Glimesh.Oauth.TokenResolver.resolve_app(token)
     end
-  end
-
-  def try_token(token) do
-    Glimesh.Oauth.TokenResolver.resolve_user(token)
   end
 
   def try_conn(%{assigns: %{current_user: %User{} = current_user}}, _opts) do
@@ -48,7 +54,8 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
 
   defp fetch_token(conn, _opts) do
     case get_req_header(conn, "authorization") do
-      ["Bearer " <> token] -> token
+      ["Bearer " <> token] -> {:bearer, token}
+      ["Client-ID " <> token] -> {:client, token}
       [] -> false
     end
   end

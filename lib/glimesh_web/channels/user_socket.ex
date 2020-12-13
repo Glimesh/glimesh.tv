@@ -29,6 +29,7 @@ defmodule GlimeshWeb.UserSocket do
          |> assign(:user_id, user.id)
          |> Absinthe.Phoenix.Socket.put_options(
            context: %{
+             is_admin: user.is_admin,
              current_user: user
            }
          )}
