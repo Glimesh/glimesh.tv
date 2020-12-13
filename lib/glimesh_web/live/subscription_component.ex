@@ -71,8 +71,4 @@ defmodule GlimeshWeb.SubscriptionComponent do
       |> assign(:stripe_payment_method, user.stripe_payment_method)
     }
   end
-
-  defp format_price(iprice) do
-    :erlang.float_to_binary(iprice / 100, decimals: 2)
-  end
 end

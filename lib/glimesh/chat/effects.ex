@@ -80,7 +80,8 @@ defmodule Glimesh.Chat.Effects do
       Tag.img_tag(
         Glimesh.Avatar.url({user.avatar, user}, :original),
         height: "20",
-        width: "20"
+        width: "20",
+        alt: user.displayname
       ),
       tags
     )

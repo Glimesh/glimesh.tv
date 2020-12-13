@@ -31,7 +31,8 @@ defmodule Glimesh.Avatar do
   end
 
   # Provide a default URL if there hasn't been a file uploaded
-  def default_url(_version, _scope) do
-    "/images/200x200.jpg"
+  def default_url(_version, scope) do
+    hash = :crypto.hash(:md5, String.downcase(scope.email)) |> Base.encode16(case: :lower)
+    "https://www.gravatar.com/avatar/#{hash}?s=200&d=robohash"
   end
 end
