@@ -11,7 +11,7 @@ defmodule Glimesh.Accounts do
   ## Database getters
 
   def list_users do
-    Repo.all(from(u in User))
+    Repo.all(from u in User, where: u.is_banned == false)
   end
 
   def search_users(query, current_page, per_page) do
@@ -20,6 +20,7 @@ defmodule Glimesh.Accounts do
     Repo.all(
       from u in User,
         where: ilike(u.username, ^like),
+        where: u.is_banned == false,
         order_by: [asc: u.id],
         offset: ^((current_page - 1) * per_page),
         limit: ^per_page
