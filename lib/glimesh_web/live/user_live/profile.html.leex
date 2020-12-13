@@ -3,7 +3,8 @@
         <div class="col-md-4">
             <div class="card text-center">
                 <div class="card-body">
-                    <h2><%= @streamer.displayname %></h2>
+                    <h2 class="<%= Glimesh.Chat.Effects.get_username_color(@streamer, "text-color-link") %>">
+                        <%= @streamer.displayname %></h2>
                     <img src="<%= Glimesh.Avatar.url({@streamer.avatar, @streamer}, :original) %>"
                         alt="Your Profile Picture"
                         class="img-fluid mb-2 img-avatar <%= if @streamer.stripe_user_id, do: "img-verified-streamer", else: "" %>">
