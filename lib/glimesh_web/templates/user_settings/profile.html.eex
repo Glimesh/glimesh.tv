@@ -56,12 +56,9 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group social-tweet mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="tweet"><i
-                                                class="fab fa-twitter fa-fw"></i></span>
-                                    </div>
-                                    <%= text_input f, :social_twitter, [class: "form-control", placeholder: gettext("Twitter Username")] %>
-                                    <%= error_tag f, :social_twitter %>
+                                    <a href="<%= @twitter_url %>" class="btn btn-info btn-block"><i
+                                            class="fab fa-twitter fa-fw"></i>
+                                        Connect Twitter Account</a>
                                 </div>
                             </div>
 

@@ -75,6 +75,12 @@ config :hcaptcha,
   public_key: "10000000-ffff-ffff-ffff-000000000001",
   secret: "0x0000000000000000000000000000000000000000"
 
+config :glimesh, Glimesh.Socials.Twitter,
+  consumer_key: "",
+  consumer_secret: "",
+  access_token: "",
+  access_token_secret: ""
+
 import_config "badwords.exs"
 import_config "emotes.exs"
 # Import environment specific config. This must remain at the bottom
