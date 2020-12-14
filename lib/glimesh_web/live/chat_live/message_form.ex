@@ -22,15 +22,6 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   end
 
   @impl true
-  def handle_event("validate", %{"chat_message" => chat_message_params}, socket) do
-    changeset =
-      socket.assigns.chat_message
-      |> Chat.change_chat_message(chat_message_params)
-      |> Map.put(:action, :validate)
-
-    {:noreply, assign(socket, :changeset, changeset)}
-  end
-
   def handle_event("send", %{"chat_message" => chat_message_params}, socket) do
     save_chat_message(socket, socket.assigns.channel, socket.assigns.user, chat_message_params)
   end

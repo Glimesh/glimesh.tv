@@ -5,10 +5,7 @@ defmodule Glimesh.Streams.Policy do
 
   @behaviour Bodyguard.Policy
 
-  import GlimeshWeb.Gettext
-
   alias Glimesh.Accounts.User
-  alias Glimesh.Chat
   alias Glimesh.Streams.Channel
 
   def authorize(:create_channel, %User{}, _nothing), do: true

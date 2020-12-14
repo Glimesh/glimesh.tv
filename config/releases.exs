@@ -96,6 +96,7 @@ config :stripity_stripe,
 # hCaptcha Configuration
 if hcaptcha_public_key = System.get_env("HCAPTCHA_PUBLIC_KEY") do
   hcaptcha_secret = System.fetch_env!("HCAPTCHA_SECRET")
+
   config :hcaptcha,
     public_key: hcaptcha_public_key,
     secret: hcaptcha_secret
@@ -129,6 +130,7 @@ if email_physical_address = System.get_env("GLIMESH_EMAIL_PHYSICAL_ADDRESS") do
   config :glimesh,
     email_physical_address: email_physical_address
 end
+
 if show_staging_warning = System.get_env("GLIMESH_SHOW_STAGING_WARNING") do
   config :glimesh,
     show_staging_warning: show_staging_warning

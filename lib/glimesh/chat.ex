@@ -199,7 +199,11 @@ defmodule Glimesh.Chat do
   end
 
   def empty_chat_message do
-    ChatMessage.changeset(%ChatMessage{}, %{})
+    ChatMessage.changeset(%ChatMessage{}, %{
+      # Ensures that the ChatMessage is always replaced in the DOM, even if the message content doesn't change.
+      # Specifically used when posting a new message in chat.
+      fake_now_property: NaiveDateTime.utc_now()
+    })
   end
 
   def get_chat_parser_config(%Channel{} = channel) do
