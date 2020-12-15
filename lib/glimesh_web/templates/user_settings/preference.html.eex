@@ -29,6 +29,15 @@
                     class="form-text text-muted"><%= gettext("Change your Glimesh experience to feel a little lighter, or a little darker.") %></small>
             </div>
 
+            <div class="form-group">
+                <div class="custom-control custom-switch custom-control-inline">
+                    <%= checkbox f, :show_timestamps, class: "custom-control-input" %>
+                    <%= label f, :show_timestamps, gettext("Show Chat Timestamps"), class: "custom-control-label" %>
+                </div>
+                <small
+                    class="form-text text-muted"><%= gettext("Show the time a message was posted in chat.") %></small>
+            </div>
+
             <%= submit gettext("Update Settings"), class: "btn btn-primary" %>
 
             <% end %>
