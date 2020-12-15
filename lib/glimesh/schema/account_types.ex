@@ -2,7 +2,10 @@ defmodule Glimesh.Schema.AccountTypes do
   @moduledoc false
   use Absinthe.Schema.Notation
 
+  import Absinthe.Resolution.Helpers
+
   alias Glimesh.Avatar
+  alias Glimesh.Repo
   alias Glimesh.Resolvers.AccountsResolver
 
   object :accounts_queries do
@@ -72,6 +75,10 @@ defmodule Glimesh.Schema.AccountTypes do
       end)
     end
 
+    field :socials, list_of(:user_social),
+      resolve: dataloader(Repo),
+      description: "A list of linked social accounts for the user"
+
     field :social_twitter, :string, description: "Qualified URL for the user's Twitter account"
     field :social_youtube, :string, description: "Qualified URL for the user's YouTube account"
 
@@ -87,5 +94,20 @@ defmodule Glimesh.Schema.AccountTypes do
 
     field :profile_content_html, :string,
       description: "HTML version of the user's profile, should be safe for rendering directly"
+  end
+
+  @desc "A linked social account for a Glimesh user."
+  object :user_social do
+    field :id, :id
+
+    field :platform, :string, description: "Platform that is linked, eg: twitter"
+
+    field :identifier, :string,
+      description: "Platform unique identifier, usually a ID, made into a string"
+
+    field :username, :string, description: "Username for the user on the linked platform"
+
+    field :inserted_at, :naive_datetime
+    field :updated_at, :naive_datetime
   end
 end

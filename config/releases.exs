@@ -96,6 +96,7 @@ config :stripity_stripe,
 # hCaptcha Configuration
 if hcaptcha_public_key = System.get_env("HCAPTCHA_PUBLIC_KEY") do
   hcaptcha_secret = System.fetch_env!("HCAPTCHA_SECRET")
+
   config :hcaptcha,
     public_key: hcaptcha_public_key,
     secret: hcaptcha_secret
@@ -124,11 +125,25 @@ if System.get_env("WAFFLE_ENDPOINT") == "S3" do
     ]
 end
 
+# Twitter Config
+if twitter_consumer_key = System.get_env("TWITTER_CONSUMER_KEY") do
+  twitter_consumer_secret = System.fetch_env!("TWITTER_CONSUMER_SECRET")
+  twitter_access_token = System.fetch_env!("TWITTER_ACCESS_TOKEN")
+  twitter_access_secret = System.fetch_env!("TWITTER_ACCESS_SECRET")
+
+  config :glimesh, Glimesh.Socials.Twitter,
+    consumer_key: twitter_consumer_key,
+    consumer_secret: twitter_consumer_secret,
+    access_token: twitter_access_token,
+    access_token_secret: twitter_access_secret
+end
+
 # Glimesh Configuration
 if email_physical_address = System.get_env("GLIMESH_EMAIL_PHYSICAL_ADDRESS") do
   config :glimesh,
     email_physical_address: email_physical_address
 end
+
 if show_staging_warning = System.get_env("GLIMESH_SHOW_STAGING_WARNING") do
   config :glimesh,
     show_staging_warning: show_staging_warning

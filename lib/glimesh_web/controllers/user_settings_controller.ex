@@ -11,12 +11,9 @@ defmodule GlimeshWeb.UserSettingsController do
   plug :assign_channel_changesets
 
   def profile(conn, _params) do
-    twitter_url =
-      Glimesh.Socials.Twitter.authorize_url!(%{
-        redirect_uri: "https://glimesh.dev/derp"
-      })
+    twitter_auth_url = Glimesh.Socials.Twitter.authorize_url!(conn)
 
-    render(conn, "profile.html", twitter_url: twitter_url)
+    render(conn, "profile.html", twitter_auth_url: twitter_auth_url)
   end
 
   def stream(conn, _params) do

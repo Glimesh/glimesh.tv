@@ -17,10 +17,10 @@ defmodule Glimesh.Socials do
     )
   end
 
-  def connected?(%User{} = user, "twitter") do
+  def connected?(%User{} = user, platform) do
     Repo.exists?(
       from us in UserSocial,
-        where: us.platform == "twitter" and us.user_id == ^user.id
+        where: us.platform == ^platform and us.user_id == ^user.id
     )
   end
 
