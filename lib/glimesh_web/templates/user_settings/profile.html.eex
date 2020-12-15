@@ -61,7 +61,8 @@
                                     <i class="fab fa-twitter fa-fw"></i> Disconnect @<%= twitter_acct.username %>
                                     <% end %>
                                     <% else %>
-                                    <a href="<%= @twitter_auth_url %>" class="btn btn-info btn-block">
+                                    <a href="<%= @twitter_auth_url %>"
+                                        class="btn btn-info btn-block <%= if @twitter_auth_url, do: "", else: "disabled" %>">
                                         <i class="fab fa-twitter fa-fw"></i>
                                         <%= if f.data.social_twitter do%>
                                         Connect @<%= f.data.social_twitter %>

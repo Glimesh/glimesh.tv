@@ -79,7 +79,10 @@ defmodule Glimesh.Schema.AccountTypes do
       resolve: dataloader(Repo),
       description: "A list of linked social accounts for the user"
 
-    field :social_twitter, :string, description: "Qualified URL for the user's Twitter account"
+    field :social_twitter, :string,
+      description: "Qualified URL for the user's Twitter account",
+      deprecate: "Use the socials field instead"
+
     field :social_youtube, :string, description: "Qualified URL for the user's YouTube account"
 
     field :social_instagram, :string,

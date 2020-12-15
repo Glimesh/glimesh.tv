@@ -26,16 +26,20 @@ defmodule Glimesh.Socials.Twitter do
     end
   end
 
-  def authorize_url!(conn) do
+  def authorize_url(conn) do
     ExTwitter.configure(Application.get_env(:glimesh, Glimesh.Socials.Twitter))
 
-    # Request twitter for a new token
-    token = ExTwitter.request_token(Routes.user_social_url(conn, :twitter))
+    try do
+      # Request twitter for a new token
+      token = ExTwitter.request_token(Routes.user_social_url(conn, :twitter))
 
-    # Generate the url for "Sign-in with twitter".
-    # For "3-legged authorization" use ExTwitter.authorize_url instead
-    {:ok, authenticate_url} = ExTwitter.authenticate_url(token.oauth_token)
+      # Generate the url for "Sign-in with twitter".
+      # For "3-legged authorization" use ExTwitter.authorize_url instead
+      {:ok, authenticate_url} = ExTwitter.authenticate_url(token.oauth_token)
 
-    authenticate_url
+      authenticate_url
+    rescue
+      MatchError -> nil
+    end
   end
 end
