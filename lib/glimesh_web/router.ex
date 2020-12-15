@@ -84,6 +84,7 @@ defmodule GlimeshWeb.Router do
     live "/platform_subscriptions", PlatformSubscriptionLive.Index, :index
 
     get "/users/social/twitter", UserSocialController, :twitter
+    delete "/users/social/disconnect/:platform", UserSocialController, :disconnect
 
     get "/users/payments", UserPaymentsController, :index
     get "/users/payments/connect", UserPaymentsController, :connect

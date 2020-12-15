@@ -9,6 +9,26 @@ defmodule Glimesh.Socials.Twitter do
 
   # Public API
 
+  def handle_user_connect(%Glimesh.Accounts.User{} = user, access_token) do
+    ExTwitter.configure(
+      consumer_key: Application.get_env(:glimesh, Glimesh.Socials.Twitter)[:consumer_key],
+      consumer_secret: Application.get_env(:glimesh, Glimesh.Socials.Twitter)[:consumer_secret],
+      access_token: access_token.oauth_token,
+      access_token_secret: access_token.oauth_token_secret
+    )
+
+    case ExTwitter.verify_credentials(skip_status: true) do
+      %ExTwitter.Model.User{screen_name: screen_name, id_str: id} ->
+        # update user to set twitter username
+
+        Glimesh.Socials.connect_user_social(user, "twitter", id, screen_name)
+
+      _ ->
+        # Something happened
+        {:error, "Failed to verify user"}
+    end
+  end
+
   def client(oauth_client_params) do
     # OAuth2.Client.new(
     #   strategy: __MODULE__,
