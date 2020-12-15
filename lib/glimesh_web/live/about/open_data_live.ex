@@ -5,7 +5,10 @@ defmodule GlimeshWeb.About.OpenDataLive do
   def mount(_, session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
-    {:ok, socket |> assign(:chart_data, Jason.encode!(%{}))}
+    {:ok,
+     socket
+     |> assign(:chart_data, Jason.encode!(%{}))
+     |> assign(:chart_theme, Map.get(session, "site_theme", "dark"))}
   end
 
   @impl true

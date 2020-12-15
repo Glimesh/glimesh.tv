@@ -1,6 +1,9 @@
-import ApexCharts from 'apexcharts';
+import ApexCharts, { initOnLoad } from 'apexcharts';
 
 export default {
+    theme() {
+        return this.el.dataset.theme;
+    },
     data() {
         return JSON.parse(this.el.dataset.chart);
     },
@@ -14,7 +17,7 @@ export default {
             background: '#0e1726',
         }
         Apex.tooltip = {
-            theme: 'dark'
+            theme: this.theme()
         }
 
         var sLineArea = {
@@ -24,12 +27,14 @@ export default {
                 align: 'center',
                 floating: true,
                 style: {
-                    color: '#ebedf2',
-                    fontFamily: 'Quicksand',
+                    color: 'var(--body-color)',
+                    fontFamily: 'Noto Sans',
+                    fontWeight: '700',
                     fontSize: '1.25rem'
                 }
             },
             chart: {
+                foreColor: 'var(--body-color)',
                 height: 400,
                 type: 'area',
                 toolbar: {
