@@ -9,7 +9,6 @@
     id: "chat_message-form",
     class: ["chat-form"],
     phx_target: @myself,
-    phx_change: "validate",
     phx_submit: "send" %>
 
   <%= if message = f.errors[:message] do %>
@@ -24,6 +23,7 @@
         <i class="far fa-smile-beam"></i>
       </a>
     </div>
+
     <%= text_input f, :message, class: "mail-write-box form-control", placeholder: "Send a message", autocomplete: "off", maxlength: "255", disabled: @disabled %>
 
     <div id="chat-settings" class="input-group-append dropup">
@@ -33,7 +33,9 @@
         <a class="dropdown-item" href="#"
           onclick="window.open('<%= Routes.chat_pop_out_url(@socket, :index, @channel_username) %>', '_blank', 'width=400,height=600,location=no,menubar=no,toolbar=no')">Pop-out
           Chat</a>
-        <a id="toggle-timestamps" class="dropdown-item", href="#" phx-click="toggle_timestamps" <%= if @user, do: 'phx-value-user=#{@user.username}' %>><%= if @show_timestamps, do: gettext("Disable Timestamps"), else: gettext("Enable Timestamps") %> </a>
+        <a id="toggle-timestamps" class="dropdown-item" , href="#" phx-click="toggle_timestamps"
+          <%= if @user, do: 'phx-value-user=#{@user.username}' %>><%= if @show_timestamps, do: gettext("Disable Timestamps"), else: gettext("Enable Timestamps") %>
+        </a>
       </div>
     </div>
 
