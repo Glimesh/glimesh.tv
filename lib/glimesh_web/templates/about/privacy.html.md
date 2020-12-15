@@ -67,7 +67,9 @@ When you visit our Sites or use our Services, some information is automatically 
         * Country: United States
         * Type: http_cookie
         * Expires: Session (on logout)
-        
+    * Partner Cookies
+        * Stripe: [https://stripe.com/cookies-policy/legal](https://stripe.com/cookies-policy/legal)
+        * CloudFlare: [https://www.cloudflare.com/cookie-policy](https://www.cloudflare.com/cookie-policy)
 
 11.  Web Beacons  
     We may also collect information using "Web Beacons". Web Beacons are electronic images that are utilized by our sites, our services, and by our emails. We utilize Web Beacons to deliver cookies, count page visits, understand campaign usage and effectiveness, and check the engagement of emails that we send out. If you'd like more information on Web Beacons please see [Wikipedia Web Beacon Article](https://en.wikipedia.org/wiki/Web_beacon)
@@ -91,6 +93,8 @@ We may also share your personal information with these third party vendors who w
 
 -   [hCaptcha](https://hcaptcha.com/) - anti-robot service for preventing spam.
 -   [Plausible.io](https://plausible.io/) - privacy focused analytics provider
+-   [Stripe](https://stripe.com/) - payment processor
+-   [Gravatar](https://en.gravatar.com/) - default avatar image generator
 
 We may also share your information as follows:
 
