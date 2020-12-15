@@ -56,5 +56,11 @@ config :glimesh,
     },
     ":glimcash:" => %{
       gif: "/emotes/gif/glimcash.gif"
+    },
+    ":2021:" => %{
+      gif: "/emotes/gif/2021.gif"
+    },
+    ":glimhello:" => %{
+      gif: "/emotes/gif/glimhello.gif"
     }
   }
