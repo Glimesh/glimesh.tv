@@ -6,6 +6,8 @@ defmodule Glimesh.CommunityTeam do
   alias Glimesh.CommunityTeam.AuditLog
   alias Glimesh.Repo
 
+  defdelegate authorize(action, user, params), to: Glimesh.CommunityTeam.Policy
+
   def access_level_to_title(level) do
     case level do
       5 -> "Admin"
@@ -16,6 +18,8 @@ defmodule Glimesh.CommunityTeam do
       _ -> "None"
     end
   end
+
+  @moduledoc """
 
   def can_edit_user(user) do
     if get_global_access_level(user.gct_level) >= 3, do: true, else: false
@@ -40,6 +44,7 @@ defmodule Glimesh.CommunityTeam do
   def can_view_billing_info(user) do
     if get_global_access_level(user.gct_level) >= 4, do: true, else: false
   end
+  """
 
   def create_audit_entry(user, attrs \\ %{action: "None", target: "None"}) do
     %AuditLog{
@@ -112,5 +117,9 @@ defmodule Glimesh.CommunityTeam do
       Disable hyperlinks changed from #{channel.disable_hyperlinks} to #{channel_params["disable_hyperlinks"]}
       Block links changed from #{channel.block_links} to #{channel_params["block_links"]}
       """
+  end
+
+  def log_unauthorized_access(current_user) do
+    create_audit_entry(current_user, %{action: "Unauthorized access", target: "None", verbose_required?: false})
   end
 end
