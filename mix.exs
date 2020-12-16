@@ -73,6 +73,7 @@ defmodule Glimesh.MixProject do
       {:phoenix_markdown, "~> 1.0"},
       {:html_sanitize_ex, "~> 1.4.1"},
       {:earmark, "~> 1.4"},
+      {:oauther, "~> 1.1"},
       {:oauth2, "~> 2.0"},
       {:extwitter, "~> 0.12.2"},
       # Uploads
