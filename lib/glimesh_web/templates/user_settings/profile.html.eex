@@ -56,12 +56,21 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group social-tweet mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="tweet"><i
-                                                class="fab fa-twitter fa-fw"></i></span>
-                                    </div>
-                                    <%= text_input f, :social_twitter, [class: "form-control", placeholder: gettext("Twitter Username")] %>
-                                    <%= error_tag f, :social_twitter %>
+                                    <%= if twitter_acct = Glimesh.Socials.get_social(@user, "twitter") do %>
+                                    <%= link to: Routes.user_social_path(@conn, :disconnect,  "twitter"), class: "btn btn-danger btn-block", data: [confirm: gettext("Are you sure you want to disconnect your Twitter account?")], method: :delete do %>
+                                    <i class="fab fa-twitter fa-fw"></i> Disconnect @<%= twitter_acct.username %>
+                                    <% end %>
+                                    <% else %>
+                                    <a href="<%= @twitter_auth_url %>"
+                                        class="btn btn-info btn-block <%= if @twitter_auth_url, do: "", else: "disabled" %>">
+                                        <i class="fab fa-twitter fa-fw"></i>
+                                        <%= if f.data.social_twitter do%>
+                                        Connect @<%= f.data.social_twitter %>
+                                        <% else %>
+                                        Connect Twitter Account
+                                        <% end %>
+                                    </a>
+                                    <% end %>
                                 </div>
                             </div>
 

@@ -43,6 +43,8 @@ defmodule Glimesh.Accounts.User do
     has_one :channel, Glimesh.Streams.Channel
     has_one :user_preference, Glimesh.Accounts.UserPreference
 
+    has_many :socials, Glimesh.Accounts.UserSocial
+
     timestamps()
   end
 

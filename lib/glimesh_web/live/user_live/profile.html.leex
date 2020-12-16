@@ -1,7 +1,7 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-4">
-            <div class="card text-center">
+            <div id="profile" class="card text-center">
                 <div class="card-body">
                     <h2 class="<%= Glimesh.Chat.Effects.get_username_color(@streamer, "text-color-link") %>">
                         <%= @streamer.displayname %></h2>
@@ -14,7 +14,18 @@
                     </div>
                     <% end %>
 
-                    <ul class="list-inline">
+                    <ul class="list-inline" phx-update="ignore">
+                        <%= if twitter_user = Glimesh.Socials.get_social(@streamer, "twitter") do %>
+                        <li rel="ugc" class="list-inline-item" data-toggle="tooltip"
+                            title="<%= gettext("Linked Twitter Account @%{username}", username: twitter_user.username) %>">
+                            <a href="https://twitter.com/<%= twitter_user.username %>" target="_blank">
+                                <span class="fa-stack">
+                                    <i class="fas fa-certificate fa-stack-2x"></i>
+                                    <i class="fab fa-twitter fa-stack-1x" style="color:white"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <% else %>
                         <%= if @streamer.social_twitter do %>
                         <li rel="ugc" class="list-inline-item">
                             <a href="https://twitter.com/<%= @streamer.social_twitter %>" target="_blank"
@@ -22,7 +33,9 @@
                                 <i class="fab fa-twitter"></i>
                             </a>
                         </li>
-                        <%  end %>
+                        <% end %>
+                        <% end %>
+
                         <%= if @streamer.social_youtube do %>
                         <li rel="ugc" class="list-inline-item">
                             <a href="https://youtube.com/<%= @streamer.social_youtube %>" target="_blank"

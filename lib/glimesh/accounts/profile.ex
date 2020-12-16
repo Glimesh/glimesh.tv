@@ -17,25 +17,22 @@ defmodule Glimesh.Accounts.Profile do
   end
 
   def viewer_share_text(streamer, profile_url) do
-    if streamer.social_twitter do
-      # just incase they included the URL or at symbol
-      twitter_username =
-        streamer.social_twitter
-        |> String.replace_leading("https://twitter.com/", "")
-        |> String.replace_leading("@", "")
+    name =
+      if twitter_user = Glimesh.Socials.get_social(streamer, "twitter") do
+        twitter_user.username
+      else
+        if streamer.social_twitter do
+          streamer.social_twitter
+        else
+          streamer.displayname
+        end
+      end
 
-      URI.encode_www_form(
-        "Just followed @#{twitter_username} on @Glimesh! I can't wait until they can start streaming! Check them out at #{
-          profile_url
-        }"
-      )
-    else
-      URI.encode_www_form(
-        "Just followed #{streamer.displayname} on @Glimesh! I can't wait until they can start streaming! Check them out at #{
-          profile_url
-        }"
-      )
-    end
+    URI.encode_www_form(
+      "Just followed @#{name} on @Glimesh! I can't wait until they can start streaming! Check them out at #{
+        profile_url
+      }"
+    )
   end
 
   def streamer_share_text(_streamer, profile_url) do

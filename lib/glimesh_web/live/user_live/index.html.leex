@@ -16,7 +16,7 @@
     <div id="users" class="row mt-2" phx-update="<%= @update_mode %>" phx-hook="InfiniteScroll"
         data-page="<%= @page %>">
         <%= for user <- @users do %>
-        <div id="user-<%= user.id %>" class="col-md-4 mb-4">
+        <div id="user-<%= user.id %>" class="col-md-4 mb-4" phx-update="ignore">
             <div class="card">
                 <div class="card-body">
                     <h4 class="<%= Glimesh.Chat.Effects.get_username_color(user, "text-color-link") %>">
@@ -39,8 +39,20 @@
                                     <strong><%= gettext("Following:") %></strong>
                                     <%= Glimesh.Streams.count_following(user) %>
                                 </li>
+                                <li>
+                                    <%= if twitter_user = Glimesh.Socials.get_social(user, "twitter") do %>
+                                    <span class="fa-stack" data-toggle="tooltip"
+                                        title="<%= gettext("Linked Twitter Account @%{username}", username: twitter_user.username) %>">
+                                        <i class="fas fa-certificate fa-stack-2x" style="color:#007bff"></i>
+                                        <i class="fab fa-twitter fa-stack-1x"></i>
+                                    </span>
+                                    <% else %>
+                                    <br>
+                                    <% end %>
+                                </li>
                             </ul>
-                            <%= live_redirect gettext("Profile"), to: Routes.user_profile_path(@socket, :index, user.username), class: "stretched-link" %>
+
+                            <%= live_redirect gettext("Profile"), to: Routes.user_profile_path(@socket, :index, user.username), class: "btn btn-primary btn-sm" %>
                         </div>
                     </div>
                 </div>
