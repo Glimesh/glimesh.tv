@@ -13,7 +13,7 @@ defmodule GlimeshWeb.GctController do
   # General Routes
   def index(conn, _params) do
 
-    view_audit_log = case Bodyguard.permit(Glimesh.CommunityTeam, :view_audit_log, conn.assigns.current_user), do: (:ok -> true; {:error, :unauthorized} -> false)
+    view_audit_log = Bodyguard.permit?(Glimesh.CommunityTeam, :view_audit_log, conn.assigns.current_user)
 
     render(
       conn,
@@ -23,14 +23,12 @@ defmodule GlimeshWeb.GctController do
   end
 
   def audit_log(conn, _params) do
-    unless CommunityTeam.can_view_audit_log(conn.assigns.current_user) do
-      redirect(conn, to: Routes.gct_path(conn, :index))
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_audit_log, conn.assigns.current_user) do
+      render(
+        conn,
+        "audit_log.html"
+      )
     end
-
-    render(
-      conn,
-      "audit_log.html"
-    )
   end
 
   # Looking up/editing a user
@@ -47,7 +45,7 @@ defmodule GlimeshWeb.GctController do
 
       user = Accounts.get_by_username(params["query"], true)
 
-      view_billing = case Bodyguard.permit(Glimesh.CommunityTeam, :view_billing_info, conn.assigns.current_user, user), do: (:ok -> true; {:error, :unauthorized} -> false)
+      view_billing = Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, conn.assigns.current_user, user)
 
       if user do
         render(
