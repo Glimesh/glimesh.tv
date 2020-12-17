@@ -32,7 +32,7 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Platform subscriptions")
+    |> put_page_title(gettext("Glimesh Platform Subscriptions"))
     |> assign(:platform_subscription, nil)
   end
 

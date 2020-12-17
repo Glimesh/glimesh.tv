@@ -15,7 +15,7 @@ defmodule GlimeshWeb.ArticleController do
 
     render(conn, "show.html",
       article: article,
-      page_title: article.title,
+      page_title: format_page_title(article.title),
       page_description: article.description
     )
   end

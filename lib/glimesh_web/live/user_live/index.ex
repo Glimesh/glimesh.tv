@@ -11,7 +11,7 @@ defmodule GlimeshWeb.UserLive.Index do
     {:ok,
      socket
      |> assign(:query, "")
-     |> assign(:page_title, "Users")
+     |> put_page_title(gettext("Our Users"))
      |> assign(page: 1, per_page: 12, update_mode: "append")
      |> search_users(), temporary_assigns: [users: []]}
   end

@@ -25,6 +25,8 @@ defmodule GlimeshWeb do
       import GlimeshWeb.Gettext
       alias GlimeshWeb.Router.Helpers, as: Routes
 
+      import Glimesh.Formatters
+
       def unauthorized(conn) do
         conn
         |> put_status(403)

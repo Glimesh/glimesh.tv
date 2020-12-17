@@ -1,3 +1,5 @@
+<h1>Glimesh Credits</h1>
+
 <h2><%= gettext("Glimesh Platform Subscribers") %></h2>
 <p><%= gettext("Beautiful people who choose to support the platform.") %></p>
 

@@ -8,7 +8,7 @@
           <%= gettext("The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving. We're launching soon, but you can get your account setup early and learn more about us below!") %>
         </p>
         <%= if @current_user do %>
-        <%= link gettext("Edit Your Account"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3" %>
+        <%= link gettext("Customize Your Profile"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3" %>
         <% else %>
         <%= link gettext("Register Your Account"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-lg mt-3" %>
         <% end %>

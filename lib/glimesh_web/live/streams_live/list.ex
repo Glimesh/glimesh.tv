@@ -14,7 +14,7 @@ defmodule GlimeshWeb.StreamsLive.List do
 
         {:ok,
          socket
-         |> assign(:page_title, gettext("Followed Streams"))
+         |> put_page_title(gettext("Followed Streams"))
          |> assign(:page, page)}
 
       nil ->
@@ -32,7 +32,7 @@ defmodule GlimeshWeb.StreamsLive.List do
 
         {:ok,
          socket
-         |> assign(:page_title, category.name)
+         |> put_page_title(category.name)
          |> assign(:category, category)
          |> assign(:page, page)}
 
