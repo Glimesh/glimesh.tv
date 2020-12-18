@@ -25,6 +25,7 @@ defmodule GlimeshWeb.UserPaymentsController do
     render(
       conn,
       "index.html",
+      page_title: format_page_title(gettext("Your Payment Portal")),
       can_payments: Accounts.can_use_payments?(user),
       incoming: Payments.sum_incoming(user),
       outgoing: Payments.sum_outgoing(user),

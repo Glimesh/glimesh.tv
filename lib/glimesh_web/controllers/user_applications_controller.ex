@@ -13,20 +13,31 @@ defmodule GlimeshWeb.UserApplicationsController do
   def index(conn, _params) do
     applications = Apps.list_apps(conn.assigns.user)
 
-    render(conn, "index.html", applications: applications)
+    render(conn, "index.html",
+      page_title: format_page_title(gettext("Applications")),
+      applications: applications
+    )
   end
 
   def show(conn, %{"id" => id}) do
     applications = Apps.list_apps(conn.assigns.user)
 
     with {:ok, application} <- Apps.get_app(conn.assigns.user, id) do
-      render(conn, "show.html", application: application, applications: applications)
+      render(conn, "show.html",
+        page_title: format_page_title(application.name),
+        application: application,
+        applications: applications
+      )
     end
   end
 
   def new(conn, _params) do
     changeset = Apps.change_app(%App{})
-    render(conn, "new.html", changeset: changeset)
+
+    render(conn, "new.html",
+      page_title: format_page_title(gettext("Create Application")),
+      changeset: changeset
+    )
   end
 
   def create(conn, %{"app" => application_params}) do
@@ -46,7 +57,12 @@ defmodule GlimeshWeb.UserApplicationsController do
   def edit(conn, %{"id" => id}) do
     with {:ok, app} <- Apps.get_app(conn.assigns.user, id) do
       changeset = Apps.change_app(app)
-      render(conn, "edit.html", application: app, changeset: changeset)
+
+      render(conn, "edit.html",
+        page_title: format_page_title(gettext("Update Application")),
+        application: app,
+        changeset: changeset
+      )
     end
   end
 

@@ -1,5 +1,6 @@
-## General Questions
+# Frequently Asked Questions
 
+## General Questions
 
 ##### What's Glimesh?
 

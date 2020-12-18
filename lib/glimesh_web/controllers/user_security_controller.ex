@@ -10,7 +10,7 @@ defmodule GlimeshWeb.UserSecurityController do
   plug :assign_email_and_password_changesets
 
   def index(conn, _params) do
-    render(conn, "edit.html")
+    render(conn, "edit.html", page_title: format_page_title(gettext("Security")))
   end
 
   def update_email(conn, %{"current_password" => password, "user" => user_params}) do

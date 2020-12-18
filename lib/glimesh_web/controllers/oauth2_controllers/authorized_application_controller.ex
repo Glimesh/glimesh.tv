@@ -10,7 +10,9 @@ defmodule GlimeshWeb.Oauth2Provider.AuthorizedApplicationController do
       Applications.get_authorized_applications_for(conn.assigns[:current_user], otp_app: :glimesh)
       |> Glimesh.Repo.preload(:app)
 
-    render(conn, "index.html", applications: applications)
+    render(conn, "index.html", format_page_title(gettext("Authorized Applications")),
+      applications: applications
+    )
   end
 
   def delete(conn, %{"uid" => uid}) do

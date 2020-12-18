@@ -24,8 +24,8 @@ defmodule GlimeshWeb.UserLive.Profile do
 
         {:ok,
          socket
+         |> put_page_title("#{streamer.displayname}'s Profile")
          |> assign(:custom_meta, Profile.meta_tags(streamer, avatar_url))
-         |> assign(:page_title, "#{streamer.displayname}'s Profile")
          |> assign(:following_count, Streams.count_following(streamer))
          |> assign(:followers_count, Streams.count_followers(streamer))
          |> assign(:youtube_id, video_id)

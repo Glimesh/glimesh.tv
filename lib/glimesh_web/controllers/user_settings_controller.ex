@@ -11,15 +11,15 @@ defmodule GlimeshWeb.UserSettingsController do
   plug :assign_channel_changesets
 
   def profile(conn, _params) do
-    render(conn, "profile.html")
+    render(conn, "profile.html", page_title: format_page_title(gettext("Your Profile")))
   end
 
   def stream(conn, _params) do
-    render(conn, "stream.html")
+    render(conn, "stream.html", page_title: format_page_title(gettext("Channel Settings")))
   end
 
   def preference(conn, _params) do
-    render(conn, "preference.html")
+    render(conn, "preference.html", page_title: format_page_title(gettext("Preferences")))
   end
 
   def update_preference(conn, %{"user_preference" => params}) do

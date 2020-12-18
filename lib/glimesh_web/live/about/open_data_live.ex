@@ -17,14 +17,20 @@ defmodule GlimeshWeb.About.OpenDataLive do
   end
 
   defp apply_action(socket, :index, _) do
-    socket |> assign(:chart_data, Glimesh.Charts.PlatformUserGrowth.json())
+    socket
+    |> put_page_title(gettext("Platform User Growth"))
+    |> assign(:chart_data, Glimesh.Charts.PlatformUserGrowth.json())
   end
 
   defp apply_action(socket, :subscriptions, _) do
-    socket |> assign(:chart_data, Glimesh.Charts.RecurringSubscriptions.json())
+    socket
+    |> put_page_title(gettext("Recurring Subscriptions"))
+    |> assign(:chart_data, Glimesh.Charts.RecurringSubscriptions.json())
   end
 
   defp apply_action(socket, :streams, _) do
-    socket |> assign(:chart_data, Glimesh.Charts.LiveStreams.json())
+    socket
+    |> put_page_title(gettext("Live Streams"))
+    |> assign(:chart_data, Glimesh.Charts.LiveStreams.json())
   end
 end

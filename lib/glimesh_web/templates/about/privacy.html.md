@@ -1,3 +1,5 @@
+# Privacy Policy
+
 This Privacy Policy explains how your personal information is collected, used, and disclosed by Glimesh, its subsidiaries, and affiliated companies (“Glimesh”). In the Privacy Policy the terms “We”, “Us”, and “Our” refer to Glimesh, its subsidiaries, and affiliated companies. “You” and “your” refers to the end user of our products and services. “Site” and “Services” refer to any products offered by Glimesh.
 
 This Privacy Policy includes but is not limited to; the websites of Glimesh, including [https://glimesh.tv/](https://glimesh.tv/) and all subdomains (“Sites”), Glimesh’s other products, services or any other features, technologies or functionalities offered by us on our Sites or through any other means (collectively, “Services”).

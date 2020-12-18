@@ -18,6 +18,7 @@ defmodule GlimeshWeb.ChannelModeratorController do
     channel_bans = StreamModeration.list_channel_bans(user, channel)
 
     render(conn, "index.html",
+      page_title: format_page_title(gettext("Channel Moderators")),
       channel_moderators: channel_moderators,
       moderation_log: moderation_log,
       channel_bans: channel_bans
@@ -44,7 +45,11 @@ defmodule GlimeshWeb.ChannelModeratorController do
 
   def new(conn, _params) do
     changeset = StreamModeration.change_channel_moderator(%ChannelModerator{})
-    render(conn, "new.html", changeset: changeset)
+
+    render(conn, "new.html",
+      page_title: format_page_title(gettext("Add Moderator")),
+      changeset: changeset
+    )
   end
 
   def create(conn, %{"channel_moderator" => channel_moderator_params}) do
@@ -80,6 +85,7 @@ defmodule GlimeshWeb.ChannelModeratorController do
       changeset = StreamModeration.change_channel_moderator(channel_moderator)
 
       render(conn, "show.html",
+        page_title: format_page_title(channel_moderator.user.displayname),
         channel_moderator: channel_moderator,
         changeset: changeset,
         moderation_log: mod_log
