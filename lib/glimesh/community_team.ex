@@ -63,7 +63,7 @@ defmodule Glimesh.CommunityTeam do
         false ->
           AuditLog
           |> order_by(desc: :inserted_at)
-          |> where([al], al.verbose_required? == false)
+          |> where([al], al.verbose_required == false)
           |> preload(:user)
           |> Repo.paginate(params)
       end
@@ -120,6 +120,6 @@ defmodule Glimesh.CommunityTeam do
   end
 
   def log_unauthorized_access(current_user) do
-    create_audit_entry(current_user, %{action: "Unauthorized access", target: "None", verbose_required?: false})
+    create_audit_entry(current_user, %{action: "Unauthorized access", target: "None", verbose_required: false})
   end
 end

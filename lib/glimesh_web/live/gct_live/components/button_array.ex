@@ -69,7 +69,7 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
     CommunityTeam.create_audit_entry(socket.assigns.admin, %{
       action: "banned",
       target: socket.assigns.user.username,
-      verbose_required?: false,
+      verbose_required: false,
       more_details: "Ban reason: " <> ban_reason
     })
 
@@ -88,7 +88,7 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
     CommunityTeam.create_audit_entry(socket.assigns.admin, %{
       action: "unbanned",
       target: socket.assigns.user.username,
-      verbose_required?: false
+      verbose_required: false
     })
 
     {:noreply,

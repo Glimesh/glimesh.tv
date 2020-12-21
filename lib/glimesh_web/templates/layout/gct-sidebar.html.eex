@@ -2,8 +2,10 @@
     <%= link class: "list-group-item list-group-item-action " <> active_gct_dashboard_path(@conn), to: Routes.gct_path(@conn, :index) do %>
     <i class="fas fa-tools fa-fw"></i> <%= gettext("Dashboard") %>
     <% end %>
-    <%= link class: "list-group-item list-group-item-action " <> active_gct_audit_log_path(@conn), to: Routes.gct_path(@conn, :audit_log) do %>
-    <i class="fas fa-clipboard-list fa-fw"></i> <%= gettext("Audit Log") %>
+    <%= if Bodyguard.permit?(Glimesh.CommunityTeam, :view_audit_log, @current_user) do %>
+        <%= link class: "list-group-item list-group-item-action " <> active_gct_audit_log_path(@conn), to: Routes.gct_path(@conn, :audit_log) do %>
+        <i class="fas fa-clipboard-list fa-fw"></i> <%= gettext("Audit Log") %>
+        <% end %>
     <% end %>
 </div>
 <div class="content">

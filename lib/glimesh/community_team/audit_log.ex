@@ -8,7 +8,7 @@ defmodule Glimesh.CommunityTeam.AuditLog do
 
     field :action, :string
     field :target, :string
-    field :verbose_required?, :boolean
+    field :verbose_required, :boolean
 
     field :more_details, :string, default: "None"
 
@@ -20,7 +20,7 @@ defmodule Glimesh.CommunityTeam.AuditLog do
     |> cast(attrs, [
       :action,
       :target,
-      :verbose_required?,
+      :verbose_required,
       :more_details
     ])
   end
