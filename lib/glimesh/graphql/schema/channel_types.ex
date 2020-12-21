@@ -6,13 +6,34 @@ defmodule Glimesh.Schema.ChannelTypes do
   import_types(Absinthe.Plug.Types)
 
   alias Glimesh.Repo
-  alias Glimesh.Resolvers.StreamsResolver
+  alias Glimesh.Resolvers.ChannelResolver
   alias Glimesh.Streams
+
+  input_object :stream_metadata_input do
+    field :ingest_server, :string
+    field :ingest_viewers, :integer
+    field :stream_time_seconds, :integer
+
+    field :source_bitrate, :integer
+    field :source_ping, :integer
+
+    field :recv_packets, :integer
+    field :lost_packets, :integer
+    field :nack_packets, :integer
+
+    field :vendor_name, :string
+    field :vendor_version, :string
+
+    field :video_codec, :string
+    field :video_height, :integer
+    field :video_width, :integer
+    field :audio_codec, :string
+  end
 
   object :streams_queries do
     @desc "List all channels"
     field :channels, list_of(:channel) do
-      resolve(&StreamsResolver.all_channels/2)
+      resolve(&ChannelResolver.all_channels/2)
     end
 
     @desc "Query individual channel"
@@ -20,32 +41,32 @@ defmodule Glimesh.Schema.ChannelTypes do
       arg(:id, :id)
       arg(:username, :string)
       arg(:stream_key, :string)
-      resolve(&StreamsResolver.find_channel/2)
+      resolve(&ChannelResolver.find_channel/2)
     end
 
     @desc "List all categories"
     field :categories, list_of(:category) do
-      resolve(&StreamsResolver.all_categories/2)
+      resolve(&ChannelResolver.all_categories/2)
     end
 
     @desc "Query individual category"
     field :category, :category do
       arg(:slug, :string)
-      resolve(&StreamsResolver.find_category/2)
+      resolve(&ChannelResolver.find_category/2)
     end
 
     @desc "List all subscribers or subscribees"
     field :subscriptions, list_of(:sub) do
       arg(:streamer_username, :string)
       arg(:user_username, :string)
-      resolve(&StreamsResolver.all_subscriptions/2)
+      resolve(&ChannelResolver.all_subscriptions/2)
     end
 
     @desc "List all follows or followers"
     field :followers, list_of(:follower) do
       arg(:streamer_username, :string)
       arg(:user_username, :string)
-      resolve(&StreamsResolver.all_followers/2)
+      resolve(&ChannelResolver.all_followers/2)
     end
   end
 
@@ -54,14 +75,14 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :start_stream, type: :stream do
       arg(:channel_id, non_null(:id))
 
-      resolve(&StreamsResolver.start_stream/3)
+      resolve(&ChannelResolver.start_stream/3)
     end
 
     @desc "End a stream"
     field :end_stream, type: :stream do
       arg(:stream_id, non_null(:id))
 
-      resolve(&StreamsResolver.end_stream/3)
+      resolve(&ChannelResolver.end_stream/3)
     end
 
     @desc "Update a stream's metadata"
@@ -69,7 +90,7 @@ defmodule Glimesh.Schema.ChannelTypes do
       arg(:stream_id, non_null(:id))
       arg(:metadata, non_null(:stream_metadata_input))
 
-      resolve(&StreamsResolver.log_stream_metadata/3)
+      resolve(&ChannelResolver.log_stream_metadata/3)
     end
 
     @desc "Update a stream's thumbnail"
@@ -77,22 +98,8 @@ defmodule Glimesh.Schema.ChannelTypes do
       arg(:stream_id, non_null(:id))
       arg(:thumbnail, non_null(:upload))
 
-      resolve(&StreamsResolver.upload_stream_thumbnail/3)
+      resolve(&ChannelResolver.upload_stream_thumbnail/3)
     end
-
-    # @desc "Create a stream"
-    # field :create_stream, type: :stream do
-    #   arg(:channel_id, non_null(:id))
-
-    #   resolve(&StreamsResolver.create_stream/3)
-    # end
-
-    # @desc "Update a stream"
-    # field :update_stream, type: :stream do
-    #   arg(:id, non_null(:id))
-
-    #   resolve(&StreamsResolver.update_stream/3)
-    # end
   end
 
   object :streams_subscriptions do
@@ -103,17 +110,6 @@ defmodule Glimesh.Schema.ChannelTypes do
         case Map.get(args, :id) do
           nil -> {:ok, topic: [Streams.get_subscribe_topic(:channel)]}
           channel_id -> {:ok, topic: [Streams.get_subscribe_topic(:channel, channel_id)]}
-        end
-      end)
-    end
-
-    field :chat_message, :chat_message do
-      arg(:channel_id, :id)
-
-      config(fn args, _ ->
-        case Map.get(args, :channel_id) do
-          nil -> {:ok, topic: [Streams.get_subscribe_topic(:chat)]}
-          channel_id -> {:ok, topic: [Streams.get_subscribe_topic(:chat, channel_id)]}
         end
       end)
     end
@@ -234,18 +230,6 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :video_height, :integer
     field :video_width, :integer
     field :audio_codec, :string
-
-    field :inserted_at, non_null(:naive_datetime)
-    field :updated_at, non_null(:naive_datetime)
-  end
-
-  @desc "A chat message sent to a channel by a user."
-  object :chat_message do
-    field :id, :id
-    field :message, :string, description: "The chat message."
-
-    field :channel, non_null(:channel), resolve: dataloader(Repo)
-    field :user, non_null(:user), resolve: dataloader(Repo)
 
     field :inserted_at, non_null(:naive_datetime)
     field :updated_at, non_null(:naive_datetime)

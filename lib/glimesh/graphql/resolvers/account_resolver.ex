@@ -1,9 +1,9 @@
-defmodule Glimesh.Resolvers.AccountsResolver do
+defmodule Glimesh.Resolvers.AccountResolver do
   @moduledoc false
   alias Glimesh.Accounts
 
-  def myself(_, _, %{context: %{current_user: current_user}}) do
-    {:ok, Accounts.get_user!(current_user.id)}
+  def myself(_, _, %{context: %{user_access: ua}}) do
+    {:ok, Accounts.get_user!(ua.user.id)}
   end
 
   def all_users(_, _) do

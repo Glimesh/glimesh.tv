@@ -1,4 +1,4 @@
-defmodule Glimesh.Resolvers.StreamsResolver do
+defmodule Glimesh.Resolvers.ChannelResolver do
   @moduledoc false
   alias Glimesh.Accounts
   alias Glimesh.Payments
@@ -18,6 +18,7 @@ defmodule Glimesh.Resolvers.StreamsResolver do
     {:ok, Streams.get_channel_for_username!(username)}
   end
 
+  # def find_channel(%{stream_key: stream_key}, %{context: %{user_access: %UserAccess{chat: true, user: user}}}) do
   def find_channel(%{stream_key: stream_key}, %{context: %{is_admin: true}}) do
     {:ok, Streams.get_channel_for_stream_key!(stream_key)}
   end

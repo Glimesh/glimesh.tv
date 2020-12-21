@@ -11,12 +11,13 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
 
   def call(conn, opts) do
     case authorized(conn, opts) do
-      {:ok, %User{} = user} ->
+      {:ok, %Glimesh.Accounts.UserAccess{} = user_access} ->
         Absinthe.Plug.put_options(conn,
           context: %{
             # Allows us to pattern match admin APIs
-            is_admin: user.is_admin,
-            current_user: user
+            is_admin: user_access.user.is_admin,
+            current_user: user_access.user,
+            user_access: user_access
           }
         )
 
@@ -24,7 +25,8 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
         Absinthe.Plug.put_options(conn,
           context: %{
             is_admin: false,
-            current_user: nil
+            current_user: nil,
+            user_access: %Glimesh.Accounts.UserAccess{}
           }
         )
 
@@ -45,7 +47,14 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
   end
 
   def try_conn(%{assigns: %{current_user: %User{} = current_user}}, _opts) do
-    {:ok, current_user}
+    {:ok,
+     %Glimesh.Accounts.UserAccess{
+       user: current_user,
+       public: true,
+       email: true,
+       chat: true,
+       streamkey: true
+     }}
   end
 
   def try_conn(_, _opts) do

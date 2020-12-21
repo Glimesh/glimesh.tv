@@ -6,24 +6,24 @@ defmodule Glimesh.Schema.AccountTypes do
 
   alias Glimesh.Avatar
   alias Glimesh.Repo
-  alias Glimesh.Resolvers.AccountsResolver
+  alias Glimesh.Resolvers.AccountResolver
 
   object :accounts_queries do
     @desc "Get yourself"
     field :myself, :user do
-      resolve(&AccountsResolver.myself/3)
+      resolve(&AccountResolver.myself/3)
     end
 
     @desc "List all users"
     field :users, list_of(:user) do
-      resolve(&AccountsResolver.all_users/2)
+      resolve(&AccountResolver.all_users/2)
     end
 
     @desc "Query individual user"
     field :user, :user do
       arg(:id, :integer)
       arg(:username, :string)
-      resolve(&AccountsResolver.find_user/2)
+      resolve(&AccountResolver.find_user/2)
     end
   end
 
