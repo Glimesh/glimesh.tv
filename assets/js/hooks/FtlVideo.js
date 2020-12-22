@@ -4,14 +4,23 @@ import {
 
 
 export default {
-    janusServerUri() {
-        return this.el.dataset.janusServerUri;
-    },
-    channelId() {
-        return parseInt(this.el.dataset.channelId);
-    },
     mounted() {
-        let player = new FtlPlayer(this.el, this.janusServerUri());
-        player.init(this.channelId());
+        let container = this.el;
+        
+        this.handleEvent("load_video", ({janus_uri, channel_id}) => {
+            let player = new FtlPlayer(container, janus_uri);
+            let init = player.init(channel_id);
+        })
+
+        container.addEventListener("loadeddata", function() {
+            let playPromise = container.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                  // Autoplay started!
+                }).catch(error => {
+                    alert("Video autoplay was prevented by your browser, hit the Play button!")
+                });
+              }
+        })
     }
 };
