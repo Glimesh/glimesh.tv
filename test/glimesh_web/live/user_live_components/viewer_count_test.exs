@@ -28,7 +28,7 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCountTest do
       {:ok, _, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
 
       # Due to a bug with LiveView in testing, the above live statement triggers two viewers, one with CSRF and one without
-      assert render(view) =~ "2 Viewers"
+      assert render(view) =~ "1 Viewers"
     end
   end
 end
