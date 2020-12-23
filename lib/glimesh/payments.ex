@@ -240,7 +240,7 @@ defmodule Glimesh.Payments do
     end
   end
 
-  def get_subscription_by_stripe_id(subscription_id) do
+  def get_subscription_by_stripe_id(subscription_id) when is_binary(subscription_id) do
     Repo.one(
       from s in Subscription,
         where: s.stripe_subscription_id == ^subscription_id

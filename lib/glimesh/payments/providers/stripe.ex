@@ -8,6 +8,8 @@ defmodule Glimesh.Payments.Providers.Stripe do
   """
   require Logger
 
+  alias Glimesh.Payments
+
   @doc """
 
   1. A few days prior to renewal, your site receives an invoice.upcoming event at the webhook
@@ -23,7 +25,7 @@ defmodule Glimesh.Payments.Providers.Stripe do
       }) do
     case invoice.status do
       "paid" ->
-        Glimesh.Payments.process_successful_renewal(
+        Payments.process_successful_renewal(
           invoice.subscription,
           invoice.period_end
         )
@@ -34,15 +36,16 @@ defmodule Glimesh.Payments.Providers.Stripe do
         type: "customer.subscription.updated",
         data: %{object: %Stripe.Subscription{} = subscription}
       }) do
-    # When a subscription changes to canceled or unpaid, your webhook script should ensure the customer is no longer receiving your products or services.
+    # When a subscription changes to canceled or unpaid, your webhook script should ensure the
+    # customer is no longer receiving your products or services.
     # We decide to give up on a subcription at this point
 
     case subscription.status do
       "canceled" ->
-        Glimesh.Payments.process_unsuccessful_renewal(subscription.id)
+        Payments.process_unsuccessful_renewal(subscription.id)
 
       "unpaid" ->
-        Glimesh.Payments.process_unsuccessful_renewal(subscription.id)
+        Payments.process_unsuccessful_renewal(subscription.id)
     end
   end
 
