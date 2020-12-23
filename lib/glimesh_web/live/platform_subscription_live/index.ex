@@ -60,7 +60,7 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
       ) do
     user = socket.assigns.user
 
-    with {:ok, _} <- Payments.set_payment_method(user, payment_method),
+    with {:ok, user} <- Payments.set_payment_method(user, payment_method),
          {:ok, subscription} <-
            Payments.subscribe_to_platform(
              user,
@@ -69,18 +69,20 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
            ) do
       {:reply, subscription,
        socket
+       |> assign(:user, Accounts.get_user!(user.id))
        |> assign(:show_subscription, false)
        |> assign(:subscription, Payments.get_platform_subscription!(user))
        |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
     else
-      {:pending_requires_action, error_msg} ->
-        {:noreply, socket |> assign(:stripe_error, error_msg)}
+      # {:pending_requires_action, error_msg} ->
+      #   {:noreply, socket |> assign(:stripe_error, error_msg)}
 
-      {:pending_requires_payment_method, error_msg} ->
-        {:noreply, socket |> assign(:stripe_error, error_msg)}
+      # {:pending_requires_payment_method, error_msg} ->
+      #   {:noreply, socket |> assign(:stripe_error, error_msg)}
 
       {:error, error_msg} ->
-        {:noreply, socket |> assign(:stripe_error, error_msg)}
+        {:noreply,
+         socket |> assign(:user, Accounts.get_user!(user.id)) |> assign(:stripe_error, error_msg)}
     end
   end
 

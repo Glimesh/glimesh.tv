@@ -64,8 +64,8 @@ defmodule Glimesh.Payments do
            Stripe.Customer.update(customer_id, %{
              invoice_settings: %{default_payment_method: payment_method_id}
            }),
-         {:ok, _} <- Accounts.set_stripe_default_payment(user, payment_method_id) do
-      {:ok, "Successfully saved and set payment method as default."}
+         {:ok, user} <- Accounts.set_stripe_default_payment(user, payment_method_id) do
+      {:ok, user}
     else
       {:error, %Stripe.Error{message: message}} ->
         {:error, message}
@@ -90,28 +90,18 @@ defmodule Glimesh.Payments do
     {:ok, product} = Stripe.Product.retrieve(product_id)
     {:ok, price} = Stripe.Price.retrieve(price_id)
 
-    with {:ok, sub} <-
-           Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"]),
-         {:ok, platform_sub} <-
-           create_subscription(%{
-             user: user,
-             stripe_subscription_id: sub.id,
-             stripe_product_id: product_id,
-             stripe_price_id: price_id,
-             stripe_current_period_end: sub.current_period_end,
-             price: price.unit_amount,
-             fee: 0,
-             payout: price.unit_amount,
-             product_name: product.name,
-             is_active: true,
-             started_at: NaiveDateTime.utc_now(),
-             ended_at: NaiveDateTime.utc_now()
-           }) do
-      {:ok, platform_sub}
-    else
-      {:error, %Stripe.Error{user_message: user_message}} -> {:error, user_message}
-      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
-    end
+    sub_attrs = %{
+      user: user,
+      stripe_product_id: product_id,
+      stripe_price_id: price_id,
+      price: price.unit_amount,
+      fee: 0,
+      payout: price.unit_amount,
+      product_name: product.name
+    }
+
+    Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"])
+    |> handle_stripe_subscription_create(user, sub_attrs)
   end
 
   def subscribe_to_channel(user, streamer, product_id, price_id) do
@@ -123,11 +113,6 @@ defmodule Glimesh.Payments do
       raise ArgumentError, "You already have an active subscription to this streamer."
     end
 
-    # Basically the same as subscribe_to_platform/3 but with
-    # "transfer_data" => [
-    #    "destination" => "{{CONNECTED_STRIPE_ACCOUNT_ID}}",
-    #  ],
-    # "application_fee_percent" => 10,
     customer_id = Accounts.get_stripe_customer_id(user)
 
     {:ok, product} = Stripe.Product.retrieve(product_id)
@@ -140,47 +125,129 @@ defmodule Glimesh.Payments do
       transfer_data: %{destination: streamer.stripe_user_id}
     }
 
-    with {:ok, stripe_sub} <-
-           Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"]),
-         {:ok, channel_sub} <-
-           create_subscription(%{
-             user: user,
-             streamer: streamer,
-             stripe_subscription_id: stripe_sub.id,
-             stripe_product_id: product_id,
-             stripe_price_id: price_id,
-             stripe_current_period_end: stripe_sub.current_period_end,
-             price: price.unit_amount,
-             fee: trunc(stripe_sub.application_fee_percent / 100 * price.unit_amount),
-             payout:
-               trunc(
-                 price.unit_amount - stripe_sub.application_fee_percent / 100 * price.unit_amount
-               ),
-             product_name: product.name,
-             is_active: true,
-             started_at: NaiveDateTime.utc_now(),
-             ended_at: NaiveDateTime.utc_now()
-           }) do
-      {:ok,
-       %{
-         status: stripe_sub.status,
-         subscription: channel_sub
-       }}
+    sub_attrs = %{
+      user: user,
+      streamer: streamer,
+      stripe_product_id: product_id,
+      stripe_price_id: price_id,
+      price: price.unit_amount,
+      fee: trunc(stripe_input.application_fee_percent / 100 * price.unit_amount),
+      payout:
+        trunc(price.unit_amount - stripe_input.application_fee_percent / 100 * price.unit_amount),
+      product_name: product.name
+    }
+
+    Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"])
+    |> handle_stripe_subscription_create(user, sub_attrs)
+  end
+
+  @doc """
+  Stripe Test Card Numbers:
+    4000 0000 0000 0341 sub.status: "incomplete", sub.latest_invoice.status = "open"
+    4242 4242 4242 4242 sub.status: "active", sub.latest_invoice.status = "paid"
+    4000 0000 0000 3220 3D Secure
+  """
+  def handle_stripe_subscription_create({:ok, %Stripe.Subscription{} = sub}, user, sub_attrs) do
+    case sub.status do
+      "active" ->
+        create_subscription(
+          Enum.into(sub_attrs, %{
+            stripe_subscription_id: sub.id,
+            stripe_current_period_end: sub.current_period_end,
+            is_active: true,
+            started_at: NaiveDateTime.utc_now(),
+            ended_at: NaiveDateTime.utc_now()
+          })
+        )
+
+      "incomplete" ->
+        handle_stripe_payment_failure(user, sub)
+    end
+  end
+
+  def handle_stripe_subscription_create(error, _user, _sub_attrs) do
+    case error do
+      {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
+      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
+      _ -> {:error, "Unexpected error."}
+    end
+  end
+
+  def handle_stripe_payment_failure(%User{} = user, %Stripe.Subscription{} = sub) do
+    case sub.latest_invoice.payment_intent.status do
+      "requires_payment_method" ->
+        # To resolve these scenarios:
+        #
+        # Notify the customer, collect new payment information, and create a new payment method
+        # Attach the payment method to the customer
+        # Update the default payment method
+        # Pay the invoice using the new payment method
+        error_message =
+          Map.get(
+            sub.latest_invoice.payment_intent.last_payment_error,
+            :message,
+            "There was a problem processing your payment. Please try again."
+          )
+
+        Accounts.set_stripe_default_payment(user, nil)
+
+        {:error, error_message}
+
+      "requires_action" ->
+        # This needs to be handled on the frontend so the user gets another prompt
+        # To handle these scenarios:
+        #
+        # Notify the customer that authentication is required
+        # Complete authentication using stripe.ConfirmCardPayment
+        # {:pending_requires_action, "requires_action"}
+
+        Accounts.set_stripe_default_payment(user, nil)
+
+        {:error, "3D Secure Cards are not yet supported."}
+    end
+  end
+
+  def unsubscribe(subscription) do
+    with {:ok, _} <- Stripe.Subscription.delete(subscription.stripe_subscription_id),
+         {:ok, sub} <- update_subscription(subscription, %{is_active: false}) do
+      {:ok, sub}
     else
       {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
       {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
     end
   end
 
-  def unsubscribe(subscription) do
-    with {:ok, _} <- Stripe.Subscription.delete(subscription.stripe_subscription_id),
-         {:ok, platform_sub} <- update_subscription(subscription, %{is_active: false}) do
-      {:ok, platform_sub}
-    else
-      {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
-      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
+  def process_successful_renewal(stripe_subscription_id, new_expiration_date) do
+    case get_subscription_by_stripe_id(stripe_subscription_id) do
+      %Subscription{} = sub ->
+        update_subscription(sub, %{
+          is_active: true,
+          ended_at: new_expiration_date |> DateTime.from_unix!() |> DateTime.to_naive()
+        })
+
+      _ ->
+        {:error, "Unable to find subscription by stripe_subscription_id"}
     end
   end
+
+  def process_unsuccessful_renewal(stripe_subscription_id) do
+    case get_subscription_by_stripe_id(stripe_subscription_id) do
+      %Subscription{} = sub ->
+        unsubscribe(sub)
+
+      _ ->
+        {:error, "Unable to find subscription by stripe_subscription_id"}
+    end
+  end
+
+  def get_subscription_by_stripe_id(subscription_id) when is_binary(subscription_id) do
+    Repo.one(
+      from s in Subscription,
+        where: s.stripe_subscription_id == ^subscription_id
+    )
+  end
+
+  def get_subscription_by_stripe_id(nil), do: nil
 
   def get_platform_subscription!(user) do
     Repo.one(
