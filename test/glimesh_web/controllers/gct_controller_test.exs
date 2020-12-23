@@ -48,7 +48,10 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "valid channel returns information", %{conn: conn} do
       lookup_channel = channel_fixture()
-      conn = get(conn, Routes.gct_path(conn, :channel_lookup, query: lookup_channel.user.username))
+
+      conn =
+        get(conn, Routes.gct_path(conn, :channel_lookup, query: lookup_channel.user.username))
+
       assert html_response(conn, 200) =~ "Information for " <> lookup_channel.user.displayname
     end
 
@@ -56,7 +59,6 @@ defmodule GlimeshWeb.GctControllerTest do
       conn = get(conn, Routes.gct_path(conn, :channel_lookup, query: "@"))
       assert html_response(conn, 200) =~ "Does not exist"
     end
-
   end
 
   describe "GET /gct/edit/:username" do
@@ -75,6 +77,7 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "does update username if valid", %{conn: conn} do
       user = user_fixture()
+
       user_conn =
         put(conn, Routes.gct_path(conn, :update_user, user.username), %{
           "user" => %{
@@ -91,6 +94,7 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "doesn't update username if invalid", %{conn: conn} do
       user = user_fixture()
+
       user_conn =
         put(conn, Routes.gct_path(conn, :update_user, user.username), %{
           "user" => %{
@@ -104,6 +108,7 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "does update email if valid", %{conn: conn} do
       user = user_fixture()
+
       user_conn =
         put(conn, Routes.gct_path(conn, :update_user, user.username), %{
           "user" => %{
@@ -120,6 +125,7 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "doesn't update email if invalid", %{conn: conn} do
       user = user_fixture()
+
       user_conn =
         put(conn, Routes.gct_path(conn, :update_user, user.username), %{
           "user" => %{
@@ -148,6 +154,7 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "updates the social media profiles", %{conn: conn} do
       valid_user = user_fixture()
+
       profile_conn =
         put(conn, Routes.gct_path(conn, :update_user_profile, valid_user.username), %{
           "user" => %{
@@ -158,10 +165,17 @@ defmodule GlimeshWeb.GctControllerTest do
           }
         })
 
-      assert redirected_to(profile_conn) == Routes.gct_path(conn, :edit_user_profile, valid_user.username)
+      assert redirected_to(profile_conn) ==
+               Routes.gct_path(conn, :edit_user_profile, valid_user.username)
+
       assert get_flash(profile_conn, :info) =~ "User updated successfully"
 
-      response = html_response(get(conn, Routes.gct_path(conn, :edit_user_profile, valid_user.username)), 200)
+      response =
+        html_response(
+          get(conn, Routes.gct_path(conn, :edit_user_profile, valid_user.username)),
+          200
+        )
+
       assert response =~ "some-fake-twitter-url"
       assert response =~ "some-fake-discord-url"
       assert response =~ "some-fake-insta-url"
@@ -170,6 +184,7 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "does update displayname if case changes", %{conn: conn} do
       user = user_fixture()
+
       profile_conn =
         put(conn, Routes.gct_path(conn, :update_user_profile, user.username), %{
           "user" => %{
@@ -177,15 +192,20 @@ defmodule GlimeshWeb.GctControllerTest do
           }
         })
 
-      assert redirected_to(profile_conn) == Routes.gct_path(conn, :edit_user_profile, user.username)
+      assert redirected_to(profile_conn) ==
+               Routes.gct_path(conn, :edit_user_profile, user.username)
+
       assert get_flash(profile_conn, :info) =~ "User updated successfully"
 
-      response = html_response(get(conn, Routes.gct_path(conn, :edit_user_profile, user.username)), 200)
+      response =
+        html_response(get(conn, Routes.gct_path(conn, :edit_user_profile, user.username)), 200)
+
       assert response =~ String.upcase(user.username)
     end
 
     test "does not update displayname if it does not match username", %{conn: conn} do
       user = user_fixture()
+
       profile_conn =
         put(conn, Routes.gct_path(conn, :update_user_profile, user.username), %{
           "user" => %{
@@ -214,6 +234,7 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "updating title actually updates it", %{conn: conn} do
       channel = channel_fixture()
+
       channel_conn =
         put(conn, Routes.gct_path(conn, :update_channel, channel.id), %{
           "channel" => %{

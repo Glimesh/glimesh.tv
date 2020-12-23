@@ -12,8 +12,8 @@ defmodule GlimeshWeb.GctController do
 
   # General Routes
   def index(conn, _params) do
-
-    view_audit_log = Bodyguard.permit?(Glimesh.CommunityTeam, :view_audit_log, conn.assigns.current_user)
+    view_audit_log =
+      Bodyguard.permit?(Glimesh.CommunityTeam, :view_audit_log, conn.assigns.current_user)
 
     render(
       conn,
@@ -23,7 +23,8 @@ defmodule GlimeshWeb.GctController do
   end
 
   def audit_log(conn, _params) do
-    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_audit_log, conn.assigns.current_user) do
+    with :ok <-
+           Bodyguard.permit(Glimesh.CommunityTeam, :view_audit_log, conn.assigns.current_user) do
       render(
         conn,
         "audit_log.html"
@@ -34,7 +35,13 @@ defmodule GlimeshWeb.GctController do
   # Looking up/editing a user
 
   def username_lookup(conn, params) do
-    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_user, conn.assigns.current_user, params["query"]) do
+    with :ok <-
+           Bodyguard.permit(
+             Glimesh.CommunityTeam,
+             :view_user,
+             conn.assigns.current_user,
+             params["query"]
+           ) do
       unless params["query"] == "",
         do:
           CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
@@ -45,7 +52,13 @@ defmodule GlimeshWeb.GctController do
 
       user = Accounts.get_by_username(params["query"], true)
 
-      view_billing = Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, conn.assigns.current_user, user)
+      view_billing =
+        Bodyguard.permit?(
+          Glimesh.CommunityTeam,
+          :view_billing_info,
+          conn.assigns.current_user,
+          user
+        )
 
       if user do
         render(
@@ -65,6 +78,7 @@ defmodule GlimeshWeb.GctController do
   def edit_user_profile(conn, %{"username" => username}) do
     current_user = conn.assigns.current_user
     user = Accounts.get_by_username(username, true)
+
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_user_profile, current_user, user) do
       CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
         action: "view edit profile",
@@ -90,6 +104,7 @@ defmodule GlimeshWeb.GctController do
   def update_user_profile(conn, %{"user" => user_params, "username" => username}) do
     current_user = conn.assigns.current_user
     user = Accounts.get_by_username(username, true)
+
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_user_profile, current_user, user) do
       CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
         action: "edited profile",
@@ -113,6 +128,7 @@ defmodule GlimeshWeb.GctController do
   def edit_user(conn, %{"username" => username}) do
     current_user = conn.assigns.current_user
     user = Accounts.get_by_username(username, true)
+
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_user, current_user, user) do
       CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
         action: "view edit user",
@@ -122,7 +138,14 @@ defmodule GlimeshWeb.GctController do
 
       if user do
         user_changeset = Accounts.change_user(user)
-        view_billing = Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, conn.assigns.current_user, user)
+
+        view_billing =
+          Bodyguard.permit?(
+            Glimesh.CommunityTeam,
+            :view_billing_info,
+            conn.assigns.current_user,
+            user
+          )
 
         render(
           conn,
@@ -140,6 +163,7 @@ defmodule GlimeshWeb.GctController do
   def update_user(conn, %{"user" => user_params, "username" => username}) do
     current_user = conn.assigns.current_user
     user = Accounts.get_by_username(username, true)
+
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_user, current_user, user) do
       CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
         action: "edited user",
@@ -155,7 +179,13 @@ defmodule GlimeshWeb.GctController do
           |> redirect(to: Routes.gct_path(conn, :edit_user, user.username))
 
         {:error, changeset} ->
-          view_billing = Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, conn.assigns.current_user, user)
+          view_billing =
+            Bodyguard.permit?(
+              Glimesh.CommunityTeam,
+              :view_billing_info,
+              conn.assigns.current_user,
+              user
+            )
 
           render(
             conn,
@@ -197,13 +227,19 @@ defmodule GlimeshWeb.GctController do
 
   def edit_channel(conn, %{"channel_id" => channel_id}) do
     channel = Streams.get_channel(channel_id)
-    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_channel, conn.assigns.current_user, channel) do
+
+    with :ok <-
+           Bodyguard.permit(
+             Glimesh.CommunityTeam,
+             :edit_channel,
+             conn.assigns.current_user,
+             channel
+           ) do
       CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
         action: "view edit channel",
         target: channel_id,
         verbose_required: true
       })
-
 
       if channel do
         channel_changeset = Streams.change_channel(channel)
@@ -226,26 +262,42 @@ defmodule GlimeshWeb.GctController do
     channel = Streams.get_channel!(channel_id)
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_channel, conn.assigns.current_user) do
-
       case Streams.update_channel(current_user, channel, channel_params) do
         {:ok, channel} ->
-          create_audit_entry_channel(current_user, "edited channel", channel.user.username, false, CommunityTeam.generate_update_channel_more_details(channel, channel_params))
+          create_audit_entry_channel(
+            current_user,
+            "edited channel",
+            channel.user.username,
+            false,
+            CommunityTeam.generate_update_channel_more_details(channel, channel_params)
+          )
+
           conn
           |> put_flash(:info, gettext("Channel updated successfully"))
           |> redirect(to: Routes.gct_path(conn, :edit_channel, channel.id))
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          render(conn, "edit_channel.html", channel: channel, channel_changeset: changeset, categories: Streams.list_categories_for_select())
+          render(conn, "edit_channel.html",
+            channel: channel,
+            channel_changeset: changeset,
+            categories: Streams.list_categories_for_select()
+          )
 
         {:error, :unauthorized} ->
-          create_audit_entry_channel(current_user, "tried to edit channel, but was unauthorized", channel.user.username, false, "User was successfully blocked from updating channel")
+          create_audit_entry_channel(
+            current_user,
+            "tried to edit channel, but was unauthorized",
+            channel.user.username,
+            false,
+            "User was successfully blocked from updating channel"
+          )
+
           conn
           |> put_flash(:error, gettext("Unauthorized. This attempt has been logged."))
           |> redirect(to: Routes.gct_path(conn, :index))
       end
     end
   end
-
 
   defp create_audit_entry_channel(current_user, action, target, verbose, more_details) do
     CommunityTeam.create_audit_entry(current_user, %{

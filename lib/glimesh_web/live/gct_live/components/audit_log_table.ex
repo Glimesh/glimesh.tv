@@ -50,7 +50,10 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
 
   @impl true
   def handle_event("show-details", %{"log-id" => log_id}, socket) do
-    {:noreply, socket |> assign(:show_details, true) |> assign(:detailed_log, CommunityTeam.get_audit_log_entry_from_id!(log_id))}
+    {:noreply,
+     socket
+     |> assign(:show_details, true)
+     |> assign(:detailed_log, CommunityTeam.get_audit_log_entry_from_id!(log_id))}
   end
 
   @impl true

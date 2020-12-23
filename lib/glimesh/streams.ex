@@ -467,9 +467,7 @@ defmodule Glimesh.Streams do
         where(query, [user: u], u.is_banned == false)
       end
 
-    Repo.one(
-      query
-    )
+    Repo.one(query)
     |> Repo.preload([:category, :user])
   end
 

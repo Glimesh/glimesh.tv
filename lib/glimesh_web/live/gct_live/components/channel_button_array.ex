@@ -13,10 +13,12 @@ defmodule GlimeshWeb.GctLive.Components.ChannelButtonArray do
   @impl true
   def mount(_params, %{"admin" => admin, "channel" => channel}, socket) do
     {:ok,
-    socket
-    |> assign(:admin, admin)
-    |> assign(:channel, channel)
-    |> assign(:can_edit_channel, Bodyguard.permit?(Glimesh.CommunityTeam, :edit_channel, admin, channel.user))}
+     socket
+     |> assign(:admin, admin)
+     |> assign(:channel, channel)
+     |> assign(
+       :can_edit_channel,
+       Bodyguard.permit?(Glimesh.CommunityTeam, :edit_channel, admin, channel.user)
+     )}
   end
-
 end

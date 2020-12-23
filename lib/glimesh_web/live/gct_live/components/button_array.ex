@@ -49,9 +49,30 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
 
   @impl true
   def mount(_params, %{"admin" => admin, "user" => user}, socket) do
-    can_ban = case Bodyguard.permit(Glimesh.CommunityTeam, :can_ban, admin, user), do: (:ok -> true; {:error, :unauthorized} -> false)
-    can_edit_user = case Bodyguard.permit(Glimesh.CommunityTeam, :edit_user, admin, user), do: (:ok -> true; {:error, :unauthorized} -> false)
-    can_edit_user_profile = case Bodyguard.permit(Glimesh.CommunityTeam, :edit_user_profile, admin, user), do: (:ok -> true; {:error, :unauthorized} -> false)
+    can_ban =
+      case Bodyguard.permit(Glimesh.CommunityTeam, :can_ban, admin, user),
+        do:
+          (
+            :ok -> true
+            {:error, :unauthorized} -> false
+          )
+
+    can_edit_user =
+      case Bodyguard.permit(Glimesh.CommunityTeam, :edit_user, admin, user),
+        do:
+          (
+            :ok -> true
+            {:error, :unauthorized} -> false
+          )
+
+    can_edit_user_profile =
+      case Bodyguard.permit(Glimesh.CommunityTeam, :edit_user_profile, admin, user),
+        do:
+          (
+            :ok -> true
+            {:error, :unauthorized} -> false
+          )
+
     {:ok,
      socket
      |> assign(:admin, admin)
