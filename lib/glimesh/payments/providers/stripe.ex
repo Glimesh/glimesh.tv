@@ -2,16 +2,9 @@ defmodule Glimesh.Payments.Providers.Stripe do
   @moduledoc """
   Stripe Webhook Handler
 
-  Unimplemented methods:
-
-  def handle_webhook(%{type: "invoice.paid"} = stripe_event) do
-     IO.inspect(stripe_event)
-     {:ok, ""}
-   end
-
-  def handle_webhook(%{type: "payment_intent.succeeded"} = stripe_event) do
-    {:ok, ""}
-  end
+  Currently Handled:
+  - Subscription Renewal
+  - Subscription Unpaid / Canceled
   """
   require Logger
 
@@ -26,49 +19,54 @@ defmodule Glimesh.Payments.Providers.Stripe do
   """
   def handle_webhook(%{
         type: "invoice.payment_succeeded",
-        data: %{object: %Stripe.PaymentIntent{} = payment_intent}
+        data: %{object: %Stripe.Invoice{} = invoice}
       }) do
-    case payment_intent.status do
-      "succeeded" ->
+    case invoice.status do
+      "paid" ->
         Glimesh.Payments.process_successful_renewal(
-          payment_intent.subscription,
-          payment_intent.period_end
+          invoice.subscription,
+          invoice.period_end
         )
-
-      _ ->
-        # Not sure what this would be
-        nil
     end
-
-    {:ok, ""}
   end
 
-  @doc """
-  Webhook notifications provide a reliable way to be notified of payment failures on
-  subscription invoices. A payment failure can be a temporary problem—the card issuer
-  declined this charge but may allow the automatic retry—or indicative of a permanent
-  blocker, such as not having a usable payment method. When payments fail, an
-  invoice.payment_failed event is sent and the status of the PaymentIntent is requires_payment_method.
-  """
-  def handle_webhook(%{type: "invoice.payment_failed"} = stripe_event) do
-    {:ok, ""}
+  def handle_webhook(%{
+        type: "customer.subscription.updated",
+        data: %{object: %Stripe.Subscription{} = subscription}
+      }) do
+    # When a subscription changes to canceled or unpaid, your webhook script should ensure the customer is no longer receiving your products or services.
+    # We decide to give up on a subcription at this point
+
+    case subscription.status do
+      "canceled" ->
+        Glimesh.Payments.process_unsuccessful_renewal(subscription.id)
+
+      "unpaid" ->
+        Glimesh.Payments.process_unsuccessful_renewal(subscription.id)
+    end
   end
 
-  def handle_webhook(%{type: "charge.failed"} = webhook) do
-    Logger.info("Incoming Stripe Webhook: " <> inspect(webhook))
-    {:ok, "Something"}
-  end
-
-  @doc """
-  Fall through webhook handler for stripe events, logging into prod for now so we can figure
-  out the right methods to implement.
-  """
   def handle_webhook(%{type: type} = webhook) do
-    Logger.info("Incoming Stripe Webhook: " <> inspect(webhook))
+    #   Fall through webhook handler for stripe events, logging into prod for now so we can figure
+    # out the right methods to implement.
+    Logger.info("Incoming Stripe Webhook: #{type} = " <> inspect(webhook))
     {:error, "Webhook endpoint not found for #{type}"}
   end
 
   def handle_webhook(_) do
     {:error, "Webhook endpoint not correct type."}
   end
+
+  # def handle_webhook(%{type: "invoice.payment_failed"} = stripe_event) do
+  #   # Webhook notifications provide a reliable way to be notified of payment failures on
+  #   # subscription invoices. A payment failure can be a temporary problem—the card issuer
+  #   # declined this charge but may allow the automatic retry—or indicative of a permanent
+  #   # blocker, such as not having a usable payment method. When payments fail, an
+  #   # invoice.payment_failed event is sent and the status of the PaymentIntent is requires_payment_method.
+  #   {:ok, ""}
+  # end
+
+  # def handle_webhook(%{type: "charge.failed"} = webhook) do
+  #   {:ok, "Something"}
+  # end
 end

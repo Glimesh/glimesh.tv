@@ -209,8 +209,8 @@ defmodule Glimesh.Payments do
 
   def unsubscribe(subscription) do
     with {:ok, _} <- Stripe.Subscription.delete(subscription.stripe_subscription_id),
-         {:ok, platform_sub} <- update_subscription(subscription, %{is_active: false}) do
-      {:ok, platform_sub}
+         {:ok, sub} <- update_subscription(subscription, %{is_active: false}) do
+      {:ok, sub}
     else
       {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
       {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
@@ -230,12 +230,24 @@ defmodule Glimesh.Payments do
     end
   end
 
+  def process_unsuccessful_renewal(stripe_subscription_id) do
+    case get_subscription_by_stripe_id(stripe_subscription_id) do
+      %Subscription{} = sub ->
+        unsubscribe(sub)
+
+      _ ->
+        {:error, "Unable to find subscription by stripe_subscription_id"}
+    end
+  end
+
   def get_subscription_by_stripe_id(subscription_id) do
     Repo.one(
       from s in Subscription,
         where: s.stripe_subscription_id == ^subscription_id
     )
   end
+
+  def get_subscription_by_stripe_id(nil), do: nil
 
   def get_platform_subscription!(user) do
     Repo.one(
