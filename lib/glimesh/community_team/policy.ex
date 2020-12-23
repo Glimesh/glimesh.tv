@@ -40,27 +40,25 @@ defmodule Glimesh.CommunityTeam.Policy do
   def authorize(:edit_user_profile, %User{is_gct: true, gct_level: 3} = current_user, user) do
     if is_self?(current_user, user) || is_user_higher_level?(current_user, user), do: false, else: true
   end
-  def authorize(:edit_user, %User{is_gct: true, gct_level: 3}, _user) do
+  def authorize(:edit_user, %User{is_gct: true, gct_level: 3} = current_user, user) do
     if is_self?(current_user, user) || is_user_higher_level?(current_user, user), do: false, else: true
   end
-  def authorize(:can_ban, %User{is_gct: true, gct_level: 3}, _user) do
+  def authorize(:can_ban, %User{is_gct: true, gct_level: 3} = current_user, user) do
     if is_self?(current_user, user) || is_user_higher_level?(current_user, user), do: false, else: true
   end
-  def authorize(:edit_channel, %User{is_gct: true, gct_level: 3}, _user) do
+  def authorize(:edit_channel, %User{is_gct: true, gct_level: 3} = current_user, user) do
     if is_self?(current_user, user) || is_user_higher_level?(current_user, user), do: false, else: true
   end
-  def authorize(:view_audit_log, %User{is_gct: true, gct_level: 3}, _user) do
-    if is_self?(current_user, user) || is_user_higher_level?(current_user, user), do: false, else: true
-  end
+  def authorize(:view_audit_log, %User{is_gct: true, gct_level: 3}, _user), do: true
 
   # GCT Member perms
-  def authorize(:edit_user_profile, %User{is_gct: true, gct_level: 2}, _user) do
+  def authorize(:edit_user_profile, %User{is_gct: true, gct_level: 2} = current_user, user) do
     if is_self?(current_user, user) || is_user_higher_level?(current_user, user), do: false, else: true
   end
-  def authorize(:can_ban, %User{is_gct: true, gct_level: 2}, _user) do
+  def authorize(:can_ban, %User{is_gct: true, gct_level: 2} = current_user, user) do
     if is_self?(current_user, user) || is_user_higher_level?(current_user, user), do: false, else: true
   end
-  def authorize(:edit_channel, %User{is_gct: true, gct_level: 2}, _user) do
+  def authorize(:edit_channel, %User{is_gct: true, gct_level: 2} = current_user, user) do
     if is_self?(current_user, user) || is_user_higher_level?(current_user, user), do: false, else: true
   end
 

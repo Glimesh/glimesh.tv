@@ -19,33 +19,6 @@ defmodule Glimesh.CommunityTeam do
     end
   end
 
-  @moduledoc """
-
-  def can_edit_user(user) do
-    if get_global_access_level(user.gct_level) >= 3, do: true, else: false
-  end
-
-  def can_edit_channel(user) do
-    if get_global_access_level(user.gct_level) >= 2, do: true, else: false
-  end
-
-  def can_edit_user_profile(user) do
-    if get_global_access_level(user.gct_level) >= 2, do: true, else: false
-  end
-
-  def can_ban_user(user) do
-    if get_global_access_level(user.gct_level) >= 2, do: true, else: false
-  end
-
-  def can_view_audit_log(user) do
-    if get_global_access_level(user.gct_level) >= 3, do: true, else: false
-  end
-
-  def can_view_billing_info(user) do
-    if get_global_access_level(user.gct_level) >= 4, do: true, else: false
-  end
-  """
-
   def create_audit_entry(user, attrs \\ %{action: "None", target: "None"}) do
     %AuditLog{
       user: user

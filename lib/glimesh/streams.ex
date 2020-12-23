@@ -445,6 +445,10 @@ defmodule Glimesh.Streams do
     |> Repo.preload([:category, :user, :stream])
   end
 
+  def get_channel(id) do
+    Repo.get_by(Channel, id: id) |> Repo.preload([:category, :user])
+  end
+
   def get_channel!(id) do
     Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :user])
   end

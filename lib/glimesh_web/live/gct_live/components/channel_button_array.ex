@@ -16,7 +16,7 @@ defmodule GlimeshWeb.GctLive.Components.ChannelButtonArray do
     socket
     |> assign(:admin, admin)
     |> assign(:channel, channel)
-    |> assign(:can_edit_channel, Bodyguard.permit?(Glimesh.CommunityTeam, :edit_channel, admin))}
+    |> assign(:can_edit_channel, Bodyguard.permit?(Glimesh.CommunityTeam, :edit_channel, admin, channel.user))}
   end
 
 end

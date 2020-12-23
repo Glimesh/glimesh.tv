@@ -155,7 +155,15 @@ defmodule GlimeshWeb.GctController do
           |> redirect(to: Routes.gct_path(conn, :edit_user, user.username))
 
         {:error, changeset} ->
-          render(conn, "edit_user.html", user: user, user_changeset: changeset, view_billing?: CommunityTeam.can_view_billing_info(conn.assigns.current_user))
+          view_billing = Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, conn.assigns.current_user, user)
+
+          render(
+            conn,
+            "edit_user.html",
+            user: user,
+            user_changeset: changeset,
+            view_billing?: view_billing
+          )
       end
     end
   end
@@ -188,8 +196,8 @@ defmodule GlimeshWeb.GctController do
   end
 
   def edit_channel(conn, %{"channel_id" => channel_id}) do
-    channel = Streams.get_channel!(channel_id)
-    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_channel, conn.assigns.current_user) do
+    channel = Streams.get_channel(channel_id)
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_channel, conn.assigns.current_user, channel) do
       CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
         action: "view edit channel",
         target: channel_id,

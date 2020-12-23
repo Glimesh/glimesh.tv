@@ -11,7 +11,7 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
     <%= live_redirect gettext("Edit User"), class: (if @can_edit_user, do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_user, @user.username) %>
     <%= unless @user.is_banned do %>
       <button class="btn btn-danger" phx-click="show_ban_modal" <%= unless @can_ban, do: "disabled" %> ><%= gettext("Ban User") %></button>
-    <%= else %>
+    <% else %>
       <button class="btn btn-danger" phx-click="unban_user" <%= unless @can_ban, do: "disabled" %> ><%= gettext("Unban User") %></button>
     <% end %>
 
