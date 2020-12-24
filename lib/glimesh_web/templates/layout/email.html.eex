@@ -29,11 +29,14 @@
 
 	<style type="text/css" media="screen">
 		@font-face {
-			font-family: "Quicksand";
+			font-family: 'Roboto';
 			font-style: normal;
-			font-weight: 400;
-			src: local(""), url("<%= Routes.static_url(GlimeshWeb.Endpoint, "/fonts/quicksand-v21-latin-regular.woff2") %>") format("woff2"),
-				url("<%= Routes.static_url(GlimeshWeb.Endpoint, "/fonts/quicksand-v21-latin-regular.woff") %>") format("woff");
+			font-weight: 300;
+			src: local(''),
+				url('<%= Routes.static_url(GlimeshWeb.Endpoint, "/fonts/roboto-v20-latin-300.woff2") %>') format('woff2'),
+				url('<%= Routes.static_url(GlimeshWeb.Endpoint, "/fonts/roboto-v20-latin-300.woff") %>') format('woff'),
+				url('<%= Routes.static_url(GlimeshWeb.Endpoint, "/fonts/roboto-v20-latin-300.ttf") %>') format('truetype'),
+			;
 		}
 
 		/* Linked Styles */
@@ -185,7 +188,7 @@
 													<%# <table width="100%" border="0" cellspacing="0" cellpadding="0">
 														<tr>
 															<td class="text-header"
-																style="color:#475c77; font-family:'Quicksand', Arial,sans-serif; font-size:12px; line-height:16px; text-align:right;">
+																style="color:#475c77; font-family:'Roboto', Arial,sans-serif; font-size:12px; line-height:16px; text-align:right;">
 																<a href="#" target="_blank" class="link2"
 																	style="color:#475c77; text-decoration:none;"><span
 																		class="link2"
@@ -240,12 +243,12 @@
 											#%>
 											<tr>
 												<td class="text-footer1 pb10"
-													style="color:#c1cddc; font-family:'Quicksand', Arial,sans-serif; font-size:16px; line-height:20px; text-align:center; padding-bottom:10px;">
+													style="color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:16px; line-height:20px; text-align:center; padding-bottom:10px;">
 													Glimesh, Inc.</td>
 											</tr>
 											<tr>
 												<td class="text-footer2"
-													style="color:#8297b3; font-family:'Quicksand', Arial,sans-serif; font-size:12px; line-height:26px; text-align:center;">
+													style="color:#8297b3; font-family:'Roboto', Arial,sans-serif; font-size:12px; line-height:26px; text-align:center;">
 													<%= Application.get_env(:glimesh, :email_physical_address) %>
 													<br />United States of America
 												</td>
@@ -256,7 +259,7 @@
 								<tr>
 									<%#
 									<td class="text-footer3 p30-15"
-										style="padding: 40px 30px 0px 30px; color:#ebedf2; font-family:'Quicksand', Arial,sans-serif; font-size:12px; line-height:18px; text-align:center;">
+										style="padding: 40px 30px 0px 30px; color:#ebedf2; font-family:'Roboto', Arial,sans-serif; font-size:12px; line-height:18px; text-align:center;">
 										<a href="#" target="_blank" class="link2-u"
 											style="color:#ebedf2; text-decoration:underline;"><span class="link2-u"
 												style="color:#ebedf2; text-decoration:underline;">Unsubscribe</span></a>

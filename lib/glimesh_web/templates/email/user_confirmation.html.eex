@@ -8,12 +8,12 @@
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
                                 <td class="h1 pb25"
-                                    style="color:#ffffff; font-family:'Quicksand', Arial,sans-serif; font-size:40px; line-height:46px; text-align:center; padding-bottom:25px;">
+                                    style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:40px; line-height:46px; text-align:center; padding-bottom:25px;">
                                     Welcome to <br>Next-Gen Live Streaming</td>
                             </tr>
                             <tr>
                                 <td class="text-center pb25"
-                                    style="color:#ebedf2; font-family:'Quicksand', Arial,sans-serif; font-size:16px; line-height:30px; text-align:center; padding-bottom:25px;">
+                                    style="color:#ebedf2; font-family:'Roboto', Arial,sans-serif; font-size:16px; line-height:30px; text-align:center; padding-bottom:25px;">
                                     Hi <%= @user.displayname %>! Welcome to Glimesh and thank you for creating your
                                     account! We can't wait for you to get to know us, but
                                     first please confirm that this email address is a good
@@ -26,7 +26,7 @@
                                         style="text-align:center;">
                                         <tr>
                                             <td class="pink-button text-button"
-                                                style="background:#1b55e2; color:#ffffff; font-family:'Quicksand', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                style="background:#1b55e2; color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
                                                 <a href="<%= @url %>" target="_blank" class="link-white"
                                                     style="color:#ffffff; text-decoration:none;"><span
                                                         class="link-white"
