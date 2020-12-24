@@ -276,11 +276,19 @@ defmodule Glimesh.Accounts.User do
   def set_profile_content_html(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{profile_content_md: profile_content_md}} ->
-        put_change(
-          changeset,
-          :profile_content_html,
-          Glimesh.Accounts.Profile.safe_user_markdown_to_html(profile_content_md)
-        )
+        if profile_content_md do
+          put_change(
+            changeset,
+            :profile_content_html,
+            Glimesh.Accounts.Profile.safe_user_markdown_to_html(profile_content_md)
+          )
+        else
+          put_change(
+            changeset,
+            :profile_content_html,
+            nil
+          )
+        end
 
       _ ->
         changeset
