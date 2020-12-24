@@ -13,7 +13,7 @@ defmodule GlimeshWeb.UserResetPasswordControllerTest do
     test "renders the reset password page", %{conn: conn} do
       conn = get(conn, Routes.user_reset_password_path(conn, :new))
       response = html_response(conn, 200)
-      assert response =~ "<h3>Forgot your password? "
+      assert response =~ "<h3>Forgot your password?</h3>"
     end
   end
 

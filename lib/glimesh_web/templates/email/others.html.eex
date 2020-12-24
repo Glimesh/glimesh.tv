@@ -16,7 +16,7 @@
 													<table width="100%" border="0" cellspacing="0" cellpadding="0">
 														<tr>
 															<td class="h3 pb20"
-																style="color:#ffffff; font-family:'Quicksand', Arial,sans-serif; font-size:25px; line-height:32px; text-align:left; padding-bottom:20px;">
+																style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:25px; line-height:32px; text-align:left; padding-bottom:20px;">
 																Lorem ipsum dolor sit amet</td>
 														</tr>
 														<tr>
@@ -34,7 +34,7 @@
 																<table border="0" cellspacing="0" cellpadding="0">
 																	<tr>
 																		<td class="blue-button text-button"
-																			style="background:#66c7ff; color:#c1cddc; font-family:'Quicksand', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
+																			style="background:#66c7ff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
 																			<a href="#" target="_blank"
 																				class="link-white"
 																				style="color:#ffffff; text-decoration:none;"><span
@@ -77,7 +77,7 @@
 																	</tr>
 																	<tr>
 																		<td class="h4 pb20"
-																			style="color:#ffffff; font-family:'Quicksand', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
+																			style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
 																			Lorem ipsum dolor sit amet, consectetur
 																			adipisicing</td>
 																	</tr>
@@ -95,7 +95,7 @@
 																				cellpadding="0">
 																				<tr>
 																					<td class="dark-blue-button text-button"
-																						style="background:#0e1726; color:#c1cddc; font-family:'Quicksand', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
+																						style="background:#0e1726; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
 																						<a href="#" target="_blank"
 																							class="link-white"
 																							style="color:#ffffff; text-decoration:none;"><span
@@ -124,7 +124,7 @@
 																	</tr>
 																	<tr>
 																		<td class="h4 pb20"
-																			style="color:#ffffff; font-family:'Quicksand', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
+																			style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
 																			Lorem ipsum dolor sit amet, consectetur
 																			adipisicing</td>
 																	</tr>
@@ -142,7 +142,7 @@
 																				cellpadding="0">
 																				<tr>
 																					<td class="dark-blue-button text-button"
-																						style="background:#0e1726; color:#c1cddc; font-family:'Quicksand', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
+																						style="background:#0e1726; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
 																						<a href="#" target="_blank"
 																							class="link-white"
 																							style="color:#ffffff; text-decoration:none;"><span
@@ -191,7 +191,7 @@
 													<table width="100%" border="0" cellspacing="0" cellpadding="0">
 														<tr>
 															<td class="h4 pb20"
-																style="color:#ffffff; font-family:'Quicksand', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
+																style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
 																Lorem ipsum dolor sit amet, consectetur</td>
 														</tr>
 														<tr>
@@ -207,7 +207,7 @@
 																<table border="0" cellspacing="0" cellpadding="0">
 																	<tr>
 																		<td class="dark-blue-button2 text-button"
-																			style="background:#021a3d; color:#c1cddc; font-family:'Quicksand', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
+																			style="background:#021a3d; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
 																			<a href="#" target="_blank" class="link"
 																				style="color:#66c7ff; text-decoration:none;"><span
 																					class="link"
@@ -253,12 +253,12 @@
 																		cellpadding="0">
 																		<tr>
 																			<td class="h2 pb15"
-																				style="color:#ffffff; font-family:'Quicksand', Arial,sans-serif; font-size:30px; line-height:36px; text-align:center; padding-bottom:15px;">
+																				style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:30px; line-height:36px; text-align:center; padding-bottom:15px;">
 																				Lorem ipsum dolor sit amet</td>
 																		</tr>
 																		<tr>
 																			<td class="text-center white pb20"
-																				style="font-family:'Quicksand', Arial,sans-serif; font-size:16px; line-height:30px; text-align:center; color:#ffffff; padding-bottom:20px;">
+																				style="font-family:'Roboto', Arial,sans-serif; font-size:16px; line-height:30px; text-align:center; color:#ffffff; padding-bottom:20px;">
 																				Lorem ipsum dolor sit amet, consectetur
 																				adipisicing elit, sed do eiusmod tempor
 																				incididunt ut labore et dolore magna
@@ -272,7 +272,7 @@
 																					style="text-align:center;">
 																					<tr>
 																						<td class="dark-blue-button3 text-button"
-																							style="background:#021a3d; color:#c1cddc; font-family:'Quicksand', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
+																							style="background:#021a3d; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
 																							<a href="#" target="_blank"
 																								class="link-white"
 																								style="color:#ffffff; text-decoration:none;"><span
@@ -329,7 +329,7 @@
 													<table width="100%" border="0" cellspacing="0" cellpadding="0">
 														<tr>
 															<td class="h4 pb20"
-																style="color:#ffffff; font-family:'Quicksand', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
+																style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
 																Lorem ipsum dolor sit amet, consectetur</td>
 														</tr>
 														<tr>
@@ -345,7 +345,7 @@
 																<table border="0" cellspacing="0" cellpadding="0">
 																	<tr>
 																		<td class="dark-blue-button2 text-button"
-																			style="background:#021a3d; color:#c1cddc; font-family:'Quicksand', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
+																			style="background:#021a3d; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
 																			<a href="#" target="_blank" class="link"
 																				style="color:#66c7ff; text-decoration:none;"><span
 																					class="link"
@@ -395,7 +395,7 @@
 													<table width="100%" border="0" cellspacing="0" cellpadding="0">
 														<tr>
 															<td class="h4 pb20"
-																style="color:#ffffff; font-family:'Quicksand', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
+																style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
 																Lorem ipsum dolor sit<span class="m-hide"><br /></span>
 																amet, consectetur <span
 																	class="m-hide"><br /></span>adipisicing elit</td>
@@ -414,7 +414,7 @@
 																<table border="0" cellspacing="0" cellpadding="0">
 																	<tr>
 																		<td class="dark-blue-button3 text-button"
-																			style="background:#021a3d; color:#c1cddc; font-family:'Quicksand', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
+																			style="background:#021a3d; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
 																			<a href="#" target="_blank"
 																				class="link-white"
 																				style="color:#ffffff; text-decoration:none;"><span
@@ -462,7 +462,7 @@
 																				cellspacing="0" cellpadding="0">
 																				<tr>
 																					<td class="h4 pb20"
-																						style="color:#ffffff; font-family:'Quicksand', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
+																						style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
 																						Lorem ipsum dolor</td>
 																				</tr>
 																				<tr>
@@ -697,7 +697,7 @@
 																				cellspacing="0" cellpadding="0">
 																				<tr>
 																					<td class="h4 pb20"
-																						style="color:#ffffff; font-family:'Quicksand', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
+																						style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
 																						Lorem ipsum dolor</td>
 																				</tr>
 																				<tr>
@@ -721,7 +721,7 @@
 																							cellpadding="0">
 																							<tr>
 																								<td class="dark-blue-button2 text-button"
-																									style="background:#021a3d; color:#c1cddc; font-family:'Quicksand', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
+																									style="background:#021a3d; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
 																									<a href="#"
 																										target="_blank"
 																										class="link"
