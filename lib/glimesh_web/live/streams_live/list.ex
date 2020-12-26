@@ -10,12 +10,13 @@ defmodule GlimeshWeb.StreamsLive.List do
       %Glimesh.Accounts.User{} = user ->
         if session["locale"], do: Gettext.put_locale(session["locale"])
 
-        page = Glimesh.StreamLayout.FollowersHomepage.generate_following_page(user)
+        channels = Glimesh.Streams.list_live_followed_channels(user)
 
         {:ok,
          socket
          |> put_page_title(gettext("Followed Streams"))
-         |> assign(:page, page)}
+         |> assign(:list_name, "Followed")
+         |> assign(:channels, channels)}
 
       nil ->
         {:ok, redirect(socket, to: "/")}
@@ -28,13 +29,14 @@ defmodule GlimeshWeb.StreamsLive.List do
 
     case Streams.get_category!(params["category"]) do
       %Glimesh.Streams.Category{} = category ->
-        page = Glimesh.StreamLayout.CategoryHomepage.generate_category_page(category)
+        channels = Glimesh.Streams.list_in_category(category)
 
         {:ok,
          socket
          |> put_page_title(category.name)
-         |> assign(:category, category)
-         |> assign(:page, page)}
+         |> assign(:list_name, category.name)
+         |> assign(:channels, channels)
+         |> assign(:category, category)}
 
       nil ->
         {:ok, redirect(socket, to: "/")}
