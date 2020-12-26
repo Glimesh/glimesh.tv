@@ -5,6 +5,13 @@
     }
 }
 
+#video-column {
+    h5 {
+        position: relative;
+        top: 6px;
+    }
+}
+
 @media (min-width: 992px) {
     #chat-column {
         #chat {
