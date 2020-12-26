@@ -3,7 +3,7 @@ defmodule Glimesh.Accounts.Profile do
 
   def safe_user_markdown_to_html(profile_content_md) do
     {:ok, html_doc, []} = Earmark.as_html(profile_content_md)
-    html_doc |> HtmlSanitizeEx.basic_html() |> String.replace("\n  ", "")
+    html_doc |> format_profile_images()
   end
 
   def youtube_video_id(youtube_intro_url) do
@@ -50,5 +50,14 @@ defmodule Glimesh.Accounts.Profile do
         "#{streamer.displayname}'s new profile page on Glimesh, the next-gen live streaming platform.",
       image_url: avatar_path
     }
+  end
+
+  def format_profile_images(html_doc) do
+    html_doc
+    |> HtmlSanitizeEx.basic_html()
+    |> String.replace("\n  ", "")
+    |> String.replace("\n</a>", "</a>")
+    |> String.replace(">  <img", "><img")
+    |> String.replace(">\n<a href", "><a href")
   end
 end
