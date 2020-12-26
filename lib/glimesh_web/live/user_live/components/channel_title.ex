@@ -9,7 +9,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
     ~L"""
     <%= if @can_change do %>
       <%= if !@editing do %>
-        <h5><%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.tag_name %></span> <%= @channel.title %> <a class="fas fa-edit" phx-click="toggle-edit" href="#" aria-label="<%= gettext("Edit") %>"></a></h5>
+        <h5><%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.tag_name %></span> <span data-toggle="tooltip" title="<%= @channel.title %>"><%= @channel.title %></span> <a class="fas fa-edit" phx-click="toggle-edit" href="#" aria-label="<%= gettext("Edit") %>"></a></h5>
       <% else %>
         <%= f = form_for @changeset, "#", [phx_submit: :save] %>
           <div class="input-group">
