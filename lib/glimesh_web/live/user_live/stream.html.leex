@@ -70,7 +70,7 @@
         <div class="card-header">
           <h3>About <%= @streamer.displayname %>'s Stream</h3>
         </div>
-        <div class="card-body">
+        <div class="card-body user-content-body">
           <%= if @streamer.profile_content_html do %>
           <%= raw(@streamer.profile_content_html) %>
           <% else %>
@@ -83,7 +83,7 @@
     </div>
     <div class="col-lg-3 layout-spacing">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body user-content-body">
           <%= if @channel.chat_rules_html do %>
           <%= raw(@channel.chat_rules_html) %>
           <% else %>
