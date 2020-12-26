@@ -16,8 +16,7 @@ defmodule Glimesh.StreamThumbnail do
   # Define a thumbnail transformation:
   def transform(:original, _) do
     {:convert,
-     "-strip -thumbnail 832x468^ -gravity center -extent 832x468 -interlace Plane -gaussian-blur 0.05 -quality 85% -format jpg",
-     :jpg}
+     "-strip -thumbnail 832x468^ -gravity center -extent 832x468 -quality 85% -format jpg", :jpg}
   end
 
   # Override the persisted filenames:
