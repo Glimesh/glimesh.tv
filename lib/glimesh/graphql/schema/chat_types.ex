@@ -35,10 +35,56 @@ defmodule Glimesh.Schema.ChatTypes do
     end
   end
 
+  interface :chat_message_part do
+    field :type, :string
+    field :text, :string
+
+    resolve_type(fn
+      %{type: "text"}, _ -> :text_part
+      %{type: "url"}, _ -> :url_part
+      %{type: "emote"}, _ -> :emote_part
+      _, _ -> nil
+    end)
+  end
+
+  object :text_part do
+    field :type, :string
+    field :text, :string
+
+    interface(:chat_message_part)
+  end
+
+  object :url_part do
+    field :type, :string
+    field :text, :string
+    field :url, :string
+
+    interface(:chat_message_part)
+  end
+
+  object :emote_part do
+    field :type, :string
+    field :text, :string
+    field :url, :string
+    field :huge, :boolean
+    field :animated, :boolean
+
+    interface(:chat_message_part)
+  end
+
   @desc "A chat message sent to a channel by a user."
   object :chat_message do
     field :id, :id
     field :message, :string, description: "The chat message."
+
+    field :parsed, list_of(:chat_message_part) do
+      # Need to strip the asset_host url from this property
+      resolve(fn message, _, _ ->
+        parsed = Glimesh.Chat.Parser.type_parser(message.message)
+        IO.inspect(parsed)
+        {:ok, parsed}
+      end)
+    end
 
     field :channel, non_null(:channel), resolve: dataloader(Repo)
     field :user, non_null(:user), resolve: dataloader(Repo)

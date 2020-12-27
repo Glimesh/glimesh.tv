@@ -13,6 +13,11 @@ defmodule Glimesh.Chat.Parser do
     defstruct allow_links: true, allow_glimojis: true, allow_animated_glimjois: false
   end
 
+  defmodule Part do
+    @enforce_keys [:type, :text]
+    defstruct [:type, :text, :url, :huge]
+  end
+
   import Phoenix.HTML
   import Phoenix.HTML.Tag
   alias Phoenix.HTML.Link
@@ -21,6 +26,75 @@ defmodule Glimesh.Chat.Parser do
                         :\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))
                         ?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?
                       /xi
+
+  def type_parser(chat_message, %Config{} = config \\ %Config{}) do
+    msg = String.split(chat_message)
+
+    glimojis = Glimesh.Emote.list_emotes_by_key_and_image(config.allow_animated_glimjois)
+
+    msg = if config.allow_glimojis, do: new_replace_glimojies(glimojis, msg), else: msg
+    msg = if config.allow_links, do: new_replace_links(msg), else: msg
+
+    new_replace_texts(msg)
+  end
+
+  defp new_replace_glimojies(glimojis, inputs) when length(inputs) == 1 do
+    [new_glimoji_to_img(glimojis, hd(inputs), true)]
+  end
+
+  defp new_replace_glimojies(glimojis, inputs) do
+    Enum.map(inputs, &new_glimoji_to_img(glimojis, &1))
+  end
+
+  defp new_replace_links(inputs) do
+    Enum.map(inputs, &new_link_to_a(&1))
+  end
+
+  defp new_replace_texts(inputs) do
+    Enum.map(inputs, &new_text_to_part(&1))
+  end
+
+  defp new_glimoji_to_img(_, %Part{} = inp, _), do: inp
+
+  defp new_glimoji_to_img(glimojis, word, huge \\ false) do
+    case Map.get(glimojis, word) do
+      nil ->
+        word
+
+      img_path ->
+        %Part{
+          type: "emote",
+          text: word,
+          url: GlimeshWeb.Router.Helpers.static_url(GlimeshWeb.Endpoint, img_path),
+          huge: huge
+        }
+    end
+  end
+
+  defp new_link_to_a(%Part{} = inp), do: inp
+
+  defp new_link_to_a(link) do
+    case URI.parse(link).scheme do
+      link when link in ["https", "http"] ->
+        %Part{
+          type: "url",
+          text: link,
+          url: link
+        }
+
+      _ ->
+        link
+    end
+  end
+
+  defp new_text_to_part(%Part{} = inp), do: inp
+
+  defp new_text_to_part(text) do
+    %Part{
+      type: "text",
+      text: text
+    }
+  end
 
   # Parser
   def parse(chat_message, %Config{} = config \\ %Config{}) do
