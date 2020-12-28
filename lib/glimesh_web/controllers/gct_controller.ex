@@ -12,8 +12,9 @@ defmodule GlimeshWeb.GctController do
 
   # General Routes
   def index(conn, _params) do
+    current_user = conn.assigns.current_user
     view_audit_log =
-      Bodyguard.permit?(Glimesh.CommunityTeam, :view_audit_log, conn.assigns.current_user)
+      Bodyguard.permit?(Glimesh.CommunityTeam, :view_audit_log, current_user)
 
     render(
       conn,
@@ -23,13 +24,16 @@ defmodule GlimeshWeb.GctController do
   end
 
   def audit_log(conn, _params) do
-    with :ok <-
-           Bodyguard.permit(Glimesh.CommunityTeam, :view_audit_log, conn.assigns.current_user) do
-      render(
-        conn,
-        "audit_log.html"
-      )
+    current_user = conn.assigns.current_user
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_audit_log, current_user) do
+      render(conn, "audit_log.html")
     end
+  end
+
+  def unauthorized(conn, _params) do
+    current_user = conn.assigns.current_user
+    CommunityTeam.log_unauthorized_access(current_user)
+    render(conn, "unauthorized.html")
   end
 
   # Looking up/editing a user

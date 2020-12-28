@@ -50,22 +50,10 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
   @impl true
   def mount(_params, %{"admin" => admin, "user" => user}, socket) do
     can_ban = Bodyguard.permit?(Glimesh.CommunityTeam, :can_ban, admin, user)
-
-    can_edit_user =
-      case Bodyguard.permit(Glimesh.CommunityTeam, :edit_user, admin, user),
-        do:
-          (
-            :ok -> true
-            {:error, :unauthorized} -> false
-          )
+    can_edit_user = Bodyguard.permit?(Glimesh.CommunityTeam, :edit_user, admin, user)
 
     can_edit_user_profile =
-      case Bodyguard.permit(Glimesh.CommunityTeam, :edit_user_profile, admin, user),
-        do:
-          (
-            :ok -> true
-            {:error, :unauthorized} -> false
-          )
+      Bodyguard.permit?(Glimesh.CommunityTeam, :edit_user_profile, admin, user)
 
     {:ok,
      socket
@@ -79,39 +67,58 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
 
   @impl true
   def handle_event("ban", %{"ban_reason" => ban_reason}, socket) do
-    {:ok, _} = Accounts.ban_user(socket.assigns.user, ban_reason)
+    gct_user = socket.assigns.admin
+    target_user = socket.assigns.user
 
-    CommunityTeam.create_audit_entry(socket.assigns.admin, %{
-      action: "banned",
-      target: socket.assigns.user.username,
-      verbose_required: false,
-      more_details: "Ban reason: " <> ban_reason
-    })
+    case Bodyguard.permit(Glimesh.CommunityTeam, :can_ban, gct_user, target_user) do
+      {:ok, _} ->
+        {:ok, _} = Accounts.ban_user(target_user, ban_reason)
 
-    {:noreply,
-     socket
-     |> assign(:show_ban, false)
-     |> redirect(
-       to: Routes.gct_path(socket, :username_lookup, query: socket.assigns.user.username)
-     )}
+        CommunityTeam.create_audit_entry(gct_user, %{
+          action: "banned",
+          target: target_user.username,
+          verbose_required: false,
+          more_details: "Ban reason: " <> ban_reason
+        })
+
+        {:noreply,
+         socket
+         |> assign(:show_ban, false)
+         |> redirect(to: Routes.gct_path(socket, :username_lookup, query: target_user.username))}
+
+      {:error, :unauthorized} ->
+        {:noreply,
+         socket
+         |> assign(:show_ban, false)
+         |> redirect(to: Routes.gct_path(socket, :unauthorized))}
+    end
   end
 
   @impl true
   def handle_event("unban_user", _value, socket) do
-    {:ok, user} = Accounts.unban_user(socket.assigns.user)
+    gct_user = socket.assigns.admin
+    target_user = socket.assigns.user
 
-    CommunityTeam.create_audit_entry(socket.assigns.admin, %{
-      action: "unbanned",
-      target: socket.assigns.user.username,
-      verbose_required: false
-    })
+    case Bodyguard.permit(Glimesh.CommunityTeam, :can_ban, gct_user, target_user) do
+      {:ok, _} ->
+        {:ok, user} = Accounts.unban_user(target_user)
 
-    {:noreply,
-     socket
-     |> assign(user: user)
-     |> redirect(
-       to: Routes.gct_path(socket, :username_lookup, query: socket.assigns.user.username)
-     )}
+        CommunityTeam.create_audit_entry(gct_user, %{
+          action: "unbanned",
+          target: target_user.username,
+          verbose_required: false
+        })
+
+        {:noreply,
+         socket
+         |> assign(user: user)
+         |> redirect(to: Routes.gct_path(socket, :username_lookup, query: target_user.username))}
+
+      {:error, :unauthorized} ->
+        {:noreply,
+         socket
+         |> redirect(to: Routes.gct_path(socket, :unauthorized))}
+    end
   end
 
   @impl true

@@ -564,7 +564,7 @@ defmodule Glimesh.Accounts do
     |> Repo.update()
   end
 
-  def throw_error_on_action(error_message, attrs, action) do
+  defp throw_error_on_action(error_message, attrs, action) do
     {:error,
      %Ecto.Changeset{
        action: action,
