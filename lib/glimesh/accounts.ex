@@ -544,24 +544,28 @@ defmodule Glimesh.Accounts do
     user.can_payments
   end
 
-  def ban_user(user, reason) do
-    case reason do
-      # Doesn't actually do anything since the ban popup doesn't handle errors. Will eventually do something.
-      # For now it just stops the ban going through if the reason is blank.
-      "" ->
-        throw_error_on_action("Ban reason required", %{is_banned: true, ban_reason: reason}, :ban)
+  def ban_user(%User{} = admin, %User{} = user, reason) do
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :can_ban, admin, user) do
+      case reason do
+        # Doesn't actually do anything since the ban popup doesn't handle errors. Will eventually do something.
+        # For now it just stops the ban going through if the reason is blank.
+        "" ->
+          throw_error_on_action("Ban reason required", %{is_banned: true, ban_reason: reason}, :ban)
 
-      _ ->
-        user
-        |> User.gct_user_changeset(%{is_banned: true, ban_reason: reason})
-        |> Repo.update()
+        _ ->
+          user
+          |> User.gct_user_changeset(%{is_banned: true, ban_reason: reason})
+          |> Repo.update()
+      end
     end
   end
 
-  def unban_user(user) do
-    user
-    |> User.gct_user_changeset(%{is_banned: false, ban_reason: nil})
-    |> Repo.update()
+  def unban_user(%User{} = admin, %User{} = user) do
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :can_ban, admin, user) do
+      user
+      |> User.gct_user_changeset(%{is_banned: false, ban_reason: nil})
+      |> Repo.update()
+    end
   end
 
   defp throw_error_on_action(error_message, attrs, action) do

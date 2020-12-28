@@ -71,8 +71,8 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
     target_user = socket.assigns.user
 
     case Bodyguard.permit(Glimesh.CommunityTeam, :can_ban, gct_user, target_user) do
-      {:ok, _} ->
-        {:ok, _} = Accounts.ban_user(target_user, ban_reason)
+      :ok ->
+        {:ok, _} = Accounts.ban_user(gct_user, target_user, ban_reason)
 
         CommunityTeam.create_audit_entry(gct_user, %{
           action: "banned",
@@ -100,8 +100,8 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
     target_user = socket.assigns.user
 
     case Bodyguard.permit(Glimesh.CommunityTeam, :can_ban, gct_user, target_user) do
-      {:ok, _} ->
-        {:ok, user} = Accounts.unban_user(target_user)
+      :ok ->
+        {:ok, user} = Accounts.unban_user(gct_user, target_user)
 
         CommunityTeam.create_audit_entry(gct_user, %{
           action: "unbanned",
