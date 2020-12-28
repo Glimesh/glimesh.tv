@@ -74,7 +74,7 @@ defmodule GlimeshWeb.GctController do
       })
 
       if user do
-        user_changeset = CommunityTeam.change_user_profile(user)
+        user_changeset = Accounts.change_user_profile(user)
 
         render(
           conn,
