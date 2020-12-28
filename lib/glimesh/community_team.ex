@@ -29,6 +29,20 @@ defmodule Glimesh.CommunityTeam do
     |> Repo.insert()
   end
 
+  def create_lookup_audit_entry(gct_user, target) do
+    attrs = %{
+      action: "lookup",
+      target: target.username,
+      verbose_required: true
+    }
+
+    %AuditLog{
+      user: gct_user
+    }
+    |> AuditLog.changeset(attrs)
+    |> Repo.insert()
+  end
+
   def list_all_audit_entries(include_verbose? \\ false, params \\ []) do
       case include_verbose? do
         true ->

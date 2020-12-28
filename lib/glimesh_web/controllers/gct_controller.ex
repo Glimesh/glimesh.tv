@@ -13,8 +13,7 @@ defmodule GlimeshWeb.GctController do
   # General Routes
   def index(conn, _params) do
     current_user = conn.assigns.current_user
-    view_audit_log =
-      Bodyguard.permit?(Glimesh.CommunityTeam, :view_audit_log, current_user)
+    view_audit_log = Bodyguard.permit?(Glimesh.CommunityTeam, :view_audit_log, current_user)
 
     render(
       conn,
@@ -25,6 +24,7 @@ defmodule GlimeshWeb.GctController do
 
   def audit_log(conn, _params) do
     current_user = conn.assigns.current_user
+
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_audit_log, current_user) do
       render(conn, "audit_log.html")
     end
@@ -39,32 +39,15 @@ defmodule GlimeshWeb.GctController do
   # Looking up/editing a user
 
   def username_lookup(conn, params) do
-    with :ok <-
-           Bodyguard.permit(
-             Glimesh.CommunityTeam,
-             :view_user,
-             conn.assigns.current_user,
-             params["query"]
-           ) do
-      unless params["query"] == "",
-        do:
-          CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
-            action: "lookup",
-            target: params["query"],
-            verbose_required: true
-          })
+    gct_user = conn.assigns.current_user
+    user = Accounts.get_by_username(params["query"], true)
 
-      user = Accounts.get_by_username(params["query"], true)
-
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_user, gct_user, user) do
       view_billing =
-        Bodyguard.permit?(
-          Glimesh.CommunityTeam,
-          :view_billing_info,
-          conn.assigns.current_user,
-          user
-        )
+        Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, gct_user, user)
 
       if user do
+        CommunityTeam.create_lookup_audit_entry(gct_user, user)
         render(
           conn,
           "lookup_user.html",
