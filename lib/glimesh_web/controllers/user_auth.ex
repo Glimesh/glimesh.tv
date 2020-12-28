@@ -185,6 +185,17 @@ defmodule GlimeshWeb.UserAuth do
     end
   end
 
+  def require_gct_user(conn, _opts) do
+    if conn.assigns[:current_user] && conn.assigns[:current_user].is_gct &&
+         conn.assigns[:current_user].tfa_token do
+      conn
+    else
+      conn
+      |> redirect(to: Routes.user_session_path(conn, :new))
+      |> halt()
+    end
+  end
+
   @doc """
   Used for api routes that require authentication.
   """

@@ -86,7 +86,8 @@ defmodule Glimesh.MixProject do
       # Other
       {:hcaptcha, "~> 0.0.1"},
       {:stripity_stripe, "~> 2.0"},
-      {:eqrcode, "~> 0.1.7"}
+      {:eqrcode, "~> 0.1.7"},
+      {:scrivener_ecto, "~> 2.0"}
     ]
   end
 

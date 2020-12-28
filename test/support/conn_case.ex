@@ -78,6 +78,22 @@ defmodule GlimeshWeb.ConnCase do
   end
 
   @doc """
+  Setup helper that registers and logs in admin user.
+
+      setup :register_and_log_in_admin_user
+
+  """
+  def register_and_log_in_gct_user(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.gct_fixture(%{tfa_token: "Fake 2fa token", gct_level: 5})
+    %{conn: log_in_user(conn, user), user: user}
+  end
+
+  def register_and_log_in_gct_user_without_tfa(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.gct_fixture(%{tfa_token: nil, gct_level: 5})
+    %{conn: log_in_user(conn, user), user: user}
+  end
+
+  @doc """
   Logs the given `user` into the `conn`.
 
   It returns an updated `conn`.

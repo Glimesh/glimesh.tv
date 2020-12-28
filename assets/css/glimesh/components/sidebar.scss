@@ -1,0 +1,49 @@
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 300px;
+    position: absolute;
+    height: 100%;
+    overflow: auto;
+}
+
+.sidebar a {
+    display: flex;
+    color: white;
+    padding: 16px;
+    text-decoration: none;
+}
+
+.sidebar a.active {
+    background-color: #1b2e4b;
+    color: #009688;
+}
+
+.sidebar a:hover:not(.active) {
+    background-color: #1b2e4b;
+    color: #009688;
+}
+
+div.content {
+    margin-left: 300px;
+    padding: 1px 16px;
+    height: 100%;
+}
+
+/* On screens that are less than 700px wide, make the sidebar into a topbar */
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  div.content {margin-left: 0;}
+}
+
+/* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+}

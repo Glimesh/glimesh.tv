@@ -59,6 +59,15 @@ defmodule GlimeshWeb.LayoutView do
     truthy_active(hd(controller_action(conn)) == GlimeshWeb.ChannelModeratorController)
   end
 
+  # GCT Path checks
+  def active_gct_dashboard_path(conn) do
+    truthy_active(controller_action(conn) == [GlimeshWeb.GctController, :index])
+  end
+
+  def active_gct_audit_log_path(conn) do
+    truthy_active(controller_action(conn) == [GlimeshWeb.GctController, :audit_log])
+  end
+
   defp controller_action(conn) do
     [controller_module(conn), action_name(conn)]
   end

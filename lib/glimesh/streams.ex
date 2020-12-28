@@ -445,19 +445,29 @@ defmodule Glimesh.Streams do
     |> Repo.preload([:category, :user, :stream])
   end
 
+  def get_channel(id) do
+    Repo.get_by(Channel, id: id) |> Repo.preload([:category, :user])
+  end
+
   def get_channel!(id) do
     Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :user])
   end
 
   def get_channel_for_username!(username, ignore_banned \\ false) do
-    Repo.one(
-      from c in Channel,
-        join: u in User,
-        on: c.user_id == u.id,
-        where: u.username == ^username,
-        where: c.inaccessible == false,
-        where: u.is_banned == ^ignore_banned
-    )
+    query =
+      Channel
+      |> join(:inner, [u], assoc(u, :user), as: :user)
+      |> where([user: u], u.username == ^username)
+      |> where([c], c.inaccessible == false)
+
+    query =
+      if ignore_banned do
+        query
+      else
+        where(query, [user: u], u.is_banned == false)
+      end
+
+    Repo.one(query)
     |> Repo.preload([:category, :user])
   end
 

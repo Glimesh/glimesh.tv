@@ -60,11 +60,17 @@ defmodule Glimesh.Accounts do
 
   """
   def get_by_username(username, ignore_banned \\ false) when is_binary(username) do
-    Repo.get_by(User, username: username, is_banned: ignore_banned)
+    case ignore_banned do
+      false -> Repo.get_by(User, username: username, is_banned: false)
+      true -> Repo.get_by(User, username: username)
+    end
   end
 
   def get_by_username!(username, ignore_banned \\ false) when is_binary(username) do
-    Repo.get_by!(User, username: username, is_banned: ignore_banned)
+    case ignore_banned do
+      false -> Repo.get_by!(User, username: username, is_banned: false)
+      true -> Repo.get_by!(User, username: username)
+    end
   end
 
   @doc """
@@ -534,5 +540,44 @@ defmodule Glimesh.Accounts do
 
   def can_stream?(user), do: user.can_stream
 
-  def can_use_payments?(user), do: user.can_payments
+  def can_use_payments?(user) do
+    user.can_payments
+  end
+
+  def ban_user(%User{} = admin, %User{} = user, reason) do
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :can_ban, admin, user) do
+      case reason do
+        # Doesn't actually do anything since the ban popup doesn't handle errors. Will eventually do something.
+        # For now it just stops the ban going through if the reason is blank.
+        "" ->
+          throw_error_on_action("Ban reason required", %{is_banned: true, ban_reason: reason}, :ban)
+
+        _ ->
+          user
+          |> User.gct_user_changeset(%{is_banned: true, ban_reason: reason})
+          |> Repo.update()
+      end
+    end
+  end
+
+  def unban_user(%User{} = admin, %User{} = user) do
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :can_ban, admin, user) do
+      user
+      |> User.gct_user_changeset(%{is_banned: false, ban_reason: nil})
+      |> Repo.update()
+    end
+  end
+
+  defp throw_error_on_action(error_message, attrs, action) do
+    {:error,
+     %Ecto.Changeset{
+       action: action,
+       changes: attrs,
+       errors: [
+         message: {error_message, [validation: :required]}
+       ],
+       data: %User{},
+       valid?: false
+     }}
+  end
 end

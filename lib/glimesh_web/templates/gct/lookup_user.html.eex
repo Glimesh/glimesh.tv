@@ -1,0 +1,166 @@
+<div class="container">
+    <h2 class="mt-4"><%= gettext("Information for %{user}", user: @user.displayname) %></h2>
+    <div class="form-group">
+        <span class="form-group-btn"><%= live_render(@conn, GlimeshWeb.GctLive.Components.ButtonArray, id: "button-array", session: %{"admin" => @conn.assigns.current_user, "user" => @user}) %></span>
+    </div>
+    <div class="card">
+        <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+            <div class="text-center">
+                <h5 class="mt-4"><%= gettext("%{user}'s Avatar", user: @user.displayname) %></h5>
+                <img src="<%= Glimesh.Avatar.url({@user.avatar, @user}, :original) %>" class="img-fluid mb-4 img-avatar">
+                <div>
+                    <p><%= gettext("User ID: %{value}", value: @user.id) %></p>
+                    <p><%= gettext("Has Channel: %{value}", value: (if Glimesh.Streams.get_channel_for_user(@user), do: "✅", else: "❌")) %>
+                    <p><%= gettext("Banned: %{value}", value: (if @user.is_banned, do: "✅", else: "❌")) %></p>
+                    <p><%= gettext("GCT: %{value}", value: (if @user.is_gct, do: "✅", else: "❌")) %></p>
+                    <p><%= gettext("Access Level: %{value}", value: Glimesh.CommunityTeam.access_level_to_title(@user.gct_level)) %></p>
+                    <p><%= gettext("Sub Ready: %{value}", value: (if @user.stripe_user_id, do: "✅", else: "❌")) %></p>
+                    <%= if @user.stripe_user_id do %>
+                        <p><%= gettext("Stripe User ID: %{value}", value: @user.stripe_user_id) %></p>
+                    <% end %>
+                    <%= if @user.stripe_customer_id && @view_billing? do %>
+                        <p><%= gettext("Stripe Customer ID: %{value}", value: @user.stripe_customer_id) %></p>
+                        <p><%= gettext("Stripe Payment Method: %{value}", value: @user.stripe_payment_method) %></p>
+                    <% end %>
+                </div>
+            </div>
+            </div>
+            <div class="col-md-8">
+                <!-- Row start -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <%= label :user, gettext("username") %>
+                        <%= text_input :user, :username, [value: @user.username, class: "form-control", disabled: true] %>
+                    </div>
+                    <div class="col-sm-6">
+                        <%= label :user, gettext("Display Name") %>
+                        <%= text_input :user, :displayname, [value: @user.displayname, class: "form-control", disabled: true] %>
+                    </div>
+                </div>
+                <!-- Row end -->
+                <!-- Row start -->
+                <div class="row mt-1">
+                    <div class="col-sm-6">
+                        <%= label :user, gettext("Email") %>
+                        <%= text_input :user, :email, [value: @user.email, class: "form-control", disabled: true] %>
+                    </div>
+                    <div class="col-sm-6">
+                        <%= label :user, gettext("Locale") %>
+                        <%= text_input :user, :locale, [value: @user.locale, class: "form-control", disabled: true] %>
+                    </div>
+                </div>
+                <!-- Row end -->
+                <!-- Row start -->
+                <div class="row mt-1">
+                    <div class="col-sm-6">
+                        <%= label :user, gettext("Twitter") %>
+                        <%= text_input :user, :twitter, [value: @user.social_twitter, class: "form-control", disabled: true] %>
+                    </div>
+                    <div class="col-sm-6">
+                        <%= label :user, gettext("Youtube") %>
+                        <%= text_input :user, :youtube, [value: @user.social_youtube, class: "form-control", disabled: true] %>
+                    </div>
+                </div>
+                <!-- Row end -->
+                <!-- Row start -->
+                <div class="row mt-1">
+                    <div class="col-sm-6">
+                        <%= label :user, gettext("Discord") %>
+                        <%= text_input :user, :discord, [value: @user.social_discord, class: "form-control", disabled: true] %>
+                    </div>
+                    <div class="col-sm-6">
+                        <%= label :user, gettext("Instagram") %>
+                        <%= text_input :user, :instagram, [value: @user.social_instagram, class: "form-control", disabled: true] %>
+                    </div>
+                </div>
+                <!-- Row end -->
+                <!-- Row start -->
+                <div class="row mt-1">
+                    <div class="col-sm-6">
+                        <%= label :user, gettext("Youtube Teaser URL") %>
+                        <%= text_input :user, :email, [value: @user.youtube_intro_url, class: "form-control", disabled: true] %>
+                    </div>
+                    <div class="col-sm-6">
+                        <%= label :user, gettext("Locale") %>
+                        <%= text_input :user, :locale, [value: @user.locale, class: "form-control", disabled: true] %>
+                    </div>
+                </div>
+                <!-- Row end -->
+                <!-- Row start -->
+                <div class="row mt-1">
+                    <div class="col">
+                        <%= label :user, gettext("Profile Content") %>
+                        <%= textarea :user, :profile_content_md, [value: @user.profile_content_md ,class: "form-control mb-4", id: "textarea_edit", rows: 7, disabled: true]  %>
+                    </div>
+                </div>
+                <!-- Row end -->
+                <%= if @user.ban_reason do %>
+                <!-- Row start -->
+                <div class="row mt-1">
+                    <div class="col">
+                        <%= label :user, gettext("Ban Reason") %>
+                        <%= textarea :user, :ban_reason, [value: @user.ban_reason,class: "form-control mb-4", id: "textarea_edit", rows: 5, disabled: true]  %>
+                    </div>
+                </div>
+                <!-- Row end -->
+                <% end %>
+            </div>
+        </div>
+        </div>
+    </div>
+    <%= if false do %> <!-- Disabled for now till I sync all views with the user's side-->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5><%= gettext("Payout History") %> </h5>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date / Time</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%= for payout <- @payout_history do %>
+                    <tr>
+                        <td><%= format_datetime(payout.created) %></td>
+                        <td>$<%= format_price(payout.amount) %></td>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5><%= gettext("Payment History") %></h5>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date / Time</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%= for payment <- @payment_history do %>
+                    <tr>
+                        <td><%= format_datetime(payment.created) %></td>
+                        <td><%= payment.description %></td>
+                        <td>$<%= format_price(payment.amount) %></td>
+                        <td><%= payment.status %></td>
+                        <td><a href="<%= payment.receipt_url %>" target="_blank">Receipt</a></td>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <% end %>
+</div>

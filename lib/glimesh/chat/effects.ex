@@ -23,8 +23,7 @@ defmodule Glimesh.Chat.Effects do
     cond do
       user.is_admin -> "text-danger"
       Payments.is_platform_founder_subscriber?(user) -> "text-warning"
-      # Placeholder for GCT
-      false -> "text-success"
+      user.is_gct -> "text-success"
       true -> default
     end
   end
@@ -50,8 +49,7 @@ defmodule Glimesh.Chat.Effects do
             title: gettext("Glimesh Supporter Subscriber")
           ]
 
-        # Placeholder for GCT
-        false ->
+        user.is_gct ->
           [
             "data-toggle": "tooltip",
             title: gettext("Glimesh Community Team")

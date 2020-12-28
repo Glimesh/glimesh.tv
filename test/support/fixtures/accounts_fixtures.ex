@@ -46,6 +46,17 @@ defmodule Glimesh.AccountsFixtures do
     user_fixture(%{is_admin: true})
   end
 
+  def gct_fixture(attrs \\ %{}) do
+    user =
+      attrs
+      |> Enum.into(%{
+        is_gct: true
+      })
+      |> user_fixture()
+
+    user
+  end
+
   def banned_fixture(_attrs \\ %{}) do
     user_fixture(%{is_banned: true})
   end

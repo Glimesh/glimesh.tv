@@ -152,6 +152,33 @@ defmodule GlimeshWeb.Router do
     live "/categories/:id/show/edit", Admin.CategoryLive.Show, :edit
   end
 
+  scope "/gct", GlimeshWeb do
+    pipe_through [:browser, :require_gct_user]
+
+    get "/", GctController, :index
+    get "/me", GctController, :edit_self
+    get "/unauthorized", GctController, :unauthorized
+
+    # Lookup scopes
+    get "/lookup/user", GctController, :username_lookup
+    get "/lookup/channel", GctController, :channel_lookup
+
+    # Editing profile scopes
+    get "/edit/profile/:username", GctController, :edit_user_profile
+    put "/edit/profile/:username/update", GctController, :update_user_profile
+
+    # Editing user scopes
+    get "/edit/:username", GctController, :edit_user
+    put "/edit/:username/update", GctController, :update_user
+
+    # Editing channel scopes
+    get "/edit/channel/:channel_id", GctController, :edit_channel
+    put "/edit/channel/:channel_id/update", GctController, :update_channel
+
+    # Audit log
+    get "/audit-log", GctController, :audit_log
+  end
+
   scope "/", GlimeshWeb do
     pipe_through [:browser]
 
