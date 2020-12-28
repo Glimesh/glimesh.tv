@@ -87,7 +87,7 @@ defmodule GlimeshWeb.GctController do
       })
 
       if user do
-        user_changeset = Accounts.change_user_profile(user)
+        user_changeset = CommunityTeam.change_user_profile(user)
 
         render(
           conn,
@@ -137,7 +137,7 @@ defmodule GlimeshWeb.GctController do
       })
 
       if user do
-        user_changeset = Accounts.change_user(user)
+        user_changeset = CommunityTeam.change_user(user)
 
         view_billing =
           Bodyguard.permit?(
@@ -172,7 +172,7 @@ defmodule GlimeshWeb.GctController do
         more_details: CommunityTeam.generate_update_user_more_details(user, user_params)
       })
 
-      case Accounts.update_user(user, user_params) do
+      case CommunityTeam.update_user(user, user_params) do
         {:ok, user} ->
           conn
           |> put_flash(:info, gettext("User updated successfully"))

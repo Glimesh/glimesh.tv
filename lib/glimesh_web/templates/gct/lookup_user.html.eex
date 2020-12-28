@@ -110,7 +110,7 @@
         </div>
         </div>
     </div>
-    <%= if @view_billing? do %>
+    <%= if false do %> <!-- Disabled for now till I sync all views with the user's side-->
     <div class="card mt-4">
         <div class="card-header">
             <h5><%= gettext("Payout History") %> </h5>

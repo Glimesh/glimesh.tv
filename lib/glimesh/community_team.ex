@@ -3,6 +3,7 @@ defmodule Glimesh.CommunityTeam do
   The Community Team context :)
   """
   import Ecto.Query, warn: false
+  alias Glimesh.Accounts.User
   alias Glimesh.CommunityTeam.AuditLog
   alias Glimesh.Repo
 
@@ -19,6 +20,7 @@ defmodule Glimesh.CommunityTeam do
     end
   end
 
+  # Audit Log related functions
   def create_audit_entry(user, attrs \\ %{action: "None", target: "None"}) do
     %AuditLog{
       user: user
@@ -28,7 +30,6 @@ defmodule Glimesh.CommunityTeam do
   end
 
   def list_all_audit_entries(include_verbose? \\ false, params \\ []) do
-    _entries =
       case include_verbose? do
         true ->
           AuditLog |> order_by(desc: :inserted_at) |> preload(:user) |> Repo.paginate(params)
@@ -48,6 +49,14 @@ defmodule Glimesh.CommunityTeam do
         where: al.id == ^id
     )
     |> Repo.preload([:user])
+  end
+
+  def log_unauthorized_access(current_user) do
+    create_audit_entry(current_user, %{
+      action: "Unauthorized access",
+      target: "None",
+      verbose_required: false
+    })
   end
 
   def generate_update_user_profile_more_details(user, user_params) do
@@ -95,12 +104,17 @@ defmodule Glimesh.CommunityTeam do
     Block links changed from #{channel.block_links} to #{channel_params["block_links"]}
     """
   end
+  # End of audit log functions
 
-  def log_unauthorized_access(current_user) do
-    create_audit_entry(current_user, %{
-      action: "Unauthorized access",
-      target: "None",
-      verbose_required: false
-    })
+  # Editing user functions
+  def change_user(user, attrs \\ %{}) do
+    User.gct_user_changeset(user, attrs)
   end
+
+  def update_user(user, attrs) do
+    user
+    |> User.gct_user_changeset(attrs)
+    |> Repo.update()
+  end
+  # End of editing user functions
 end
