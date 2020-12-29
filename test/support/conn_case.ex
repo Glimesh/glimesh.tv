@@ -118,9 +118,9 @@ defmodule GlimeshWeb.ConnCase do
     create_token_and_return_context(conn, user)
   end
 
-  defp create_token_and_return_context(conn, user) do
+  def create_token_and_return_context(conn, user, scopes \\ "public email chat streamkey") do
     {:ok, %{token: token}} =
-      ExOauth2Provider.AccessTokens.create_token(user, %{}, otp_app: :glimesh)
+      ExOauth2Provider.AccessTokens.create_token(user, %{scopes: scopes}, otp_app: :glimesh)
 
     %{
       conn: conn |> Plug.Conn.put_req_header("authorization", "Bearer #{token}"),
