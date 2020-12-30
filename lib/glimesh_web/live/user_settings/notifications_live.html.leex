@@ -1,7 +1,7 @@
 <div class="container">
     <h2 class="mt-4"><%= gettext("Notifications") %></h2>
 
-    <%= f = form_for @changeset, "#", [phx_change: :save]%>
+    <%= f = form_for @changeset, "#notifications", [phx_change: :save]%>
 
     <div class="card">
         <div class="card-header">
@@ -57,8 +57,8 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title"><%= live_sub.streamer.displayname %></h5>
-                            <button type="button" phx-click="remove_live_notification"
-                                phx-value-streamer="<%= live_sub.streamer.id %>"
+                            <button id="streamer-<%= live_sub.streamer.id %>" type="button"
+                                phx-click="remove_live_notification" phx-value-streamer="<%= live_sub.streamer.id %>"
                                 class="btn btn-danger btn-sm"><%= gettext("Disable Live Notifications") %></button>
                         </div>
                     </div>

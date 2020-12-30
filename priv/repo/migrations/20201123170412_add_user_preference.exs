@@ -17,7 +17,7 @@ defmodule Glimesh.Repo.Migrations.AddUserPreferences do
 
     flush()
 
-    users = Glimesh.Repo.all(from u in "users", select: [:id])
+    users = Glimesh.Repo.all(from(u in "users", select: [:id]))
 
     Enum.each(users, fn user ->
       %UserPreference{
