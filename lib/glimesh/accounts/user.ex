@@ -346,5 +346,4 @@ defmodule Glimesh.Accounts.User do
       add_error(changeset, :tfa, "Invalid 2FA code")
     end
   end
-
 end

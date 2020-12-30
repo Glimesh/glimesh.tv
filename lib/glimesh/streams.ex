@@ -251,9 +251,9 @@ defmodule Glimesh.Streams do
               u.allow_live_subscription_emails == true
       )
 
-    Glimesh.Streams.ChannelNotifier.deliver_live_channel_notification(
+    Glimesh.Streams.ChannelNotifier.deliver_live_channel_notifications(
       users,
-      Repo.preload(channel, [:streamer, :stream])
+      Repo.preload(channel, [:user, :stream])
     )
 
     # 5. Broadcast to anyone who's listening

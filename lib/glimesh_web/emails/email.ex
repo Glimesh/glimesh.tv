@@ -1,6 +1,9 @@
 defmodule GlimeshWeb.Emails.Email do
   use Bamboo.Phoenix, view: GlimeshWeb.EmailView
 
+  alias Glimesh.Accounts.User
+  alias Glimesh.Streams.Channel
+  alias Glimesh.Streams.Stream
   alias GlimeshWeb.Router.Helpers, as: Routes
 
   import Bamboo.Email
@@ -62,9 +65,8 @@ defmodule GlimeshWeb.Emails.Email do
     """)
   end
 
-  def channel_live(user, channel) do
-    streamer = channel.streamer.displayname
-    stream = channel.stream
+  def channel_live(%User{} = user, %User{} = streamer, %Channel{} = channel, %Stream{} = stream) do
+    streamer = streamer.displayname
 
     user_base_email()
     |> to(user.email)

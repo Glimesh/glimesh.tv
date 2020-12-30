@@ -44,17 +44,17 @@ defmodule Glimesh.CommunityTeam do
   end
 
   def list_all_audit_entries(include_verbose? \\ false, params \\ []) do
-      case include_verbose? do
-        true ->
-          AuditLog |> order_by(desc: :inserted_at) |> preload(:user) |> Repo.paginate(params)
+    case include_verbose? do
+      true ->
+        AuditLog |> order_by(desc: :inserted_at) |> preload(:user) |> Repo.paginate(params)
 
-        false ->
-          AuditLog
-          |> order_by(desc: :inserted_at)
-          |> where([al], al.verbose_required == false)
-          |> preload(:user)
-          |> Repo.paginate(params)
-      end
+      false ->
+        AuditLog
+        |> order_by(desc: :inserted_at)
+        |> where([al], al.verbose_required == false)
+        |> preload(:user)
+        |> Repo.paginate(params)
+    end
   end
 
   def get_audit_log_entry_from_id!(id) do
@@ -118,6 +118,7 @@ defmodule Glimesh.CommunityTeam do
     Block links changed from #{channel.block_links} to #{channel_params["block_links"]}
     """
   end
+
   # End of audit log functions
 
   # Editing user functions
@@ -130,5 +131,6 @@ defmodule Glimesh.CommunityTeam do
     |> User.gct_user_changeset(attrs)
     |> Repo.update()
   end
+
   # End of editing user functions
 end
