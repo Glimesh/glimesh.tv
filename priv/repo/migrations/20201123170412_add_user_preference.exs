@@ -2,7 +2,7 @@ defmodule Glimesh.Repo.Migrations.AddUserPreferences do
   use Ecto.Migration
   use Ecto.Schema
 
-  import Ecto.Query, only: [from: 1]
+  import Ecto.Query, warn: false
 
   alias Glimesh.Accounts.UserPreference
 
@@ -17,7 +17,7 @@ defmodule Glimesh.Repo.Migrations.AddUserPreferences do
 
     flush()
 
-    users = Glimesh.Repo.all(from(u in Glimesh.Accounts.User))
+    users = Glimesh.Repo.all(from u in "users", select: [:id])
 
     Enum.each(users, fn user ->
       %UserPreference{
