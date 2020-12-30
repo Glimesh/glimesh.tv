@@ -4,7 +4,16 @@ defmodule Glimesh.OauthApplications.OauthApplication do
   use ExOauth2Provider.Applications.Application, otp_app: :glimesh
 
   schema "oauth_applications" do
-    application_fields()
+    field :name, :string, null: false
+    field :uid, :string, null: false
+    field :secret, :string, null: false, default: ""
+    field :redirect_uri, :string, null: false
+    field :scopes, :string, null: false, default: ""
+
+    belongs_to :owner, Glimesh.Accounts.User
+
+    has_many :access_tokens, Glimesh.OauthAccessTokens.OauthAccessToken,
+      foreign_key: :application_id
 
     has_one :app, Glimesh.Apps.App
 
