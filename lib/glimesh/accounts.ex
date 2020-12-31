@@ -550,7 +550,11 @@ defmodule Glimesh.Accounts do
         # Doesn't actually do anything since the ban popup doesn't handle errors. Will eventually do something.
         # For now it just stops the ban going through if the reason is blank.
         "" ->
-          throw_error_on_action("Ban reason required", %{is_banned: true, ban_reason: reason}, :ban)
+          throw_error_on_action(
+            "Ban reason required",
+            %{is_banned: true, ban_reason: reason},
+            :ban
+          )
 
         _ ->
           user
