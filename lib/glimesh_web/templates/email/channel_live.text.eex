@@ -1,0 +1,8 @@
+# <%= @stream_title %>
+
+<%= @streamer_name %> is live now on Glimesh!
+
+Watch The Stream at <%= @stream_link %>
+
+You are recieving this email because you have chosen to receive email notifications
+when <%= @streamer_name %> goes live. To unsubscribe go to <%= @unsubscribe_link %>

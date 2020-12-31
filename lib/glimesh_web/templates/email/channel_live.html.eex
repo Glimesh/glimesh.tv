@@ -1,0 +1,56 @@
+<!-- Article / Full Width Image + Title + Copy + Button -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td style="padding-bottom: 10px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#0e264b">
+                <tr>
+                    <td class="fluid-img" style="font-size:0pt; line-height:0pt; text-align:left;"><img
+                            src="<%= @stream_thumbnail %>" width="650" height="366" border="0" alt="" /></td>
+                </tr>
+                <tr>
+                    <td class="p30-15" style="padding: 50px 30px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="h3 pb20"
+                                    style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:25px; line-height:32px; text-align:left; padding-bottom:20px;">
+                                    <%= @stream_title %></td>
+                            </tr>
+                            <tr>
+                                <td class="text pb20"
+                                    style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
+                                    <%= @streamer_name %> is live now on Glimesh! </td>
+                            </tr>
+                            <!-- Button -->
+                            <tr>
+                                <td align="left">
+                                    <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td class="blue-button text-button"
+                                                style="background:#66c7ff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
+                                                <a href="<%= @stream_link %>" target="_blank" class="link-white"
+                                                    style="color:#ffffff; text-decoration:none;"><span
+                                                        class="link-white"
+                                                        style="color:#ffffff; text-decoration:none;">Watch The
+                                                        Stream</span></a></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text pb20"
+                                    style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-top:20px; padding-bottom:20px;">
+                                    You are recieving this email because you have chosen to receive email notifications
+                                    when <%= @streamer_name %> goes live. To unsubscribe go to your <a
+                                        href="<%= @unsubscribe_link %>">notification preferences</a> page.
+
+                                </td>
+                            </tr>
+                            <!-- END Button -->
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<!-- END Article / Full Width Image + Title + Copy + Button -->

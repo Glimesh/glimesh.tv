@@ -20,8 +20,9 @@
                     </div>
                     <% end %>
 
-                    <p>By creating an account you agree to our
-                        <%= link "Terms of Service", to: Routes.about_path(@conn, :terms) %>! <br></p>
+                    <p>By creating an account you agree that you have read and acknowledged our
+                        <%= link "Terms of Service", to: Routes.about_path(@conn, :terms) %> and
+                        <%= link "Privacy Policy", to: Routes.about_path(@conn, :privacy) %>.<br></p>
 
                     <div class="input-group mt-3 mb-3">
                         <div class="input-group-prepend">
@@ -45,6 +46,16 @@
                         </div>
                         <%= password_input f, :password, class: "form-control", placeholder: "Password", required: true, autocomplete: "new-password", "aria-label": "Password"  %>
                         <%= error_tag f, :password %>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="custom-control custom-switch">
+                            <%= checkbox f, :allow_glimesh_newsletter_emails, class: "custom-control-input" %>
+                            <%= label f, :allow_glimesh_newsletter_emails, gettext("Allow Glimesh Newsletter Emails"), class: "custom-control-label" %>
+                            <%= error_tag f, :allow_glimesh_newsletter_emails %>
+                            <p> We'll send emails about product launches, upcoming events, or new availability.
+                            </p>
+                        </div>
                     </div>
 
                     <div class="text-center">

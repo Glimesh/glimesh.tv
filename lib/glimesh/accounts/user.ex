@@ -42,6 +42,9 @@ defmodule Glimesh.Accounts.User do
 
     field :locale, :string, default: "en"
 
+    field :allow_glimesh_newsletter_emails, :boolean, default: false
+    field :allow_live_subscription_emails, :boolean, default: true
+
     has_one :channel, Glimesh.Streams.Channel
     has_one :user_preference, Glimesh.Accounts.UserPreference
 
@@ -65,6 +68,7 @@ defmodule Glimesh.Accounts.User do
       :email,
       :password,
       :displayname,
+      :allow_glimesh_newsletter_emails,
       :is_admin,
       :can_payments,
       :is_banned,
@@ -79,6 +83,14 @@ defmodule Glimesh.Accounts.User do
       required: true,
       with: &Glimesh.Accounts.UserPreference.changeset/2
     )
+  end
+
+  def notifications_changeset(user, attrs) do
+    user
+    |> cast(attrs, [
+      :allow_glimesh_newsletter_emails,
+      :allow_live_subscription_emails
+    ])
   end
 
   defp validate_username(changeset) do

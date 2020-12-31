@@ -240,7 +240,21 @@ defmodule Glimesh.Streams do
       |> Repo.update()
 
     # 4. Send Notifications
-    # Todo
+    users =
+      Repo.all(
+        from u in User,
+          left_join: f in Followers,
+          on: u.id == f.user_id,
+          where:
+            f.streamer_id == ^channel.user_id and
+              f.has_live_notifications == true and
+              u.allow_live_subscription_emails == true
+      )
+
+    Glimesh.Streams.ChannelNotifier.deliver_live_channel_notifications(
+      users,
+      Repo.preload(channel, [:user, :stream])
+    )
 
     # 5. Broadcast to anyone who's listening
     broadcast_message = Repo.preload(channel, :category, force: true)
@@ -443,6 +457,16 @@ defmodule Glimesh.Streams do
         where: f.user_id == ^user.id
     )
     |> Repo.preload([:category, :user, :stream])
+  end
+
+  def list_followed_live_notification_channels(user) do
+    Repo.all(
+      from c in Channel,
+        join: f in Followers,
+        on: c.user_id == f.streamer_id,
+        where: f.user_id == ^user.id and f.has_live_notifications == true
+    )
+    |> Repo.preload([:category, :user, :streamer])
   end
 
   def get_channel(id) do

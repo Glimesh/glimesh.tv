@@ -12,7 +12,8 @@ defmodule Glimesh.AccountsFixtures do
     streamer = user_fixture(attrs)
     {:ok, _} = Glimesh.Streams.create_channel(streamer)
 
-    streamer
+    Glimesh.Accounts.get_user!(streamer.id)
+    |> Glimesh.Repo.preload([:channel])
   end
 
   def channel_fixture(attrs \\ %{}) do

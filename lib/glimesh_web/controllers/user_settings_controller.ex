@@ -22,6 +22,10 @@ defmodule GlimeshWeb.UserSettingsController do
     render(conn, "preference.html", page_title: format_page_title(gettext("Preferences")))
   end
 
+  def notifications(conn, _params) do
+    render(conn, "notifications.html", page_title: format_page_title(gettext("Notifications")))
+  end
+
   def update_preference(conn, %{"user_preference" => params}) do
     user = conn.assigns.current_user
     current_user_pref = Accounts.get_user_preference!(user)

@@ -98,6 +98,7 @@ defmodule GlimeshWeb.Router do
     put "/users/settings/preference", UserSettingsController, :update_preference
     put "/users/settings/update_profile", UserSettingsController, :update_profile
     put "/users/settings/update_channel", UserSettingsController, :update_channel
+    get "/users/settings/notifications", UserSettingsController, :notifications
 
     get "/users/settings/security", UserSecurityController, :index
     put "/users/settings/update_password", UserSecurityController, :update_password

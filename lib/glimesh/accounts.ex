@@ -162,6 +162,15 @@ defmodule Glimesh.Accounts do
 
   ## Settings
 
+  def change_user_notifications(%User{} = user, attrs \\ %{}) do
+    User.notifications_changeset(user, attrs)
+  end
+
+  def update_user_notifications(%User{} = user, attrs \\ %{}) do
+    change_user_notifications(user, attrs)
+    |> Repo.update()
+  end
+
   def get_user_preference!(%User{} = user) do
     Repo.get_by!(UserPreference, user_id: user.id)
   end

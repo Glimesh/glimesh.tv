@@ -4,6 +4,8 @@ defmodule Glimesh.Accounts.UserNotifier do
   alias GlimeshWeb.Emails.Email
   alias GlimeshWeb.Emails.Mailer
 
+  import Glimesh.Emails, only: [log_bamboo_delivery: 5]
+
   @doc """
   Deliver instructions to confirm account.
   """
@@ -11,12 +13,16 @@ defmodule Glimesh.Accounts.UserNotifier do
     email = Email.user_confirmation_instructions(user, url)
 
     Mailer.deliver_later(email)
+    |> log_bamboo_delivery(
+      user,
+      "Account Transactional",
+      "user:confirmation_instructions",
+      email.subject
+    )
 
     {:ok, %{to: email.to, body: email.text_body}}
   end
 
-  @spec deliver_reset_password_instructions(atom | %{displayname: any, email: any}, any) ::
-          {:ok, %{body: nil | binary, to: any}}
   @doc """
   Deliver instructions to reset password account.
   """
@@ -24,6 +30,12 @@ defmodule Glimesh.Accounts.UserNotifier do
     email = Email.user_reset_password_instructions(user, url)
 
     Mailer.deliver_later(email)
+    |> log_bamboo_delivery(
+      user,
+      "Account Transactional",
+      "user:reset_password_instructions",
+      email.subject
+    )
 
     {:ok, %{to: email.to, body: email.text_body}}
   end
@@ -35,6 +47,12 @@ defmodule Glimesh.Accounts.UserNotifier do
     email = Email.user_update_email_instructions(user, url)
 
     Mailer.deliver_later(email)
+    |> log_bamboo_delivery(
+      user,
+      "Account Transactional",
+      "user:update_email_instructions",
+      email.subject
+    )
 
     {:ok, %{to: email.to, body: email.text_body}}
   end
@@ -49,6 +67,12 @@ defmodule Glimesh.Accounts.UserNotifier do
       email = Email.user_report_alert(admin, reporting_user, reported_user, reason, notes)
 
       Mailer.deliver_later(email)
+      |> log_bamboo_delivery(
+        admin,
+        "Admin Transactional",
+        "user:user_report_alert",
+        email.subject
+      )
     end
 
     {:ok, %{}}
