@@ -4,7 +4,6 @@ defmodule Glimesh.CommunityTeam.Policy do
   @behaviour Bodyguard.Policy
 
   alias Glimesh.Accounts.User
-  alias Glimesh.CommunityTeam
 
   # Global Admin perms
   def authorize(:view_user, %User{is_admin: true}, _user), do: true

@@ -44,17 +44,17 @@ defmodule Glimesh.CommunityTeam do
   end
 
   def list_all_audit_entries(include_verbose? \\ false, params \\ []) do
-      case include_verbose? do
-        true ->
-          AuditLog |> order_by(desc: :inserted_at) |> preload(:user) |> Repo.paginate(params)
+    case include_verbose? do
+      true ->
+        AuditLog |> order_by(desc: :inserted_at) |> preload(:user) |> Repo.paginate(params)
 
-        false ->
-          AuditLog
-          |> order_by(desc: :inserted_at)
-          |> where([al], al.verbose_required == false)
-          |> preload(:user)
-          |> Repo.paginate(params)
-      end
+      false ->
+        AuditLog
+        |> order_by(desc: :inserted_at)
+        |> where([al], al.verbose_required == false)
+        |> preload(:user)
+        |> Repo.paginate(params)
+    end
   end
 
   def get_audit_log_entry_from_id!(id) do
@@ -81,6 +81,7 @@ defmodule Glimesh.CommunityTeam do
     YouTube social changed from #{user.social_youtube} to #{user_params["social_youtube"]}
     Instagram social changed from #{user.social_instagram} to #{user_params["social_instagram"]}
     Discord social changed from #{user.social_discord} to #{user_params["social_discord"]}
+    Guilded social changed from #{user.social_guilded} to #{user_params["social_guilded"]}
     YouTube URL changed from #{user.youtube_intro_url} to #{user_params["youtube_intro_url"]}
     """
   end
@@ -93,6 +94,7 @@ defmodule Glimesh.CommunityTeam do
     Language changed from #{user.locale} to #{user_params["locale"]}
     Admin changed from #{user.is_admin} to #{user_params["is_admin"]}
     Can stream changed from #{user.can_stream} to #{user_params["can_stream"]}
+    Can use payments changed from #{user.can_payments} to #{user_params["can_payments"]}
     Stripe user id changed from #{user.stripe_user_id} to #{user_params["stripe_user_id"]}
     Stripe customer id changed from #{user.stripe_customer_id} to #{
       user_params["stripe_customer_id"]
@@ -118,6 +120,7 @@ defmodule Glimesh.CommunityTeam do
     Block links changed from #{channel.block_links} to #{channel_params["block_links"]}
     """
   end
+
   # End of audit log functions
 
   # Editing user functions
@@ -126,9 +129,17 @@ defmodule Glimesh.CommunityTeam do
   end
 
   def update_user(user, attrs) do
+    attrs =
+      cond do
+        attrs["username"] -> Map.merge(attrs, %{"displayname" => attrs["username"]})
+        attrs[:username] -> Map.merge(attrs, %{displayname: attrs[:username]})
+        true -> attrs
+      end
+
     user
     |> User.gct_user_changeset(attrs)
     |> Repo.update()
   end
+
   # End of editing user functions
 end

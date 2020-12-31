@@ -1,8 +1,6 @@
 defmodule GlimeshWeb.GctLive.Components.ChannelButtonArray do
   use GlimeshWeb, :live_view
 
-  alias Glimesh.CommunityTeam
-
   @impl true
   def render(assigns) do
     ~L"""

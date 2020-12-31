@@ -43,11 +43,11 @@ defmodule GlimeshWeb.GctController do
     user = Accounts.get_by_username(params["query"], true)
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_user, gct_user, user) do
-      view_billing =
-        Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, gct_user, user)
+      view_billing = Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, gct_user, user)
 
       if user do
         CommunityTeam.create_lookup_audit_entry(gct_user, user)
+
         render(
           conn,
           "lookup_user.html",
