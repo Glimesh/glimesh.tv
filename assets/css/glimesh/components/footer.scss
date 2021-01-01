@@ -1,0 +1,33 @@
+.footer-end {
+    background-color: var(--footer-bg-color);
+}
+
+.footer-end a {
+    color: var(--body-color)!important;
+}
+
+.footer-social {
+    background-color: var(--navbar-bg-color);
+}
+
+.footer-social .btn-default {
+    background-color: var(--navbar-bg-color);
+    border: none !important;
+}
+
+.footer-social .btn-default .fab {
+    font-size: 2rem;
+}
+
+.footer-main {
+    background-image: var(--footer-main-bg);
+    background-color: var(--footer-main-bg-color);
+}
+
+.footer-main a {
+    color: var(--footer-links-color)!important;
+}
+
+.footer-main.pt-5 {
+    padding-top: 4rem !important;
+}
