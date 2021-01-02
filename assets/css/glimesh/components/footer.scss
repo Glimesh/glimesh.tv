@@ -7,11 +7,13 @@
 }
 
 .footer-social {
-    background-color: var(--navbar-bg-color);
+    background-color: var(--body-bg-color);
+    //background-color: var(--navbar-bg-color);
 }
 
 .footer-social .btn-default {
-    background-color: var(--navbar-bg-color);
+    background-color: var(--body-bg-color);
+    //background-color: var(--navbar-bg-color);
     border: none !important;
 }
 
@@ -21,6 +23,8 @@
 
 .footer-main {
     background-image: var(--footer-main-bg);
+    background-position: right bottom;
+    background-repeat: no-repeat;
     background-color: var(--footer-main-bg-color);
 }
 
