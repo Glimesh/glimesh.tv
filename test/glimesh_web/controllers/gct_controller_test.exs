@@ -47,12 +47,11 @@ defmodule GlimeshWeb.GctControllerTest do
     setup :register_and_log_in_gct_user
 
     test "valid channel returns information", %{conn: conn} do
-      lookup_channel = channel_fixture()
+      streamer = streamer_fixture()
 
-      conn =
-        get(conn, Routes.gct_path(conn, :channel_lookup, query: lookup_channel.user.username))
+      conn = get(conn, Routes.gct_path(conn, :channel_lookup, query: streamer.username))
 
-      assert html_response(conn, 200) =~ "Information for " <> lookup_channel.user.displayname
+      assert html_response(conn, 200) =~ "Information for " <> streamer.displayname
     end
 
     test "invalid channel returns an invalid channel page", %{conn: conn} do
@@ -222,9 +221,9 @@ defmodule GlimeshWeb.GctControllerTest do
     setup :register_and_log_in_gct_user
 
     test "valid user returns edit page", %{conn: conn} do
-      valid_channel = channel_fixture()
-      conn = get(conn, Routes.gct_path(conn, :edit_channel, valid_channel.id))
-      assert html_response(conn, 200) =~ valid_channel.user.username
+      streamer = streamer_fixture()
+      conn = get(conn, Routes.gct_path(conn, :edit_channel, streamer.channel.id))
+      assert html_response(conn, 200) =~ streamer.username
     end
 
     test "invalid user returns invalid channel page", %{conn: conn} do
@@ -233,7 +232,7 @@ defmodule GlimeshWeb.GctControllerTest do
     end
 
     test "updating title actually updates it", %{conn: conn} do
-      channel = channel_fixture()
+      %{channel: channel} = streamer_fixture()
 
       channel_conn =
         put(conn, Routes.gct_path(conn, :update_channel, channel.id), %{

@@ -31,9 +31,11 @@ defmodule Glimesh.Resolvers.ChannelResolver do
 
   def start_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
     channel = Streams.get_channel!(channel_id)
-    {:ok, stream} = Streams.start_stream(channel)
 
-    {:ok, stream}
+    case Streams.start_stream(channel) do
+      {:error, _} -> {:error, "User is unauthorized to start a stream."}
+      other -> other
+    end
   end
 
   def start_stream(_parent, _args, _resolution) do
@@ -58,9 +60,8 @@ defmodule Glimesh.Resolvers.ChannelResolver do
         context: %{is_admin: true}
       }) do
     stream = Streams.get_stream!(stream_id)
-    {:ok, stream} = Streams.log_stream_metadata(stream, metadata)
 
-    {:ok, stream}
+    Streams.log_stream_metadata(stream, metadata)
   end
 
   def log_stream_metadata(_parent, _args, _resolution) do
@@ -78,27 +79,6 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   end
 
   def upload_stream_thumbnail(_parent, _args, _resolution) do
-    {:error, "Access denied"}
-  end
-
-  def create_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
-    channel = Streams.get_channel!(channel_id)
-    {:ok, stream} = Streams.create_stream(channel)
-
-    {:ok, stream}
-  end
-
-  def create_stream(_parent, _args, _resolution) do
-    {:error, "Access denied"}
-  end
-
-  def update_stream(_parent, %{id: id} = args, %{context: %{is_admin: true}}) do
-    {:ok, stream} = Streams.update_stream(Streams.get_stream!(id), args)
-
-    {:ok, stream}
-  end
-
-  def update_stream(_parent, _args, _resolution) do
     {:error, "Access denied"}
   end
 

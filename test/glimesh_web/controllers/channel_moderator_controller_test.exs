@@ -32,12 +32,12 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
 
     test "does not render edit form", %{conn: conn} do
       # Fixture for a different random user
-      [channel, streamer] = channel_streamer_fixture()
+      streamer = streamer_fixture()
 
       {:ok, mod} =
         StreamModeration.create_channel_moderator(
           streamer,
-          channel,
+          streamer.channel,
           user_fixture(),
           @create_attrs
         )
@@ -48,12 +48,12 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
 
     test "does not allow updating", %{conn: conn} do
       # Fixture for a different random user
-      [channel, streamer] = channel_streamer_fixture()
+      streamer = streamer_fixture()
 
       {:ok, mod} =
         StreamModeration.create_channel_moderator(
           streamer,
-          channel,
+          streamer.channel,
           user_fixture(),
           @create_attrs
         )
@@ -70,12 +70,12 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
 
     test "does not allow deleting", %{conn: conn} do
       # Fixture for a different random user
-      [channel, streamer] = channel_streamer_fixture()
+      streamer = streamer_fixture()
 
       {:ok, mod} =
         StreamModeration.create_channel_moderator(
           streamer,
-          channel,
+          streamer.channel,
           user_fixture(),
           @create_attrs
         )

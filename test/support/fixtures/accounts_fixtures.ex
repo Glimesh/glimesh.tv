@@ -8,26 +8,24 @@ defmodule Glimesh.AccountsFixtures do
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
 
-  def streamer_fixture(attrs \\ %{}) do
-    streamer = user_fixture(attrs)
-    {:ok, _} = Glimesh.Streams.create_channel(streamer)
+  def streamer_fixture(user_attrs \\ %{}, channel_attrs \\ %{}) do
+    # Users need to be confirmed & can_stream to be a streamer
+    streamer =
+      user_fixture(user_attrs)
+      |> Ecto.Changeset.change(%{
+        confirmed_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second),
+        can_stream: true
+      })
+      |> Glimesh.Repo.update!()
+
+    {:ok, _} =
+      Glimesh.Streams.create_channel(
+        streamer,
+        Map.merge(%{category_id: Enum.at(Glimesh.Streams.list_categories(), 0).id}, channel_attrs)
+      )
 
     Glimesh.Accounts.get_user!(streamer.id)
-    |> Glimesh.Repo.preload([:channel])
-  end
-
-  def channel_fixture(attrs \\ %{}) do
-    streamer = user_fixture(attrs)
-    {:ok, channel} = Glimesh.Streams.create_channel(streamer)
-
-    channel
-  end
-
-  def channel_streamer_fixture() do
-    streamer = user_fixture(%{})
-    {:ok, channel} = Glimesh.Streams.create_channel(streamer)
-
-    [channel, streamer]
+    |> Glimesh.Repo.preload(channel: [:category])
   end
 
   def user_fixture(attrs \\ %{}) do

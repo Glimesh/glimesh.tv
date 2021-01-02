@@ -16,8 +16,17 @@ defmodule Glimesh.ChatTest do
     @link_containing_attrs %{message: "https://glimesh.tv is cool"}
     @invalid_attrs %{message: nil}
 
+    setup do
+      streamer = streamer_fixture()
+
+      %{
+        channel: streamer.channel,
+        streamer: streamer
+      }
+    end
+
     def chat_message_fixture(attrs \\ %{}) do
-      channel = channel_fixture()
+      %{channel: channel} = streamer_fixture()
       user = user_fixture()
 
       {:ok, chat_message} =
@@ -27,7 +36,7 @@ defmodule Glimesh.ChatTest do
     end
 
     def multiple_chat_message_fixture(attrs \\ %{num_of_messages: 10}) do
-      channel = channel_fixture()
+      %{channel: channel} = streamer_fixture()
       user = user_fixture()
 
       # Pretty janky way of creating multiple chat messages but it works
@@ -61,44 +70,46 @@ defmodule Glimesh.ChatTest do
       assert Chat.get_chat_message!(chat_message.id).message == chat_message.message
     end
 
-    test "create_chat_message/3 with valid data creates a chat_message" do
+    test "create_chat_message/3 with valid data creates a chat_message", %{channel: channel} do
       assert {:ok, %ChatMessage{} = chat_message} =
-               Chat.create_chat_message(user_fixture(), channel_fixture(), @valid_attrs)
+               Chat.create_chat_message(user_fixture(), channel, @valid_attrs)
 
       assert chat_message.message == "some message"
     end
 
-    test "create_chat_message/3 with valid data when the channel has links blocked creates a chat_message" do
-      [channel, streamer] = channel_streamer_fixture()
+    test "create_chat_message/3 with valid data when the channel has links blocked creates a chat_message",
+         %{channel: channel, streamer: streamer} do
       {:ok, _} = Streams.update_channel(streamer, channel, %{block_links: true})
 
       assert {:ok, %ChatMessage{} = chat_message} =
-               Chat.create_chat_message(user_fixture(), channel_fixture(), @valid_attrs)
+               Chat.create_chat_message(user_fixture(), channel, @valid_attrs)
 
       assert chat_message.message == "some message"
     end
 
-    test "create_chat_message/3 with invalid data returns error changeset" do
+    test "create_chat_message/3 with invalid data returns error changeset", %{channel: channel} do
       assert {:error, %Ecto.Changeset{}} =
-               Chat.create_chat_message(user_fixture(), channel_fixture(), @invalid_attrs)
+               Chat.create_chat_message(user_fixture(), channel, @invalid_attrs)
     end
 
-    test "create_chat_message/3 with a link when channel has links blocked returns error changeset" do
-      [channel, streamer] = channel_streamer_fixture()
+    test "create_chat_message/3 with a link when channel has links blocked returns error changeset",
+         %{channel: channel, streamer: streamer} do
       {:ok, channel} = Streams.update_channel(streamer, channel, %{block_links: true})
 
       assert {:error, "This channel has links disabled!"} =
                Chat.create_chat_message(user_fixture(), channel, @link_containing_attrs)
     end
 
-    test "create_chat_message/1 with a link when channel allows links returns a chat_message" do
+    test "create_chat_message/1 with a link when channel allows links returns a chat_message", %{
+      channel: channel
+    } do
       assert {:ok, %ChatMessage{}} =
-               Chat.create_chat_message(user_fixture(), channel_fixture(), %{
+               Chat.create_chat_message(user_fixture(), channel, %{
                  "message" => "https://glimesh.tv is cool"
                })
 
       assert {:ok, %ChatMessage{} = chat_message} =
-               Chat.create_chat_message(user_fixture(), channel_fixture(), @link_containing_attrs)
+               Chat.create_chat_message(user_fixture(), channel, @link_containing_attrs)
 
       assert chat_message.message == @link_containing_attrs.message
     end
@@ -117,10 +128,10 @@ defmodule Glimesh.ChatTest do
 
   describe "get_moderator_permissions/2" do
     setup do
-      [channel, streamer] = channel_streamer_fixture()
+      streamer = streamer_fixture()
 
       %{
-        channel: channel,
+        channel: streamer.channel,
         streamer: streamer,
         moderator: user_fixture(),
         user: user_fixture()
@@ -156,10 +167,10 @@ defmodule Glimesh.ChatTest do
 
   describe "is_moderator/2" do
     setup do
-      [channel, streamer] = channel_streamer_fixture()
+      streamer = streamer_fixture()
 
       %{
-        channel: channel,
+        channel: streamer.channel,
         streamer: streamer,
         moderator: user_fixture(),
         user: user_fixture()
@@ -189,18 +200,18 @@ defmodule Glimesh.ChatTest do
 
   describe "bans and timeouts" do
     setup do
-      [channel, streamer] = channel_streamer_fixture()
+      streamer = streamer_fixture()
       moderator = user_fixture()
 
       {:ok, _} =
-        StreamModeration.create_channel_moderator(streamer, channel, moderator, %{
+        StreamModeration.create_channel_moderator(streamer, streamer.channel, moderator, %{
           can_short_timeout: true,
           can_long_timeout: true,
           can_ban: true
         })
 
       %{
-        channel: channel,
+        channel: streamer.channel,
         streamer: streamer,
         moderator: moderator,
         user: user_fixture()

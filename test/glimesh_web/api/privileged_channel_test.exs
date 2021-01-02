@@ -194,6 +194,29 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
              }
     end
 
+    test "can't start stream for a user that can't stream", %{conn: conn, channel: channel} do
+      channel.user
+      |> Ecto.Changeset.change(%{
+        confirmed_at: nil,
+        can_stream: false
+      })
+      |> Glimesh.Repo.update!()
+
+      conn =
+        post(conn, "/api", %{
+          "query" => @start_stream_query,
+          "variables" => %{channelId: "#{channel.id}"}
+        })
+
+      assert [
+               %{
+                 "locations" => _,
+                 "message" => "User is unauthorized to start a stream.",
+                 "path" => _
+               }
+             ] = json_response(conn, 200)["errors"]
+    end
+
     test "can log stream metadata", %{conn: conn, channel: channel} do
       {:ok, stream} = Streams.start_stream(channel)
 
@@ -251,6 +274,14 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
   end
 
   def create_channel(%{user: user}) do
+    user =
+      user
+      |> Ecto.Changeset.change(%{
+        confirmed_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second),
+        can_stream: true
+      })
+      |> Glimesh.Repo.update!()
+
     {:ok, channel} = Streams.create_channel(user)
     %{channel: channel}
   end
