@@ -1,0 +1,31 @@
+.footer-end {
+    background-color: var(--footer-main-bg-color);
+}
+
+.footer-social {
+    background-color: var(--body-bg-color);
+}
+
+.footer-social .btn-default {
+    background-color: var(--body-bg-color);
+    border: none !important;
+}
+
+.footer-social .btn-default .fab {
+    font-size: 2rem;
+}
+
+.footer-social .btn-default:hover {
+    color: var(--secondary-color);
+}
+
+.footer-main {
+    background-image: var(--footer-main-bg);
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    background-color: var(--footer-main-bg-color);
+}
+
+.footer-main.pt-5 {
+    padding-top: 4rem !important;
+}

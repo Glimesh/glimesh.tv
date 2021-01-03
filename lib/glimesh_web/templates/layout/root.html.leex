@@ -81,48 +81,55 @@
   </div>
 
   <%= if Map.get(assigns, :render_footer, true) do %>
-  <footer class="container mt-4 mb-4">
-    <div class="row justify-content-sm-center">
-      <div class="col-sm-11 col-md-8">
-        <div class="row text-center">
-          <div class="col-4">
-            <h5><%= gettext("About") %></h5>
-            <ul class="list-unstyled text-small">
-              <li><%= link gettext("About Us"), to: Routes.about_path(@conn, :index), class: "text-muted" %></li>
-              <li><%= link gettext("F.A.Qs"), to: Routes.about_path(@conn, :faq), class: "text-muted" %></li>
-              <li><%= link gettext("Open Data"), to: Routes.open_data_path(@conn, :index), class: "text-muted" %></li>
-              <li><%= link gettext("Credits"), to: Routes.about_path(@conn, :credits), class: "text-muted" %></li>
-            </ul>
-          </div>
-          <div class="col-4">
-            <h5><%= gettext("Social") %></h5>
-            <ul class="list-unstyled text-small">
-              <li><a class="text-muted" href="https://twitter.com/Glimesh">Twitter</a></li>
-              <li><a class="text-muted" href="https://discord.gg/Glimesh">Discord</a></li>
-              <li><a class="text-muted" href="https://facebook.com/Glimesh">Facebook</a></li>
-              <li><a class="text-muted" href="https://instagram.com/Glimesh">Instagram</a></li>
-              <li><a class="text-muted" href="https://reddit.com/r/Glimesh">Reddit</a></li>
-              <li><a class="text-muted" href="https://github.com/Glimesh">GitHub</a></li>
-            </ul>
-          </div>
-          <div class="col-4">
-            <h5><%= gettext("Blog") %></h5>
-            <ul class="list-unstyled text-small">
-              <%= for article <- Glimesh.Blog.list_some_articles(6) do %>
-              <li><%= link article.title, to: Routes.article_path(@conn, :show, article.slug), class: "text-muted" %>
-              </li>
-              <% end %>
-            </ul>
-          </div>
+  <footer class="mt-4">
+
+  <section class="footer-main pt-5 pb-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-4">
+          <h6><%= gettext("GLIMESH.TV") %></h6>
+          <ul class="list-unstyled text-small">
+          <li><%= link gettext("About Glimesh"), to: Routes.about_path(@conn, :index) %></li>
+          <li><%= link gettext("Frequently Asked Questions"), to: Routes.about_path(@conn, :faq) %></li>
+          <li><%= link gettext("Open Data"), to: Routes.open_data_path(@conn, :index) %></li>
+          <li><%= link gettext("Credits"), to: Routes.about_path(@conn, :credits) %></li>
+          </ul>
+        </div>
+
+        <div class="col-8">
+          <h6><%= gettext("BLOG") %></h6>
+          <ul class="list-unstyled text-small">
+          <%= for article <- Glimesh.Blog.list_some_articles(4) do %>
+          <li><%= link article.title, to: Routes.article_path(@conn, :show, article.slug) %>
+          </li>
+          <% end %>
+          </ul>
         </div>
       </div>
     </div>
+  </section>
 
-    <p class="text-center mt-4">
-      <%= gettext("Copyright © 2020 Glimesh, Inc.") %> <%= gettext("All rights reserved.") %><br>
-      <%= link "Terms of Service", to: Routes.about_path(@conn, :terms), class: "text-muted" %> &
-      <%= link "Privacy & Cookie Policy", to: Routes.about_path(@conn, :privacy), class: "text-muted" %>
+  <section class="footer-social pt-2 pb-2">
+    <div class="container">
+      <div class="btn-group btn-block" role="group" aria-label="Glimesh Socials">
+        <a href="https://twitter.com/Glimesh" class="btn btn-default"><i class="fab fa-twitter-square"></i></a>
+        <a href="https://discord.gg/Glimesh" class="btn btn-default"><i class="fab fa-discord"></i></a>
+        <a href="https://facebook.com/Glimesh" class="btn btn-default"><i class="fab fa-facebook-square"></i></a>
+        <a href="https://instagram.com/Glimesh" class="btn btn-default"><i class="fab fa-instagram-square"></i></a>
+        <a href="https://reddit.com/r/Glimesh" class="btn btn-default"><i class="fab fa-reddit-square"></i></a>
+        <a href="https://github.com/Glimesh" class="btn btn-default"><i class="fab fa-github-square"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="footer-end pt-5 pb-4">
+    <p class="text-center">
+      <%= gettext("Copyright © 2021 Glimesh, Inc.") %> <%= gettext("All rights reserved.") %><br>
+      <%= link "Terms of Service", to: Routes.about_path(@conn, :terms) %> |
+      <%= link "Privacy & Cookie Policy", to: Routes.about_path(@conn, :privacy) %>
     </p>
+  </section>
+
   </footer>
   <% end %>
 
