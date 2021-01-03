@@ -6,7 +6,20 @@ defmodule Glimesh.Application do
   use Application
 
   def start(_type, _args) do
+    topologies = [
+      example: [
+        strategy: Cluster.Strategy.Epmd,
+        config: [
+          hosts: [
+            :"glimesh@do-nyc3-web1.us-east.web.glimesh.tv",
+            :"glimesh@do-nyc3-web2.us-east.web.glimesh.tv"
+          ]
+        ]
+      ]
+    ]
+
     children = [
+      {Cluster.Supervisor, [topologies, [name: Glimesh.ClusterSupervisor]]},
       # Start the Ecto repository
       Glimesh.Repo,
       # Start the Telemetry supervisor
