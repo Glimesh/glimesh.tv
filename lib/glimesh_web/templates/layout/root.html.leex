@@ -83,52 +83,55 @@
   <%= if Map.get(assigns, :render_footer, true) do %>
   <footer class="mt-4">
 
-  <section class="footer-main pt-5 pb-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-4">
-          <h6><%= gettext("GLIMESH.TV") %></h6>
-          <ul class="list-unstyled text-small">
-          <li><%= link gettext("About Glimesh"), to: Routes.about_path(@conn, :index) %></li>
-          <li><%= link gettext("Frequently Asked Questions"), to: Routes.about_path(@conn, :faq) %></li>
-          <li><%= link gettext("Open Data"), to: Routes.open_data_path(@conn, :index) %></li>
-          <li><%= link gettext("Credits"), to: Routes.about_path(@conn, :credits) %></li>
-          </ul>
-        </div>
+    <section class="footer-main pt-5 pb-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-4">
+            <h6><%= gettext("GLIMESH.TV") %></h6>
+            <ul class="list-unstyled text-small">
+              <li><%= link gettext("About Glimesh"), to: Routes.about_path(@conn, :index) %></li>
+              <li><%= link gettext("Frequently Asked Questions"), to: Routes.about_path(@conn, :faq) %></li>
+              <li><%= link gettext("Open Data"), to: Routes.open_data_path(@conn, :index) %></li>
+              <li><%= link gettext("Credits"), to: Routes.about_path(@conn, :credits) %></li>
+            </ul>
+          </div>
 
-        <div class="col-8">
-          <h6><%= gettext("BLOG") %></h6>
-          <ul class="list-unstyled text-small">
-          <%= for article <- Glimesh.Blog.list_some_articles(4) do %>
-          <li><%= link article.title, to: Routes.article_path(@conn, :show, article.slug) %>
-          </li>
-          <% end %>
-          </ul>
+          <div class="col-8">
+            <h6><%= gettext("BLOG") %></h6>
+            <ul class="list-unstyled text-small">
+              <%= for article <- Glimesh.Blog.list_some_articles(4) do %>
+              <li><%= link article.title, to: Routes.article_path(@conn, :show, article.slug) %>
+              </li>
+              <% end %>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="footer-social pt-2 pb-2">
-    <div class="container">
-      <div class="btn-group btn-block" role="group" aria-label="Glimesh Socials">
-        <a href="https://twitter.com/Glimesh" class="btn btn-default"><i class="fab fa-twitter-square"></i></a>
-        <a href="https://discord.gg/Glimesh" class="btn btn-default"><i class="fab fa-discord"></i></a>
-        <a href="https://facebook.com/Glimesh" class="btn btn-default"><i class="fab fa-facebook-square"></i></a>
-        <a href="https://instagram.com/Glimesh" class="btn btn-default"><i class="fab fa-instagram-square"></i></a>
-        <a href="https://reddit.com/r/Glimesh" class="btn btn-default"><i class="fab fa-reddit-square"></i></a>
-        <a href="https://github.com/Glimesh" class="btn btn-default"><i class="fab fa-github-square"></i></a>
+    <section class="footer-social pt-2 pb-2">
+      <div class="container">
+        <div class="btn-group btn-block" role="group" aria-label="Glimesh Socials">
+          <a href="https://twitter.com/Glimesh" class="btn btn-default"><i class="fab fa-twitter-square"></i></a>
+          <a href="https://discord.gg/Glimesh" class="btn btn-default"><i class="fab fa-discord"></i></a>
+          <a href="https://facebook.com/Glimesh" class="btn btn-default"><i class="fab fa-facebook-square"></i></a>
+          <a href="https://instagram.com/Glimesh" class="btn btn-default"><i class="fab fa-instagram-square"></i></a>
+          <a href="https://reddit.com/r/Glimesh" class="btn btn-default"><i class="fab fa-reddit-square"></i></a>
+          <a href="https://github.com/Glimesh" class="btn btn-default"><i class="fab fa-github-square"></i></a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="footer-end pt-5 pb-4">
-    <p class="text-center">
-      <%= gettext("Copyright © 2021 Glimesh, Inc.") %> <%= gettext("All rights reserved.") %><br>
-      <%= link "Terms of Service", to: Routes.about_path(@conn, :terms) %> |
-      <%= link "Privacy & Cookie Policy", to: Routes.about_path(@conn, :privacy) %>
-    </p>
-  </section>
+    <section class="footer-end pt-5 pb-4">
+      <p class="text-center mb-0">
+        <%= gettext("Copyright © 2021 Glimesh, Inc.") %> <%= gettext("All rights reserved.") %><br>
+        <%= link "Terms of Service", to: Routes.about_path(@conn, :terms) %> |
+        <%= link "Privacy & Cookie Policy", to: Routes.about_path(@conn, :privacy) %>
+      </p>
+      <p class="text-center">
+        <small>Build Version: <%= Glimesh.get_version() %></small>
+      </p>
+    </section>
 
   </footer>
   <% end %>
