@@ -71,6 +71,11 @@ window.addEventListener("phx:page-loading-stop", info => {
             document.getElementById("primaryNav").classList.remove('show');
         }
     }
+
+    // Make sure no dropdown form's are automatically closed on action
+    document.querySelectorAll('.dropdown-menu form').forEach(function(el) { 
+        el.onclick = function(e) { e.stopPropagation(); } 
+    })
 });
 
 // connect if there are any LiveViews on the page
