@@ -4,6 +4,20 @@
 # remember to add this file to your .gitignore.
 import Config
 
+# Node configuration
+config :libcluster,
+  topologies: [
+    example: [
+      strategy: Cluster.Strategy.Epmd,
+      config: [
+        hosts: [
+          :"glimesh@do-nyc3-web1.us-east.web.glimesh.tv",
+          :"glimesh@do-nyc3-web2.us-east.web.glimesh.tv"
+        ]
+      ]
+    ]
+  ]
+
 # Database Configuration
 database_url =
   System.get_env("DATABASE_URL") ||

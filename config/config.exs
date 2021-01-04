@@ -81,6 +81,9 @@ config :glimesh, Glimesh.Socials.Twitter,
   access_token: "",
   access_token_secret: ""
 
+config :libcluster,
+  topologies: []
+
 import_config "badwords.exs"
 import_config "emotes.exs"
 # Import environment specific config. This must remain at the bottom

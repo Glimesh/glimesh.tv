@@ -6,7 +6,10 @@ defmodule Glimesh.Application do
   use Application
 
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies)
+
     children = [
+      {Cluster.Supervisor, [topologies, [name: Glimesh.ClusterSupervisor]]},
       # Start the Ecto repository
       Glimesh.Repo,
       # Start the Telemetry supervisor
