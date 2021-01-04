@@ -40,7 +40,7 @@ defmodule Glimesh.Emails do
 
   """
   def email_sent_recently?(%User{} = user, filters \\ [], minutes_ago \\ 60) do
-    timeframe = NaiveDateTime.add(NaiveDateTime.utc_now(), minutes_ago * 60, :second)
+    timeframe = NaiveDateTime.add(NaiveDateTime.utc_now(), -(minutes_ago * 60), :second)
     wheres = Keyword.merge([user_id: user.id], filters)
 
     Repo.exists?(query_sent_recently(wheres, timeframe))
@@ -58,7 +58,7 @@ defmodule Glimesh.Emails do
       1
   """
   def count_emails_sent_recently(%User{} = user, filters \\ [], minutes_ago \\ 60) do
-    timeframe = NaiveDateTime.add(NaiveDateTime.utc_now(), minutes_ago * 60, :second)
+    timeframe = NaiveDateTime.add(NaiveDateTime.utc_now(), -(minutes_ago * 60), :second)
     wheres = Keyword.merge([user_id: user.id], filters)
 
     Repo.aggregate(query_sent_recently(wheres, timeframe), :count, :id)
@@ -67,7 +67,7 @@ defmodule Glimesh.Emails do
   defp query_sent_recently(wheres, timeframe) do
     from l in EmailLog,
       where: ^wheres,
-      where: l.inserted_at < ^timeframe
+      where: l.inserted_at >= ^timeframe
   end
 
   @doc """
