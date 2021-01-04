@@ -10,7 +10,8 @@ use Mix.Config
 config :glimesh,
   ecto_repos: [Glimesh.Repo],
   environment: Mix.env(),
-  email_physical_address: "1234 Fake St. Pittsburgh, PA 15217"
+  email_physical_address: "1234 Fake St. Pittsburgh, PA 15217",
+  launched: false
 
 config :waffle,
   storage: Waffle.Storage.Local,

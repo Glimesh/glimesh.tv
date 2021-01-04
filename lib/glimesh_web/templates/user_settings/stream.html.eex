@@ -22,6 +22,12 @@
 
     <div class="card">
         <div class="card-body">
+            <%= if not @launched do %>
+            <div class="alert alert-primary" role="alert">
+                <%= gettext("Glimesh is not yet launched, so this page is still missing some critical information you need for streaming. You can customize your stream, but check back once we've launched for more!") %>
+            </div>
+            <% end %>
+
             <%= form_for @channel_changeset, Routes.user_settings_path(@conn, :update_channel), [multipart: true, class: "form"], fn f -> %>
             <div class="row">
                 <%= if @channel_changeset.action do %>

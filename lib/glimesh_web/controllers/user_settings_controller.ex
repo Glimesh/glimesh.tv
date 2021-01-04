@@ -15,7 +15,12 @@ defmodule GlimeshWeb.UserSettingsController do
   end
 
   def stream(conn, _params) do
-    render(conn, "stream.html", page_title: format_page_title(gettext("Channel Settings")))
+    launched = Application.get_env(:glimesh, :launched, false)
+
+    render(conn, "stream.html",
+      page_title: format_page_title(gettext("Channel Settings")),
+      launched: launched
+    )
   end
 
   def preference(conn, _params) do
