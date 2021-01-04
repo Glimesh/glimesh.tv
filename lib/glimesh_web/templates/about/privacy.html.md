@@ -61,7 +61,7 @@ When you visit our Sites or use our Services, some information is automatically 
     We use Plausible [Plausible.io](https://plausible.io/privacy) to collect basic anonymized analytics about our site, and it’s usage. We collect this data to better understand our users, their referrals, and how they utilize our Services. Please see their Privacy Policy for more information.
     
 10.  Cookies  
-    We automatically collect information using “cookies.” Cookies are small data files stored on your hard drive by a website. Among other things, cookies help us improve our Sites, Services and your experience. You can usually choose to set your browser to remove and/or reject cookies. If you choose to remove or reject cookies, this could affect certain features or services of our Sites or Services. For example, you will not be able to login to the Glimesh Services. Glimesh provides a single functional cookie for our users to track their logged in state
+    We automatically collect information using “cookies.” Cookies are small data files stored on your hard drive by a website. Among other things, cookies help us improve our Sites, Services and your experience. You can usually choose to set your browser to remove and/or reject cookies. If you choose to remove or reject cookies, this could affect certain features or services of our Sites or Services. For example, you will not be able to login to the Glimesh Services. Glimesh uses only functional, required cookies for it's website, and does not allow tracking or advertising cookies.
     * Our Functional Website Cookie
         * Name: __glimesh_key    
         * Provider: Glimesh    
