@@ -8,7 +8,7 @@
           <%= form_for :user, Routes.user_confirmation_path(@conn, :create), fn f -> %>
           <div cass="form-group">
             <%= label f, gettext("email") %>
-            <%= email_input f, :email, [required: true, class: "form-control", autofocus: "autofocus"] %>
+            <%= email_input f, :email, value: @existing_email, required: true, class: "form-control", autofocus: "autofocus" %>
             <%= error_tag f, :email %>
           </div>
 
@@ -21,8 +21,10 @@
     </div>
 
     <div class="col-md-5 col-lg-4">
+      <%= if is_nil(@existing_email) do %>
       <h5 class="mt-4">Don't have an account?</h5>
       <%= link "Register", class: "btn btn-primary", to: Routes.user_registration_path(@conn, :new) %>
+      <% end %>
     </div>
 
   </div>

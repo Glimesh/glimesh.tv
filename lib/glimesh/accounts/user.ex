@@ -70,6 +70,7 @@ defmodule Glimesh.Accounts.User do
       :displayname,
       :allow_glimesh_newsletter_emails,
       :is_admin,
+      :can_stream,
       :can_payments,
       :is_banned,
       :is_gct,

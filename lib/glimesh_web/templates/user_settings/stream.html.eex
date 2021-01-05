@@ -1,5 +1,15 @@
 <div class="container">
     <h2 class="mt-4"><%= gettext("Channel Settings") %></h2>
+
+    <%= if is_nil(@current_user.confirmed_at) do %>
+    <div class="alert alert-warning" role="alert">
+        <strong><%= gettext("Unverified Account") %></strong>
+        <%= gettext("Your email has not be verified, in order to stream on Glimesh you need to verify your email.") %>
+
+        <%= link gettext("Verify Email"), to: Routes.user_confirmation_path(@conn, :new), class: "btn btn-primary btn-sm" %>
+    </div>
+    <% end %>
+
     <%= if !@channel do %>
     <div class="card">
         <div class="card-body">
@@ -9,9 +19,16 @@
         </div>
     </div>
     <% else %>
-    <%= form_for @channel_changeset, Routes.user_settings_path(@conn, :update_channel), [multipart: true, class: "form"], fn f -> %>
+
     <div class="card">
         <div class="card-body">
+            <%= if not @launched do %>
+            <div class="alert alert-primary" role="alert">
+                <%= gettext("Glimesh is not yet launched, so this page is still missing some critical information you need for streaming. You can customize your stream, but check back once we've launched for more!") %>
+            </div>
+            <% end %>
+
+            <%= form_for @channel_changeset, Routes.user_settings_path(@conn, :update_channel), [multipart: true, class: "form"], fn f -> %>
             <div class="row">
                 <%= if @channel_changeset.action do %>
                 <div class="alert alert-danger">
@@ -19,6 +36,27 @@
                 </div>
                 <% end %>
             </div>
+
+            <%= if @current_user.can_stream do %>
+            <div class="form-group">
+                <%= label f, gettext("Stream Key") %>
+                <p class="text-muted form-text">
+                    <%= gettext("A key used to uniquely identify and connect to your stream. Treat your Stream Key as a password.") %>
+                </p>
+                <div class="input-group">
+                    <%= text_input f, :stream_key, [class: "form-control", disabled: "disabled"] %>
+
+                    <div class="input-group-append">
+                        <button class="btn btn-info click-to-copy" type="button"
+                            data-copy-value="<%= input_value f, :stream_key %>"
+                            data-copied-error-text="<%= gettext("Error copying Stream Key") %>"
+                            data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
+                    </div>
+                </div>
+                <%= error_tag f, :stream_key %>
+            </div>
+            <% end %>
+
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
@@ -94,9 +132,32 @@
                     <%= button(gettext("Delete Channel"), to: Routes.user_settings_path(@conn, :delete_channel), method: "put", class: "btn btn-danger", data: [confirm: "Pressing OK will: \n - Delete your channel \n - Wipe all settings tied to the channel \n - Clear all followers for the channel \n\nPressing OK will NOT: \n- Delete your Glimesh account \n- Remove all profile related settings \n\nAre you sure you want to do this?"]) %>
                 </div>
             </div>
+            <% end %>
         </div>
     </div>
-    <% end %>
 
     <% end %>
 </div>
+
+
+<script>
+    var clicksToCopy = document.querySelectorAll(".click-to-copy")
+    for (var button of clicksToCopy) {
+        button.addEventListener('click', function (event) {
+            var oldText = event.target.innerText;
+            var copiedText = event.target.dataset.copiedText;
+            var copiedErrorText = event.target.dataset.copiedText;
+            var value = event.target.dataset.copyValue;
+
+            navigator.clipboard.writeText(value).then(function () {
+                event.target.innerText = copiedText;
+
+                setTimeout(function () {
+                    event.target.innerText = oldText;
+                }, 5000);
+            }, function (err) {
+                event.target.innerText = copiedErrorText;
+            });
+        })
+    }
+</script>

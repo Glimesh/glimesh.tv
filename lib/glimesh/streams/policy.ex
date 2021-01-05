@@ -10,6 +10,14 @@ defmodule Glimesh.Streams.Policy do
 
   def authorize(:create_channel, %User{}, _nothing), do: true
 
+  def authorize(
+        :start_stream,
+        %User{can_stream: can_stream, confirmed_at: confirmed_at},
+        _nothing
+      )
+      when can_stream and not is_nil(confirmed_at),
+      do: true
+
   # Admins
   def authorize(:update_channel, %User{is_admin: true}, _channel), do: true
   def authorize(:delete_channel, %User{is_admin: true}, _channel), do: true

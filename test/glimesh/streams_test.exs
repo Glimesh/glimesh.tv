@@ -124,8 +124,8 @@ defmodule Glimesh.StreamsTest do
 
   describe "channels" do
     setup do
-      [channel, streamer] = channel_streamer_fixture()
-      {:ok, channel: channel, streamer: streamer}
+      streamer = streamer_fixture()
+      {:ok, channel: streamer.channel, streamer: streamer}
     end
 
     test "rotate_stream_key/1 changes a stream key", %{channel: channel, streamer: streamer} do
@@ -136,7 +136,9 @@ defmodule Glimesh.StreamsTest do
 
   describe "ingest stream api" do
     setup do
-      {:ok, channel: channel_fixture()}
+      %{channel: channel} = streamer_fixture()
+
+      {:ok, channel: channel}
     end
 
     test "start_stream/1 successfully starts a stream", %{channel: channel} do

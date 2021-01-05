@@ -7,7 +7,8 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCountTest do
   @component GlimeshWeb.UserLive.Components.ViewerCount
 
   defp create_channel(_) do
-    %{channel: channel_fixture()}
+    %{channel: channel} = streamer_fixture()
+    %{channel: channel}
   end
 
   describe "viewer counts" do

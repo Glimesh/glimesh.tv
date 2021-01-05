@@ -2,9 +2,21 @@ defmodule GlimeshWeb.UserConfirmationController do
   use GlimeshWeb, :controller
 
   alias Glimesh.Accounts
+  alias Glimesh.Accounts.User
 
   def new(conn, _params) do
-    render(conn, "new.html")
+    case conn.assigns.current_user do
+      %User{confirmed_at: confirmed_at} when not is_nil(confirmed_at) ->
+        conn
+        |> put_flash(:info, gettext("Your account's email is already confirmed."))
+        |> redirect(to: "/")
+
+      %User{email: email} ->
+        render(conn, "new.html", existing_email: email)
+
+      nil ->
+        render(conn, "new.html", existing_email: nil)
+    end
   end
 
   def create(conn, %{"user" => %{"email" => email}}) do

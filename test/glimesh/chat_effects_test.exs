@@ -11,18 +11,18 @@ defmodule Glimesh.ChatEffectsTest do
 
   describe "chat rendering" do
     setup do
-      [channel, streamer] = channel_streamer_fixture()
+      streamer = streamer_fixture()
       moderator = user_fixture()
 
       {:ok, _} =
-        StreamModeration.create_channel_moderator(streamer, channel, moderator, %{
+        StreamModeration.create_channel_moderator(streamer, streamer.channel, moderator, %{
           can_short_timeout: true,
           can_long_timeout: true,
           can_ban: true
         })
 
       %{
-        channel: channel,
+        channel: streamer.channel,
         streamer: streamer,
         moderator: moderator,
         user: user_fixture()

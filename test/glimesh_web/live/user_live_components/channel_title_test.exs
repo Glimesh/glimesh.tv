@@ -7,11 +7,10 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitleTest do
   @component GlimeshWeb.UserLive.Components.ChannelTitle
 
   defp create_channel(_) do
-    channel = channel_fixture()
-    streamer = Glimesh.Accounts.get_user!(channel.user_id)
+    streamer = streamer_fixture()
 
     %{
-      channel: channel,
+      channel: streamer.channel,
       streamer: streamer
     }
   end

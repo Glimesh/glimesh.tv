@@ -57,10 +57,10 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userProfileDropdown">
                     <%= if @current_user.is_gct do %>
-                        <%= link class: "dropdown-item", to: Routes.gct_path(@conn, :index) do %>
-                            <i class="fas fa-user fa-fw"></i>
-                            <%= gettext("GCT Dash") %>
-                        <% end %>
+                    <%= link class: "dropdown-item", to: Routes.gct_path(@conn, :index) do %>
+                    <i class="fas fa-user fa-fw"></i>
+                    <%= gettext("GCT Dash") %>
+                    <% end %>
                     <% end %>
                     <!-- Check for a channel and display an option to go to it -->
                     <%= if Glimesh.Streams.get_channel_for_user(@current_user) do %>

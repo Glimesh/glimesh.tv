@@ -219,48 +219,44 @@ defmodule Glimesh.Streams do
   Also sends notifications
   """
   def start_stream(%Channel{} = channel) do
-    # 0. End all current streams
-    stop_active_streams(channel)
+    # Even though a service is starting the stream, we check the permissions against the user.
+    user = Glimesh.Accounts.get_user!(channel.user_id)
 
-    # 1. Create Stream
-    {:ok, stream} =
-      create_stream(channel, %{
-        title: channel.title,
-        category_id: channel.category_id,
-        started_at: DateTime.utc_now() |> DateTime.to_naive()
-      })
+    with :ok <- Bodyguard.permit(__MODULE__, :start_stream, user) do
+      # 0. End all current streams
+      stop_active_streams(channel)
 
-    # 2. Change Channel to use Stream
-    # 3. Change Channel to Live
-    {:ok, channel} =
-      channel
-      |> Channel.start_changeset(%{
-        stream_id: stream.id
-      })
-      |> Repo.update()
+      # 1. Create Stream
+      {:ok, stream} =
+        create_stream(channel, %{
+          title: channel.title,
+          category_id: channel.category_id,
+          started_at: DateTime.utc_now() |> DateTime.to_naive()
+        })
 
-    # 4. Send Notifications
-    users =
-      Repo.all(
-        from u in User,
-          left_join: f in Followers,
-          on: u.id == f.user_id,
-          where:
-            f.streamer_id == ^channel.user_id and
-              f.has_live_notifications == true and
-              u.allow_live_subscription_emails == true
+      # 2. Change Channel to use Stream
+      # 3. Change Channel to Live
+      {:ok, channel} =
+        channel
+        |> Channel.start_changeset(%{
+          stream_id: stream.id
+        })
+        |> Repo.update()
+
+      # 4. Send Notifications
+      users = list_live_subscribed_followers(channel)
+
+      Glimesh.Streams.ChannelNotifier.deliver_live_channel_notifications(
+        users,
+        Repo.preload(channel, [:user, :stream])
       )
 
-    Glimesh.Streams.ChannelNotifier.deliver_live_channel_notifications(
-      users,
-      Repo.preload(channel, [:user, :stream])
-    )
+      # 5. Broadcast to anyone who's listening
+      broadcast_message = Repo.preload(channel, :category, force: true)
+      broadcast({:ok, broadcast_message}, :channel)
 
-    # 5. Broadcast to anyone who's listening
-    broadcast_message = Repo.preload(channel, :category, force: true)
-    broadcast({:ok, broadcast_message}, :channel)
-
-    {:ok, stream}
+      {:ok, stream}
+    end
   end
 
   @doc """
@@ -424,6 +420,18 @@ defmodule Glimesh.Streams do
         where: cat.id == ^category.id or cat.parent_id == ^category.id
     )
     |> Repo.preload([:category, :user, :stream])
+  end
+
+  def list_live_subscribed_followers(%Channel{} = channel) do
+    Repo.all(
+      from u in User,
+        left_join: f in Followers,
+        on: u.id == f.user_id,
+        where:
+          f.streamer_id == ^channel.user_id and
+            f.has_live_notifications == true and
+            u.allow_live_subscription_emails == true
+    )
   end
 
   def list_all_follows do
