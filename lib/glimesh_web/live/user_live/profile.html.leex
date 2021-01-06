@@ -94,7 +94,7 @@
                     <% end %>
                     <%= if @user do %>
                         <%= if @user.is_gct do %>
-                            <%= live_redirect gettext("View on GCT"), class: "btn btn-danger mt-1", to: Routes.gct_path(@socket, :username_lookup, query: @streamer.username) %>
+                            <%= live_redirect gettext("View on GCT"), class: "btn btn-danger btn-sm mt-4", to: Routes.gct_path(@socket, :username_lookup, query: @streamer.username) %>
                         <% end %>
                     <% end %>
 
