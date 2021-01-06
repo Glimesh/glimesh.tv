@@ -10,7 +10,8 @@ defmodule GlimeshWeb.UserSettings.Components.ProfileSettingsLive do
     |> put_flash(:info, nil)
     |> assign(:profile_changeset, session["profile_changeset"])
     |> assign(:twitter_auth_url, session["twitter_auth_url"])
-    |> assign(:user, session["user"])}
+    |> assign(:user, session["user"])
+    |> assign(:route, session["route"])}
   end
 
 end
