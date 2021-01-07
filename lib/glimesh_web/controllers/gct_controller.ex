@@ -40,7 +40,13 @@ defmodule GlimeshWeb.GctController do
 
   def username_lookup(conn, params) do
     gct_user = conn.assigns.current_user
-    user = Accounts.get_by_username(params["query"], true)
+    query = params["query"]
+    IO.inspect(parse_user_query(params["query"]))
+    user = case parse_user_query(query) do
+      "username" -> Accounts.get_by_username(query, true)
+      "email" -> Accounts.get_user_by_email(query)
+      "user_id" -> Accounts.get_user!(query)
+    end
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_user, gct_user, user) do
       view_billing = Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, gct_user, user)
@@ -190,6 +196,7 @@ defmodule GlimeshWeb.GctController do
   # Looking up/editing a channel
 
   def channel_lookup(conn, params) do
+    query = params["query"]
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_channel, conn.assigns.current_user) do
       unless params["query"] == "",
         do:
@@ -199,7 +206,10 @@ defmodule GlimeshWeb.GctController do
             verbose_required: true
           })
 
-      channel = Streams.get_channel_for_username!(params["query"], true)
+      channel = case parse_channel_query(query) do
+        "channel_id" -> Streams.get_channel!(query)
+        "username" -> Streams.get_channel_for_username!(query, true)
+      end
 
       if channel do
         render(
@@ -317,5 +327,25 @@ defmodule GlimeshWeb.GctController do
       verbose_required: verbose,
       more_details: more_details
     })
+  end
+
+  defp parse_user_query(string) do
+    if Regex.match?(~r{\A\d*\z}, string) do
+      "user_id"
+    else
+      if String.contains?(string, "@") do
+        "email"
+      else
+        "username"
+      end
+    end
+  end
+
+  defp parse_channel_query(string) do
+    if Regex.match?(~r{\A\d*\z}, string) do
+      "channel_id"
+    else
+      "username"
+    end
   end
 end
