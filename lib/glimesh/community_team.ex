@@ -6,6 +6,7 @@ defmodule Glimesh.CommunityTeam do
   alias Glimesh.Accounts.User
   alias Glimesh.CommunityTeam.AuditLog
   alias Glimesh.Repo
+  alias Glimesh.Streams.Channel
 
   defdelegate authorize(action, user, params), to: Glimesh.CommunityTeam.Policy
 
@@ -142,4 +143,16 @@ defmodule Glimesh.CommunityTeam do
   end
 
   # End of editing user functions
+
+  # Editing channel functions
+  def soft_delete_channel(%Channel{} = channel, %User{} = gct_member) do
+    with :ok <- Bodyguard.permit(__MODULE__, :soft_delete_channel, gct_member, channel.user) do
+      attrs = %{inaccessible: true}
+
+      channel
+      |> Channel.changeset(attrs)
+      |> Repo.update()
+    end
+  end
+  # End of editing channel functions
 end

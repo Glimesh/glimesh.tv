@@ -27,7 +27,7 @@
                 <%= gettext("Glimesh is not yet launched, so this page is still missing some critical information you need for streaming. You can customize your stream, but check back once we've launched for more!") %>
             </div>
             <% end %>
-            <%= live_render(@conn, GlimeshWeb.UserSettings.Components.ChannelSettingsLive, id: "channel-settings-form", session: %{"route" => Routes.user_settings_path(@conn, :update_channel), "channel_changeset" => @channel_changeset, "categories" => @categories, "channel" => @channel, "user" => @current_user, "delete_route" => Routes.user_settings_path(@conn, :delete_channel)}) %>
+            <%= live_render(@conn, GlimeshWeb.UserSettings.Components.ChannelSettingsLive, id: "channel-settings-form", session: %{"route" => Routes.user_settings_path(@conn, :update_channel), "channel_changeset" => @channel_changeset, "categories" => @categories, "channel" => @channel, "user" => @current_user, "delete_route" => Routes.user_settings_path(@conn, :delete_channel), "channel_delete_disabled" => false}) %>
 
         </div>
     </div>

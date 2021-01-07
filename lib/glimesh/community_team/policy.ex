@@ -12,6 +12,7 @@ defmodule Glimesh.CommunityTeam.Policy do
   def authorize(:can_ban, %User{is_admin: true}, _user), do: true
   def authorize(:edit_channel, %User{is_admin: true}, _user), do: true
   def authorize(:view_audit_log, %User{is_admin: true}, _user), do: true
+  def authorize(:soft_delete_channel, %User{is_admin: true}, _user), do: true
 
   # Global GCT perms
   def authorize(:view_user, %User{is_gct: true}, _user), do: true
@@ -24,6 +25,7 @@ defmodule Glimesh.CommunityTeam.Policy do
   def authorize(:can_ban, %User{is_gct: true, gct_level: 5}, _user), do: true
   def authorize(:edit_channel, %User{is_gct: true, gct_level: 5}, _user), do: true
   def authorize(:view_audit_log, %User{is_gct: true, gct_level: 5}, _user), do: true
+  def authorize(:soft_delete_channel, %User{is_gct: true, gct_level: 5}, _user), do: true
 
   # GCT Manager perms
   def authorize(:edit_user_profile, %User{is_gct: true, gct_level: 4}, _user), do: true
@@ -32,8 +34,15 @@ defmodule Glimesh.CommunityTeam.Policy do
   def authorize(:can_ban, %User{is_gct: true, gct_level: 4}, _user), do: true
   def authorize(:edit_channel, %User{is_gct: true, gct_level: 4}, _user), do: true
   def authorize(:view_audit_log, %User{is_gct: true, gct_level: 4}, _user), do: true
+  def authorize(:soft_delete_channel, %User{is_gct: true, gct_level: 4}, _user), do: true
 
   # GCT Team Lead perms
+  def authorize(:soft_delete_channel, %User{is_gct: true, gct_level: 3} = current_user, user) do
+    if is_self?(current_user, user) || is_user_higher_level?(current_user, user),
+      do: false,
+      else: true
+  end
+
   def authorize(:edit_user_profile, %User{is_gct: true, gct_level: 3} = current_user, user) do
     if is_self?(current_user, user) || is_user_higher_level?(current_user, user),
       do: false,
