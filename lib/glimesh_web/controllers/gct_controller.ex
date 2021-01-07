@@ -41,7 +41,6 @@ defmodule GlimeshWeb.GctController do
   def username_lookup(conn, params) do
     gct_user = conn.assigns.current_user
     query = params["query"]
-    IO.inspect(parse_user_query(params["query"]))
     user = case parse_user_query(query) do
       "username" -> Accounts.get_by_username(query, true)
       "email" -> Accounts.get_user_by_email(query)
@@ -115,7 +114,7 @@ defmodule GlimeshWeb.GctController do
           |> redirect(to: Routes.gct_path(conn, :edit_user_profile, user.username))
 
         {:error, changeset} ->
-          render(conn, "edit_user_profile.html", user_changeset: changeset, user: user)
+          render(conn, "edit_user_profile.html", user_changeset: changeset, user: user, twitter_auth_url: Glimesh.Socials.Twitter.authorize_url(conn))
       end
     end
   end
@@ -228,20 +227,14 @@ defmodule GlimeshWeb.GctController do
     current_user = conn.assigns.current_user
     channel = Streams.get_channel(channel_id)
 
-    with :ok <-
-           Bodyguard.permit(
-             Glimesh.CommunityTeam,
-             :edit_channel,
-             current_user,
-             channel.user
-           ) do
-      CommunityTeam.create_audit_entry(current_user, %{
-        action: "view edit channel",
-        target: channel_id,
-        verbose_required: true
-      })
+    if channel do
+      with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_channel, current_user, channel.user) do
+        CommunityTeam.create_audit_entry(current_user, %{
+          action: "view edit channel",
+          target: channel_id,
+          verbose_required: true
+        })
 
-      if channel do
         channel_changeset = Streams.change_channel(channel)
         disable_delete_button = Kernel.not(Bodyguard.permit?(Glimesh.CommunityTeam, :soft_delete_channel, current_user, channel.user))
 
@@ -253,9 +246,9 @@ defmodule GlimeshWeb.GctController do
           categories: Streams.list_categories_for_select(),
           channel_delete_disabled: disable_delete_button
         )
-      else
-        render(conn, "invalid_user.html")
       end
+    else
+      render(conn, "invalid_user.html")
     end
   end
 
