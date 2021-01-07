@@ -248,4 +248,15 @@ defmodule GlimeshWeb.GctControllerTest do
       assert resp =~ "New title"
     end
   end
+
+  describe "PUT /gct/edit/channel/:channel_id/delete" do
+    setup :register_and_log_in_gct_user
+
+    test "channel successfully deletes when triggered", %{conn: conn} do
+      %{channel: channel} = streamer_fixture()
+      channel_conn = put(conn, Routes.gct_path(conn, :delete_channel, channel.id))
+      assert redirected_to(channel_conn) == Routes.gct_path(conn, :index)
+      assert get_flash(channel_conn, :info) =~ "Channel deleted successfully"
+    end
+  end
 end
