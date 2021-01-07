@@ -21,6 +21,7 @@
                 data-copy-value="<%= input_value f, :stream_key %>"
                 data-copied-error-text="<%= gettext("Error copying Stream Key") %>"
                 data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
+            <button class="btn btn-danger" type="button" phx-click="rotate_stream_key">Reset Stream Key</button>
         </div>
     </div>
     <%= error_tag f, :stream_key %>
