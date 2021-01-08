@@ -305,7 +305,7 @@ defmodule GlimeshWeb.GctController do
           conn
           |> put_flash(:info, "Channel deleted successfully.")
           |> redirect(to: Routes.gct_path(conn, :index))
-        {:error, changeset} ->
+        {:error, _changeset} ->
           conn
           |> put_flash(:error, "An issue occurred when trying to delete the channel.")
           |> redirect(to: Routes.gct_path(conn, :edit_channel, channel_id))
