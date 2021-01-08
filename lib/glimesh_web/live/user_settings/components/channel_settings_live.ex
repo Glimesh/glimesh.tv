@@ -1,6 +1,8 @@
 defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
   use GlimeshWeb, :live_view
 
+  alias Glimesh.Streams
+
   @impl true
   def mount(_params, session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
@@ -16,6 +18,22 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
     |> assign(:user, session["user"])
     |> assign(:delete_route, session["delete_route"])
     |> assign(:channel_delete_disabled, session["channel_delete_disabled"])}
+  end
+
+  @impl true
+  def handle_event("rotate_stream_key", _params, socket) do
+    with :ok <- Bodyguard.permit(Glimesh.Streams, :update_channel, socket.assigns.channel.user, socket.assigns.channel) do
+      case Streams.rotate_stream_key(socket.assigns.channel.user, socket.assigns.channel) do
+        {:ok, changeset} ->
+          {:noreply,
+          socket
+          |> put_flash(:info, "Stream key reset")
+          |> assign(:channel_changeset, Streams.Channel.changeset(changeset))}
+        {:error, changeset} ->
+          {:noreply,
+          socket}
+      end
+    end
   end
 
 end
