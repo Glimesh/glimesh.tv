@@ -29,7 +29,7 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
           socket
           |> put_flash(:info, "Stream key reset")
           |> assign(:channel_changeset, Streams.Channel.changeset(changeset))}
-        {:error, changeset} ->
+        {:error, _changeset} ->
           {:noreply,
           socket}
       end
