@@ -70,6 +70,12 @@
                         <%  end %>
                     </ul>
 
+                    <%= if Glimesh.Streams.get_channel_for_user(@streamer) do %>
+                    <div>
+                        <%= live_redirect gettext("View Channel"), class: "btn btn-primary", to: Routes.user_stream_path(@socket, :index, @streamer.username) %>
+                    </div>
+                    <% end %>
+
                     <div class="row mt-4">
                         <div class="col-6">
                             <%= live_redirect to: Routes.user_followers_path(@socket, :index, @streamer.username), class: "text-color-link" do %>
@@ -92,6 +98,7 @@
                         href="https://twitter.com/intent/tweet?text=<%= @viewer_share_text %>"
                         data-size="large"><%= gettext("Share on Twitter") %></a>
                     <% end %>
+
                     <%= if @user do %>
                         <%= if @user.is_gct do %>
                             <%= live_redirect gettext("View on GCT"), class: "btn btn-danger btn-sm mt-4", to: Routes.gct_path(@socket, :username_lookup, query: @streamer.username) %>

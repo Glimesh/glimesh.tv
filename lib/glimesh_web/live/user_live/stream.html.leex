@@ -39,8 +39,16 @@
 
           <div class="d-none d-sm-block mt-4">
             <div class="row">
-              <div class="col-8">
-                <code>Edge: <%= @janus_hostname %></code>
+              <div class="col-8 d-inline-flex align-items-center">
+                <div id="streamer-avatar">
+                  <a href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
+                    <img src="<%= Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)%>"
+                      alt="<%= @channel.user.displayname %>" width="48" height="48"
+                      class="img-avatar mr-2 float-left <%= if @channel.user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+                  </a>
+                </div>
+                <a title="<%= gettext("View Profile") %>" class="<%= Glimesh.Chat.Effects.get_username_color(@channel.user) %>" href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>" ><h3><%= @channel.user.displayname %></h3></a>
+                <!--<code>Edge: <%= @janus_hostname %></code>-->
                 <%# live_render(@socket, GlimeshWeb.UserLive.ViewerHeads, id: "viewer-heads", session: %{"user" => @user, "streamer" => @streamer.username, "fake_multiplier" => 12}) %>
               </div>
               <div class="col-4">
