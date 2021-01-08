@@ -92,9 +92,11 @@
                         href="https://twitter.com/intent/tweet?text=<%= @viewer_share_text %>"
                         data-size="large"><%= gettext("Share on Twitter") %></a>
                     <% end %>
+                    <%= live_redirect gettext("View Channel"), class: "btn btn-primary btn-sm mt-4", to: Routes.user_stream_path(@socket, :index, @streamer.username) %>
+
                     <%= if @user do %>
                         <%= if @user.is_gct do %>
-                            <%= live_redirect gettext("View on GCT"), class: "btn btn-danger btn-sm mt-4", to: Routes.gct_path(@socket, :username_lookup, query: @streamer.username) %>
+                            <%= live_redirect gettext("View on GCT"), class: "btn btn-danger btn-sm mt-2", to: Routes.gct_path(@socket, :username_lookup, query: @streamer.username) %>
                         <% end %>
                     <% end %>
 
