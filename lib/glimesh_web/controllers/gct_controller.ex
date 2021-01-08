@@ -40,7 +40,12 @@ defmodule GlimeshWeb.GctController do
 
   def username_lookup(conn, params) do
     gct_user = conn.assigns.current_user
-    user = Accounts.get_by_username(params["query"], true)
+    query = params["query"]
+    user = case parse_user_query(query) do
+      "username" -> Accounts.get_by_username(query, true)
+      "email" -> Accounts.get_user_by_email(query)
+      "user_id" -> Accounts.get_user!(query)
+    end
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_user, gct_user, user) do
       view_billing = Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, gct_user, user)
@@ -65,9 +70,10 @@ defmodule GlimeshWeb.GctController do
   def edit_user_profile(conn, %{"username" => username}) do
     current_user = conn.assigns.current_user
     user = Accounts.get_by_username(username, true)
+    twitter_auth_url = Glimesh.Socials.Twitter.authorize_url(conn)
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_user_profile, current_user, user) do
-      CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
+      CommunityTeam.create_audit_entry(current_user, %{
         action: "view edit profile",
         target: username,
         verbose_required: true
@@ -80,7 +86,8 @@ defmodule GlimeshWeb.GctController do
           conn,
           "edit_user_profile.html",
           user: user,
-          user_changeset: user_changeset
+          user_changeset: user_changeset,
+          twitter_auth_url: twitter_auth_url
         )
       else
         render(conn, "invalid_user.html")
@@ -93,7 +100,7 @@ defmodule GlimeshWeb.GctController do
     user = Accounts.get_by_username(username, true)
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_user_profile, current_user, user) do
-      CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
+      CommunityTeam.create_audit_entry(current_user, %{
         action: "edited profile",
         target: username,
         verbose_required: false,
@@ -107,7 +114,7 @@ defmodule GlimeshWeb.GctController do
           |> redirect(to: Routes.gct_path(conn, :edit_user_profile, user.username))
 
         {:error, changeset} ->
-          render(conn, "edit_user_profile.html", user_changeset: changeset, user: user)
+          render(conn, "edit_user_profile.html", user_changeset: changeset, user: user, twitter_auth_url: Glimesh.Socials.Twitter.authorize_url(conn))
       end
     end
   end
@@ -117,7 +124,7 @@ defmodule GlimeshWeb.GctController do
     user = Accounts.get_by_username(username, true)
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_user, current_user, user) do
-      CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
+      CommunityTeam.create_audit_entry(current_user, %{
         action: "view edit user",
         target: username,
         verbose_required: true
@@ -130,7 +137,7 @@ defmodule GlimeshWeb.GctController do
           Bodyguard.permit?(
             Glimesh.CommunityTeam,
             :view_billing_info,
-            conn.assigns.current_user,
+            current_user,
             user
           )
 
@@ -152,7 +159,7 @@ defmodule GlimeshWeb.GctController do
     user = Accounts.get_by_username(username, true)
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_user, current_user, user) do
-      CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
+      CommunityTeam.create_audit_entry(current_user, %{
         action: "edited user",
         target: username,
         verbose_required: false,
@@ -170,7 +177,7 @@ defmodule GlimeshWeb.GctController do
             Bodyguard.permit?(
               Glimesh.CommunityTeam,
               :view_billing_info,
-              conn.assigns.current_user,
+              current_user,
               user
             )
 
@@ -188,6 +195,7 @@ defmodule GlimeshWeb.GctController do
   # Looking up/editing a channel
 
   def channel_lookup(conn, params) do
+    query = params["query"]
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_channel, conn.assigns.current_user) do
       unless params["query"] == "",
         do:
@@ -197,7 +205,10 @@ defmodule GlimeshWeb.GctController do
             verbose_required: true
           })
 
-      channel = Streams.get_channel_for_username!(params["query"], true)
+      channel = case parse_channel_query(query) do
+        "channel_id" -> Streams.get_channel!(query)
+        "username" -> Streams.get_channel_for_username!(query, true)
+      end
 
       if channel do
         render(
@@ -213,34 +224,31 @@ defmodule GlimeshWeb.GctController do
   end
 
   def edit_channel(conn, %{"channel_id" => channel_id}) do
+    current_user = conn.assigns.current_user
     channel = Streams.get_channel(channel_id)
 
-    with :ok <-
-           Bodyguard.permit(
-             Glimesh.CommunityTeam,
-             :edit_channel,
-             conn.assigns.current_user,
-             channel
-           ) do
-      CommunityTeam.create_audit_entry(conn.assigns.current_user, %{
-        action: "view edit channel",
-        target: channel_id,
-        verbose_required: true
-      })
+    if channel do
+      with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_channel, current_user, channel.user) do
+        CommunityTeam.create_audit_entry(current_user, %{
+          action: "view edit channel",
+          target: channel_id,
+          verbose_required: true
+        })
 
-      if channel do
         channel_changeset = Streams.change_channel(channel)
+        disable_delete_button = Kernel.not(Bodyguard.permit?(Glimesh.CommunityTeam, :soft_delete_channel, current_user, channel.user))
 
         render(
           conn,
           "edit_channel.html",
           channel: channel,
           channel_changeset: channel_changeset,
-          categories: Streams.list_categories_for_select()
+          categories: Streams.list_categories_for_select(),
+          channel_delete_disabled: disable_delete_button
         )
-      else
-        render(conn, "invalid_user.html")
       end
+    else
+      render(conn, "invalid_user.html")
     end
   end
 
@@ -248,7 +256,7 @@ defmodule GlimeshWeb.GctController do
     current_user = conn.assigns.current_user
     channel = Streams.get_channel!(channel_id)
 
-    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_channel, conn.assigns.current_user) do
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_channel, current_user) do
       case Streams.update_channel(current_user, channel, channel_params) do
         {:ok, channel} ->
           create_audit_entry_channel(
@@ -286,12 +294,51 @@ defmodule GlimeshWeb.GctController do
     end
   end
 
-  defp create_audit_entry_channel(current_user, action, target, verbose, more_details) do
+  def delete_channel(conn, %{"channel_id" => channel_id}) do
+    current_user = conn.assigns.current_user
+    channel = Streams.get_channel!(channel_id)
+
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :soft_delete_channel, current_user, channel.user) do
+      case CommunityTeam.soft_delete_channel(channel, current_user) do
+        {:ok, _} ->
+          create_audit_entry_channel(current_user, "delete channel", channel.user.username, false)
+          conn
+          |> put_flash(:info, "Channel deleted successfully.")
+          |> redirect(to: Routes.gct_path(conn, :index))
+        {:error, _changeset} ->
+          conn
+          |> put_flash(:error, "An issue occurred when trying to delete the channel.")
+          |> redirect(to: Routes.gct_path(conn, :edit_channel, channel_id))
+      end
+    end
+  end
+
+  defp create_audit_entry_channel(current_user, action, target, verbose, more_details \\ "N/A") do
     CommunityTeam.create_audit_entry(current_user, %{
       action: action,
       target: target,
       verbose_required: verbose,
       more_details: more_details
     })
+  end
+
+  defp parse_user_query(string) do
+    if Regex.match?(~r{\A\d*\z}, string) do
+      "user_id"
+    else
+      if String.contains?(string, "@") do
+        "email"
+      else
+        "username"
+      end
+    end
+  end
+
+  defp parse_channel_query(string) do
+    if Regex.match?(~r{\A\d*\z}, string) do
+      "channel_id"
+    else
+      "username"
+    end
   end
 end

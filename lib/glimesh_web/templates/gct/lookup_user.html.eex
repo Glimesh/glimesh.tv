@@ -60,7 +60,11 @@
                     <div class="row mt-1">
                         <div class="col-sm-6">
                             <%= label :user, gettext("Twitter") %>
-                            <%= text_input :user, :twitter, [value: @user.social_twitter, class: "form-control", disabled: true] %>
+                            <%= if twitter_user = Glimesh.Socials.get_social(@user, "twitter") do %>
+                                <%= text_input :user, :twitter, [value: twitter_user.username, class: "form-control", disabled: true] %>
+                            <% else %>
+                                <%= text_input :user, :twitter, [value: @user.social_twitter, class: "form-control", disabled: true] %>
+                            <% end %>
                         </div>
                         <div class="col-sm-6">
                             <%= label :user, gettext("Youtube") %>
