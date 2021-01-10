@@ -90,9 +90,10 @@
             <h6><%= gettext("GLIMESH.TV") %></h6>
             <ul class="list-unstyled text-small">
               <li><%= link gettext("About Glimesh"), to: Routes.about_path(@conn, :index) %></li>
+              <li><%= link gettext("Credits"), to: Routes.about_path(@conn, :credits) %></li>
+              <li><%= link gettext("DMCA Policy"), to: Routes.about_path(@conn, :dmca) %></li>
               <li><%= link gettext("Frequently Asked Questions"), to: Routes.about_path(@conn, :faq) %></li>
               <li><%= link gettext("Open Data"), to: Routes.open_data_path(@conn, :index) %></li>
-              <li><%= link gettext("Credits"), to: Routes.about_path(@conn, :credits) %></li>
             </ul>
           </div>
 
@@ -127,6 +128,7 @@
         <%= gettext("Copyright © 2021 Glimesh, Inc.") %> <%= gettext("All rights reserved.") %><br>
         <%= link "Terms of Service", to: Routes.about_path(@conn, :terms) %> |
         <%= link "Privacy & Cookie Policy", to: Routes.about_path(@conn, :privacy) %>
+
       </p>
       <p class="text-center">
         <small>Build Version: <%= Glimesh.get_version() %></small>

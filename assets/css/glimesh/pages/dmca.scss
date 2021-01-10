@@ -1,0 +1,19 @@
+#dmca {
+    background-image: url("/images/about/dmca/8.png");
+    background-repeat: no-repeat;
+
+    background-size: 40%;
+
+    .card {
+        background-image: url("/images/about/dmca/7.png");
+        background-repeat: no-repeat;
+        background-position: bottom right;
+        background-size: 40%;
+    }
+}
+
+@media (min-width: 768px) { 
+    #dmca {
+        background-size: 20%;
+    }
+ }

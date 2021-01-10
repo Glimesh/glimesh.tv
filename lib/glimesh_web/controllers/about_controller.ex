@@ -19,6 +19,14 @@ defmodule GlimeshWeb.AboutController do
     render(conn, "terms.html", page_title: format_page_title(gettext("Terms of Service")))
   end
 
+  def dmca(conn, _params) do
+    conn
+    |> put_layout("app.html")
+    |> render("dmca.html",
+      page_title: format_page_title(gettext("DMCA"))
+    )
+  end
+
   def credits(conn, _param) do
     %{
       ftl: ftl_credits,
