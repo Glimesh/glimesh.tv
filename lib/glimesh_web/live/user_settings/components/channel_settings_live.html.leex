@@ -1,11 +1,9 @@
 <%= form_for @channel_changeset, @route, [multipart: true, class: "form"], fn f -> %>
-<div class="row">
-    <%= if @channel_changeset.action do %>
-    <div class="alert alert-danger">
-        <p> <%= gettext("Oops, something went wrong! Please check the errors below.") %></p>
+<%= if @channel_changeset.action do %>
+    <div class="alert alert-danger text-center">
+        <%= gettext("Oops, something went wrong! Please check the errors below.") %>
     </div>
-    <% end %>
-</div>
+<% end %>
 
 <%= if @user.can_stream do %>
 <div class="form-group">
@@ -40,8 +38,11 @@
                 <%= file_input f, :poster, class: "custom-file-input", accept: "image/png, image/jpeg" %>
                 <%= label f, gettext("Choose file"), class: "custom-file-label" %>
             </div>
-
-            <%= error_tag f, :poster %>
+            <%= if f.errors[:poster] do %>
+                <div>
+                    <span class="text-danger"><%= gettext("Invalid image. Must be either a PNG or JPG.")%></span>
+                </div>
+            <% end %>
         </div>
     </div>
     <div class="col-sm-6">
@@ -55,8 +56,11 @@
                 <%= file_input f, :chat_bg, class: "custom-file-input", accept: "image/png, image/jpeg" %>
                 <%= label f, :chat_bg, gettext("Choose file"), class: "custom-file-label" %>
             </div>
-
-            <%= error_tag f, :chat_bg %>
+            <%= if f.errors[:chat_bg] do %>
+                <div>
+                    <span class="text-danger"><%= gettext("Invalid image. Max size is 100KB.")%></span>
+                </div>
+            <% end %>
         </div>
     </div>
 </div>

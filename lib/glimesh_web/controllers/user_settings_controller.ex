@@ -94,6 +94,7 @@ defmodule GlimeshWeb.UserSettingsController do
   def update_channel(conn, %{"channel" => channel_params}) do
     channel = conn.assigns.channel
     user = conn.assigns.current_user
+    launched = Application.get_env(:glimesh, :launched, false)
 
     case Streams.update_channel(user, channel, channel_params) do
       {:ok, _} ->
@@ -103,7 +104,7 @@ defmodule GlimeshWeb.UserSettingsController do
         |> UserAuth.log_in_user(conn.assigns.current_user)
 
       {:error, changeset} ->
-        render(conn, "stream.html", channel_changeset: changeset)
+        render(conn, "stream.html", channel_changeset: changeset, launched: launched)
     end
   end
 
