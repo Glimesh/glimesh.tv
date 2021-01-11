@@ -58,9 +58,9 @@ defmodule GlimeshWeb.UserLive.Stream do
 
   defp random_janus_server do
     [
-      "https://do-nyc3-edge1.us-east.live.glimesh.tv/janus",
-      "https://do-nyc3-edge2.us-east.live.glimesh.tv/janus",
-      "https://do-nyc3-edge3.us-east.live.glimesh.tv/janus"
+      "https://do-nyc3-edge1.kjfk.live.glimesh.tv/janus",
+      "https://do-nyc3-edge2.kjfk.live.glimesh.tv/janus",
+      "https://do-nyc3-edge3.kjfk.live.glimesh.tv/janus"
     ]
     |> Enum.random()
   end
