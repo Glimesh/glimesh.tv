@@ -49,11 +49,13 @@ defmodule Glimesh.Streams do
 
   def create_channel(%User{} = user, attrs \\ %{category_id: Enum.at(list_categories(), 0).id}) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_channel, user) do
-      %Channel{
+      {:ok, channel } = %Channel{
         user: user
       }
       |> Channel.create_changeset(attrs)
       |> Repo.insert()
+
+      rotate_stream_key(user, channel) # Has to be done to generate a stream key for the channel
     end
   end
 
@@ -79,7 +81,7 @@ defmodule Glimesh.Streams do
     with :ok <- Bodyguard.permit(__MODULE__, :update_channel, user, channel) do
       channel
       |> change_channel()
-      |> Channel.stream_key_changeset()
+      |> Channel.stream_key_changeset(channel.id)
       |> Repo.update()
     end
   end

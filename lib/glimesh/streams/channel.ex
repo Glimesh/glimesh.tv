@@ -37,7 +37,6 @@ defmodule Glimesh.Streams.Channel do
     channel
     |> changeset(attrs)
     |> put_change(:status, "offline")
-    |> put_change(:stream_key, generate_stream_key())
   end
 
   def start_changeset(channel, attrs \\ %{}) do
@@ -53,9 +52,9 @@ defmodule Glimesh.Streams.Channel do
     |> put_change(:status, "offline")
   end
 
-  def stream_key_changeset(channel) do
+  def stream_key_changeset(channel, channel_id) do
     channel
-    |> put_change(:stream_key, generate_stream_key())
+    |> put_change(:stream_key, generate_stream_key(channel_id))
   end
 
   def changeset(channel, attrs \\ %{}) do
@@ -108,7 +107,8 @@ defmodule Glimesh.Streams.Channel do
     end
   end
 
-  defp generate_stream_key do
-    :crypto.strong_rand_bytes(64) |> Base.encode64() |> binary_part(0, 64)
+  defp generate_stream_key(channel_id) do
+    key = :crypto.strong_rand_bytes(64) |> Base.encode64() |> binary_part(0, 64)
+    "#{channel_id}-#{key}"
   end
 end
