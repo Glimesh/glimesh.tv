@@ -31,5 +31,11 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCountTest do
       # Due to a bug with LiveView in testing, the above live statement triggers two viewers, one with CSRF and one without
       assert render(view) =~ "1 Viewers"
     end
+
+    test "can hide the viewer count", %{conn: conn, channel: channel} do
+      {:ok, view, _} = live_isolated(conn, @component, session: %{"channel_id" => channel.id})
+
+      assert view |> element("button") |> render_click() =~ "far fa-smile"
+    end
   end
 end
