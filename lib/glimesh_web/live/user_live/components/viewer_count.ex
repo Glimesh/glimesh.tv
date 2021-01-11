@@ -7,7 +7,13 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCount do
   @impl true
   def render(assigns) do
     ~L"""
-      <button class="btn btn-danger"><%= gettext(" %{count} Viewers", count: @viewer_count) %></button>
+      <button class="btn btn-danger" phx-click="toggle">
+      <%= if @visible do %>
+      <%= gettext(" %{count} Viewers", count: @viewer_count) %>
+      <% else %>
+      <i class="far fa-smile"></i>
+      <% end %>
+      </button>
     """
   end
 
@@ -17,7 +23,7 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCount do
 
     viewer_count = Presence.list_presences(topic) |> Enum.count()
 
-    {:ok, assign(socket, :viewer_count, viewer_count)}
+    {:ok, socket |> assign(:visible, true) |> assign(:viewer_count, viewer_count)}
   end
 
   @impl true
@@ -32,5 +38,10 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCount do
     viewer_count = count + map_size(joins) - map_size(leaves)
 
     {:noreply, socket |> assign(:viewer_count, viewer_count)}
+  end
+
+  @impl true
+  def handle_event("toggle", %{}, socket) do
+    {:noreply, assign(socket, :visible, !socket.assigns.visible)}
   end
 end
