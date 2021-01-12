@@ -74,6 +74,7 @@ defmodule Glimesh.Streams.Channel do
       :block_links
     ])
     |> validate_length(:chat_rules_md, max: 8192)
+    |> validate_length(:title, max: 250)
     |> set_chat_rules_content_html()
     |> cast_attachments(attrs, [:poster, :chat_bg])
   end
