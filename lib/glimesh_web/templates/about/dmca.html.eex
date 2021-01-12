@@ -31,7 +31,7 @@
                 <div class="col-md-10">
 
                     <p>
-                        <%= gettext("Copyrights are protections given to creative works and their owners. You can simply think of copyrights as the right to copy a creative work. As the owner of a creative work you have the right to copy that work in any way you'd like and copyright laws like the DMCA protect you from anyone else copying that work without your permission. Copyrights are actually given to you as the owner the moment you create a work. You can get official copyrights to register things by law but by default the law gives you some basic copyrights the moment you create an original work.") %>
+                        <%= gettext("Copyrights are protections given to creative works and their owners. You can simply think of copyrights as the right to copy a creative work. As the owner of a creative work you have the right to copy that work in any way you'd like and copyright laws like the DMCA protect you from anyone else copying that work without your permission. By default the law gives you some basic copyrights the moment you create an original work, however you can register your work online which can help your creative work be instantly protected by Copyright laws.") %>
                     </p>
 
                     <p>
