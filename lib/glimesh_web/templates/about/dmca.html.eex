@@ -186,7 +186,7 @@
 
                     <ul>
                         <li>
-                            <%= gettext("Glimesh will be fully transparent about DMCA Takedown requests. The whole community will see the requests and will be able to respond to them. So false requests will have little effectiveness and the community as a whole will be able to combat them together. ") %>
+                            <%= gettext("Glimesh will be fully transparent about DMCA Takedown requests. We will be posting DMCA requests on our Github with private information removed. This way the community as a whole can see who is issuing takedown notices and can help aide those who have the requests if the request is false.") %>
                         </li>
                         <li>
                             <%= gettext("Glimesh will be clear as to how the rules work. There will be no guessing as to how to counter notice or how the process works. Also Glimesh will require that takedown notices include very specifically where the copyright content is so that you are not guessing what you may have a strike for.") %>
@@ -195,7 +195,7 @@
                             <%= gettext("Glimesh aims to be fair as possible. While we cannot condone improper use of copyright material we know that not all DMCA claims are fair. We will be open to help in whatever ways possible to ensure you have the best opportunity to correct DMCA claims. While we are not lawyers and cannot offer legal advice we will do our best to help you get in the right direction for correcting any claims in a fair manner.") %>
                         </li>
                         <li>
-                            <%= gettext("Glimesh is also working towards developing ideas where we can either satisfy licensing requirements.") %>
+                            <%= gettext("Lastly Glimesh is working to partner with music providers or independant artists who will provide proper music licenses for you to use.") %>
                         </li>
                     </ul>
 
