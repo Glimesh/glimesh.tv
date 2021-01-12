@@ -189,6 +189,7 @@ defmodule GlimeshWeb.Router do
     get "/about/privacy", AboutController, :privacy
     get "/about/terms", AboutController, :terms
     get "/about/credits", AboutController, :credits
+    get "/about/dmca", AboutController, :dmca
 
     live "/about/open-data", About.OpenDataLive, :index
     live "/about/open-data/subscriptions", About.OpenDataLive, :subscriptions
