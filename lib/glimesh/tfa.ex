@@ -23,9 +23,10 @@ defmodule Glimesh.Tfa do
     EQRCode.png(input, width: 355, background_color: <<255, 255, 255>>, color: <<0, 0, 0>>)
   end
 
-  defp generate_hmac(secret, period) do
+  defp generate_hmac(secret, period, seconds_ago) do
     moving_factor =
       DateTime.utc_now()
+      |> DateTime.add(seconds_ago * -1)
       |> DateTime.to_unix()
       |> Integer.floor_div(period)
       |> Integer.to_string(16)
@@ -57,9 +58,9 @@ defmodule Glimesh.Tfa do
   Generate Time-Based One-Time Password.
   The default period used to calculate the moving factor is 30s
   """
-  def generate_totp(secret, period \\ 30) do
+  def generate_totp(secret, steps_ago \\ 0, period \\ 30) do
     secret
-    |> generate_hmac(period)
+    |> generate_hmac(period, steps_ago * period)
     |> hmac_dynamic_truncation
     |> generate_hotp
   end
@@ -67,12 +68,15 @@ defmodule Glimesh.Tfa do
   @doc """
   Validates the pin with the secret key supplied
   """
-  def validate_pin(pin, secret) do
-    if secret == nil do
-      true
-    else
-      pin == generate_totp(secret)
-    end
+  def validate_pin(pin, secret, steps \\ 1)
+      
+  def validate_pin(_pin, secret, _steps) when is_nil(secret) do
+    true
+  end
+  
+  def validate_pin(pin, secret, steps) do
+    0..steps
+    |> Enum.any?(&(pin == generate_totp(secret, &1)))
   end
 
   @doc """
