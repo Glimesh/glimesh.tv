@@ -158,7 +158,7 @@ if appsignal_api_key = System.get_env("APPSIGNAL_API_KEY") do
     otp_app: :glimesh,
     name: System.fetch_env!("APPSIGNAL_NAME"),
     push_api_key: appsignal_api_key,
-    env: Mix.env()
+    env: "prod"
 end
 
 # Glimesh Configuration
