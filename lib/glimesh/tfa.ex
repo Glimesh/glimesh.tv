@@ -23,7 +23,7 @@ defmodule Glimesh.Tfa do
     EQRCode.png(input, width: 355, background_color: <<255, 255, 255>>, color: <<0, 0, 0>>)
   end
 
-  defp generate_hmac(secret, period, seconds_offset \\ 0) do
+  defp generate_hmac(secret, period, seconds_offset) do
     moving_factor =
       DateTime.utc_now()
       |> DateTime.add(seconds_offset)
