@@ -152,6 +152,15 @@ if twitter_consumer_key = System.get_env("TWITTER_CONSUMER_KEY") do
     access_token_secret: twitter_access_secret
 end
 
+if appsignal_api_key = System.get_env("APPSIGNAL_API_KEY") do
+  config :appsignal, :config,
+    active: true,
+    otp_app: :glimesh,
+    name: System.fetch_env!("APPSIGNAL_NAME"),
+    push_api_key: appsignal_api_key,
+    env: Mix.env()
+end
+
 # Glimesh Configuration
 if email_physical_address = System.get_env("GLIMESH_EMAIL_PHYSICAL_ADDRESS") do
   config :glimesh,
