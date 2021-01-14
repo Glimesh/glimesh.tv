@@ -23,10 +23,10 @@ defmodule Glimesh.Tfa do
     EQRCode.png(input, width: 355, background_color: <<255, 255, 255>>, color: <<0, 0, 0>>)
   end
 
-  defp generate_hmac(secret, period, seconds_ago) do
+  defp generate_hmac(secret, period, seconds_offset \\ 0) do
     moving_factor =
       DateTime.utc_now()
-      |> DateTime.add(seconds_ago * -1)
+      |> DateTime.add(seconds_offset)
       |> DateTime.to_unix()
       |> Integer.floor_div(period)
       |> Integer.to_string(16)
@@ -60,7 +60,7 @@ defmodule Glimesh.Tfa do
   """
   def generate_totp(secret, steps_ago \\ 0, period \\ 30) do
     secret
-    |> generate_hmac(period, steps_ago * period)
+    |> generate_hmac(period, steps_ago * period * -1)
     |> hmac_dynamic_truncation
     |> generate_hotp
   end
