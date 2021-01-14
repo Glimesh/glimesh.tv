@@ -115,7 +115,7 @@ defmodule GlimeshWeb.UserSessionControllerTest do
       assert response =~ user.username
       assert response =~ "Sign Out"
     end
-    
+
     test "logs the user in within allowed 2fa time drift", %{conn: conn, user: user} do
       secret = Glimesh.Tfa.generate_secret(user.hashed_password)
       pin = Glimesh.Tfa.generate_totp(secret, 1)
@@ -146,7 +146,7 @@ defmodule GlimeshWeb.UserSessionControllerTest do
       assert response =~ user.username
       assert response =~ "Sign Out"
     end
-    
+
     test "errors and redirects on incorrect 2fa", %{conn: conn, user: user} do
       secret = Glimesh.Tfa.generate_secret(user.hashed_password)
       password = valid_user_password()
@@ -170,16 +170,16 @@ defmodule GlimeshWeb.UserSessionControllerTest do
       assert response =~ "<h3>Login to our Alpha!</h3>"
       assert response =~ "Invalid 2FA code"
     end
-    
-    test "errors and redirects on 2fa drift steps out of bounds", %{conn: conn, user: user} do
-        secret = Glimesh.Tfa.generate_secret(user.hashed_password)
-        pin = Glimesh.Tfa.generate_totp(secret, 2)
-        password = valid_user_password()
 
-        {:ok, user} =
-          Glimesh.Accounts.update_tfa(user, Glimesh.Tfa.generate_totp(secret), password, %{
-            tfa_token: secret
-          })
+    test "errors and redirects on 2fa drift steps out of bounds", %{conn: conn, user: user} do
+      secret = Glimesh.Tfa.generate_secret(user.hashed_password)
+      pin = Glimesh.Tfa.generate_totp(secret, 2)
+      password = valid_user_password()
+
+      {:ok, user} =
+        Glimesh.Accounts.update_tfa(user, Glimesh.Tfa.generate_totp(secret), password, %{
+          tfa_token: secret
+        })
 
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{

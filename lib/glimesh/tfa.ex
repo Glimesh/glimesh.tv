@@ -69,11 +69,11 @@ defmodule Glimesh.Tfa do
   Validates the pin with the secret key supplied
   """
   def validate_pin(pin, secret, steps \\ 1)
-      
+
   def validate_pin(_pin, secret, _steps) when is_nil(secret) do
     true
   end
-  
+
   def validate_pin(pin, secret, steps) do
     0..steps
     |> Enum.any?(&(pin == generate_totp(secret, &1)))
