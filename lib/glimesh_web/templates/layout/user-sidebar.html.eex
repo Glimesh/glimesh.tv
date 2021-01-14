@@ -1,61 +1,63 @@
-<div class="row">
-    <div class="col-2 user-sidebar">
-        <div class="list-group list-group-flush">
-            <%= link class: "list-group-item list-group-item-action " <> active_user_profile_path(@conn), to: Routes.user_settings_path(@conn, :profile) do %>
-            <i class="fas fa-user fa-fw"></i> <%= gettext("Profile") %>
-            <% end %>
-            <%= link class: "list-group-item list-group-item-action " <> active_user_payments_path(@conn), to: Routes.user_payments_path(@conn, :index) do %>
-            <i class="fas fa-money-bill fa-fw"></i> <%= gettext("Payments") %>
-            <% end %>
-            <%= link class: "list-group-item list-group-item-action " <> active_user_settings_path(@conn), to: Routes.user_settings_path(@conn, :preference) do %>
-            <i class="fas fa-cog fa-fw"></i> <%= gettext("Preferences") %>
-            <% end %>
-            <%= link class: "list-group-item list-group-item-action " <> active_user_notifications_path(@conn), to: Routes.user_settings_path(@conn, :notifications) do %>
-            <i class="fas fa-envelope fa-fw"></i> <%= gettext("Notifications") %>
-            <% end %>
-            <%= link class: "list-group-item list-group-item-action " <> active_user_security_path(@conn), to: Routes.user_security_path(@conn, :index) do %>
-            <i class="fas fa-lock fa-fw"></i> <%= gettext("Security") %>
-            <% end %>
-            <%= link class: "list-group-item list-group-item-action " <> active_user_authorizations_path(@conn), to: Routes.authorized_application_path(@conn, :index) do %>
-            <i class="fas fa-robot fa-fw"></i> <%= gettext("Authorizations") %>
-            <% end %>
-        </div>
+<div class="container">
+    <div class="row">
+        <div class="col-2 user-sidebar">
+            <div class="list-group list-group-flush">
+                <%= link class: "list-group-item list-group-item-action " <> active_user_profile_path(@conn), to: Routes.user_settings_path(@conn, :profile) do %>
+                <i class="fas fa-user fa-fw"></i> <%= gettext("Profile") %>
+                <% end %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_payments_path(@conn), to: Routes.user_payments_path(@conn, :index) do %>
+                <i class="fas fa-money-bill fa-fw"></i> <%= gettext("Payments") %>
+                <% end %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_settings_path(@conn), to: Routes.user_settings_path(@conn, :preference) do %>
+                <i class="fas fa-cog fa-fw"></i> <%= gettext("Preferences") %>
+                <% end %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_notifications_path(@conn), to: Routes.user_settings_path(@conn, :notifications) do %>
+                <i class="fas fa-envelope fa-fw"></i> <%= gettext("Notifications") %>
+                <% end %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_security_path(@conn), to: Routes.user_security_path(@conn, :index) do %>
+                <i class="fas fa-lock fa-fw"></i> <%= gettext("Security") %>
+                <% end %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_authorizations_path(@conn), to: Routes.authorized_application_path(@conn, :index) do %>
+                <i class="fas fa-robot fa-fw"></i> <%= gettext("Authorizations") %>
+                <% end %>
+            </div>
 
-        <hr>
-        <h4 class="text-center"><%= gettext("Channel") %></h4>
-        <div class="list-group list-group-flush">
-            <%= if Glimesh.Streams.get_channel_for_user(@current_user) do %>
-            <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: Routes.user_settings_path(@conn, :stream) do %>
-            <i class="fas fa-video fa-fw"></i> <%= gettext("Channel Settings") %>
-            <% end %>
-            <%= link class: "list-group-item list-group-item-action " <> active_channel_moderator_path(@conn), to: Routes.channel_moderator_path(@conn, :index) do %>
-            <i class="fas fa-hammer fa-fw"></i> <%= gettext("Moderators") %>
-            <% end %>
-            <% else %>
-            <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: Routes.user_settings_path(@conn, :stream) do %>
-            <i class="fas fa-video fa-fw"></i> <%= gettext("Create Channel") %>
-            <% end %>
-            <% end %>
-        </div>
+            <hr>
+            <h4 class="text-center"><%= gettext("Channel") %></h4>
+            <div class="list-group list-group-flush">
+                <%= if Glimesh.Streams.get_channel_for_user(@current_user) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: Routes.user_settings_path(@conn, :stream) do %>
+                <i class="fas fa-video fa-fw"></i> <%= gettext("Channel Settings") %>
+                <% end %>
+                <%= link class: "list-group-item list-group-item-action " <> active_channel_moderator_path(@conn), to: Routes.channel_moderator_path(@conn, :index) do %>
+                <i class="fas fa-hammer fa-fw"></i> <%= gettext("Moderators") %>
+                <% end %>
+                <% else %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: Routes.user_settings_path(@conn, :stream) do %>
+                <i class="fas fa-video fa-fw"></i> <%= gettext("Create Channel") %>
+                <% end %>
+                <% end %>
+            </div>
 
-        <hr>
-        <h4 class="text-center">Developers</h4>
-        <div class="list-group list-group-flush">
-            <%= link class: "list-group-item list-group-item-action " <> active_user_applications_path(@conn), to: Routes.user_applications_path(@conn, :index) do %>
-            <i class="fas fa-code fa-fw"></i> <%= gettext("Applications") %>
+            <hr>
+            <h4 class="text-center">Developers</h4>
+            <div class="list-group list-group-flush">
+                <%= link class: "list-group-item list-group-item-action " <> active_user_applications_path(@conn), to: Routes.user_applications_path(@conn, :index) do %>
+                <i class="fas fa-code fa-fw"></i> <%= gettext("Applications") %>
+                <% end %>
+            </div>
+        </div>
+        <div class="col-md-10">
+
+            <%= if get_flash(@conn, :info) do %>
+            <p class="alert alert-info mt-4" role="alert"><%= get_flash(@conn, :info) %></p>
             <% end %>
+            <%= if get_flash(@conn, :error) do %>
+            <p class="alert alert-danger mt-4" role="alert"><%= get_flash(@conn, :error) %></p>
+            <% end %>
+
+            <%= @inner_content %>
+
         </div>
     </div>
-    <div class="col-md-10">
-
-        <%= if get_flash(@conn, :info) do %>
-        <p class="alert alert-info mt-4" role="alert"><%= get_flash(@conn, :info) %></p>
-        <% end %>
-        <%= if get_flash(@conn, :error) do %>
-        <p class="alert alert-danger mt-4" role="alert"><%= get_flash(@conn, :error) %></p>
-        <% end %>
-
-        <%= @inner_content %>
-
-    </div>
-</div>
+ </div>
