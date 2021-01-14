@@ -76,6 +76,13 @@ When you visit our Sites or use our Services, some information is automatically 
         * Country: United States
         * Type: http_cookie
         * Expires: 1 hour
+    * Our Functional Support Portal Cookie
+        * Name: _zammad_session   
+        * Provider: Glimesh
+        * Purpose: Track state of users   
+        * Country: United States
+        * Type: http_cookie
+        * Expires: Session (on logout)
     * Partner Cookies
         * Stripe: [https://stripe.com/cookies-policy/legal](https://stripe.com/cookies-policy/legal)
         * CloudFlare: [https://www.cloudflare.com/cookie-policy](https://www.cloudflare.com/cookie-policy)
