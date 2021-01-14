@@ -1,6 +1,7 @@
 defmodule GlimeshWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :glimesh
   use Absinthe.Phoenix.Endpoint
+  use Appsignal.Phoenix
 
   # The session will be stored in the cookie: signed & encrypted.
   # The value used for encryption is our `secret_key_base`
