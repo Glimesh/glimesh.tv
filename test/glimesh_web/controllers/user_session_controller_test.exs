@@ -116,6 +116,37 @@ defmodule GlimeshWeb.UserSessionControllerTest do
       assert response =~ "Sign Out"
     end
 
+    test "logs the user in within allowed 2fa time drift", %{conn: conn, user: user} do
+      secret = Glimesh.Tfa.generate_secret(user.hashed_password)
+      pin = Glimesh.Tfa.generate_totp(secret, 1)
+      password = valid_user_password()
+
+      {:ok, user} = Glimesh.Accounts.update_tfa(user, pin, password, %{tfa_token: secret})
+
+      conn =
+        post(conn, Routes.user_session_path(conn, :create), %{
+          "user" => %{"email" => user.email, "password" => password}
+        })
+
+      assert get_session(conn, :tfa_user_id) == user.id
+      response = html_response(conn, 200)
+      assert response =~ "Enter your 2FA code!"
+
+      conn =
+        post(conn, Routes.user_session_path(conn, :tfa), %{
+          "user" => %{"tfa" => pin}
+        })
+
+      assert get_session(conn, :user_token)
+      assert redirected_to(conn) =~ "/"
+
+      # Now do a logged in request and assert on the menu
+      conn = get(conn, "/")
+      response = html_response(conn, 200)
+      assert response =~ user.username
+      assert response =~ "Sign Out"
+    end
+
     test "errors and redirects on incorrect 2fa", %{conn: conn, user: user} do
       secret = Glimesh.Tfa.generate_secret(user.hashed_password)
       password = valid_user_password()
@@ -133,6 +164,31 @@ defmodule GlimeshWeb.UserSessionControllerTest do
       conn =
         post(conn, Routes.user_session_path(conn, :tfa), %{
           "user" => %{"tfa" => "123456"}
+        })
+
+      response = html_response(conn, 200)
+      assert response =~ "<h3>Login to our Alpha!</h3>"
+      assert response =~ "Invalid 2FA code"
+    end
+
+    test "errors and redirects on 2fa drift steps out of bounds", %{conn: conn, user: user} do
+      secret = Glimesh.Tfa.generate_secret(user.hashed_password)
+      pin = Glimesh.Tfa.generate_totp(secret, 2)
+      password = valid_user_password()
+
+      {:ok, user} =
+        Glimesh.Accounts.update_tfa(user, Glimesh.Tfa.generate_totp(secret), password, %{
+          tfa_token: secret
+        })
+
+      conn =
+        post(conn, Routes.user_session_path(conn, :create), %{
+          "user" => %{"email" => user.email, "password" => password}
+        })
+
+      conn =
+        post(conn, Routes.user_session_path(conn, :tfa), %{
+          "user" => %{"tfa" => pin}
         })
 
       response = html_response(conn, 200)
