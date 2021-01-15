@@ -29,6 +29,9 @@ defmodule Glimesh.Payments.Providers.Stripe do
           invoice.subscription,
           invoice.period_end
         )
+
+      _ ->
+        {:ok, ""}
     end
   end
 
@@ -46,6 +49,9 @@ defmodule Glimesh.Payments.Providers.Stripe do
 
       "unpaid" ->
         Payments.process_unsuccessful_renewal(subscription.id)
+
+      _ ->
+        {:ok, ""}
     end
   end
 
