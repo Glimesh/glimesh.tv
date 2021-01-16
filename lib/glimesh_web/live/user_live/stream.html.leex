@@ -5,10 +5,10 @@
       <div class="card">
         <div class="card-header">
           <div class="row">
-            <div class="col-8">
+            <div class="col-6">
               <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
             </div>
-            <div class="col-4">
+            <div class="col-6">
               <div class="float-right">
                 <div class="stream-info btn-toolbar ml-4">
                   <div class="btn-group mr-2" role="group" aria-label="First group">
@@ -16,10 +16,10 @@
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                     <% end %>
                   </div>
-                  <div class="btn-group mr-2" role="group" aria-label="Second group">
+                  <div class="btn-group mr-2" role="group" aria-label="Third group">
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                   </div>
-                  <div class="btn-group" role="group" aria-label="Third group">
+                  <div class="btn-group" role="group" aria-label="Fourth group">
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
                   </div>
                 </div>
