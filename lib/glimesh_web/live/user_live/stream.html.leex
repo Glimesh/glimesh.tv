@@ -16,10 +16,10 @@
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                     <% end %>
                   </div>
-                  <div class="btn-group mr-2" role="group" aria-label="Third group">
+                  <div class="btn-group mr-2" role="group" aria-label="Second group">
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                   </div>
-                  <div class="btn-group" role="group" aria-label="Fourth group">
+                  <div class="btn-group" role="group" aria-label="Third group">
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
                   </div>
                 </div>

@@ -25,3 +25,23 @@
         width: 100%;
     }
 }
+
+@media (max-width: 776px) {
+    .f_txt {
+        display: none;
+    }
+
+    .uf_txt {
+        display: none;
+    }
+}
+
+@media (min-width: 777px) {
+    .f_ico {
+        display: none;
+    }
+
+    .uf_ico {
+        display: none;
+    }
+}
