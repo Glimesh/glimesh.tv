@@ -34,6 +34,10 @@
     .uf_txt {
         display: none;
     }
+
+    .v_txt {
+        display: none;
+    }
 }
 
 @media (min-width: 777px) {
@@ -42,6 +46,10 @@
     }
 
     .uf_ico {
+        display: none;
+    }
+
+    .v_ico {
         display: none;
     }
 }
