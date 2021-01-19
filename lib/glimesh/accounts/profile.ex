@@ -1,6 +1,27 @@
 defmodule Glimesh.Accounts.Profile do
   @moduledoc false
 
+  alias Glimesh.Accounts.User
+
+  def user_role_color(%User{team_role: team_role}) do
+    case team_role do
+      "Core Team" ->
+        "bg-danger"
+
+      "Community Team" ->
+        "bg-success"
+
+      "Design Team" ->
+        "bg-info"
+
+      "Product Dev Team" ->
+        "bg-secondary"
+
+      _ ->
+        ""
+    end
+  end
+
   def safe_user_markdown_to_html(profile_content_md) do
     {:ok, html_doc, []} = Earmark.as_html(profile_content_md)
     html_doc |> format_profile_images()

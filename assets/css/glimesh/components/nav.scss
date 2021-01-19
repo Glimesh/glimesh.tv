@@ -1,0 +1,11 @@
+.nav-pagenav {
+    .nav-item a {
+        color: var(--navbar-color);
+        border-bottom: 1px solid var(--navbar-color);
+    }
+
+    .nav-item.active a {
+        color: var(--primary);
+        border-bottom: 1px solid var(--primary);
+    }
+}

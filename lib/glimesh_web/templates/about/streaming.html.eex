@@ -1,0 +1,118 @@
+<div class="jumbotron jumbotron-fluid jumbotron-glimesh d-flex align-items-center">
+    <div class="container">
+        <h1 class="display-4 text-center"><%= gettext("Streaming on Glimesh") %></h1>
+    </div>
+</div>
+<h2><%= gettext("Features & Focuses") %></h2>
+<p>
+    <%= gettext("At Glimesh, we value an excellent experience while streaming. So we've taken a great deal of consideration into how and why we are designing features to make you and your viewers experience an excellent one. Let's take a brief look at what makes us stand out in the crowd.") %>
+</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h4 class="text-center mb-4"><%= gettext("Discoverability") %></h4>
+                <p>
+                    <%= gettext("Discoverability is a primary focus of our platform. During our initial launch, it will be straightforward to find new content to watch. However, as we grow, this becomes more of a problem, and we want to experiment with a couple of different options for making it easy to find new and smaller streams. From the very beginning, we are working hard on making streaming equitable for all, so you don’t have to compete with unfair advantages.") %>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h4 class="text-center mb-4"><%= gettext("Subscriptions") %></h4>
+                <p>
+                    <%= gettext("From day one, we want to give you the ability to monetize your streams so that you can create income straight away. That’s right! You do not need to have a minimum viewer count or following to obtain this feature!") %>
+                </p>
+                <p>
+                    <%= gettext("We also offer a competitive 50/50 split for your subscriptions, with the fees taken out of our side. Included for free is our chargeback protection for your subscriptions.") %>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h4 class="text-center mb-4"><%= gettext("Moderation") %></h4>
+                <p>
+                    <%= gettext("The Glimesh Community Team is here with one goal in mind - to support the Glimesh community. We do this through global moderation, responding to tickets and reports, and by offering guidance. You'll find us dropping into channels to say hello or answer questions, as well as talking to the community in the Glimesh Discord! Our aim is to keep Glimesh a fun, welcoming, and most importantly a safe place for any content creator or viewer.") %>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h4 class="text-center mb-4"><%= gettext("Faster Than Light (FTL)") %></h4>
+                <p>
+                    <%= gettext("Our streaming technology is built on open standards and gives your streams unimaginable levels of interactivity. We're continually pushing the boundaries of live video, and of course, it's open source. Our Mixer-derived FTL protocol has sub-second latency, and under good network conditions, you can expect as low as 250ms of delay.") %>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h4 class="text-center mb-4"><%= gettext("Interface") %></h4>
+                <p>
+                    <%= gettext("Our platform is designed to be accessible, user friendly, and blazing fast to make your streaming or viewing experience amazing! We are constantly building, tweaking, and iterating on our platform to continue to strive for perfection.") %>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h4 class="text-center mb-4"><%= gettext("Community") %></h4>
+                <p>
+                    <%= gettext("We have a fantastic community, and we massively encourage you to join! Everyone is super supportive and happy to help! Regardless of your experience with streaming, you will always feel welcome!") %>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+<h2 class="text-right">Insights</h2>
+
+
+<div class="card">
+    <div class="card-body">
+        <h4>ExampleUser</h4>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis minima amet repellendus molestias
+            ipsum unde, illum magni temporibus quos, aperiam eius consequatur impedit id. Nemo facilis
+            aliquid in assumenda dicta?</p>
+
+        Some Image
+    </div>
+</div>
+<div class="card mt-4">
+    <div class="card-body">
+        <h4>ExampleUser</h4>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis minima amet repellendus molestias
+            ipsum unde, illum magni temporibus quos, aperiam eius consequatur impedit id. Nemo facilis
+            aliquid in assumenda dicta?</p>
+
+        Some Image
+    </div>
+</div>
+-->
+<div class="text-center mt-4 mb-4">
+
+    <h3><%= gettext("Start Now") %></h3>
+
+    <div class="mt-4 mb-4">
+        <%= if @current_user do %>
+        <%= link gettext("Customize Your Channel"), to: Routes.user_settings_path(@conn, :stream), class: "btn btn-primary btn-lg mx-4" %>
+        <% else %>
+        <%= link gettext("Register Your Account"), to: Routes.user_registration_path(@conn, :new), class: "btn btn-primary btn-lg mx-4" %>
+        <%= link gettext("Login"), to: Routes.user_session_path(@conn, :new), class: "btn btn-primary btn-lg mx-4" %>
+        <% end %>
+    </div>
+
+</div>

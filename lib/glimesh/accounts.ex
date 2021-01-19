@@ -31,6 +31,14 @@ defmodule Glimesh.Accounts do
     Repo.all(from u in User, where: u.is_admin == true)
   end
 
+  def list_team_users do
+    Repo.all(
+      from u in User,
+        where: not is_nil(u.team_role),
+        order_by: [asc: u.username]
+    )
+  end
+
   @doc """
   Gets a user by email.
 

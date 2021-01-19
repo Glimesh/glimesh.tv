@@ -25,6 +25,13 @@ defmodule GlimeshWeb.LayoutView do
     end
   end
 
+  # About Paths
+  def active_about_path(conn, action) do
+    truthy_active(controller_action(conn) == [GlimeshWeb.AboutController, action])
+  end
+
+  # User Settings Paths
+
   def active_user_profile_path(conn) do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :profile])
   end

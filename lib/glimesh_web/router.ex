@@ -185,6 +185,9 @@ defmodule GlimeshWeb.Router do
     pipe_through [:browser]
 
     get "/about", AboutController, :index
+    get "/about/streaming", AboutController, :streaming
+    get "/about/team", AboutController, :team
+    get "/about/mission", AboutController, :mission
     get "/about/faq", AboutController, :faq
     get "/about/privacy", AboutController, :privacy
     get "/about/terms", AboutController, :terms

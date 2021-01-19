@@ -56,9 +56,9 @@
                     <%= error_tag f, :tfa_token %>
                 </div>
                 <div class="col-sm-6">
-                    <%= label f, gettext("Can use payments") %>
-                    <%= select f, :can_payments, [Yes: true, No: false], [class: "form-control"] %>
-                    <%= error_tag f, :can_payments %>
+                    <%= label f, gettext("Team Role") %>
+                    <%= text_input f, :team_role, [class: "form-control"] %>
+                    <%= error_tag f, :team_role %>
                 </div>
             </div>
             <!-- Billing section of the user -->
