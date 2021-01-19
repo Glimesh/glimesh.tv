@@ -7,7 +7,7 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCount do
   @impl true
   def render(assigns) do
     ~L"""
-      <button class="btn btn-danger" data-toggle="tooltip" title="Viewers" phx-click="toggle">
+      <button class="btn btn-danger btn-responsive" data-toggle="tooltip" title="Viewers" phx-click="toggle">
       <%= if @visible do %>
       <span class="v_txt"><%= gettext("%{count} Viewers", count: @viewer_count) %></span><span class="v_ico"><%= gettext("%{count} ", count: @viewer_count) %><i class="far fa-eye"></i></span>
       <% else %>

@@ -11,15 +11,15 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
         <%= if @user do %>
             <%= if @can_subscribe do %>
                 <%= if @subscribed do %>
-                    <button class="btn btn-secondary" phx-click="unsubscribe" phx-throttle="5000"><%= gettext("Unsubscribe") %></button>
+                    <button class="btn btn-secondary btn-responsive" phx-click="unsubscribe" phx-throttle="5000"><%= gettext("Unsubscribe") %></button>
                 <% else %>
-                    <button class="btn btn-secondary" phx-click="show_modal" phx-throttle="5000"><%= gettext("Subscribe") %></button>
+                    <button class="btn btn-secondary btn-responsive" phx-click="show_modal" phx-throttle="5000"><%= gettext("Subscribe") %></button>
                 <% end %>
             <% else %>
-                <button class="btn btn-secondary disabled"><%= gettext("Subscribe") %></button>
+                <button class="btn btn-secondary btn-responsive disabled"><%= gettext("Subscribe") %></button>
             <% end %>
         <% else %>
-            <%= link gettext("Subscribe"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary" %>
+            <%= link gettext("Subscribe"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary btn-responsive" %>
         <% end %>
 
         <%= if @show_subscription do %>
