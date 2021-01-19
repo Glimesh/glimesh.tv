@@ -48,7 +48,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButtonTest do
         )
 
       assert html =~ "Follow"
-      assert html =~ "class=\"btn btn-primary btn-block follow-button\""
+      assert html =~ "class=\"btn btn-primary btn-block follow-button btn-responsive\""
 
       new_button = view |> element("button", "Follow") |> render_click()
       assert new_button =~ "Unfollow"
@@ -89,7 +89,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButtonTest do
         )
 
       assert html =~ "far fa-bell"
-      new_button = view |> element(".live-notifications-button") |> render_click()
+      new_button = view |> element(".live-notifications-button btn-responsive") |> render_click()
       assert new_button =~ "fas fa-bell"
 
       following = Glimesh.Streams.get_following(streamer, user)
@@ -110,7 +110,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButtonTest do
         )
 
       assert html =~ "fas fa-bell"
-      new_button = view |> element(".live-notifications-button") |> render_click()
+      new_button = view |> element(".live-notifications-button btn-responsive") |> render_click()
       assert new_button =~ "far fa-bell"
 
       following = Glimesh.Streams.get_following(streamer, user)
