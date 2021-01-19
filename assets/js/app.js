@@ -59,12 +59,15 @@ bsCustomFileInput.init();
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", () => {});
 window.addEventListener("phx:page-loading-stop", info => {
-    BSN.initCallback(document.body);
-    bsCustomFileInput.init();
+    if (info.detail && info.detail.kind && info.detail.kind === "initial") {
+        // Only do a full reload of dom whenever the entire page changes 
+        BSN.initCallback(document.body);
+        bsCustomFileInput.init();
 
-    // Close the nav bar on navigate
-    if (document.getElementById("primaryNav")) {
-        document.getElementById("primaryNav").classList.remove('show');
+        // Close the nav bar on navigate
+        if (document.getElementById("primaryNav")) {
+            document.getElementById("primaryNav").classList.remove('show');
+        }
     }
 });
 
