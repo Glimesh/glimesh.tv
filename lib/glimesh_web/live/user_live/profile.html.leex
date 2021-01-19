@@ -100,12 +100,17 @@
                     <% end %>
 
                     <%= if @user do %>
-                        <%= if @user.is_gct do %>
-                            <%= live_redirect gettext("View on GCT"), class: "btn btn-danger btn-sm mt-4", to: Routes.gct_path(@socket, :username_lookup, query: @streamer.username) %>
-                        <% end %>
+                    <%= if @user.is_gct do %>
+                    <%= live_redirect gettext("View on GCT"), class: "btn btn-danger btn-sm mt-4", to: Routes.gct_path(@socket, :username_lookup, query: @streamer.username) %>
+                    <% end %>
                     <% end %>
 
                 </div>
+                <%= if @streamer.team_role do %>
+                <div class="card-footer <%= Glimesh.Accounts.Profile.user_role_color(@streamer) %> rounded-bottom">
+                    <h5 class="card-title text-white mb-0"><%= @streamer.team_role %></h5>
+                </div>
+                <% end %>
             </div>
 
             <div class="mt-4">

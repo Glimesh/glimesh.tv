@@ -17,6 +17,7 @@ defmodule Glimesh.Accounts.User do
 
     field :can_stream, :boolean, default: false
     field :can_payments, :boolean, default: false
+    field :team_role, :string
     field :is_admin, :boolean, default: false
     field :is_gct, :boolean, default: false
     field :gct_level, :integer
@@ -245,7 +246,8 @@ defmodule Glimesh.Accounts.User do
       :ban_reason,
       :can_payments,
       :is_gct,
-      :gct_level
+      :gct_level,
+      :team_role
     ])
     |> validate_length(:ban_reason, max: 8192)
     |> validate_username()

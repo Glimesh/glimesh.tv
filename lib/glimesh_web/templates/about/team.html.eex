@@ -1,0 +1,48 @@
+<div class="jumbotron jumbotron-fluid jumbotron-glimesh d-flex align-items-center">
+    <div class="container">
+        <h1 class="display-4 text-center"><%= gettext("The Team") %></h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <p>
+            <%= gettext("The Glimesh Team is a core group responsible for out our company and the platform we provide our users. We're a diverse group of individuals working together for a common cause, and trying to leave the industry better than we found it. We run Glimesh as an open company with an unusually flat organizational hierarchy.") %>
+        </p>
+    </div>
+</div>
+
+<div class="row mt-4 mb-4">
+    <%= for user <- @users do %>
+    <div class="col-md-3 mb-4">
+
+        <div class="card text-center h-100">
+            <h4 class="text-color-link mt-3 mb-3">
+                <%= link user.displayname, to: Routes.user_profile_path(@conn, :index, user.username), class: "stretched-link text-color-link" %>
+            </h4>
+            <img src="<%= Glimesh.Avatar.url({user.avatar, user}, :original) %>"
+                class="card-img-top img-avatar mx-auto mb-4" alt="<%= user.displayname %>">
+            <div class="card-body <%= Glimesh.Accounts.Profile.user_role_color(user) %> rounded-bottom">
+                <h5 class="card-title text-white mb-0"><%= user.team_role %></h5>
+            </div>
+        </div>
+    </div>
+    <% end %>
+</div>
+
+
+<div class="card">
+    <div class="card-body">
+        <h2 class="text-center"><%= gettext("Join Us!") %></h2>
+
+        <p>
+            <%= gettext("We also encourage our community to become part of our team as we know there are a lot of talented people out there who wish to be part of something new. If you feel that you can offer Glimesh and the community your talents; whether that’s web development, designing or moderation, then we would love to hear from you. If this is of any interest then please reach out to us in our Discord and mention your interest within our #volunteer channel.") %>
+        </p>
+
+        <div class="mt-4 mb-4 text-center">
+            <a href="https://discord.gg/Glimesh"
+                class="btn btn-primary btn-lg mx-4"><%= gettext("Join our Discord") %></a>
+        </div>
+
+    </div>
+</div>

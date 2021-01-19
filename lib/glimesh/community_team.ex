@@ -108,6 +108,7 @@ defmodule Glimesh.CommunityTeam do
     GCT changed from #{user.is_gct} to #{user_params["is_gct"]}
     GCT Access changed from #{user.gct_level} to #{user_params["gct_level"]}
     Banned changed from #{user.is_banned} to #{user_params["is_banned"]}
+    Team Role from #{user.team_role} to #{user_params["team_role"]}
     """
   end
 
@@ -154,5 +155,6 @@ defmodule Glimesh.CommunityTeam do
       |> Repo.update()
     end
   end
+
   # End of editing channel functions
 end
