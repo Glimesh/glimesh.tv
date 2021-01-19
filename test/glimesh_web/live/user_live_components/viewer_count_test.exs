@@ -35,7 +35,7 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCountTest do
     test "can hide the viewer count", %{conn: conn, channel: channel} do
       {:ok, view, _} = live_isolated(conn, @component, session: %{"channel_id" => channel.id})
 
-      assert view |> element("button") |> render_click() =~ "far fa-smile"
+      assert view |> element("button") |> render_click() =~ "far fa-eye-slash"
     end
   end
 end
