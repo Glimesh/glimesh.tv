@@ -15,7 +15,7 @@ defmodule Glimesh.Accounts.Profile do
         "bg-info"
 
       "Product Dev Team" ->
-        "bg-warning"
+        "bg-secondary"
 
       _ ->
         ""

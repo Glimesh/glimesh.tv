@@ -7,21 +7,21 @@
 <div class="card">
     <div class="card-body card-glimheart">
         <p class="lead mb-4">
-            <%= gettext("Glimesh is the next generation streaming platform built by the community, for the community. We know establishing a following is hard and the hours are long. Our platform focuses on increasing discoverability for content creators and implementing the latest in streaming technology to level the playing field. We understand the importance of interaction between content creators and their fans and we’re dedicated to innovating new ways to bring communities closer together.") %>
+            <%= gettext("Glimesh is the next generation streaming platform built by the community for the community. We know establishing a following is hard, and the hours are long. Our platform focuses on increasing discoverability for content creators and implementing the latest in streaming technology to level the playing field. We understand the importance of interaction between content creators and their fans, and we’re dedicated to innovating new ways to bring communities closer together.") %>
         </p>
 
         <p>
-            <%= gettext("We believe in being transparent in our work too. Glimesh is an Open Company, with a strong commitment to transparency & fairness. All of our financial statements are public record, all our development work is available through Github, and we organize using public tools like GitHub & Trello. We make a commitment to treating our community fairly and building sustainable income for our streamers, the platform, and the families of those who build it.") %>
+            <%= gettext("We believe in being transparent in our work too. Glimesh is an Open Company with a strong commitment to transparency & fairness. All of our financial statements are public record, all our development work is available through Github, and we organize using public tools like GitHub & Trello. We make a commitment to treating our community fairly and building sustainable income for our streamers, the platform, and the families of those who build it.") %>
         </p>
 
         <h3 class="mt-4"><%= gettext("Our History") %></h3>
 
         <p>
-            <%= gettext("Glimesh came out of the shutdown of Mixer. When Microsoft pulled the plug on the platform overnight, communities were left without a home, streamers were left without a paycheck, and technologists were left without a viable alternative to the \"FTL\" product that Mixer offered. To us, this was a painful event to watch, and we decided then that streamers deserve better. We started working on an early alpha preview immediately to prove out the technology and business we wanted to build, and within a month hosted a charity stream that raised over $3,000 powered by our own platform. Since then we've been hard at work building the remaining features & scaling requirements for an alpha launch, and that brings us to today!") %>
+            <%= gettext("Glimesh came out of the shutdown of Mixer. When Microsoft pulled the plug on the platform overnight, communities were left without a home, streamers were left without a paycheck, and technologists were left without a viable alternative to the \"FTL\" product Mixer offered. To us, this event was painful to watch, and we decided then that streamers deserve better. We started working on an early alpha preview immediately to prove the technology and the business we wanted to build. We hosted a charity stream within a month that raised over $3,000 powered by our platform. Since then, we've been hard at work building the remaining features & scaling requirements for an alpha launch, and that brings us to today!") %>
         </p>
 
         <p>
-            <%= gettext("Granted this journey has not been easy, nor will it be in the future. We’re not aiming to take down the competitors, and sell for billions of dollars to the next ephemeral tech company, instead we’re aiming to create a home.") %>
+            <%= gettext("Granted, this journey has not been easy, nor will it be in the future. We’re not aiming to take down the competitors and sell for billions of dollars to the next ephemeral tech company; instead, we’re aiming to create a home.") %>
         </p>
 
     </div>

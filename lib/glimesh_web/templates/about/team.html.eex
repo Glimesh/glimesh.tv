@@ -7,7 +7,7 @@
 <div class="card">
     <div class="card-body">
         <p>
-            <%= gettext("The Glimesh Team is a core group responsible for out our company and the platform we provide our users. We're a diverse group of individuals working together for a common cause, and trying to leave the industry better than we found it. We run Glimesh as an open company with an unusually flat organizational hierarchy.") %>
+            <%= gettext("The Glimesh Team is a core group responsible for our company and the platform we provide our users. We're a diverse group of individuals working together for a common cause and trying to leave the industry better than we found it. We run Glimesh as an open company with an unusually flat organizational hierarchy.") %>
         </p>
     </div>
 </div>
@@ -36,7 +36,7 @@
         <h2 class="text-center"><%= gettext("Join Us!") %></h2>
 
         <p>
-            <%= gettext("We also encourage our community to become part of our team as we know there are a lot of talented people out there who wish to be part of something new. If you feel that you can offer Glimesh and the community your talents; whether that’s web development, designing or moderation, then we would love to hear from you. If this is of any interest then please reach out to us in our Discord and mention your interest within our #volunteer channel.") %>
+            <%= gettext("We also encourage our community to become part of our team as we know there are many talented people out there who wish to be part of something new. If you feel that you can offer Glimesh and the community your talents, whether that’s web development, designing, or moderation, then we would love to hear from you. If this is of any interest, please reach out to us in our Discord and mention your interest within our #volunteer channel.") %>
         </p>
 
         <div class="mt-4 mb-4 text-center">
