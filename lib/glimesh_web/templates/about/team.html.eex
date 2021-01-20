@@ -6,7 +6,7 @@
 
 <div class="card">
     <div class="card-body">
-        <p style="margin:0;">
+        <p class="m-0">
             <%= gettext("The Glimesh Team is a core group responsible for our company and the platform we provide our users. We're a diverse group of individuals working together for a common cause and trying to leave the industry better than we found it. We run Glimesh as an open company with an unusually flat organizational hierarchy.") %>
         </p>
     </div>
