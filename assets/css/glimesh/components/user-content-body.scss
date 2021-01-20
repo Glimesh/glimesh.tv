@@ -2,6 +2,8 @@
 .user-content-body {
     table {
         @extend .table;
+        display: block;
+        overflow: auto;
     }
 
     img {
