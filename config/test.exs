@@ -43,3 +43,5 @@ config :glimesh, :stripe_config,
   channel_sub_base_product_id: "prod_channel_sub",
   channel_sub_base_price_id: "price_channel_sub",
   channel_sub_base_price: 500
+
+config :appsignal, :config, active: false
