@@ -40,7 +40,7 @@ defmodule Glimesh.FileValidation do
         {:ok, :unknown}
 
       {:error, reason} ->
-        {:error, :file.format_error(reason)}
+        {:error, List.to_string(:file.format_error(reason))}
     end
   end
 end

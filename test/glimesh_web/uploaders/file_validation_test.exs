@@ -10,7 +10,8 @@ defmodule Glimesh.FileValidationTest do
         path: @png_file
       }
 
-      assert true == Glimesh.FileValidation.validate(waffle_mock, [:png])
+      assert Glimesh.FileValidation.validate(waffle_mock, [:png])
+      refute Glimesh.FileValidation.validate(waffle_mock, [:jpg])
     end
 
     test "get_file_type/1 returns expected output" do
@@ -22,6 +23,9 @@ defmodule Glimesh.FileValidationTest do
 
       assert {:ok, :unknown} ==
                Glimesh.FileValidation.get_file_type("test/test_helper.exs")
+
+      assert {:error, "no such file or directory"} ==
+               Glimesh.FileValidation.get_file_type("non-existant-file")
     end
   end
 end
