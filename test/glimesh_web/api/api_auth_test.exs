@@ -130,4 +130,29 @@ defmodule GlimeshWeb.Api.ApiAuthTest do
              }
     end
   end
+
+  describe "authenticated api access with lowercased authorization header" do
+    setup :register_and_set_user_token
+
+    test "gets accepted", %{conn: conn, user: user} do
+      conn =
+        conn
+        |> Plug.Conn.put_req_header(
+          "authorization",
+          conn
+          |> Plug.Conn.get_req_header("authorization")
+          |> hd()
+          |> String.downcase()
+        )
+
+      conn =
+        post(conn, "/api", %{
+          "query" => @myself_query
+        })
+
+      assert json_response(conn, 200) == %{
+               "data" => %{"myself" => %{"username" => user.username}}
+             }
+    end
+  end
 end

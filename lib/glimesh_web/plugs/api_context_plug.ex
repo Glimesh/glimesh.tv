@@ -64,7 +64,9 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
   defp fetch_token(conn, _opts) do
     case get_req_header(conn, "authorization") do
       ["Bearer " <> token] -> {:bearer, token}
+      ["bearer " <> token] -> {:bearer, token}
       ["Client-ID " <> token] -> {:client, token}
+      ["client-id " <> token] -> {:client, token}
       [] -> false
     end
   end
