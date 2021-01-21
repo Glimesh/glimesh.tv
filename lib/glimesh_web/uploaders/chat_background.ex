@@ -11,10 +11,11 @@ defmodule Glimesh.ChatBackground do
 
   # Whitelist file extensions:
   def validate({file, _}) do
-    extension_passes = ~w(.jpg .jpeg .png) |> Enum.member?(Path.extname(file.file_name))
+    type_passes = Glimesh.FileValidation.validate(file, [:png, :jpg])
+
     size_passes = file_size(file) <= @max_file_size
 
-    extension_passes && size_passes
+    type_passes && size_passes
   end
 
   # Define a thumbnail transformation:
