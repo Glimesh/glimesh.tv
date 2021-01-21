@@ -9,7 +9,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
     <%= if @user do %>
       <%= if @following do %>
         <div class="btn-group" role="group">
-          <button class="btn btn-primary btn-block follow-button btn-responsive" phx-click="unfollow"><span class="uf_txt"><%= gettext("Unfollow") %></span><span class="uf_ico"><i class="fas fa-user-minus"></i></span></button>
+          <button class="btn btn-primary btn-block follow-button btn-responsive" phx-click="unfollow"><span class="d-none d-lg-block"><%= gettext("Unfollow") %></span><span class="d-lg-none"><i class="fas fa-user-minus"></i></span></button>
           <%= if @following.has_live_notifications do %>
           <button type="button" class="btn btn-primary live-notifications-button btn-responsive" phx-click="disable_live_notifications"><i class="fas fa-bell"></i></button>
           <% else %>
@@ -17,11 +17,11 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
           <% end %>
         </div>
       <% else %>
-        <button class="btn btn-primary btn-block follow-button btn-responsive" phx-click="follow" phx-throttle="5000"><span class="f_txt"><%= gettext("Follow") %></span><span class="f_ico"><i class="fas fa-user-plus"></i></span></button>
+        <button class="btn btn-primary btn-block follow-button btn-responsive" phx-click="follow" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Follow") %></span><span class="d-lg-none"><i class="fas fa-user-plus"></i></span></button>
       <% end %>
     <% else %>
       <%= link to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-block btn-responsive" do %>
-      <span class="f_txt"><%= gettext("Follow") %></span><span class="f_ico"><i class="fas fa-user-plus"></i></span>
+      <span class="d-none d-lg-block"><%= gettext("Follow") %></span><span class="d-lg-none"><i class="fas fa-user-plus"></i></span>
       <% end %>
     <% end %>
     """
