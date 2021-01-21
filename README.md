@@ -1,6 +1,6 @@
 # Glimesh.tv
 ![Elixir CI](https://github.com/glimesh/glimesh.tv/workflows/Elixir%20CI/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/Glimesh/glimesh.tv/badge.svg?branch=master)](https://coveralls.io/github/Glimesh/glimesh.tv?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/Glimesh/glimesh.tv/badge.svg?branch=dev)](https://coveralls.io/github/Glimesh/glimesh.tv?branch=dev)
 
 Glimesh is a next generation streaming platform built by the community, for the community.
 Our platform focuses on increasing discoverability for content creators and implementing the
