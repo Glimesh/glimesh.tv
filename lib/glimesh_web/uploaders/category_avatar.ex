@@ -13,7 +13,7 @@ defmodule Glimesh.CategoryAvatar do
   def acl(:landscape, _), do: :public_read
 
   def validate({file, _}) do
-    ~w(.jpg .jpeg .png) |> Enum.member?(Path.extname(file.file_name))
+    Glimesh.FileValidation.validate(file, [:png, :jpg])
   end
 
   def transform(:portrait, _) do
