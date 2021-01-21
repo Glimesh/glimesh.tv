@@ -25,3 +25,11 @@
         width: 100%;
     }
 }
+
+@media (max-width: 768px) {
+    .btn-responsive {
+        padding: 2px 4px;
+        line-height: 1;
+        border-radius: 3px;
+    }
+}
