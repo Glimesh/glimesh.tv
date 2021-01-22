@@ -5,11 +5,24 @@ defmodule Glimesh.AccountsProfileTest do
   alias Glimesh.Accounts.Profile
 
   describe "normal safe user markdown" do
-    test "cannot inject local urls" do
-      bad_markdown = "[link](https://google.com)"
-      bad_html = "<a href=\"https://google.com\">link</a>"
+    test "allows normal markdown" do
+      assert {:ok, "<p>\n<strong>bold</strong></p>\n"} ==
+               Profile.safe_user_markdown_to_html("**bold**")
+    end
 
-      assert Profile.safe_user_markdown_to_html(bad_markdown) =~ bad_html
+    test "errors on weird markdown" do
+      assert {:error, "Unexpected line </h2> on line 1"} ==
+               Profile.safe_user_markdown_to_html("</h2>")
+    end
+
+    test "can use urls" do
+      assert {:ok, "<p><a href=\"https://google.com\">link</a></p>\n"} ==
+               Profile.safe_user_markdown_to_html("[link](https://google.com)")
+    end
+
+    test "allows nil's when clearing out content" do
+      assert {:ok, nil} ==
+               Profile.safe_user_markdown_to_html(nil)
     end
   end
 
@@ -74,7 +87,7 @@ defmodule Glimesh.AccountsProfileTest do
       test "bad_links: #{left_hash}", context do
         {l, r} = context.registered.pair
 
-        out = Profile.safe_user_markdown_to_html(l)
+        {:ok, out} = Profile.safe_user_markdown_to_html(l)
 
         assert out =~ r
       end
@@ -84,7 +97,7 @@ defmodule Glimesh.AccountsProfileTest do
       bad_markdown = "[a](javascript:prompt(document.cookie))"
       bad_html = "<a href=\"javascript:prompt(document.cookie)\">a</a>"
 
-      refute Profile.safe_user_markdown_to_html(bad_markdown) =~ bad_html
+      refute {:ok, bad_html} == Profile.safe_user_markdown_to_html(bad_markdown)
     end
   end
 end
