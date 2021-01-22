@@ -55,7 +55,7 @@ To clone a local copy of Glimesh.tv, run
 
 ```sh
 git clone https://github.com/Glimesh/glimesh.tv.git
-# or if you have permissions to the repository
+# or if you have permissions to the repository, or prefer to use SSH authentication
 # git clone git@github.com:Glimesh/glimesh.tv.git
 ```
 
@@ -67,7 +67,7 @@ as this can have a significant negative impact on performance.
 
 Running Glimesh.tv natively on Windows is not yet understood. However you can run the application very well with WSL2. If you are interested in running Glimesh.tv natively, have a go at us and let us know!
 
-[WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) with Ubuntu 20.04 has been tested successfully for development on Windows.
+[WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) with Ubuntu 18.04 & 20.04 has been tested successfully for development on Windows.
 
 ### Ubuntu Installation (including WSL2 + Ubuntu)
 On modern versions of Ubuntu, you can install these packages with the following command:
