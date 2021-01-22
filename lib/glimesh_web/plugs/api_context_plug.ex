@@ -67,7 +67,7 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
       ["bearer " <> token] -> {:bearer, token}
       ["Client-ID " <> token] -> {:client, token}
       ["client-id " <> token] -> {:client, token}
-      [] -> false
+      _ -> false
     end
   end
 end

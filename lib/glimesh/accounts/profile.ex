@@ -22,9 +22,28 @@ defmodule Glimesh.Accounts.Profile do
     end
   end
 
+  def safe_user_markdown_to_html(nil) do
+    {:ok, nil}
+  end
+
   def safe_user_markdown_to_html(profile_content_md) do
-    {:ok, html_doc, []} = Earmark.as_html(profile_content_md)
-    html_doc |> format_profile_images()
+    case Earmark.as_html(profile_content_md) do
+      {:ok, html_doc, []} ->
+        {:ok, format_profile_images(html_doc)}
+
+      {:ok, _, error_messages} ->
+        {:error, format_earmark_messages(error_messages)}
+
+      {:error, _, error_messages} ->
+        {:error, format_earmark_messages(error_messages)}
+    end
+  end
+
+  defp format_earmark_messages(error_messages) do
+    Enum.map(error_messages, fn {_severity, line, message} ->
+      "#{message} on line #{line}"
+    end)
+    |> Enum.join("\n")
   end
 
   def youtube_video_id(youtube_intro_url) do
