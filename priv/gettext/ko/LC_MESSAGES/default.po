@@ -8,121 +8,96 @@ msgstr ""
 "Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/index.html.leex:35
-msgid "Are you sure?"
-msgstr "정말로 진행하시겠습니까?"
+#: 
+msgid "can't be blank"
+msgstr "비워둘 수 없음"
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/index.html.leex:18
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:25
-msgid "Avatar"
-msgstr "아바타"
+#: 
+msgid "has already been taken"
+msgstr "이미 사용 중"
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:37
-#: lib/glimesh_web/templates/user_applications/new.html.eex:7
-msgid "Back"
-msgstr "뒤로"
+#: 
+msgid "is invalid"
+msgstr "유효하지 않음"
 
-#, elixir-format
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:69
-msgid "Cancel Subscription"
-msgstr "구독 취소"
+#: 
+msgid "must be accepted"
+msgstr "수락돼야 함"
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/form_component.ex:52
-msgid "Category created successfully"
-msgstr "성공적으로 카테고리를 생성하였습니다"
+#: 
+msgid "has invalid format"
+msgstr "유효하지 않은 포멧입니다"
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/form_component.ex:39
-msgid "Category updated successfully"
-msgstr "성공적으로 카테고리를 갱신하였습니다"
+#: 
+msgid "has an invalid entry"
+msgstr "유효하지 않은 접근입니다"
 
-#, elixir-format
-#: lib/glimesh_web/controllers/user_confirmation_controller.ex:53
-msgid "Confirmation link is invalid or it has expired."
-msgstr "확인 링크에 문제가 있거나 기간이 만료되었습니다."
+#: 
+msgid "is reserved"
+msgstr "예약"
 
-#, elixir-format
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:16
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:37
-msgid "Cosmetic Features"
-msgstr "비주얼 기능"
+#: 
+msgid "does not match confirmation"
+msgstr "일치하지 않습니다"
 
-#, elixir-format
-#: lib/glimesh/accounts/user.ex:176
-msgid "Display name must match Username"
-msgstr "닉네임은 아이디와 일치해야 합니다."
+#: 
+msgid "is still associated with this entry"
+msgstr "아직 이 엔트리와 관련이 있습니다"
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:36
-#: lib/glimesh_web/live/user_live/components/channel_title.ex:12 lib/glimesh_web/templates/gct/edit_user_profile.html.eex:125
-#: lib/glimesh_web/templates/user_settings/profile.html.eex:138
-msgid "Edit"
-msgstr "편집"
+#: 
+msgid "are still associated with this entry"
+msgstr "아직 이 엔트리와 관련이 있습니다"
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/index.ex:19
-#: lib/glimesh_web/live/admin/category_live/show.ex:20
-msgid "Edit Category"
-msgstr "카테고리 편집"
+#: 
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] "최소 %{count}글자 이상이어야 합니다."
 
-#, elixir-format
-#: lib/glimesh_web/controllers/user_security_controller.ex:50
-msgid "Email change link is invalid or it has expired."
-msgstr "이메일 변경 링크에 문제가 있거나 기간이 만료되었습니다."
+#: 
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] "％{count}항목이 필요합니다."
 
-#, elixir-format
-#: lib/glimesh/accounts/user.ex:194
-msgid "Email is the same"
-msgstr "이메일이 동일합니다"
+#: 
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] "최소 %{count}글자 이상이어야 합니다."
 
-#, elixir-format
-#: lib/glimesh_web/templates/article/index.html.eex:2
-msgid "Glimesh Blog"
-msgstr "글리메쉬 블로그"
+#: 
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] "최소 ％{count}항목이 필요합니다."
 
-#, elixir-format
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:11
-msgid "Help us fund the platform & grow!"
-msgstr "플랫폼에 자금을 제공하고 성장에 협력해주세요!!!"
+#: 
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] "%{count}글자를 초과하지 말아야 합니다"
 
-#, elixir-format
-#: lib/glimesh/accounts/user.ex:311
-msgid "Incorrect YouTube URL format"
-msgstr "잘못된 YouTube URL 형식"
+#: 
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] "％{count}항목을 초과하지 말아야 합니다."
 
-#, elixir-format
-#: lib/glimesh/accounts/user.ex:302
-msgid "Invalid Password"
-msgstr "유효하지 않은 비밀번호"
+#: 
+msgid "must be less than %{number}"
+msgstr "%{number}보다 작아야 합니다."
 
-#, elixir-format
-#: lib/glimesh_web/controllers/user_session_controller.ex:16
-msgid "Invalid e-mail or password"
-msgstr "유효하지 않은 이메일 혹은 비밀번호입니다."
+#: 
+msgid "must be greater than %{number}"
+msgstr "%{number} 초과여야 합니다"
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/index.ex:31
-#: lib/glimesh_web/live/admin/category_live/index.html.leex:2
-msgid "Listing Categories"
-msgstr "카테고리 목록"
+#: 
+msgid "must be less than or equal to %{number}"
+msgstr "%{number} 이하여야 합니다"
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/index.html.leex:16
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:15 lib/glimesh_web/templates/user_applications/form.html.eex:9
-msgid "Name"
-msgstr "이름"
+#: 
+msgid "must be greater than or equal to %{number}"
+msgstr "%{number} 이상이어야 합니다"
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/index.ex:25
-#: lib/glimesh_web/live/admin/category_live/index.html.leex:42
-msgid "New Category"
-msgstr "새 카테고리"
+#: 
+msgid "must be equal to %{number}"
+msgstr "%{number}와(과) 동일해야 합니다"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:4
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:12 lib/glimesh_web/templates/gct/edit_user_profile.html.eex:32
 #: lib/glimesh_web/templates/oauth2_provider/authorization/error.html.eex:2 lib/glimesh_web/templates/user_applications/form.html.eex:4
@@ -132,2341 +107,1942 @@ msgstr "새 카테고리"
 msgid "Oops, something went wrong! Please check the errors below."
 msgstr "문제가 발생했습니다! 아래의 오류를 확인해주세요."
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/index.html.leex:19
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:30
-msgid "Parent"
-msgstr "상위"
+#: lib/glimesh_web/controllers/user_confirmation_controller.ex:53
+msgid "Confirmation link is invalid or it has expired."
+msgstr "확인 링크에 문제가 있거나 기간이 만료되었습니다."
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/form_component.html.leex:11
-msgid "Parent Category"
-msgstr "상위 카테고리"
+#: lib/glimesh_web/controllers/user_security_controller.ex:50
+msgid "Email change link is invalid or it has expired."
+msgstr "이메일 변경 링크에 문제가 있거나 기간이 만료되었습니다."
 
-#, elixir-format
-#: lib/glimesh/accounts/user.ex:204
-msgid "Password does not match"
-msgstr "비밀번호가 일치하지 않습니다"
+#: lib/glimesh_web/controllers/user_session_controller.ex:16
+msgid "Invalid e-mail or password"
+msgstr "유효하지 않은 이메일 혹은 비밀번호입니다."
 
-#, elixir-format
-#: lib/glimesh_web/templates/article/index.html.eex:15
-msgid "Read More"
-msgstr "자세히 보기"
-
-#, elixir-format
 #: lib/glimesh_web/controllers/user_reset_password_controller.ex:58
 msgid "Reset password link is invalid or it has expired."
 msgstr "비밀번호 초기화 링크에 문제가 있거나 기간이 만료되었습니다."
 
-#, elixir-format
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:23
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:46
-msgid "Select"
-msgstr "선택"
+#: lib/glimesh/accounts/user.ex:176
+msgid "Display name must match Username"
+msgstr "닉네임은 아이디와 일치해야 합니다."
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/show.ex:19
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:1
-msgid "Show Category"
-msgstr "카테고리 표시"
+#: lib/glimesh/accounts/user.ex:194
+msgid "Email is the same"
+msgstr "이메일이 동일합니다"
 
-#, elixir-format
-#: lib/glimesh_web/live/admin/category_live/index.html.leex:17
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:20
-msgid "Slug"
-msgstr "슬러그"
+#: lib/glimesh/accounts/user.ex:311
+msgid "Incorrect YouTube URL format"
+msgstr "잘못된 YouTube URL 형식"
 
-#, elixir-format
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:32
-msgid "Support Glimesh's future with your wallet! Get special perks to show off."
-msgstr "지갑을 충전하여 글리메쉬의 미래를 지원해주세요! 뽐낼 수 있는 특별한 특전도 드린답니다."
+#: lib/glimesh/accounts/user.ex:302
+msgid "Invalid Password"
+msgstr "유효하지 않은 비밀번호"
 
-#, elixir-format
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:55
-msgid "You're subscribed!"
-msgstr "구독 중!"
+#: lib/glimesh/accounts/user.ex:204
+msgid "Password does not match"
+msgstr "비밀번호가 일치하지 않습니다"
 
-#, elixir-format
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:13
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:34 lib/glimesh_web/live/platform_subscription_live/index.html.leex:61
-#: lib/glimesh_web/live/subscription_component.ex:34
-msgid "monthly"
-msgstr "매월"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/viewer_count.ex:10
-msgid " %{count} Viewers"
-msgstr "%{count}명 시청 중"
-
-#, elixir-format
-#: lib/glimesh_web/live/streams_live/list.html.leex:23
-msgid "%{category} Streams"
-msgstr "%{category} 방송"
-
-#, elixir-format
-#: lib/glimesh_web/live/streams_live/list.html.leex:9
-msgid "%{category} Streams Coming Soon"
-msgstr "%{category} 방송이 곧 생겨날 거예요!"
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_security/edit.html.eex:106
-#: lib/glimesh_web/templates/user_session/tfa.html.eex:18
-msgid "2FA Code"
-msgstr "2FA 코드"
-
-#, elixir-format
-#: lib/glimesh_web/controllers/user_confirmation_controller.ex:46
-msgid "Account confirmed successfully."
-msgstr "계정을 정상적으로 확인하였습니다."
-
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:16
-msgid "Art"
-msgstr "미술"
-
-#, elixir-format
-#: lib/glimesh_web/live/homepage_live.html.leex:54
-msgid "Built by the community, for the community."
-msgstr "커뮤니티를 위한, 커뮤니티에 의한."
-
-#, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:35
 msgid "Change E-mail"
 msgstr "이메일 변경"
 
-#, elixir-format
-#: lib/glimesh_web/templates/user_security/edit.html.eex:74
-msgid "Change Password"
-msgstr "비밀번호 변경"
-
-#, elixir-format
-#: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:21
-#: lib/glimesh_web/templates/user_settings/profile.html.eex:16
-msgid "Click Update Settings down below when you've chosen the file."
-msgstr "파일을 선택한 후 아래의 \"설정 적용\"을 눌러 적용해주세요."
-
-#, elixir-format
-#: lib/glimesh_web/live/homepage_live.html.leex:53
-msgid "Community Driven."
-msgstr "커뮤니티 중심"
-
-#, elixir-format
-#: lib/glimesh_web/live/homepage_live.html.leex:56
-msgid "Community is one of our main focuse at Glimesh and we make sure to include you every step of the way. We host staff meetings live on our platform every Tuesday that are open to everyone and if there's a feature you wish we had, you can collaborate on our %{a_start}open source codebase%{a_end} to create it!"
-msgstr "커뮤니티는 글리메쉬의 가장 중요한 핵심 요소 중 하나입니다. 그만큼 모든 단계에서 여러분이 참여할 수 있도록 노력하고 있습니다. 매주 화요일마다 모두에게 공개되는 플랫폼 스태프 미팅 방송을 진행하며, 원하는 기능이 있다면 %{a_start}오픈 소스 코드베이스%{a_end}에서 기여하여 개발에 참여할 수도 있습니다!"
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_security/edit.html.eex:66
-msgid "Confirm New Password"
-msgstr "새로운 비밀번호 확인"
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:14
-msgid "Confirm new password"
-msgstr "새로운 비밀번호 확인"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/report_button.ex:54
-msgid "Copyright Infringement / Law Violation"
-msgstr "저작권 침해 / 법률 위반"
-
-#, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:27
 #: lib/glimesh_web/templates/user_security/edit.html.eex:58 lib/glimesh_web/templates/user_security/edit.html.eex:114
 #: lib/glimesh_web/templates/user_security/edit.html.eex:122
 msgid "Current Password"
 msgstr "현재 비밀번호"
 
-#, elixir-format
-#: lib/glimesh_web/templates/user_payments/index.html.eex:43
-msgid "Delete Saved Payment"
-msgstr "저장된 결제수단 삭제"
+#: lib/glimesh_web/templates/user_security/edit.html.eex:8
+msgid "Change e-mail"
+msgstr "이메일 변경"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:95
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:106
 msgid "Discord Server URL"
 msgstr "Discord 서버 URL"
 
-#, elixir-format
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:17
-#: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:39 lib/glimesh_web/templates/gct/lookup_user.html.eex:44
-#: lib/glimesh_web/templates/user_settings/profile.html.eex:39
-msgid "Display Name"
-msgstr "닉네임"
-
-#, elixir-format
-#: lib/glimesh_web/controllers/user_security_controller.ex:43
-msgid "E-mail changed successfully."
-msgstr "이메일을 성공적으로 변경하였습니다"
-
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:28
-msgid "Education"
-msgstr "교육"
-
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:30
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:51 lib/glimesh_web/templates/user_reset_password/new.html.eex:11
 #: lib/glimesh_web/templates/user_security/edit.html.eex:20
 msgid "Email"
 msgstr "이메일"
 
-#, elixir-format
-#: lib/glimesh_web/templates/user_payments/index.html.eex:80
-msgid "Enable Subscriptions"
-msgstr "구독 활성화"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:20
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:24
-msgid "Follow"
-msgstr "팔로우"
-
-#, elixir-format
-#: lib/glimesh_web/live/streams_live/list.ex:17
-msgid "Followed Streams"
-msgstr "팔로우한 채널"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/profile.html.leex:77
-msgid "Followers"
-msgstr "팔로워"
-
-#, elixir-format
-#: lib/glimesh/stream_layout/followers_homepage.ex:22
-#: lib/glimesh_web/live/user_live/profile.html.leex:82 lib/glimesh_web/templates/layout/_navbar.html.leex:44
-msgid "Following"
-msgstr "팔로잉"
-
-#, elixir-format
-#: lib/glimesh_web/live/homepage_live.html.leex:76
-msgid "For launch, subscriptions will be only be enabled in the US."
-msgstr "정식 서비스 시에는 미국에서만 구독 기능을 활성화할 수 있습니다."
-
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:13
-msgid "Gaming"
-msgstr "게임"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/profile.html.leex:113
-msgid "Glimesh isn't launched yet, but you can follow %{streamer} now and get automatically notified when they go live!"
-msgstr "글리메쉬는 아직 정식 서비스를 준비 중이지만, %{streamer} 채널을 지금 팔로우하여 나중에 생방송이 진행 중일 때 알림을 받을 수 있습니다!"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/report_button.ex:42
-msgid "Hate Speech"
-msgstr "혐오 발언"
-
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:25
-msgid "IRL"
-msgstr "일상"
-
-#, elixir-format
-#: lib/glimesh_web/controllers/user_confirmation_controller.ex:34
-msgid "If your e-mail is in our system and it has not been confirmed yet, "
-msgstr "해당 이메일이 가입되어있고 아직 확인되지 않았다면, "
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/report_button.ex:48
-msgid "Inappropriate Content"
-msgstr "부적절한 내용"
-
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:73
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:83
 msgid "Instagram Username"
 msgstr "Instagram 계정"
 
-#, elixir-format
-#: lib/glimesh_web/live/homepage_live.html.leex:35
-msgid "It's even faster than light."
-msgstr "빛보다 빠릅니다."
-
-#, elixir-format
-#: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:46
-#: lib/glimesh_web/templates/user_settings/profile.html.eex:46
-msgid "Language"
-msgstr "언어"
-
-#, elixir-format
-#: lib/glimesh_web/live/homepage_live.html.leex:73
-msgid "Level the playing field."
-msgstr "모두에게 평등한 플랫폼."
-
-#, elixir-format
-#: lib/glimesh_web/controllers/user_session_controller.ex:37
-msgid "Logged out successfully."
-msgstr "성공적으로 로그아웃하였습니다."
-
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:33
-msgid "More"
-msgstr "기타"
-
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:19
-msgid "Music"
-msgstr "음악"
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:10
-#: lib/glimesh_web/templates/user_security/edit.html.eex:53
-msgid "New password"
-msgstr "새로운 비밀번호"
-
-#, elixir-format
-#: lib/glimesh_web/live/homepage_live.html.leex:6
-msgid "Next-Gen Live Streaming"
-msgstr "차세대 실시간 방송"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/report_button.ex:65
-msgid "Notes"
-msgstr "설명"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/report_button.ex:60
-msgid "Other"
-msgstr "기타"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/index.ex:14
-#: lib/glimesh_web/live/user_live/index.html.leex:2
-msgid "Our Users"
-msgstr "회원 목록"
-
-#, elixir-format
-#: lib/glimesh_web/live/homepage_live.html.leex:37
-msgid "Our fastest streaming technology is built on open standards and gives your streams unimaginable levels of interactivity. We're constantly pushing the boundaries of live video and of course, it's open source."
-msgstr "글리메쉬의 초고속 방송 기술은 표준 오픈소스를 기반으로 구축되어 있으며 무궁무진한 상호작용의 가능성을 제공합니다. 글리메쉬는 끊임없이 인터넷 생방송의 경계를 넓히고 있으며, 모든 것이 오픈 소스입니다."
-
-#, elixir-format
-#: lib/glimesh_web/controllers/user_reset_password_controller.ex:41
-msgid "Password reset successfully."
-msgstr "비밀번호를 성공적으로 초기화하였습니다."
-
-#, elixir-format
-#: lib/glimesh_web/controllers/user_security_controller.ex:62
-msgid "Password updated successfully."
-msgstr "비밀번호를 성공적으로 변경하였습니다."
-
-#, elixir-format
-#: lib/glimesh_web/live/subscription_component.ex:25
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:35
-msgid "Payment Details"
-msgstr "결제 상세 내역"
-
-#, elixir-format
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:145
-#: lib/glimesh_web/templates/user_payments/index.html.eex:132
-msgid "Payment History"
-msgstr "결제 기록"
-
-#, elixir-format
-#: lib/glimesh_web/live/subscription_component.ex:17
-msgid "Payment method already attached!"
-msgstr "지불 방식이 이미 존재합니다!"
-
-#, elixir-format
-#: lib/glimesh_web/controllers/user_payments_controller.ex:87
-msgid "Payment method deleted!"
-msgstr "결제수단이 삭제되었습니다!"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/profile.html.leex:110
-msgid "Pre-Follow Streamer"
-msgstr "미리 팔로우한 스트리머"
-
-#, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:56
-msgid "Profile updated successfully."
-msgstr "프로필을 성공적으로 갱신하였습니다."
-
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:96
-#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:24
-msgid "Register"
-msgstr "가입"
-
-#, elixir-format
-#: lib/glimesh_web/live/homepage_live.html.leex:13
-msgid "Register Your Account"
-msgstr "내 계정 만들기"
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_security/edit.html.eex:137
-msgid "Remove Two Factor Authentication"
-msgstr "2FA 제거"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/report_button.ex:10
-msgid "Report User"
-msgstr "유저 신고"
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:1
-#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:19
-msgid "Reset password"
-msgstr "비밀번호 초기화"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/channel_title.ex:22
-msgid "Save Info"
-msgstr "정보 저장"
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_payments/index.html.eex:31
-msgid "Saved Payment Method"
-msgstr "저장된 결제수단"
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_payments/index.html.eex:48
-msgid "Setup Payment Method"
-msgstr "결제수단 설정"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/profile.html.leex:89
-msgid "Share my profile on Twitter"
-msgstr "내 프로필을 Twitter에 공유"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/profile.html.leex:93
-msgid "Share on Twitter"
-msgstr "Twitter에 공유"
-
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:91
-msgid "Sign Out"
-msgstr "로그아웃"
-
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:97
-#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:25
-msgid "Sign in"
-msgstr "로그인"
-
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:54
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:54
 msgid "Social"
 msgstr "SNS"
 
-#, elixir-format
-#: lib/glimesh_web/templates/user_payments/index.html.eex:74
-msgid "Streamer"
-msgstr "스트리머"
-
-#, elixir-format
-#: lib/glimesh_web/controllers/user_payments_controller.ex:51
-msgid "Stripe account linked successfully, welcome to the sub club!"
-msgstr "Stripe 계정이 성공적으로 연결되었습니다. Sub Club에 오신 걸 환영합니다!"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/followers.html.leex:19
-msgid "Sub Ready!"
-msgstr "구독 준비!"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/profile.html.leex:13
-#: lib/glimesh_web/templates/user_payments/index.html.eex:65
-msgid "Sub-ready Streamer"
-msgstr "구독이 준비된 스트리머"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/report_button.ex:69
-msgid "Submit Report"
-msgstr "신고하기"
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_security/edit.html.eex:132
-msgid "Submit Two Factor Authentication"
-msgstr "2FA 전송"
-
-#, elixir-format
-#: lib/glimesh_web/live/subscription_component.ex:45
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:16 lib/glimesh_web/live/user_live/components/subscribe_button.ex:19
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:22
-msgid "Subscribe"
-msgstr "구독"
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_payments/index.html.eex:109
-msgid "Subscribed since %{date}"
-msgstr ""
-
-#, elixir-format
-#: lib/glimesh_web/live/homepage_live.html.leex:75
-msgid "Subscription buttons shouldn't be restricted for a particular group of streamers. Everyone who can verify their identity and bank information will receive a subscription button for their stream."
-msgstr "특정 집단의 스트리머에게만 구독 기능을 주어서는 안 됩니다. 본인 인증과 은행 정보만 확인할 수 있는 사람이라면 누구든 본인의 채널에 구독 기능을 만들 수 있습니다."
-
-#, elixir-format
-#: lib/glimesh_web/live/homepage_live.html.leex:72
-msgid "Subscriptions for Everyone."
-msgstr "평등한 구독 시스템"
-
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:22
-msgid "Tech"
-msgstr "기술"
-
-#, elixir-format
-#: lib/glimesh_web/live/homepage_live.html.leex:8
-msgid "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving. We're launching soon, but you can get your account setup early and learn more about us below!"
-msgstr "진정한 실시간 상호작용 기술을 중심으로 구축된 최초의 실시간 방송 플랫폼입니다. 방송은 빛과도 같이 빠르고, 채팅은 불타오르고, 커뮤니티는 번창하고 있습니다. 아직 정식 서비스를 준비 중이지만, 미리 계정을 설정할 수 있으며 아래에서 글리메쉬에 관해 자세히 알아보실 수 있습니다!"
-
-#, elixir-format
-#: lib/glimesh_web/live/subscription_component.ex:33
-msgid "Total Charge"
-msgstr "총액"
-
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:62
 msgid "Twitter Username"
 msgstr "Twitter 계정"
 
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:12
-msgid "Unfollow"
-msgstr "팔로우 해제"
+#: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:84
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:95
+msgid "YouTube Username"
+msgstr "Youtube 계정"
 
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:14
-#: lib/glimesh_web/templates/user_payments/index.html.eex:98
-msgid "Unsubscribe"
-msgstr "구독 해제"
+#: lib/glimesh_web/controllers/user_settings_controller.ex:14
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:2
+msgid "Your Profile"
+msgstr "내 프로필"
 
-#, elixir-format
+#: lib/glimesh_web/templates/user_security/edit.html.eex:74
+msgid "Change Password"
+msgstr "비밀번호 변경"
+
+#: lib/glimesh_web/templates/user_security/edit.html.eex:39
+msgid "Change password"
+msgstr "비밀번호 변경"
+
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:10
+#: lib/glimesh_web/templates/user_security/edit.html.eex:53
+msgid "New password"
+msgstr "새로운 비밀번호"
+
+#: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:21
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:16
+msgid "Click Update Settings down below when you've chosen the file."
+msgstr "파일을 선택한 후 아래의 \"설정 적용\"을 눌러 적용해주세요."
+
+#: lib/glimesh_web/templates/user_security/edit.html.eex:66
+msgid "Confirm New Password"
+msgstr "새로운 비밀번호 확인"
+
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:17
+#: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:39 lib/glimesh_web/templates/gct/lookup_user.html.eex:44
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:39
+msgid "Display Name"
+msgstr "닉네임"
+
+#: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:46
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:46
+msgid "Language"
+msgstr "언어"
+
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:87
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:173 lib/glimesh_web/templates/user_settings/preference.html.eex:41
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:186
 msgid "Update Settings"
 msgstr "설정 적용"
 
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:79
-msgid "Upgrade!"
-msgstr "업그레이드!"
-
-#, elixir-format
-#: lib/glimesh_web/controllers/user_registration_controller.ex:25
-msgid "User created successfully."
-msgstr "유저를 성공적으로 생성하였습니다."
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:58
-msgid "User followed successfully"
-msgstr "성공적으로 팔로우하였습니다"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:72
-msgid "User unfollowed successfully"
-msgstr "성공적으로 팔로우를 해제하였습니다"
-
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:38
-msgid "Users"
-msgstr "유저"
-
-#, elixir-format
-#: lib/glimesh_web/live/homepage_live.html.leex:34
-msgid "Warp Speed Streaming."
-msgstr "초고속 방송"
-
-#, elixir-format
-#: lib/glimesh_web/live/streams_live/list.html.leex:11
-msgid "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!"
-msgstr "지금은 가끔 특별한 이벤트나 독특한 방송을 진행하지만, 정식 서비스가 시작되면 이 페이지가 글리메쉬의 방송으로 가득 채워질 거예요!"
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_payments/index.html.eex:69
-msgid "Welcome to the sub club!"
-msgstr "구독을 환영합니다!"
-
-#, elixir-format
-#: lib/glimesh_web/live/user_live/components/report_button.ex:36
-msgid "What has this user done wrong?"
-msgstr "이 방송에 어떠한 문제가 있습니까?"
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_payments/index.html.eex:52
-msgid "You can link a payment method by creating a subscription to a channel, or the platform."
-msgstr "채널 또는 플랫폼에 구독을 생성하여 지불 방식을 연동할 수 있습니다."
-
-#, elixir-format
-#: lib/glimesh_web/templates/user_payments/index.html.eex:33
-msgid "You have an existing saved payment method. You can delete it by clicking the button below."
-msgstr "이미 저장된 지불 방식이 있습니다. 아래의 버튼을 클릭하여 삭제할 수 있습니다."
-
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:115
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:126
 msgid "YouTube Teaser URL"
 msgstr "YouTube 소개 URL"
 
-#, elixir-format
-#: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:84
-#: lib/glimesh_web/templates/user_settings/profile.html.eex:95
-msgid "YouTube Username"
-msgstr "Youtube 계정"
+#: lib/glimesh_web/controllers/user_settings_controller.ex:56
+msgid "Profile updated successfully."
+msgstr "프로필을 성공적으로 갱신하였습니다."
 
-#, elixir-format
-#: lib/glimesh_web/live/subscription_component.ex:21
-msgid "Your Name"
-msgstr "이름"
+#: lib/glimesh_web/controllers/user_security_controller.ex:30
+msgid "A link to confirm your e-mail change has been sent to the new address."
+msgstr "이메일 변경을 확인하는 링크가 포함된 메일을 새 이메일 주소로 발송하였습니다."
 
-#, elixir-format
+#: lib/glimesh_web/controllers/user_security_controller.ex:43
+msgid "E-mail changed successfully."
+msgstr "이메일을 성공적으로 변경하였습니다"
+
+#: lib/glimesh_web/controllers/user_security_controller.ex:62
+msgid "Password updated successfully."
+msgstr "비밀번호를 성공적으로 변경하였습니다."
+
+#: lib/glimesh_web/controllers/user_confirmation_controller.ex:46
+msgid "Account confirmed successfully."
+msgstr "계정을 정상적으로 확인하였습니다."
+
+#: lib/glimesh_web/controllers/user_confirmation_controller.ex:34
+msgid "If your e-mail is in our system and it has not been confirmed yet, "
+msgstr "해당 이메일이 가입되어있고 아직 확인되지 않았다면, "
+
+#: lib/glimesh_web/controllers/user_confirmation_controller.ex:35
+msgid "you will receive an e-mail with instructions shortly."
+msgstr "곧 안내 지침이 담긴 이메일을 받으실 겁니다."
+
+#: lib/glimesh_web/controllers/user_reset_password_controller.ex:24
+msgid "If your e-mail is in our system, you will receive instructions to reset your password shortly."
+msgstr "등록된 이메일 주소라면 비밀번호 초기화 안내 메일을 곧 받으실 수 있습니다."
+
+#: lib/glimesh_web/controllers/user_reset_password_controller.ex:41
+msgid "Password reset successfully."
+msgstr "비밀번호를 성공적으로 초기화하였습니다."
+
+#: lib/glimesh_web/controllers/user_registration_controller.ex:25
+msgid "User created successfully."
+msgstr "유저를 성공적으로 생성하였습니다."
+
+#: lib/glimesh_web/templates/user_confirmation/new.html.eex:10
+msgid "email"
+msgstr "이메일"
+
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:1
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:19
+msgid "Reset password"
+msgstr "비밀번호 초기화"
+
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:14
+msgid "Confirm new password"
+msgstr "새로운 비밀번호 확인"
+
+#: lib/glimesh_web/live/user_live/profile.html.leex:77
+msgid "Followers"
+msgstr "팔로워"
+
+#: lib/glimesh/stream_layout/followers_homepage.ex:22
+#: lib/glimesh_web/live/user_live/profile.html.leex:82 lib/glimesh_web/templates/layout/_navbar.html.leex:44
+msgid "Following"
+msgstr "팔로잉"
+
+#: lib/glimesh_web/live/user_live/profile.html.leex:110
+msgid "Pre-Follow Streamer"
+msgstr "미리 팔로우한 스트리머"
+
+#: lib/glimesh_web/live/user_live/profile.html.leex:89
+msgid "Share my profile on Twitter"
+msgstr "내 프로필을 Twitter에 공유"
+
+#: lib/glimesh_web/live/user_live/profile.html.leex:93
+msgid "Share on Twitter"
+msgstr "Twitter에 공유"
+
+#: lib/glimesh_web/live/user_live/followers.html.leex:19
+msgid "Sub Ready!"
+msgstr "구독 준비!"
+
+#: lib/glimesh_web/live/user_live/profile.html.leex:13
+#: lib/glimesh_web/templates/user_payments/index.html.eex:65
+msgid "Sub-ready Streamer"
+msgstr "구독이 준비된 스트리머"
+
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:20
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:24
+msgid "Follow"
+msgstr "팔로우"
+
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:58
+msgid "User followed successfully"
+msgstr "성공적으로 팔로우하였습니다"
+
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:72
+msgid "User unfollowed successfully"
+msgstr "성공적으로 팔로우를 해제하였습니다"
+
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:12
+msgid "Unfollow"
+msgstr "팔로우 해제"
+
+#: lib/glimesh_web/controllers/user_session_controller.ex:37
+msgid "Logged out successfully."
+msgstr "성공적으로 로그아웃하였습니다."
+
+#: lib/glimesh_web/templates/article/index.html.eex:2
+msgid "Glimesh Blog"
+msgstr "글리메쉬 블로그"
+
+#: lib/glimesh_web/templates/article/index.html.eex:15
+msgid "Read More"
+msgstr "자세히 보기"
+
+#: lib/glimesh_web/live/homepage_live.html.leex:54
+msgid "Built by the community, for the community."
+msgstr "커뮤니티를 위한, 커뮤니티에 의한."
+
+#: lib/glimesh_web/live/homepage_live.html.leex:53
+msgid "Community Driven."
+msgstr "커뮤니티 중심"
+
+#: lib/glimesh_web/live/homepage_live.html.leex:76
+msgid "For launch, subscriptions will be only be enabled in the US."
+msgstr "정식 서비스 시에는 미국에서만 구독 기능을 활성화할 수 있습니다."
+
+#: lib/glimesh_web/live/homepage_live.html.leex:35
+msgid "It's even faster than light."
+msgstr "빛보다 빠릅니다."
+
+#: lib/glimesh_web/live/homepage_live.html.leex:73
+msgid "Level the playing field."
+msgstr "모두에게 평등한 플랫폼."
+
+#: lib/glimesh_web/live/homepage_live.html.leex:6
+msgid "Next-Gen Live Streaming"
+msgstr "차세대 실시간 방송"
+
+#: lib/glimesh_web/live/homepage_live.html.leex:37
+msgid "Our fastest streaming technology is built on open standards and gives your streams unimaginable levels of interactivity. We're constantly pushing the boundaries of live video and of course, it's open source."
+msgstr "글리메쉬의 초고속 방송 기술은 표준 오픈소스를 기반으로 구축되어 있으며 무궁무진한 상호작용의 가능성을 제공합니다. 글리메쉬는 끊임없이 인터넷 생방송의 경계를 넓히고 있으며, 모든 것이 오픈 소스입니다."
+
+#: lib/glimesh_web/live/homepage_live.html.leex:13
+msgid "Register Your Account"
+msgstr "내 계정 만들기"
+
+#: lib/glimesh_web/live/homepage_live.html.leex:75
+msgid "Subscription buttons shouldn't be restricted for a particular group of streamers. Everyone who can verify their identity and bank information will receive a subscription button for their stream."
+msgstr "특정 집단의 스트리머에게만 구독 기능을 주어서는 안 됩니다. 본인 인증과 은행 정보만 확인할 수 있는 사람이라면 누구든 본인의 채널에 구독 기능을 만들 수 있습니다."
+
+#: lib/glimesh_web/live/homepage_live.html.leex:72
+msgid "Subscriptions for Everyone."
+msgstr "평등한 구독 시스템"
+
+#: lib/glimesh_web/live/homepage_live.html.leex:8
+msgid "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving. We're launching soon, but you can get your account setup early and learn more about us below!"
+msgstr "진정한 실시간 상호작용 기술을 중심으로 구축된 최초의 실시간 방송 플랫폼입니다. 방송은 빛과도 같이 빠르고, 채팅은 불타오르고, 커뮤니티는 번창하고 있습니다. 아직 정식 서비스를 준비 중이지만, 미리 계정을 설정할 수 있으며 아래에서 글리메쉬에 관해 자세히 알아보실 수 있습니다!"
+
+#: lib/glimesh_web/live/homepage_live.html.leex:34
+msgid "Warp Speed Streaming."
+msgstr "초고속 방송"
+
+#: lib/glimesh_web/live/homepage_live.html.leex:56
+msgid "Community is one of our main focuse at Glimesh and we make sure to include you every step of the way. We host staff meetings live on our platform every Tuesday that are open to everyone and if there's a feature you wish we had, you can collaborate on our %{a_start}open source codebase%{a_end} to create it!"
+msgstr "커뮤니티는 글리메쉬의 가장 중요한 핵심 요소 중 하나입니다. 그만큼 모든 단계에서 여러분이 참여할 수 있도록 노력하고 있습니다. 매주 화요일마다 모두에게 공개되는 플랫폼 스태프 미팅 방송을 진행하며, 원하는 기능이 있다면 %{a_start}오픈 소스 코드베이스%{a_end}에서 기여하여 개발에 참여할 수도 있습니다!"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:16
+msgid "Art"
+msgstr "미술"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:28
+msgid "Education"
+msgstr "교육"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:13
+msgid "Gaming"
+msgstr "게임"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:25
+msgid "IRL"
+msgstr "일상"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:33
+msgid "More"
+msgstr "기타"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:19
+msgid "Music"
+msgstr "음악"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:96
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:24
+msgid "Register"
+msgstr "가입"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:91
+msgid "Sign Out"
+msgstr "로그아웃"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:97
+#: lib/glimesh_web/templates/user_reset_password/edit.html.eex:25
+msgid "Sign in"
+msgstr "로그인"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:22
+msgid "Tech"
+msgstr "기술"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:79
+msgid "Upgrade!"
+msgstr "업그레이드!"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:38
+msgid "Users"
+msgstr "유저"
+
+#: lib/glimesh_web/controllers/user_payments_controller.ex:87
+msgid "Payment method deleted!"
+msgstr "결제수단이 삭제되었습니다!"
+
+#: lib/glimesh_web/controllers/user_payments_controller.ex:51
+msgid "Stripe account linked successfully, welcome to the sub club!"
+msgstr "Stripe 계정이 성공적으로 연결되었습니다. Sub Club에 오신 걸 환영합니다!"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:43
+msgid "Delete Saved Payment"
+msgstr "저장된 결제수단 삭제"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:80
+msgid "Enable Subscriptions"
+msgstr "구독 활성화"
+
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:145
+#: lib/glimesh_web/templates/user_payments/index.html.eex:132
+msgid "Payment History"
+msgstr "결제 기록"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:31
+msgid "Saved Payment Method"
+msgstr "저장된 결제수단"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:48
+msgid "Setup Payment Method"
+msgstr "결제수단 설정"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:74
+msgid "Streamer"
+msgstr "스트리머"
+
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:14
+#: lib/glimesh_web/templates/user_payments/index.html.eex:98
+msgid "Unsubscribe"
+msgstr "구독 해제"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:69
+msgid "Welcome to the sub club!"
+msgstr "구독을 환영합니다!"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:52
+msgid "You can link a payment method by creating a subscription to a channel, or the platform."
+msgstr "채널 또는 플랫폼에 구독을 생성하여 지불 방식을 연동할 수 있습니다."
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:33
+msgid "You have an existing saved payment method. You can delete it by clicking the button below."
+msgstr "이미 저장된 지불 방식이 있습니다. 아래의 버튼을 클릭하여 삭제할 수 있습니다."
+
 #: lib/glimesh_web/controllers/user_payments_controller.ex:28
 #: lib/glimesh_web/templates/user_payments/index.html.eex:2
 msgid "Your Payment Portal"
 msgstr "내 총 지불액"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:88
 msgid "Your Subscriptions"
 msgstr "내 구독"
 
-#, elixir-format
-#: lib/glimesh_web/templates/user_confirmation/new.html.eex:10
-msgid "email"
-msgstr "이메일"
+#: lib/glimesh_web/live/subscription_component.ex:25
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:35
+msgid "Payment Details"
+msgstr "결제 상세 내역"
 
-#, elixir-format
-#: lib/glimesh_web/controllers/user_confirmation_controller.ex:35
-msgid "you will receive an e-mail with instructions shortly."
-msgstr "곧 안내 지침이 담긴 이메일을 받으실 겁니다."
+#: lib/glimesh_web/live/subscription_component.ex:17
+msgid "Payment method already attached!"
+msgstr "지불 방식이 이미 존재합니다!"
 
-#, elixir-format
+#: lib/glimesh_web/live/subscription_component.ex:45
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:16 lib/glimesh_web/live/user_live/components/subscribe_button.ex:19
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:22
+msgid "Subscribe"
+msgstr "구독"
+
+#: lib/glimesh_web/live/subscription_component.ex:33
+msgid "Total Charge"
+msgstr "총액"
+
+#: lib/glimesh_web/live/subscription_component.ex:21
+msgid "Your Name"
+msgstr "이름"
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:13
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:34 lib/glimesh_web/live/platform_subscription_live/index.html.leex:61
+#: lib/glimesh_web/live/subscription_component.ex:34
+msgid "monthly"
+msgstr "매월"
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:69
+msgid "Cancel Subscription"
+msgstr "구독 취소"
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:16
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:37
+msgid "Cosmetic Features"
+msgstr "비주얼 기능"
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:11
+msgid "Help us fund the platform & grow!"
+msgstr "플랫폼에 자금을 제공하고 성장에 협력해주세요!!!"
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:23
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:46
+msgid "Select"
+msgstr "선택"
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:32
+msgid "Support Glimesh's future with your wallet! Get special perks to show off."
+msgstr "지갑을 충전하여 글리메쉬의 미래를 지원해주세요! 뽐낼 수 있는 특별한 특전도 드린답니다."
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:55
+msgid "You're subscribed!"
+msgstr "구독 중!"
+
+#: lib/glimesh_web/live/streams_live/list.ex:17
+msgid "Followed Streams"
+msgstr "팔로우한 채널"
+
+#: lib/glimesh_web/live/streams_live/list.html.leex:11
+msgid "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!"
+msgstr "지금은 가끔 특별한 이벤트나 독특한 방송을 진행하지만, 정식 서비스가 시작되면 이 페이지가 글리메쉬의 방송으로 가득 채워질 거예요!"
+
+#: lib/glimesh_web/live/streams_live/list.html.leex:9
+msgid "%{category} Streams Coming Soon"
+msgstr "%{category} 방송이 곧 생겨날 거예요!"
+
+#: lib/glimesh_web/live/user_live/index.ex:14
+#: lib/glimesh_web/live/user_live/index.html.leex:2
+msgid "Our Users"
+msgstr "유저 목록"
+
+#: lib/glimesh_web/live/user_live/components/channel_title.ex:22
+msgid "Save Info"
+msgstr "정보 저장"
+
+#: lib/glimesh_web/live/user_live/profile.html.leex:113
+msgid "Glimesh isn't launched yet, but you can follow %{streamer} now and get automatically notified when they go live!"
+msgstr "글리메쉬는 아직 정식 서비스를 준비 중이지만, %{streamer} 채널을 지금 팔로우하여 나중에 생방송이 진행 중일 때 알림을 받을 수 있습니다!"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:10
+msgid "Report User"
+msgstr "유저 신고"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:54
+msgid "Copyright Infringement / Law Violation"
+msgstr "저작권 침해 / 법률 위반"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:42
+msgid "Hate Speech"
+msgstr "혐오 발언"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:48
+msgid "Inappropriate Content"
+msgstr "부적절한 내용"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:65
+msgid "Notes"
+msgstr "설명"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:60
+msgid "Other"
+msgstr "기타"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:69
+msgid "Submit Report"
+msgstr "신고하기"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:36
+msgid "What has this user done wrong?"
+msgstr "이 방송에 어떠한 문제가 있습니까?"
+
+#: lib/glimesh_web/live/streams_live/list.html.leex:23
+msgid "%{category} Streams"
+msgstr "%{category} 방송"
+
+#: lib/glimesh_web/live/admin/category_live/index.html.leex:35
+msgid "Are you sure?"
+msgstr "정말로 진행하시겠습니까?"
+
+#: lib/glimesh_web/live/admin/category_live/index.html.leex:18
+#: lib/glimesh_web/live/admin/category_live/show.html.leex:25
+msgid "Avatar"
+msgstr "아바타"
+
+#: lib/glimesh_web/live/admin/category_live/show.html.leex:37
+#: lib/glimesh_web/templates/user_applications/new.html.eex:7
+msgid "Back"
+msgstr "뒤로"
+
+#: lib/glimesh_web/live/admin/category_live/form_component.ex:52
+msgid "Category created successfully"
+msgstr "성공적으로 카테고리를 생성하였습니다"
+
+#: lib/glimesh_web/live/admin/category_live/form_component.ex:39
+msgid "Category updated successfully"
+msgstr "성공적으로 카테고리를 갱신하였습니다"
+
+#: lib/glimesh_web/live/admin/category_live/show.html.leex:36
+#: lib/glimesh_web/live/user_live/components/channel_title.ex:12 lib/glimesh_web/templates/gct/edit_user_profile.html.eex:125
+#: lib/glimesh_web/templates/user_settings/profile.html.eex:138
+msgid "Edit"
+msgstr "편집"
+
+#: lib/glimesh_web/live/admin/category_live/index.ex:19
+#: lib/glimesh_web/live/admin/category_live/show.ex:20
+msgid "Edit Category"
+msgstr "카테고리 편집"
+
+#: lib/glimesh_web/live/admin/category_live/index.ex:31
+#: lib/glimesh_web/live/admin/category_live/index.html.leex:2
+msgid "Listing Categories"
+msgstr "카테고리 목록"
+
+#: lib/glimesh_web/live/admin/category_live/index.html.leex:16
+#: lib/glimesh_web/live/admin/category_live/show.html.leex:15 lib/glimesh_web/templates/user_applications/form.html.eex:9
+msgid "Name"
+msgstr "이름"
+
+#: lib/glimesh_web/live/admin/category_live/index.ex:25
+#: lib/glimesh_web/live/admin/category_live/index.html.leex:42
+msgid "New Category"
+msgstr "새 카테고리"
+
+#: lib/glimesh_web/live/admin/category_live/index.html.leex:19
+#: lib/glimesh_web/live/admin/category_live/show.html.leex:30
+msgid "Parent"
+msgstr "상위"
+
+#: lib/glimesh_web/live/admin/category_live/form_component.html.leex:11
+msgid "Parent Category"
+msgstr "상위 카테고리"
+
+#: lib/glimesh_web/live/admin/category_live/show.ex:19
+#: lib/glimesh_web/live/admin/category_live/show.html.leex:1
+msgid "Show Category"
+msgstr "카테고리 표시"
+
+#: lib/glimesh_web/live/admin/category_live/index.html.leex:17
+#: lib/glimesh_web/live/admin/category_live/show.html.leex:20
+msgid "Slug"
+msgstr "슬러그"
+
 #: lib/glimesh_web/templates/user_security/edit.html.eex:81
 msgid "2FA Setup"
 msgstr "2FA 설정"
 
-#, elixir-format
-#: lib/glimesh_web/controllers/user_security_controller.ex:30
-msgid "A link to confirm your e-mail change has been sent to the new address."
-msgstr "이메일 변경을 확인하는 링크가 포함된 메일을 새 이메일 주소로 발송하였습니다."
+#: lib/glimesh_web/templates/user_security/edit.html.eex:132
+msgid "Submit Two Factor Authentication"
+msgstr "2FA 전송"
 
-#, elixir-format
-#: lib/glimesh_web/templates/user_security/edit.html.eex:8
-msgid "Change e-mail"
-msgstr "이메일 변경"
+#: lib/glimesh_web/templates/user_security/edit.html.eex:106
+#: lib/glimesh_web/templates/user_session/tfa.html.eex:18
+msgid "2FA Code"
+msgstr "2FA 코드"
 
-#, elixir-format
-#: lib/glimesh_web/templates/user_security/edit.html.eex:39
-msgid "Change password"
-msgstr "비밀번호 변경"
+#: lib/glimesh_web/templates/user_security/edit.html.eex:137
+msgid "Remove Two Factor Authentication"
+msgstr "2FA 제거"
 
-#, elixir-format
-#: lib/glimesh_web/controllers/user_reset_password_controller.ex:24
-msgid "If your e-mail is in our system, you will receive instructions to reset your password shortly."
-msgstr "등록된 이메일 주소라면 비밀번호 초기화 안내 메일을 곧 받으실 수 있습니다."
+#: lib/glimesh_web/live/user_live/components/viewer_count.ex:10
+msgid " %{count} Viewers"
+msgstr "%{count}명 시청 중"
 
-#, elixir-format
-#: lib/glimesh_web/controllers/user_settings_controller.ex:14
-#: lib/glimesh_web/templates/user_settings/profile.html.eex:2
-msgid "Your Profile"
-msgstr "내 프로필"
-
-msgid "can't be blank"
-msgstr "비워둘 수 없음"
-
-msgid "has already been taken"
-msgstr "이미 사용 중"
-
-msgid "is invalid"
-msgstr "유효하지 않음"
-
-msgid "must be accepted"
-msgstr "수락돼야 함"
-
-msgid "has invalid format"
-msgstr "유효하지 않은 포멧입니다"
-
-msgid "has an invalid entry"
-msgstr "유효하지 않은 접근입니다"
-
-msgid "is reserved"
-msgstr "예약"
-
-msgid "does not match confirmation"
-msgstr "일치하지 않습니다"
-
-msgid "is still associated with this entry"
-msgstr "아직 이 엔트리와 관련이 있습니다"
-
-msgid "are still associated with this entry"
-msgstr "아직 이 엔트리와 관련이 있습니다"
-
-msgid "should be %{count} character(s)"
-msgid_plural "should be %{count} character(s)"
-msgstr[0] "최소 %{count}글자 이상이어야 합니다."
-
-msgid "should have %{count} item(s)"
-msgid_plural "should have %{count} item(s)"
-msgstr[0] "％{count}항목이 필요합니다."
-
-msgid "should be at least %{count} character(s)"
-msgid_plural "should be at least %{count} character(s)"
-msgstr[0] "최소 %{count}글자 이상이어야 합니다."
-
-msgid "should have at least %{count} item(s)"
-msgid_plural "should have at least %{count} item(s)"
-msgstr[0] "최소 ％{count}항목이 필요합니다."
-
-msgid "should be at most %{count} character(s)"
-msgid_plural "should be at most %{count} character(s)"
-msgstr[0] "%{count}글자를 초과하지 말아야 합니다"
-
-msgid "should have at most %{count} item(s)"
-msgid_plural "should have at most %{count} item(s)"
-msgstr[0] "％{count}항목을 초과하지 말아야 합니다."
-
-msgid "must be less than %{number}"
-msgstr "%{number}보다 작아야 합니다."
-
-msgid "must be greater than %{number}"
-msgstr "%{number} 초과여야 합니다"
-
-msgid "must be less than or equal to %{number}"
-msgstr "%{number} 이하여야 합니다"
-
-msgid "must be greater than or equal to %{number}"
-msgstr "%{number} 이상이어야 합니다"
-
-msgid "must be equal to %{number}"
-msgstr "%{number}와(과) 동일해야 합니다"
-
-#, elixir-format
 #: lib/glimesh_web/templates/user_session/tfa.html.eex:27
 msgid "Don't have access anymore?"
 msgstr "더 이상 접속할 수 없나요?"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_session/tfa.html.eex:6
 msgid "Enter your 2FA code!"
 msgstr "2FA 코드를 입력하세요!"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:27
 msgid "Invalid 2FA code, if you need help please email %{email}"
 msgstr "유효하지 않은 2FA 코드입니다. 도움이 필요하다면 %{email}로 문의 바랍니다."
 
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:83 sidebar.html.eex:8
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:83
+#: lib/glimesh_web/templates/layout/user-sidebar.html.eex:8
 msgid "Payments"
 msgstr "지불"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_session/tfa.html.eex:27
 msgid "Please contact %{email}"
 msgstr "%{email}로 문의 바랍니다."
 
-#, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:55
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:74 sidebar.html.eex:5
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:74 lib/glimesh_web/templates/layout/user-sidebar.html.eex:5
 msgid "Profile"
 msgstr "프로필"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_security_controller.ex:13
-#: sidebar.html.eex:17 lib/glimesh_web/templates/user_security/edit.html.eex:2
+#: lib/glimesh_web/templates/layout/user-sidebar.html.eex:17 lib/glimesh_web/templates/user_security/edit.html.eex:2
 msgid "Security"
 msgstr "보안"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:16
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:27 lib/glimesh_web/templates/layout/_navbar.html.leex:87
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:11 lib/glimesh_web/templates/user_settings/profile.html.eex:27
 msgid "Settings"
 msgstr "설정"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:67
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:111
 msgid "Chat Rules (Markdown Supported)"
 msgstr "채팅 규칙 (마크다운 지원)"
 
-#, elixir-format
-#: sidebar.html.eex:36
+#: lib/glimesh_web/templates/layout/user-sidebar.html.eex:36
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:18
 msgid "Create Channel"
 msgstr "채널 생성"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:132
 msgid "Delete Channel"
 msgstr "채널 삭제"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:101
 msgid "Stream settings updated successfully"
 msgstr "성공적으로 방송 설정을 갱신했습니다"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:16
 msgid "You currently don't have a channel setup. Press the button below if you'd like to setup your channel!"
 msgstr "채널을 설정하지 않았습니다. 아래의 버튼을 눌러 자신의 채널을 설정하세요!"
 
-#, elixir-format
 #: lib/glimesh/stream_layout/followers_homepage.ex:31
 msgid "Your Followed Streams"
 msgstr "내가 팔로우한 채널"
 
-#, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:20
 msgid "Actions"
 msgstr "행동"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/form.html.eex:38
 msgid "Allowed Redirect URI's"
 msgstr "허용된 리다이렉트 URI"
 
-#, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:17
 msgid "Application"
 msgstr "애플리케이션"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/oauth2_controllers/authorized_application_controller.ex:28
 msgid "Application revoked."
 msgstr "애플리케이션 취소됨."
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:17
-#: sidebar.html.eex:45 lib/glimesh_web/templates/user_applications/index.html.eex:4
+#: lib/glimesh_web/templates/layout/user-sidebar.html.eex:45 lib/glimesh_web/templates/user_applications/index.html.eex:4
 #: lib/glimesh_web/templates/user_applications/show.html.eex:4
 msgid "Applications"
 msgstr "애플리케이션"
 
-#, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:16
 msgid "Are you sure you wish to authorize %{name} to use your account? This application will be able to:"
 msgstr "%{name}이(가) 계정을 사용하도록 승인하시겠습니까? 이 애플리케이션의 다음을 수행할 수 있습니다:"
 
-#, elixir-format
-#: sidebar.html.eex:20
+#: lib/glimesh_web/templates/layout/user-sidebar.html.eex:20
 msgid "Authorizations"
 msgstr "인증"
 
-#, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:35
 #: lib/glimesh_web/templates/user_applications/show.html.eex:97
 msgid "Authorize"
 msgstr "승인"
 
-#, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:6
 msgid "Authorize %{name}?"
 msgstr "%{name}을(를) 승인하시겠습니까?"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/oauth2_controllers/authorized_application_controller.ex:14
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:4
 msgid "Authorized Applications"
 msgstr "승인된 애플리케이션"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/form.html.eex:31
 msgid "Browse for Images"
 msgstr "이미지 찾아보기"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:88
 msgid "Callbacks"
 msgstr "콜백"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:26
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:41 lib/glimesh_web/templates/user_applications/form.html.eex:31
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:70 lib/glimesh_web/templates/user_settings/stream.html.eex:85
 msgid "Choose file"
 msgstr "파일 선택"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:43
 #: lib/glimesh_web/templates/user_applications/show.html.eex:56 lib/glimesh_web/templates/user_applications/show.html.eex:69
 #: lib/glimesh_web/templates/user_applications/show.html.eex:82 lib/glimesh_web/templates/user_settings/stream.html.eex:53
 msgid "Click to Copy"
 msgstr "클릭하여 복사"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:35
 msgid "Client ID"
 msgstr "클라이언트 ID"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:43
 #: lib/glimesh_web/templates/user_applications/show.html.eex:56 lib/glimesh_web/templates/user_applications/show.html.eex:69
 #: lib/glimesh_web/templates/user_applications/show.html.eex:82 lib/glimesh_web/templates/user_settings/stream.html.eex:53
 msgid "Copied to Clipboard"
 msgstr "클립보드에 복사됨"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:38
 #: lib/glimesh_web/templates/user_applications/index.html.eex:7 lib/glimesh_web/templates/user_applications/new.html.eex:4
 #: lib/glimesh_web/templates/user_applications/show.html.eex:7
 msgid "Create Application"
 msgstr "애플리케이션 생성"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:33
 msgid "Credentials"
 msgstr "자격 증명"
 
-#, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:38
 msgid "Deny"
 msgstr "거부"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/form.html.eex:21
 #: lib/glimesh_web/templates/user_payments/index.html.eex:142
 msgid "Description"
 msgstr "설명"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/edit.html.eex:2
 #: lib/glimesh_web/templates/user_applications/show.html.eex:105
 msgid "Edit Application"
 msgstr "애플리케이션 편집"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:42
 #: lib/glimesh_web/templates/user_applications/show.html.eex:55 lib/glimesh_web/templates/user_applications/show.html.eex:68
 #: lib/glimesh_web/templates/user_applications/show.html.eex:81
 msgid "Error"
 msgstr "오류"
 
-#, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:18 lib/glimesh_web/templates/user_applications/form.html.eex:15
 msgid "Homepage"
 msgstr "홈페이지"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:150
 #: lib/glimesh_web/templates/user_applications/form.html.eex:27 lib/glimesh_web/templates/user_settings/profile.html.eex:163
 msgid "Image"
 msgstr "이미지"
 
-#, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:19
 msgid "Installed at"
 msgstr "설치 위치:"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:74
 msgid "OAuth Authorization URL"
 msgstr "OAuth 인증 URL"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:61
 msgid "OAuth Token URL"
 msgstr "OAuth 토큰 URL"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/form.html.eex:47
 msgid "Save Application"
 msgstr "애플리케이션 저장"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:48
 msgid "Secret Key"
 msgstr "비밀키"
 
-#, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:30
 msgid "Unauthorize"
 msgstr "승인 해제"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/form.html.eex:41
 msgid "Use one line per URI"
 msgstr "하나의 URI당 한 줄을 사용해주세요"
 
-#, elixir-format
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:8
 msgid "scopechat"
 msgstr "이 애플리케이션이 채팅에서 사용자를 대신하도록 허용."
 
-#, elixir-format
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:7
 msgid "scopeemail"
 msgstr "이 애플리케이션이 이메일 주소를 확인하도록 허용."
 
-#, elixir-format
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:6
 msgid "scopepublic"
 msgstr "이 애플리케이션이 프로필을 열람하도록 허용."
 
-#, elixir-format
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:9
 msgid "scopestream"
-msgstr "이 애플리케이션이 방송키를 확인할 수 있도록 허용."
+msgstr "이 애플리케이션이 스트림키를 확인할 수 있도록 허용."
 
-#, elixir-format
 #: lib/glimesh_web/live/user_live/followers.html.leex:3
 msgid "%{username}'s Followers"
 msgstr "%{username}의 팔로워"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/index.html.eex:27
 msgid "API Documentation"
 msgstr "API 문서"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:97
 msgid "Black & White 2FA Image"
 msgstr "흑백 2FA 이미지"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:136
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:149
 msgid "Bold"
 msgstr "굵게"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:146
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:159
 msgid "Code"
 msgstr "코드"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:166
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:179
 msgid "Coming soon!"
 msgstr "조만간 지원 예정!"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:140
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:153
 msgid "Heading"
 msgstr "제목"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:138
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:151
 msgid "Italic"
 msgstr "이탤릭"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:148
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:161
 msgid "Link"
 msgstr "링크"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:157
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:170
 msgid "Ordered List"
 msgstr "숫자로 정렬된 목록"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:127
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:140
 msgid "Preview"
 msgstr "미리보기"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:144
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:157
 msgid "Quote"
 msgstr "인용구"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:154
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:167
 msgid "Unordered List"
 msgstr "점으로 정렬된 목록"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:146
 #: lib/glimesh_web/live/user_live/stream.html.leex:78
 msgid "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the right hand corner!"
 msgstr "프로필에 오신 걸 환영합니다! 아직 아무것도 수정하지 않았지만, 우측 상단의 닉네임을 눌러 손쉽게 편집할 수 있답니다!"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:79
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:123
 msgid "Block viewers from posting links?"
 msgstr "시청자들이 링크를 올릴 수 없도록 차단"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_registration_controller.ex:36
 msgid "Captcha validation failed, please try again."
 msgstr "Captcha 인증 실패. 다시 시도해주세요."
 
-#, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.html.leex:19
 msgid "Current active channel subscriptions totals, including net-new each week and totals."
 msgstr "현재 활성화된 전체 채널의 구독 수 (매주 신규 증가량 및 주당 총액)"
 
-#, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:31
 msgid "Founder"
 msgstr "설립자"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:21
 msgid "Giving Monthly"
 msgstr "매달 지급"
 
-#, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.ex:35
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:2
 msgid "Glimesh Platform Subscriptions"
 msgstr "글리메쉬 플랫폼 구독"
 
-#, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.html.leex:3
 msgid "Glimesh takes transparency to the exteme, as an open company we build in the public light, and we operate in the public light. We've built graphs for a couple common metrics we use, but if you have any questions about how we run, let us know!"
 msgstr "글리메쉬는 매우 투명하게 운영됩니다. 공개 기업으로서 공공의 관점에서 만들고 운영합니다. 저희가 사용하는 몇 가지 일반적인 지표에 대한 그래프를 만들었습니다. 그래도 글리메쉬의 운영에 관한 질문이 있으시다면 언제든 알려주세요!"
 
-#, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.ex:33
 #: lib/glimesh_web/live/about/open_data_live.html.leex:24
 msgid "Live Streams"
 msgstr "생방송"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:3
 msgid "Manage your ongoing subscriptions, see your transaction history, and setup your payout information subscriptions!"
 msgstr "진행 중인 구독을 관리하고, 거래 내역을 환인하고, 지급 정보를 설정하세요!"
 
-#, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.html.leex:26
 msgid "Number of live streams each week."
 msgstr "매주 생방송 수"
 
-#, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.html.leex:12
 msgid "Number of users on the platform over time, and net-new each week."
 msgstr "시간 경과에 따른 플랫폼 이용자 수 및 매주 신규 이용자 수"
 
-#, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.html.leex:2
 #: lib/glimesh_web/templates/layout/root.html.leex:94
 msgid "Open Data"
 msgstr "공개 데이터"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:122
 #: lib/glimesh_web/templates/user_payments/index.html.eex:119
 msgid "Payout History"
 msgstr "지급 내역"
 
-#, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.ex:21
 #: lib/glimesh_web/live/about/open_data_live.html.leex:10
 msgid "Platform User Growth"
 msgstr "플랫폼 이용자 증가"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:13
 msgid "Receiving Monthly"
 msgstr "매월 받는 금액"
 
-#, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.ex:27
 #: lib/glimesh_web/live/about/open_data_live.html.leex:16
 msgid "Recurring Subscriptions"
 msgstr "반복 구독"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:74
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:118
 msgid "Should links automatically be clickable?"
 msgstr "링크가 클릭 가능하도록 활성화"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:96
 msgid "Subscribed since %{date}."
 msgstr "%{date}부터 구독 중"
 
-#, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:3
 msgid "Support the platform directly and get a couple of extra perks to really stand out!"
 msgstr "플랫폼을 직접 지원하고 멋진 몇 가지 혜택을 받아보세요!"
 
-#, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:10
 msgid "Supporter"
 msgstr "후원자"
 
-#, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:56
 msgid "Thanks for supporting Glimesh. Your genuine support is appreciated."
 msgstr "글리메쉬를 후원해주셔서 감사합니다. 진심어린 지지에 감사드립니다."
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:56
 msgid "User account is banned. Please contact support at %{email} for more information."
 msgstr "사용자 계정이 금지되었습니다. 자세한 정보를 확인하시려면 %{email}로 문의 바랍니다."
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/index.html.eex:24
 msgid "Want to build a chat bot, an online tool, or other service that integrates with Glimesh? You're in the right place! Create an Application to get started and check out our API documentation if you need some guidance."
 msgstr "글리메쉬에서 사용할 챗봇이나 온라인 도구 등 각종 서비스를 만들고 싶으시다고요? 제대로 오셨습니다! 애플리케이션을 생성해서 시작해보세요. API 문서를 확인하시면 자세한 안내를 확인할 수 있습니다."
 
-#, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:91
 #: lib/glimesh_web/templates/user_payments/index.html.eex:164
 msgid "We're not quite ready to accept payments yet. Once we launch the platform, you'll be able to access this page!"
 msgstr "아직 글리메쉬는 비용을 처리할 준비가 안 됐습니다. 플랫폼이 정식으로 오픈하면 이 페이지에 접근할 수 있게 될 거예요!"
 
-#, elixir-format
+#: lib/glimesh_web/templates/user_payments/index.html.eex:109
+msgid "Subscribed since %{date}"
+msgstr "%{date}부터 구독 중"
+
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:36
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:80
 msgid "A repeatable background for your chat. Make sure it's not too noisy, and it's an image that can repeat nicely right and down. Max Size: 100Kb"
-msgstr ""
+msgstr "내 채널 채팅 배경에 반복되는 이미지입니다. 어지럽지 않은 이미지를 사용해주세요. 좌측 상단에서 시작해 채팅 화면 전체에 반복해서 표시됩니다. 최대 크기: 100KB"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:7
 msgid "About Us"
-msgstr ""
+msgstr "글리메쉬에 관하여"
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:16
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:72 lib/glimesh_web/templates/channel_moderator/index.html.eex:81
 #: lib/glimesh_web/templates/channel_moderator/show.html.eex:41
 msgid "Action"
-msgstr ""
+msgstr "행동"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/channel_moderator_controller.ex:50
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:7 lib/glimesh_web/templates/channel_moderator/new.html.eex:4
 msgid "Add Moderator"
-msgstr ""
+msgstr "매니저 추가"
 
-#, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:127
 msgid "All rights reserved."
-msgstr ""
+msgstr "판권 소유."
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:143
 msgid "Amount"
-msgstr ""
+msgstr "금액"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:21
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:65
 msgid "An image for your channel that will be shown whenever you are offline. Will be resized or cropped to 1920x1080."
-msgstr ""
+msgstr "방송 중이 아닐 때 표시되는 채널의 이미지입니다. 1920x1080으로 크기가 조정되거나 잘리게 됩니다."
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:49
 msgid "Application created successfully."
-msgstr ""
+msgstr "애플리케이션이 성공적으로 생성되었습니다."
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:76
 msgid "Application updated successfully."
-msgstr ""
+msgstr "애플리케이션이 성공적으로 갱신되었습니다."
 
-#, elixir-format
 #: lib/glimesh_web/live/chat_live/index.html.leex:22
 msgid "Are you sure you wish to permanently ban %{username}?"
-msgstr ""
+msgstr "정말로 %{username}을(를) 영구적으로 차단하시겠습니까?"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/new.html.eex:7
 #: lib/glimesh_web/templates/channel_moderator/show.html.eex:7
 msgid "Back to Moderator List"
-msgstr ""
+msgstr "매니저 목록으로 돌아가기"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:32
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:21
 msgid "Ban"
-msgstr ""
+msgstr "차단"
 
-#, elixir-format
 #: lib/glimesh_web/live/chat_live/index.html.leex:23
 msgid "Ban user from channel."
-msgstr ""
+msgstr "채널에서 유저를 차단."
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:55
 msgid "Banned At"
-msgstr ""
+msgstr "차단 시점:"
 
-#, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:4
 msgid "Beautiful people who choose to support the platform."
-msgstr ""
+msgstr "플랫폼을 지원하기로 선택한 아름다운 사람들."
 
-#, elixir-format
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:69 sidebar.html.eex:25
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:69
+#: lib/glimesh_web/templates/layout/user-sidebar.html.eex:25
 msgid "Channel"
-msgstr ""
+msgstr "채널"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:48
 msgid "Channel Bans"
-msgstr ""
+msgstr "채널 차단"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:58
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:102
 msgid "Channel Category"
-msgstr ""
+msgstr "채널 카테고리"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:74
 msgid "Channel Moderation Log"
-msgstr ""
+msgstr "채널 관리 로그"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/channel_moderator_controller.ex:21
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:4
 msgid "Channel Moderators"
-msgstr ""
+msgstr "채널 매니저"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:19
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:63
 msgid "Channel Poster"
-msgstr ""
+msgstr "채널 표지"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:21
-#: sidebar.html.eex:29 lib/glimesh_web/templates/user_settings/stream.html.eex:2
+#: lib/glimesh_web/templates/layout/user-sidebar.html.eex:29 lib/glimesh_web/templates/user_settings/stream.html.eex:2
 msgid "Channel Settings"
-msgstr ""
+msgstr "채널 설정"
 
-#, elixir-format
 #: lib/glimesh/chat/effects.ex:116
 msgid "Channel Subscriber"
-msgstr ""
+msgstr "채널 구독자"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:51
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:95
 msgid "Channel Title"
-msgstr ""
+msgstr "채널 제목"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:34
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:78
 msgid "Chat Background"
-msgstr ""
+msgstr "채팅 배경"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:33
 #: lib/glimesh_web/templates/layout/root.html.leex:95
 msgid "Credits"
-msgstr ""
+msgstr "크레딧"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:141
 msgid "Date / Time"
-msgstr ""
+msgstr "날짜 / 시간"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:104
 msgid "Disabled channel notifications"
-msgstr ""
+msgstr "채널 알림 비활성화"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/show.html.eex:4
 msgid "Edit %{username}"
-msgstr ""
+msgstr "%{username} 편집"
 
-#, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:67
 msgid "Elixir Libraries"
-msgstr ""
+msgstr "Elixir"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:88
 msgid "Enabled channel notifications"
-msgstr ""
+msgstr "채널 알림 활성화"
 
-#, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:47
 msgid "FTL Libraries"
-msgstr ""
+msgstr "FTL 라이브러리"
 
-#, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:6
 msgid "Founders"
-msgstr ""
+msgstr "설립자"
 
-#, elixir-format
 #: lib/glimesh/chat/effects.ex:55
 msgid "Glimesh Community Team"
-msgstr ""
+msgstr "글리메쉬 커뮤니티 팀"
 
-#, elixir-format
 #: lib/glimesh/chat/effects.ex:43
 msgid "Glimesh Founder Subscriber"
-msgstr ""
+msgstr "글리메쉬 설립 구독자"
 
-#, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:3
 msgid "Glimesh Platform Subscribers"
-msgstr ""
+msgstr "글리메쉬 플랫폼 구독자"
 
-#, elixir-format
 #: lib/glimesh/chat/effects.ex:37
 msgid "Glimesh Staff"
-msgstr ""
+msgstr "글리메쉬 직원"
 
-#, elixir-format
 #: lib/glimesh/chat/effects.ex:49
 msgid "Glimesh Supporter Subscriber"
-msgstr ""
+msgstr "글리메쉬 후원자 구독"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:106
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:118
 msgid "Guilded Server URL"
-msgstr ""
+msgstr "Guilded 서버 주소"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:20
 msgid "Invalid image. Must be either png or jpg."
-msgstr ""
+msgstr "잘못된 이미지입니다. PNG나 JPG여야 합니다."
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:26
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:20
 msgid "Long Timeout"
-msgstr ""
+msgstr "긴 채팅금지"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:80
 msgid "Moderator"
-msgstr ""
+msgstr "매니저"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/show.html.eex:21
 msgid "Moderator Since: %{date}"
-msgstr ""
+msgstr "%{date}부터 매니저인 상태"
 
-#, elixir-format
-#: sidebar.html.eex:32
+#: lib/glimesh_web/templates/layout/user-sidebar.html.eex:32
 msgid "Moderators"
-msgstr ""
+msgstr "매니저"
 
-#, elixir-format
 #: lib/glimesh_web/views/channel_moderator_view.ex:5
 msgid "No"
-msgstr ""
+msgstr "아니오"
 
-#, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:87
 msgid "NodeJS Libraries"
-msgstr ""
+msgstr "NodeJS 라이브러리"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:126
 msgid "Not available"
-msgstr ""
+msgstr "사용할 수 없음"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:97
 msgid "OAuth Client ID & Client Secret rotated successfully."
-msgstr ""
+msgstr "OAuth 클라이언트 ID & 클라이언트 시크릿이 성공적으로 교체되었습니다."
 
-#, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:36
 msgid "Open Source Libraries"
-msgstr ""
+msgstr "오픈소스 라이브러리"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:16
 msgid "Permissions"
-msgstr ""
+msgstr "권한"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:133
 msgid "Profile Content (%{a_start}Markdown%{a_end} supported)"
-msgstr ""
+msgstr "프로필 내용 (%{a_start}마크다운%{a_end} 지원)"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:44
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:23
 msgid "Remove Ban"
-msgstr ""
+msgstr "차단 해제"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:38
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:22
 msgid "Remove Timeout"
-msgstr ""
+msgstr "채팅금지 해제"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:107
 msgid "Rotate Keys"
-msgstr ""
+msgstr "키 교체"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:48
 msgid "Save"
-msgstr ""
+msgstr "저장"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:135
 msgid "See something you don't expect? Need a refund? Please email us at %{email} and we'll be happy to help!"
-msgstr ""
+msgstr "예상치 못한 것을 발견하셨나요? 환불이 필요하시나요? %{email}로 이메일을 보내주시면 최대한 도와드리겠습니다!"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:20
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:19
 msgid "Short Timeout"
-msgstr ""
+msgstr "짧은 채팅금지"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:38
 msgid "Show"
-msgstr ""
+msgstr "표시"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:144
 msgid "Status"
-msgstr ""
+msgstr "상태"
 
-#, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:24
 msgid "Supporters"
-msgstr ""
+msgstr "후원자"
 
-#, elixir-format
 #: lib/glimesh_web/live/chat_live/index.html.leex:18
 msgid "Timeout user for 15 minutes."
-msgstr ""
+msgstr "15분간 채팅금지."
 
-#, elixir-format
 #: lib/glimesh_web/live/chat_live/index.html.leex:13
 msgid "Timeout user for 5 minutes."
-msgstr ""
+msgstr "5분간 채팅금지."
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:18
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:83 lib/glimesh_web/templates/channel_moderator/show.html.eex:43
 msgid "Timestamp"
-msgstr ""
+msgstr "타임스탬프"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:64
 msgid "Unban"
-msgstr ""
+msgstr "차단해제"
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:15
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:18 lib/glimesh_web/templates/channel_moderator/index.html.eex:54
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:82 lib/glimesh_web/templates/channel_moderator/show.html.eex:42
 msgid "User"
-msgstr ""
+msgstr "유저"
 
-#, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/show.html.eex:35
 msgid "User Moderation Log"
-msgstr ""
+msgstr "유저 관리 로그"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:124
 msgid "View on Stripe"
-msgstr ""
+msgstr "Stripe에서 보기"
 
-#, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:37
 msgid "We use numerous open source projects to power Glimesh, and without them this project would never have been possible. This is not a comprehensive list, unfortunately. You can find a full list by browsing our core repositories:"
-msgstr ""
+msgstr "저희는 글리메쉬를 개발하기 위해 수많은 오픈소스 프로젝트를 사용합니다. 오픈소스의 도움이 없었다면 글리메쉬 프로젝트는 불가능했을 거예요. 안타깝게도 이건 완전한 목록이 아닙니다. 메인 저장소를 탐색하면 전체 목록을 확인하실 수 있습니다."
 
-#, elixir-format
 #: lib/glimesh_web/live/chat_live/index.html.leex:4
 msgid "Welcome to chat! Follow the rules."
-msgstr ""
+msgstr "채팅에 오신 것을 환영합니다! 규칙을 지켜주세요."
 
-#, elixir-format
 #: lib/glimesh_web/views/channel_moderator_view.ex:5
 msgid "Yes"
-msgstr ""
+msgstr "예"
 
-#, elixir-format
 #: lib/glimesh/chat/policy.ex:45
 msgid "You are banned from Glimesh."
-msgstr ""
+msgstr "글리메쉬로부터 차단당했습니다."
 
-#, elixir-format
 #: lib/glimesh/chat/policy.ex:38
 msgid "You are banned from this channel for %{minutes} more minutes."
-msgstr ""
+msgstr "현재 이 채널에서 당한 상태입니다. %{minutes}분 후 차단이 풀립니다."
 
-#, elixir-format
 #: lib/glimesh/chat/policy.ex:33
 msgid "You are permanently banned from this channel."
-msgstr ""
+msgstr "이 채널에서 영구적으로 차단당했습니다."
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:102
 msgid "You do not have permission to rotate this apps keys."
-msgstr ""
+msgstr "이 앱의 키를 교체할 권한이 없습니다."
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:84
 msgid "You do not have permission to update this app."
-msgstr ""
+msgstr "이 앱을 갱신할 권한이 없습니다."
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:12
 msgid "%{user}'s Avatar"
-msgstr ""
+msgstr "%{user}의 아바타"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:54
 msgid "2FA Token"
-msgstr ""
+msgstr "2FA 토큰"
 
-#, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:41
 msgid "5 Custom Emotes"
-msgstr ""
+msgstr "다섯 개의 커스텀 이모티콘"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:44
 msgid "A key used to uniquely identify and connect to your stream. Treat your Stream Key as a password."
-msgstr ""
+msgstr "방송을 고유하게 식별하고 연결하는 데 사용되는 값입니다. 스트림키를 비밀번호로 취급해주세요."
 
-#, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:92
 msgid "About Glimesh"
-msgstr ""
+msgstr "글리메쉬에 관하여"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:22
 msgid "Access Level: %{value}"
-msgstr ""
+msgstr "접근 레벨: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:9
 msgid "Accessibility"
-msgstr ""
+msgstr "접근성"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:42
 msgid "Admin"
-msgstr ""
+msgstr "관리자"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:14
 #: lib/glimesh_web/templates/user_registration/new.html.eex:54
 msgid "Allow Glimesh Newsletter Emails"
-msgstr ""
+msgstr "글리메쉬 뉴스레터 이메일 구독"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:47
 msgid "Allow Live Channel Emails"
-msgstr ""
+msgstr "생방송 이메일 알림 허용"
 
-#, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:40
 msgid "Animated Avatar Ring"
-msgstr ""
+msgstr "움직이는 아바타 테두리"
 
-#, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:18
 msgid "Animated Emotes"
-msgstr ""
+msgstr "움직이는 이모티콘"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:60
 msgid "Are you sure you want to disconnect your Twitter account?"
-msgstr ""
+msgstr "Twitter 계정 연동을 해제하시겠습니까?"
 
-#, elixir-format
-#: lib/glimesh_web/templates/gct/index.html.eex:7 sidebar.html.eex:7
+#: lib/glimesh_web/templates/gct/index.html.eex:7
+#: lib/glimesh_web/templates/layout/gct-sidebar.html.eex:7
 msgid "Audit Log"
-msgstr ""
+msgstr "감사 로그"
 
-#, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:100
 msgid "BLOG"
-msgstr ""
+msgstr "블로그"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:19
 msgid "Backend: %{value}"
-msgstr ""
+msgstr "백엔드: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:37
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:117 lib/glimesh_web/templates/gct/lookup_user.html.eex:109
 msgid "Ban Reason"
-msgstr ""
+msgstr "차단 사유"
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:13
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:28 lib/glimesh_web/live/gct_live/components/button_array.ex:41
 msgid "Ban User"
-msgstr ""
+msgstr "유저 차단"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:112
 msgid "Banned"
-msgstr ""
+msgstr "차단"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:19
 msgid "Banned: %{value}"
-msgstr ""
+msgstr "%{value} 차단"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:16
 msgid "Belongs to: %{value}"
-msgstr ""
+msgstr "현재 위치: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:67
 msgid "Billing Settings"
-msgstr ""
+msgstr "결제 설정"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:21
 msgid "Blocked links: %{value}"
-msgstr ""
+msgstr "차단된 링크: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:47
 msgid "Can stream"
-msgstr ""
+msgstr "방송 가능"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:59
 msgid "Can use payments"
-msgstr ""
+msgstr "지불 가능"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:36
 msgid "Category"
-msgstr ""
+msgstr "카테고리"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:29
 msgid "Change your Glimesh experience to feel a little lighter, or a little darker."
-msgstr ""
+msgstr "글리메쉬 사이트를 밝게 보거나 어둡게 보도록 변경합니다."
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:25
 msgid "Changing a username will break the user's avatar."
-msgstr ""
+msgstr "닉네임을 변경하면 유저의 아바타를 잃게 됩니다."
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:15
 msgid "Channel ID: %{value}"
-msgstr ""
+msgstr "채널 ID: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:11
 msgid "Channel thumbnail"
-msgstr ""
+msgstr "채널 썸네일"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/gct_controller.ex:263
 msgid "Channel updated successfully"
-msgstr ""
+msgstr "채널이 성공적으로 갱신되었습니다"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:48
 msgid "Chat Rules"
-msgstr ""
+msgstr "채팅 규칙"
 
-#, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:17
 msgid "Colored Avatar Ring"
-msgstr ""
+msgstr "색 있는 아바타 테두리"
 
-#, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:127
 msgid "Copyright © 2021 Glimesh, Inc."
-msgstr ""
+msgstr "저작권 © 2021 Glimesh, Inc."
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:17
 msgid "Created At: %{value} UTC"
-msgstr ""
+msgstr "생성 일시: %{value} UTC"
 
-#, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:11
 msgid "Customize Your Profile"
-msgstr ""
+msgstr "프로필 꾸미기"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:20
 msgid "Dark"
-msgstr ""
+msgstr "어두움"
 
-#, elixir-format
-#: sidebar.html.eex:3
+#: lib/glimesh_web/templates/layout/gct-sidebar.html.eex:3
 msgid "Dashboard"
-msgstr ""
+msgstr "대시보드"
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:61
 msgid "Details for Audit Log #%{log_number}"
-msgstr ""
+msgstr "감사 로그 #%{log_number}에 관한 세부 정보"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:62
 msgid "Disable Live Notifications"
-msgstr ""
+msgstr "생방송 알림 끄기"
 
-#, elixir-format
 #: lib/glimesh_web/live/chat_live/message_form.html.leex:37
 msgid "Disable Timestamps"
-msgstr ""
+msgstr "타임스탬프 끄기"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:20
 msgid "Disabled hyperlinks: %{value}"
-msgstr ""
+msgstr "비활성화된 하이퍼링크: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.ex:39
 msgid "Disabled live channel notifications for %{streamer}"
-msgstr ""
+msgstr "%{streamer}의 채널 생방송 알림이 꺼짐"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:49
-msgid "Disallowing Live Subscriptions will disable them across the board, even if you have channels listed\r\n                    below. If you allow the notifications you'll start getting going live emails for the listed\r\n                    channels."
-msgstr ""
+msgid "Disallowing Live Subscriptions will disable them across the board, even if you have channels listed\n"
+"                    below. If you allow the notifications you'll start getting going live emails for the listed\n"
+"                    channels."
+msgstr "생방송 알림을 끄면 아래의 목록에서 별도로 설정을 했더라도 모든 채널의 알림이 꺼지게 됩니다. 알림을 허용하면 아래의 채널에 관한 생방송 알림을 이메일로 받게 됩니다."
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:73
 msgid "Discord"
-msgstr ""
+msgstr "Discord"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/invalid_user.html.eex:3
 msgid "Does not exist"
-msgstr ""
+msgstr "존재하지 않습니다"
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:7
 msgid "Edit Channel"
-msgstr ""
+msgstr "채널 편집"
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:10
 msgid "Edit Profile"
-msgstr ""
+msgstr "프로필 편집"
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:11
 msgid "Edit User"
-msgstr ""
+msgstr "유저 편집"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:35
 msgid "Email Confirmed At"
-msgstr ""
+msgstr "이메일 확인 일시:"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:17
 msgid "Email Confirmed At: %{value}"
-msgstr ""
+msgstr "이메일 확인 일시: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/live/chat_live/message_form.html.leex:37
 msgid "Enable Timestamps"
-msgstr ""
+msgstr "타임스탬프 보기"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:52
 msgid "Error copying Stream Key"
-msgstr ""
+msgstr "스트림키를 복사하는 데 오류 발생"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:35
 msgid "Followers:"
-msgstr ""
+msgstr "팔로워:"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:39
 msgid "Following:"
-msgstr ""
+msgstr "팔로잉:"
 
-#, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:39
 msgid "Founder Badge"
-msgstr ""
+msgstr "설립자 배지"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:11
 #: lib/glimesh_web/templates/layout/root.html.leex:93
 msgid "Frequently Asked Questions"
-msgstr ""
+msgstr "자주 묻는 질문"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:103
 msgid "GCT Access Level"
-msgstr ""
+msgstr "GCT 접근 레벨"
 
-#, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:62
 msgid "GCT Dash"
-msgstr ""
+msgstr "GCT 대시"
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:69
 msgid "GCT Member"
-msgstr ""
+msgstr "GCT 멤버"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:95
 msgid "GCT Settings"
-msgstr ""
+msgstr "GCT 설정"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:21
 msgid "GCT: %{value}"
-msgstr ""
+msgstr "GCT: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:90
 msgid "GLIMESH.TV"
-msgstr ""
+msgstr "GLIMESH.TV"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:14
 msgid "General Settings"
-msgstr ""
+msgstr "일반 설정"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/index.html.eex:2
 msgid "Glimesh Community Team Dashboard | Your access level is: %{level}"
-msgstr ""
+msgstr "글리메쉬 커뮤니티 팀 대시보드 | 내 접근 레벨: %{level}"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:27
 msgid "Glimesh is not yet launched, so this page is still missing some critical information you need for streaming. You can customize your stream, but check back once we've launched for more!"
-msgstr ""
+msgstr "글리메쉬는 아직 서비스를 하고 있지 않습니다. 이 페이지에는 스트리밍에 필요한 및 가지 중요한 내용이 아직 누락된 상태입니다. 지금은 방송의 간단한 설정을 할 수 있으니 서비스를 시작하면 다시 확인해주세요!"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:4
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:9 lib/glimesh_web/templates/gct/edit_user_profile.html.eex:7
 #: lib/glimesh_web/templates/gct/invalid_user.html.eex:4
 msgid "Go Back"
-msgstr ""
+msgstr "뒤로"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:84
 msgid "Guilded"
-msgstr ""
+msgstr "Guilded"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:18
 msgid "Has Channel: %{value}"
-msgstr ""
+msgstr "채널: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:14
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:42
 msgid "If enabled, we can send alerts whenever your favorite followed streams go live. To get live notifications you must be following the channel, with the bell checked, and \"Allow Live Subscriptions\" must be enabled below."
-msgstr ""
+msgstr "활성화하면 좋아하는 스트리머의 방송이 시작될 때마다 알림을 받을 수 있습니다. 생방송 알림을 받으려면 채널을 팔로우 한 후 벨을 체크하고 \"생방송 이메일 알림 허용\"을 활성화해야 합니다."
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:6
 msgid "If you're not authorized to edit this user you must return to the previous page."
-msgstr ""
+msgstr "이 유저를 편집할 권한이 없다면 이전 페이지로 돌아가십시오."
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:2
 msgid "Information for %{user}"
-msgstr ""
+msgstr "%{user} 정보"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:2
 msgid "Information for %{user}'s channel"
-msgstr ""
+msgstr "%{user}의 채널 정보"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:77
 msgid "Instagram"
-msgstr ""
+msgstr "Instagram"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:98
 msgid "Is GCT"
-msgstr ""
+msgstr "GCT 여부"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:31
 msgid "Joined:"
-msgstr ""
+msgstr "참가:"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:24
 msgid "Light"
-msgstr ""
+msgstr "밝음"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:45
 #: lib/glimesh_web/live/user_live/profile.html.leex:20
 msgid "Linked Twitter Account @%{username}"
-msgstr ""
+msgstr "Twitter 계정 @%{username} 연동"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:39
 msgid "Live Channel Notifications"
-msgstr ""
+msgstr "채널 생방송 알림"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:55
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:94
 msgid "Locale"
-msgstr ""
+msgstr "언어"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:14
 msgid "Look & Feel"
-msgstr ""
+msgstr "테마"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/index.html.eex:33
 msgid "Lookup Channel"
-msgstr ""
+msgstr "채널 검색"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/index.html.eex:18
 msgid "Lookup Username"
-msgstr ""
+msgstr "닉네임 조회"
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:78
 msgid "More Details"
-msgstr ""
+msgstr "자세히"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:10
 msgid "More accessibility options are coming soon to make Glimesh more comfortable for everyone."
-msgstr ""
+msgstr "누구나 편하게 글리메쉬를 즐길 수 있도록 더 많은 접근성 옵션이 곧 제공될 예정입니다."
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:8
 msgid "Newsletter Subscriptions"
-msgstr ""
+msgstr "뉴스레터 구독"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:16
-msgid "Newsletter emails are our general marketing, product updates, and new feature announcements. We'll\r\n                    send emails about upcoming events or new product launches or availability."
-msgstr ""
+msgid "Newsletter emails are our general marketing, product updates, and new feature announcements. We'll\n"
+"                    send emails about upcoming events or new product launches or availability."
+msgstr "뉴스레터 이메일은 일반적인 홍보, 사이트 업데이트, 새로운 기능 발표 등을 담습니다. 예정된 이벤트나 신기능 출시에 관한 이메일을 보내드립니다."
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:31
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:2 sidebar.html.eex:14
+#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:2 lib/glimesh_web/templates/layout/user-sidebar.html.eex:14
 msgid "Notifications"
-msgstr ""
+msgstr "알림"
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:19
 msgid "Options"
-msgstr ""
+msgstr "옵션"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:87
 msgid "Payments Enabled"
-msgstr ""
+msgstr "지불 활성화"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:27
-#: sidebar.html.eex:11 lib/glimesh_web/templates/user_settings/preference.html.eex:2
+#: lib/glimesh_web/templates/layout/user-sidebar.html.eex:11 lib/glimesh_web/templates/user_settings/preference.html.eex:2
 msgid "Preferences"
-msgstr ""
+msgstr "환경 설정"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:41
 msgid "Preferences updated successfully."
-msgstr ""
+msgstr "성공적으로 환경 설정을 갱신하였습니다."
 
-#, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:15
 msgid "Privacy & Cookie Policy"
-msgstr ""
+msgstr "개인 정보 및 쿠키 정책"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:101
 msgid "Profile Content"
-msgstr ""
+msgstr "프로필 내용"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:121
 msgid "Profile Content (Markdown supported)"
-msgstr ""
+msgstr "프로필 내용 (마크다운 지원)"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_confirmation/new.html.eex:16
 msgid "Resend"
-msgstr ""
+msgstr "재발송"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.ex:61
 msgid "Saved notification preferences."
-msgstr ""
+msgstr "알림 설정을 저장하였습니다."
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/index.html.eex:22
 #: lib/glimesh_web/templates/gct/index.html.eex:37
 msgid "Search"
-msgstr ""
+msgstr "검색"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:9
 msgid "Search for usernames"
-msgstr ""
+msgstr "닉네임 검색"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_reset_password/new.html.eex:17
 msgid "Send Reset Email"
-msgstr ""
+msgstr "재설정 이메일 전송"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:86
 msgid "Sent At"
-msgstr ""
+msgstr "발송 일시"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:35
 msgid "Show Chat Timestamps"
-msgstr ""
+msgstr "채팅 타임스탬프 표시"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:38
 msgid "Show the time a message was posted in chat."
-msgstr ""
+msgstr "채팅에서 메시지가 작성된 시간을 표시합니다."
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:17
 msgid "Site Theme: "
-msgstr ""
+msgstr "사이트 테마: "
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:18
 msgid "Status: %{value}"
-msgstr ""
+msgstr "상태: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:42
 msgid "Stream Key"
-msgstr ""
+msgstr "스트림키"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:75
 msgid "Stripe Customer ID"
-msgstr ""
+msgstr "Stripe 고객 ID"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:27
 msgid "Stripe Customer ID: %{value}"
-msgstr ""
+msgstr "Stripe 고객 ID: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:82
 msgid "Stripe Payment Method"
-msgstr ""
+msgstr "Stripe 지불 방법"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:31
 msgid "Stripe Payment Method: %{value}"
-msgstr ""
+msgstr "Stripe 지불 방법: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:70
 msgid "Stripe User ID"
-msgstr ""
+msgstr "Stripe 유저 ID"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:30
 msgid "Stripe User ID: %{value}"
-msgstr ""
+msgstr "Stripe 유저 ID: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:24
 msgid "Sub Ready: %{value}"
-msgstr ""
+msgstr "구독 준비: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:85
 msgid "Subject"
-msgstr ""
+msgstr "제목"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_social_controller.ex:41
 msgid "Successfully disconnected your social account."
-msgstr ""
+msgstr "SNS 계정을 성공적으로 연결 해제했습니다."
 
-#, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:38
 msgid "Supporter Perks"
-msgstr ""
+msgstr "후원자 특전"
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:17
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:75
 msgid "Target"
-msgstr ""
+msgstr "대상"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:19
 msgid "Terms of Service"
-msgstr ""
+msgstr "이용 약관"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_social_controller.ex:46
 msgid "There was a problem disconnecting your social account."
-msgstr ""
+msgstr "SNS 계정 연결을 해제하는 중에 문제가 발생했습니다."
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_social_controller.ex:30
 msgid "There was a problem linking your account."
-msgstr ""
+msgstr "계정을 연결하는 데 문제가 발생했습니다."
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_social_controller.ex:17
 msgid "There was a problem linking your account: "
-msgstr ""
+msgstr "계정을 연결하는 데 문제가 발생했습니다: "
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:78
-msgid "This is a list of all of the emails we have sent you and what triggered them. Only shows the last 50 sent\r\n                emails."
-msgstr ""
+msgid "This is a list of all of the emails we have sent you and what triggered them. Only shows the last 50 sent\n"
+"                emails."
+msgstr "글리메쉬 팀에서 발송한 이메일의 목록입니다. 최근에 발송한 50개의 이메일만 표시합니다."
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_social_controller.ex:24
 msgid "This social account has already been linked to another user."
-msgstr ""
+msgstr "이 SNS 계정은 이미 다른 유저와 연결된 상태입니다."
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:28
 msgid "Title"
-msgstr ""
+msgstr "제목"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:40
 msgid "To be added"
-msgstr ""
+msgstr "추가 예정"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:62
 msgid "Twitter"
-msgstr ""
+msgstr "Twitter"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:84
 msgid "Type of Email"
-msgstr ""
+msgstr "이메일 종류"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/gct_controller.ex:283
 msgid "Unauthorized. This attempt has been logged."
-msgstr ""
+msgstr "승인되지 않았습니다. 이 시도는 기록되었습니다."
 
-#, elixir-format
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:15
 msgid "Unban User"
-msgstr ""
+msgstr "유저 차단 해제"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:6
 msgid "Unverified Account"
-msgstr ""
+msgstr "확인되지 않은 계정"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:62
 msgid "Update Application"
-msgstr ""
+msgstr "애플리케이션 갱신"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:131
 msgid "Update Channel"
-msgstr ""
+msgstr "채널 갱신"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:123
 msgid "Update User"
-msgstr ""
+msgstr "유저 갱신"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:16
 msgid "User ID: %{value}"
-msgstr ""
+msgstr "유저 ID: %{value}"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/gct_controller.ex:106
 #: lib/glimesh_web/controllers/gct_controller.ex:165
 msgid "User updated successfully"
-msgstr ""
+msgstr "유저를 성공적으로 갱신했습니다"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:22
 msgid "Username"
-msgstr ""
+msgstr "닉네임"
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:9
 msgid "Verify Email"
-msgstr ""
+msgstr "이메일 확인"
 
-#, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:97
 msgid "View on GCT"
-msgstr ""
+msgstr "GCT에서 보기"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:3
 msgid "WARNING YOU'RE CURRENTLY EDITING %{user}"
-msgstr ""
+msgstr "경고: %{user}의 정보를 변경 중입니다"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:2
 msgid "WARNING YOU'RE CURRENTLY EDITING %{user}'s CHANNEL"
-msgstr ""
+msgstr "경고: %{user}의 채널 정보를 변경 중입니다"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:4
 msgid "WARNING YOU'RE CURRENTLY EDITING %{user}'s PROFILE SETTINGS"
-msgstr ""
+msgstr "경고: %{user}의 프로필 설정을 수정하고 있습니다"
 
-#, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:82
 msgid "We use Stripe as our payment provider."
-msgstr ""
+msgstr "글리메쉬는 Stripe를 지불 수단으로 이용합니다."
 
-#, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:75
 msgid "Your Email Log"
-msgstr ""
+msgstr "이메일 기록"
 
-#, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:11
 msgid "Your account's email is already confirmed."
-msgstr ""
+msgstr "계정의 이메일이 이미 확인된 상태입니다."
 
-#, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:7
 msgid "Your email has not be verified, in order to stream on Glimesh you need to verify your email."
-msgstr ""
+msgstr "이메일이 확인되지 않았습니다. 글리메쉬에서 방송을 하려면 이메일을 확인해야 합니다."
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:66
 msgid "Youtube"
-msgstr ""
+msgstr "YouTube"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:90
 msgid "Youtube Teaser URL"
-msgstr ""
+msgstr "YouTube"
 
-#, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:40
 msgid "username"
-msgstr ""
+msgstr "닉네임"
+
