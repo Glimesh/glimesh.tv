@@ -89,7 +89,7 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   end
 
   def find_category(%{slug: slug}, _) do
-    {:ok, Streams.get_category!(slug)}
+    {:ok, Streams.get_category(slug)}
   end
 
   # Subscriptions

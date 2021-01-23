@@ -126,18 +126,16 @@ defmodule Glimesh.Streams do
   @doc """
   Gets a single category.
 
-  Raises `Ecto.NoResultsError` if the Category does not exist.
-
   ## Examples
 
-      iex> get_category!(123)
+      iex> get_category(123)
       %Category{}
 
-      iex> get_category!(456)
-      ** (Ecto.NoResultsError)
+      iex> get_category(456)
+      nil
 
   """
-  def get_category!(slug),
+  def get_category(slug),
     do: Repo.one(from c in Category, where: c.slug == ^slug and is_nil(c.parent_id))
 
   def get_category_by_id!(id), do: Repo.get_by!(Category, id: id)
