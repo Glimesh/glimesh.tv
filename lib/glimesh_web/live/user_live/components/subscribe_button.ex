@@ -13,7 +13,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
                 <%= if @subscribed do %>
                     <button class="btn btn-secondary btn-responsive" phx-click="unsubscribe" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Unsubscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
                 <% else %>
-                    <button class="btn btn-secondary btn-responsive" phx-click="show_modal" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Subscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i>/span></button>
+                    <button class="btn btn-secondary btn-responsive" phx-click="show_modal" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Subscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
                 <% end %>
             <% else %>
                 <button class="btn btn-secondary btn-responsive disabled"><span class="d-none d-lg-block"><%= gettext("Subscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
