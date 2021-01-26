@@ -158,7 +158,22 @@ if appsignal_api_key = System.get_env("APPSIGNAL_API_KEY") do
     otp_app: :glimesh,
     name: System.fetch_env!("APPSIGNAL_NAME"),
     push_api_key: appsignal_api_key,
-    env: "prod"
+    env: "prod",
+    skip_session_data: true,
+    filter_parameters: [
+      "password",
+      "hashed_password",
+      "email",
+      "user",
+      "streamKey",
+      "stream_key",
+      "token",
+      "api_token",
+      "client_secret",
+      "secret",
+      "tfa_token",
+      "refresh_token"
+    ]
 end
 
 # Glimesh Configuration

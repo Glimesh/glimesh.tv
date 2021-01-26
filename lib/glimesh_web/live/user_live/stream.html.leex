@@ -3,20 +3,20 @@
 
     <div id="video-column" class="col-lg-9 layout-spacing">
       <div class="card">
-        <div class="card-header">
+        <div class="card-header p-1">
           <div class="row">
-            <div class="col-8">
+            <div class="col align-self-center">
               <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
             </div>
-            <div class="col-4">
+            <div class="col-auto">
               <div class="float-right">
-                <div class="stream-info btn-toolbar ml-4">
-                  <div class="btn-group mr-2" role="group" aria-label="First group">
+                <div class="stream-info btn-toolbar">
+                  <div class="btn-group mr-sm-2" role="group" aria-label="First group">
                     <%= if @streamer.stripe_user_id do %>
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                     <% end %>
                   </div>
-                  <div class="btn-group mr-2" role="group" aria-label="Second group">
+                  <div class="btn-group mr-1" role="group" aria-label="Second group">
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                   </div>
                   <div class="btn-group" role="group" aria-label="Third group">
@@ -27,7 +27,7 @@
             </div>
           </div>
         </div>
-        <div class="card-body">
+        <div class="card-body p-1">
           <div class="embed-responsive embed-responsive-16by9">
             <%= if @backend == "ftl" do %>
             <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo"
@@ -36,25 +36,31 @@
             No video player backend specified.
             <% end %>
           </div>
-
-          <div class="d-none d-sm-block mt-4">
-            <div class="row">
-              <div class="col-8 d-inline-flex align-items-center">
-                <div id="streamer-avatar">
-                  <a href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
-                    <img src="<%= Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)%>"
-                      alt="<%= @channel.user.displayname %>" width="48" height="48"
-                      class="img-avatar mr-2 float-left <%= if @channel.user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
-                  </a>
-                </div>
-                <a title="<%= gettext("View Profile") %>" class="<%= Glimesh.Chat.Effects.get_username_color(@channel.user) %>" href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>" ><h3><%= @channel.user.displayname %></h3></a>
-                <!--<code>Edge: <%= @janus_hostname %></code>-->
-                <%# live_render(@socket, GlimeshWeb.UserLive.ViewerHeads, id: "viewer-heads", session: %{"user" => @user, "streamer" => @streamer.username, "fake_multiplier" => 12}) %>
+        </div>
+        <div class="card-footer p-1 d-none d-sm-block">
+          <div class="row">
+            <div class="col-8 d-inline-flex align-items-center">
+              <div id="streamer-avatar">
+                <a href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
+                  <img src="<%= Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)%>"
+                    alt="<%= @channel.user.displayname %>" width="48" height="48"
+                    class="img-avatar mr-2 float-left <%= if @channel.user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+                </a>
               </div>
-              <div class="col-4">
-                <div class="float-right">
-                  <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                </div>
+              <a title="<%= gettext("View Profile") %>"
+                class="<%= Glimesh.Chat.Effects.get_username_color(@channel.user) %>"
+                href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
+                <h3 class="mb-0"><%= @channel.user.displayname %></h3>
+              </a>
+
+              <%= live_render(@socket, GlimeshWeb.UserLive.Components.SocialButtons, id: "social-buttons", container: {:ul, class: "list-inline ml-2 mb-0"}, session: %{"user_id" => @streamer.id}) %>
+
+              <!--<code>Edge: <%= @janus_hostname %></code>-->
+              <%# live_render(@socket, GlimeshWeb.UserLive.ViewerHeads, id: "viewer-heads", session: %{"user" => @user, "streamer" => @streamer.username, "fake_multiplier" => 12}) %>
+            </div>
+            <div class="col-4 align-self-center">
+              <div class="float-right mr-sm-2">
+                <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user" => @user, "streamer" => @streamer}) %>
               </div>
             </div>
           </div>

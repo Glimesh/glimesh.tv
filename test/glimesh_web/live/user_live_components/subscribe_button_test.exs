@@ -34,7 +34,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButtonTest do
         live_isolated(conn, @component, session: %{"user" => user, "streamer" => streamer})
 
       assert html =~ "Subscribe"
-      assert html =~ "btn btn-secondary disabled"
+      assert html =~ "btn btn-secondary btn-responsive disabled"
     end
 
     test "shows a disabled subscription button for when the user is the streamer", %{
@@ -45,7 +45,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButtonTest do
         live_isolated(conn, @component, session: %{"user" => streamer, "streamer" => streamer})
 
       assert html =~ "Subscribe"
-      assert html =~ "btn btn-secondary disabled"
+      assert html =~ "btn btn-secondary btn-responsive disabled"
     end
 
     test "shows a subscription button for user with can_payments", %{
@@ -61,7 +61,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButtonTest do
         )
 
       assert html =~ "Subscribe"
-      assert html =~ "class=\"btn btn-secondary\""
+      assert html =~ "class=\"btn btn-secondary btn-responsive\""
 
       modal = view |> element("button", "Subscribe") |> render_click()
       assert modal =~ "$5.00 / monthly"

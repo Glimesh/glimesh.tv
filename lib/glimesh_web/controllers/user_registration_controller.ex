@@ -38,4 +38,13 @@ defmodule GlimeshWeb.UserRegistrationController do
         |> redirect(to: Routes.user_registration_path(conn, :new))
     end
   end
+
+  def create(conn, %{"user" => _}) do
+    conn
+    |> put_flash(
+      :error,
+      gettext("Captcha validation failed, please make sure you have JavaScript enabled.")
+    )
+    |> redirect(to: Routes.user_registration_path(conn, :new))
+  end
 end

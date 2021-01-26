@@ -12,7 +12,7 @@ defmodule GlimeshWeb.Emails.Email do
     new_email()
     |> put_html_layout({GlimeshWeb.LayoutView, "email.html"})
     |> put_text_layout({GlimeshWeb.LayoutView, "email.text"})
-    |> from("support@glimesh.tv")
+    |> from("Glimesh <noreply@glimesh.tv>")
   end
 
   def user_confirmation_instructions(user, url) do

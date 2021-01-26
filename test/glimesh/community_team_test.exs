@@ -53,7 +53,9 @@ defmodule Glimesh.CommunityTeamTest do
 
     test "can't delete channel if no permission" do
       user = gct_fixture(%{gct_level: 2, tfa_token: "Fake 2fa token"})
-      assert Bodyguard.permit?(Glimesh.CommunityTeam, :soft_delete_channel, user, user_fixture()) == false
+
+      assert Bodyguard.permit?(Glimesh.CommunityTeam, :soft_delete_channel, user, user_fixture()) ==
+               false
     end
   end
 end

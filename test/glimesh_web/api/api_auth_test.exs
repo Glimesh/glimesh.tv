@@ -130,4 +130,47 @@ defmodule GlimeshWeb.Api.ApiAuthTest do
              }
     end
   end
+
+  describe "weird other auth methods" do
+    setup :register_and_set_user_token
+
+    test "authenticated api access with lowercased authorization header gets accepted", %{
+      conn: conn,
+      user: user
+    } do
+      conn =
+        conn
+        |> Plug.Conn.put_req_header(
+          "authorization",
+          conn
+          |> Plug.Conn.get_req_header("authorization")
+          |> hd()
+          |> String.downcase()
+        )
+
+      conn =
+        post(conn, "/api", %{
+          "query" => @myself_query
+        })
+
+      assert json_response(conn, 200) == %{
+               "data" => %{"myself" => %{"username" => user.username}}
+             }
+    end
+
+    test "bearer token with missing token gets rejected", %{conn: conn} do
+      conn =
+        conn
+        |> Plug.Conn.put_req_header(
+          "authorization",
+          "Bearer "
+        )
+
+      conn = post(conn, "/api", %{"query" => @myself_query})
+
+      assert json_response(conn, 401) == %{
+               "errors" => [%{"message" => "You must be logged in to access the api"}]
+             }
+    end
+  end
 end

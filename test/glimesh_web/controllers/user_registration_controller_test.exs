@@ -57,5 +57,30 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
       assert response =~ "must have the @ sign and no spaces"
       assert response =~ "Must be at least 8 characters"
     end
+
+    test "render errors if hcaptcha is invalid", %{conn: conn} do
+      conn =
+        post(conn, Routes.user_registration_path(conn, :create), %{
+          "h-captcha-response" => "invalid_response",
+          "user" => %{"email" => "with spaces", "password" => "short"}
+        })
+
+      assert redirected_to(conn) == Routes.user_registration_path(conn, :create)
+
+      assert get_flash(conn, :error) =~
+               "Captcha validation failed, please try again."
+    end
+
+    test "render errors if hcaptcha does not load for some reason", %{conn: conn} do
+      conn =
+        post(conn, Routes.user_registration_path(conn, :create), %{
+          "user" => %{"email" => "with spaces", "password" => "short"}
+        })
+
+      assert redirected_to(conn) == Routes.user_registration_path(conn, :create)
+
+      assert get_flash(conn, :error) =~
+               "Captcha validation failed, please make sure you have JavaScript enabled."
+    end
   end
 end

@@ -90,18 +90,12 @@ defmodule Glimesh.Streams.Channel do
   def set_chat_rules_content_html(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{chat_rules_md: chat_rules_md}} ->
-        if chat_rules_md do
-          put_change(
-            changeset,
-            :chat_rules_html,
-            Glimesh.Accounts.Profile.safe_user_markdown_to_html(chat_rules_md)
-          )
-        else
-          put_change(
-            changeset,
-            :chat_rules_html,
-            nil
-          )
+        case Glimesh.Accounts.Profile.safe_user_markdown_to_html(chat_rules_md) do
+          {:ok, content} ->
+            put_change(changeset, :chat_rules_html, content)
+
+          {:error, message} ->
+            add_error(changeset, :chat_rules_html, message)
         end
 
       _ ->

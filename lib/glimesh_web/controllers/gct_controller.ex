@@ -41,11 +41,13 @@ defmodule GlimeshWeb.GctController do
   def username_lookup(conn, params) do
     gct_user = conn.assigns.current_user
     query = params["query"]
-    user = case parse_user_query(query) do
-      "username" -> Accounts.get_by_username(query, true)
-      "email" -> Accounts.get_user_by_email(query)
-      "user_id" -> Accounts.get_user!(query)
-    end
+
+    user =
+      case parse_user_query(query) do
+        "username" -> Accounts.get_by_username(query, true)
+        "email" -> Accounts.get_user_by_email(query)
+        "user_id" -> Accounts.get_user!(query)
+      end
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_user, gct_user, user) do
       view_billing = Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, gct_user, user)
@@ -114,7 +116,11 @@ defmodule GlimeshWeb.GctController do
           |> redirect(to: Routes.gct_path(conn, :edit_user_profile, user.username))
 
         {:error, changeset} ->
-          render(conn, "edit_user_profile.html", user_changeset: changeset, user: user, twitter_auth_url: Glimesh.Socials.Twitter.authorize_url(conn))
+          render(conn, "edit_user_profile.html",
+            user_changeset: changeset,
+            user: user,
+            twitter_auth_url: Glimesh.Socials.Twitter.authorize_url(conn)
+          )
       end
     end
   end
@@ -196,6 +202,7 @@ defmodule GlimeshWeb.GctController do
 
   def channel_lookup(conn, params) do
     query = params["query"]
+
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_channel, conn.assigns.current_user) do
       unless params["query"] == "",
         do:
@@ -205,10 +212,11 @@ defmodule GlimeshWeb.GctController do
             verbose_required: true
           })
 
-      channel = case parse_channel_query(query) do
-        "channel_id" -> Streams.get_channel!(query)
-        "username" -> Streams.get_channel_for_username!(query, true)
-      end
+      channel =
+        case parse_channel_query(query) do
+          "channel_id" -> Streams.get_channel!(query)
+          "username" -> Streams.get_channel_for_username!(query, true)
+        end
 
       if channel do
         render(
@@ -228,7 +236,8 @@ defmodule GlimeshWeb.GctController do
     channel = Streams.get_channel(channel_id)
 
     if channel do
-      with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_channel, current_user, channel.user) do
+      with :ok <-
+             Bodyguard.permit(Glimesh.CommunityTeam, :edit_channel, current_user, channel.user) do
         CommunityTeam.create_audit_entry(current_user, %{
           action: "view edit channel",
           target: channel_id,
@@ -236,7 +245,16 @@ defmodule GlimeshWeb.GctController do
         })
 
         channel_changeset = Streams.change_channel(channel)
-        disable_delete_button = Kernel.not(Bodyguard.permit?(Glimesh.CommunityTeam, :soft_delete_channel, current_user, channel.user))
+
+        disable_delete_button =
+          Kernel.not(
+            Bodyguard.permit?(
+              Glimesh.CommunityTeam,
+              :soft_delete_channel,
+              current_user,
+              channel.user
+            )
+          )
 
         render(
           conn,
@@ -298,13 +316,21 @@ defmodule GlimeshWeb.GctController do
     current_user = conn.assigns.current_user
     channel = Streams.get_channel!(channel_id)
 
-    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :soft_delete_channel, current_user, channel.user) do
+    with :ok <-
+           Bodyguard.permit(
+             Glimesh.CommunityTeam,
+             :soft_delete_channel,
+             current_user,
+             channel.user
+           ) do
       case CommunityTeam.soft_delete_channel(channel, current_user) do
         {:ok, _} ->
           create_audit_entry_channel(current_user, "delete channel", channel.user.username, false)
+
           conn
           |> put_flash(:info, "Channel deleted successfully.")
           |> redirect(to: Routes.gct_path(conn, :index))
+
         {:error, _changeset} ->
           conn
           |> put_flash(:error, "An issue occurred when trying to delete the channel.")
