@@ -25,7 +25,7 @@ defmodule GlimeshWeb.StreamsLive.List do
   end
 
   @impl true
-  def mount(%{"category" => category}, session, socket) do
+  def mount(params, session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
     case Streams.get_category(params["category"]) do
@@ -43,11 +43,6 @@ defmodule GlimeshWeb.StreamsLive.List do
       nil ->
         {:ok, redirect(socket, to: "/")}
     end
-  end
-
-  @impl true
-  def mount(_, _, socket) do
-    {:ok, redirect(socket, to: "/")}
   end
 
   @impl true
