@@ -34,7 +34,7 @@ defmodule Glimesh.Streams.Tag do
   def set_identifier_attribute(changeset) do
     category_name =
       if category_id = get_field(changeset, :category_id) do
-        Glimesh.Streams.get_category_by_id!(category_id).name
+        Glimesh.ChannelCategories.get_category_by_id!(category_id).name
       else
         "Global"
       end

@@ -3,6 +3,8 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   import Gettext, only: [with_locale: 2]
 
   alias Glimesh.Streams
+  alias Glimesh.ChannelLookups
+  alias Glimesh.ChannelCategories
 
   @impl true
   def render(assigns) do
@@ -48,7 +50,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   @impl true
   def mount(_params, %{"channel_id" => channel_id, "user" => nil}, socket) do
     if connected?(socket), do: Streams.subscribe_to(:channel, channel_id)
-    channel = Streams.get_channel!(channel_id)
+    channel = ChannelLookups.get_channel!(channel_id)
 
     {:ok,
      socket
@@ -62,7 +64,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   @impl true
   def mount(_params, %{"channel_id" => channel_id, "user" => user}, socket) do
     if connected?(socket), do: Streams.subscribe_to(:channel, channel_id)
-    channel = Streams.get_channel!(channel_id)
+    channel = ChannelLookups.get_channel!(channel_id)
 
     {:ok,
      socket
@@ -104,7 +106,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
     socket
     |> assign(
       :categories,
-      Streams.list_categories_for_select()
+      ChannelCategories.list_categories_for_select()
     )
   end
 end

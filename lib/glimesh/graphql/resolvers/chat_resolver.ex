@@ -7,7 +7,7 @@ defmodule Glimesh.Resolvers.ChatResolver do
         %{context: %{user_access: ua}}
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Resolvers.Scopes, :chat, ua) do
-      channel = Glimesh.Streams.get_channel!(channel_id)
+      channel = Glimesh.ChannelLookups.get_channel!(channel_id)
 
       Glimesh.Chat.create_chat_message(ua.user, channel, message_obj)
     end

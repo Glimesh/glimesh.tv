@@ -3,8 +3,6 @@ defmodule GlimeshWeb.CategoryLiveTest do
 
   import Phoenix.LiveViewTest
 
-  alias Glimesh.Streams
-
   @create_attrs %{
     name: "some name"
   }
@@ -14,7 +12,7 @@ defmodule GlimeshWeb.CategoryLiveTest do
   @invalid_attrs %{name: nil}
 
   defp fixture(:category) do
-    {:ok, category} = Streams.create_category(@create_attrs)
+    {:ok, category} = Glimesh.ChannelCategories.create_category(@create_attrs)
 
     category
   end

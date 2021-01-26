@@ -1,7 +1,7 @@
 defmodule GlimeshWeb.Admin.TagLive.Index do
   use GlimeshWeb, :live_view
 
-  alias Glimesh.Streams
+  alias Glimesh.ChannelCategories
   alias Glimesh.Streams.Tag
 
   @impl true
@@ -17,7 +17,7 @@ defmodule GlimeshWeb.Admin.TagLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Tag")
-    |> assign(:tag, Streams.get_tag!(id))
+    |> assign(:tag, ChannelCategories.get_tag!(id))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -34,13 +34,13 @@ defmodule GlimeshWeb.Admin.TagLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    tag = Streams.get_tag!(id)
-    {:ok, _} = Streams.delete_tag(tag)
+    tag = ChannelCategories.get_tag!(id)
+    {:ok, _} = ChannelCategories.delete_tag(tag)
 
     {:noreply, assign(socket, :tags, list_tags())}
   end
 
   defp list_tags do
-    Streams.list_tags()
+    ChannelCategories.list_tags()
   end
 end

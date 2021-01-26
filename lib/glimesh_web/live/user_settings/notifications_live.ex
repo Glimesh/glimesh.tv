@@ -3,6 +3,7 @@ defmodule GlimeshWeb.NotificationsLive do
 
   alias Glimesh.Accounts
   alias Glimesh.Streams
+  alias Glimesh.ChannelLookups
 
   @impl true
   def mount(_params, session, socket) do
@@ -11,7 +12,9 @@ defmodule GlimeshWeb.NotificationsLive do
     user = Accounts.get_user_by_session_token(session["user_token"])
 
     changeset = Accounts.change_user_notifications(user)
-    channel_live_subscriptions = Glimesh.Streams.list_followed_live_notification_channels(user)
+
+    channel_live_subscriptions = ChannelLookups.list_followed_live_notification_channels(user)
+
     email_log = Glimesh.Emails.list_email_log(user)
 
     {:ok,
@@ -42,7 +45,7 @@ defmodule GlimeshWeb.NotificationsLive do
          )
          |> assign(
            :channel_live_subscriptions,
-           Glimesh.Streams.list_followed_live_notification_channels(socket.assigns.current_user)
+           ChannelLookups.list_followed_live_notification_channels(socket.assigns.current_user)
          )}
 
       {:error, %Ecto.Changeset{} = changeset} ->

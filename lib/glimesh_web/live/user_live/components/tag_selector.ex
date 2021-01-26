@@ -18,7 +18,7 @@ defmodule GlimeshWeb.UserLive.Components.TagSelector do
 
   @impl true
   def update(assigns, socket) do
-    tags = Glimesh.Streams.list_tags_for_tagify(assigns.category_id) |> Jason.encode!()
+    tags = Glimesh.ChannelCategories.list_tags_for_tagify(assigns.category_id) |> Jason.encode!()
 
     {:ok,
      socket

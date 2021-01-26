@@ -16,7 +16,7 @@
 
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.SocialButtons, id: "social-buttons", container: {:ul, class: "list-inline"}, session: %{"user_id" => @streamer.id}) %>
 
-                    <%= if Glimesh.Streams.get_channel_for_user(@streamer) do %>
+                    <%= if Glimesh.ChannelLookups.get_channel_for_user(@streamer) do %>
                     <div>
                         <%= live_redirect gettext("View Channel"), class: "btn btn-primary", to: Routes.user_stream_path(@socket, :index, @streamer.username) %>
                     </div>

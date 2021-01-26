@@ -161,7 +161,7 @@ defmodule GlimeshWeb.UserAuth do
   """
   def require_user_has_channel(conn, _opts) do
     if Map.has_key?(conn.assigns, :current_user) and
-         Glimesh.Streams.get_channel_for_user(conn.assigns[:current_user]) do
+         Glimesh.ChannelLookups.get_channel_for_user(conn.assigns[:current_user]) do
       conn
     else
       conn

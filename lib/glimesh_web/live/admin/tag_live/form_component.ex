@@ -1,13 +1,13 @@
 defmodule GlimeshWeb.Admin.TagLive.FormComponent do
   use GlimeshWeb, :live_component
 
-  alias Glimesh.Streams
+  alias Glimesh.ChannelCategories
 
   @impl true
   def update(%{tag: tag} = assigns, socket) do
-    changeset = Streams.change_tag(tag)
+    changeset = ChannelCategories.change_tag(tag)
 
-    categories = [{"Global Tag", nil}] ++ Streams.list_categories_for_select()
+    categories = [{"Global Tag", nil}] ++ ChannelCategories.list_categories_for_select()
 
     {:ok,
      socket
@@ -23,7 +23,7 @@ defmodule GlimeshWeb.Admin.TagLive.FormComponent do
   def handle_event("validate", %{"tag" => tag_params}, socket) do
     changeset =
       socket.assigns.tag
-      |> Streams.change_tag(tag_params)
+      |> ChannelCategories.change_tag(tag_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
@@ -34,7 +34,7 @@ defmodule GlimeshWeb.Admin.TagLive.FormComponent do
   end
 
   defp save_tag(socket, :edit, tag_params) do
-    case Streams.update_tag(socket.assigns.tag, tag_params) do
+    case ChannelCategories.update_tag(socket.assigns.tag, tag_params) do
       {:ok, _tag} ->
         {:noreply,
          socket
@@ -47,7 +47,7 @@ defmodule GlimeshWeb.Admin.TagLive.FormComponent do
   end
 
   defp save_tag(socket, :new, tag_params) do
-    case Streams.create_tag(tag_params) do
+    case ChannelCategories.create_tag(tag_params) do
       {:ok, _tag} ->
         {:noreply,
          socket

@@ -3,7 +3,7 @@ defmodule GlimeshWeb.TagLiveTest do
 
   import Phoenix.LiveViewTest
 
-  alias Glimesh.Streams
+  alias Glimesh.ChannelCategories
 
   @create_attrs %{
     category_id: "",
@@ -17,7 +17,7 @@ defmodule GlimeshWeb.TagLiveTest do
   }
 
   defp fixture(:tag) do
-    {:ok, tag} = Streams.create_tag(@create_attrs)
+    {:ok, tag} = ChannelCategories.create_tag(@create_attrs)
     tag
   end
 

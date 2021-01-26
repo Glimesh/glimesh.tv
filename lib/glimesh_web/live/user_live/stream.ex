@@ -5,13 +5,14 @@ defmodule GlimeshWeb.UserLive.Stream do
   alias Glimesh.Accounts.Profile
   alias Glimesh.Presence
   alias Glimesh.Streams
+  alias Glimesh.ChannelLookups
 
   def mount(%{"username" => streamer_username}, session, socket) do
     # If the viewer is logged in set their locale, otherwise it defaults to English
     if session["locale"], do: Gettext.put_locale(session["locale"])
     if connected?(socket), do: Process.send(self(), :load_stream, [])
 
-    case Streams.get_channel_for_username!(streamer_username) do
+    case ChannelLookups.get_channel_for_username!(streamer_username) do
       %Glimesh.Streams.Channel{} = channel ->
         maybe_user = Accounts.get_user_by_session_token(session["user_token"])
         streamer = Accounts.get_user!(channel.streamer_id)

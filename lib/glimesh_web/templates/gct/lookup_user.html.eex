@@ -15,7 +15,7 @@
                         <div>
                             <p><%= gettext("User ID: %{value}", value: @user.id) %></p>
                             <p><%= gettext("Email Confirmed At: %{value}", value: @user.confirmed_at) %></p>
-                            <p><%= gettext("Has Channel: %{value}", value: (if Glimesh.Streams.get_channel_for_user(@user), do: "✅", else: "❌")) %>
+                            <p><%= gettext("Has Channel: %{value}", value: (if Glimesh.ChannelLookups.get_channel_for_user(@user), do: "✅", else: "❌")) %>
                                 <p><%= gettext("Banned: %{value}", value: (if @user.is_banned, do: "✅", else: "❌")) %>
                                 </p>
                                 <p><%= gettext("GCT: %{value}", value: (if @user.is_gct, do: "✅", else: "❌")) %></p>

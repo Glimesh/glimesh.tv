@@ -62,7 +62,7 @@ defmodule GlimeshWeb.ConnCase do
   """
   def register_and_log_in_streamer(%{conn: conn}) do
     user = Glimesh.AccountsFixtures.streamer_fixture()
-    channel = Glimesh.Streams.get_channel_for_user(user)
+    channel = Glimesh.ChannelLookups.get_channel_for_user(user)
     %{conn: log_in_user(conn, user), user: user, channel: channel}
   end
 

@@ -6,12 +6,13 @@ defmodule GlimeshWeb.ChatLive.Index do
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Presence
   alias Glimesh.Streams
+  alias Glimesh.ChannelLookups
 
   @impl true
   def mount(_params, %{"channel_id" => channel_id} = session, socket) do
     if connected?(socket), do: Streams.subscribe_to(:chat, channel_id)
 
-    channel = Streams.get_channel!(channel_id)
+    channel = ChannelLookups.get_channel!(channel_id)
 
     # Sets a default user_preferences map for the chat if the user is logged out
     user_preferences =

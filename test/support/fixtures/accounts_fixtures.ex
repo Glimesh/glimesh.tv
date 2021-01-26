@@ -21,7 +21,10 @@ defmodule Glimesh.AccountsFixtures do
     {:ok, _} =
       Glimesh.Streams.create_channel(
         streamer,
-        Map.merge(%{category_id: Enum.at(Glimesh.Streams.list_categories(), 0).id}, channel_attrs)
+        Map.merge(
+          %{category_id: Enum.at(Glimesh.ChannelCategories.list_categories(), 0).id},
+          channel_attrs
+        )
       )
 
     Glimesh.Accounts.get_user!(streamer.id)
