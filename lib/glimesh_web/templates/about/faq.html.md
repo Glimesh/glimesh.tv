@@ -65,7 +65,7 @@ We do want to test out load balancing and multiple streamers at one time with al
 
 
 ##### When is the projected launch date?
-We’re aiming for sometime in 2020 for our alpha launch. We’ll let you know 2 weeks in advance of launch to give you time to prepare.
+We’re aiming for sometime early 2021 for our alpha launch. We’ll let you know 2 weeks in advance of launch to give you time to prepare.
 
 
 ##### Will Glimesh be a publicly traded company?
