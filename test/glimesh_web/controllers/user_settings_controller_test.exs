@@ -77,6 +77,22 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
       response = html_response(channel_conn, 200)
       assert response =~ "Must not exceed 250 characters"
     end
+
+    test "puts tags", %{conn: conn} do
+      channel_conn =
+        put(conn, Routes.user_settings_path(conn, :update_channel), %{
+          "channel" => %{
+            "tags" => "[{\"value\":\"Digital Media\"},{\"value\":\"some name\"}]"
+          }
+        })
+
+      assert redirected_to(channel_conn) == Routes.user_settings_path(conn, :stream)
+      assert get_flash(channel_conn, :info) =~ "Stream settings updated successfully"
+
+      response = html_response(get(conn, Routes.user_settings_path(conn, :stream)), 200)
+      assert response =~ "Digital Media"
+      assert response =~ "some name"
+    end
   end
 
   describe "PUT /users/settings/update_profile" do

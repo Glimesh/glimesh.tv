@@ -28,6 +28,8 @@ defmodule Glimesh.Streams.Channel do
     field :poster, Glimesh.ChannelPoster.Type
     field :chat_bg, Glimesh.ChatBackground.Type
 
+    many_to_many :tags, Glimesh.Streams.Tag, join_through: "channel_tags", on_replace: :delete
+
     has_many :chat_messages, Glimesh.Chat.ChatMessage
 
     timestamps()
@@ -77,6 +79,11 @@ defmodule Glimesh.Streams.Channel do
     |> validate_length(:title, max: 250)
     |> set_chat_rules_content_html()
     |> cast_attachments(attrs, [:poster, :chat_bg])
+  end
+
+  def tags_changeset(channel, tags) do
+    channel
+    |> put_assoc(:tags, tags)
   end
 
   def maybe_put_assoc(changeset, key, value) do

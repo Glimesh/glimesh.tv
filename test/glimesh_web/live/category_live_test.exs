@@ -13,27 +13,15 @@ defmodule GlimeshWeb.CategoryLiveTest do
   }
   @invalid_attrs %{name: nil}
 
-  defp fixture(:category, parent_category) do
-    {:ok, category} =
-      Streams.create_category(@create_attrs |> Enum.into(%{parent_id: parent_category.id}))
-
-    category
-  end
-
-  defp fixture(:parent_category) do
-    {:ok, category} =
-      Streams.create_category(%{
-        name: "some parent",
-        parent_id: nil
-      })
+  defp fixture(:category) do
+    {:ok, category} = Streams.create_category(@create_attrs)
 
     category
   end
 
   defp create_category(_) do
-    parent_category = fixture(:parent_category)
-    category = fixture(:category, parent_category)
-    %{parent_category: parent_category, category: category}
+    category = fixture(:category)
+    %{category: category}
   end
 
   describe "Category Normal User Functionality" do
@@ -54,7 +42,7 @@ defmodule GlimeshWeb.CategoryLiveTest do
       assert html =~ category.name
     end
 
-    test "saves new category", %{conn: conn, parent_category: parent_category} do
+    test "saves new category", %{conn: conn} do
       {:ok, index_live, _html} = live(conn, Routes.category_index_path(conn, :index))
 
       assert index_live |> element("a", "New Category") |> render_click() =~
@@ -66,7 +54,7 @@ defmodule GlimeshWeb.CategoryLiveTest do
              |> form("#category-form", category: @invalid_attrs)
              |> render_change() =~ "Cannot be blank"
 
-      new_input = %{name: "some new category", parent_id: parent_category.id}
+      new_input = %{name: "some new category"}
 
       {:ok, _, html} =
         index_live

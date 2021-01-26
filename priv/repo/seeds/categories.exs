@@ -1,85 +1,12 @@
-standard_categories = %{
-  "Art" => [
-    "Digital",
-    "Physical"
-  ],
-  "Music" => [
-    "24/7 Music Stream",
-    "Live Band",
-    "DJ"
-  ],
-  "Tech" => [
-    "3D Printing",
-    "Live Stats",
-    "Programming",
-    "Game Development",
-    "Web Development"
-  ],
-  "IRL" => [
-    "Animals",
-    "Exploration",
-    "Talk Show",
-    "News",
-    "Cooking",
-    "Studying"
-  ],
-  "Education" => [
-    "Anthropology",
-    "Business Administration",
-    "Chemistry",
-    "Church",
-    "Economics",
-    "Engineering",
-    "Oceanography",
-    "Political Science",
-    "Psychology",
-    "Statistics"
-  ],
-  "Gaming" => [
-    "Action",
-    "Action-Adventure",
-    "Adventure",
-    "Board Game",
-    "Education",
-    "Fighting",
-    "Misc",
-    "MMO",
-    "Music",
-    "Party",
-    "Platform",
-    "Puzzle",
-    "Racing",
-    "Role-Playing",
-    "Sandbox",
-    "Shooter",
-    "Simulation",
-    "Sports",
-    "Strategy",
-    "Visual Novel"
-  ]
-}
+categories = ["Art", "Music", "Tech", "IRL", "Education", "Gaming"]
 
-for {cat, subs} <- standard_categories do
-  category =
-    Glimesh.Repo.insert!(
+Enum.each(categories, fn name ->
+  Glimesh.Repo.insert!(
       %Glimesh.Streams.Category{
-        name: cat,
-        tag_name: cat,
-        slug: Slug.slugify(cat),
-        parent_id: nil
+        name: name,
+        slug: Slug.slugify(name)
       },
-      on_conflict: :nothing
+      on_conflict: :nothing,
+      conflict_target: :name
     )
-
-  for sub <- subs do
-    Glimesh.Repo.insert!(
-      %Glimesh.Streams.Category{
-        name: sub,
-        tag_name: "#{cat} > #{sub}",
-        slug: Slug.slugify(sub),
-        parent_id: category.id
-      },
-      on_conflict: :nothing
-    )
-  end
-end
+end)

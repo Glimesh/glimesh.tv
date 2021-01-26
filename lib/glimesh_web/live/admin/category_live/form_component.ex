@@ -12,7 +12,7 @@ defmodule GlimeshWeb.Admin.CategoryLive.FormComponent do
      |> assign(assigns)
      |> assign(
        :existing_categories,
-       Enum.map(Streams.list_parent_categories(), &{&1.name, &1.id})
+       Streams.list_categories_for_select()
      )
      |> assign(:changeset, changeset)}
   end

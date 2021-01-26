@@ -11,6 +11,7 @@ defmodule Glimesh.Streams do
   alias Glimesh.Streams.Followers
 
   alias Glimesh.Streams.StreamMetadata
+  alias Glimesh.Streams.Tag
 
   alias Glimesh.Streams.Category
 
@@ -59,9 +60,26 @@ defmodule Glimesh.Streams do
 
   def update_channel(%User{} = user, %Channel{} = channel, attrs) do
     with :ok <- Bodyguard.permit(__MODULE__, :update_channel, user, channel) do
+      category_id =
+        if cat_id = attrs["category_id"] do
+          String.to_integer(cat_id)
+        else
+          channel.category_id
+        end
+
+      upsert_tags =
+        case Jason.decode(Map.get(attrs, "tags", [])) do
+          {:ok, decoded_tags} -> decoded_tags |> Enum.map(fn x -> x["value"] end)
+          {:error, _} -> []
+        end
+
+      tags = upsert_channel_category_tags(category_id, upsert_tags)
+
       new_channel =
         channel
+        |> Repo.preload(:tags)
         |> Channel.changeset(attrs)
+        |> Channel.tags_changeset(tags)
         |> Repo.update()
 
       case new_channel do
@@ -73,6 +91,18 @@ defmodule Glimesh.Streams do
           broadcast({:ok, broadcast_message}, :channel)
       end
     end
+  end
+
+  defp upsert_channel_category_tags(category_id, tag_list) do
+    Enum.map(tag_list, fn tag_name ->
+      {:ok, tag} =
+        upsert_tag(%Tag{
+          name: tag_name,
+          category_id: category_id
+        })
+
+      tag
+    end)
   end
 
   def rotate_stream_key(%User{} = user, %Channel{} = channel) do
@@ -106,21 +136,12 @@ defmodule Glimesh.Streams do
 
   """
   def list_categories do
-    Repo.all(Category) |> Repo.preload(:parent)
+    Repo.all(Category)
   end
 
   def list_categories_for_select do
-    Repo.all(from c in Category, order_by: [asc: :tag_name])
-    |> Enum.map(&{&1.tag_name, &1.id})
-  end
-
-  def list_parent_categories do
-    Repo.all(from c in Category, where: is_nil(c.parent_id))
-  end
-
-  @spec list_categories_by_parent(atom | %{id: any}) :: any
-  def list_categories_by_parent(category) do
-    Repo.all(from c in Category, where: c.parent_id == ^category.id)
+    Repo.all(from c in Category, order_by: [asc: :name])
+    |> Enum.map(&{&1.name, &1.id})
   end
 
   @doc """
@@ -136,7 +157,7 @@ defmodule Glimesh.Streams do
 
   """
   def get_category(slug),
-    do: Repo.one(from c in Category, where: c.slug == ^slug and is_nil(c.parent_id))
+    do: Repo.one(from c in Category, where: c.slug == ^slug)
 
   def get_category_by_id!(id), do: Repo.get_by!(Category, id: id)
 
@@ -246,7 +267,7 @@ defmodule Glimesh.Streams do
 
       Glimesh.Streams.ChannelNotifier.deliver_live_channel_notifications(
         users,
-        Repo.preload(channel, [:user, :stream])
+        Repo.preload(channel, [:user, :stream, :tags])
       )
 
       # 5. Broadcast to anyone who's listening
@@ -415,9 +436,30 @@ defmodule Glimesh.Streams do
         join: cat in Category,
         on: cat.id == c.category_id,
         where: c.status == "live",
-        where: cat.id == ^category.id or cat.parent_id == ^category.id
+        where: cat.id == ^category.id
     )
-    |> Repo.preload([:category, :user, :stream])
+    |> Repo.preload([:category, :user, :stream, :tags])
+  end
+
+  def filter_live_channels(params) do
+    Repo.all(actually_filter_live_channels(params))
+    |> Repo.preload([:category, :user, :stream, :tags])
+  end
+
+  def actually_filter_live_channels(%{"category" => _category_slug, "tag" => tag_slug}) do
+    from c in Channel,
+      join: t in Tag,
+      join: ct in "channel_tags",
+      on: ct.tag_id == t.id and ct.channel_id == c.id,
+      where: c.status == "live" and t.slug == ^tag_slug
+  end
+
+  def actually_filter_live_channels(%{"category" => category_slug}) do
+    from c in Channel,
+      join: cat in Category,
+      on: cat.id == c.category_id,
+      where: c.status == "live",
+      where: cat.slug == ^category_slug
   end
 
   def list_live_subscribed_followers(%Channel{} = channel) do
@@ -452,7 +494,7 @@ defmodule Glimesh.Streams do
         where: c.status == "live",
         where: f.user_id == ^user.id
     )
-    |> Repo.preload([:category, :user, :stream])
+    |> Repo.preload([:category, :user, :stream, :tags])
   end
 
   def list_all_followed_channels(user) do
@@ -476,11 +518,11 @@ defmodule Glimesh.Streams do
   end
 
   def get_channel(id) do
-    Repo.get_by(Channel, id: id) |> Repo.preload([:category, :user])
+    Repo.get_by(Channel, id: id) |> Repo.preload([:category, :user, :tags])
   end
 
   def get_channel!(id) do
-    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :user])
+    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :user, :tags])
   end
 
   def get_channel_for_username!(username, ignore_banned \\ false) do
@@ -498,7 +540,7 @@ defmodule Glimesh.Streams do
       end
 
     Repo.one(query)
-    |> Repo.preload([:category, :user])
+    |> Repo.preload([:category, :user, :tags])
   end
 
   def get_channel_for_stream_key!(stream_key) do
@@ -525,4 +567,138 @@ defmodule Glimesh.Streams do
   end
 
   # Private Calls
+
+  @doc """
+  Returns the list of tags.
+
+  ## Examples
+
+      iex> list_tags()
+      [%Tag{}, ...]
+
+  """
+  def list_tags do
+    Repo.all(from t in Tag, order_by: [desc: :count_usage]) |> Repo.preload(:category)
+  end
+
+  def list_tags(category_id) do
+    Repo.all(from t in Tag, where: t.category_id == ^category_id, order_by: [desc: :count_usage])
+  end
+
+  def list_live_tags(category_id) do
+    Repo.all(
+      from t in Tag,
+        join: c in Channel,
+        join: ct in "channel_tags",
+        on: ct.tag_id == t.id and ct.channel_id == c.id,
+        where: c.status == "live" and t.category_id == ^category_id,
+        order_by: [desc: :count_usage]
+    )
+  end
+
+  def list_tags_for_tagify(category_id) do
+    Repo.all(
+      from t in Tag,
+        where: t.category_id == ^category_id,
+        order_by: [desc: :count_usage]
+    )
+    |> Enum.map(fn tag ->
+      %{
+        value: tag.name,
+        label: "#{tag.name} (#{tag.count_usage} Uses)",
+        # placeholder for global tags
+        class: ""
+      }
+    end)
+  end
+
+  @doc """
+  Gets a single tag.
+
+  Raises `Ecto.NoResultsError` if the Tag does not exist.
+
+  ## Examples
+
+      iex> get_tag!(123)
+      %Tag{}
+
+      iex> get_tag!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_tag!(id), do: Repo.get!(Tag, id)
+
+  @doc """
+  Creates a tag.
+
+  ## Examples
+
+      iex> create_tag(%{field: value})
+      {:ok, %Tag{}}
+
+      iex> create_tag(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_tag(attrs \\ %{}) do
+    upsert_tag(%Tag{}, attrs)
+  end
+
+  @doc """
+  Updates a tag.
+
+  ## Examples
+
+      iex> update_tag(tag, %{field: new_value})
+      {:ok, %Tag{}}
+
+      iex> update_tag(tag, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_tag(%Tag{} = tag, attrs) do
+    # upsert_tag(tag, attrs)
+    tag
+    |> Tag.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def upsert_tag(%Tag{} = tag, attrs \\ %{}) do
+    tag
+    |> Tag.changeset(attrs)
+    |> Repo.insert(
+      returning: [:count_usage],
+      on_conflict: [inc: [count_usage: 1]],
+      conflict_target: [:identifier]
+    )
+  end
+
+  @doc """
+  Deletes a tag.
+
+  ## Examples
+
+      iex> delete_tag(tag)
+      {:ok, %Tag{}}
+
+      iex> delete_tag(tag)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_tag(%Tag{} = tag) do
+    Repo.delete(tag)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking tag changes.
+
+  ## Examples
+
+      iex> change_tag(tag)
+      %Ecto.Changeset{data: %Tag{}}
+
+  """
+  def change_tag(%Tag{} = tag, attrs \\ %{}) do
+    Tag.changeset(tag, attrs)
+  end
 end

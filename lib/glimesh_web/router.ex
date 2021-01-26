@@ -151,6 +151,10 @@ defmodule GlimeshWeb.Router do
 
     live "/categories/:id", Admin.CategoryLive.Show, :show
     live "/categories/:id/show/edit", Admin.CategoryLive.Show, :edit
+
+    live "/tags", Admin.TagLive.Index, :index
+    live "/tags/new", Admin.TagLive.Index, :new
+    live "/tags/:id/edit", Admin.TagLive.Index, :edit
   end
 
   scope "/gct", GlimeshWeb do

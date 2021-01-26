@@ -216,4 +216,87 @@ defmodule Glimesh.StreamsTest do
       assert {:ok, %{}} = Streams.log_stream_metadata(stream, incoming_attrs)
     end
   end
+
+  describe "tags" do
+    alias Glimesh.Streams.Tag
+
+    @valid_attrs %{
+      count_usage: 42,
+      name: "some name"
+    }
+    @update_attrs %{
+      count_usage: 43,
+      name: "some updated name"
+    }
+    @invalid_attrs %{category_id: nil, count_usage: nil, icon: nil, name: nil, slug: nil}
+
+    def tag_fixture(attrs \\ %{}) do
+      {:ok, tag} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Streams.create_tag()
+
+      tag
+    end
+
+    test "list_tags/0 returns all tags" do
+      tag = tag_fixture()
+      assert Enum.member?(Enum.map(Streams.list_tags(), fn x -> x.name end), tag.name)
+    end
+
+    test "get_tag!/1 returns the tag with given id" do
+      tag = tag_fixture()
+      assert Streams.get_tag!(tag.id) == tag
+    end
+
+    test "create_tag/1 with valid data creates a tag" do
+      assert {:ok, %Tag{} = tag} = Streams.create_tag(@valid_attrs)
+      assert tag.name == "some name"
+      assert tag.slug == "some-name"
+    end
+
+    test "create_tag/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Streams.create_tag(@invalid_attrs)
+    end
+
+    test "update_tag/2 with valid data updates the tag" do
+      tag = tag_fixture()
+      assert {:ok, %Tag{} = tag} = Streams.update_tag(tag, @update_attrs)
+      assert tag.name == "some updated name"
+    end
+
+    test "update_tag/2 with invalid data returns error changeset" do
+      tag = tag_fixture()
+      assert {:error, %Ecto.Changeset{}} = Streams.update_tag(tag, @invalid_attrs)
+      assert tag == Streams.get_tag!(tag.id)
+    end
+
+    test "upsert_tag/2 creates a tag or increments if exists" do
+      assert {:ok, %Tag{} = tag} = Streams.upsert_tag(%Tag{name: "Hello World"})
+      assert tag.name == "Hello World"
+      assert tag.slug == "hello-world"
+      assert tag.count_usage == 1
+
+      # Test recreating it
+      assert {:ok, %Tag{} = new_tag} = Streams.upsert_tag(%Tag{name: "Hello World"})
+      assert tag.id == new_tag.id
+      assert new_tag.name == "Hello World"
+      assert new_tag.slug == "hello-world"
+      assert new_tag.count_usage == 2
+
+      assert {:ok, %Tag{} = one_more} = Streams.upsert_tag(%Tag{name: "Hello World"})
+      assert one_more.count_usage == 3
+    end
+
+    test "delete_tag/1 deletes the tag" do
+      tag = tag_fixture()
+      assert {:ok, %Tag{}} = Streams.delete_tag(tag)
+      assert_raise Ecto.NoResultsError, fn -> Streams.get_tag!(tag.id) end
+    end
+
+    test "change_tag/1 returns a tag changeset" do
+      tag = tag_fixture()
+      assert %Ecto.Changeset{} = Streams.change_tag(tag)
+    end
+  end
 end

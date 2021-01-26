@@ -1,0 +1,36 @@
+@import "../variables";
+
+$tags-border-color       : var(--input-border-color);
+$tags-hover-border-color : var(--input-border-color);
+$tags-focus-border-color : var(--input-border-color);
+
+// Tagify does really weird things with it's CSS variables that makes it impossible for us to overwrite them properly.
+
+.tagify {
+    // Fuck this v
+    color: $input-color;
+}
+
+.tagify__input {
+    &:focus { 
+        &:empty {
+            &::before {
+                color: $input-color !important;
+            }
+        }
+    }
+    &::before {
+        color: $input-color !important;
+    }
+}
+
+.tagify__dropdown {
+    color: $input-color !important;
+
+    .tagify__dropdown__wrapper {
+        background-color: $input-bg !important;
+        border-color: $input-border-color !important;
+    }
+}
+
+@import "~@yaireo/tagify/src/tagify"; 

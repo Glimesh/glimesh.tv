@@ -124,12 +124,24 @@ defmodule Glimesh.Schema.ChannelTypes do
   object :category do
     field :id, :id
     field :name, :string, description: "Name of the category"
-    field :tag_name, :string, description: "Parent Name and Name of the category in one string"
+
+    field :tag_name, :string do
+      deprecate("Tag name is now just name")
+
+      resolve(fn category, _, _ ->
+        {:ok, category.name}
+      end)
+    end
+
     field :slug, :string, description: "Slug of the category"
 
-    field :parent, :category,
-      resolve: dataloader(Repo),
-      description: "Parent category, if null this is a parent category"
+    field :parent, :category do
+      deprecate("All categories are now parents and the children are tags.")
+
+      resolve(fn _, _, _ ->
+        {:ok, nil}
+      end)
+    end
   end
 
   @desc "A channel is a user's actual container for live streaming."
