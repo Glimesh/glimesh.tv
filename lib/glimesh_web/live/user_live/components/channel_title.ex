@@ -30,7 +30,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
       <h5 class="mb-0"><%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.name %></span> <%= @channel.title %> </h5>
     <% end %>
     <%= for tag <- @channel.tags do %>
-    <span class="badge badge-primary"><%= tag.name %></span>
+      <%= live_patch tag.name, to: Routes.streams_list_path(@socket, :index, @channel.category.slug, %{tag: tag.slug}), class: "badge badge-pill badge-primary" %>
     <% end %>
     """
   end
