@@ -9,6 +9,8 @@ defmodule Glimesh.Streams.Category do
     field :name, :string
     field :slug, :string
 
+    has_many :tags, Glimesh.Streams.Tag
+
     timestamps()
   end
 
