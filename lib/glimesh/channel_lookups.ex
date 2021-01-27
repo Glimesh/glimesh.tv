@@ -20,10 +20,6 @@ defmodule Glimesh.ChannelLookups do
     |> Repo.preload([:category, :user])
   end
 
-  def list_live_channels do
-    filter_live_channels()
-  end
-
   def filter_live_channels(params \\ %{}) do
     Repo.all(perform_filter_live_channels(params))
     |> Repo.preload([:category, :user, :stream, :tags])
