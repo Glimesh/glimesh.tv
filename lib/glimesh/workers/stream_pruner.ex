@@ -5,8 +5,8 @@ defmodule Glimesh.Workers.StreamPruner do
   use GenServer
 
   require Logger
-  alias Glimesh.Streams
   alias Glimesh.ChannelLookups
+  alias Glimesh.Streams
 
   # 5 Minutes in milliseconds
   @interval 300_000

@@ -2,11 +2,11 @@ defmodule GlimeshWeb.ChatLive.Index do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Accounts
+  alias Glimesh.ChannelLookups
   alias Glimesh.Chat
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Presence
   alias Glimesh.Streams
-  alias Glimesh.ChannelLookups
 
   @impl true
   def mount(_params, %{"channel_id" => channel_id} = session, socket) do

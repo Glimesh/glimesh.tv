@@ -5,15 +5,10 @@ defmodule Glimesh.Streams do
 
   import Ecto.Query, warn: false
   alias Glimesh.Accounts.User
-  alias Glimesh.Repo
-  alias Glimesh.Streams.Channel
-  alias Glimesh.Streams.Followers
-
-  alias Glimesh.Streams.StreamMetadata
-  alias Glimesh.Streams.Tag
-
-  alias Glimesh.ChannelLookups
   alias Glimesh.ChannelCategories
+  alias Glimesh.ChannelLookups
+  alias Glimesh.Repo
+  alias Glimesh.Streams.{Channel, Followers, StreamMetadata, Tag}
 
   defdelegate authorize(action, user, params), to: Glimesh.Streams.Policy
 

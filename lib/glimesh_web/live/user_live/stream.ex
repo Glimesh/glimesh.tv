@@ -3,9 +3,9 @@ defmodule GlimeshWeb.UserLive.Stream do
 
   alias Glimesh.Accounts
   alias Glimesh.Accounts.Profile
+  alias Glimesh.ChannelLookups
   alias Glimesh.Presence
   alias Glimesh.Streams
-  alias Glimesh.ChannelLookups
 
   def mount(%{"username" => streamer_username}, session, socket) do
     # If the viewer is logged in set their locale, otherwise it defaults to English

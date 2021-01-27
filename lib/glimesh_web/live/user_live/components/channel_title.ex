@@ -2,9 +2,9 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   use GlimeshWeb, :live_view
   import Gettext, only: [with_locale: 2]
 
-  alias Glimesh.Streams
-  alias Glimesh.ChannelLookups
   alias Glimesh.ChannelCategories
+  alias Glimesh.ChannelLookups
+  alias Glimesh.Streams
 
   @impl true
   def render(assigns) do

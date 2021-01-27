@@ -3,9 +3,9 @@ defmodule GlimeshWeb.ChannelModeratorController do
 
   action_fallback GlimeshWeb.FallbackController
 
+  alias Glimesh.ChannelLookups
   alias Glimesh.StreamModeration
   alias Glimesh.Streams.ChannelModerator
-  alias Glimesh.ChannelLookups
 
   plug :put_layout, "user-sidebar.html"
 

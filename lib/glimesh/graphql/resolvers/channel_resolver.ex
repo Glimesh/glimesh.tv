@@ -1,10 +1,10 @@
 defmodule Glimesh.Resolvers.ChannelResolver do
   @moduledoc false
   alias Glimesh.Accounts
+  alias Glimesh.ChannelCategories
+  alias Glimesh.ChannelLookups
   alias Glimesh.Payments
   alias Glimesh.Streams
-  alias Glimesh.ChannelLookups
-  alias Glimesh.ChannelCategories
 
   # Channels
 

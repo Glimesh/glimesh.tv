@@ -5,8 +5,8 @@ defmodule Glimesh.Workers.StreamMetrics do
   use GenServer
 
   require Logger
-  alias Glimesh.Streams
   alias Glimesh.ChannelLookups
+  alias Glimesh.Streams
 
   @interval 60_000
 

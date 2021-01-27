@@ -2,10 +2,10 @@ defmodule GlimeshWeb.UserSettingsController do
   use GlimeshWeb, :controller
 
   alias Glimesh.Accounts
-  alias Glimesh.Streams
-  alias GlimeshWeb.UserAuth
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
+  alias Glimesh.Streams
+  alias GlimeshWeb.UserAuth
 
   plug :put_layout, "user-sidebar.html"
 

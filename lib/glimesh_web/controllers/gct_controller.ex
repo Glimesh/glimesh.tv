@@ -2,11 +2,11 @@ defmodule GlimeshWeb.GctController do
   use GlimeshWeb, :controller
 
   alias Glimesh.Accounts
+  alias Glimesh.ChannelCategories
+  alias Glimesh.ChannelLookups
   alias Glimesh.CommunityTeam
   alias Glimesh.Payments
   alias Glimesh.Streams
-  alias Glimesh.ChannelLookups
-  alias Glimesh.ChannelCategories
 
   action_fallback GlimeshWeb.GCTFallbackController
 

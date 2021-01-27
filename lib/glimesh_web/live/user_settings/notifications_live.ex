@@ -2,8 +2,8 @@ defmodule GlimeshWeb.NotificationsLive do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Accounts
-  alias Glimesh.Streams
   alias Glimesh.ChannelLookups
+  alias Glimesh.Streams
 
   @impl true
   def mount(_params, session, socket) do

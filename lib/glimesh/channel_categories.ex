@@ -9,7 +9,6 @@ defmodule Glimesh.ChannelCategories do
   alias Glimesh.Streams.Category
   alias Glimesh.Streams.Channel
   alias Glimesh.Streams.Tag
-  alias Glimesh.Streams.Category
 
   ## Categories
 

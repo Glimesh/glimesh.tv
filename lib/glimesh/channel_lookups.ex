@@ -7,11 +7,7 @@ defmodule Glimesh.ChannelLookups do
 
   alias Glimesh.Accounts.User
   alias Glimesh.Repo
-  alias Glimesh.Streams.Category
-  alias Glimesh.Streams.Channel
-  alias Glimesh.Streams.Followers
-  alias Glimesh.Streams.Tag
-  alias Glimesh.Streams.Category
+  alias Glimesh.Streams.{Category, Channel, Followers, Tag}
 
   ## Filtering
 
