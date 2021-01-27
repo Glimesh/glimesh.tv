@@ -83,6 +83,7 @@ defmodule Glimesh.Streams.Channel do
 
   def tags_changeset(channel, tags) do
     channel
+    |> change()
     |> put_assoc(:tags, tags)
   end
 

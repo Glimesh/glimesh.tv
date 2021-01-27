@@ -2,6 +2,7 @@ defmodule Glimesh.ChannelCategoriesTest do
   use Glimesh.DataCase
   use Bamboo.Test
 
+  import Glimesh.AccountsFixtures
   alias Glimesh.ChannelCategories
 
   describe "categories" do
@@ -107,6 +108,41 @@ defmodule Glimesh.ChannelCategoriesTest do
     test "list_tags/0 returns all tags" do
       tag = tag_fixture()
       assert Enum.member?(Enum.map(ChannelCategories.list_tags(), fn x -> x.name end), tag.name)
+    end
+
+    test "list_tags/1 returns all tags in a category" do
+      %Glimesh.Streams.Category{id: cat_id} = ChannelCategories.get_category("gaming")
+      tag = tag_fixture(%{category_id: cat_id})
+
+      assert Enum.member?(
+               Enum.map(ChannelCategories.list_tags(cat_id), fn x -> x.name end),
+               tag.name
+             )
+    end
+
+    test "list_live_tags/1 returns only live tags" do
+      streamer = streamer_fixture()
+      category_id = streamer.channel.category_id
+
+      offline_tag = tag_fixture(%{name: "Offline Tag", category_id: category_id})
+      live_tag = tag_fixture(%{name: "Online Tag", category_id: category_id})
+
+      {:ok, channel} =
+        streamer.channel
+        |> Glimesh.Streams.Channel.tags_changeset([live_tag])
+        |> Glimesh.Repo.update()
+
+      {:ok, _} = Glimesh.Streams.start_stream(channel)
+
+      assert Enum.member?(
+               Enum.map(ChannelCategories.list_live_tags(category_id), fn x -> x.name end),
+               live_tag.name
+             )
+
+      refute Enum.member?(
+               Enum.map(ChannelCategories.list_live_tags(category_id), fn x -> x.name end),
+               offline_tag.name
+             )
     end
 
     test "get_tag!/1 returns the tag with given id" do
