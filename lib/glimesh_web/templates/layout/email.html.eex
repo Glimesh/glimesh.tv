@@ -249,7 +249,7 @@
 											<tr>
 												<td class="text-footer2"
 													style="color:#8297b3; font-family:'Roboto', Arial,sans-serif; font-size:12px; line-height:26px; text-align:center;">
-													<%= Application.get_env(:glimesh, :email_physical_address) %>
+													<%= raw(Application.get_env(:glimesh, :email_physical_address)) %>
 													<br />United States of America
 												</td>
 											</tr>
