@@ -9,11 +9,11 @@ defmodule GlimeshWeb.UserSessionController do
     render(conn, "new.html", error_message: nil)
   end
 
-  def create(conn, %{"user" => %{"email" => email, "password" => password} = user_params}) do
-    if user = Accounts.get_user_by_email_and_password(email, password) do
+  def create(conn, %{"user" => %{"login" => login, "password" => password} = user_params}) do
+    if user = Accounts.get_user_by_login_and_password(login, password) do
       attempt_login(conn, user, user_params)
     else
-      render(conn, "new.html", error_message: gettext("Invalid e-mail or password"))
+      render(conn, "new.html", error_message: gettext("Invalid e-mail / username or password"))
     end
   end
 
