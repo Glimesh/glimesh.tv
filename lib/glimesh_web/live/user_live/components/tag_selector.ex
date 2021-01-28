@@ -11,7 +11,7 @@ defmodule GlimeshWeb.UserLive.Components.TagSelector do
         "data-category": @current_category_id,
         "data-tags": @tags,
         "phx-hook": "TagSelector",
-        placeholder: "describe your stream" %>
+        placeholder: gettext("Add tags to describe your stream! Limit 10.") %>
     </div>
     """
   end
