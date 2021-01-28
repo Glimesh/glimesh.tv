@@ -5,18 +5,20 @@
 import Config
 
 # Node configuration
-config :libcluster,
-  topologies: [
-    example: [
-      strategy: Cluster.Strategy.Epmd,
-      config: [
-        hosts: [
-          :"glimesh@do-nyc3-web1.us-east.web.glimesh.tv",
-          :"glimesh@do-nyc3-web2.us-east.web.glimesh.tv"
+if System.get_env("ENABLE_LIBCLUSTER") do
+  config :libcluster,
+    topologies: [
+      example: [
+        strategy: Cluster.Strategy.Epmd,
+        config: [
+          hosts: [
+            :"glimesh@do-nyc3-web1.us-east.web.glimesh.tv",
+            :"glimesh@do-nyc3-web2.us-east.web.glimesh.tv"
+          ]
         ]
       ]
     ]
-  ]
+end
 
 # Database Configuration
 database_url =
