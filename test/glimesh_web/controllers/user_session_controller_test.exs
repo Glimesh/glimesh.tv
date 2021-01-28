@@ -23,10 +23,27 @@ defmodule GlimeshWeb.UserSessionControllerTest do
   end
 
   describe "POST /users/log_in" do
-    test "logs the user in", %{conn: conn, user: user} do
+    test "logs the user in with email", %{conn: conn, user: user} do
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{
-          "user" => %{"email" => user.email, "password" => valid_user_password(), "tfa" => nil}
+          "user" => %{"login" => user.email, "password" => valid_user_password(), "tfa" => nil}
+        })
+
+      assert get_session(conn, :user_token)
+      assert redirected_to(conn) =~ "/"
+
+      # Now do a logged in request and assert on the menu
+      conn = get(conn, "/")
+      response = html_response(conn, 200)
+      assert response =~ user.username
+      assert response =~ "Settings"
+      assert response =~ "Sign Out"
+    end
+
+    test "logs the user in with username", %{conn: conn, user: user} do
+      conn =
+        post(conn, Routes.user_session_path(conn, :create), %{
+          "user" => %{"login" => user.username, "password" => valid_user_password(), "tfa" => nil}
         })
 
       assert get_session(conn, :user_token)
@@ -44,7 +61,7 @@ defmodule GlimeshWeb.UserSessionControllerTest do
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{
           "user" => %{
-            "email" => user.email,
+            "login" => user.email,
             "password" => valid_user_password(),
             "remember_me" => "true",
             "tfa" => nil
@@ -58,19 +75,19 @@ defmodule GlimeshWeb.UserSessionControllerTest do
     test "emits error message with invalid credentials", %{conn: conn, user: user} do
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{
-          "user" => %{"email" => user.email, "password" => "invalid_password"}
+          "user" => %{"login" => user.email, "password" => "invalid_password"}
         })
 
       response = html_response(conn, 200)
       assert response =~ "<h3>Login to our Alpha!</h3>"
-      assert response =~ "Invalid email or password"
+      assert response =~ "Invalid e-mail / username or password"
     end
 
     test "emits error message with banned user", %{conn: conn, banned_user: banned_user} do
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{
           "user" => %{
-            "email" => banned_user.email,
+            "login" => banned_user.email,
             "password" => valid_user_password(),
             "tfa" => nil
           }
@@ -94,7 +111,7 @@ defmodule GlimeshWeb.UserSessionControllerTest do
 
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{
-          "user" => %{"email" => user.email, "password" => password}
+          "user" => %{"login" => user.email, "password" => password}
         })
 
       assert get_session(conn, :tfa_user_id) == user.id
@@ -125,7 +142,7 @@ defmodule GlimeshWeb.UserSessionControllerTest do
 
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{
-          "user" => %{"email" => user.email, "password" => password}
+          "user" => %{"login" => user.email, "password" => password}
         })
 
       assert get_session(conn, :tfa_user_id) == user.id
@@ -158,7 +175,7 @@ defmodule GlimeshWeb.UserSessionControllerTest do
 
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{
-          "user" => %{"email" => user.email, "password" => password}
+          "user" => %{"login" => user.email, "password" => password}
         })
 
       conn =
@@ -183,7 +200,7 @@ defmodule GlimeshWeb.UserSessionControllerTest do
 
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{
-          "user" => %{"email" => user.email, "password" => password}
+          "user" => %{"login" => user.email, "password" => password}
         })
 
       conn =

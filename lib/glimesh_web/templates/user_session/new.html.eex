@@ -22,10 +22,10 @@
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-at fa-fw"></i></span>
+                            <span class="input-group-text"><i class="fas fa-user fa-fw"></i></span>
                         </div>
-                        <%= email_input f, :email, class: "form-control", placeholder: "Email", autofocus: "true", required: true, autocomplete: "username", "aria-label": "Email"  %>
-                        <%= error_tag f, :email %>
+                        <%= text_input f, :login, class: "form-control", placeholder: "Email or Username", autofocus: "true", required: true, autocomplete: "username", "aria-label": "Email or Username"  %>
+                        <%= error_tag f, :login %>
                     </div>
 
                     <div class="input-group mb-3">

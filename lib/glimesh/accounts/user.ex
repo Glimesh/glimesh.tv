@@ -98,6 +98,7 @@ defmodule Glimesh.Accounts.User do
   defp validate_username(changeset) do
     changeset
     |> validate_required([:username])
+    # It's important to make sure username's cannot look like emails, so don't allow @'s
     |> validate_format(:username, ~r/^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/i,
       message: "Use only alphanumeric characters, no spaces"
     )
