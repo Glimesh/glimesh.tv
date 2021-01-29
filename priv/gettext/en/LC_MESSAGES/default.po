@@ -1822,7 +1822,7 @@ msgstr "Preferences"
 
 #: lib/glimesh_web/controllers/user_settings_controller.ex:41
 msgid "Preferences updated successfully."
-msgstr "Preferences updates successfully."
+msgstr "Preferences updated successfully."
 
 #: lib/glimesh_web/controllers/about_controller.ex:15
 msgid "Privacy & Cookie Policy"
