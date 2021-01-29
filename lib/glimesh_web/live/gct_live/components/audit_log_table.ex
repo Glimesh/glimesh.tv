@@ -4,7 +4,9 @@ defmodule GlimeshWeb.GctLive.Components.AuditLogTable do
   alias Glimesh.CommunityTeam
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
+    if session["locale"], do: Gettext.put_locale(session["locale"])
+
     %{
       entries: entries,
       page_number: page_number,

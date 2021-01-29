@@ -10,6 +10,8 @@ defmodule GlimeshWeb.GctLive.Components.ChannelButtonArray do
 
   @impl true
   def mount(_params, %{"admin" => admin, "channel" => channel}, socket) do
+    Gettext.put_locale(Glimesh.Accounts.get_user_locale(admin))
+
     {:ok,
      socket
      |> assign(:admin, admin)

@@ -233,7 +233,6 @@ defmodule Glimesh.Accounts.User do
       :displayname,
       :username,
       :email,
-      :locale,
       :is_admin,
       :can_stream,
       :stripe_user_id,

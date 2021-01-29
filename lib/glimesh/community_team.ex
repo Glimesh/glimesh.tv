@@ -77,7 +77,6 @@ defmodule Glimesh.CommunityTeam do
   def generate_update_user_profile_more_details(user, user_params) do
     _fancy_string = """
     Display name changed from #{user.displayname} to #{user_params["displayname"]}
-    Language changed from #{user.locale} to #{user_params["locale"]}
     Twitter social changed from #{user.social_twitter} to #{user_params["social_twitter"]}
     YouTube social changed from #{user.social_youtube} to #{user_params["social_youtube"]}
     Instagram social changed from #{user.social_instagram} to #{user_params["social_instagram"]}
@@ -92,7 +91,6 @@ defmodule Glimesh.CommunityTeam do
     Display name changed from #{user.displayname} to #{user_params["displayname"]}
     Username changed from #{user.username} to #{user_params["username"]}
     Email changed from #{user.email} to #{user_params["email"]}
-    Language changed from #{user.locale} to #{user_params["locale"]}
     Admin changed from #{user.is_admin} to #{user_params["is_admin"]}
     Can stream changed from #{user.can_stream} to #{user_params["can_stream"]}
     Can use payments changed from #{user.can_payments} to #{user_params["can_payments"]}
