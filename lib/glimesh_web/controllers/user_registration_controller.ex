@@ -11,9 +11,14 @@ defmodule GlimeshWeb.UserRegistrationController do
   end
 
   def create(conn, %{"user" => user_params, "h-captcha-response" => captcha_response}) do
+    existing_preferences = %Glimesh.Accounts.UserPreference{
+      locale: GlimeshWeb.LayoutView.site_locale(conn),
+      site_theme: GlimeshWeb.LayoutView.site_theme(conn)
+    }
+
     case Hcaptcha.verify(captcha_response) do
       {:ok, _} ->
-        case Accounts.register_user(user_params) do
+        case Accounts.register_user(user_params, existing_preferences) do
           {:ok, user} ->
             {:ok, _} =
               Accounts.deliver_user_confirmation_instructions(

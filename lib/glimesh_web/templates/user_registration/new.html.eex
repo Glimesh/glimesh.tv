@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="text-center">
-                        <%= raw Hcaptcha.Template.display(theme: "dark") %>
+                        <%= raw Hcaptcha.Template.display(theme: GlimeshWeb.LayoutView.site_theme(@conn)) %>
 
                         <%= submit "Register", class: "btn btn-primary btn-lg mt-2" %>
 

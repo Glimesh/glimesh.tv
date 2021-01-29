@@ -14,14 +14,22 @@
             <h3><%= gettext("Look & Feel") %></h3>
 
             <div class="form-group">
+                <%= label f, gettext("Language") %>
+                <%= select f, :locale, Application.get_env(:glimesh, :locales), [class: "form-control"] %>
+                <%= error_tag f, :locale %>
+            </div>
+
+            <div class="form-group">
                 <%= label f, gettext("Site Theme: ") %>
                 <div class="custom-control custom-radio custom-control-inline">
-                    <%= radio_button f, :site_theme, "dark", [id: "darkMode", class: "custom-control-input"] %>
-                    <label class="custom-control-label" for="darkMode"><%= gettext("Dark") %></label>
+                    <%= radio_button f, :site_theme, "dark", [checked: input_value(f, :site_theme) == "dark", class: "custom-control-input"] %>
+                    <label class="custom-control-label"
+                        for="<%= input_id(f, :site_theme, "dark") %>"><%= gettext("Dark") %></label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
-                    <%= radio_button f, :site_theme, "light", [id: "lightMode", class: "custom-control-input"] %>
-                    <label class="custom-control-label" for="lightMode"><%= gettext("Light") %></label>
+                    <%= radio_button f, :site_theme, "light", [checked: input_value(f, :site_theme) == "light", class: "custom-control-input"] %>
+                    <label class="custom-control-label"
+                        for="<%= input_id(f, :site_theme, "light") %>"><%= gettext("Light") %></label>
                 </div>
                 <%= error_tag f, :site_theme %>
 

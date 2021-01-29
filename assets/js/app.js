@@ -55,8 +55,16 @@ let liveSocket = new LiveSocket("/live", Socket, {
     hooks: Hooks
 });
 
+// Make sure no dropdown form's are automatically closed on action
+function ignoreDropdownFormClosing() {
+    document.querySelectorAll('.dropdown-menu form').forEach(function(el) { 
+        el.onclick = function(e) { e.stopPropagation(); } 
+    })
+}
+
 // Init the file upload handler
 bsCustomFileInput.init();
+ignoreDropdownFormClosing()
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", () => {});
@@ -72,10 +80,7 @@ window.addEventListener("phx:page-loading-stop", info => {
         }
     }
 
-    // Make sure no dropdown form's are automatically closed on action
-    document.querySelectorAll('.dropdown-menu form').forEach(function(el) { 
-        el.onclick = function(e) { e.stopPropagation(); } 
-    })
+    ignoreDropdownFormClosing()
 });
 
 // connect if there are any LiveViews on the page

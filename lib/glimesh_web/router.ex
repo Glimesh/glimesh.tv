@@ -216,6 +216,8 @@ defmodule GlimeshWeb.Router do
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :confirm
 
+    post "/quick_preferences", QuickPreferenceController, :update_preference
+
     # This must be the last route
     live "/:username", UserLive.Stream, :index
     live "/:username/profile", UserLive.Profile, :index

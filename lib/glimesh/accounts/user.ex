@@ -41,8 +41,6 @@ defmodule Glimesh.Accounts.User do
 
     field :tfa_token, :string
 
-    field :locale, :string, default: "en"
-
     field :allow_glimesh_newsletter_emails, :boolean, default: false
     field :allow_live_subscription_emails, :boolean, default: true
 
@@ -214,7 +212,6 @@ defmodule Glimesh.Accounts.User do
     user
     |> cast(attrs, [
       :displayname,
-      :locale,
       :social_twitter,
       :social_youtube,
       :social_instagram,

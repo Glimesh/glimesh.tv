@@ -45,6 +45,40 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
       assert response =~ "Sign Out"
     end
 
+    test "creates account and remembers preferences", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(site_theme: "light", locale: "de")
+
+      username = unique_user_username()
+      email = unique_user_email()
+
+      conn =
+        post(conn, Routes.user_registration_path(conn, :create), %{
+          "h-captcha-response" => "valid_response",
+          "user" => %{
+            "username" => username,
+            "email" => email,
+            "password" => valid_user_password()
+          }
+        })
+
+      assert get_session(conn, :user_token)
+      assert redirected_to(conn) =~ "/"
+
+      # Now do a logged in request and assert on the menu
+      conn = get(conn, "/")
+      response = html_response(conn, 200)
+      assert response =~ username
+      assert response =~ "de ☀️"
+
+      user = Glimesh.Accounts.get_by_username!(username)
+      prefs = Glimesh.Accounts.get_user_preference!(user)
+
+      assert prefs.site_theme == "light"
+      assert prefs.locale == "de"
+    end
+
     test "render errors for invalid data", %{conn: conn} do
       conn =
         post(conn, Routes.user_registration_path(conn, :create), %{
