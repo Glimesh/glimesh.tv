@@ -1,7 +1,7 @@
 <h1><%= gettext("Show Category") %></h1>
 
 <%= if @live_action in [:edit] do %>
-  <%= live_modal @socket, GlimeshWeb.Admin.CategoryLive.FormComponent,
+<%= live_modal @socket, GlimeshWeb.Admin.CategoryLive.FormComponent,
     id: @category.id,
     title: @page_title,
     action: @live_action,
@@ -19,16 +19,6 @@
   <li>
     <strong><%= gettext("Slug") %>:</strong>
     <%= @category.slug %>
-  </li>
-
-  <li>
-    <strong><%= gettext("Avatar") %>:</strong>
-    <%= @category.avatar %>
-  </li>
-
-  <li>
-    <strong><%= gettext("Parent") %>:</strong>
-    <%= @category.parent_id %>
   </li>
 
 </ul>

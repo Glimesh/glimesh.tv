@@ -25,7 +25,7 @@
             <hr>
             <h4 class="text-center"><%= gettext("Channel") %></h4>
             <div class="list-group list-group-flush">
-                <%= if Glimesh.Streams.get_channel_for_user(@current_user) do %>
+                <%= if Glimesh.ChannelLookups.get_channel_for_user(@current_user) do %>
                 <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: Routes.user_settings_path(@conn, :stream) do %>
                 <i class="fas fa-video fa-fw"></i> <%= gettext("Channel Settings") %>
                 <% end %>

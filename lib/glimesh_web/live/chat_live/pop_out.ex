@@ -2,10 +2,10 @@ defmodule GlimeshWeb.ChatLive.PopOut do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Accounts
-  alias Glimesh.Streams
+  alias Glimesh.ChannelLookups
 
   def mount(%{"username" => streamer_username}, session, socket) do
-    case Streams.get_channel_for_username!(streamer_username) do
+    case ChannelLookups.get_channel_for_username!(streamer_username) do
       %Glimesh.Streams.Channel{} = channel ->
         # Keep track of viewers using their socket ID, but later we'll keep track of chatters by their user
 

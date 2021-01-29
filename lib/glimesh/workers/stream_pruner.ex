@@ -5,6 +5,7 @@ defmodule Glimesh.Workers.StreamPruner do
   use GenServer
 
   require Logger
+  alias Glimesh.ChannelLookups
   alias Glimesh.Streams
 
   # 5 Minutes in milliseconds
@@ -29,7 +30,7 @@ defmodule Glimesh.Workers.StreamPruner do
   end
 
   defp prune_old_streams do
-    channels = Streams.list_live_channels()
+    channels = ChannelLookups.filter_live_channels()
     Logger.info("Checking for stale streams to prune")
 
     current_time = NaiveDateTime.local_now()

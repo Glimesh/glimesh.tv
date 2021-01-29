@@ -2,6 +2,8 @@ defmodule GlimeshWeb.StreamsLive.List do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Accounts
+  alias Glimesh.ChannelCategories
+  alias Glimesh.ChannelLookups
   alias Glimesh.Streams
 
   @impl true
@@ -10,11 +12,12 @@ defmodule GlimeshWeb.StreamsLive.List do
       %Glimesh.Accounts.User{} = user ->
         if session["locale"], do: Gettext.put_locale(session["locale"])
 
-        channels = Glimesh.Streams.list_live_followed_channels(user)
+        channels = ChannelLookups.list_live_followed_channels(user)
 
         {:ok,
          socket
          |> put_page_title(gettext("Followed Streams"))
+         |> assign(:tags, nil)
          |> assign(:list_name, "Followed")
          |> assign(:channels, channels)}
 
@@ -24,18 +27,19 @@ defmodule GlimeshWeb.StreamsLive.List do
   end
 
   @impl true
-  def mount(%{"category" => category}, session, socket) do
+  def mount(params, session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
-    case Streams.get_category(category) do
-      %Glimesh.Streams.Category{} = category ->
-        channels = Glimesh.Streams.list_in_category(category)
+    case ChannelCategories.get_category(params["category"]) do
+      %Streams.Category{} = category ->
+        tags = ChannelCategories.list_live_tags(category.id)
 
         {:ok,
          socket
          |> put_page_title(category.name)
          |> assign(:list_name, category.name)
-         |> assign(:channels, channels)
+         |> assign(:tags, tags)
+         |> assign(:tag_selected, Map.has_key?(params, "tag"))
          |> assign(:category, category)}
 
       nil ->
@@ -43,7 +47,13 @@ defmodule GlimeshWeb.StreamsLive.List do
     end
   end
 
-  def mount(_, _, socket) do
-    {:ok, redirect(socket, to: "/")}
+  @impl true
+  def handle_params(params, _uri, socket) do
+    channels = ChannelLookups.filter_live_channels(Map.take(params, ["category", "tag"]))
+
+    {:noreply,
+     socket
+     |> assign(:tag_selected, Map.has_key?(params, "tag"))
+     |> assign(:channels, channels)}
   end
 end

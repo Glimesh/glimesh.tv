@@ -17,6 +17,10 @@ defmodule GlimeshWeb.Api.ChannelTest do
     channel(username: $username) {
       title
       streamer { username }
+
+      tags {
+        name
+      }
     }
   }
   """
@@ -53,7 +57,12 @@ defmodule GlimeshWeb.Api.ChannelTest do
                "data" => %{
                  "channel" => %{
                    "title" => "Live Stream!",
-                   "streamer" => %{"username" => user.username}
+                   "streamer" => %{"username" => user.username},
+                   "tags" => [
+                     %{
+                       "name" => "World of Warcraft"
+                     }
+                   ]
                  }
                }
              }
@@ -74,12 +83,16 @@ defmodule GlimeshWeb.Api.ChannelTest do
     category(slug: $slug) {
       name
       slug
+
+      tags {
+        name
+      }
     }
   }
   """
 
   describe "categories api" do
-    setup [:register_and_set_user_token]
+    setup [:register_and_set_user_token, :create_tag]
 
     test "returns all categories", %{conn: conn} do
       conn =
@@ -104,7 +117,12 @@ defmodule GlimeshWeb.Api.ChannelTest do
                "data" => %{
                  "category" => %{
                    "name" => "Gaming",
-                   "slug" => "gaming"
+                   "slug" => "gaming",
+                   "tags" => [
+                     %{
+                       "name" => "World of Warcraft"
+                     }
+                   ]
                  }
                }
              }
@@ -131,6 +149,24 @@ defmodule GlimeshWeb.Api.ChannelTest do
 
   def create_channel(%{user: user}) do
     {:ok, channel} = Streams.create_channel(user)
+
+    {:ok, channel} =
+      Streams.update_channel(user, channel, %{
+        "tags" => "[{\"value\":\"World of Warcraft\"}]"
+      })
+
     %{channel: channel}
+  end
+
+  def create_tag(_) do
+    %Streams.Category{id: cat_id} = Glimesh.ChannelCategories.get_category("gaming")
+
+    {:ok, tag} =
+      Glimesh.ChannelCategories.create_tag(%{
+        category_id: cat_id,
+        name: "World of Warcraft"
+      })
+
+    %{tag: tag}
   end
 end

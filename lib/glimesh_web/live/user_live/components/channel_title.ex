@@ -2,6 +2,8 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   use GlimeshWeb, :live_view
   import Gettext, only: [with_locale: 2]
 
+  alias Glimesh.ChannelCategories
+  alias Glimesh.ChannelLookups
   alias Glimesh.Streams
 
   @impl true
@@ -9,7 +11,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
     ~L"""
     <%= if @can_change do %>
       <%= if !@editing do %>
-        <h5 class="mb-0"><%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.tag_name %></span> <%= @channel.title %> <a class="fas fa-edit" phx-click="toggle-edit" href="#" aria-label="<%= gettext("Edit") %>"></a></h5>
+        <h5 class="mb-0"><%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.name %></span> <%= @channel.title %> <a class="fas fa-edit" phx-click="toggle-edit" href="#" aria-label="<%= gettext("Edit") %>"></a></h5>
       <% else %>
         <%= f = form_for @changeset, "#", [phx_submit: :save] %>
           <div class="input-group">
@@ -27,7 +29,10 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
         </form>
       <% end %>
     <% else %>
-      <h5 class="mb-0"><%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.tag_name %></span> <%= @channel.title %> </h5>
+      <h5 class="mb-0"><%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.name %></span> <%= @channel.title %> </h5>
+    <% end %>
+    <%= for tag <- @channel.tags do %>
+      <%= live_patch tag.name, to: Routes.streams_list_path(@socket, :index, @channel.category.slug, %{tag: tag.slug}), class: "badge badge-pill badge-primary" %>
     <% end %>
     """
   end
@@ -45,7 +50,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   @impl true
   def mount(_params, %{"channel_id" => channel_id, "user" => nil}, socket) do
     if connected?(socket), do: Streams.subscribe_to(:channel, channel_id)
-    channel = Streams.get_channel!(channel_id)
+    channel = ChannelLookups.get_channel!(channel_id)
 
     {:ok,
      socket
@@ -59,7 +64,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   @impl true
   def mount(_params, %{"channel_id" => channel_id, "user" => user}, socket) do
     if connected?(socket), do: Streams.subscribe_to(:channel, channel_id)
-    channel = Streams.get_channel!(channel_id)
+    channel = ChannelLookups.get_channel!(channel_id)
 
     {:ok,
      socket
@@ -101,7 +106,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
     socket
     |> assign(
       :categories,
-      Streams.list_categories_for_select()
+      ChannelCategories.list_categories_for_select()
     )
   end
 end

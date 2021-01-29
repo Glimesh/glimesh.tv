@@ -27,6 +27,25 @@
     </div>
 
 
+    <%= if !is_nil(@tags) do %>
+    <div class="card">
+        <div class="card-body align-items-center">
+            <h4 class="float-left">
+                <%= gettext("Tags:") %>
+
+                <%= for tag <- @tags do %>
+                <%= live_patch tag.name, to: Routes.streams_list_path(@socket, :index, @category.slug, %{tag: tag.slug}), class: "badge badge-pill badge-primary" %>
+                <% end %>
+            </h4>
+            <div class="float-right">
+                <%= if @tag_selected do %>
+                <%= live_patch gettext("Clear Filter"), to: Routes.streams_list_path(@socket, :index, @category.slug), class: "btn btn-primary" %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <% end %>
+
     <div class="row">
         <%= for channel <- @channels do %>
         <div class="col-sm-12 col-md-6 col-lg-4 mt-4">
@@ -36,8 +55,8 @@
                     alt="<%= channel.title %>" class="card-img">
                 <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
                     <div class="card-stream-tags">
-                        <%= if channel.category do   %>
-                        <span class="badge badge-primary"><%= channel.category.name %></span>
+                        <%= for tag <- channel.tags do %>
+                        <span class="badge badge-primary"><%= tag.name %></span>
                         <% end %>
                     </div>
 

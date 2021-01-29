@@ -124,12 +124,39 @@ defmodule Glimesh.Schema.ChannelTypes do
   object :category do
     field :id, :id
     field :name, :string, description: "Name of the category"
-    field :tag_name, :string, description: "Parent Name and Name of the category in one string"
+
+    field :tags, list_of(:tag), resolve: dataloader(Repo)
+
+    field :tag_name, :string do
+      deprecate("Tag name is now just name")
+
+      resolve(fn category, _, _ ->
+        {:ok, category.name}
+      end)
+    end
+
     field :slug, :string, description: "Slug of the category"
 
-    field :parent, :category,
-      resolve: dataloader(Repo),
-      description: "Parent category, if null this is a parent category"
+    field :parent, :category do
+      deprecate("All categories are now parents and the children are tags.")
+
+      resolve(fn _, _, _ ->
+        {:ok, nil}
+      end)
+    end
+  end
+
+  @desc "Tags are user created labels that are either global or category specific."
+  object :tag do
+    field :id, :id
+    field :name, :string, description: "Name of the tag"
+    field :slug, :string, description: "URL friendly name of the tag"
+    field :count_usage, :integer, description: "The number of streams started with this tag"
+
+    field :category, :category, resolve: dataloader(Repo)
+
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
   end
 
   @desc "A channel is a user's actual container for live streaming."
@@ -165,6 +192,8 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :user, non_null(:user),
       resolve: dataloader(Repo),
       deprecate: "Please use the streamer field"
+
+    field :tags, list_of(:tag), resolve: dataloader(Repo)
 
     field :inserted_at, non_null(:naive_datetime)
     field :updated_at, non_null(:naive_datetime)
