@@ -2,6 +2,8 @@ defmodule GlimeshWeb.UserSettingsController do
   use GlimeshWeb, :controller
 
   alias Glimesh.Accounts
+  alias Glimesh.ChannelCategories
+  alias Glimesh.ChannelLookups
   alias Glimesh.Streams
   alias GlimeshWeb.UserAuth
 
@@ -78,7 +80,7 @@ defmodule GlimeshWeb.UserSettingsController do
 
   def delete_channel(conn, _params) do
     user = conn.assigns.current_user
-    channel = Streams.get_channel_for_username!(user.username)
+    channel = ChannelLookups.get_channel_for_username!(user.username)
 
     case Streams.delete_channel(user, channel) do
       {:ok, _} ->
@@ -121,13 +123,13 @@ defmodule GlimeshWeb.UserSettingsController do
   end
 
   defp assign_channel_changesets(conn, _opts) do
-    channel = Streams.get_channel_for_username!(conn.assigns.current_user.username)
+    channel = ChannelLookups.get_channel_for_username!(conn.assigns.current_user.username)
 
     if channel do
       conn
       |> assign(:channel, channel)
       |> assign(:channel_changeset, Streams.change_channel(channel))
-      |> assign(:categories, Streams.list_categories_for_select())
+      |> assign(:categories, ChannelCategories.list_categories_for_select())
     else
       conn |> assign(:channel, channel)
     end

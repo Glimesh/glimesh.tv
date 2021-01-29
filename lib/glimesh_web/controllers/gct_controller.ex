@@ -2,6 +2,8 @@ defmodule GlimeshWeb.GctController do
   use GlimeshWeb, :controller
 
   alias Glimesh.Accounts
+  alias Glimesh.ChannelCategories
+  alias Glimesh.ChannelLookups
   alias Glimesh.CommunityTeam
   alias Glimesh.Payments
   alias Glimesh.Streams
@@ -214,8 +216,8 @@ defmodule GlimeshWeb.GctController do
 
       channel =
         case parse_channel_query(query) do
-          "channel_id" -> Streams.get_channel!(query)
-          "username" -> Streams.get_channel_for_username!(query, true)
+          "channel_id" -> ChannelLookups.get_channel!(query)
+          "username" -> ChannelLookups.get_channel_for_username!(query, true)
         end
 
       if channel do
@@ -223,7 +225,7 @@ defmodule GlimeshWeb.GctController do
           conn,
           "lookup_channel.html",
           channel: channel,
-          categories: Streams.list_categories_for_select()
+          categories: ChannelCategories.list_categories_for_select()
         )
       else
         render(conn, "invalid_user.html")
@@ -233,7 +235,7 @@ defmodule GlimeshWeb.GctController do
 
   def edit_channel(conn, %{"channel_id" => channel_id}) do
     current_user = conn.assigns.current_user
-    channel = Streams.get_channel(channel_id)
+    channel = ChannelLookups.get_channel(channel_id)
 
     if channel do
       with :ok <-
@@ -261,7 +263,7 @@ defmodule GlimeshWeb.GctController do
           "edit_channel.html",
           channel: channel,
           channel_changeset: channel_changeset,
-          categories: Streams.list_categories_for_select(),
+          categories: ChannelCategories.list_categories_for_select(),
           channel_delete_disabled: disable_delete_button
         )
       end
@@ -272,7 +274,7 @@ defmodule GlimeshWeb.GctController do
 
   def update_channel(conn, %{"channel" => channel_params, "channel_id" => channel_id}) do
     current_user = conn.assigns.current_user
-    channel = Streams.get_channel!(channel_id)
+    channel = ChannelLookups.get_channel!(channel_id)
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_channel, current_user) do
       case Streams.update_channel(current_user, channel, channel_params) do
@@ -293,7 +295,7 @@ defmodule GlimeshWeb.GctController do
           render(conn, "edit_channel.html",
             channel: channel,
             channel_changeset: changeset,
-            categories: Streams.list_categories_for_select()
+            categories: ChannelCategories.list_categories_for_select()
           )
 
         {:error, :unauthorized} ->
@@ -314,7 +316,7 @@ defmodule GlimeshWeb.GctController do
 
   def delete_channel(conn, %{"channel_id" => channel_id}) do
     current_user = conn.assigns.current_user
-    channel = Streams.get_channel!(channel_id)
+    channel = ChannelLookups.get_channel!(channel_id)
 
     with :ok <-
            Bodyguard.permit(

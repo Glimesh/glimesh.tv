@@ -14,10 +14,24 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
      |> assign(:channel_changeset, session["channel_changeset"])
      |> assign(:categories, session["categories"])
      |> assign(:channel, session["channel"])
+     |> assign(:current_category_id, session["channel"].category_id)
      |> assign(:route, session["route"])
      |> assign(:user, session["user"])
      |> assign(:delete_route, session["delete_route"])
      |> assign(:channel_delete_disabled, session["channel_delete_disabled"])}
+  end
+
+  @impl true
+  def handle_event(
+        "change_channel",
+        %{"_target" => ["channel", "category_id"], "channel" => channel},
+        socket
+      ) do
+    {:noreply, socket |> assign(:current_category_id, channel["category_id"])}
+  end
+
+  def handle_event("change_channel", _params, socket) do
+    {:noreply, socket}
   end
 
   @impl true

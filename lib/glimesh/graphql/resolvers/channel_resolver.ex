@@ -1,26 +1,28 @@
 defmodule Glimesh.Resolvers.ChannelResolver do
   @moduledoc false
   alias Glimesh.Accounts
+  alias Glimesh.ChannelCategories
+  alias Glimesh.ChannelLookups
   alias Glimesh.Payments
   alias Glimesh.Streams
 
   # Channels
 
   def all_channels(_, _) do
-    {:ok, Streams.list_channels()}
+    {:ok, ChannelLookups.list_channels()}
   end
 
   def find_channel(%{id: id}, _) do
-    {:ok, Streams.get_channel!(id)}
+    {:ok, ChannelLookups.get_channel!(id)}
   end
 
   def find_channel(%{username: username}, _) do
-    {:ok, Streams.get_channel_for_username!(username)}
+    {:ok, ChannelLookups.get_channel_for_username!(username)}
   end
 
   # def find_channel(%{stream_key: stream_key}, %{context: %{user_access: %UserAccess{chat: true, user: user}}}) do
   def find_channel(%{stream_key: stream_key}, %{context: %{is_admin: true}}) do
-    {:ok, Streams.get_channel_for_stream_key!(stream_key)}
+    {:ok, ChannelLookups.get_channel_for_stream_key!(stream_key)}
   end
 
   def find_channel(%{stream_key: _}, _) do
@@ -30,7 +32,7 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   # Streams
 
   def start_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
-    channel = Streams.get_channel!(channel_id)
+    channel = ChannelLookups.get_channel!(channel_id)
 
     case Streams.start_stream(channel) do
       {:error, _} -> {:error, "User is unauthorized to start a stream."}
@@ -85,11 +87,11 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   # Categories
 
   def all_categories(_, _) do
-    {:ok, Streams.list_categories()}
+    {:ok, ChannelCategories.list_categories()}
   end
 
   def find_category(%{slug: slug}, _) do
-    {:ok, Streams.get_category(slug)}
+    {:ok, ChannelCategories.get_category(slug)}
   end
 
   # Subscriptions

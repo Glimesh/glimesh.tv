@@ -7,31 +7,17 @@
   phx_change: "validate",
   phx_submit: "save" %>
 
-  <div class="form-group">
-    <%= label f, :parent_id, gettext("Parent Category") %>
-    <%= select f, :parent_id, @existing_categories, class: "form-control" %>
-    <%= error_tag f, :parent_id %>
-  </div>
+<div class="form-group">
+  <%= label f, :name %>
+  <%= text_input f, :name, class: "form-control" %>
+  <%= error_tag f, :name %>
+</div>
 
-  <div class="form-group">
-    <%= label f, :name %>
-    <%= text_input f, :name, class: "form-control" %>
-    <%= error_tag f, :name %>
-  </div>
+<div class="form-group">
+  <%= label f, :slug %>
+  <%= text_input f, :slug, class: "form-control", disabled: true %>
+  <%= error_tag f, :slug %>
+</div>
 
-  <div class="form-group">
-    <%= label f, :slug %>
-    <%= text_input f, :slug, class: "form-control", disabled: true %>
-    <%= error_tag f, :slug %>
-  </div>
-
-  <!--
-  <div class="form-control">
-    <%= file_input f, :avatar, id: "customFile", class: "", accept: "image/png, image/jpeg" %>
-    <%= error_tag f, :avatar %>
-  </div>
-  -->
-
-
-  <%= submit "Save", class: "btn btn-primary", phx_disable_with: "Saving..." %>
+<%= submit "Save", class: "btn btn-primary", phx_disable_with: "Saving..." %>
 </form>

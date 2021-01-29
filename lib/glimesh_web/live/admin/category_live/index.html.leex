@@ -2,7 +2,7 @@
   <h1><%= gettext("Listing Categories") %></h1>
 
   <%= if @live_action in [:new, :edit] do %>
-    <%= live_modal @socket, GlimeshWeb.Admin.CategoryLive.FormComponent,
+  <%= live_modal @socket, GlimeshWeb.Admin.CategoryLive.FormComponent,
       id: @category.id || :new,
       title: @page_title,
       action: @live_action,
@@ -15,26 +15,21 @@
       <tr>
         <th><%= gettext("Name") %></th>
         <th><%= gettext("Slug") %></th>
-        <th><%= gettext("Avatar") %></th>
-        <th><%= gettext("Parent") %></th>
 
         <th></th>
       </tr>
     </thead>
     <tbody id="categories">
       <%= for category <- @categories do %>
-        <tr id="category-<%= category.id %>">
-          <td><%= category.name %></td>
-          <td><%= category.slug %></td>
-          <td><%= category.avatar %></td>
-          <td><%= category.parent_id %></td>
-
-          <td>
-            <span><%= live_redirect "Show", to: Routes.category_show_path(@socket, :show, category) %></span>
-            <span><%= live_patch "Edit", to: Routes.category_index_path(@socket, :edit, category) %></span>
-            <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: category.id, data: [confirm: gettext("Are you sure?")] %></span>
-          </td>
-        </tr>
+      <tr id="category-<%= category.id %>">
+        <td><%= category.name %></td>
+        <td><%= category.slug %></td>
+        <td>
+          <span><%= live_redirect "Show", to: Routes.category_show_path(@socket, :show, category) %></span>
+          <span><%= live_patch "Edit", to: Routes.category_index_path(@socket, :edit, category) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: category.id, data: [confirm: gettext("Are you sure?")] %></span>
+        </td>
+      </tr>
       <% end %>
     </tbody>
   </table>

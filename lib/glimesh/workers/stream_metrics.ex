@@ -5,6 +5,7 @@ defmodule Glimesh.Workers.StreamMetrics do
   use GenServer
 
   require Logger
+  alias Glimesh.ChannelLookups
   alias Glimesh.Streams
 
   @interval 60_000
@@ -26,7 +27,7 @@ defmodule Glimesh.Workers.StreamMetrics do
   end
 
   defp count_current_viewers do
-    channels = Streams.list_live_channels()
+    channels = ChannelLookups.filter_live_channels()
     Logger.info("Counting live viewers for #{length(channels)} channels")
 
     Enum.map(channels, fn channel ->

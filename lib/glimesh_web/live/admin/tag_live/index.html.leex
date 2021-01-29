@@ -1,0 +1,49 @@
+<div class="container">
+  <h2 class="mt-4"><%= gettext("Listing Tags") %></h2>
+
+  <div class="card">
+    <div class="card-body">
+      <%= if @live_action in [:new, :edit] do %>
+      <%= live_modal @socket, GlimeshWeb.Admin.TagLive.FormComponent,
+    id: @tag.id || :new,
+    title: @page_title,
+    action: @live_action,
+    tag: @tag,
+    return_to: Routes.tag_index_path(@socket, :index) %>
+      <% end %>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Name</th>
+            <th>Slug</th>
+            <!--<th>Icon</th>-->
+            <th>Count usage</th>
+
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tags">
+          <%= for tag <- @tags do %>
+          <tr id="tag-<%= tag.id %>">
+            <td><%= if tag.category, do: tag.category.name, else: "Global" %></td>
+            <td><%= tag.name %></td>
+            <td><%= tag.slug %></td>
+            <!--<td><%= tag.icon %></td>-->
+            <td><%= tag.count_usage %></td>
+
+            <td>
+              <span><%= live_patch "Edit", to: Routes.tag_index_path(@socket, :edit, tag), class: "btn btn-sm btn-primary" %></span>
+              <span><%= link "Delete", to: "#", class: "btn btn-sm btn-danger", phx_click: "delete", phx_value_id: tag.id, data: [confirm: "Are you sure?"] %></span>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <span><%= live_patch "New Tag", to: Routes.tag_index_path(@socket, :new), class: "btn btn-primary" %></span>
+
+    </div>
+  </div>
+</div>

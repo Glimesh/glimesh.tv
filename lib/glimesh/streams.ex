@@ -5,14 +5,10 @@ defmodule Glimesh.Streams do
 
   import Ecto.Query, warn: false
   alias Glimesh.Accounts.User
+  alias Glimesh.ChannelCategories
+  alias Glimesh.ChannelLookups
   alias Glimesh.Repo
-  alias Glimesh.Streams.Category
-  alias Glimesh.Streams.Channel
-  alias Glimesh.Streams.Followers
-
-  alias Glimesh.Streams.StreamMetadata
-
-  alias Glimesh.Streams.Category
+  alias Glimesh.Streams.{Channel, Followers, StreamMetadata, Tag}
 
   defdelegate authorize(action, user, params), to: Glimesh.Streams.Policy
 
@@ -47,7 +43,10 @@ defmodule Glimesh.Streams do
 
   # User API Calls
 
-  def create_channel(%User{} = user, attrs \\ %{category_id: Enum.at(list_categories(), 0).id}) do
+  def create_channel(
+        %User{} = user,
+        attrs \\ %{category_id: Enum.at(ChannelCategories.list_categories(), 0).id}
+      ) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_channel, user) do
       %Channel{
         user: user
@@ -59,9 +58,26 @@ defmodule Glimesh.Streams do
 
   def update_channel(%User{} = user, %Channel{} = channel, attrs) do
     with :ok <- Bodyguard.permit(__MODULE__, :update_channel, user, channel) do
+      category_id =
+        if cat_id = attrs["category_id"] do
+          String.to_integer(cat_id)
+        else
+          channel.category_id
+        end
+
+      upsert_tags =
+        case Jason.decode(Map.get(attrs, "tags", [])) do
+          {:ok, decoded_tags} -> decoded_tags |> Enum.map(fn x -> x["value"] end)
+          {:error, _} -> []
+        end
+
+      tags = upsert_channel_category_tags(category_id, upsert_tags)
+
       new_channel =
         channel
+        |> Repo.preload(:tags)
         |> Channel.changeset(attrs)
+        |> Channel.tags_changeset(tags)
         |> Repo.update()
 
       case new_channel do
@@ -73,6 +89,18 @@ defmodule Glimesh.Streams do
           broadcast({:ok, broadcast_message}, :channel)
       end
     end
+  end
+
+  defp upsert_channel_category_tags(category_id, tag_list) do
+    Enum.map(tag_list, fn tag_name ->
+      {:ok, tag} =
+        ChannelCategories.upsert_tag(%Tag{
+          name: tag_name,
+          category_id: category_id
+        })
+
+      tag
+    end)
   end
 
   def rotate_stream_key(%User{} = user, %Channel{} = channel) do
@@ -92,117 +120,6 @@ defmodule Glimesh.Streams do
       |> Channel.changeset(attrs)
       |> Repo.update()
     end
-  end
-
-  ## Categories
-
-  @doc """
-  Returns the list of categories.
-
-  ## Examples
-
-      iex> list_categories()
-      [%Category{}, ...]
-
-  """
-  def list_categories do
-    Repo.all(Category) |> Repo.preload(:parent)
-  end
-
-  def list_categories_for_select do
-    Repo.all(from c in Category, order_by: [asc: :tag_name])
-    |> Enum.map(&{&1.tag_name, &1.id})
-  end
-
-  def list_parent_categories do
-    Repo.all(from c in Category, where: is_nil(c.parent_id))
-  end
-
-  @spec list_categories_by_parent(atom | %{id: any}) :: any
-  def list_categories_by_parent(category) do
-    Repo.all(from c in Category, where: c.parent_id == ^category.id)
-  end
-
-  @doc """
-  Gets a single category.
-
-  ## Examples
-
-      iex> get_category(123)
-      %Category{}
-
-      iex> get_category(456)
-      nil
-
-  """
-  def get_category(slug),
-    do: Repo.one(from c in Category, where: c.slug == ^slug and is_nil(c.parent_id))
-
-  def get_category_by_id!(id), do: Repo.get_by!(Category, id: id)
-
-  @doc """
-  Creates a category.
-
-  ## Examples
-
-      iex> create_category(%{field: value})
-      {:ok, %Category{}}
-
-      iex> create_category(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_category(attrs \\ %{}) do
-    %Category{}
-    |> Category.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a category.
-
-  ## Examples
-
-      iex> update_category(category, %{field: new_value})
-      {:ok, %Category{}}
-
-      iex> update_category(category, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_category(%Category{} = category, attrs) do
-    category
-    |> Category.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a category.
-
-  ## Examples
-
-      iex> delete_category(category)
-      {:ok, %Category{}}
-
-      iex> delete_category(category)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_category(%Category{} = category) do
-    Repo.delete(category)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking category changes.
-
-  ## Examples
-
-      iex> change_category(category)
-      %Ecto.Changeset{data: %Category{}}
-
-  """
-  def change_category(%Category{} = category, attrs \\ %{}) do
-    Category.changeset(category, attrs)
   end
 
   # Streams
@@ -242,11 +159,11 @@ defmodule Glimesh.Streams do
         |> Repo.update()
 
       # 4. Send Notifications
-      users = list_live_subscribed_followers(channel)
+      users = ChannelLookups.list_live_subscribed_followers(channel)
 
       Glimesh.Streams.ChannelNotifier.deliver_live_channel_notifications(
         users,
-        Repo.preload(channel, [:user, :stream])
+        Repo.preload(channel, [:user, :stream, :tags])
       )
 
       # 5. Broadcast to anyone who's listening
@@ -283,7 +200,7 @@ defmodule Glimesh.Streams do
         ended_at: DateTime.utc_now() |> DateTime.to_naive()
       })
 
-    get_channel!(stream.channel_id)
+    ChannelLookups.get_channel!(stream.channel_id)
     |> Channel.stop_changeset(%{})
     |> Repo.update()
 
@@ -348,7 +265,7 @@ defmodule Glimesh.Streams do
       |> Followers.changeset(attrs)
       |> Repo.insert()
 
-    channel = get_channel_for_user(streamer)
+    channel = ChannelLookups.get_channel_for_user(streamer)
 
     if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
       Glimesh.Chat.create_chat_message(user, channel, %{
@@ -392,46 +309,6 @@ defmodule Glimesh.Streams do
     Channel.changeset(channel, attrs)
   end
 
-  def list_channels do
-    Repo.all(
-      from c in Channel,
-        join: cat in Category,
-        on: cat.id == c.category_id
-    )
-    |> Repo.preload([:category, :user])
-  end
-
-  def list_live_channels do
-    Repo.all(
-      from c in Channel,
-        where: c.status == "live"
-    )
-    |> Repo.preload([:category, :user, :stream])
-  end
-
-  def list_in_category(category) do
-    Repo.all(
-      from c in Channel,
-        join: cat in Category,
-        on: cat.id == c.category_id,
-        where: c.status == "live",
-        where: cat.id == ^category.id or cat.parent_id == ^category.id
-    )
-    |> Repo.preload([:category, :user, :stream])
-  end
-
-  def list_live_subscribed_followers(%Channel{} = channel) do
-    Repo.all(
-      from u in User,
-        left_join: f in Followers,
-        on: u.id == f.user_id,
-        where:
-          f.streamer_id == ^channel.user_id and
-            f.has_live_notifications == true and
-            u.allow_live_subscription_emails == true
-    )
-  end
-
   def list_all_follows do
     Repo.all(from(f in Followers))
   end
@@ -442,82 +319,6 @@ defmodule Glimesh.Streams do
 
   def list_following(user) do
     Repo.all(from f in Followers, where: f.user_id == ^user.id)
-  end
-
-  def list_live_followed_channels(user) do
-    Repo.all(
-      from c in Channel,
-        join: f in Followers,
-        on: c.user_id == f.streamer_id,
-        where: c.status == "live",
-        where: f.user_id == ^user.id
-    )
-    |> Repo.preload([:category, :user, :stream])
-  end
-
-  def list_all_followed_channels(user) do
-    Repo.all(
-      from c in Channel,
-        join: f in Followers,
-        on: c.user_id == f.streamer_id,
-        where: f.user_id == ^user.id
-    )
-    |> Repo.preload([:category, :user, :stream])
-  end
-
-  def list_followed_live_notification_channels(user) do
-    Repo.all(
-      from c in Channel,
-        join: f in Followers,
-        on: c.user_id == f.streamer_id,
-        where: f.user_id == ^user.id and f.has_live_notifications == true
-    )
-    |> Repo.preload([:category, :user, :streamer])
-  end
-
-  def get_channel(id) do
-    Repo.get_by(Channel, id: id) |> Repo.preload([:category, :user])
-  end
-
-  def get_channel!(id) do
-    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :user])
-  end
-
-  def get_channel_for_username!(username, ignore_banned \\ false) do
-    query =
-      Channel
-      |> join(:inner, [u], assoc(u, :user), as: :user)
-      |> where([user: u], u.username == ^username)
-      |> where([c], c.inaccessible == false)
-
-    query =
-      if ignore_banned do
-        query
-      else
-        where(query, [user: u], u.is_banned == false)
-      end
-
-    Repo.one(query)
-    |> Repo.preload([:category, :user])
-  end
-
-  def get_channel_for_stream_key!(stream_key) do
-    Repo.one(
-      from c in Channel,
-        where: c.stream_key == ^stream_key and c.inaccessible == false
-    )
-    |> Repo.preload([:category, :user])
-  end
-
-  def get_channel_for_user(user) do
-    Repo.one(
-      from c in Channel,
-        join: u in User,
-        on: c.user_id == u.id,
-        where: u.id == ^user.id,
-        where: c.inaccessible == false
-    )
-    |> Repo.preload([:category, :user])
   end
 
   def is_live?(%Channel{} = channel) do

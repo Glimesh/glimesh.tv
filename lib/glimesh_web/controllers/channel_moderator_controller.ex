@@ -3,8 +3,8 @@ defmodule GlimeshWeb.ChannelModeratorController do
 
   action_fallback GlimeshWeb.FallbackController
 
+  alias Glimesh.ChannelLookups
   alias Glimesh.StreamModeration
-  alias Glimesh.Streams
   alias Glimesh.Streams.ChannelModerator
 
   plug :put_layout, "user-sidebar.html"
@@ -12,7 +12,7 @@ defmodule GlimeshWeb.ChannelModeratorController do
   def index(conn, _params) do
     user = conn.assigns.current_user
 
-    channel = Streams.get_channel_for_user(conn.assigns.current_user)
+    channel = ChannelLookups.get_channel_for_user(conn.assigns.current_user)
     channel_moderators = StreamModeration.list_channel_moderators(user, channel)
     moderation_log = StreamModeration.list_channel_moderation_log(user, channel)
     channel_bans = StreamModeration.list_channel_bans(user, channel)
@@ -27,7 +27,7 @@ defmodule GlimeshWeb.ChannelModeratorController do
 
   def unban_user(conn, %{"username" => username}) do
     user = conn.assigns.current_user
-    channel = Streams.get_channel_for_user(conn.assigns.current_user)
+    channel = ChannelLookups.get_channel_for_user(conn.assigns.current_user)
     unban_user = Glimesh.Accounts.get_by_username!(username)
 
     case Glimesh.Chat.unban_user(user, channel, unban_user) do
@@ -54,7 +54,7 @@ defmodule GlimeshWeb.ChannelModeratorController do
 
   def create(conn, %{"channel_moderator" => channel_moderator_params}) do
     user = conn.assigns.current_user
-    channel = Streams.get_channel_for_user(user)
+    channel = ChannelLookups.get_channel_for_user(user)
     new_mod_user = Glimesh.Accounts.get_by_username(channel_moderator_params["username"])
 
     case StreamModeration.create_channel_moderator(
