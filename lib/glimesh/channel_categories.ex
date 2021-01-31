@@ -131,6 +131,16 @@ defmodule Glimesh.ChannelCategories do
     Repo.all(from t in Tag, where: t.category_id == ^category_id, order_by: [desc: :count_usage])
   end
 
+  def list_tags_for_channel(%Channel{} = channel) do
+    Repo.all(
+      from t in Tag,
+        join: c in Channel,
+        join: ct in "channel_tags",
+        on: ct.tag_id == t.id and ct.channel_id == c.id,
+        where: c.id == ^channel.id
+    )
+  end
+
   def list_live_tags(category_id) do
     Repo.all(
       from t in Tag,
@@ -209,14 +219,38 @@ defmodule Glimesh.ChannelCategories do
     |> Repo.update()
   end
 
+  @doc """
+  Upserts a tag. Note: Does not actually update anything.
+
+  ## Examples
+
+      iex> upsert_tag(tag, %{field: new_value})
+      {:ok, %Tag{}}
+
+      iex> upsert_tag(tag, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
   def upsert_tag(%Tag{} = tag, attrs \\ %{}) do
+    timestamp =
+      NaiveDateTime.utc_now()
+      |> NaiveDateTime.truncate(:second)
+
     tag
     |> Tag.changeset(attrs)
     |> Repo.insert(
-      returning: [:count_usage],
-      on_conflict: [inc: [count_usage: 1]],
-      conflict_target: [:identifier]
+      returning: true,
+      on_conflict: [set: [updated_at: timestamp]],
+      conflict_target: :identifier
     )
+  end
+
+  def increment_tags_usage(tags) do
+    Enum.map(tags, fn tag ->
+      update_tag(tag, %{
+        count_usage: tag.count_usage + 1
+      })
+    end)
   end
 
   @doc """

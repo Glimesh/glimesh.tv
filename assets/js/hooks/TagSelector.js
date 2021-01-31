@@ -11,12 +11,22 @@ export default {
     },
     tagify() {
         let tags = JSON.parse(this.el.dataset.tags);
+        let categoryId = this.el.dataset.category;
         let allowedRegex = /^[A-Za-z0-9: -]{2,18}$/;
 
         return new Tagify(this.el, {
             whitelist: tags,
             trim: true,
             maxTags: 10,
+            originalInputValueFormat: (valuesArr) => {
+                return JSON.stringify(
+                    valuesArr.map(item => {
+                        return {
+                        category_id: categoryId,
+                        value: item.value
+                    }
+                }));
+            },
             templates: {
                 tag: function(tagData) {
                     try{

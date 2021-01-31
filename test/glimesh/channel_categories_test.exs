@@ -96,15 +96,6 @@ defmodule Glimesh.ChannelCategoriesTest do
     }
     @invalid_attrs %{category_id: nil, count_usage: nil, icon: nil, name: nil, slug: nil}
 
-    def tag_fixture(attrs \\ %{}) do
-      {:ok, tag} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> ChannelCategories.create_tag()
-
-      tag
-    end
-
     test "list_tags/0 returns all tags" do
       tag = tag_fixture()
       assert Enum.member?(Enum.map(ChannelCategories.list_tags(), fn x -> x.name end), tag.name)
@@ -129,7 +120,8 @@ defmodule Glimesh.ChannelCategoriesTest do
 
       {:ok, channel} =
         streamer.channel
-        |> Glimesh.Streams.Channel.tags_changeset([live_tag])
+        |> Ecto.Changeset.change()
+        |> Ecto.Changeset.put_assoc(:tags, [live_tag])
         |> Glimesh.Repo.update()
 
       {:ok, _} = Glimesh.Streams.start_stream(channel)
@@ -172,21 +164,15 @@ defmodule Glimesh.ChannelCategoriesTest do
       assert tag == ChannelCategories.get_tag!(tag.id)
     end
 
-    test "upsert_tag/2 creates a tag or increments if exists" do
+    test "upsert_tag/2 dedupes automatically" do
       assert {:ok, %Tag{} = tag} = ChannelCategories.upsert_tag(%Tag{name: "Hello World"})
       assert tag.name == "Hello World"
       assert tag.slug == "hello-world"
-      assert tag.count_usage == 1
 
-      # Test recreating it
-      assert {:ok, %Tag{} = new_tag} = ChannelCategories.upsert_tag(%Tag{name: "Hello World"})
-      assert tag.id == new_tag.id
-      assert new_tag.name == "Hello World"
-      assert new_tag.slug == "hello-world"
-      assert new_tag.count_usage == 2
-
-      assert {:ok, %Tag{} = one_more} = ChannelCategories.upsert_tag(%Tag{name: "Hello World"})
-      assert one_more.count_usage == 3
+      assert {:ok, %Tag{} = similar_tag} = ChannelCategories.upsert_tag(%Tag{name: "hello world"})
+      assert tag.id == similar_tag.id
+      # Keeps original name set above
+      assert similar_tag.name == "Hello World"
     end
 
     test "delete_tag/1 deletes the tag" do
@@ -198,6 +184,25 @@ defmodule Glimesh.ChannelCategoriesTest do
     test "change_tag/1 returns a tag changeset" do
       tag = tag_fixture()
       assert %Ecto.Changeset{} = ChannelCategories.change_tag(tag)
+    end
+
+    test "going live with a tag increments usage" do
+      streamer = streamer_fixture()
+      category_id = streamer.channel.category_id
+
+      tag = tag_fixture(%{name: "Online Tag", category_id: category_id})
+
+      {:ok, channel} =
+        streamer.channel
+        |> Ecto.Changeset.change()
+        |> Ecto.Changeset.put_assoc(:tags, [tag])
+        |> Glimesh.Repo.update()
+
+      {:ok, _} = Glimesh.Streams.start_stream(channel)
+
+      new_tag = ChannelCategories.get_tag!(tag.id)
+
+      assert new_tag.count_usage == 1
     end
   end
 end

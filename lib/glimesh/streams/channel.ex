@@ -79,12 +79,49 @@ defmodule Glimesh.Streams.Channel do
     |> validate_length(:title, max: 250)
     |> set_chat_rules_content_html()
     |> cast_attachments(attrs, [:poster, :chat_bg])
+    |> maybe_put_tags(:tags, attrs)
   end
+
+  alias Glimesh.Streams.Tag
 
   def tags_changeset(channel, tags) do
     channel
     |> change()
     |> put_assoc(:tags, tags)
+  end
+
+  def maybe_put_tags(changeset, key, attrs) do
+    # Make sure we're not accidentally unsetting tags
+    if Map.has_key?(attrs, "tags") do
+      changeset |> put_assoc(key, parse_tags(attrs))
+    else
+      changeset
+    end
+  end
+
+  def parse_tags(attrs) do
+    (attrs["tags"] || "[]")
+    |> Jason.decode!()
+    |> insert_and_get_all()
+  end
+
+  defp insert_and_get_all([]) do
+    []
+  end
+
+  defp insert_and_get_all(inputs) do
+    Enum.map(inputs, fn input ->
+      {:ok, tag} =
+        Glimesh.ChannelCategories.upsert_tag(
+          %Tag{},
+          %{
+            category_id: input["category_id"],
+            name: input["value"]
+          }
+        )
+
+      tag
+    end)
   end
 
   def maybe_put_assoc(changeset, key, value) do
