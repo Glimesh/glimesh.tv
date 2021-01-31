@@ -139,7 +139,7 @@ defmodule Glimesh.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
-  def register_user(attrs) do
+  def register_user(attrs, existing_preferences \\ %UserPreference{}) do
     # Check to see if the register_user function was called from a test or the live site
     attrs =
       cond do
@@ -150,7 +150,7 @@ defmodule Glimesh.Accounts do
 
     user_insert =
       %User{
-        user_preference: %UserPreference{}
+        user_preference: existing_preferences
       }
       |> User.registration_changeset(attrs)
       |> Repo.insert()
@@ -562,6 +562,11 @@ defmodule Glimesh.Accounts do
 
   def can_use_payments?(user) do
     user.can_payments
+  end
+
+  def get_user_locale(%User{} = user) do
+    prefs = get_user_preference!(user)
+    prefs.locale
   end
 
   def ban_user(%User{} = admin, %User{} = user, reason) do

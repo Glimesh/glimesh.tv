@@ -7,11 +7,35 @@
 # General application configuration
 use Mix.Config
 
+# This will manually need to be populated as languages are completed.
+# Format: Displayname: "locale_code"
+locales = [
+  English: "en",
+  Español: "es",
+  "Español rioplatense": "es_AR",
+  "Español mexicano": "es_MX",
+  Deutsch: "de",
+  日本語: "ja",
+  "Norsk Bokmål": "nb",
+  Français: "fr",
+  Svenska: "sv",
+  "Tiếng Việt": "vi",
+  Русский: "ru",
+  한국어: "ko",
+  Italiano: "it",
+  български: "bg",
+  Nederlands: "nl",
+  Suomi: "fi",
+  Polski: "pl",
+  "Limba Română": "ro"
+]
+
 config :glimesh,
   ecto_repos: [Glimesh.Repo],
   environment: Mix.env(),
   email_physical_address: "1234 Fake St.<br>Pittsburgh, PA 15217",
-  launched: false
+  launched: false,
+  locales: locales
 
 config :waffle,
   storage: Waffle.Storage.Local,
@@ -35,7 +59,7 @@ config :glimesh, GlimeshWeb.Emails.Mailer,
 
 config :glimesh, GlimeshWeb.Gettext,
   default_locale: "en",
-  locales: ~w(en es ja de nb es_MX es_AR fr sv vi ru ko it bg nl fi pl ro)
+  locales: Enum.map(locales, fn {_, x} -> x end)
 
 config :ex_oauth2_provider, namespace: Glimesh
 

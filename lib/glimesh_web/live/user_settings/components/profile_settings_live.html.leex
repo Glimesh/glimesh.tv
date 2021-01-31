@@ -6,15 +6,14 @@
             <div class="col-md-4">
                 <div class="text-center">
                     <h5 class="mt-4"><%= gettext("Settings") %></h5>
-                    <img src="<%= Glimesh.Avatar.url({@user.avatar, @user}, :original) %>"
-                        alt="Your Profile Picture" class="img-fluid mb-4 img-avatar">
+                    <img src="<%= Glimesh.Avatar.url({@user.avatar, @user}, :original) %>" alt="Your Profile Picture"
+                        class="img-fluid mb-4 img-avatar">
 
                     <div class="mb-4 text-left">
                         <p><%= gettext("Click Update Settings down below when you've chosen the file.") %> </p>
                         <%= file_input f, :avatar, id: "customFile", class: "", accept: "image/png, image/jpeg" %>
                         <%= if f.errors[:avatar] do %>
-                        <div><span
-                                class="text-danger"><%= gettext("Invalid image. Must be either png or jpg.")%></span>
+                        <div><span class="text-danger"><%= gettext("Invalid image. Must be either png or jpg.")%></span>
                         </div>
                         <% end %>
                     </div>
@@ -39,12 +38,8 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="form-group">
-                            <%= label f, gettext("Language") %>
-                            <%= select f, :locale, [English: "en", Español: "es", "Español rioplatense": "es_AR", "Español mexicano": "es_MX", Deutsch: "de", 日本語: "ja", "Norsk Bokmål": "nb", Français: "fr", Svenska: "sv", "Tiếng Việt": "vi", "Русский": "ru", 한국어: "ko", "Italiano": "it", български: "bg", Nederlands: "nl", Suomi: "fi", Polski: "pl", "Limba Română": "ro" ], [class: "form-control"] %>
-                            <!-- This will manually need to be populated as languages are completed. Format: Displayname: "locale_code"-->
-                            <%= error_tag f, :email %>
-                        </div>
+                        <%= label f, gettext("Language") %>
+                        <p><%= gettext("Language settings moved to your Preferences, or the top nav.") %></p>
                     </div>
                 </div>
                 <div class="info">
@@ -86,8 +81,7 @@
                         <div class="col-md-6">
                             <div class="input-group social-youtube mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="fb"><i
-                                            class="fab fa-youtube fa-fw"></i></span>
+                                    <span class="input-group-text" id="fb"><i class="fab fa-youtube fa-fw"></i></span>
                                 </div>
                                 <%= text_input f, :social_youtube, [class: "form-control", placeholder: gettext("YouTube Username")] %>
                                 <%= error_tag f, :social_youtube %>
@@ -142,8 +136,8 @@
                             <markdown-toolbar for="textarea_edit">
                                 <div class="d-inline-flex mb-2">
                                     <div class="pr-3">
-                                        <md-bold class="fas fa-bold fa-2x" data-toggle="tooltip"
-                                            data-placement="top" title=<%= gettext("Bold") %>></md-bold>
+                                        <md-bold class="fas fa-bold fa-2x" data-toggle="tooltip" data-placement="top"
+                                            title=<%= gettext("Bold") %>></md-bold>
                                         <md-italic class="fas fa-italic fa-2x" data-toggle="tooltip"
                                             data-placement="top" title=<%= gettext("Italic") %>></md-italic>
                                         <md-header class="fas fa-heading fa-2x" data-toggle="tooltip"
@@ -152,12 +146,12 @@
                                     <div class="pr-3 pl-3">
                                         <md-quote class="fas fa-quote-right fa-2x" data-toggle="tooltip"
                                             data-placement="top" title=<%= gettext("Quote") %>></md-quote>
-                                        <md-code class="fas fa-code fa-2x" data-toggle="tooltip"
-                                            data-placement="top" title=<%= gettext("Code") %>></md-code>
-                                        <md-link class="fas fa-link fa-2x" data-toggle="tooltip"
-                                            data-placement="top" title=<%= gettext("Link") %>></md-link>
-                                        <md-image class="fas fa-image fa-2x" data-toggle="tooltip"
-                                            data-placement="top" title=<%= gettext("Image") %>></md-image>
+                                        <md-code class="fas fa-code fa-2x" data-toggle="tooltip" data-placement="top"
+                                            title=<%= gettext("Code") %>></md-code>
+                                        <md-link class="fas fa-link fa-2x" data-toggle="tooltip" data-placement="top"
+                                            title=<%= gettext("Link") %>></md-link>
+                                        <md-image class="fas fa-image fa-2x" data-toggle="tooltip" data-placement="top"
+                                            title=<%= gettext("Image") %>></md-image>
                                     </div>
                                     <div class="pr-3 pl-3">
                                         <md-unordered-list class="fas fa-list-ul fa-2x" data-toggle="tooltip"

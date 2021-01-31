@@ -8,6 +8,7 @@ defmodule Glimesh.Accounts.UserPreference do
   schema "user_preferences" do
     belongs_to :user, Glimesh.Accounts.User
 
+    field :locale, :string, default: "en"
     field :site_theme, :string, default: "dark"
     field :show_timestamps, :boolean, default: false
 
@@ -20,6 +21,7 @@ defmodule Glimesh.Accounts.UserPreference do
   def changeset(user_preferences, attrs) do
     user_preferences
     |> cast(attrs, [
+      :locale,
       :site_theme,
       :show_timestamps
     ])

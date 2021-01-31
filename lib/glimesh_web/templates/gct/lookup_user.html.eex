@@ -55,8 +55,6 @@
                             <%= text_input :user, :email, [value: @user.email, class: "form-control", disabled: true] %>
                         </div>
                         <div class="col-sm-6">
-                            <%= label :user, gettext("Locale") %>
-                            <%= text_input :user, :locale, [value: @user.locale, class: "form-control", disabled: true] %>
                         </div>
                     </div>
 
@@ -98,8 +96,6 @@
                             <%= text_input :user, :email, [value: @user.youtube_intro_url, class: "form-control", disabled: true] %>
                         </div>
                         <div class="col-sm-6">
-                            <%= label :user, gettext("Locale") %>
-                            <%= text_input :user, :locale, [value: @user.locale, class: "form-control", disabled: true] %>
                         </div>
                     </div>
 

@@ -20,7 +20,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
           <%= text_input f, :title, [class: "form-control"] %>
 
           <div class="input-group-append">
-          <%= with_locale(@user.locale, fn -> %>
+          <%= with_locale(Glimesh.Accounts.get_user_locale(@user), fn -> %>
             <%= submit gettext("Save Info"), class: "btn btn-primary" %>
           <% end) %>
           </div>

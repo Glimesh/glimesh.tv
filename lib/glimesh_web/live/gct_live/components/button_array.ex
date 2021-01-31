@@ -49,6 +49,8 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
 
   @impl true
   def mount(_params, %{"admin" => admin, "user" => user}, socket) do
+    Gettext.put_locale(Glimesh.Accounts.get_user_locale(admin))
+
     can_ban = Bodyguard.permit?(Glimesh.CommunityTeam, :can_ban, admin, user)
     can_edit_user = Bodyguard.permit?(Glimesh.CommunityTeam, :edit_user, admin, user)
 
