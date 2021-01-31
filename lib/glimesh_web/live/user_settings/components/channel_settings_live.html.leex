@@ -29,6 +29,23 @@
 <div class="row">
     <div class="col-sm-6">
         <div class="form-group">
+            <%= label f, gettext("Channel Primary Language") %>
+            <%= select f, :locale, Application.get_env(:glimesh, :locales), class: "form-control" %>
+            <%= error_tag f, :language %>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <%= label f, gettext("18+ Content") %>
+            <%= checkbox f, :adult_content, [class: "form-control"] %>
+            <%= error_tag f, :adult_content %>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
             <%= label f, :poster, gettext("Channel Poster") %>
             <p class="text-muted form-text">
                 <%= gettext("An image for your channel that will be shown whenever you are offline. Will be resized or cropped to 1920x1080.") %>

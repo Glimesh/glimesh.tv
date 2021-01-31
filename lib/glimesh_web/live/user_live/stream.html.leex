@@ -28,6 +28,37 @@
           </div>
         </div>
         <div class="card-body p-1">
+          <%= if true do %>
+          <div class="jumbotron jumbotron-fluid jumbotron-mature-content mb-0">
+            <div class="container p-5">
+              <div class="row justify-content-center">
+                <div class="col-sm-8">
+                  <h1 class="display-4 text-center">Mature Content Warning!</h1>
+                  <p class="lead text-center">Before you can view the content, please enter your date of birth to
+                    confirm
+                    that you are
+                    above the age of 18.</p>
+                </div>
+                <div class="w-100"></div>
+                <div class="col-8 col-lg-3">
+                  <form>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Date of Birth</label>
+                      <input type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    </div>
+                    <%# <div class="form-group form-check">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                  <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                </div> %>
+                    <button type="submit" class="btn btn-primary btn-block">Agree & View Channel</button>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <% else %>
           <div class="embed-responsive embed-responsive-16by9">
             <%= if @backend == "ftl" do %>
             <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo"
@@ -36,6 +67,7 @@
             No video player backend specified.
             <% end %>
           </div>
+          <% end %>
         </div>
         <div class="card-footer p-1 d-none d-sm-block">
           <div class="row">

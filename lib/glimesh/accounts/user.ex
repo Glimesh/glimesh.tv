@@ -14,6 +14,7 @@ defmodule Glimesh.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
+    field :date_of_birth, :date
 
     field :can_stream, :boolean, default: false
     field :can_payments, :boolean, default: false
@@ -67,6 +68,7 @@ defmodule Glimesh.Accounts.User do
       :email,
       :password,
       :displayname,
+      :date_of_birth,
       :allow_glimesh_newsletter_emails,
       :is_admin,
       :can_stream,
