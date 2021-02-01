@@ -48,7 +48,8 @@ defmodule Glimesh.Streams.Stream do
       :avg_chatters,
       :new_subscribers,
       :resub_subscribers,
-      :global_tags
+      :global_tags,
+      :category_tags
     ])
     |> cast_attachments(attrs, [:thumbnail])
   end

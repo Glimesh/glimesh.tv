@@ -78,11 +78,17 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
       assert response =~ "Must not exceed 250 characters"
     end
 
-    test "puts tags", %{conn: conn} do
+    test "puts tags", %{conn: conn, channel: channel} do
+      tags_input =
+        Jason.encode!([
+          %{category_id: channel.category_id, value: "Digital Media"},
+          %{category_id: channel.category_id, value: "some name"}
+        ])
+
       channel_conn =
         put(conn, Routes.user_settings_path(conn, :update_channel), %{
           "channel" => %{
-            "tags" => "[{\"value\":\"Digital Media\"},{\"value\":\"some name\"}]"
+            "tags" => tags_input
           }
         })
 

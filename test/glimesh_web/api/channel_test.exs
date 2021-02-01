@@ -3,6 +3,8 @@ defmodule GlimeshWeb.Api.ChannelTest do
 
   alias Glimesh.Streams
 
+  import Glimesh.AccountsFixtures
+
   @channels_query """
   query getChannels {
     channels {
@@ -150,23 +152,19 @@ defmodule GlimeshWeb.Api.ChannelTest do
   def create_channel(%{user: user}) do
     {:ok, channel} = Streams.create_channel(user)
 
-    {:ok, channel} =
-      Streams.update_channel(user, channel, %{
-        "tags" => "[{\"value\":\"World of Warcraft\"}]"
-      })
+    %{tag: tag} = create_tag(%{})
+
+    {:ok, _} =
+      channel
+      |> Glimesh.Repo.preload(:tags)
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:tags, [tag])
+      |> Glimesh.Repo.update()
 
     %{channel: channel}
   end
 
   def create_tag(_) do
-    %Streams.Category{id: cat_id} = Glimesh.ChannelCategories.get_category("gaming")
-
-    {:ok, tag} =
-      Glimesh.ChannelCategories.create_tag(%{
-        category_id: cat_id,
-        name: "World of Warcraft"
-      })
-
-    %{tag: tag}
+    %{tag: tag_fixture()}
   end
 end

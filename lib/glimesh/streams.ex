@@ -8,7 +8,7 @@ defmodule Glimesh.Streams do
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
   alias Glimesh.Repo
-  alias Glimesh.Streams.{Channel, Followers, StreamMetadata, Tag}
+  alias Glimesh.Streams.{Channel, Followers, StreamMetadata}
 
   defdelegate authorize(action, user, params), to: Glimesh.Streams.Policy
 
@@ -58,26 +58,9 @@ defmodule Glimesh.Streams do
 
   def update_channel(%User{} = user, %Channel{} = channel, attrs) do
     with :ok <- Bodyguard.permit(__MODULE__, :update_channel, user, channel) do
-      category_id =
-        if cat_id = attrs["category_id"] do
-          String.to_integer(cat_id)
-        else
-          channel.category_id
-        end
-
-      upsert_tags =
-        case Jason.decode(Map.get(attrs, "tags", [])) do
-          {:ok, decoded_tags} -> decoded_tags |> Enum.map(fn x -> x["value"] end)
-          {:error, _} -> []
-        end
-
-      tags = upsert_channel_category_tags(category_id, upsert_tags)
-
       new_channel =
         channel
-        |> Repo.preload(:tags)
         |> Channel.changeset(attrs)
-        |> Channel.tags_changeset(tags)
         |> Repo.update()
 
       case new_channel do
@@ -89,18 +72,6 @@ defmodule Glimesh.Streams do
           broadcast({:ok, broadcast_message}, :channel)
       end
     end
-  end
-
-  defp upsert_channel_category_tags(category_id, tag_list) do
-    Enum.map(tag_list, fn tag_name ->
-      {:ok, tag} =
-        ChannelCategories.upsert_tag(%Tag{
-          name: tag_name,
-          category_id: category_id
-        })
-
-      tag
-    end)
   end
 
   def rotate_stream_key(%User{} = user, %Channel{} = channel) do
@@ -141,11 +112,14 @@ defmodule Glimesh.Streams do
       # 0. End all current streams
       stop_active_streams(channel)
 
+      tags = Glimesh.ChannelCategories.list_tags_for_channel(channel)
+
       # 1. Create Stream
       {:ok, stream} =
         create_stream(channel, %{
           title: channel.title,
           category_id: channel.category_id,
+          category_tags: Enum.map(tags, & &1.id),
           started_at: DateTime.utc_now() |> DateTime.to_naive()
         })
 
@@ -157,6 +131,8 @@ defmodule Glimesh.Streams do
           stream_id: stream.id
         })
         |> Repo.update()
+
+      Glimesh.ChannelCategories.increment_tags_usage(tags)
 
       # 4. Send Notifications
       users = ChannelLookups.list_live_subscribed_followers(channel)

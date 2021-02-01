@@ -67,8 +67,8 @@ defmodule Glimesh.ChannelLookupsTest do
 
       {:ok, _} =
         channel
-        |> Glimesh.Repo.preload(:tags)
-        |> Glimesh.Streams.Channel.tags_changeset([some_tag])
+        |> Ecto.Changeset.change()
+        |> Ecto.Changeset.put_assoc(:tags, [some_tag])
         |> Glimesh.Repo.update()
 
       {:ok, _} = Glimesh.Streams.start_stream(channel)

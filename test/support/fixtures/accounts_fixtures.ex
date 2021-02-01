@@ -8,6 +8,23 @@ defmodule Glimesh.AccountsFixtures do
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
 
+  def tag_fixture(tag_attrs \\ %{}) do
+    %Glimesh.Streams.Category{id: cat_id} = Glimesh.ChannelCategories.get_category("gaming")
+
+    {:ok, tag} =
+      Glimesh.ChannelCategories.create_tag(
+        Map.merge(
+          %{
+            category_id: cat_id,
+            name: "World of Warcraft"
+          },
+          tag_attrs
+        )
+      )
+
+    tag
+  end
+
   def streamer_fixture(user_attrs \\ %{}, channel_attrs \\ %{}) do
     # Users need to be confirmed & can_stream to be a streamer
     streamer =

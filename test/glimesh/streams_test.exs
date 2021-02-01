@@ -84,6 +84,21 @@ defmodule Glimesh.StreamsTest do
       assert new_channel.status == "live"
     end
 
+    test "start_stream/1 stores historical tags", %{channel: channel} do
+      tag = tag_fixture()
+
+      {:ok, channel} =
+        channel
+        |> Glimesh.Repo.preload(:tags)
+        |> Ecto.Changeset.change()
+        |> Ecto.Changeset.put_assoc(:tags, [tag])
+        |> Glimesh.Repo.update()
+
+      {:ok, stream} = Streams.start_stream(channel)
+
+      assert stream.category_tags == [tag.id]
+    end
+
     test "start_stream/1 stops any other streams that still are lingering", %{channel: channel} do
       %Glimesh.Streams.Stream{channel: channel}
       |> Glimesh.Streams.Stream.changeset(%{})
