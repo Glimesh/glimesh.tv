@@ -100,9 +100,10 @@ defmodule Glimesh.Streams.Channel do
   end
 
   def parse_tags(attrs) do
-    (attrs["tags"] || "[]")
-    |> Jason.decode!()
-    |> insert_and_get_all()
+    case Jason.decode(attrs["tags"] || "[]") do
+      {:ok, content} -> insert_and_get_all(content)
+      _ -> insert_and_get_all([])
+    end
   end
 
   defp insert_and_get_all([]) do
