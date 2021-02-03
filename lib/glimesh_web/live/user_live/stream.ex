@@ -59,6 +59,8 @@ defmodule GlimeshWeb.UserLive.Stream do
   end
 
   def handle_event("show_mature", _value, socket) do
+    Process.send(self(), :load_stream, [])
+
     {:noreply, assign(socket, :prompt_mature, false)}
   end
 
