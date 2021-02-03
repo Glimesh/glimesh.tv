@@ -17,15 +17,19 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
             # Allows us to pattern match admin APIs
             is_admin: user_access.user.is_admin,
             current_user: user_access.user,
+            access_type: "user",
+            access_identifier: user_access.user.username,
             user_access: user_access
           }
         )
 
-      {:ok, %OauthApplication{}} ->
+      {:ok, %OauthApplication{uid: uid}} ->
         Absinthe.Plug.put_options(conn,
           context: %{
             is_admin: false,
             current_user: nil,
+            access_type: "app",
+            access_identifier: uid,
             user_access: %Glimesh.Accounts.UserAccess{}
           }
         )
