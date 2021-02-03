@@ -22,8 +22,8 @@ defmodule Glimesh.Chat.Effects do
   def get_username_color(user, default \\ "text-white") do
     cond do
       user.is_admin -> "text-danger"
-      Payments.is_platform_founder_subscriber?(user) -> "text-warning"
       user.is_gct -> "text-success"
+      Payments.is_platform_founder_subscriber?(user) -> "text-warning"
       true -> default
     end
   end
@@ -36,6 +36,12 @@ defmodule Glimesh.Chat.Effects do
             "data-toggle": "tooltip",
             title: gettext("Glimesh Staff")
           ]
+          
+          user.is_gct ->
+          [
+            "data-toggle": "tooltip",
+            title: gettext("Glimesh Community Team")
+          ]
 
         Payments.is_platform_founder_subscriber?(user) ->
           [
@@ -47,12 +53,6 @@ defmodule Glimesh.Chat.Effects do
           [
             "data-toggle": "tooltip",
             title: gettext("Glimesh Supporter Subscriber")
-          ]
-
-        user.is_gct ->
-          [
-            "data-toggle": "tooltip",
-            title: gettext("Glimesh Community Team")
           ]
 
         true ->
