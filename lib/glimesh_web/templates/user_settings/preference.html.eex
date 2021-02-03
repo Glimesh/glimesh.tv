@@ -10,17 +10,33 @@
             <p><%= gettext("More accessibility options are coming soon to make Glimesh more comfortable for everyone.") %>
             </p>
 
-
-            <h3><%= gettext("Look & Feel") %></h3>
+            <h3 class="mt-4"><%= gettext("Site Content") %></h3>
 
             <div class="form-group">
-                <%= label f, gettext("Language") %>
-                <%= select f, :locale, Application.get_env(:glimesh, :locales), [class: "form-control"] %>
+                <%= label f, gettext("Language:") %>
+                <%= select f, :locale, Application.get_env(:glimesh, :locales), [class: "custom-select"] %>
                 <%= error_tag f, :locale %>
             </div>
 
             <div class="form-group">
-                <%= label f, gettext("Site Theme: ") %>
+                <%= label f, gettext("Mature Content Visibility:") %>
+                <div class="custom-control custom-switch">
+                    <%= checkbox f, :show_mature_content, class: "custom-control-input" %>
+                    <label class="custom-control-label"
+                        for="<%= input_id(f, :show_mature_content) %>"><%= gettext("Bypass Mature Content Warning") %></label>
+                </div>
+                <%= error_tag f, :show_mature_content %>
+
+                <small
+                    class="form-text text-muted"><%= gettext("Automatically bypass our Mature Content warning by enabling this preference.") %></small>
+            </div>
+
+
+            <h3 class="mt-4"><%= gettext("Look & Feel") %></h3>
+
+            <div class="form-group">
+                <%= label f, gettext("Site Theme:") %>
+                <br>
                 <div class="custom-control custom-radio custom-control-inline">
                     <%= radio_button f, :site_theme, "dark", [checked: input_value(f, :site_theme) == "dark", class: "custom-control-input"] %>
                     <label class="custom-control-label"
@@ -38,7 +54,8 @@
             </div>
 
             <div class="form-group">
-                <div class="custom-control custom-switch custom-control-inline">
+                <%= label f, gettext("Chat Timestamp Visibility:") %>
+                <div class="custom-control custom-switch">
                     <%= checkbox f, :show_timestamps, class: "custom-control-input" %>
                     <%= label f, :show_timestamps, gettext("Show Chat Timestamps"), class: "custom-control-label" %>
                 </div>
@@ -46,7 +63,7 @@
                     class="form-text text-muted"><%= gettext("Show the time a message was posted in chat.") %></small>
             </div>
 
-            <%= submit gettext("Update Settings"), class: "btn btn-primary" %>
+            <%= submit gettext("Update Settings"), class: "btn btn-primary mt-4" %>
 
             <% end %>
         </div>

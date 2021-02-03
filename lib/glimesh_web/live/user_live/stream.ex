@@ -22,6 +22,7 @@ defmodule GlimeshWeb.UserLive.Stream do
         {:ok,
          socket
          |> put_page_title(channel.title)
+         |> assign(:prompt_mature, Streams.prompt_mature_content(channel, maybe_user))
          |> assign(:custom_meta, Profile.meta_tags(streamer, avatar_url))
          |> assign(:streamer, channel.user)
          |> assign(:channel, channel)
@@ -55,6 +56,10 @@ defmodule GlimeshWeb.UserLive.Stream do
      })
      |> assign(:janus_uri, janus_uri)
      |> assign(:janus_hostname, janus_hostname)}
+  end
+
+  def handle_event("show_mature", _value, socket) do
+    {:noreply, assign(socket, :prompt_mature, false)}
   end
 
   defp random_janus_server do

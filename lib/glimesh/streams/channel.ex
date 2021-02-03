@@ -15,7 +15,7 @@ defmodule Glimesh.Streams.Channel do
     field :title, :string, default: "Live Stream!"
     field :status, :string
     field :language, :string
-    field :adult_content, :boolean
+    field :mature_content, :boolean, default: false
     field :thumbnail, :string
     field :stream_key, :string
     field :inaccessible, :boolean, default: false
@@ -68,7 +68,7 @@ defmodule Glimesh.Streams.Channel do
       :category_id,
       :stream_id,
       :language,
-      :adult_content,
+      :mature_content,
       :thumbnail,
       :stream_key,
       :chat_rules_md,

@@ -248,6 +248,15 @@ defmodule Glimesh.Streams do
     {:ok, stream |> Repo.preload([:metadata])}
   end
 
+  def prompt_mature_content(%Channel{mature_content: true}, %User{} = user) do
+    user_pref = Glimesh.Accounts.get_user_preference!(user)
+
+    !user_pref.show_mature_content
+  end
+
+  def prompt_mature_content(%Channel{mature_content: true}, nil), do: true
+  def prompt_mature_content(_, _), do: false
+
   # System API Calls
 
   ## Following

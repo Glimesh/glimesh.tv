@@ -11,7 +11,7 @@ defmodule Glimesh.Accounts.UserPreference do
     field :locale, :string, default: "en"
     field :site_theme, :string, default: "dark"
     field :show_timestamps, :boolean, default: false
-    field :show_adult_content, :boolean
+    field :show_mature_content, :boolean
 
     timestamps()
   end
@@ -25,7 +25,7 @@ defmodule Glimesh.Accounts.UserPreference do
       :locale,
       :site_theme,
       :show_timestamps,
-      :show_adult_content
+      :show_mature_content
     ])
   end
 end
