@@ -6,7 +6,7 @@ defmodule Glimesh.Accounts.User do
   import GlimeshWeb.Gettext
   import Ecto.Changeset
 
-  @derive {Inspect, except: [:password]}
+  @derive {Inspect, except: [:password, :hashed_password, :tfa_token]}
   schema "users" do
     field :username, :string
     field :displayname, :string

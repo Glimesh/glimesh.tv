@@ -20,6 +20,8 @@ defmodule GlimeshWeb.ApiSocket do
            context: %{
              is_admin: false,
              current_user: nil,
+             access_type: "app",
+             access_identifier: client_id,
              user_access: %Glimesh.Accounts.UserAccess{}
            }
          )}
@@ -39,6 +41,8 @@ defmodule GlimeshWeb.ApiSocket do
            context: %{
              is_admin: user_access.user.is_admin,
              current_user: user_access.user,
+             access_type: "user",
+             access_identifier: user_access.user.username,
              user_access: user_access
            }
          )}
