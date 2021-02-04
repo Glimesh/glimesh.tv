@@ -17,7 +17,7 @@ defmodule Glimesh.Streams.Channel do
     field :language, :string
     field :mature_content, :boolean, default: false
     field :thumbnail, :string
-    field :stream_key, :string
+    field :hmac_key, :string
     field :inaccessible, :boolean, default: false
     field :backend, :string
     field :disable_hyperlinks, :boolean, default: false
@@ -40,7 +40,7 @@ defmodule Glimesh.Streams.Channel do
     channel
     |> changeset(attrs)
     |> put_change(:status, "offline")
-    |> put_change(:stream_key, generate_stream_key())
+    |> put_change(:hmac_key, generate_hmac_key())
   end
 
   def start_changeset(channel, attrs \\ %{}) do
@@ -56,9 +56,9 @@ defmodule Glimesh.Streams.Channel do
     |> put_change(:status, "offline")
   end
 
-  def stream_key_changeset(channel) do
+  def hmac_key_changeset(channel) do
     channel
-    |> put_change(:stream_key, generate_stream_key())
+    |> put_change(:hmac_key, generate_hmac_key())
   end
 
   def changeset(channel, attrs \\ %{}) do
@@ -70,7 +70,7 @@ defmodule Glimesh.Streams.Channel do
       :language,
       :mature_content,
       :thumbnail,
-      :stream_key,
+      :hmac_key,
       :chat_rules_md,
       :inaccessible,
       :status,
@@ -151,7 +151,7 @@ defmodule Glimesh.Streams.Channel do
     end
   end
 
-  defp generate_stream_key do
+  defp generate_hmac_key do
     :crypto.strong_rand_bytes(64) |> Base.encode64() |> binary_part(0, 64)
   end
 end

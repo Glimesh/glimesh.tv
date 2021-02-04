@@ -69,3 +69,8 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 .text-color-link {
     color: var(--body-color);
 }
+
+.stream-key:not(:focus) {
+    color: transparent;
+    text-shadow: 0 0 10px var(--input-color);
+}

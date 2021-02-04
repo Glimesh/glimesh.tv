@@ -12,17 +12,17 @@
         <%= gettext("A key used to uniquely identify and connect to your stream. Treat your Stream Key as a password.") %>
     </p>
     <div class="input-group">
-        <%= text_input f, :stream_key, [class: "form-control", disabled: "disabled"] %>
+        <input type="text" value="<%= @stream_key %>" class="form-control stream-key" readonly="readonly">
 
         <div class="input-group-append">
-            <button class="btn btn-info click-to-copy" type="button" data-copy-value="<%= input_value f, :stream_key %>"
+            <button class="btn btn-info click-to-copy" type="button" data-copy-value="<%= @stream_key %>"
                 data-copied-error-text="<%= gettext("Error copying Stream Key") %>"
                 data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
             <button class="btn btn-danger" type="button" phx-click="rotate_stream_key" phx-throttle="5000">Reset Stream
                 Key</button>
         </div>
     </div>
-    <%= error_tag f, :stream_key %>
+    <%= error_tag f, :hmac_key %>
 </div>
 <% end %>
 

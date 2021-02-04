@@ -11,6 +11,7 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
      socket
      |> put_flash(:info, nil)
      |> put_flash(:error, nil)
+     |> assign(:stream_key, Glimesh.Streams.get_stream_key(session["channel"]))
      |> assign(:channel_changeset, session["channel_changeset"])
      |> assign(:categories, session["categories"])
      |> assign(:channel, session["channel"])
@@ -44,11 +45,12 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
              socket.assigns.channel
            ) do
       case Streams.rotate_stream_key(socket.assigns.channel.user, socket.assigns.channel) do
-        {:ok, changeset} ->
+        {:ok, channel} ->
           {:noreply,
            socket
            |> put_flash(:info, "Stream key reset")
-           |> assign(:channel_changeset, Streams.Channel.changeset(changeset))}
+           |> assign(:stream_key, Glimesh.Streams.get_stream_key(channel))
+           |> assign(:channel_changeset, Streams.Channel.changeset(channel))}
 
         {:error, _changeset} ->
           {:noreply, socket}

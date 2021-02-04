@@ -169,6 +169,8 @@ if appsignal_api_key = System.get_env("APPSIGNAL_API_KEY") do
       "user",
       "streamKey",
       "stream_key",
+      "hmac_key",
+      "hmacKey",
       "token",
       "api_token",
       "client_secret",

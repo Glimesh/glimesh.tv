@@ -15,15 +15,17 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
   query getChannel($id: ID!) {
     channel(id: $id) {
       streamKey
+      hmacKey
     }
   }
   """
 
-  @channel_by_streamkey_query """
-  query getChannel($streamKey: String!) {
-    channel(streamKey: $streamKey) {
+  @channel_by_hmac_key_query """
+  query getChannel($hmacKey: String!) {
+    channel(hmacKey: $hmacKey) {
       title
       streamKey
+      hmacKey
       streamer { username }
     }
   }
@@ -94,14 +96,14 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
     } do
       conn =
         post(conn, "/api", %{
-          "query" => @channel_by_streamkey_query,
-          "variables" => %{streamKey: channel.stream_key}
+          "query" => @channel_by_hmac_key_query,
+          "variables" => %{hmacKey: channel.hmac_key}
         })
 
       assert [
                %{
                  "locations" => _,
-                 "message" => "Unauthorized to access streamKey query.",
+                 "message" => "Unauthorized to access hmacKey query.",
                  "path" => _
                }
              ] = json_response(conn, 200)["errors"]
@@ -140,24 +142,26 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
       assert json_response(conn, 200) == %{
                "data" => %{
                  "channel" => %{
-                   "streamKey" => channel.stream_key
+                   "streamKey" => Glimesh.Streams.get_stream_key(channel),
+                   "hmacKey" => channel.hmac_key
                  }
                }
              }
     end
 
-    test "returns a channel by streamkey", %{conn: conn, user: user, channel: channel} do
+    test "returns a channel by hmacKey", %{conn: conn, user: user, channel: channel} do
       conn =
         post(conn, "/api", %{
-          "query" => @channel_by_streamkey_query,
-          "variables" => %{streamKey: channel.stream_key}
+          "query" => @channel_by_hmac_key_query,
+          "variables" => %{hmacKey: channel.hmac_key}
         })
 
       assert json_response(conn, 200) == %{
                "data" => %{
                  "channel" => %{
                    "title" => "Live Stream!",
-                   "streamKey" => channel.stream_key,
+                   "streamKey" => Glimesh.Streams.get_stream_key(channel),
+                   "hmacKey" => channel.hmac_key,
                    "streamer" => %{"username" => user.username}
                  }
                }
