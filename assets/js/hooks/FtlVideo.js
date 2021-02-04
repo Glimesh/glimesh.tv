@@ -2,13 +2,14 @@ import {
     FtlPlayer
 } from "janus-ftl-player";
 
+let player; 
 
 export default {
     mounted() {
         let container = this.el;
         
         this.handleEvent("load_video", ({janus_uri, channel_id}) => {
-            let player = new FtlPlayer(container, janus_uri);
+            player = new FtlPlayer(container, janus_uri);
             let init = player.init(channel_id);
         })
 
@@ -22,5 +23,8 @@ export default {
                 });
               }
         })
+    },
+    destroyed() {
+        player.destroy();
     }
 };
