@@ -11,6 +11,7 @@ defmodule Glimesh.Accounts.UserPreference do
     field :locale, :string, default: "en"
     field :site_theme, :string, default: "dark"
     field :show_timestamps, :boolean, default: false
+    field :show_mature_content, :boolean
 
     timestamps()
   end
@@ -23,7 +24,8 @@ defmodule Glimesh.Accounts.UserPreference do
     |> cast(attrs, [
       :locale,
       :site_theme,
-      :show_timestamps
+      :show_timestamps,
+      :show_mature_content
     ])
   end
 end

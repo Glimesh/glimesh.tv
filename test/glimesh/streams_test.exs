@@ -64,6 +64,33 @@ defmodule Glimesh.StreamsTest do
       {:ok, new_channel} = Streams.rotate_stream_key(streamer, channel)
       assert new_channel.stream_key != channel.stream_key
     end
+
+    test "prompt_mature_content/2 flags content correctly", %{
+      streamer: streamer,
+      channel: channel
+    } do
+      user = user_fixture()
+      assert Streams.prompt_mature_content(channel, user) == false
+
+      {:ok, channel} =
+        Streams.update_channel(streamer, channel, %{
+          mature_content: true
+        })
+
+      assert Streams.prompt_mature_content(channel, user) == true
+      assert Streams.prompt_mature_content(channel, nil) == true
+
+      user_pref = Glimesh.Accounts.get_user_preference!(user)
+
+      {:ok, _} =
+        Glimesh.Accounts.update_user_preference(user_pref, %{
+          show_mature_content: true
+        })
+
+      user = Glimesh.Accounts.get_user!(user.id)
+
+      assert Streams.prompt_mature_content(channel, user) == false
+    end
   end
 
   describe "ingest stream api" do

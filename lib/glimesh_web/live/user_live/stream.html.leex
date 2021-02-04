@@ -28,6 +28,28 @@
           </div>
         </div>
         <div class="card-body p-1">
+          <%= if @prompt_mature do %>
+          <div class="jumbotron jumbotron-fluid jumbotron-mature-content mb-0">
+            <div class="container p-5">
+              <div class="row justify-content-center">
+                <div class="col-sm-6">
+                  <h3 class="display-5 text-center"><%= gettext("Mature Content Warning") %></h3>
+                  <p class="lead text-center">
+                    <%= gettext("The streamer has flagged this channel as only appropriate for Mature Audiences.") %><br>
+                    <%= gettext("Do you wish to continue?") %>
+                  </p>
+                </div>
+                <div class="w-100"></div>
+                <div class="col-8 col-lg-3">
+                  <button type="button" phx-click="show_mature"
+                    class="btn btn-primary btn-block"><%= gettext("Agree & View Channel") %></button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <% else %>
           <div class="embed-responsive embed-responsive-16by9">
             <%= if @backend == "ftl" do %>
             <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo"
@@ -36,6 +58,7 @@
             No video player backend specified.
             <% end %>
           </div>
+          <% end %>
         </div>
         <div class="card-footer p-1 d-none d-sm-block">
           <div class="row">
