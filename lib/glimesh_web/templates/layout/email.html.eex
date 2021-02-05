@@ -175,8 +175,8 @@
 														<tr>
 															<td class="img m-center"
 																style="font-size:0pt; line-height:0pt; text-align:left;">
-																<img src="<%= Routes.static_url(GlimeshWeb.Endpoint, "/images/logos/logo-for-navbar.png") %>"
-																	width="206" height="38" border="0" alt="" /></td>
+																<img src="<%= Routes.static_url(GlimeshWeb.Endpoint, "/images/logos/logo-alpha.png") %>"
+																	width="279" height="38" border="0" alt="Glimesh Logo" /></td>
 														</tr>
 													</table>
 												</th>
