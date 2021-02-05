@@ -39,6 +39,7 @@ defmodule Glimesh.Schema.ChatTypes do
   object :chat_message do
     field :id, :id
     field :message, :string, description: "The chat message."
+    field :is_followed_message, :boolean, description: "If the message is a follower alert"
 
     field :channel, non_null(:channel), resolve: dataloader(Repo)
     field :user, non_null(:user), resolve: dataloader(Repo)
