@@ -3,7 +3,7 @@
 <h2><%= gettext("Glimesh Platform Subscribers") %></h2>
 <p><%= gettext("Beautiful people who choose to support the platform.") %></p>
 
-<h4><%= gettext("Founders") %></h4>
+<h4><%= gettext("Gold Supporters") %></h4>
 
 <div class="row">
     <%= for sub <- @founder_subscribers do %>
@@ -12,8 +12,7 @@
         <%= live_redirect to: Routes.user_profile_path(@conn, :index, sub.user.username) do %>
         <div class="text-md-center">
             <p><%= sub.user.displayname %></p>
-            <img src="<%= Glimesh.Avatar.url({sub.user.avatar, sub.user}, :original) %>" alt="Your Profile Picture"
-                style="width: 80% !important;" class="img-fluid mb-2 img-avatar">
+            <img src="<%= Glimesh.Avatar.url({sub.user.avatar, sub.user}, :original) %>" alt="<%= sub.user.displayname %>" style="width: 80% !important;" class="img-fluid mb-2 img-avatar">
         </div>
         <% end %>
     </div>
