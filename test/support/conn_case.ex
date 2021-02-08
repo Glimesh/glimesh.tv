@@ -88,6 +88,11 @@ defmodule GlimeshWeb.ConnCase do
     %{conn: log_in_user(conn, user), user: user}
   end
 
+  def register_and_log_in_gct_user_without_perms(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.gct_fixture(%{tfa_token: "Fake 2fa token", gct_level: 1})
+    %{conn: log_in_user(conn, user), user: user}
+  end
+
   def register_and_log_in_gct_user_without_tfa(%{conn: conn}) do
     user = Glimesh.AccountsFixtures.gct_fixture(%{tfa_token: nil, gct_level: 5})
     %{conn: log_in_user(conn, user), user: user}

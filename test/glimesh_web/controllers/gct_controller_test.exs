@@ -3,12 +3,54 @@ defmodule GlimeshWeb.GctControllerTest do
 
   import Glimesh.AccountsFixtures
 
+  @invalid_title "
+    Sx6eu5jr2oKAQsdpS4M8
+    AxXghvWsWSchJSSi2ABt
+    Ho4aIAf5WoA3Gd2tcsqI
+    FNys7XlKHsUNl1Z6s8sk
+    QVrjPgxeeCWuwxEaiEra
+    qhgfmylNDKF3ZQWWu0HC
+    jzkWE5CtjEbHmCTaXic4
+    GnJHpbC5C9sTiMNXQ5JB
+    k7vImnpaTTtNQ1s5BSk0
+    UaVU370WzTaRkDyCP7nq
+    xrJCuc2Fvi93kjFxeGbF
+    FEkZ0YOalkhUg04r6g2R
+    S9HAlsHfoMKIUTasuQkJ"
+
   describe "GET /gct" do
     setup :register_and_log_in_gct_user
 
     test "show index page", %{conn: conn} do
       conn = get(conn, Routes.gct_path(conn, :index))
       assert html_response(conn, 200) =~ "Glimesh Community Team Dashboard"
+    end
+  end
+
+  describe "GET /gct/audit-log" do
+    setup :register_and_log_in_gct_user
+
+    test "shows the audit log", %{conn: conn} do
+      conn = get(conn, Routes.gct_path(conn, :audit_log))
+      assert html_response(conn, 200) =~ "GCT Audit Log"
+    end
+  end
+
+  describe "GET /gct/audit-log without permission" do
+    setup :register_and_log_in_gct_user_without_perms
+
+    test "shows the unauthorized page", %{conn: conn} do
+      conn = get(conn, Routes.gct_path(conn, :audit_log))
+      assert html_response(conn, 200) =~ "You've tried to access something you cannot. "
+    end
+  end
+
+  describe "GET /gct/unauthorized" do
+    setup :register_and_log_in_gct_user
+
+    test "shows the unauthorized page", %{conn: conn} do
+      conn = get(conn, Routes.gct_path(conn, :unauthorized))
+      assert html_response(conn, 200) =~ "You've tried to access something you cannot. "
     end
   end
 
@@ -37,6 +79,18 @@ defmodule GlimeshWeb.GctControllerTest do
       assert html_response(conn, 200) =~ "Information for " <> lookup_user.displayname
     end
 
+    test "valid email returns information", %{conn: conn} do
+      lookup_user = user_fixture()
+      conn = get(conn, Routes.gct_path(conn, :username_lookup, query: lookup_user.email))
+      assert html_response(conn, 200) =~ "Information for " <> lookup_user.displayname
+    end
+
+    test "valid ID returns information", %{conn: conn} do
+      lookup_user = user_fixture()
+      conn = get(conn, Routes.gct_path(conn, :username_lookup, query: lookup_user.id))
+      assert html_response(conn, 200) =~ "Information for " <> lookup_user.displayname
+    end
+
     test "invalid user returns an invalid user page", %{conn: conn} do
       conn = get(conn, Routes.gct_path(conn, :username_lookup, query: "invalid_user"))
       assert html_response(conn, 200) =~ "Does not exist"
@@ -51,6 +105,12 @@ defmodule GlimeshWeb.GctControllerTest do
 
       conn = get(conn, Routes.gct_path(conn, :channel_lookup, query: streamer.username))
 
+      assert html_response(conn, 200) =~ "Information for " <> streamer.displayname
+    end
+
+    test "valid channel ID returns information", %{conn: conn} do
+      streamer = streamer_fixture()
+      conn = get(conn, Routes.gct_path(conn, :channel_lookup, query: streamer.channel.id))
       assert html_response(conn, 200) =~ "Information for " <> streamer.displayname
     end
 
@@ -246,6 +306,19 @@ defmodule GlimeshWeb.GctControllerTest do
 
       resp = html_response(get(conn, Routes.gct_path(conn, :edit_channel, channel.id)), 200)
       assert resp =~ "New title"
+    end
+
+    test "invalid data returns an error", %{conn: conn} do
+      %{channel: channel} = streamer_fixture()
+
+      channel_conn =
+        put(conn, Routes.gct_path(conn, :update_channel, channel.id), %{
+          "channel" => %{
+            "title" => @invalid_title
+          }
+        })
+
+      assert html_response(channel_conn, 200) =~ "Must not exceed 250 characters"
     end
   end
 
