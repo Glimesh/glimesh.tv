@@ -60,9 +60,9 @@ defmodule Glimesh.StreamsTest do
       {:ok, channel: streamer.channel, streamer: streamer}
     end
 
-    test "rotate_stream_key/1 changes a stream key", %{channel: channel, streamer: streamer} do
+    test "rotate_stream_key/1 changes a hmac key", %{channel: channel, streamer: streamer} do
       {:ok, new_channel} = Streams.rotate_stream_key(streamer, channel)
-      assert new_channel.stream_key != channel.stream_key
+      assert new_channel.hmac_key != channel.hmac_key
     end
 
     test "prompt_mature_content/2 flags content correctly", %{

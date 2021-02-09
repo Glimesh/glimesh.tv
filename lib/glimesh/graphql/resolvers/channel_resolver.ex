@@ -20,13 +20,15 @@ defmodule Glimesh.Resolvers.ChannelResolver do
     {:ok, ChannelLookups.get_channel_for_username!(username)}
   end
 
-  # def find_channel(%{stream_key: stream_key}, %{context: %{user_access: %UserAccess{chat: true, user: user}}}) do
-  def find_channel(%{stream_key: stream_key}, %{context: %{is_admin: true}}) do
-    {:ok, ChannelLookups.get_channel_for_stream_key!(stream_key)}
+  def find_channel(%{hmac_key: hmac_key}, %{context: %{is_admin: true}}) do
+    case ChannelLookups.get_channel_by_hmac_key(hmac_key) do
+      %Glimesh.Streams.Channel{} = channel -> {:ok, channel}
+      _ -> {:error, "Channel not found with hmacKey."}
+    end
   end
 
-  def find_channel(%{stream_key: _}, _) do
-    {:error, "Unauthorized to access streamKey query."}
+  def find_channel(%{hmac_key: _}, _) do
+    {:error, "Unauthorized to access hmacKey query."}
   end
 
   # Streams

@@ -40,7 +40,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :channel, :channel do
       arg(:id, :id)
       arg(:username, :string)
-      arg(:stream_key, :string)
+      arg(:hmac_key, :string)
       resolve(&ChannelResolver.find_channel/2)
     end
 
@@ -172,9 +172,19 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :stream_key, :string do
       resolve(fn channel, _, %{context: %{current_user: current_user}} ->
         if current_user.is_admin do
-          {:ok, channel.stream_key}
+          {:ok, Glimesh.Streams.get_stream_key(channel)}
         else
           {:error, "Unauthorized to access streamKey field."}
+        end
+      end)
+    end
+
+    field :hmac_key, :string do
+      resolve(fn channel, _, %{context: %{current_user: current_user}} ->
+        if current_user.is_admin do
+          {:ok, channel.hmac_key}
+        else
+          {:error, "Unauthorized to access hmacKey field."}
         end
       end)
     end

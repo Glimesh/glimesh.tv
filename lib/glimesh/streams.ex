@@ -78,7 +78,7 @@ defmodule Glimesh.Streams do
     with :ok <- Bodyguard.permit(__MODULE__, :update_channel, user, channel) do
       channel
       |> change_channel()
-      |> Channel.stream_key_changeset()
+      |> Channel.hmac_key_changeset()
       |> Repo.update()
     end
   end
@@ -232,6 +232,8 @@ defmodule Glimesh.Streams do
 
   def prompt_mature_content(%Channel{mature_content: true}, nil), do: true
   def prompt_mature_content(_, _), do: false
+
+  def get_stream_key(%Channel{id: id, hmac_key: hmac_key}), do: "#{id}-#{hmac_key}"
 
   # System API Calls
 

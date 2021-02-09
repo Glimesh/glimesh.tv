@@ -36,8 +36,8 @@ defmodule Glimesh.Chat.Effects do
             "data-toggle": "tooltip",
             title: gettext("Glimesh Staff")
           ]
-          
-          user.is_gct ->
+
+        user.is_gct ->
           [
             "data-toggle": "tooltip",
             title: gettext("Glimesh Community Team")
