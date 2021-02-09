@@ -10,6 +10,7 @@ defmodule Glimesh.Chat.ChatMessage do
   schema "chat_messages" do
     field :message, :string
     field :is_visible, :boolean, default: true
+    field :is_followed_message, :boolean, default: false
 
     belongs_to :channel, Channel
     belongs_to :user, User
@@ -20,7 +21,7 @@ defmodule Glimesh.Chat.ChatMessage do
   @doc false
   def changeset(chat_message, attrs) do
     chat_message
-    |> cast(attrs, [:message, :is_visible])
+    |> cast(attrs, [:message, :is_visible, :is_followed_message])
     |> validate_required([:channel, :user, :message])
   end
 end
