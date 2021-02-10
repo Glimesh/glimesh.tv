@@ -2,6 +2,7 @@ defmodule GlimeshWeb.UserPaymentsController do
   use GlimeshWeb, :controller
 
   alias Glimesh.Accounts
+  alias Glimesh.PaymentProviders.StripeProvider
   alias Glimesh.Payments
 
   plug :put_layout, "user-sidebar.html"
@@ -9,28 +10,20 @@ defmodule GlimeshWeb.UserPaymentsController do
   def index(conn, _params) do
     user = conn.assigns.current_user
 
-    params =
-      Plug.Conn.Query.encode(%{
-        "client_id" => Application.get_env(:stripity_stripe, :connect_client_id),
-        "state" => Phoenix.Token.sign(GlimeshWeb.Endpoint, "stripe state", user.id),
-        "suggested_capabilities" => ["transfers", "card_payments"],
-        "stripe_user" => %{
-          "email" => user.email,
-          "url" => Routes.user_stream_url(conn, :index, user.username)
-        }
-      })
-
-    stripe_oauth_url = "https://connect.stripe.com/express/oauth/authorize?" <> params
+    countries =
+      ["Select Your Country": ""] ++
+        StripeProvider.list_payout_countries()
 
     render(
       conn,
       "index.html",
       page_title: format_page_title(gettext("Your Payment Portal")),
       can_payments: Accounts.can_use_payments?(user),
+      can_receive_payments: Accounts.can_receive_payments?(user),
       incoming: Payments.sum_incoming(user),
       outgoing: Payments.sum_outgoing(user),
-      is_sub_ready_streamer: !is_nil(user.stripe_user_id),
-      stripe_oauth_url: stripe_oauth_url,
+      is_sub_ready_streamer: false,
+      stripe_countries: countries,
       platform_subscription: Payments.get_platform_subscription!(user),
       subscriptions: Payments.get_channel_subscriptions(user),
       default_payment_changeset: Accounts.change_stripe_default_payment(user),
@@ -40,41 +33,62 @@ defmodule GlimeshWeb.UserPaymentsController do
     )
   end
 
-  def connect(conn, %{"state" => state, "code" => code}) do
+  def setup(conn, %{"country" => country}) do
     user = conn.assigns.current_user
 
-    with {:ok, _} <- verify_token(state, user.id),
-         {:ok, _} <- Payments.oauth_connect(user, code) do
-      conn
-      |> put_flash(
-        :info,
-        gettext("Stripe account linked successfully, welcome to the sub club!")
-      )
-      |> redirect(to: Routes.user_payments_path(conn, :index))
-    else
-      {:error, verify_error} when verify_error in [:expired, :invalid] ->
+    refresh_url = Routes.user_payments_url(conn, :index)
+    return_url = Routes.user_payments_url(conn, :connect)
+
+    case StripeProvider.start_connect(
+           user,
+           country,
+           return_url,
+           refresh_url
+         ) do
+      {:ok, stripe_oauth_url} ->
+        render(conn, "setup.html",
+          page_title: format_page_title(gettext("Setup Glimesh Payouts")),
+          can_payments: Accounts.can_use_payments?(user),
+          country: country,
+          stripe_oauth_url: stripe_oauth_url
+        )
+
+      {:error, message} when is_bitstring(message) ->
         conn
-        |> put_flash(:error, "Your Stripe Connect timed out, please try again.")
+        |> put_flash(:error, message)
         |> redirect(to: Routes.user_payments_path(conn, :index))
 
-      {:error, err} ->
+      {:error, %Stripe.Error{}} ->
         conn
-        |> put_flash(:error, err)
+        |> put_flash(:error, "There was an error accessing the Stripe API.")
         |> redirect(to: Routes.user_payments_path(conn, :index))
     end
   end
 
-  defp verify_token(state_token, user_id) do
-    case Phoenix.Token.verify(GlimeshWeb.Endpoint, "stripe state", state_token, max_age: 86_400) do
-      {:ok, found_user_id} ->
-        if user_id !== found_user_id do
-          {:error, :invalid}
-        else
-          {:ok, user_id}
-        end
+  def connect(conn, _params) do
+    user = conn.assigns.current_user
 
-      {:error, reason} ->
-        {:error, reason}
+    if user.stripe_user_id do
+      case StripeProvider.check_account_capabilities_and_upgrade(user) do
+        {:ok, _} ->
+          conn
+          |> put_flash(
+            :info,
+            "Your payments account is successfully linked. Your subscription button is now enabled."
+          )
+          |> redirect(to: Routes.user_payments_path(conn, :index))
+
+        {:pending, message} ->
+          conn
+          |> put_flash(:info, message)
+          |> redirect(to: Routes.user_payments_path(conn, :index))
+      end
+
+      conn
+    else
+      conn
+      |> put_flash(:error, "There was a problem connecting your payouts account.")
+      |> redirect(to: Routes.user_payments_path(conn, :index))
     end
   end
 

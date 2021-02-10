@@ -17,6 +17,7 @@ defmodule Glimesh.Accounts.User do
 
     field :can_stream, :boolean, default: false
     field :can_payments, :boolean, default: false
+    field :can_receive_payments, :boolean, default: false
     field :team_role, :string
     field :is_admin, :boolean, default: false
     field :is_gct, :boolean, default: false
@@ -71,6 +72,7 @@ defmodule Glimesh.Accounts.User do
       :is_admin,
       :can_stream,
       :can_payments,
+      :can_receive_payments,
       :is_banned,
       :is_gct,
       :gct_level,
@@ -257,7 +259,12 @@ defmodule Glimesh.Accounts.User do
   """
   def stripe_changeset(user, attrs) do
     user
-    |> cast(attrs, [:stripe_customer_id, :stripe_user_id, :stripe_payment_method])
+    |> cast(attrs, [
+      :stripe_customer_id,
+      :stripe_user_id,
+      :stripe_payment_method,
+      :can_receive_payments
+    ])
   end
 
   @doc """

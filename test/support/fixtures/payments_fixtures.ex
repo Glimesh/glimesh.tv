@@ -38,11 +38,11 @@ defmodule Glimesh.PaymentsFixtures do
     })
   end
 
-  def channel_subscription_fixture(streamer, user) do
+  def channel_subscription_fixture(streamer, user, stripe_subscription_id \\ "1234") do
     Glimesh.Payments.create_subscription(%{
       user: user,
       streamer: streamer,
-      stripe_subscription_id: "random_id",
+      stripe_subscription_id: stripe_subscription_id,
       stripe_product_id: Glimesh.Payments.get_channel_sub_base_product_id(),
       stripe_price_id: Glimesh.Payments.get_channel_sub_base_price_id(),
       stripe_current_period_end: 1234,
