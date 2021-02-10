@@ -91,7 +91,7 @@ defmodule Glimesh.PaymentProviders.StripeProvider.Transfers do
           {:ok, invoice}
 
         some_error ->
-          Logger.emergency("Unexpected error saving Subscription Invoice #{invoice.id}")
+          Logger.error("Unexpected error saving Subscription Invoice #{invoice.id}")
           {:error, some_error}
       end
     end)
