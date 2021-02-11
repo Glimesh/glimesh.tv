@@ -50,15 +50,17 @@
           </div>
 
           <% else %>
-          <div class="embed-responsive embed-responsive-16by9">
-            <%= if @backend == "ftl" do %>
-            <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo"
-              poster="<%= Glimesh.ChannelPoster.url({@channel.poster, @channel}, :original) %>" controls muted></video>
-            <% else %>
-            No video player backend specified.
+          <div class="container-fluid col-lg-11">
+            <div class="embed-responsive embed-responsive-16by9">
+              <%= if @backend == "ftl" do %>
+              <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo"
+                poster="<%= Glimesh.ChannelPoster.url({@channel.poster, @channel}, :original) %>" controls muted></video>
+              <% else %>
+              No video player backend specified.
+              <% end %>
+            </div>
             <% end %>
           </div>
-          <% end %>
         </div>
         <div class="card-footer p-1 d-none d-sm-block">
           <div class="row">
