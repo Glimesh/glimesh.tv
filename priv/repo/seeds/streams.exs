@@ -1,6 +1,6 @@
 num_streams = 100
 
-possible_categories = Enum.map(Glimesh.Streams.list_categories(), fn x -> x.id end)
+possible_categories = Enum.map(Glimesh.ChannelCategories.list_categories(), fn x -> x.id end)
 
 for n <- 1..num_streams do
   category = Enum.random(possible_categories)
