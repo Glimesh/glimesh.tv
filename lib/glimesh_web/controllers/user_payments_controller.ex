@@ -78,7 +78,13 @@ defmodule GlimeshWeb.UserPaymentsController do
           )
           |> redirect(to: Routes.user_payments_path(conn, :index))
 
-        {:pending, message} ->
+        {:pending_taxes, message} ->
+          # Should redirect to a taxes page
+          conn
+          |> put_flash(:info, message)
+          |> redirect(to: Routes.user_payments_path(conn, :index))
+
+        {:pending_stripe, message} ->
           conn
           |> put_flash(:info, message)
           |> redirect(to: Routes.user_payments_path(conn, :index))

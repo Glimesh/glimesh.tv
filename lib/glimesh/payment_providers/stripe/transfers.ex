@@ -38,8 +38,7 @@ defmodule Glimesh.PaymentProviders.StripeProvider.Transfers do
     |> Enum.map(fn {streamer_id, invoices_for_streamer} ->
       streamer = Glimesh.Accounts.get_user!(streamer_id)
 
-      invoices_total = Enum.map(invoices_for_streamer, & &1.total_amount) |> Enum.sum()
-      payout_amount = invoices_total / 2
+      payout_amount = Enum.map(invoices_for_streamer, & &1.payout_amount) |> Enum.sum()
 
       if payout_amount <= 0 do
         raise "Payout Amount is less than 0 cents, aborting!"

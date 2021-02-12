@@ -7,7 +7,13 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButtonTest do
   @component GlimeshWeb.UserLive.Components.SubscribeButton
 
   defp create_streamer(_) do
-    %{streamer: streamer_fixture(%{can_payments: true, can_receive_payments: true})}
+    {:ok, streamer} =
+      Glimesh.Accounts.set_stripe_attrs(streamer_fixture(%{can_payments: true}), %{
+        is_stripe_setup: true,
+        is_tax_verified: true
+      })
+
+    %{streamer: streamer}
   end
 
   describe "subscription button unauthed user" do

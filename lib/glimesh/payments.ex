@@ -121,8 +121,6 @@ defmodule Glimesh.Payments do
     stripe_input = %{
       customer: customer_id,
       items: [%{price: price_id}]
-      # application_fee_percent: 50,
-      # transfer_data: %{destination: streamer.stripe_user_id}
     }
 
     glimesh_cut_percent = 50

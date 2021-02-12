@@ -74,7 +74,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
     subscribed = Glimesh.Payments.has_channel_subscription?(user, streamer)
 
     can_subscribe = if Accounts.can_use_payments?(user), do: user.id != streamer.id, else: false
-    can_receive_payments = streamer.can_receive_payments
+    can_receive_payments = Accounts.can_receive_payments?(streamer)
 
     {:ok,
      socket

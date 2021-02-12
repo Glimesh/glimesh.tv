@@ -30,6 +30,26 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
         user = Accounts.get_user!(subscription.user_id)
         streamer = Accounts.get_user!(subscription.streamer_id)
 
+        # Figure out if we need to account for a withholding
+        # Hold back a widtholding amount
+        total_amount = invoice.total
+
+        # This is recalculated just in case our cut changes or the invoice is discounted.
+        glimesh_cut_percent = 0.50
+        glimesh_cut = trunc(total_amount * glimesh_cut_percent)
+        potential_payout_amount = total_amount - glimesh_cut
+
+        # Withholding is calculated from the potential payout amount, not the full amount
+        withholding_amount =
+          if streamer.tax_withholding_percent,
+            do:
+              Decimal.to_integer(
+                Decimal.mult(potential_payout_amount, streamer.tax_withholding_percent)
+              ),
+            else: 0
+
+        payout_amount = potential_payout_amount - withholding_amount
+
         Payments.create_subscription_invoice(%{
           # Relations
           user: user,
@@ -38,7 +58,10 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
           # Fields
           stripe_invoice_id: invoice.id,
           stripe_status: invoice.status,
-          total_amount: invoice.total
+          total_amount: total_amount,
+          # our_amount: our_amount,
+          withholding_amount: withholding_amount,
+          payout_amount: payout_amount
         })
 
       nil ->
@@ -120,16 +143,31 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
     cond do
       tos_accepted and transfers_enabled ->
         user = Accounts.get_user_by_stripe_user_id(account.id)
-        Accounts.set_can_receive_payments(user, true)
+
+        # We have to manually process taxe formsfor anyone outside the US
+        is_tax_verified = account.country == "US"
+
+        response =
+          Accounts.set_stripe_attrs(user, %{
+            is_stripe_setup: true,
+            is_tax_verified: is_tax_verified
+          })
+
+        if is_tax_verified do
+          response
+        else
+          {:pending_taxes, "Something about taxes"}
+        end
 
       tos_accepted and !transfers_enabled ->
-        {:pending, "Verifying that your account can receive transfers. Please check back later."}
+        {:pending_stripe,
+         "Verifying that your account can receive transfers. Please check back later."}
 
       transfers_enabled and !tos_accepted ->
-        {:pending, "Verifying your Terms of Service acceptance. Please check back later."}
+        {:pending_stripe, "Verifying your Terms of Service acceptance. Please check back later."}
 
       true ->
-        {:pending, "Verifying your account details. Please check back later."}
+        {:pending_stripe, "Verifying your account details. Please check back later."}
     end
   end
 

@@ -16,16 +16,15 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
         total: 500
       })
 
-    {:ok, _} =
-      StripeProvider.pay_invoice(%Stripe.Invoice{
-        id: id,
-        subscription: sub,
-        status: "paid",
-        total: 500
-      })
+    StripeProvider.pay_invoice(%Stripe.Invoice{
+      id: id,
+      subscription: sub,
+      status: "paid",
+      total: 500
+    })
   end
 
-  describe "Stripe Provider" do
+  describe "Normal Payouts" do
     setup do
       %{
         streamer: streamer_fixture(),
@@ -96,6 +95,44 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
       Enum.map(paid_out_transfers, fn {result, data} ->
         assert result == :ok
         assert data.amount == 500
+      end)
+    end
+  end
+
+  describe "Witholding Payouts" do
+    setup do
+      {:ok, streamer} =
+        Glimesh.Accounts.set_stripe_attrs(streamer_fixture(), %{
+          is_stripe_setup: true,
+          is_tax_verified: true,
+          tax_withholding_percent: 0.30
+        })
+
+      %{
+        streamer: streamer,
+        user: user_fixture()
+      }
+    end
+
+    test "prepare_payouts/0 prepares the correct amount with withholding", %{
+      streamer: streamer,
+      user: user
+    } do
+      {:ok, _} = channel_subscription_fixture(streamer, user, "456")
+      {:ok, _} = channel_subscription_fixture(streamer, user, "789")
+
+      create_and_pay_invoice("1", "456")
+      {:ok, subscription_invoice} = create_and_pay_invoice("2", "789")
+      assert subscription_invoice.total_amount == 500
+      assert subscription_invoice.withholding_amount == 75
+      assert subscription_invoice.payout_amount == 175
+
+      transfers = Transfers.prepare_payouts()
+      paid_out_transfers = Transfers.commit_payouts(transfers)
+
+      Enum.map(paid_out_transfers, fn {result, data} ->
+        assert result == :ok
+        assert data.amount == 350
       end)
     end
   end
@@ -181,6 +218,7 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
     test "check_account_capabilities_and_upgrade/1 upgrades an account", %{streamer: streamer} do
       account_mock = %Stripe.Account{
         id: "1234",
+        country: "US",
         capabilities: %{
           transfers: "active"
         },
@@ -193,15 +231,42 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
 
       assert {:ok, user} = StripeProvider.check_account_capabilities_and_upgrade(account_mock)
       refute is_nil(user.stripe_user_id)
-      assert user.can_receive_payments
+      assert user.is_stripe_setup
+      assert user.is_tax_verified
       assert Glimesh.Accounts.can_receive_payments?(user)
     end
 
-    test "check_account_capabilities_and_upgrade/1 has error states" do
-      assert {:pending,
+    test "check_account_capabilities_and_upgrade/1 upgrades an account, but does not verify taxes if outside the US",
+         %{streamer: streamer} do
+      account_mock = %Stripe.Account{
+        id: "1234",
+        country: "DE",
+        capabilities: %{
+          transfers: "active"
+        },
+        tos_acceptance: %{
+          date: 1234
+        }
+      }
+
+      Glimesh.Accounts.set_stripe_user_id(streamer, "1234")
+
+      assert {:pending_taxes, "Something about taxes"} =
+               StripeProvider.check_account_capabilities_and_upgrade(account_mock)
+
+      streamer = Glimesh.Accounts.get_user!(streamer.id)
+      refute is_nil(streamer.stripe_user_id)
+      assert streamer.is_stripe_setup
+      refute streamer.is_tax_verified
+      refute Glimesh.Accounts.can_receive_payments?(streamer)
+    end
+
+    test "check_account_capabilities_and_upgrade/1 has pending states" do
+      assert {:pending_stripe,
               "Verifying that your account can receive transfers. Please check back later."} =
                StripeProvider.check_account_capabilities_and_upgrade(%Stripe.Account{
                  id: "1234",
+                 country: "US",
                  capabilities: %{
                    transfers: "pending"
                  },
@@ -210,9 +275,11 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
                  }
                })
 
-      assert {:pending, "Verifying your Terms of Service acceptance. Please check back later."} =
+      assert {:pending_stripe,
+              "Verifying your Terms of Service acceptance. Please check back later."} =
                StripeProvider.check_account_capabilities_and_upgrade(%Stripe.Account{
                  id: "1234",
+                 country: "US",
                  capabilities: %{
                    transfers: "active"
                  },
@@ -221,9 +288,10 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
                  }
                })
 
-      assert {:pending, "Verifying your account details. Please check back later."} =
+      assert {:pending_stripe, "Verifying your account details. Please check back later."} =
                StripeProvider.check_account_capabilities_and_upgrade(%Stripe.Account{
                  id: "1234",
+                 country: "US",
                  capabilities: %{},
                  tos_acceptance: %{}
                })

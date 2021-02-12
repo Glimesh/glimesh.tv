@@ -11,9 +11,15 @@ defmodule Glimesh.Payments.SubscriptionInvoice do
 
     field :stripe_invoice_id, :string
     field :stripe_status, :string
+
+    # These fields are calculated by us
     # Total after discounts and taxes.
     field :total_amount, :integer
+    # payout_amount = total_amount - withholding_amount
+    field :withholding_amount, :integer
+    field :payout_amount, :integer
 
+    # These fields are what actually happened
     field :user_paid, :boolean, default: false
     field :streamer_paidout, :boolean, default: false
     field :streamer_payout_amount, :integer
@@ -29,6 +35,8 @@ defmodule Glimesh.Payments.SubscriptionInvoice do
       :stripe_invoice_id,
       :stripe_status,
       :total_amount,
+      :withholding_amount,
+      :payout_amount,
       :user_paid,
       :streamer_paidout,
       :streamer_payout_amount,
@@ -48,6 +56,8 @@ defmodule Glimesh.Payments.SubscriptionInvoice do
       :stripe_invoice_id,
       :stripe_status,
       :total_amount,
+      :withholding_amount,
+      :payout_amount,
       :user_paid,
       :streamer_paidout,
       :streamer_payout_amount,
