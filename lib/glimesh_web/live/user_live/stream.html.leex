@@ -56,6 +56,12 @@
                         No video player backend specified.
                         <% end %>
                     </div>
+
+                    <%= if @player_error do %>
+                    <div class="alert alert-danger mt-2" role="alert">
+                        <%= @player_error %>
+                    </div>
+                    <% end %>
                     <% end %>
                 </div>
                 <div class="card-footer p-1 d-none d-sm-block">

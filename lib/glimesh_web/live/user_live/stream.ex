@@ -37,6 +37,7 @@ defmodule GlimeshWeb.UserLive.Stream do
          |> assign(:backend, channel.backend)
          |> assign(:janus_url, "Pending...")
          |> assign(:janus_hostname, "Pending...")
+         |> assign(:player_error, nil)
          |> assign(:channel_id, channel.id)
          |> assign(:user, maybe_user)}
 
@@ -67,7 +68,9 @@ defmodule GlimeshWeb.UserLive.Stream do
 
       _ ->
         # In the event we can't find an edge, something is real wrong
-        {:noreply, socket}
+        {:noreply,
+         socket
+         |> assign(:player_error, "Unable to find edge video location, we'll be back soon!")}
     end
   end
 
