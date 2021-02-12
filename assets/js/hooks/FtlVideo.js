@@ -8,8 +8,8 @@ export default {
     mounted() {
         let container = this.el;
         
-        this.handleEvent("load_video", ({janus_uri, channel_id}) => {
-            player = new FtlPlayer(container, janus_uri);
+        this.handleEvent("load_video", ({janus_url, channel_id}) => {
+            player = new FtlPlayer(container, janus_url);
             let init = player.init(channel_id);
         })
 
