@@ -221,6 +221,7 @@ defmodule Glimesh.Accounts.User do
       :profile_content_md
     ])
     |> validate_length(:profile_content_md, max: 8192)
+    |> validate_required(:displayname)
     |> validate_youtube_url(:youtube_intro_url)
     |> validate_displayname()
     |> set_profile_content_html()
