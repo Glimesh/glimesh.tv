@@ -48,12 +48,14 @@ defmodule Glimesh.PaymentProviders.StripeProvider.Transfers do
         streamer_id: streamer_id,
         invoices: invoices_for_streamer,
         transfer: %{
-          description: "Glimesh Payout #x",
+          description: "Glimesh Payout on " <> Date.to_string(NaiveDateTime.utc_now()),
           destination: streamer.stripe_user_id,
           # trunc should be safe because we only ever work in USD cents so we're just converting a float to int
           amount: trunc(payout_amount),
           currency: "USD",
           metadata: %{
+            total_withholding_amount:
+              Enum.map(invoices_for_streamer, & &1.withholding_amount) |> Enum.sum(),
             included_invoices:
               Enum.map(invoices_for_streamer, & &1.stripe_invoice_id) |> Enum.join(", ")
           }

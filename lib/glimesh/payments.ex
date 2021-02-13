@@ -8,6 +8,7 @@ defmodule Glimesh.Payments do
   alias Glimesh.Accounts
   alias Glimesh.Accounts.User
   alias Glimesh.Payments.Subscription
+  alias Glimesh.Payments.SubscriptionInvoice
   alias Glimesh.Repo
   alias Glimesh.Streams.Channel
 
@@ -365,13 +366,17 @@ defmodule Glimesh.Payments do
     payment_history.data
   end
 
-  def list_payout_history(%User{stripe_user_id: nil}), do: []
-
-  def list_payout_history(%User{stripe_user_id: stripe_user_id}) do
-    {:ok, payout_history} = Stripe.Transfer.list(%{destination: stripe_user_id})
-
-    payout_history.data
-  end
+  # Not ready for this yet...
+  # @doc """
+  # List our historical payouts for the user
+  # """
+  # def list_payout_history(%User{} = streamer) do
+  #   Repo.all(
+  #     from si in SubscriptionInvoice,
+  #       where:
+  #         si.streamer_id == ^streamer.id and si.user_paid == true and si.streamer_paidout == true
+  #   )
+  # end
 
   @doc """
   Returns the list of subscription.
@@ -451,7 +456,7 @@ defmodule Glimesh.Payments do
     Subscription.create_changeset(subscription, attrs)
   end
 
-  alias Glimesh.Payments.SubscriptionInvoice
+  # Subscription Invoices
 
   def get_subscription_invoice_by_stripe_id(invoice_id) when is_binary(invoice_id) do
     Repo.one(

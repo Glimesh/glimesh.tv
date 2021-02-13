@@ -61,7 +61,7 @@ defmodule GlimeshWeb.GctController do
           conn,
           "lookup_user.html",
           user: user,
-          payout_history: Payments.list_payout_history(user),
+          payout_history: [],
           payment_history: Payments.list_payment_history(user),
           view_billing?: view_billing
         )
