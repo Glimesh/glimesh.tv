@@ -79,7 +79,6 @@ defmodule GlimeshWeb.UserLive.StreamTest do
 
       {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
 
-      send(view.pid, {:load_stream, "DE"})
       assert render(view) =~ "some-de-server"
       assert render(view) =~ "https://some-de-server/janus"
     end

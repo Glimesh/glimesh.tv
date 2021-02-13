@@ -13,11 +13,7 @@ defmodule GlimeshWeb.UserLive.Stream do
 
     if connected?(socket) do
       # Wait until the socket connection is ready to load the stream
-      Process.send(
-        self(),
-        {:load_stream, Map.get(session, "country")},
-        []
-      )
+      Process.send(self(), :load_stream, [])
     end
 
     case ChannelLookups.get_channel_for_username!(streamer_username) do
@@ -30,6 +26,7 @@ defmodule GlimeshWeb.UserLive.Stream do
         {:ok,
          socket
          |> put_page_title(channel.title)
+         |> assign(:country, Map.get(session, "country"))
          |> assign(:prompt_mature, Streams.prompt_mature_content(channel, maybe_user))
          |> assign(:custom_meta, Profile.meta_tags(streamer, avatar_url))
          |> assign(:streamer, channel.user)
@@ -46,7 +43,7 @@ defmodule GlimeshWeb.UserLive.Stream do
     end
   end
 
-  def handle_info({:load_stream, country}, socket) do
+  def handle_info(:load_stream, socket) do
     # Keep track of viewers using their socket ID, but later we'll keep track of chatters by their user
     Presence.track_presence(
       self(),
@@ -55,7 +52,7 @@ defmodule GlimeshWeb.UserLive.Stream do
       %{}
     )
 
-    case Glimesh.Janus.get_closest_edge_location(country) do
+    case Glimesh.Janus.get_closest_edge_location(socket.assigns.country) do
       %Glimesh.Janus.EdgeRoute{url: janus_url, hostname: janus_hostname} ->
         {:noreply,
          socket
