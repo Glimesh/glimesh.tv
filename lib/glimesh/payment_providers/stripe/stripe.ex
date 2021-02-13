@@ -21,48 +21,14 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
   end
 
   @doc """
-  Create a subscription invoice record for us whenever we get a Stripe Invoice. We let Stripe handle most of the metadata and only keep information we need to show the user, or information we need for Streamer payouts.
+  Create a subscription invoice record for us whenever we get a Stripe Invoice.
+  We let Stripe handle most of the metadata and only keep information we need
+  to show the user, or information we need for Streamer payouts.
   """
   def create_invoice(%Stripe.Invoice{} = invoice) do
     case Glimesh.Payments.get_subscription_by_stripe_id(invoice.subscription) do
       %Subscription{} = subscription ->
-        # Create invoice for this subscription
-        user = Accounts.get_user!(subscription.user_id)
-        streamer = Accounts.get_user!(subscription.streamer_id)
-
-        # Figure out if we need to account for a withholding
-        # Hold back a widtholding amount
-        total_amount = invoice.total
-
-        # This is recalculated just in case our cut changes or the invoice is discounted.
-        glimesh_cut_percent = 0.50
-        glimesh_cut = trunc(total_amount * glimesh_cut_percent)
-        potential_payout_amount = total_amount - glimesh_cut
-
-        # Withholding is calculated from the potential payout amount, not the full amount
-        withholding_amount =
-          if streamer.tax_withholding_percent,
-            do:
-              Decimal.to_integer(
-                Decimal.mult(potential_payout_amount, streamer.tax_withholding_percent)
-              ),
-            else: 0
-
-        payout_amount = potential_payout_amount - withholding_amount
-
-        Payments.create_subscription_invoice(%{
-          # Relations
-          user: user,
-          streamer: streamer,
-          subscription: subscription,
-          # Fields
-          stripe_invoice_id: invoice.id,
-          stripe_status: invoice.status,
-          total_amount: total_amount,
-          # our_amount: our_amount,
-          withholding_amount: withholding_amount,
-          payout_amount: payout_amount
-        })
+        create_subscription_invoice(subscription, invoice)
 
       nil ->
         Logger.error("Unable to find a Glimesh Subscription for #{invoice.subscription}")
@@ -176,6 +142,66 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
          {:ok, something} <- check_account_capabilities_and_upgrade(account) do
       {:ok, something}
     end
+  end
+
+  defp create_subscription_invoice(%Subscription{} = subscription, %Stripe.Invoice{} = invoice)
+       when not is_nil(subscription.streamer_id) do
+    # Channel Subscription
+    # Create invoice for this subscription
+    user = Accounts.get_user!(subscription.user_id)
+    streamer = Accounts.get_user!(subscription.streamer_id)
+
+    # Figure out if we need to account for a withholding
+    # Hold back a widtholding amount
+    total_amount = invoice.total
+
+    # This is recalculated just in case our cut changes or the invoice is discounted.
+    glimesh_cut_percent = 0.50
+    glimesh_cut = trunc(total_amount * glimesh_cut_percent)
+    potential_payout_amount = total_amount - glimesh_cut
+
+    # Withholding is calculated from the potential payout amount, not the full amount
+    withholding_amount =
+      if streamer.tax_withholding_percent,
+        do:
+          Decimal.to_integer(
+            Decimal.mult(potential_payout_amount, streamer.tax_withholding_percent)
+          ),
+        else: 0
+
+    payout_amount = potential_payout_amount - withholding_amount
+
+    Payments.create_subscription_invoice(%{
+      # Relations
+      user: user,
+      streamer: streamer,
+      subscription: subscription,
+      # Fields
+      stripe_invoice_id: invoice.id,
+      stripe_status: invoice.status,
+      total_amount: total_amount,
+      # our_amount: our_amount,
+      withholding_amount: withholding_amount,
+      payout_amount: payout_amount
+    })
+  end
+
+  defp create_subscription_invoice(%Subscription{} = subscription, %Stripe.Invoice{} = invoice) do
+    # Platform Subscription
+    user = Accounts.get_user!(subscription.user_id)
+
+    Payments.create_subscription_invoice(%{
+      # Relations
+      user: user,
+      streamer: nil,
+      subscription: subscription,
+      # Fields
+      stripe_invoice_id: invoice.id,
+      stripe_status: invoice.status,
+      total_amount: invoice.total,
+      withholding_amount: 0,
+      payout_amount: 0
+    })
   end
 
   defp get_connect_link(%Stripe.Account{} = account, return_url, refresh_url) do

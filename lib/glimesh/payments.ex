@@ -468,7 +468,8 @@ defmodule Glimesh.Payments do
   def list_unpaidout_invoices do
     Repo.all(
       from si in SubscriptionInvoice,
-        where: si.user_paid == true and si.streamer_paidout == false
+        where:
+          not is_nil(si.streamer_id) and si.user_paid == true and si.streamer_paidout == false
     )
   end
 
