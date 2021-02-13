@@ -12,14 +12,12 @@ defmodule GlimeshWeb.StreamsLive.List do
       %Glimesh.Accounts.User{} = user ->
         if session["locale"], do: Gettext.put_locale(session["locale"])
 
-        channels = ChannelLookups.list_live_followed_channels(user)
-
         {:ok,
          socket
          |> put_page_title(gettext("Followed Streams"))
+         |> assign(:current_user, user)
          |> assign(:tags, nil)
-         |> assign(:list_name, "Followed")
-         |> assign(:channels, channels)}
+         |> assign(:list_name, "Followed")}
 
       nil ->
         {:ok, redirect(socket, to: "/")}
@@ -49,7 +47,12 @@ defmodule GlimeshWeb.StreamsLive.List do
 
   @impl true
   def handle_params(params, _uri, socket) do
-    channels = ChannelLookups.filter_live_channels(Map.take(params, ["category", "tag"]))
+    channels =
+      if Map.get(params, "category") == "following" do
+        ChannelLookups.list_live_followed_channels(socket.assigns.current_user)
+      else
+        ChannelLookups.filter_live_channels(Map.take(params, ["category", "tag"]))
+      end
 
     {:noreply,
      socket
