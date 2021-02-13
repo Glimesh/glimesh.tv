@@ -4,7 +4,8 @@
 }
 
 #chat {
-    height: 100%;
+    height: calc(100vh - 90px);
+    width: 100%;
     display: flex;
     flex-flow: column;
     overflow: hidden;
@@ -88,5 +89,18 @@
 
     .chat-form {
         flex: 0 0;
+    }
+}
+
+.chat-space-fill {
+    position: absolute;
+    height: 48px;
+    width: 48px;
+    bottom: 0;
+    right: 0;
+    opacity: 0.5;
+    display: none;
+    @media (min-width: 992px) and (max-height: 940px) {
+        display: block;
     }
 }
