@@ -51,7 +51,7 @@ defmodule GlimeshWeb.QuickPreferenceControllerTest do
       assert redirected_to(conn) == Routes.homepage_path(conn, :index)
 
       assert get_flash(conn, :info) =~
-               "Preferences updates successfully."
+               "Preferences updated successfully."
 
       conn = get(conn, Routes.homepage_path(conn, :index))
       assert html_response(conn, 200) =~ "de ☀️"
