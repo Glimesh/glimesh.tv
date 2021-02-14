@@ -1,84 +1,202 @@
+<style>
+    #timer {
+        margin-top: 40px;
+        text-align: center;
+    }
+
+    #timer div {
+        display: inline-block;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    #timer .text {
+        display: block;
+        font-size: 20px;
+    }
+
+    #timer .spacer {
+        font-size: 130px;
+        font-weight: bold;
+    }
+
+    #timer .count {
+        display: block;
+        font-size: 130px;
+        font-weight: bold;
+        color: #FF4343;
+    }
+</style>
+
+
+
 <div class="fancy-bg">
-  <div class="container">
-
-    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
-      <div class="col-md-12 p-lg-5 mx-auto my-5">
-        <h1 class="display-4 font-weight-normal"><%= gettext("Next-Gen Live Streaming") %></h1>
-        <p class="lead font-weight-normal">
-          <%= gettext("The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving. We're launching soon, but you can get your account setup early and learn more about us below!") %>
-        </p>
-        <%= if @current_user do %>
-        <%= link gettext("Customize Your Profile"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3" %>
-        <% else %>
-        <%= link gettext("Register Your Account"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-lg mt-3" %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="layout-px-spacing">
-  <div class="container">
-    <hr>
-    <div class="my-5">
-      <div class="">
-        <div class="row featurette">
-          <div class="col-md-6 order-md-2">
-            <div class="mb-md-0 mb-3 embed-responsive embed-responsive-16by9">
-              <video autoplay muted controls loop class="embed-responsive-item">
-                <source src="/videos/features/quick-chat.mp4" type="video/mp4">
-              </video>
+    <div class="container">
+        <div class="position-relative overflow-hidden p-3 p-md-5 text-center">
+            <div class="col-md-12 p-lg-4 mx-auto">
+                <h1 class="display-2 font-weight-bold">The <span class="text-color-alpha">Alpha</span> Is Coming!</h1>
+                <div id="timer">
+                    <div class="days"><span class="count">--</span> <span class="text">Days</span></div>
+                    <div class="hours"><span class="count">--</span> <span class="text">Hours</span></div>
+                    <div class="min"><span class="count">--</span> <span class="text">Mins</span></div>
+                    <div class="sec"><span class="count">--</span> <span class="text">Secs</span></div>
+                </div>
+                <%= if @current_user do %>
+                <%= link gettext("Customize Your Profile"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3 mx-3" %>
+                <%= link gettext("Create Your Channel"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3 mx-3" %>
+                <%= link gettext("Setup Payouts"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3 mx-3" %>
+                <% else %>
+                <%= link gettext("Register Your Account"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-lg mt-3" %>
+                <% end %>
             </div>
-          </div>
-          <div class="col-md-6 order-md-1">
-            <h2 class="featurette-heading"><%= gettext("Warp Speed Streaming.") %> <br><small
-                class="text-muted"><%= gettext("It's even faster than light.") %></small></h2>
-            <p class="lead text-justify">
-              <%= gettext("Our fastest streaming technology is built on open standards and gives your streams unimaginable levels of interactivity. We're constantly pushing the boundaries of live video and of course, it's open source.") %>
-            </p>
-          </div>
         </div>
-      </div>
+
+        <h2 class="text-right"><span class="text-color-alpha">Features</span></h2>
+
+        <div class="card-deck mt-4 mb-4">
+            <div class="card">
+                <h5 class="card-header bg-primary text-center rounded">Profiles</h5>
+                <div class="card-body">
+                    <p class="card-text">Start right away with securing your profile and then make it yours! With loads of customisable features, you can really edit and bring your profiles to life to help show people who you are and what you are about!</p>
+                </div>
+            </div>
+            <div class="card">
+                <h5 class="card-header bg-primary text-center rounded">Streaming</h5>
+                <div class="card-body">
+                    <p class="card-text">You are able to stream right away and begin growing your communities. Interacting with them has just got a whole lot easier too with our FTL streaming technology – they will be able to view your stream in real time!</p>
+                </div>
+            </div>
+            <div class="card">
+                <h5 class="card-header bg-primary text-center rounded">Subscriptions</h5>
+                <div class="card-body">
+                    <p class="card-text">Subscription buttons will be available to everyone and you will not need to meet any requirements to obtain this feature. To begin with, this will only be immediately available to limited countries. Join our discord to find out if your country is included.</p>
+                </div>
+            </div>
+            <div class="card">
+                <h5 class="card-header bg-primary text-center rounded">Live Events</h5>
+                <div class="card-body">
+                    <p class="card-text">Our Glimesh Community Team will be hosting live events that you will all be welcome to join! Keep an eye out within our discord to stay up to date with these.</p>
+                </div>
+            </div>
+            <div class="card">
+                <h5 class="card-header bg-primary text-center rounded">More!</h5>
+                <div class="card-body">
+                    <p class="card-text">Remember, this is just the Alpha! We have a lot more planned within further phases of development and we are doing our best to roll this out at fast as possible. Stay tuned!</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="text-right"><span class="text-color-alpha">Alpha</span> Support</h2>
+
+        <div class="card mt-2">
+            <h3 class="card-header bg-primary text-center rounded-lg py-4">What to Expect</h3>
+            <div class="card-body">
+                <p class="card-text">We are so excited to be launching our Alpha version of our next generation streaming platform, but more importantly to notify you that there is no exclusive access accompanied with this launch – That’s right! It is available to everyone! The reason for this is to not only give everyone a fair experience of this but also to really put our platform to the test. We are expecting bugs and issues to occur throughout this process and we really want to stress this to you and re-assure you that this is very much not the final version of what we hope to be the best streaming platform available. As such, we need you! Not only to stress test our website but to give us feedback, suggestions and to report any issues that you experience so that we can work had to rectify these as soon as possible so that we can offer you a stable platform to grow your communities on. Once completed, we will then focus on adding lots of new features for you to enjoy but fear not, we wanted to include a few right away for you to test out and enjoy.
+                </p>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <h3 class="card-header bg-primary text-center rounded-lg py-4">Help Us Improve</h3>
+            <div class="card-body">
+                <div class="row justify-content-md-center">
+                    <div class="col-7">
+                        <p>As explained, we know there are going to be bugs and issues that users may experience within this Alpha version of our platform, but we are prepared! We have some amazing developers who are only ever a message away from resolving these for you to make your experience as enjoyable as possible and to make any necessary improvements to our platform. As such below is information on how to report issues, make suggestions and how to ask any questions that you may have.</p>
+
+                        <h4>How to put forward a query:</h4>
+                        <p>Really easy! You simply need to join our discord and locate the server named <strong>#questions</strong>. Simply insert your question into this server and watch our community and team get back to you with answers as soon as possible.</p>
+
+                        <h4>How to make a suggestion?</h4>
+                        <p>We are always looking to improve and open to new ideas! Locate our <strong>#suggestions</strong> server within our discord and provide us with your suggestions and ideas on what you think we could do differently or add to our platform to make the experience amazing!</p>
+
+                        <h4>How to report a bug:</h4>
+                        <p>Again, simply locate our <strong>#bugs</strong> server within our discord and provide as much information (accompanied preferably with screen shots or clips) of the bug that you have experienced. Our developers will then action this as soon as possible, make necessary fixes and then confirm back to you once this has been completed.</p>
+                    </div>
+                    <div class="col-3">
+                        <img src="/images/homepage/discord.png" alt="" class="rounded img-fluid">
+                    </div>
+                </div>
+                <div class="text-center mt-4 mb-4">
+                    <%= link "Join Our Discord", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="card-deck mt-4">
+            <div class="card">
+                <h5 class="card-header bg-primary text-center rounded">Useful Documents</h5>
+                <div class="card-body">
+                    <h4>Get up to speed with our Terms Of Service!</h4>
+                    <p>Before you get streaming, we recommend you read our Terms of Service to ensure your streams do not fall foul of anything. *Please note: Due to this being the Alpha Version this document is subject to change therefore please stay up to date with the latest version here.</p>
+
+                    <div class="text-center mt-4 mb-4">
+                        <%= link "Terms of Service", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
+                    </div>
+
+                    <h4>Streaming on Glimesh Guide!</h4>
+                    <p>We have created a useful guide to help get you underway with streaming on Glimesh regardless of streaming experience! Remember if you run into any issues, give us a shout and we will always do our best to help!</p>
+
+                    <div class="text-center mt-4 mb-4">
+                        <%= link "Day One Streamer Guide", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card">
+                <h5 class="card-header bg-primary text-center rounded">Additional Support</h5>
+                <div class="card-body">
+                    <h4>Glimesh Support</h4>
+                    <p>We also have a support page which can provide you with further information such as: FAQ's, Account Support, Subscriptions & Payments and a whole lot more!</p>
+
+                    <div class="text-center mt-4 mb-4">
+                        <%= link "Glimesh Support Portal", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <hr>
 
-    <div class="my-5">
-      <div class="">
-        <div class="row featurette">
-          <div class="mb-md-0 mb-3 col-md-6">
-            <img src="/images/dotstorming-community-project.png" alt="" class="img-fluid">
-          </div>
-          <div class="col-md-6">
-            <h2 class="featurette-heading"><%= gettext("Community Driven.") %> <br><small
-                class="text-muted"><%= gettext("Built by the community, for the community.") %></small></h2>
-            <p class="lead text-justify">
-              <%= gettext("Community is one of our main focuse at Glimesh and we make sure to include you every step of the way. We host staff meetings live on our platform every Tuesday that are open to everyone and if there's a feature you wish we had, you can collaborate on our %{a_start}open source codebase%{a_end} to create it!", a_start: '<a href="https://github.com/Glimesh" target="_blank">', a_end: "</a>") |> raw() %>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <script>
+        // Countdown
+        // Set the date we're counting down to
+        // Remember that javascript is stupid and 2 == March
+        var countDownDate = new Date(Date.UTC(2021, 2, 2, 16, 0, 0, 0)).getTime();
 
-    <hr>
+        function padToTwo(value) {
+            var s = "0" + value;
+            return s.substr(s.length - 2);
+        }
 
-    <div class="my-5">
-      <div class="">
-        <div class="row featurette">
-          <div class="mb-md-0 mb-3 col-md-4 order-md-2 text-center">
-            <img src="/images/glimesh-verified.png" alt="" class="" style="max-height: 250px">
-          </div>
-          <div class="col-md-8 order-md-1">
-            <h2 class="featurette-heading"><%= gettext("Subscriptions for Everyone.") %> <br><small
-                class="text-muted"><%= gettext("Level the playing field.") %></small></h2>
-            <p class="lead text-justify">
-              <%= gettext("Subscription buttons shouldn't be restricted for a particular group of streamers. Everyone who can verify their identity and bank information will receive a subscription button for their stream.") %>
-              <br><em><small><%= gettext("For launch, subscriptions will be only be enabled in the US.") %></small></em>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <hr>
-  </div>
+        function setTimeRemaining() {
+            // Get todays date and time
+            var now = new Date().getTime();
+            // Find the distance between now an the count down date
+            var distance = countDownDate - now;
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            // Output the result in an element with id="demo"
+            document.getElementById("timer").innerHTML = '<div class="days"><span class="text">Days</span> <span class="count">' + padToTwo(days) + '</span></div>' +
+                '<div class="spacer">:</div>' +
+                '<div class="hours"><span class="text">Hours</span><span class="count">' + padToTwo(hours) + '</span></div>' +
+                '<div class="spacer">:</div>' +
+                '<div class="min"><span class="text">Minutes</span><span class="count">' + padToTwo(minutes) + '</span></div>' +
+                '<div class="spacer">:</div>' +
+                '<div class="sec"><span class="text">Seconds</span><span class="count">' + padToTwo(seconds) + '</span></div>';
+            // If the count down is over, write some text
+            if (distance < 0) {
+                clearInterval(countdownfunction);
+                document.getElementById("timer").innerHTML = "EXPIRED";
+            }
+        }
+        setTimeRemaining();
+        // Update the count down every 1 second
+        var countdownfunction = setInterval(setTimeRemaining, 1000)
+    </script>

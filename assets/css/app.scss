@@ -70,6 +70,10 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     color: var(--body-color);
 }
 
+.text-color-alpha {
+    color: #FF4343;
+}
+
 .stream-key:not(:focus) {
     color: transparent;
     text-shadow: 0 0 10px var(--input-color);
