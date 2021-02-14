@@ -78,3 +78,41 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     color: transparent;
     text-shadow: 0 0 10px var(--input-color);
 }
+
+#timer {
+    margin-top: 40px;
+    text-align: center;
+
+    div {
+        display: inline-block;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    .text {
+        display: block;
+        font-size: 20px;
+    }
+
+    .spacer {
+        font-size: 130px;
+        font-weight: bold;
+    }
+
+    .count {
+        display: block;
+        font-size: 130px;
+        font-weight: bold;
+        color: #FF4343;
+        /*
+        background-color: rgba(0, 123, 255, 0.5);
+        border-radius: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        */
+    }
+}
+
+.fancy-bg {
+    background: url("/images/emails/launch/NOTFORUSE.png") no-repeat;
+}

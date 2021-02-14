@@ -8,9 +8,12 @@ defmodule GlimeshWeb.HomepageLive do
     # If the viewer is logged in set their locale, otherwise it defaults to English
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
+    Glimesh.Accounts.UserNotifier.deliver_launch_update(maybe_user)
+
     {:ok,
      socket
      |> put_page_title()
+     |> assign(:show_prelaunch_stream, false)
      |> assign(:current_user, maybe_user)}
   end
 end

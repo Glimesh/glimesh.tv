@@ -121,8 +121,9 @@
         <section class="footer-end pt-5 pb-4">
             <p class="text-center mb-0">
                 <%= gettext("Copyright © 2021 Glimesh, Inc.") %> <%= gettext("All rights reserved.") %><br>
-                <%= link "Terms of Service", to: Routes.about_path(@conn, :terms) %> |
-                <%= link "Privacy & Cookie Policy", to: Routes.about_path(@conn, :privacy) %>
+                <%= link gettext("Terms of Service"), to: Routes.about_path(@conn, :terms) %> |
+                <%= link gettext("Rules of Conduct"), to: Routes.about_path(@conn, :conduct) %> |
+                <%= link gettext("Privacy & Cookie Policy"), to: Routes.about_path(@conn, :privacy) %>
 
             </p>
             <p class="text-center">

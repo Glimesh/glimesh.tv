@@ -1,790 +1,25 @@
-
-							<!-- Article / Full Width Image + Title + Copy + Button -->
-							<table width="100%" border="0" cellspacing="0" cellpadding="0">
-								<tr>
-									<td style="padding-bottom: 10px;">
-										<table width="100%" border="0" cellspacing="0" cellpadding="0"
-											bgcolor="#0e264b">
-											<tr>
-												<td class="fluid-img"
-													style="font-size:0pt; line-height:0pt; text-align:left;"><img
-														src="images/image1.jpg" width="650" height="366" border="0"
-														alt="" /></td>
-											</tr>
-											<tr>
-												<td class="p30-15" style="padding: 50px 30px;">
-													<table width="100%" border="0" cellspacing="0" cellpadding="0">
-														<tr>
-															<td class="h3 pb20"
-																style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:25px; line-height:32px; text-align:left; padding-bottom:20px;">
-																Lorem ipsum dolor sit amet</td>
-														</tr>
-														<tr>
-															<td class="text pb20"
-																style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
-																Lorem ipsum dolor sit amet, consectetur adipisicing
-																elit, sed do eiusmod tempor incididunt ut labore et
-																dolore magna aliqua. Ut enim ad minim veniam, quis
-																nostrud exercitation ullamco laboris nisi ut aliquip ex
-																ea commodo consequat.</td>
-														</tr>
-														<!-- Button -->
-														<tr>
-															<td align="left">
-																<table border="0" cellspacing="0" cellpadding="0">
-																	<tr>
-																		<td class="blue-button text-button"
-																			style="background:#66c7ff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
-																			<a href="#" target="_blank"
-																				class="link-white"
-																				style="color:#ffffff; text-decoration:none;"><span
-																					class="link-white"
-																					style="color:#ffffff; text-decoration:none;">CLICK
-																					HERE</span></a></td>
-																	</tr>
-																</table>
-															</td>
-														</tr>
-														<!-- END Button -->
-													</table>
-												</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</table>
-							<!-- END Article / Full Width Image + Title + Copy + Button -->
-
-							<!-- Two Columns / Articles -->
-							<table width="100%" border="0" cellspacing="0" cellpadding="0">
-								<tr>
-									<td style="padding-bottom: 10px;">
-										<table width="100%" border="0" cellspacing="0" cellpadding="0"
-											bgcolor="#ff6666">
-											<tr>
-												<td class="p30-15" style="padding: 50px 30px;">
-													<table width="100%" border="0" cellspacing="0" cellpadding="0">
-														<tr>
-															<th class="column-top" width="280"
-																style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
-																<table width="100%" border="0" cellspacing="0"
-																	cellpadding="0">
-																	<tr>
-																		<td class="fluid-img pb25"
-																			style="font-size:0pt; line-height:0pt; text-align:left; padding-bottom:25px;">
-																			<img src="images/image2.jpg" width="280"
-																				height="157" border="0" alt="" /></td>
-																	</tr>
-																	<tr>
-																		<td class="h4 pb20"
-																			style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
-																			Lorem ipsum dolor sit amet, consectetur
-																			adipisicing</td>
-																	</tr>
-																	<tr>
-																		<td class="text pb20"
-																			style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
-																			Magna aliqua. Ut enim ad minim veniam, quis
-																			nostrud exercitation ullamco laboris nisi ut
-																			aliquip ex ea commodo.</td>
-																	</tr>
-																	<!-- Button -->
-																	<tr>
-																		<td align="left">
-																			<table border="0" cellspacing="0"
-																				cellpadding="0">
-																				<tr>
-																					<td class="dark-blue-button text-button"
-																						style="background:#0e1726; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
-																						<a href="#" target="_blank"
-																							class="link-white"
-																							style="color:#ffffff; text-decoration:none;"><span
-																								class="link-white"
-																								style="color:#ffffff; text-decoration:none;">CALICK
-																								HERE</span></a></td>
-																				</tr>
-																			</table>
-																		</td>
-																	</tr>
-																	<!-- END Button -->
-																</table>
-															</th>
-															<th class="column-empty2" width="30"
-																style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
-															</th>
-															<th class="column-top" width="280"
-																style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
-																<table width="100%" border="0" cellspacing="0"
-																	cellpadding="0">
-																	<tr>
-																		<td class="fluid-img pb25"
-																			style="font-size:0pt; line-height:0pt; text-align:left; padding-bottom:25px;">
-																			<img src="images/image3.jpg" width="280"
-																				height="157" border="0" alt="" /></td>
-																	</tr>
-																	<tr>
-																		<td class="h4 pb20"
-																			style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
-																			Lorem ipsum dolor sit amet, consectetur
-																			adipisicing</td>
-																	</tr>
-																	<tr>
-																		<td class="text pb20"
-																			style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
-																			Magna aliqua. Ut enim ad minim veniam, quis
-																			nostrud exercitation ullamco laboris nisi ut
-																			aliquip ex ea commodo.</td>
-																	</tr>
-																	<!-- Button -->
-																	<tr>
-																		<td align="left">
-																			<table border="0" cellspacing="0"
-																				cellpadding="0">
-																				<tr>
-																					<td class="dark-blue-button text-button"
-																						style="background:#0e1726; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
-																						<a href="#" target="_blank"
-																							class="link-white"
-																							style="color:#ffffff; text-decoration:none;"><span
-																								class="link-white"
-																								style="color:#ffffff; text-decoration:none;">CALICK
-																								HERE</span></a></td>
-																				</tr>
-																			</table>
-																		</td>
-																	</tr>
-																	<!-- END Button -->
-																</table>
-															</th>
-														</tr>
-													</table>
-												</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</table>
-							<!-- END Two Columns / Articles -->
-
-							<!-- Article / Image On The Left - Copy On The Right -->
-							<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#0e1726">
-								<tr>
-									<td class="p30-15" style="padding: 50px 30px;">
-										<table width="100%" border="0" cellspacing="0" cellpadding="0">
-											<tr>
-												<th class="column-top" width="280"
-													style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
-													<table width="100%" border="0" cellspacing="0" cellpadding="0">
-														<tr>
-															<td class="fluid-img"
-																style="font-size:0pt; line-height:0pt; text-align:left;">
-																<img src="images/image4.jpg" width="280" height="210"
-																	border="0" alt="" /></td>
-														</tr>
-													</table>
-												</th>
-												<th class="column-empty2" width="30"
-													style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
-												</th>
-												<th class="column-top" width="280"
-													style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
-													<table width="100%" border="0" cellspacing="0" cellpadding="0">
-														<tr>
-															<td class="h4 pb20"
-																style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
-																Lorem ipsum dolor sit amet, consectetur</td>
-														</tr>
-														<tr>
-															<td class="text pb20"
-																style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
-																Magna aliqua. Ut enim ad minim veniam, quis nostrud
-																exercitation ullamco laboris nisi ut aliquip ex ea
-																commodo.</td>
-														</tr>
-														<!-- Button -->
-														<tr>
-															<td align="left">
-																<table border="0" cellspacing="0" cellpadding="0">
-																	<tr>
-																		<td class="dark-blue-button2 text-button"
-																			style="background:#021a3d; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
-																			<a href="#" target="_blank" class="link"
-																				style="color:#66c7ff; text-decoration:none;"><span
-																					class="link"
-																					style="color:#66c7ff; text-decoration:none;">CALICK
-																					HERE</span></a></td>
-																	</tr>
-																</table>
-															</td>
-														</tr>
-														<!-- END Button -->
-													</table>
-												</th>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</table>
-							<!-- END Article / Image On The Left - Copy On The Right -->
-
-							<!-- CTA Section -->
-							<table width="100%" border="0" cellspacing="0" cellpadding="0">
-								<tr>
-									<td background="images/bg.png" bgcolor="#0e1726" valign="top" height="366"
-										class="bg"
-										style="background-size:cover !important; -webkit-background-size:cover !important; background-repeat:none;">
-										<!--[if gte mso 9]>
-										<v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:650px; height: 366px">
-											<v:fill type="frame" src="images/bg.png" color="#0e1726" />
-											<v:textbox inset="0,0,0,0">
-										<![endif]-->
-										<div>
-											<table width="100%" border="0" cellspacing="0" cellpadding="0">
-												<tr>
-													<td class="content-spacing" height="366" width="30"
-														style="font-size:0pt; line-height:0pt; text-align:left;"></td>
-													<td style="padding: 30px 0px;">
-														<table width="100%" border="0" cellspacing="0" cellpadding="0"
-															style="background:url(images/blue_pattern.png) 0 0 transparent !important"
-															bgcolor="#71c8fb">
-															<tr>
-																<td class="p30-15" style="padding: 50px 30px;">
-																	<table width="100%" border="0" cellspacing="0"
-																		cellpadding="0">
-																		<tr>
-																			<td class="h2 pb15"
-																				style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:30px; line-height:36px; text-align:center; padding-bottom:15px;">
-																				Lorem ipsum dolor sit amet</td>
-																		</tr>
-																		<tr>
-																			<td class="text-center white pb20"
-																				style="font-family:'Roboto', Arial,sans-serif; font-size:16px; line-height:30px; text-align:center; color:#ffffff; padding-bottom:20px;">
-																				Lorem ipsum dolor sit amet, consectetur
-																				adipisicing elit, sed do eiusmod tempor
-																				incididunt ut labore et dolore magna
-																				aliqua.</td>
-																		</tr>
-																		<!-- Button -->
-																		<tr>
-																			<td align="center">
-																				<table class="center" border="0"
-																					cellspacing="0" cellpadding="0"
-																					style="text-align:center;">
-																					<tr>
-																						<td class="dark-blue-button3 text-button"
-																							style="background:#021a3d; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
-																							<a href="#" target="_blank"
-																								class="link-white"
-																								style="color:#ffffff; text-decoration:none;"><span
-																									class="link-white"
-																									style="color:#ffffff; text-decoration:none;">CALICK
-																									HERE</span></a></td>
-																					</tr>
-																				</table>
-																			</td>
-																		</tr>
-																		<!-- END Button -->
-																	</table>
-																</td>
-															</tr>
-														</table>
-													</td>
-													<td class="content-spacing" width="30"
-														style="font-size:0pt; line-height:0pt; text-align:left;"></td>
-												</tr>
-											</table>
-										</div>
-										<!--[if gte mso 9]>
-											</v:textbox>
-											</v:rect>
-										<![endif]-->
-									</td>
-								</tr>
-							</table>
-							<!-- END CTA Section -->
-
-							<!-- Article / Image On The Right - Copy On The Left -->
-							<table width="100%" border="0" cellspacing="0" cellpadding="0">
-								<tr>
-									<td class="p30-15" style="padding: 50px 30px;" bgcolor="#0e1726">
-										<table width="100%" border="0" cellspacing="0" cellpadding="0" dir="rtl"
-											style="direction: rtl;">
-											<tr>
-												<th class="column-dir-top" dir="ltr" width="280"
-													style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; direction:ltr; vertical-align:top;">
-													<table width="100%" border="0" cellspacing="0" cellpadding="0">
-														<tr>
-															<td class="fluid-img"
-																style="font-size:0pt; line-height:0pt; text-align:left;">
-																<img src="images/image4.jpg" width="280" height="210"
-																	border="0" alt="" /></td>
-														</tr>
-													</table>
-												</th>
-												<th class="column-empty2" width="30"
-													style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
-												</th>
-												<th class="column-dir-top" dir="ltr" width="280"
-													style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; direction:ltr; vertical-align:top;">
-													<table width="100%" border="0" cellspacing="0" cellpadding="0">
-														<tr>
-															<td class="h4 pb20"
-																style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
-																Lorem ipsum dolor sit amet, consectetur</td>
-														</tr>
-														<tr>
-															<td class="text pb20"
-																style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
-																Magna aliqua. Ut enim ad minim veniam, quis nostrud
-																exercitation ullamco laboris nisi ut aliquip ex ea
-																commodo.</td>
-														</tr>
-														<!-- Button -->
-														<tr>
-															<td align="left">
-																<table border="0" cellspacing="0" cellpadding="0">
-																	<tr>
-																		<td class="dark-blue-button2 text-button"
-																			style="background:#021a3d; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
-																			<a href="#" target="_blank" class="link"
-																				style="color:#66c7ff; text-decoration:none;"><span
-																					class="link"
-																					style="color:#66c7ff; text-decoration:none;">CALICK
-																					HERE</span></a></td>
-																	</tr>
-																</table>
-															</td>
-														</tr>
-														<!-- END Button -->
-													</table>
-												</th>
-											</tr>
-										</table>
-									</td>
-								</tr>
-								<tr>
-									<td class="img pb10"
-										style="font-size:0pt; line-height:0pt; text-align:left; padding-bottom:10px;">
-									</td>
-								</tr>
-							</table>
-							<!-- END Article / Image On The Right - Copy On The Left -->
-
-							<!-- Article Secondary / Image On The Left - Copy On The Right -->
-							<table width="100%" border="0" cellspacing="0" cellpadding="0">
-								<tr>
-									<td class="p30-15" bgcolor="#ff6666">
-										<table width="100%" border="0" cellspacing="0" cellpadding="0">
-											<tr>
-												<th class="column-top" width="325"
-													style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
-													<table width="100%" border="0" cellspacing="0" cellpadding="0">
-														<tr>
-															<td class="fluid-img"
-																style="font-size:0pt; line-height:0pt; text-align:left;">
-																<img src="images/image5.jpg" width="325" height="362"
-																	border="0" alt="" /></td>
-														</tr>
-													</table>
-												</th>
-												<th class="column-empty2" width="30"
-													style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
-												</th>
-												<th class="column" width="280"
-													style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal;">
-													<table width="100%" border="0" cellspacing="0" cellpadding="0">
-														<tr>
-															<td class="h4 pb20"
-																style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
-																Lorem ipsum dolor sit<span class="m-hide"><br /></span>
-																amet, consectetur <span
-																	class="m-hide"><br /></span>adipisicing elit</td>
-														</tr>
-														<tr>
-															<td class="text pb20"
-																style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
-																Magna aliqua. Ut enim ad minim <span
-																	class="m-hide"><br /></span>veniam, quis nostrud
-																exercitation <span class="m-hide"><br /></span>ullamco
-																laboris nisi ut aliquip ex ea</td>
-														</tr>
-														<!-- Button -->
-														<tr>
-															<td align="left">
-																<table border="0" cellspacing="0" cellpadding="0">
-																	<tr>
-																		<td class="dark-blue-button3 text-button"
-																			style="background:#021a3d; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
-																			<a href="#" target="_blank"
-																				class="link-white"
-																				style="color:#ffffff; text-decoration:none;"><span
-																					class="link-white"
-																					style="color:#ffffff; text-decoration:none;">CALICK
-																					HERE</span></a></td>
-																	</tr>
-																</table>
-															</td>
-														</tr>
-														<!-- END Button -->
-													</table>
-												</th>
-												<th class="m-td" width="30"
-													style="font-size:0pt; line-height:0pt; text-align:left;"></th>
-											</tr>
-										</table>
-									</td>
-								</tr>
-								<tr>
-									<td class="img pb10"
-										style="font-size:0pt; line-height:0pt; text-align:left; padding-bottom:10px;">
-									</td>
-								</tr>
-							</table>
-							<!-- END Article Secondary / Image On The Left - Copy On The Right -->
-
-							<!-- Two Columns / Articles -->
-							<table width="100%" border="0" cellspacing="0" cellpadding="0">
-								<tr>
-									<td style="padding-bottom: 10px;">
-										<table width="100%" border="0" cellspacing="0" cellpadding="0"
-											bgcolor="#ff6666">
-											<tr>
-												<td>
-													<table width="100%" border="0" cellspacing="0" cellpadding="0">
-														<tr>
-															<th class="column-top" width="280" bgcolor="#0e264b"
-																style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
-																<table width="100%" border="0" cellspacing="0"
-																	cellpadding="0">
-																	<tr>
-																		<td class="p30-15" style="padding: 50px 30px;">
-																			<table width="100%" border="0"
-																				cellspacing="0" cellpadding="0">
-																				<tr>
-																					<td class="h4 pb20"
-																						style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
-																						Lorem ipsum dolor</td>
-																				</tr>
-																				<tr>
-																					<td>
-																						<table width="100%" border="0"
-																							cellspacing="0"
-																							cellpadding="0">
-																							<tr>
-																								<td class="pb10"
-																									style="padding-bottom:10px;">
-																									<table width="100%"
-																										border="0"
-																										cellspacing="0"
-																										cellpadding="0">
-																										<tr>
-																											<td valign="top"
-																												class="img"
-																												width="25"
-																												style="font-size:0pt; line-height:0pt; text-align:left;">
-																												<img src="images/small_arrow.jpg"
-																													width="10"
-																													height="17"
-																													border="0"
-																													alt="" />
-																											</td>
-																											<td valign="top"
-																												class="text"
-																												style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left;">
-																												<a href="#"
-																													target="_blank"
-																													class="link"
-																													style="color:#66c7ff; text-decoration:none;"><span
-																														class="link"
-																														style="color:#66c7ff; text-decoration:none;">Lorem
-																														ipsum
-																														dolor</span></a>
-																											</td>
-																										</tr>
-																									</table>
-																								</td>
-																							</tr>
-																							<tr>
-																								<td class="pb10"
-																									style="padding-bottom:10px;">
-																									<table width="100%"
-																										border="0"
-																										cellspacing="0"
-																										cellpadding="0">
-																										<tr>
-																											<td valign="top"
-																												class="img"
-																												width="25"
-																												style="font-size:0pt; line-height:0pt; text-align:left;">
-																												<img src="images/small_arrow.jpg"
-																													width="10"
-																													height="17"
-																													border="0"
-																													alt="" />
-																											</td>
-																											<td valign="top"
-																												class="text"
-																												style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left;">
-																												<a href="#"
-																													target="_blank"
-																													class="link"
-																													style="color:#66c7ff; text-decoration:none;"><span
-																														class="link"
-																														style="color:#66c7ff; text-decoration:none;">Sit
-																														amet
-																														consectetur</span></a>
-																											</td>
-																										</tr>
-																									</table>
-																								</td>
-																							</tr>
-																							<tr>
-																								<td class="pb10"
-																									style="padding-bottom:10px;">
-																									<table width="100%"
-																										border="0"
-																										cellspacing="0"
-																										cellpadding="0">
-																										<tr>
-																											<td valign="top"
-																												class="img"
-																												width="25"
-																												style="font-size:0pt; line-height:0pt; text-align:left;">
-																												<img src="images/small_arrow.jpg"
-																													width="10"
-																													height="17"
-																													border="0"
-																													alt="" />
-																											</td>
-																											<td valign="top"
-																												class="text"
-																												style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left;">
-																												<a href="#"
-																													target="_blank"
-																													class="link"
-																													style="color:#66c7ff; text-decoration:none;"><span
-																														class="link"
-																														style="color:#66c7ff; text-decoration:none;">Adipisicing
-																														elit,
-																														sed
-																														do
-																														eiusmod</span></a>
-																											</td>
-																										</tr>
-																									</table>
-																								</td>
-																							</tr>
-																							<tr>
-																								<td class="pb10"
-																									style="padding-bottom:10px;">
-																									<table width="100%"
-																										border="0"
-																										cellspacing="0"
-																										cellpadding="0">
-																										<tr>
-																											<td valign="top"
-																												class="img"
-																												width="25"
-																												style="font-size:0pt; line-height:0pt; text-align:left;">
-																												<img src="images/small_arrow.jpg"
-																													width="10"
-																													height="17"
-																													border="0"
-																													alt="" />
-																											</td>
-																											<td valign="top"
-																												class="text"
-																												style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left;">
-																												<a href="#"
-																													target="_blank"
-																													class="link"
-																													style="color:#66c7ff; text-decoration:none;"><span
-																														class="link"
-																														style="color:#66c7ff; text-decoration:none;">Tempor
-																														incididunt
-																														ut
-																														labore</span></a>
-																											</td>
-																										</tr>
-																									</table>
-																								</td>
-																							</tr>
-																							<tr>
-																								<td class="pb10"
-																									style="padding-bottom:10px;">
-																									<table width="100%"
-																										border="0"
-																										cellspacing="0"
-																										cellpadding="0">
-																										<tr>
-																											<td valign="top"
-																												class="img"
-																												width="25"
-																												style="font-size:0pt; line-height:0pt; text-align:left;">
-																												<img src="images/small_arrow.jpg"
-																													width="10"
-																													height="17"
-																													border="0"
-																													alt="" />
-																											</td>
-																											<td valign="top"
-																												class="text"
-																												style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left;">
-																												<a href="#"
-																													target="_blank"
-																													class="link"
-																													style="color:#66c7ff; text-decoration:none;"><span
-																														class="link"
-																														style="color:#66c7ff; text-decoration:none;">Et
-																														dolore
-																														magna
-																														aliqua.</span></a>
-																											</td>
-																										</tr>
-																									</table>
-																								</td>
-																							</tr>
-																							<tr>
-																								<td class="pb10"
-																									style="padding-bottom:10px;">
-																									<table width="100%"
-																										border="0"
-																										cellspacing="0"
-																										cellpadding="0">
-																										<tr>
-																											<td valign="top"
-																												class="img"
-																												width="25"
-																												style="font-size:0pt; line-height:0pt; text-align:left;">
-																												<img src="images/small_arrow.jpg"
-																													width="10"
-																													height="17"
-																													border="0"
-																													alt="" />
-																											</td>
-																											<td valign="top"
-																												class="text"
-																												style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left;">
-																												<a href="#"
-																													target="_blank"
-																													class="link"
-																													style="color:#66c7ff; text-decoration:none;"><span
-																														class="link"
-																														style="color:#66c7ff; text-decoration:none;">Enim
-																														ad
-																														minim
-																														veniam</span></a>
-																											</td>
-																										</tr>
-																									</table>
-																								</td>
-																							</tr>
-																						</table>
-																					</td>
-																				</tr>
-																			</table>
-																		</td>
-																	</tr>
-																</table>
-															</th>
-															<th class="column-top" width="280" bgcolor="#0e1726"
-																style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
-																<table width="100%" border="0" cellspacing="0"
-																	cellpadding="0">
-																	<tr>
-																		<td class="p30-15" style="padding: 50px 30px;">
-																			<table width="100%" border="0"
-																				cellspacing="0" cellpadding="0">
-																				<tr>
-																					<td class="h4 pb20"
-																						style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
-																						Lorem ipsum dolor</td>
-																				</tr>
-																				<tr>
-																					<td class="text pb20"
-																						style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
-																						Lorem ipsum dolor sit amet,
-																						consectetur adipisicing elit,
-																						sed do eiusmod tempor incididunt
-																						ut labore et dolore magna
-																						aliqua. Ut enim ad minim veniam,
-																						quis nostrud exercitation
-																						ullamco laboris nisi ut aliquip
-																						ex ea commodo consequat. Duis
-																						aute irure dolor.</td>
-																				</tr>
-																				<!-- Button -->
-																				<tr>
-																					<td align="left">
-																						<table border="0"
-																							cellspacing="0"
-																							cellpadding="0">
-																							<tr>
-																								<td class="dark-blue-button2 text-button"
-																									style="background:#021a3d; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:0px 6px 6px 6px; font-weight:bold;">
-																									<a href="#"
-																										target="_blank"
-																										class="link"
-																										style="color:#66c7ff; text-decoration:none;"><span
-																											class="link"
-																											style="color:#66c7ff; text-decoration:none;">CALICK
-																											HERE</span></a>
-																								</td>
-																							</tr>
-																						</table>
-																					</td>
-																				</tr>
-																				<!-- END Button -->
-																			</table>
-																		</td>
-																	</tr>
-																</table>
-															</th>
-														</tr>
-													</table>
-												</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</table>
-							<!-- END Two Columns / Articles -->
-
-
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td style="padding-bottom: 10px;">
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#0e1726">
                 <tr>
-                    <td class="tbrr p30-15" style="padding: 60px 30px; border-radius:6px 6px 0px 0px;"
-                        bgcolor="#0e1726">
+                    <td class="fluid-img" style="font-size:0pt; line-height:0pt; text-align:left;"><img src="https://glimesh.dev/images/emails/launch/NOTFORUSE.png" width="650" height="366" border="0" alt="" /></td>
+                </tr>
+                <tr>
+                    <td class="p30-15" style="padding: 50px 30px;">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
-                                <td class="h1 pb25"
-                                    style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:40px; line-height:46px; text-align:center; padding-bottom:25px;">
-                                    Welcome to <br>Next-Gen Live Streaming</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center pb25"
-                                    style="color:#ebedf2; font-family:'Roboto', Arial,sans-serif; font-size:16px; line-height:30px; text-align:center; padding-bottom:25px;">
-                                    Hi <%= @user.displayname %>! Welcome to Glimesh and thank you for creating your
-                                    account! We can't wait for you to get to know us, but
-                                    first please confirm that this email address is a good
-                                    way to reach you!</td>
+                                <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
+                                    That's right! Our Alpha is launching on March 2nd 2021 at 11AM EST and we just wanted to let you know that you have full access! From this date, you will be able to stream and experience FTL technology like no other! We also have a few extra features that we think you may like! So get ready, get setup - we look forward to seeing you!
+                                </td>
                             </tr>
                             <!-- Button -->
                             <tr>
                                 <td align="center">
-                                    <table class="center" border="0" cellspacing="0" cellpadding="0"
-                                        style="text-align:center;">
+                                    <table border="0" cellspacing="0" cellpadding="0">
                                         <tr>
-                                            <td class="pink-button text-button"
-                                                style="background:#1b55e2; color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
-                                                <a href="<%= @url %>" target="_blank" class="link-white"
-                                                    style="color:#ffffff; text-decoration:none;"><span
-                                                        class="link-white"
-                                                        style="color:#ffffff; text-decoration:none;">Confirm
-                                                        Email</span></a></td>
+                                            <td class="blue-button text-button" style="background:#007bff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius: 6px; font-weight:bold;">
+                                                <a href="#" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;">Visit Glimesh</span></a></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -797,3 +32,300 @@
         </td>
     </tr>
 </table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td style="padding-bottom: 10px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#0e264b">
+                <tr>
+                    <td class="p30-15" style="padding: 50px 30px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <th class="column-top" width="280" style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td class="fluid-img pb25" style="font-size:0pt; line-height:0pt; text-align:left; padding-bottom:25px;">
+                                                <img src="https://glimesh.dev/images/emails/launch/glimcap.png" width="280" height="157" border="0" alt="" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="h4 pb20" style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">Missed the last Team Meeting?</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
+                                                Fear not, we have you covered! Check out our team meeting Glimcap where we gather all of the topics discussed within our meeting and collate them into a handy blog to allow you to catch up on what you missed!</td>
+                                        </tr>
+                                        <!-- Button -->
+                                        <tr>
+                                            <td align="center">
+                                                <table border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td class="dark-blue-button text-button" style="background:#007bff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                            <a href="#" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;">Glimcap</span></a></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <!-- END Button -->
+                                    </table>
+                                </th>
+                                <th class="column-empty2" width="30" style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
+                                </th>
+                                <th class="column-top" width="280" style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td class="fluid-img pb25" style="font-size:0pt; line-height:0pt; text-align:left; padding-bottom:25px;">
+                                                <img src="https://glimesh.dev/images/emails/launch/discord.png" width="280" height="157" border="0" alt="" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="h4 pb20" style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
+                                                Stay Updated</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
+                                                If you have not already figured it out, we like to get things done around here. As such, there are lot changes and the best place for you to stay up to date is within our Discord. Come hang out, talk to some great people and see what we are about!
+                                            </td>
+                                        </tr>
+                                        <!-- Button -->
+                                        <tr>
+                                            <td align="center">
+                                                <table border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td class="dark-blue-button text-button" style="background:#007bff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                            <a href="#" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;">Glimesh Discord</span></a></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <!-- END Button -->
+                                    </table>
+                                </th>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<!-- END Two Columns / Articles -->
+
+<!-- Article / Image On The Left - Copy On The Right -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#0e1726">
+    <tr>
+        <td class="p30-15" style="padding: 50px 30px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <th class="column-top" width="280" style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="fluid-img" style="font-size:0pt; line-height:0pt; text-align:left;">
+                                    <img src="https://glimesh.dev/images/emails/launch/privacy.png" width="280" height="210" border="0" alt="" /></td>
+                            </tr>
+                        </table>
+                    </th>
+                    <th class="column-empty2" width="30" style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
+                    </th>
+                    <th class="column-top" width="280" style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="h4 pb20" style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
+                                    Privacy Policy Changes</td>
+                            </tr>
+                            <tr>
+                                <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
+                                    We have made a few changes to our Privacy Policy which we recommend that you read through to ensure that you stay update with any new changes.
+                                </td>
+                            </tr>
+                            <!-- Button -->
+                            <tr>
+                                <td align="left">
+                                    <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td class="dark-blue-button2 text-button" style="background:#007bff; color:#fff; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                <a href="#" target="_blank" class="link" style="color:#fff; text-decoration:none;"><span class="link" style="color:#fff; text-decoration:none;">Privacy Policy</span></a></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <!-- END Button -->
+                        </table>
+                    </th>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<!-- END Article / Image On The Left - Copy On The Right -->
+
+<!-- CTA Section -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td background="images/bg.png" bgcolor="#0e1726" valign="top" height="366" class="bg" style="background-size:cover !important; -webkit-background-size:cover !important; background-repeat:none;">
+            <!--[if gte mso 9]>
+										<v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:650px; height: 366px">
+											<v:fill type="frame" src="images/bg.png" color="#0e1726" />
+											<v:textbox inset="0,0,0,0">
+										<![endif]-->
+            <div>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td class="content-spacing" height="366" width="30" style="font-size:0pt; line-height:0pt; text-align:left;"></td>
+                        <td style="padding: 30px 0px;">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background:url(images/blue_pattern.png) 0 0 transparent !important" bgcolor="#71c8fb">
+                                <tr>
+                                    <td class="p30-15" style="padding: 50px 30px;">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td class="h2 pb15" style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:30px; line-height:36px; text-align:center; padding-bottom:15px;">
+                                                    Get <span style="color: #FF4343;">Prepared!</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center white pb20" style="font-family:'Roboto', Arial,sans-serif; font-size:16px; line-height:30px; text-align:center; color:#ffffff; padding-bottom:20px;">
+                                                    If you have not already done it, be sure to complete editing your profile so that you are ready to stream from day one!
+                                                </td>
+                                            </tr>
+                                            <!-- Button -->
+                                            <tr>
+                                                <td align="center">
+                                                    <table class="center" border="0" cellspacing="0" cellpadding="0" style="text-align:center;">
+                                                        <tr>
+                                                            <td class="dark-blue-button3 text-button" style="background:#007bff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                                <a href="#" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;">View Your Profile</span></a></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <!-- END Button -->
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="content-spacing" width="30" style="font-size:0pt; line-height:0pt; text-align:left;"></td>
+                    </tr>
+                </table>
+            </div>
+            <!--[if gte mso 9]>
+											</v:textbox>
+											</v:rect>
+										<![endif]-->
+        </td>
+    </tr>
+</table>
+<!-- END CTA Section -->
+
+<!-- Article / Image On The Right - Copy On The Left -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td class="p30-15" style="padding: 50px 30px;" bgcolor="#0e1726">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" dir="rtl" style="direction: rtl;">
+                <tr>
+                    <th class="column-dir-top" dir="ltr" width="280" style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; direction:ltr; vertical-align:top;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="fluid-img" style="font-size:0pt; line-height:0pt; text-align:left;">
+                                    <img src="https://glimesh.dev/images/emails/launch/terms.png" width="280" height="210" border="0" alt="" /></td>
+                            </tr>
+                        </table>
+                    </th>
+                    <th class="column-empty2" width="30" style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
+                    </th>
+                    <th class="column-dir-top" dir="ltr" width="280" style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; direction:ltr; vertical-align:top;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="h4 pb20" style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:right; padding-bottom:20px;">
+                                    Terms of Service</td>
+                            </tr>
+                            <tr>
+                                <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:right; padding-bottom:20px;">
+                                    Before streaming or watching, we advise you read through our Terms Of Service (TOS) as we are regularly updating this and we want to do our very best to make sure that everybody is compliant with this.
+                                </td>
+                            </tr>
+                            <!-- Button -->
+                            <tr>
+                                <td align="right">
+                                    <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td class="dark-blue-button2 text-button" style="background:#007bff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                <a href="#" target="_blank" class="link" style="color:#fff; text-decoration:none;"><span class="link" style="color:#fff; text-decoration:none;">Terms of Service</span></a></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <!-- END Button -->
+                        </table>
+                    </th>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td class="img pb10" style="font-size:0pt; line-height:0pt; text-align:left; padding-bottom:10px;">
+        </td>
+    </tr>
+</table>
+<!-- END Article / Image On The Right - Copy On The Left -->
+
+<!-- Two Columns / Articles -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td style="padding-bottom: 10px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#0e264b">
+                <tr>
+                    <td>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <th class="column-top" width="280" bgcolor="#0e264b" style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td class="p30-15" style="padding: 50px 30px;">
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td class="h2 pb15" style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:50px; line-height:56px; text-align:center; padding-top:70px;">
+                                                            Support</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </th>
+                                <th class="column-top" width="280" bgcolor="#0e264b" style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; vertical-align:top;">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td class="p30-15" style="padding: 50px 30px;">
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td class="h4 pb20" style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
+                                                            Need Help?</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
+                                                            Checkout our support dashboard where you can find loads of useful information and to hopefully answer any questions you may have to help get you underway.</td>
+                                                    </tr>
+                                                    <!-- Button -->
+                                                    <tr>
+                                                        <td align="left">
+                                                            <table border="0" cellspacing="0" cellpadding="0">
+                                                                <tr>
+                                                                    <td class="dark-blue-button2 text-button" style="background:#007bff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                                        <a href="#" target="_blank" class="link" style="color:#fff; text-decoration:none;"><span class="link" style="color:#fff; text-decoration:none;">Support</span></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- END Button -->
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </th>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<!-- END Two Columns / Articles -->

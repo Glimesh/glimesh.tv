@@ -1,45 +1,23 @@
-<style>
-    #timer {
-        margin-top: 40px;
-        text-align: center;
-    }
-
-    #timer div {
-        display: inline-block;
-        margin-left: 15px;
-        margin-right: 15px;
-    }
-
-    #timer .text {
-        display: block;
-        font-size: 20px;
-    }
-
-    #timer .spacer {
-        font-size: 130px;
-        font-weight: bold;
-    }
-
-    #timer .count {
-        display: block;
-        font-size: 130px;
-        font-weight: bold;
-        color: #FF4343;
-    }
-</style>
-
-
-
 <div class="fancy-bg">
+    <%= if @show_prelaunch_stream do %>
+    <div class="container-fluid">
+        <h1 class="display-2 text-center font-weight-bold">The <span class="text-color-alpha">Alpha</span> Preshow!</h1>
+        <%= live_render(@socket, GlimeshWeb.UserLive.Stream, id: "stream", session: %{"username" => "anissa.cartwright"}) %>
+    </div>
+    <% else %>
     <div class="container">
+
         <div class="position-relative overflow-hidden p-3 p-md-5 text-center">
             <div class="col-md-12 p-lg-4 mx-auto">
                 <h1 class="display-2 font-weight-bold">The <span class="text-color-alpha">Alpha</span> Is Coming!</h1>
                 <div id="timer">
-                    <div class="days"><span class="count">--</span> <span class="text">Days</span></div>
-                    <div class="hours"><span class="count">--</span> <span class="text">Hours</span></div>
-                    <div class="min"><span class="count">--</span> <span class="text">Mins</span></div>
-                    <div class="sec"><span class="count">--</span> <span class="text">Secs</span></div>
+                    <div class="days"><span class="text">Days</span> <span class="count">--</span></div>
+                    <div class="spacer">:</div>
+                    <div class="hours"><span class="text">Hours</span><span class="count">--</span></div>
+                    <div class="spacer">:</div>
+                    <div class="min"><span class="text">Minutes</span><span class="count">--</span></div>
+                    <div class="spacer">:</div>
+                    <div class="sec"><span class="text">Seconds</span><span class="count">--</span></div>
                 </div>
                 <%= if @current_user do %>
                 <%= link gettext("Customize Your Profile"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3 mx-3" %>
@@ -51,37 +29,42 @@
             </div>
         </div>
 
+    </div>
+    <% end %>
+
+    <div class="container">
+
         <h2 class="text-right"><span class="text-color-alpha">Features</span></h2>
 
         <div class="card-deck mt-4 mb-4">
             <div class="card">
-                <h5 class="card-header bg-primary text-center rounded">Profiles</h5>
+                <h5 class="card-header bg-primary text-center rounded-lg py-4">Profiles</h5>
                 <div class="card-body">
-                    <p class="card-text">Start right away with securing your profile and then make it yours! With loads of customisable features, you can really edit and bring your profiles to life to help show people who you are and what you are about!</p>
+                    <p class="card-text text-center">Start right away with securing your profile and then make it yours! With loads of customisable features, you can really edit and bring your profiles to life to help show people who you are and what you are about!</p>
                 </div>
             </div>
             <div class="card">
-                <h5 class="card-header bg-primary text-center rounded">Streaming</h5>
+                <h5 class="card-header bg-primary text-center rounded-lg py-4">Streaming</h5>
                 <div class="card-body">
-                    <p class="card-text">You are able to stream right away and begin growing your communities. Interacting with them has just got a whole lot easier too with our FTL streaming technology – they will be able to view your stream in real time!</p>
+                    <p class="card-text text-center">You are able to stream right away and begin growing your communities. Interacting with them has just got a whole lot easier too with our FTL streaming technology – they will be able to view your stream in real time!</p>
                 </div>
             </div>
             <div class="card">
-                <h5 class="card-header bg-primary text-center rounded">Subscriptions</h5>
+                <h5 class="card-header bg-primary text-center rounded-lg py-4">Subscriptions</h5>
                 <div class="card-body">
-                    <p class="card-text">Subscription buttons will be available to everyone and you will not need to meet any requirements to obtain this feature. To begin with, this will only be immediately available to limited countries. Join our discord to find out if your country is included.</p>
+                    <p class="card-text text-center">Subscription buttons will be available to everyone and you will not need to meet any requirements to obtain this feature. To begin with, this will only be immediately available to limited countries. Join our discord to find out if your country is included.</p>
                 </div>
             </div>
             <div class="card">
-                <h5 class="card-header bg-primary text-center rounded">Live Events</h5>
+                <h5 class="card-header bg-primary text-center rounded-lg py-4">Live Events</h5>
                 <div class="card-body">
-                    <p class="card-text">Our Glimesh Community Team will be hosting live events that you will all be welcome to join! Keep an eye out within our discord to stay up to date with these.</p>
+                    <p class="card-text text-center">Our Glimesh Community Team will be hosting live events that you will all be welcome to join! Keep an eye out within our discord to stay up to date with these.</p>
                 </div>
             </div>
             <div class="card">
-                <h5 class="card-header bg-primary text-center rounded">More!</h5>
+                <h5 class="card-header bg-primary text-center rounded-lg py-4">More!</h5>
                 <div class="card-body">
-                    <p class="card-text">Remember, this is just the Alpha! We have a lot more planned within further phases of development and we are doing our best to roll this out at fast as possible. Stay tuned!</p>
+                    <p class="card-text text-center">Remember, this is just the Alpha! We have a lot more planned within further phases of development and we are doing our best to roll this out at fast as possible. Stay tuned!</p>
                 </div>
             </div>
         </div>
@@ -91,14 +74,14 @@
         <div class="card mt-2">
             <h3 class="card-header bg-primary text-center rounded-lg py-4">What to Expect</h3>
             <div class="card-body">
-                <p class="card-text">We are so excited to be launching our Alpha version of our next generation streaming platform, but more importantly to notify you that there is no exclusive access accompanied with this launch – That’s right! It is available to everyone! The reason for this is to not only give everyone a fair experience of this but also to really put our platform to the test. We are expecting bugs and issues to occur throughout this process and we really want to stress this to you and re-assure you that this is very much not the final version of what we hope to be the best streaming platform available. As such, we need you! Not only to stress test our website but to give us feedback, suggestions and to report any issues that you experience so that we can work had to rectify these as soon as possible so that we can offer you a stable platform to grow your communities on. Once completed, we will then focus on adding lots of new features for you to enjoy but fear not, we wanted to include a few right away for you to test out and enjoy.
+                <p class="card-text text-center">We are so excited to be launching our Alpha version of our next generation streaming platform, but more importantly to notify you that there is no exclusive access accompanied with this launch – That’s right! It is available to everyone! The reason for this is to not only give everyone a fair experience of this but also to really put our platform to the test. We are expecting bugs and issues to occur throughout this process and we really want to stress this to you and re-assure you that this is very much not the final version of what we hope to be the best streaming platform available. As such, we need you! Not only to stress test our website but to give us feedback, suggestions and to report any issues that you experience so that we can work had to rectify these as soon as possible so that we can offer you a stable platform to grow your communities on. Once completed, we will then focus on adding lots of new features for you to enjoy but fear not, we wanted to include a few right away for you to test out and enjoy.
                 </p>
             </div>
         </div>
 
         <div class="card mt-4">
             <h3 class="card-header bg-primary text-center rounded-lg py-4">Help Us Improve</h3>
-            <div class="card-body">
+            <div class="card-body card-glimfamily">
                 <div class="row justify-content-md-center">
                     <div class="col-7">
                         <p>As explained, we know there are going to be bugs and issues that users may experience within this Alpha version of our platform, but we are prepared! We have some amazing developers who are only ever a message away from resolving these for you to make your experience as enjoyable as possible and to make any necessary improvements to our platform. As such below is information on how to report issues, make suggestions and how to ask any questions that you may have.</p>
@@ -124,17 +107,29 @@
 
 
 
-        <div class="card-deck mt-4">
+        <div class="card-deck mt-4 mb-5">
             <div class="card">
-                <h5 class="card-header bg-primary text-center rounded">Useful Documents</h5>
+                <h5 class="card-header bg-primary text-center rounded-lg py-4">Useful Documents</h5>
                 <div class="card-body">
-                    <h4>Get up to speed with our Terms Of Service!</h4>
+                    <h4>Get up to speed with our Terms of Service!</h4>
                     <p>Before you get streaming, we recommend you read our Terms of Service to ensure your streams do not fall foul of anything. *Please note: Due to this being the Alpha Version this document is subject to change therefore please stay up to date with the latest version here.</p>
 
                     <div class="text-center mt-4 mb-4">
                         <%= link "Terms of Service", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
                     </div>
 
+                    <h4>Review our Rules of Conduct!</h4>
+                    <p>Before you get streaming, we recommend you read our Terms of Service to ensure your streams do not fall foul of anything. *Please note: Due to this being the Alpha Version this document is subject to change therefore please stay up to date with the latest version here.</p>
+
+                    <div class="text-center mt-4 mb-4">
+                        <%= link "Terms of Service", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card">
+                <h5 class="card-header bg-primary text-center rounded-lg py-4">Additional Support</h5>
+                <div class="card-body">
                     <h4>Streaming on Glimesh Guide!</h4>
                     <p>We have created a useful guide to help get you underway with streaming on Glimesh regardless of streaming experience! Remember if you run into any issues, give us a shout and we will always do our best to help!</p>
 
@@ -142,11 +137,6 @@
                         <%= link "Day One Streamer Guide", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
                     </div>
 
-                </div>
-            </div>
-            <div class="card">
-                <h5 class="card-header bg-primary text-center rounded">Additional Support</h5>
-                <div class="card-body">
                     <h4>Glimesh Support</h4>
                     <p>We also have a support page which can provide you with further information such as: FAQ's, Account Support, Subscriptions & Payments and a whole lot more!</p>
 
@@ -159,44 +149,45 @@
         </div>
 
     </div>
+</div>
 
 
-    <script>
-        // Countdown
-        // Set the date we're counting down to
-        // Remember that javascript is stupid and 2 == March
-        var countDownDate = new Date(Date.UTC(2021, 2, 2, 16, 0, 0, 0)).getTime();
+<script>
+    // Countdown
+    // Set the date we're counting down to
+    // Remember that javascript is stupid and 2 == March
+    var countDownDate = new Date(Date.UTC(2021, 2, 2, 16, 0, 0, 0)).getTime();
 
-        function padToTwo(value) {
-            var s = "0" + value;
-            return s.substr(s.length - 2);
+    function padToTwo(value) {
+        var s = "0" + value;
+        return s.substr(s.length - 2);
+    }
+
+    function setTimeRemaining() {
+        // Get todays date and time
+        var now = new Date().getTime();
+        // Find the distance between now an the count down date
+        var distance = countDownDate - now;
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        // Output the result in an element with id="demo"
+        document.getElementById("timer").innerHTML = '<div class="days"><span class="text">Days</span> <span class="count">' + padToTwo(days) + '</span></div>' +
+            '<div class="spacer">:</div>' +
+            '<div class="hours"><span class="text">Hours</span><span class="count">' + padToTwo(hours) + '</span></div>' +
+            '<div class="spacer">:</div>' +
+            '<div class="min"><span class="text">Minutes</span><span class="count">' + padToTwo(minutes) + '</span></div>' +
+            '<div class="spacer">:</div>' +
+            '<div class="sec"><span class="text">Seconds</span><span class="count">' + padToTwo(seconds) + '</span></div>';
+        // If the count down is over, write some text
+        if (distance < 0) {
+            clearInterval(countdownfunction);
+            document.getElementById("timer").innerHTML = "EXPIRED";
         }
-
-        function setTimeRemaining() {
-            // Get todays date and time
-            var now = new Date().getTime();
-            // Find the distance between now an the count down date
-            var distance = countDownDate - now;
-            // Time calculations for days, hours, minutes and seconds
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            // Output the result in an element with id="demo"
-            document.getElementById("timer").innerHTML = '<div class="days"><span class="text">Days</span> <span class="count">' + padToTwo(days) + '</span></div>' +
-                '<div class="spacer">:</div>' +
-                '<div class="hours"><span class="text">Hours</span><span class="count">' + padToTwo(hours) + '</span></div>' +
-                '<div class="spacer">:</div>' +
-                '<div class="min"><span class="text">Minutes</span><span class="count">' + padToTwo(minutes) + '</span></div>' +
-                '<div class="spacer">:</div>' +
-                '<div class="sec"><span class="text">Seconds</span><span class="count">' + padToTwo(seconds) + '</span></div>';
-            // If the count down is over, write some text
-            if (distance < 0) {
-                clearInterval(countdownfunction);
-                document.getElementById("timer").innerHTML = "EXPIRED";
-            }
-        }
-        setTimeRemaining();
-        // Update the count down every 1 second
-        var countdownfunction = setInterval(setTimeRemaining, 1000)
-    </script>
+    }
+    setTimeRemaining();
+    // Update the count down every 1 second
+    var countdownfunction = setInterval(setTimeRemaining, 1000)
+</script>
