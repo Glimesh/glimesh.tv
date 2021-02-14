@@ -89,7 +89,7 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
       response = html_response(conn, 200)
       assert response =~ "<h3>Register for our Alpha!</h3>"
       assert response =~ "must have the @ sign and no spaces"
-      assert response =~ "Must be at least 8 characters"
+      assert response =~ "should be at least 8 character(s)"
     end
 
     test "render errors if hcaptcha is invalid", %{conn: conn} do

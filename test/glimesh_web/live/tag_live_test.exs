@@ -46,7 +46,7 @@ defmodule GlimeshWeb.TagLiveTest do
 
       assert index_live
              |> form("#tag-form", tag: @invalid_attrs)
-             |> render_change() =~ "Cannot be blank"
+             |> render_change() =~ "be blank"
 
       {:ok, _, html} =
         index_live
@@ -68,7 +68,7 @@ defmodule GlimeshWeb.TagLiveTest do
 
       assert index_live
              |> form("#tag-form", tag: @invalid_attrs)
-             |> render_change() =~ "Cannot be blank"
+             |> render_change() =~ "be blank"
 
       {:ok, _, html} =
         index_live
