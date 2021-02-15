@@ -49,7 +49,7 @@
     <div class="row">
         <%= for channel <- @channels do %>
         <div class="col-sm-12 col-md-6 col-lg-4 mt-4">
-            <%= live_redirect to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
+            <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
             <div class="card card-stream">
                 <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>"
                     alt="<%= channel.title %>" class="card-img">
