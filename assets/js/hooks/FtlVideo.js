@@ -25,6 +25,6 @@ export default {
         })
     },
     destroyed() {
-        player.destroy();
+        if(player) {player.destroy();}
     }
 };
