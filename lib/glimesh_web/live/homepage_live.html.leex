@@ -9,20 +9,20 @@
 
         <div class="position-relative overflow-hidden p-3 p-md-5 text-center">
             <div class="col-md-12 p-lg-4 mx-auto">
-                <h1 class="display-2 font-weight-bold">The <span class="text-color-alpha">Alpha</span> Is Coming!</h1>
-                <div id="timer">
-                    <div class="days"><span class="text">Days</span> <span class="count">--</span></div>
+                <h1 class="display-2 font-weight-bold text-white">The <span class="text-color-alpha">Alpha</span> Is Coming!</h1>
+                <div id="timer" phx-hook="LaunchCountdown">
+                    <div class="days"><span class="text">Days</span> <span class="count"><%= @days %></span></div>
                     <div class="spacer">:</div>
-                    <div class="hours"><span class="text">Hours</span><span class="count">--</span></div>
+                    <div class="hours"><span class="text">Hours</span><span class="count"><%= @hours %></span></div>
                     <div class="spacer">:</div>
-                    <div class="min"><span class="text">Minutes</span><span class="count">--</span></div>
+                    <div class="min"><span class="text">Minutes</span><span class="count"><%= @minutes %></span></div>
                     <div class="spacer">:</div>
-                    <div class="sec"><span class="text">Seconds</span><span class="count">--</span></div>
+                    <div class="sec"><span class="text">Seconds</span><span class="count"><%= @seconds %></span></div>
                 </div>
                 <%= if @current_user do %>
-                <%= link gettext("Customize Your Profile"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3 mx-3" %>
-                <%= link gettext("Create Your Channel"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3 mx-3" %>
-                <%= link gettext("Setup Payouts"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3 mx-3" %>
+                <%= link gettext("Customize Your Profile"), to: Routes.user_settings_path(@socket, :profile), class: "btn btn-primary btn-lg mt-3 mx-3" %>
+                <%= link gettext("Create Your Channel"), to: Routes.user_settings_path(@socket, :stream), class: "btn btn-primary btn-lg mt-3 mx-3" %>
+                <%# link gettext("Setup Payouts"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3 mx-3" %>
                 <% else %>
                 <%= link gettext("Register Your Account"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-lg mt-3" %>
                 <% end %>
@@ -34,47 +34,58 @@
 
     <div class="container">
 
-        <h2 class="text-right"><span class="text-color-alpha">Features</span></h2>
+        <h2><span class="text-color-alpha">Alpha</span> Features</h2>
 
-        <div class="card-deck mt-4 mb-4">
-            <div class="card">
-                <h5 class="card-header bg-primary text-center rounded-lg py-4">Profiles</h5>
-                <div class="card-body">
-                    <p class="card-text text-center">Start right away with securing your profile and then make it yours! With loads of customisable features, you can really edit and bring your profiles to life to help show people who you are and what you are about!</p>
+        <div class="row mt-4 mb-4">
+            <div class="col mb-2">
+                <div class="card">
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4" style="margin:-1px">Profiles</h5>
+                    <div class="card-body p-3">
+                        <p class="card-text text-center">Start right away with securing your profile and then make it yours! With loads of customizable features, you can really edit and bring your profiles to life to help show people who you are and what you are about!</p>
+                    </div>
                 </div>
             </div>
-            <div class="card">
-                <h5 class="card-header bg-primary text-center rounded-lg py-4">Streaming</h5>
-                <div class="card-body">
-                    <p class="card-text text-center">You are able to stream right away and begin growing your communities. Interacting with them has just got a whole lot easier too with our FTL streaming technology – they will be able to view your stream in real time!</p>
+            <div class="col mb-2">
+                <div class="card">
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4" style="margin:-1px">Streaming</h5>
+                    <div class="card-body p-3">
+                        <p class="card-text text-center">You'll be able to create your stream, go live, and begin growing your communities. Interacting with them will be a whole lot easier with the FTL streaming technology – they will be able to view your stream in real-time!</p>
+                    </div>
                 </div>
             </div>
-            <div class="card">
-                <h5 class="card-header bg-primary text-center rounded-lg py-4">Subscriptions</h5>
-                <div class="card-body">
-                    <p class="card-text text-center">Subscription buttons will be available to everyone and you will not need to meet any requirements to obtain this feature. To begin with, this will only be immediately available to limited countries. Join our discord to find out if your country is included.</p>
+            <div class="col mb-2">
+                <div class="card">
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4" style="margin:-1px">Subscriptions</h5>
+                    <div class="card-body p-3">
+                        <p class="card-text text-center">Subscription buttons will be available, with payouts, and you will not need to meet any viewership requirements for them. During early phases, this will only be available to limited countries. </p>
+                    </div>
                 </div>
             </div>
-            <div class="card">
-                <h5 class="card-header bg-primary text-center rounded-lg py-4">Live Events</h5>
-                <div class="card-body">
-                    <p class="card-text text-center">Our Glimesh Community Team will be hosting live events that you will all be welcome to join! Keep an eye out within our discord to stay up to date with these.</p>
+            <div class="col mb-2">
+                <div class="card">
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4" style="margin:-1px">Live Events</h5>
+                    <div class="card-body p-3">
+                        <p class="card-text text-center">Our Glimesh Community Team will be hosting live events filled with content from all of our various categories. Keep an eye out on our Twitter, for now, to stay up to date with these.</p>
+                    </div>
                 </div>
             </div>
-            <div class="card">
-                <h5 class="card-header bg-primary text-center rounded-lg py-4">More!</h5>
-                <div class="card-body">
-                    <p class="card-text text-center">Remember, this is just the Alpha! We have a lot more planned within further phases of development and we are doing our best to roll this out at fast as possible. Stay tuned!</p>
+            <div class="col mb-2">
+                <div class="card">
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4" style="margin:-1px">More!</h5>
+                    <div class="card-body p-3">
+                        <p class="card-text text-center">Remember, this is just the Alpha! We are excited to continue to develop features you expect while still continuing to innovate on brand new ideas. You can check out our <a href="https://glimesh.tv/blog/2020-08-13-glimesh-alpha-roadmap">Alpha Roadmap</a> for planned features.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <h2 class="text-right"><span class="text-color-alpha">Alpha</span> Support</h2>
+
+        <h2><span class="text-color-alpha">Alpha</span> Support</h2>
 
         <div class="card mt-2">
             <h3 class="card-header bg-primary text-center rounded-lg py-4">What to Expect</h3>
             <div class="card-body">
-                <p class="card-text text-center">We are so excited to be launching our Alpha version of our next generation streaming platform, but more importantly to notify you that there is no exclusive access accompanied with this launch – That’s right! It is available to everyone! The reason for this is to not only give everyone a fair experience of this but also to really put our platform to the test. We are expecting bugs and issues to occur throughout this process and we really want to stress this to you and re-assure you that this is very much not the final version of what we hope to be the best streaming platform available. As such, we need you! Not only to stress test our website but to give us feedback, suggestions and to report any issues that you experience so that we can work had to rectify these as soon as possible so that we can offer you a stable platform to grow your communities on. Once completed, we will then focus on adding lots of new features for you to enjoy but fear not, we wanted to include a few right away for you to test out and enjoy.
+                <p class="card-text text-center">We are very excited to be launching the Alpha version of Glimesh and we're proud to say that all of our alpha features will be available to everyone! During this very early phase, we want to set expectations correctly. You can expect that we'll have issues, bugs, and even downtime early on but we will continue to improve and strive for excellence. We invite everyone in early to help us find these issues, to help us create new products, and to continue growing Glimesh into the best platform it can be. We encourage everyone to try new things on the platform and to report issues when you see them! If you need any support or help along the way, we'll be there for you.
                 </p>
             </div>
         </div>
@@ -83,111 +94,74 @@
             <h3 class="card-header bg-primary text-center rounded-lg py-4">Help Us Improve</h3>
             <div class="card-body card-glimfamily">
                 <div class="row justify-content-md-center">
-                    <div class="col-7">
-                        <p>As explained, we know there are going to be bugs and issues that users may experience within this Alpha version of our platform, but we are prepared! We have some amazing developers who are only ever a message away from resolving these for you to make your experience as enjoyable as possible and to make any necessary improvements to our platform. As such below is information on how to report issues, make suggestions and how to ask any questions that you may have.</p>
+                    <div class="col-md-7">
+                        <p>As explained, we know there are going to be bugs and issues that users may experience within this Alpha version of our platform, but we are prepared! We have an amazing team that is ready to triage, fix, and help resolve any issues you may face. Our Discord is the main source of most of our questions, suggestions, and bug reports and you can find details on how to navigate it below!</p>
 
-                        <h4>How to put forward a query:</h4>
-                        <p>Really easy! You simply need to join our discord and locate the server named <strong>#questions</strong>. Simply insert your question into this server and watch our community and team get back to you with answers as soon as possible.</p>
+                        <h4>What if I have a question?</h4>
+                        <p>Really easy! You simply need to join our Discord and locate the channel named <strong class="text-info">#questions</strong>. After you've fully written out your question, send it and we'll help you out as soon as possible.</p>
 
-                        <h4>How to make a suggestion?</h4>
-                        <p>We are always looking to improve and open to new ideas! Locate our <strong>#suggestions</strong> server within our discord and provide us with your suggestions and ideas on what you think we could do differently or add to our platform to make the experience amazing!</p>
+                        <h4>How can I make a suggestion?</h4>
+                        <p>We are always looking to improve and our platform is built on your ideas! Our <strong class="text-success">#suggestions</strong> channel gives you an easy place to post any ideas you have or suggestions on how we could do things differently.</p>
 
-                        <h4>How to report a bug:</h4>
-                        <p>Again, simply locate our <strong>#bugs</strong> server within our discord and provide as much information (accompanied preferably with screen shots or clips) of the bug that you have experienced. Our developers will then action this as soon as possible, make necessary fixes and then confirm back to you once this has been completed.</p>
+                        <h4>How do I report a bug?</h4>
+                        <p>The <strong class="text-warning">#bugs</strong> channel is the first place bugs should be reported. Our team will triage them, and file them to their appropriate places. When you are submitting a bug, it helps to provide any screenshots or clips you have, but please be sure not to leak your private information. If you have a issue with something sensitive, email <a href="mailto:support@glimesh.tv">support@glimesh.tv</a> We'll try to reach back out to you when the bug is resolved.</p>
                     </div>
-                    <div class="col-3">
-                        <img src="/images/homepage/discord.png" alt="" class="rounded img-fluid">
+                    <div class="col-md-3 text-center">
+                        <img src="/images/homepage/discord.webp" alt="Screenshot of our Discord for reference" class="rounded img-fluid">
                     </div>
                 </div>
                 <div class="text-center mt-4 mb-4">
-                    <%= link "Join Our Discord", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
+                    <%= link "Join Our Discord", to: "https://discord.gg/Glimesh", class: "btn btn-primary" %>
                 </div>
             </div>
         </div>
 
 
 
-        <div class="card-deck mt-4 mb-5">
-            <div class="card">
-                <h5 class="card-header bg-primary text-center rounded-lg py-4">Useful Documents</h5>
-                <div class="card-body">
-                    <h4>Get up to speed with our Terms of Service!</h4>
-                    <p>Before you get streaming, we recommend you read our Terms of Service to ensure your streams do not fall foul of anything. *Please note: Due to this being the Alpha Version this document is subject to change therefore please stay up to date with the latest version here.</p>
+        <div class="row mt-4 mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4">Useful Documents</h5>
+                    <div class="card-body">
+                        <h4>Get up to speed with our Terms of Service!</h4>
+                        <p>Before you use the platform, you must review our Terms of Service to ensure your streams and content do not violate any of our conditions. The Terms of Service also includes information about your rights and usage of the website.</p>
 
-                    <div class="text-center mt-4 mb-4">
-                        <%= link "Terms of Service", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
+                        <div class="text-center mt-4 mb-4">
+                            <%= link "Terms of Service", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
+                        </div>
+
+                        <h4>Review our Rules of Conduct!</h4>
+                        <p>Our Rules of Conduct is another required reading, especially for streamers! It includes rules and guidelines on the type of content that is appropriate for Glimesh, and violating its guidelines could lead to repercussions.</p>
+
+                        <div class="text-center mt-4 mb-4">
+                            <%= link "Rules of Conduct", to: Routes.about_path(@socket, :conduct), class: "btn btn-primary" %>
+                        </div>
+
                     </div>
-
-                    <h4>Review our Rules of Conduct!</h4>
-                    <p>Before you get streaming, we recommend you read our Terms of Service to ensure your streams do not fall foul of anything. *Please note: Due to this being the Alpha Version this document is subject to change therefore please stay up to date with the latest version here.</p>
-
-                    <div class="text-center mt-4 mb-4">
-                        <%= link "Terms of Service", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
-                    </div>
-
                 </div>
             </div>
-            <div class="card">
-                <h5 class="card-header bg-primary text-center rounded-lg py-4">Additional Support</h5>
-                <div class="card-body">
-                    <h4>Streaming on Glimesh Guide!</h4>
-                    <p>We have created a useful guide to help get you underway with streaming on Glimesh regardless of streaming experience! Remember if you run into any issues, give us a shout and we will always do our best to help!</p>
+            <div class="col-md-6">
+                <div class="card">
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4">Additional Support</h5>
+                    <div class="card-body">
+                        <h4>Streaming on Glimesh Guide!</h4>
+                        <p>We have created a useful guide to help get you underway with streaming on Glimesh, regardless of your streaming experience! Remember if you run into any issues, give us a shout and we will always do our best to help!</p>
 
-                    <div class="text-center mt-4 mb-4">
-                        <%= link "Day One Streamer Guide", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
+                        <div class="text-center mt-4 mb-4">
+                            <%= link "Day One Streamer Guide", to: "https://glimesh-static-assets.nyc3.digitaloceanspaces.com/2021-glimesh-streaming-guide.pdf", class: "btn btn-primary", target: "_blank" %>
+                        </div>
+
+                        <h4>Glimesh Support</h4>
+                        <p>We also have a support page that can provide you with further information such as FAQs, Account Support, Subscriptions & Payments, and a whole lot more!</p>
+
+                        <div class="text-center mt-4 mb-4">
+                            <%= link "Glimesh Support Portal", to: "https://support.glimesh.tv", class: "btn btn-primary", target: "_blank" %>
+                        </div>
+
                     </div>
-
-                    <h4>Glimesh Support</h4>
-                    <p>We also have a support page which can provide you with further information such as: FAQ's, Account Support, Subscriptions & Payments and a whole lot more!</p>
-
-                    <div class="text-center mt-4 mb-4">
-                        <%= link "Glimesh Support Portal", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
-                    </div>
-
                 </div>
             </div>
         </div>
 
     </div>
 </div>
-
-
-<script>
-    // Countdown
-    // Set the date we're counting down to
-    // Remember that javascript is stupid and 2 == March
-    var countDownDate = new Date(Date.UTC(2021, 2, 2, 16, 0, 0, 0)).getTime();
-
-    function padToTwo(value) {
-        var s = "0" + value;
-        return s.substr(s.length - 2);
-    }
-
-    function setTimeRemaining() {
-        // Get todays date and time
-        var now = new Date().getTime();
-        // Find the distance between now an the count down date
-        var distance = countDownDate - now;
-        // Time calculations for days, hours, minutes and seconds
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        // Output the result in an element with id="demo"
-        document.getElementById("timer").innerHTML = '<div class="days"><span class="text">Days</span> <span class="count">' + padToTwo(days) + '</span></div>' +
-            '<div class="spacer">:</div>' +
-            '<div class="hours"><span class="text">Hours</span><span class="count">' + padToTwo(hours) + '</span></div>' +
-            '<div class="spacer">:</div>' +
-            '<div class="min"><span class="text">Minutes</span><span class="count">' + padToTwo(minutes) + '</span></div>' +
-            '<div class="spacer">:</div>' +
-            '<div class="sec"><span class="text">Seconds</span><span class="count">' + padToTwo(seconds) + '</span></div>';
-        // If the count down is over, write some text
-        if (distance < 0) {
-            clearInterval(countdownfunction);
-            document.getElementById("timer").innerHTML = "EXPIRED";
-        }
-    }
-    setTimeRemaining();
-    // Update the count down every 1 second
-    var countdownfunction = setInterval(setTimeRemaining, 1000)
-</script>

@@ -3,14 +3,23 @@
         <td style="padding-bottom: 10px;">
             <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#0e1726">
                 <tr>
-                    <td class="fluid-img" style="font-size:0pt; line-height:0pt; text-align:left;"><img src="https://glimesh.dev/images/emails/launch/NOTFORUSE.png" width="650" height="366" border="0" alt="" /></td>
+                    <td class="fluid-img" style="font-size:0pt; line-height:0pt; text-align:left;"><img src="<%= Routes.static_url(GlimeshWeb.Endpoint, "/images/emails/launch/alpha-launch.jpg") %>" width="650" height="366" border="0" alt="Glimesh Alpha Launch - March 2nd 2021 @ 11AM EST" /></td>
                 </tr>
                 <tr>
                     <td class="p30-15" style="padding: 50px 30px;">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
-                                <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
-                                    That's right! Our Alpha is launching on March 2nd 2021 at 11AM EST and we just wanted to let you know that you have full access! From this date, you will be able to stream and experience FTL technology like no other! We also have a few extra features that we think you may like! So get ready, get setup - we look forward to seeing you!
+                                <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:16px; line-height:26px; text-align:left; padding-bottom:20px;">
+
+                                    Hey folks! It feels like just yesterday that we had our first Charity Stream on a hacked-together video stream & half-implemented chat. From that day we knew we were making something truly special for our community. Your passion, support, encouragement, and participation over the past 8 months have provided unfathomable motivation and I personally want to thank all of you.
+
+                                    <br><br>
+
+                                    Our team & community have been hard at work, volunteering away our nights & weekends and we are proud to announce: <strong>the Glimesh Alpha will be ready for you on March 2nd, 2021 at 11AM EST!</strong> We hope you'll join us to celebrate the launch of the platform and a new era of live streaming. We have tons of information packed in this email but I encourage you to also visit our site to learn more.
+
+                                    <br><br>
+
+                                    <em>- Luke Strickland (@clone1018)</em>
                                 </td>
                             </tr>
                             <!-- Button -->
@@ -18,8 +27,8 @@
                                 <td align="center">
                                     <table border="0" cellspacing="0" cellpadding="0">
                                         <tr>
-                                            <td class="blue-button text-button" style="background:#007bff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius: 6px; font-weight:bold;">
-                                                <a href="#" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;">Visit Glimesh</span></a></td>
+                                            <td class="blue-button text-button" style="background:#4286ef; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius: 6px; font-weight:bold;">
+                                                <a href="<%= Routes.homepage_url(GlimeshWeb.Endpoint, :index) %>" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;">Visit Glimesh</span></a></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -45,22 +54,22 @@
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
                                             <td class="fluid-img pb25" style="font-size:0pt; line-height:0pt; text-align:left; padding-bottom:25px;">
-                                                <img src="https://glimesh.dev/images/emails/launch/glimcap.png" width="280" height="157" border="0" alt="" /></td>
+                                                <img src="<%= Routes.static_url(GlimeshWeb.Endpoint, "/images/emails/launch/day-one-guide.jpg") %>" width="280" height="156" border="0" alt="Glimesh Streamer Day One Guide" /></td>
                                         </tr>
                                         <tr>
-                                            <td class="h4 pb20" style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">Missed the last Team Meeting?</td>
+                                            <td class="h4 pb20" style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">Streamer Day One Guide</td>
                                         </tr>
                                         <tr>
                                             <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
-                                                Fear not, we have you covered! Check out our team meeting Glimcap where we gather all of the topics discussed within our meeting and collate them into a handy blog to allow you to catch up on what you missed!</td>
+                                                Streaming on a new platform like Glimesh is an awesome experience. If you plan on streaming, you'll want to check out our Streamer Day One Guide! It gives you a quick rundown of Glimesh, our features, categories, OBS settings, and more. </td>
                                         </tr>
                                         <!-- Button -->
                                         <tr>
-                                            <td align="center">
+                                            <td align="left">
                                                 <table border="0" cellspacing="0" cellpadding="0">
                                                     <tr>
-                                                        <td class="dark-blue-button text-button" style="background:#007bff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
-                                                            <a href="#" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;">Glimcap</span></a></td>
+                                                        <td class="dark-blue-button text-button" style="background:#4286ef; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                            <a href="https://glimesh-static-assets.nyc3.digitaloceanspaces.com/2021-glimesh-streaming-guide.pdf" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;">Glimesh Streaming Guide</span></a></td>
                                                     </tr>
                                                 </table>
                                             </td>
@@ -74,24 +83,24 @@
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
                                             <td class="fluid-img pb25" style="font-size:0pt; line-height:0pt; text-align:left; padding-bottom:25px;">
-                                                <img src="https://glimesh.dev/images/emails/launch/discord.png" width="280" height="157" border="0" alt="" /></td>
+                                                <img src="<%= Routes.static_url(GlimeshWeb.Endpoint, "/images/emails/launch/streamer-survey.jpg") %>" width="280" height="157" border="0" alt="Glimesh Streamer Survey" /></td>
                                         </tr>
                                         <tr>
                                             <td class="h4 pb20" style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">
-                                                Stay Updated</td>
+                                                Streamer Survey</td>
                                         </tr>
                                         <tr>
                                             <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
-                                                If you have not already figured it out, we like to get things done around here. As such, there are lot changes and the best place for you to stay up to date is within our Discord. Come hang out, talk to some great people and see what we are about!
+                                                If you are a streamer, we're trying to collect some final data to prepare for our launch. We've put together this anonymous survey to understand more about how you stream, your viewership, and technical details so we can make sure our servers are ready!
                                             </td>
                                         </tr>
                                         <!-- Button -->
                                         <tr>
-                                            <td align="center">
+                                            <td align="left">
                                                 <table border="0" cellspacing="0" cellpadding="0">
                                                     <tr>
-                                                        <td class="dark-blue-button text-button" style="background:#007bff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
-                                                            <a href="#" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;">Glimesh Discord</span></a></td>
+                                                        <td class="dark-blue-button text-button" style="background:#4286ef; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                            <a href="https://forms.gle/V94vQgus4WM1NsM37" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;">Glimesh Streamer Survey</span></a></td>
                                                     </tr>
                                                 </table>
                                             </td>
@@ -119,7 +128,7 @@
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
                                 <td class="fluid-img" style="font-size:0pt; line-height:0pt; text-align:left;">
-                                    <img src="https://glimesh.dev/images/emails/launch/privacy.png" width="280" height="210" border="0" alt="" /></td>
+                                    <img src="<%= Routes.static_url(GlimeshWeb.Endpoint, "/images/emails/launch/privacy-policy.jpg") %>" width="280" height="210" border="0" alt="Privacy Policy Changes" /></td>
                             </tr>
                         </table>
                     </th>
@@ -133,7 +142,7 @@
                             </tr>
                             <tr>
                                 <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
-                                    We have made a few changes to our Privacy Policy which we recommend that you read through to ensure that you stay update with any new changes.
+                                    We have made adjustments to our Privacy Policy to reflect our site going into alpha launch, and have added some additional service providers you should be aware of.
                                 </td>
                             </tr>
                             <!-- Button -->
@@ -141,8 +150,8 @@
                                 <td align="left">
                                     <table border="0" cellspacing="0" cellpadding="0">
                                         <tr>
-                                            <td class="dark-blue-button2 text-button" style="background:#007bff; color:#fff; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
-                                                <a href="#" target="_blank" class="link" style="color:#fff; text-decoration:none;"><span class="link" style="color:#fff; text-decoration:none;">Privacy Policy</span></a></td>
+                                            <td class="dark-blue-button2 text-button" style="background:#4286ef; color:#fff; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                <a href="<%= Routes.about_url(GlimeshWeb.Endpoint, :privacy) %>" target="_blank" class="link" style="color:#fff; text-decoration:none;"><span class="link" style="color:#fff; text-decoration:none;">Privacy Policy</span></a></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -160,28 +169,23 @@
 <!-- CTA Section -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-        <td background="images/bg.png" bgcolor="#0e1726" valign="top" height="366" class="bg" style="background-size:cover !important; -webkit-background-size:cover !important; background-repeat:none;">
-            <!--[if gte mso 9]>
-										<v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:650px; height: 366px">
-											<v:fill type="frame" src="images/bg.png" color="#0e1726" />
-											<v:textbox inset="0,0,0,0">
-										<![endif]-->
+        <td bgcolor="#0e1726" valign="top" height="366" class="bg">
             <div>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td class="content-spacing" height="366" width="30" style="font-size:0pt; line-height:0pt; text-align:left;"></td>
                         <td style="padding: 30px 0px;">
-                            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background:url(images/blue_pattern.png) 0 0 transparent !important" bgcolor="#71c8fb">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td class="p30-15" style="padding: 50px 30px;">
+                                    <td class="p30-15" style="padding: 30px 30px;">
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <td class="h2 pb15" style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:30px; line-height:36px; text-align:center; padding-bottom:15px;">
-                                                    Get <span style="color: #FF4343;">Prepared!</span></td>
+                                                    Setup Your Channel</td>
                                             </tr>
                                             <tr>
                                                 <td class="text-center white pb20" style="font-family:'Roboto', Arial,sans-serif; font-size:16px; line-height:30px; text-align:center; color:#ffffff; padding-bottom:20px;">
-                                                    If you have not already done it, be sure to complete editing your profile so that you are ready to stream from day one!
+                                                    While we prepare for launch, you can continue to prepare your channel for going live on the platform! Customizing your images, setting up tags, creating your channel rules, and more can all be done before launch.
                                                 </td>
                                             </tr>
                                             <!-- Button -->
@@ -189,8 +193,8 @@
                                                 <td align="center">
                                                     <table class="center" border="0" cellspacing="0" cellpadding="0" style="text-align:center;">
                                                         <tr>
-                                                            <td class="dark-blue-button3 text-button" style="background:#007bff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
-                                                                <a href="#" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;">View Your Profile</span></a></td>
+                                                            <td class="dark-blue-button3 text-button" style="background:#4286ef; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                                <a href="<%= Routes.user_settings_url(GlimeshWeb.Endpoint, :stream) %>" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;">Setup Your Channel</span></a></td>
                                                         </tr>
                                                     </table>
                                                 </td>
@@ -205,10 +209,6 @@
                     </tr>
                 </table>
             </div>
-            <!--[if gte mso 9]>
-											</v:textbox>
-											</v:rect>
-										<![endif]-->
         </td>
     </tr>
 </table>
@@ -224,7 +224,7 @@
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
                                 <td class="fluid-img" style="font-size:0pt; line-height:0pt; text-align:left;">
-                                    <img src="https://glimesh.dev/images/emails/launch/terms.png" width="280" height="210" border="0" alt="" /></td>
+                                    <img src="<%= Routes.static_url(GlimeshWeb.Endpoint, "/images/emails/launch/terms-of-service.jpg") %>" width="280" height="210" border="0" alt="Terms of Service Updates" /></td>
                             </tr>
                         </table>
                     </th>
@@ -238,7 +238,7 @@
                             </tr>
                             <tr>
                                 <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:right; padding-bottom:20px;">
-                                    Before streaming or watching, we advise you read through our Terms Of Service (TOS) as we are regularly updating this and we want to do our very best to make sure that everybody is compliant with this.
+                                    We have also updated our Terms of Service. Your consent to this new Terms of Service, which includes our new Rules of Conduct is required to utilize Glimesh's services. These documents also contain rules about content on Glimesh that you need to be familiar with.
                                 </td>
                             </tr>
                             <!-- Button -->
@@ -246,8 +246,8 @@
                                 <td align="right">
                                     <table border="0" cellspacing="0" cellpadding="0">
                                         <tr>
-                                            <td class="dark-blue-button2 text-button" style="background:#007bff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
-                                                <a href="#" target="_blank" class="link" style="color:#fff; text-decoration:none;"><span class="link" style="color:#fff; text-decoration:none;">Terms of Service</span></a></td>
+                                            <td class="dark-blue-button2 text-button" style="background:#4286ef; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                <a href="<%= Routes.about_url(GlimeshWeb.Endpoint, :terms) %>" target="_blank" class="link" style="color:#fff; text-decoration:none;"><span class="link" style="color:#fff; text-decoration:none;">Terms of Service</span></a></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -300,15 +300,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">
-                                                            Checkout our support dashboard where you can find loads of useful information and to hopefully answer any questions you may have to help get you underway.</td>
+                                                            Check out our support portal where you can find loads of useful information and answers to any questions you may have.</td>
                                                     </tr>
                                                     <!-- Button -->
                                                     <tr>
                                                         <td align="left">
                                                             <table border="0" cellspacing="0" cellpadding="0">
                                                                 <tr>
-                                                                    <td class="dark-blue-button2 text-button" style="background:#007bff; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
-                                                                        <a href="#" target="_blank" class="link" style="color:#fff; text-decoration:none;"><span class="link" style="color:#fff; text-decoration:none;">Support</span></a>
+                                                                    <td class="dark-blue-button2 text-button" style="background:#4286ef; color:#c1cddc; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                                        <a href="https://support.glimesh.tv/" target="_blank" class="link" style="color:#fff; text-decoration:none;"><span class="link" style="color:#fff; text-decoration:none;">Support</span></a>
                                                                     </td>
                                                                 </tr>
                                                             </table>

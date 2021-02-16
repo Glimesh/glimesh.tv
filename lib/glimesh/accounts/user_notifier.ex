@@ -12,15 +12,19 @@ defmodule Glimesh.Accounts.UserNotifier do
   def deliver_launch_update(user) do
     email = Email.user_launch_info(user)
 
-    Mailer.deliver_later(email)
-    |> log_bamboo_delivery(
-      user,
-      "Account Update",
-      "service:launch_update",
-      email.subject
-    )
+    if false and Glimesh.Emails.email_sent?(user, subject: email.subject) do
+      {:ok, :debounced}
+    else
+      Mailer.deliver_later(email)
+      |> log_bamboo_delivery(
+        user,
+        "Account Update",
+        "service:launch_update",
+        email.subject
+      )
 
-    {:ok, %{to: email.to, body: email.text_body}}
+      {:ok, %{to: email.to, body: email.text_body}}
+    end
   end
 
   @doc """

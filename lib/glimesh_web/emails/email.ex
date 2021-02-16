@@ -18,7 +18,7 @@ defmodule GlimeshWeb.Emails.Email do
   def user_launch_info(user) do
     user_base_email()
     |> to(user.email)
-    |> subject("Glimesh Launch Date! Terms of Service and Privacy Policy Updates Inside")
+    |> subject("Glimesh Alpha Launch News & Account Updates!")
     |> assign(:user, user)
     |> render(:launch)
   end

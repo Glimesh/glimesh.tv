@@ -1,1 +1,44 @@
-Something about the launch
+Hey folks! It feels like just yesterday that we had our first Charity Stream on a hacked-together video stream & 
+half-implemented chat. From that day we knew we were making something truly special for our community. Your passion, 
+support, encouragement, and participation over the past 8 months have provided unfathomable motivation and I 
+personally want to thank all of you.
+
+Our team & community have been hard at work, volunteering away our nights & weekends and we are proud to announce: 
+the Glimesh Alpha will be ready for you on March 2nd, 2021 at 11AM EST! We hope you'll join us to celebrate the launch 
+of the platform and a new era of live streaming. We have tons of information packed in this email but I encourage 
+you to also visit our site to learn more.
+
+- Luke Strickland (@clone1018)
+
+Visit the site: <%= Routes.homepage_url(GlimeshWeb.Endpoint, :index) %>
+
+Glimesh Streamer Day One Guide
+Streaming on a new platform like Glimesh is an awesome experience. If you plan on streaming, you'll want to check out 
+our Streamer Day One Guide! It gives you a quick rundown of Glimesh, our features, categories, OBS settings, and more.
+Link here: https://glimesh-static-assets.nyc3.digitaloceanspaces.com/2021-glimesh-streaming-guide.pdf
+		
+Glimesh Streamer Survey
+If you are a streamer, we're trying to collect some final data to prepare for our launch. We've put together this 
+anonymous survey to understand more about how you stream, your viewership, and technical details so we can make 
+sure our servers are ready!
+Link here: https://forms.gle/V94vQgus4WM1NsM37
+
+Privacy Policy Changes
+We have made adjustments to our Privacy Policy to reflect our site going into alpha launch, and have added some 
+additional service providers you should be aware of.
+Link here: <%= Routes.about_url(GlimeshWeb.Endpoint, :privacy) %>
+	
+Setup Your Channel
+While we prepare for launch, you can continue to prepare your channel for going live on the platform! Customizing 
+your images, setting up tags, creating your channel rules, and more can all be done before launch.
+Link here: <%= Routes.user_settings_url(GlimeshWeb.Endpoint, :stream) %>
+
+Terms of Service Updates
+We have also updated our Terms of Service. Your consent to this new Terms of Service, which includes our new 
+Rules of Conduct is required to utilize Glimesh's services. These documents also contain rules about content on 
+limesh that you need to be familiar with.
+Link here: <%= Routes.about_url(GlimeshWeb.Endpoint, :terms) %>
+
+Support
+Check out our support portal where you can find loads of useful information and answers to any questions you may have.
+Link here: https://support.glimesh.tv/
