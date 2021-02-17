@@ -27,7 +27,8 @@ locales = [
   Nederlands: "nl",
   Suomi: "fi",
   Polski: "pl",
-  "Limba Română": "ro"
+  "Limba Română": "ro",
+  "Português Brasileiro": "pt_br"
 ]
 
 config :glimesh,
