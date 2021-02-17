@@ -12,7 +12,7 @@ defmodule Glimesh.Accounts.UserNotifier do
   def deliver_launch_update(user) do
     email = Email.user_launch_info(user)
 
-    if false and Glimesh.Emails.email_sent?(user, subject: email.subject) do
+    if Glimesh.Emails.email_sent?(user, subject: email.subject) do
       {:ok, :debounced}
     else
       Mailer.deliver_later(email)
