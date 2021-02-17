@@ -15,12 +15,28 @@ defmodule Glimesh.JanusTest do
 
   describe "Edge Routing" do
     test "closest_edge_location/1 routes to a close edge location" do
+      assert is_nil(Janus.get_closest_edge_location("US"))
+
       create_good_edge("not-new-york", ["AU"])
       create_good_edge("new-york", ["US"])
 
       assert Janus.get_closest_edge_location("US").hostname == "new-york"
       assert Janus.get_closest_edge_location("AU").hostname == "not-new-york"
       assert length(Janus.all_edge_routes()) == 2
+    end
+
+    test "closest_edge_location/1 routes to a random close edge location" do
+      create_good_edge("new-york-2", ["US"])
+      create_good_edge("new-york-1", ["US"])
+
+      first_hostname = Janus.get_closest_edge_location("US").hostname
+
+      # Basically just check 20 to see if we get a different match
+      assert Enum.reduce_while(1..20, 0, fn _, _ ->
+               if first_hostname == Janus.get_closest_edge_location("US").hostname,
+                 do: {:cont, false},
+                 else: {:halt, true}
+             end)
     end
 
     test "closest_edge_location/1 respects priority and availability" do

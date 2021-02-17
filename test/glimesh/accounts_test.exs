@@ -337,7 +337,7 @@ defmodule Glimesh.AccountsTest do
           displayname: "SomethingDifferent"
         })
 
-      assert %{displayname: ["Display name must match username"]} = errors_on(changeset)
+      assert %{displayname: ["Display name must match Username"]} = errors_on(changeset)
     end
   end
 

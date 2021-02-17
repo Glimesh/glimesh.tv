@@ -28,6 +28,27 @@ defmodule Glimesh.Emails do
   end
 
   @doc """
+  Has the user received any emails that match a specific filter
+
+  ## Examples
+
+      iex> email_sent?(%User{}, [subject: "Spammy Email"])
+      true
+
+      iex> email_sent?(%User{}, [subject: "Totally normal email"], 30)
+      false
+
+  """
+  def email_sent?(%User{} = user, filters \\ []) do
+    wheres = Keyword.merge([user_id: user.id], filters)
+
+    Repo.exists?(
+      from l in EmailLog,
+        where: ^wheres
+    )
+  end
+
+  @doc """
   Has the user received any emails recently that match a specific filter
 
   ## Examples

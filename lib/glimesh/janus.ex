@@ -37,6 +37,7 @@ defmodule Glimesh.Janus do
       from e in EdgeRoute,
         where: e.available == true,
         order_by: [desc: :priority],
+        order_by: fragment("RANDOM()"),
         limit: 1
     )
   end
@@ -46,6 +47,7 @@ defmodule Glimesh.Janus do
       from e in EdgeRoute,
         where: e.available == true and ^country in e.country_codes,
         order_by: [desc: :priority],
+        order_by: fragment("RANDOM()"),
         limit: 1
     )
   end

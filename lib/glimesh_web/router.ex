@@ -196,6 +196,7 @@ defmodule GlimeshWeb.Router do
     get "/about/faq", AboutController, :faq
     get "/about/privacy", AboutController, :privacy
     get "/about/terms", AboutController, :terms
+    get "/about/conduct", AboutController, :conduct
     get "/about/credits", AboutController, :credits
     get "/about/dmca", AboutController, :dmca
 
