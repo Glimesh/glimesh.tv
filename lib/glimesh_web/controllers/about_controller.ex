@@ -44,6 +44,12 @@ defmodule GlimeshWeb.AboutController do
     |> render("terms.html", page_title: format_page_title(gettext("Terms of Service")))
   end
 
+  def conduct(conn, _param) do
+    conn
+    |> put_layout("text.html")
+    |> render("conduct.html", page_title: format_page_title(gettext("Rules of Conduct")))
+  end
+
   def dmca(conn, _params) do
     conn
     |> put_layout("app.html")

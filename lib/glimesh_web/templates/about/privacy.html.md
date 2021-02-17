@@ -107,10 +107,14 @@ Glimesh stores and processes personal information in the United States.
 
 We may also share your personal information with these third party vendors who work on our behalf:
 
--   [hCaptcha](https://hcaptcha.com/) - anti-robot service for preventing spam.
+-   [DigitalOcean](https://www.digitalocean.com/) - hosting provider for user data
+-   [CloudFlare](https://www.cloudflare.com/) - web performance and security
+-   [hCaptcha](https://hcaptcha.com/) - anti-robot service for preventing spam
 -   [Plausible.io](https://plausible.io/) - privacy focused analytics provider
 -   [Stripe](https://stripe.com/) - payment processor
 -   [Gravatar](https://en.gravatar.com/) - default avatar image generator
+-   [mailgun](https://www.mailgun.com/) - email sending service
+-   [AppSignal](https://appsignal.com/) - error reporting & collection
 
 We may also share your information as follows:
 

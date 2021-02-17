@@ -15,6 +15,14 @@ defmodule GlimeshWeb.Emails.Email do
     |> from("Glimesh <noreply@glimesh.tv>")
   end
 
+  def user_launch_info(user) do
+    user_base_email()
+    |> to(user.email)
+    |> subject("Glimesh Alpha Launch News & Account Updates!")
+    |> assign(:user, user)
+    |> render(:launch)
+  end
+
   def user_confirmation_instructions(user, url) do
     user_base_email()
     |> to(user.email)

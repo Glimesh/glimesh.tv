@@ -70,7 +70,93 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     color: var(--body-color);
 }
 
+.text-color-alpha {
+    color: #FF4343;
+}
+
 .stream-key:not(:focus) {
     color: transparent;
     text-shadow: 0 0 10px var(--input-color);
+}
+
+.fancy-bg {
+    .position-relative {
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 5px;
+        margin-bottom: 40px;
+    }
+}
+
+#timer {
+    margin-top: 40px;
+    text-align: center;
+
+    color: #fff;
+
+    // text-shadow: 0px 0px 3px #000;
+
+    div {
+        display: inline-block;
+    }
+
+    .text {
+        display: block;
+        font-size: 20px;
+    }
+
+    .spacer {
+        font-weight: bold;
+        font-size: 4rem;
+    }
+
+    .count {
+        display: block;
+        font-size: 4rem;
+        font-weight: bold;
+        color: #FF4343;
+    }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+    #timer {
+        div {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .text {
+            font-size: 20px;
+        }
+
+        .spacer,
+        .count {
+            font-size: 80px;
+        }
+    }
+}
+
+@media (min-width: 1200px) {
+    #timer {
+        div {
+
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+
+        .text {
+            font-size: 20px;
+        }
+
+        .spacer,
+        .count {
+            font-size: 130px;
+        }
+    }
+}
+
+.fancy-bg {
+    // It's worth using WebP only for this image, saves almost 1MB in size, no harm if users don't see it.
+    background: url("/images/homepage/background-resized.webp") no-repeat center top;
+    background-size: contain;
 }
