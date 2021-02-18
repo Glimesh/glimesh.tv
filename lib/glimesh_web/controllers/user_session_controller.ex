@@ -20,7 +20,8 @@ defmodule GlimeshWeb.UserSessionController do
   def tfa(conn, %{"user" => %{"tfa" => tfa} = user_params}) do
     if user = Accounts.get_user!(get_session(conn, :tfa_user_id)) do
       if Tfa.validate_pin(tfa, user.tfa_token) do
-        UserAuth.log_in_user(conn, user, user_params)
+        params = Map.put(user_params, "remember_me", get_session(conn, :tfa_remember_me))
+        UserAuth.log_in_user(conn, user, params)
       else
         render(conn, "new.html",
           error_message:
@@ -43,6 +44,7 @@ defmodule GlimeshWeb.UserSessionController do
     if user.tfa_token do
       conn
       |> put_session(:tfa_user_id, user.id)
+      |> put_session(:tfa_remember_me, Map.get(user_params, "remember_me", false))
       |> render("tfa.html", error_message: nil)
     else
       UserAuth.log_in_user(conn, user, user_params)
