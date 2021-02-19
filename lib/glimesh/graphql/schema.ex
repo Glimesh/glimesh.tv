@@ -24,6 +24,7 @@ defmodule Glimesh.Schema do
   end
 
   subscription do
+    import_fields(:account_subscriptions)
     import_fields(:streams_subscriptions)
     import_fields(:chat_subscriptions)
   end

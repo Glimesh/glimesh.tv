@@ -9,7 +9,7 @@ defmodule GlimeshWeb.UserSettings.NotificationsLiveTest do
 
     test "shows a notifications page", %{conn: conn, user: user} do
       streamer = streamer_fixture()
-      Glimesh.Streams.follow(streamer, user, true)
+      Glimesh.AccountFollows.follow(streamer, user, true)
 
       {:ok, _, html} = live_isolated(conn, GlimeshWeb.NotificationsLive)
 
@@ -36,7 +36,7 @@ defmodule GlimeshWeb.UserSettings.NotificationsLiveTest do
 
     test "can remove live channel subscription", %{conn: conn, user: user} do
       streamer = streamer_fixture()
-      Glimesh.Streams.follow(streamer, user, true)
+      Glimesh.AccountFollows.follow(streamer, user, true)
       {:ok, view, _} = live_isolated(conn, GlimeshWeb.NotificationsLive)
 
       html = view |> element("#streamer-#{streamer.id}") |> render_click()

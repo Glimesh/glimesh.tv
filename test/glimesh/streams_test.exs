@@ -3,15 +3,16 @@ defmodule Glimesh.StreamsTest do
   use Bamboo.Test
 
   import Glimesh.AccountsFixtures
-  alias Glimesh.Streams
+  alias Glimesh.AccountFollows
   alias Glimesh.ChannelLookups
+  alias Glimesh.Streams
 
   describe "followers" do
     def followers_fixture do
       streamer = streamer_fixture()
       user = user_fixture()
 
-      {:ok, followers} = Streams.follow(streamer, user)
+      {:ok, followers} = AccountFollows.follow(streamer, user)
 
       followers
     end
@@ -19,7 +20,7 @@ defmodule Glimesh.StreamsTest do
     test "follow/2 successfully follows streamer" do
       streamer = streamer_fixture()
       user = user_fixture()
-      Streams.follow(streamer, user)
+      AccountFollows.follow(streamer, user)
 
       followed = ChannelLookups.list_all_followed_channels(user)
 
@@ -29,28 +30,28 @@ defmodule Glimesh.StreamsTest do
     test "unfollow/2 successfully unfollows streamer" do
       streamer = streamer_fixture()
       user = user_fixture()
-      Streams.follow(streamer, user)
+      AccountFollows.follow(streamer, user)
       followed = ChannelLookups.list_all_followed_channels(user)
 
       assert Enum.map(followed, fn x -> x.user.username end) == [streamer.username]
 
-      Streams.unfollow(streamer, user)
+      AccountFollows.unfollow(streamer, user)
       assert ChannelLookups.list_all_followed_channels(user) == []
     end
 
     test "is_following?/1 detects active follow" do
       streamer = streamer_fixture()
       user = user_fixture()
-      Streams.follow(streamer, user)
-      assert Streams.is_following?(streamer, user) == true
+      AccountFollows.follow(streamer, user)
+      assert AccountFollows.is_following?(streamer, user) == true
     end
 
     test "follow/2 twice returns error changeset" do
       streamer = streamer_fixture()
       user = user_fixture()
 
-      Streams.follow(streamer, user)
-      assert {:error, %Ecto.Changeset{}} = Streams.follow(streamer, user)
+      AccountFollows.follow(streamer, user)
+      assert {:error, %Ecto.Changeset{}} = AccountFollows.follow(streamer, user)
     end
   end
 

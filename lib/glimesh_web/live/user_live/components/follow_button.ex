@@ -1,7 +1,7 @@
 defmodule GlimeshWeb.UserLive.Components.FollowButton do
   use GlimeshWeb, :live_view
 
-  alias Glimesh.Streams
+  alias Glimesh.AccountFollows
 
   @impl true
   def render(assigns) do
@@ -40,7 +40,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
   def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
     Gettext.put_locale(Glimesh.Accounts.get_user_locale(user))
 
-    following = Streams.get_following(streamer, user)
+    following = AccountFollows.get_following(streamer, user)
 
     {:ok,
      socket
@@ -51,7 +51,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
 
   @impl true
   def handle_event("follow", _value, socket) do
-    case Streams.follow(socket.assigns.streamer, socket.assigns.user, false) do
+    case AccountFollows.follow(socket.assigns.streamer, socket.assigns.user, false) do
       {:ok, following} ->
         {:noreply,
          socket
@@ -65,7 +65,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
 
   @impl true
   def handle_event("unfollow", _value, socket) do
-    case Streams.unfollow(socket.assigns.streamer, socket.assigns.user) do
+    case AccountFollows.unfollow(socket.assigns.streamer, socket.assigns.user) do
       {:ok, _} ->
         {:noreply,
          socket
@@ -79,7 +79,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
 
   @impl true
   def handle_event("enable_live_notifications", _value, socket) do
-    case Streams.update_following(socket.assigns.following, %{
+    case AccountFollows.update_following(socket.assigns.following, %{
            has_live_notifications: true
          }) do
       {:ok, following} ->
@@ -95,7 +95,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
 
   @impl true
   def handle_event("disable_live_notifications", _value, socket) do
-    case Streams.update_following(socket.assigns.following, %{
+    case AccountFollows.update_following(socket.assigns.following, %{
            has_live_notifications: false
          }) do
       {:ok, following} ->

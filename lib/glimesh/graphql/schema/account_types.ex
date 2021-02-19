@@ -25,6 +25,29 @@ defmodule Glimesh.Schema.AccountTypes do
       arg(:username, :string)
       resolve(&AccountResolver.find_user/2)
     end
+
+    @desc "List all follows or followers"
+    field :followers, list_of(:follower) do
+      arg(:streamer_username, :string)
+      arg(:user_username, :string)
+      resolve(&AccountResolver.all_followers/2)
+    end
+  end
+
+  object :account_subscriptions do
+    field :followers, :follower do
+      arg(:streamer_id, :id)
+
+      config(fn args, _ ->
+        case Map.get(args, :streamer_id) do
+          nil ->
+            {:ok, topic: [Glimesh.AccountFollows.get_subscribe_topic(:follows)]}
+
+          streamer_id ->
+            {:ok, topic: [Glimesh.AccountFollows.get_subscribe_topic(:follows, streamer_id)]}
+        end
+      end)
+    end
   end
 
   @desc "A user of Glimesh, can be a streamer, a viewer or both!"
@@ -112,5 +135,17 @@ defmodule Glimesh.Schema.AccountTypes do
 
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
+  end
+
+  @desc "A follower is a user who subscribes to notifications for a particular user's channel."
+  object :follower do
+    field :id, :id
+    field :has_live_notifications, :boolean
+
+    field :streamer, non_null(:user), resolve: dataloader(Repo)
+    field :user, non_null(:user), resolve: dataloader(Repo)
+
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
   end
 end

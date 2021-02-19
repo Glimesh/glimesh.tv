@@ -37,7 +37,8 @@ defmodule Glimesh.Workers.StreamMetrics do
         |> Enum.count()
 
       Streams.update_stream(channel.stream, %{
-        count_viewers: count_viewers
+        count_viewers: count_viewers,
+        peak_viewers: max(channel.stream.count_viewers, count_viewers)
       })
     end)
   end

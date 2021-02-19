@@ -33,6 +33,9 @@ defmodule Glimesh.Schema.ChannelTypes do
   object :streams_queries do
     @desc "List all channels"
     field :channels, list_of(:channel) do
+      arg(:status, :channel_status)
+      arg(:category_slug, :string)
+
       resolve(&ChannelResolver.all_channels/2)
     end
 
@@ -60,13 +63,6 @@ defmodule Glimesh.Schema.ChannelTypes do
       arg(:streamer_username, :string)
       arg(:user_username, :string)
       resolve(&ChannelResolver.all_subscriptions/2)
-    end
-
-    @desc "List all follows or followers"
-    field :followers, list_of(:follower) do
-      arg(:streamer_username, :string)
-      arg(:user_username, :string)
-      resolve(&ChannelResolver.all_followers/2)
     end
   end
 
@@ -198,6 +194,9 @@ defmodule Glimesh.Schema.ChannelTypes do
 
     field :streamer, non_null(:user), resolve: dataloader(Repo)
     field :chat_messages, list_of(:chat_message), resolve: dataloader(Repo)
+    field :bans, list_of(:channel_ban), resolve: dataloader(Repo)
+    field :moderators, list_of(:channel_moderator), resolve: dataloader(Repo)
+    field :moderation_logs, list_of(:channel_moderation_log), resolve: dataloader(Repo)
 
     field :user, non_null(:user),
       resolve: dataloader(Repo),
@@ -269,18 +268,6 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :video_height, :integer
     field :video_width, :integer
     field :audio_codec, :string
-
-    field :inserted_at, non_null(:naive_datetime)
-    field :updated_at, non_null(:naive_datetime)
-  end
-
-  @desc "A follower is a user who subscribes to notifications for a particular channel."
-  object :follower do
-    field :id, :id
-    field :has_live_notifications, :boolean
-
-    field :streamer, non_null(:user), resolve: dataloader(Repo)
-    field :user, non_null(:user), resolve: dataloader(Repo)
 
     field :inserted_at, non_null(:naive_datetime)
     field :updated_at, non_null(:naive_datetime)
