@@ -1,6 +1,7 @@
 // Initial sizing for mobile, quickly overwritten any time we have columns
 #chat-column {
     #chat {
+        min-height: 400px;
         max-height: 400px;
     }
 }
@@ -8,7 +9,7 @@
 @media (min-width: 992px) {
     #chat-column {
         #chat {
-            max-height: initial;
+            max-height: calc(100vh - 90px);
         }
     }
 
