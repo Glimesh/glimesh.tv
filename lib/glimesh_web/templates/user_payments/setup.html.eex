@@ -6,8 +6,8 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title"><%= gettext("1. Tax Information") %></h5>
-                <p class="card-text"><strong><%= gettext("United States:") %></strong> <%= gettext("During your Stripe connection process you will provide information required for end of year 1099-MISC filing with the income you made from Glimesh. Your sub button will be immediately available after the Stripe connection.") %></p>
-                <p class="card-text"><strong><%= gettext("Other Countries:") %></strong> <%= gettext("After you finish your Stripe connection process, you will be redirected to a tax form submission page which will require you to submit a W-8 before we can enable your sub button. Submitted W-8 forms can take up to 10-14 days for review.") %></p>
+                <p class="card-text"><strong><%= gettext("United States:") %></strong> <%= gettext("During your Stripe Connection Process you will provide the information required to fill out an electronic W-9 that will be submitted to Stripe. Once you have completed your Stripe Connection Process your sub button will be available immediately.") %></p>
+                <p class="card-text"><strong><%= gettext("Other Countries:") %></strong> <%= gettext("After you finish your Stripe Connection Process, you will be redirected to a tax form submission page which will allow you to submit an United States Internal Revenue Service form, called the W-8, that we rquire before we can enable your sub button. Submitted W-8 forms can take up to 10-14 days for review.") %></p>
             </div>
         </div>
         <div class="card">
@@ -19,7 +19,7 @@
                     <li><%= gettext("If non-US country:") %>
                         <ul>
                             <li><%= gettext("Submit your W-8 form") %></li>
-                            <li><%= gettext("Wait for manual staff review") %></li>
+                            <li><%= gettext("Wait for internal review process") %></li>
                         </ul>
                     </li>
                     <li><%= gettext("Get subscribers!") %></li>
