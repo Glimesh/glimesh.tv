@@ -62,7 +62,7 @@
                     <%= if @user.is_stripe_setup do %>
                     <h5><%= gettext("Glimesh Payouts") %></h5>
                     <%= if @user.is_stripe_setup == false or @user.is_tax_verified == false do %>
-                    <p class="text-warning">Your account setup is still pending.</p>
+                    <p class="text-warning"><%= gettext("Your account setup is still pending.") %></p>
                     <% end %>
                     <ul>
                         <li><%= gettext("Stripe Setup:") %> <%= truthy_checkbox(@user.is_stripe_setup) %></li>
