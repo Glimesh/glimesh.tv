@@ -5,36 +5,45 @@
     <div class="card-deck mt-4 mb-4">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">1. Tax Information</h5>
-                <p class="card-text"><strong>United States: </strong>Every year you'll receive a 1099-MISC with the income you made from Glimesh.</p>
-                <p class="card-text"><strong>Other Countries: </strong>Glimesh will withhold 30% of your payouts until provided with a valid submitted W-8BEN.</p>
+                <h5 class="card-title"><%= gettext("1. Tax Information") %></h5>
+                <p class="card-text"><strong><%= gettext("United States:") %></strong> <%= gettext("During your Stripe Connection Process you will provide the information required to fill out an electronic W-9 that will be submitted to Stripe. Once you have completed your Stripe Connection Process your sub button will be available immediately.") %></p>
+                <p class="card-text"><strong><%= gettext("Other Countries:") %></strong> <%= gettext("After you finish your Stripe Connection Process, you will be redirected to a tax form submission page which will allow you to submit an United States Internal Revenue Service form, called the W-8, that we rquire before we can enable your sub button. Submitted W-8 forms can take up to 10-14 days for review.") %></p>
             </div>
         </div>
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">2. Setup</h5>
+                <h5 class="card-title"><%= gettext("2. Setup") %></h5>
                 <ol>
-                    <li>Follow Instructions</li>
-                    <li>Get redirected to Stripe</li>
+                    <li><%= gettext("Read this page carefully") %></li>
+                    <li><%= gettext("Complete your setup process on Stripe") %></li>
+                    <li><%= gettext("If non-US country:") %>
+                        <ul>
+                            <li><%= gettext("Submit your W-8 form") %></li>
+                            <li><%= gettext("Wait for internal review process") %></li>
+                        </ul>
+                    </li>
+                    <li><%= gettext("Get subscribers!") %></li>
                 </ol>
             </div>
         </div>
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">3. Payouts</h5>
+                <h5 class="card-title"><%= gettext("3. Payouts") %></h5>
+                <p><%= gettext("Glimesh payouts happen weekly, but there is some delay in getting a new subscriber and seeing their money in your bank account. All subscriptions and payouts happen in USD, and will be converted.") %></p>
                 <ol>
-                    <li>Payouts happen Wednesday</li>
-                    <li>Deposit can take 24-48 hours</li>
-                    <li>In your bank on Friday</li>
+                    <li><%= gettext("After subscribing, funds can take time to settle in our account") %></li>
+                    <li><%= gettext("Payouts happen Wednesday") %></li>
+                    <li><%= gettext("Stripe Deposit can take 24-48 hours, and can take additional time") %></li>
+                    <li><%= gettext("In your bank on Friday") %></li>
                 </ol>
             </div>
             <div class="card-footer">
-                <a href="<%= @stripe_oauth_url %>" class="btn btn-secondary btn-block"><%= gettext("Proceed with Setup") %></a>
+                <a href="<%= @stripe_oauth_url %>" class="btn btn-secondary btn-block"><%= gettext("Proceed with Stripe Setup") %></a>
             </div>
         </div>
     </div>
 
-    <p>This page is not legal or tax advice. Before accepting Glimesh Payouts, please consult with your own legal & tax representatives. </p>
+    <p><%= gettext("This page is not legal or tax advice. Before accepting Glimesh Payouts, please consult with your own legal & tax representatives.") %></p>
 
 
     <% else %>

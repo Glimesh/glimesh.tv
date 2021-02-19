@@ -251,7 +251,8 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
 
       Glimesh.Accounts.set_stripe_user_id(streamer, "1234")
 
-      assert {:pending_taxes, "Something about taxes"} =
+      assert {:pending_taxes,
+              "Your Stripe account is successfully setup, but you must provide more information regarding your income taxes."} =
                StripeProvider.check_account_capabilities_and_upgrade(account_mock)
 
       streamer = Glimesh.Accounts.get_user!(streamer.id)

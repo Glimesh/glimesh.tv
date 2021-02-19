@@ -62,13 +62,17 @@
                     <%= if @user.is_stripe_setup do %>
                     <h5><%= gettext("Glimesh Payouts") %></h5>
                     <%= if @user.is_stripe_setup == false or @user.is_tax_verified == false do %>
-                    <p class="text-warning">Your account setup is still pending.</p>
+                    <p class="text-warning"><%= gettext("Your account setup is still pending.") %></p>
                     <% end %>
                     <ul>
                         <li><%= gettext("Stripe Setup:") %> <%= truthy_checkbox(@user.is_stripe_setup) %></li>
                         <li><%= gettext("Taxes Verified:") %> <%= truthy_checkbox(@user.is_tax_verified) %></li>
                         <li><%= gettext("Sub Button:") %> <%= truthy_checkbox(@can_receive_payments) %></li>
                     </ul>
+                    <%= unless @user.is_tax_verified do %>
+                    <%= link gettext("Submit Tax Forms"), to: Routes.user_payments_path(@conn, :taxes), class: "btn btn-secondary btn-block mb-2" %>
+                    <% end %>
+
                     <%= if @stripe_dashboard_url do %>
                     <a href="<%= @stripe_dashboard_url %>" class="btn btn-primary btn-block mb-2" target="_blank"><%= gettext("Manage Stripe Account") %></a>
                     <% end %>

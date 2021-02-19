@@ -65,6 +65,21 @@ defmodule GlimeshWeb.UserPaymentsController do
     end
   end
 
+  def taxes(conn, _params) do
+    user = conn.assigns.current_user
+
+    if user.is_tax_verified do
+      conn
+      |> put_flash(:info, "Your tax information has already been collected.")
+      |> redirect(to: Routes.user_payments_path(conn, :index))
+    else
+      render(conn, "taxes.html",
+        page_title: format_page_title(gettext("Submit Tax Forms")),
+        can_payments: Accounts.can_use_payments?(user)
+      )
+    end
+  end
+
   def connect(conn, _params) do
     user = conn.assigns.current_user
 
@@ -82,7 +97,7 @@ defmodule GlimeshWeb.UserPaymentsController do
           # Should redirect to a taxes page
           conn
           |> put_flash(:info, message)
-          |> redirect(to: Routes.user_payments_path(conn, :index))
+          |> redirect(to: Routes.user_payments_path(conn, :taxes))
 
         {:pending_stripe, message} ->
           conn
