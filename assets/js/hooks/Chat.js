@@ -76,8 +76,8 @@ export default {
             // Scroll if we need to
             this.maybeScrollToBottom(chatMessages);
 
-            // Init bootstrap in case dom has changed
-            BSN.initCallback(chatMessages);
+            // Apply a BS init to just the new chat message
+            BSN.initCallback(document.getElementById(e.message_id));
             
             //Timestamp handler
             if (e["show_timestamps"]) {
