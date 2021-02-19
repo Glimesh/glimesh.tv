@@ -100,7 +100,6 @@
                 <div class="chat-absolute">
                     <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id} %>
                 </div>
-                <img class="chat-space-fill" src="<%= Enum.random(Map.values(Glimesh.Emote.list_emotes_by_key_and_image())) %>"/>
             </div>
         </div>
 
