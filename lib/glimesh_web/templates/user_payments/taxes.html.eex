@@ -1,0 +1,23 @@
+<div class="container">
+    <h2 class="mt-4"><%= gettext("Submit Tax Forms") %></h2>
+
+    <%= if @can_payments do %>
+    <p>Thank you for setting up your account with our payments partner Stripe! Next up is to verify your tax withholding amount by uploading a W-8 form. This form is provided by the Internal Revenue Service of the United States, and is required to collect so we can properly withhold tax on your payouts. You will need to download the appropriate form below, and have a tax professional assist you with the information it requires.</p>
+
+    <h3>Form Types</h3>
+    <ul>
+        <li><a href="https://www.irs.gov/pub/irs-pdf/fw8ben.pdf">W-8BEN - For use by individuals</a></li>
+        <li><a href="https://www.irs.gov/pub/irs-pdf/fw8bene.pdf">W-8BEN-E - For use by business or legal entities</a></li>
+    </ul>
+
+    <p>Once you have completed the form, please upload a copy of it to the embedded Box.com (secure file hosting) page below. Our team will review, and we'll send you an email if we have any questions! After we review, and your account is approved, your subscriptions button will be enabled!</p>
+
+    <p>If you have problems seeing this embedded page below, try this link <a href="https://app.box.com/f/450d66ac6daa4c298e15ad3fc43403ac">https://app.box.com/f/450d66ac6daa4c298e15ad3fc43403ac</a></p>
+    <iframe src="https://app.box.com/f/450d66ac6daa4c298e15ad3fc43403ac" height="780" width="100%"></iframe>
+
+    <% else %>
+    <div class="alert alert-primary" role="alert">
+        <%= gettext("We're not quite ready to accept payments yet. Once we launch the platform, you'll be able to access this page!") %>
+    </div>
+    <% end %>
+</div>

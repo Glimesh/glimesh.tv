@@ -89,6 +89,7 @@ defmodule GlimeshWeb.Router do
 
     get "/users/payments", UserPaymentsController, :index
     post "/users/payments/setup", UserPaymentsController, :setup
+    get "/users/payments/taxes", UserPaymentsController, :taxes
     get "/users/payments/connect", UserPaymentsController, :connect
     put "/users/payments/delete_default_payment", UserPaymentsController, :delete_default_payment
 

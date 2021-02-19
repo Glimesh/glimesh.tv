@@ -122,7 +122,8 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
         if is_tax_verified do
           response
         else
-          {:pending_taxes, "Something about taxes"}
+          {:pending_taxes,
+           "Your Stripe account is successfully setup, but you must provide more information regarding your income taxes."}
         end
 
       tos_accepted and !transfers_enabled ->
