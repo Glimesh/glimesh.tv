@@ -16,7 +16,7 @@ defmodule Glimesh.Accounts.User do
     field :confirmed_at, :naive_datetime
 
     field :can_stream, :boolean, default: false
-    field :can_payments, :boolean, default: false
+
     field :team_role, :string
     field :is_admin, :boolean, default: false
     field :is_gct, :boolean, default: false
@@ -30,6 +30,11 @@ defmodule Glimesh.Accounts.User do
     field :social_instagram, :string
     field :social_discord, :string
     field :social_guilded, :string
+
+    field :can_payments, :boolean, default: false
+    field :is_stripe_setup, :boolean, default: false
+    field :is_tax_verified, :boolean, default: false
+    field :tax_withholding_percent, :decimal
 
     field :stripe_user_id, :string
     field :stripe_customer_id, :string
@@ -71,6 +76,7 @@ defmodule Glimesh.Accounts.User do
       :is_admin,
       :can_stream,
       :can_payments,
+      :is_stripe_setup,
       :is_banned,
       :is_gct,
       :gct_level,
@@ -253,11 +259,18 @@ defmodule Glimesh.Accounts.User do
   end
 
   @doc """
-  A user changeset for changing the stripe customer id.
+  A user changeset for changing the stripe.
   """
   def stripe_changeset(user, attrs) do
     user
-    |> cast(attrs, [:stripe_customer_id, :stripe_user_id, :stripe_payment_method])
+    |> cast(attrs, [
+      :stripe_customer_id,
+      :stripe_user_id,
+      :stripe_payment_method,
+      :is_stripe_setup,
+      :is_tax_verified,
+      :tax_withholding_percent
+    ])
   end
 
   @doc """

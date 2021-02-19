@@ -1,14 +1,39 @@
-defmodule Glimesh.Payments.Providers.Stripe do
+defmodule Glimesh.PaymentProviders.StripeProvider.Webhooks do
   @moduledoc """
   Stripe Webhook Handler
 
   Currently Handled:
+  - Invoice Created
+  - Invoice Paid
+  - Account Updated
   - Subscription Renewal
   - Subscription Unpaid / Canceled
   """
   require Logger
 
+  alias Glimesh.PaymentProviders.StripeProvider
   alias Glimesh.Payments
+
+  def handle_webhook(%{
+        type: "invoice.created",
+        data: %{object: %Stripe.Invoice{} = invoice}
+      }) do
+    StripeProvider.create_invoice(invoice)
+  end
+
+  def handle_webhook(%{
+        type: "invoice.paid",
+        data: %{object: %Stripe.Invoice{} = invoice}
+      }) do
+    StripeProvider.pay_invoice(invoice)
+  end
+
+  def handle_webhook(%{
+        type: "account.updated",
+        data: %{object: %Stripe.Account{} = account}
+      }) do
+    StripeProvider.check_account_capabilities_and_upgrade(account)
+  end
 
   @doc """
 
@@ -58,7 +83,7 @@ defmodule Glimesh.Payments.Providers.Stripe do
   def handle_webhook(%{type: type} = webhook) do
     #   Fall through webhook handler for stripe events, logging into prod for now so we can figure
     # out the right methods to implement.
-    Logger.info("Incoming Stripe Webhook: #{type} = " <> inspect(webhook))
+    Logger.info("Unimplemented Stripe Webhook: #{type} = " <> inspect(webhook))
     {:error, "Webhook endpoint not found for #{type}"}
   end
 

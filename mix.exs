@@ -41,7 +41,6 @@ defmodule Glimesh.MixProject do
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:floki, ">= 0.0.0", only: :test},
       {:excoveralls, "~> 0.13.1", only: :test},
-      {:stripe_mock, "~> 0.1.0", only: :test},
       # Core
       {:bcrypt_elixir, "~> 2.0"},
       {:phoenix, "~> 1.5.6"},
@@ -81,11 +80,11 @@ defmodule Glimesh.MixProject do
       {:waffle_ecto, "~> 0.0.9"},
       {:ex_aws, "~> 2.1.2"},
       {:ex_aws_s3, "~> 2.0"},
-      {:hackney, "~> 1.9"},
+      {:hackney, "~> 1.17"},
       {:sweet_xml, "~> 0.6"},
       # Other
       {:hcaptcha, "~> 0.0.1"},
-      {:stripity_stripe, "~> 2.0"},
+      {:stripity_stripe, "~> 2.9"},
       {:eqrcode, "~> 0.1.7"},
       {:scrivener_ecto, "~> 2.0"},
       {:libcluster, "~> 3.2"},

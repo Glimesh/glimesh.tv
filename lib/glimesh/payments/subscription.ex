@@ -35,6 +35,8 @@ defmodule Glimesh.Payments.Subscription do
     field :started_at, :naive_datetime
     field :ended_at, :naive_datetime
 
+    has_many :invoices, Glimesh.Payments.SubscriptionInvoice
+
     timestamps()
   end
 

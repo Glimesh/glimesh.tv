@@ -8,6 +8,7 @@ defmodule Glimesh.Payments do
   alias Glimesh.Accounts
   alias Glimesh.Accounts.User
   alias Glimesh.Payments.Subscription
+  alias Glimesh.Payments.SubscriptionInvoice
   alias Glimesh.Repo
   alias Glimesh.Streams.Channel
 
@@ -120,10 +121,10 @@ defmodule Glimesh.Payments do
 
     stripe_input = %{
       customer: customer_id,
-      items: [%{price: price_id}],
-      application_fee_percent: 50,
-      transfer_data: %{destination: streamer.stripe_user_id}
+      items: [%{price: price_id}]
     }
+
+    glimesh_cut_percent = 50
 
     sub_attrs = %{
       user: user,
@@ -131,9 +132,8 @@ defmodule Glimesh.Payments do
       stripe_product_id: product_id,
       stripe_price_id: price_id,
       price: price.unit_amount,
-      fee: trunc(stripe_input.application_fee_percent / 100 * price.unit_amount),
-      payout:
-        trunc(price.unit_amount - stripe_input.application_fee_percent / 100 * price.unit_amount),
+      fee: trunc(glimesh_cut_percent / 100 * price.unit_amount),
+      payout: trunc(price.unit_amount - glimesh_cut_percent / 100 * price.unit_amount),
       product_name: product.name
     }
 
@@ -333,16 +333,6 @@ defmodule Glimesh.Payments do
     |> Repo.preload(:user)
   end
 
-  def oauth_connect(user, code) do
-    with {:ok, resp} <- Stripe.Connect.OAuth.token(code),
-         {:ok, _} <- Accounts.set_stripe_user_id(user, resp.stripe_user_id) do
-      {:ok, "Successfully updated Stripe oauth user."}
-    else
-      {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
-      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
-    end
-  end
-
   def get_stripe_dashboard_url(%User{stripe_user_id: nil}), do: nil
 
   def get_stripe_dashboard_url(%User{stripe_user_id: stripe_user_id}) do
@@ -376,13 +366,17 @@ defmodule Glimesh.Payments do
     payment_history.data
   end
 
-  def list_payout_history(%User{stripe_user_id: nil}), do: []
-
-  def list_payout_history(%User{stripe_user_id: stripe_user_id}) do
-    {:ok, payout_history} = Stripe.Transfer.list(%{destination: stripe_user_id})
-
-    payout_history.data
-  end
+  # Not ready for this yet...
+  # @doc """
+  # List our historical payouts for the user
+  # """
+  # def list_payout_history(%User{} = streamer) do
+  #   Repo.all(
+  #     from si in SubscriptionInvoice,
+  #       where:
+  #         si.streamer_id == ^streamer.id and si.user_paid == true and si.streamer_paidout == true
+  #   )
+  # end
 
   @doc """
   Returns the list of subscription.
@@ -460,5 +454,100 @@ defmodule Glimesh.Payments do
   """
   def change_subscription(%Subscription{} = subscription, attrs \\ %{}) do
     Subscription.create_changeset(subscription, attrs)
+  end
+
+  # Subscription Invoices
+
+  def get_subscription_invoice_by_stripe_id(invoice_id) when is_binary(invoice_id) do
+    Repo.one(
+      from s in SubscriptionInvoice,
+        where: s.stripe_invoice_id == ^invoice_id
+    )
+  end
+
+  def list_unpaidout_invoices do
+    Repo.all(
+      from si in SubscriptionInvoice,
+        where:
+          not is_nil(si.streamer_id) and si.user_paid == true and si.streamer_paidout == false
+    )
+  end
+
+  @doc """
+  Returns the list of subscription invoices.
+
+  ## Examples
+
+      iex> list_subscription_invoices()
+      [%SubscriptionInvoice{}, ...]
+
+  """
+  def list_subscription_invoices do
+    Repo.all(SubscriptionInvoice)
+  end
+
+  @doc """
+  Creates a subscription invoice.
+
+  ## Examples
+
+      iex> create_subscription_invoice(%{field: value})
+      {:ok, %SubscriptionInvoice{}}
+
+      iex> create_subscription_invoice(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_subscription_invoice(attrs \\ %{}) do
+    %SubscriptionInvoice{}
+    |> SubscriptionInvoice.create_changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a subscription invoice.
+
+  ## Examples
+
+      iex> update_subscription_invoice(invoice, %{field: new_value})
+      {:ok, %SubscriptionInvoice{}}
+
+      iex> update_subscription_invoice(invoice, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_subscription_invoice(%SubscriptionInvoice{} = invoice, attrs) do
+    invoice
+    |> SubscriptionInvoice.update_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a subscription invoice.
+
+  ## Examples
+
+      iex> delete_subscription_invoice(invoice)
+      {:ok, %SubscriptionInvoice{}}
+
+      iex> delete_subscription_invoice(invoice)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_subscription_invoice(%SubscriptionInvoice{} = invoice) do
+    Repo.delete(invoice)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking subscription invoice changes.
+
+  ## Examples
+
+      iex> change_subscription_invoice(invoice)
+      %Ecto.Changeset{data: %SubscriptionInvoice{}}
+
+  """
+  def change_subscription_invoice(%SubscriptionInvoice{} = invoice, attrs \\ %{}) do
+    SubscriptionInvoice.create_changeset(invoice, attrs)
   end
 end

@@ -66,6 +66,7 @@ defmodule GlimeshWeb.UserLive.Stream do
          |> assign(:prompt_mature, Streams.prompt_mature_content(channel, maybe_user))
          |> assign(:custom_meta, Profile.meta_tags(streamer, avatar_url))
          |> assign(:streamer, channel.user)
+         |> assign(:can_receive_payments, Accounts.can_receive_payments?(channel.user))
          |> assign(:channel, channel)
          |> assign(:backend, channel.backend)
          |> assign(:janus_url, "Pending...")

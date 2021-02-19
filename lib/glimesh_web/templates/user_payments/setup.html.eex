@@ -1,0 +1,45 @@
+<div class="container">
+    <h2 class="mt-4"><%= gettext("Setup Glimesh Payouts") %></h2>
+
+    <%= if @can_payments do %>
+    <div class="card-deck mt-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">1. Tax Information</h5>
+                <p class="card-text"><strong>United States: </strong>Every year you'll receive a 1099-MISC with the income you made from Glimesh.</p>
+                <p class="card-text"><strong>Other Countries: </strong>Glimesh will withhold 30% of your payouts until provided with a valid submitted W-8BEN.</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">2. Setup</h5>
+                <ol>
+                    <li>Follow Instructions</li>
+                    <li>Get redirected to Stripe</li>
+                </ol>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">3. Payouts</h5>
+                <ol>
+                    <li>Payouts happen Wednesday</li>
+                    <li>Deposit can take 24-48 hours</li>
+                    <li>In your bank on Friday</li>
+                </ol>
+            </div>
+            <div class="card-footer">
+                <a href="<%= @stripe_oauth_url %>" class="btn btn-secondary btn-block"><%= gettext("Proceed with Setup") %></a>
+            </div>
+        </div>
+    </div>
+
+    <p>This page is not legal or tax advice. Before accepting Glimesh Payouts, please consult with your own legal & tax representatives. </p>
+
+
+    <% else %>
+    <div class="alert alert-primary" role="alert">
+        <%= gettext("We're not quite ready to accept payments yet. Once we launch the platform, you'll be able to access this page!") %>
+    </div>
+    <% end %>
+</div>

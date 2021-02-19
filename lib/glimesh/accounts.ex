@@ -375,6 +375,16 @@ defmodule Glimesh.Accounts do
     end
   end
 
+  def set_stripe_attrs(%User{} = user, attrs \\ %{}) do
+    user
+    |> User.stripe_changeset(attrs)
+    |> Repo.update()
+  end
+
+  def get_user_by_stripe_user_id(user_id) do
+    Repo.one(from u in User, where: u.stripe_user_id == ^user_id)
+  end
+
   def set_stripe_user_id(user, user_id) do
     user
     |> User.stripe_changeset(%{stripe_user_id: user_id})
@@ -562,6 +572,10 @@ defmodule Glimesh.Accounts do
 
   def can_use_payments?(user) do
     user.can_payments
+  end
+
+  def can_receive_payments?(user) do
+    user.is_stripe_setup && user.is_tax_verified
   end
 
   def get_user_locale(%User{} = user) do

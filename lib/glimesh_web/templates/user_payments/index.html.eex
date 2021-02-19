@@ -39,8 +39,7 @@
                         <p><%= gettext("Oops, something went wrong! Please check the errors below.") %></p>
                     </div>
                     <% end %>
-                    <button type="submit"
-                        class="btn btn-block btn-danger"><%= gettext("Delete Saved Payment") %></button>
+                    <button type="submit" class="btn btn-block btn-danger"><%= gettext("Delete Saved Payment") %></button>
                     <% end %>
 
                     <% else %>
@@ -60,26 +59,34 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <%= if @is_sub_ready_streamer do %>
-                    <div class="info">
-                        <h5 class=""><%= gettext("Sub-ready Streamer") %></h5>
-                    </div>
-                    <div class="acc-action">
-                        <div class="">
-                            <h6><%= gettext("Welcome to the sub club!") %></h6>
-                        </div>
-                    </div>
-                    <% else %>
-                    <div class="info">
-                        <h5 class=""><%= gettext("Streamer") %></h5>
-                    </div>
-                    <div class="acc-action">
-                        <div class="">
-                        </div>
-                        <a href="<%= @stripe_oauth_url %>"
-                            class="btn btn-secondary"><%= gettext("Enable Subscriptions") %></a>
-                    </div>
+                    <%= if @user.is_stripe_setup do %>
+                    <h5><%= gettext("Glimesh Payouts") %></h5>
+                    <%= if @user.is_stripe_setup == false or @user.is_tax_verified == false do %>
+                    <p class="text-warning">Your account setup is still pending.</p>
                     <% end %>
+                    <ul>
+                        <li><%= gettext("Stripe Setup:") %> <%= truthy_checkbox(@user.is_stripe_setup) %></li>
+                        <li><%= gettext("Taxes Verified:") %> <%= truthy_checkbox(@user.is_tax_verified) %></li>
+                        <li><%= gettext("Sub Button:") %> <%= truthy_checkbox(@can_receive_payments) %></li>
+                    </ul>
+                    <%= if @stripe_dashboard_url do %>
+                    <a href="<%= @stripe_dashboard_url %>" class="btn btn-primary btn-block mb-2" target="_blank"><%= gettext("Manage Stripe Account") %></a>
+                    <% end %>
+                    <p><%= gettext("If you want to deactivate your account or need help with something, please email support@glimesh.tv") %></p>
+                    <% else %>
+                    <h5><%= gettext("Setup Glimesh Payouts") %></h5>
+                    <%= form_for @conn, Routes.user_payments_path(@conn, :setup), fn f -> %>
+                    <div class="form-group">
+                        <%= label f, gettext("Your Country") %>
+                        <%= select f, :country, @stripe_countries, class: "form-control", required: true %>
+                        <small class="form-text text-muted"><%= gettext("We only support payouts in the countries listed above, if you don't see your country then unfortunately we do not yet support payouts for you.") %></small>
+                        <%= error_tag f, :country %>
+                    </div>
+
+                    <%= submit gettext("Start Process"), class: "btn btn-secondary", "data-confirm": "Are you sure you wish to start the payouts setup with this country? You cannot change your country if you make a mistake." %>
+                    <% end %>
+                    <% end %>
+
                 </div>
             </div>
         </div>
@@ -120,8 +127,7 @@
         </div>
         <div class="card-body">
             <%= if @stripe_dashboard_url do %>
-            <a href="<%= @stripe_dashboard_url %>" class="btn btn-primary"
-                target="_blank"><%= gettext("View on Stripe") %></a>
+            <a href="<%= @stripe_dashboard_url %>" class="btn btn-primary" target="_blank"><%= gettext("View on Stripe") %></a>
             <% else %>
             <%= gettext("Not available") %>
             <% end %>
