@@ -8,6 +8,20 @@ defmodule Glimesh.Resolvers.ChannelResolver do
 
   # Channels
 
+  def all_channels(%{status: status, category_slug: category_slug}, _) do
+    case ChannelCategories.get_category(category_slug) do
+      %Glimesh.Streams.Category{id: category_id} ->
+        {:ok, ChannelLookups.list_channels(status: status, category_id: category_id)}
+
+      _ ->
+        {:error, "Invalid channel slug."}
+    end
+  end
+
+  def all_channels(%{status: status}, _) do
+    {:ok, ChannelLookups.list_channels(status: status)}
+  end
+
   def all_channels(_, _) do
     {:ok, ChannelLookups.list_channels()}
   end
@@ -119,27 +133,5 @@ defmodule Glimesh.Resolvers.ChannelResolver do
 
   def all_subscriptions(_, _) do
     {:ok, Payments.list_all_subscriptions()}
-  end
-
-  # Followers
-
-  def all_followers(%{streamer_username: streamer_username}, _) do
-    streamer = Accounts.get_by_username(streamer_username)
-    {:ok, Streams.list_followers(streamer)}
-  end
-
-  def all_followers(%{user_username: user_username}, _) do
-    user = Accounts.get_by_username(user_username)
-    {:ok, Streams.list_following(user)}
-  end
-
-  def all_followers(%{streamer_username: streamer_username, user_username: user_username}, _) do
-    streamer = Accounts.get_by_username(streamer_username)
-    user = Accounts.get_by_username(user_username)
-    {:ok, Streams.get_following(streamer, user)}
-  end
-
-  def all_followers(_, _) do
-    {:ok, Streams.list_all_follows()}
   end
 end

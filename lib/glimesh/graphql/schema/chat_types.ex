@@ -20,6 +20,38 @@ defmodule Glimesh.Schema.ChatTypes do
 
       resolve(&ChatResolver.create_chat_message/3)
     end
+
+    @desc "Short timeout (5 minutes) a user from a chat channel."
+    field :short_timeout_user, type: :channel_moderation_log do
+      arg(:channel_id, non_null(:id))
+      arg(:user_id, non_null(:id))
+
+      resolve(&ChatResolver.short_timeout_user/3)
+    end
+
+    @desc "Short timeout (5 minutes) a user from a chat channel."
+    field :long_timeout_user, type: :channel_moderation_log do
+      arg(:channel_id, non_null(:id))
+      arg(:user_id, non_null(:id))
+
+      resolve(&ChatResolver.long_timeout_user/3)
+    end
+
+    @desc "Ban a user from a chat channel."
+    field :ban_user, type: :channel_moderation_log do
+      arg(:channel_id, non_null(:id))
+      arg(:user_id, non_null(:id))
+
+      resolve(&ChatResolver.ban_user/3)
+    end
+
+    @desc "Unban a user from a chat channel."
+    field :unban_user, type: :channel_moderation_log do
+      arg(:channel_id, non_null(:id))
+      arg(:user_id, non_null(:id))
+
+      resolve(&ChatResolver.unban_user/3)
+    end
   end
 
   object :chat_subscriptions do
@@ -42,6 +74,45 @@ defmodule Glimesh.Schema.ChatTypes do
 
     field :channel, non_null(:channel), resolve: dataloader(Repo)
     field :user, non_null(:user), resolve: dataloader(Repo)
+
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+  end
+
+  @desc "A channel timeout or ban"
+  object :channel_ban do
+    field :channel, non_null(:channel), resolve: dataloader(Repo)
+    field :user, non_null(:user), resolve: dataloader(Repo)
+
+    field :expires_at, :naive_datetime
+    field :reason, :string
+
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+  end
+
+  @desc "A channel moderator"
+  object :channel_moderator do
+    field :channel, non_null(:channel), resolve: dataloader(Repo)
+    field :user, non_null(:user), resolve: dataloader(Repo)
+
+    field :can_short_timeout, :boolean
+    field :can_long_timeout, :boolean
+    field :can_un_timeout, :boolean
+    field :can_ban, :boolean
+    field :can_unban, :boolean
+
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+  end
+
+  @desc "A moderation event that happened"
+  object :channel_moderation_log do
+    field :channel, non_null(:channel), resolve: dataloader(Repo)
+    field :moderator, non_null(:user), resolve: dataloader(Repo)
+    field :user, non_null(:user), resolve: dataloader(Repo)
+
+    field :action, :string
 
     field :inserted_at, non_null(:naive_datetime)
     field :updated_at, non_null(:naive_datetime)

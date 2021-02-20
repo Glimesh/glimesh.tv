@@ -32,6 +32,9 @@ defmodule Glimesh.Streams.Channel do
     many_to_many :tags, Glimesh.Streams.Tag, join_through: "channel_tags", on_replace: :delete
 
     has_many :chat_messages, Glimesh.Chat.ChatMessage
+    has_many :bans, Glimesh.Streams.ChannelBan
+    has_many :moderators, Glimesh.Streams.ChannelModerator
+    has_many :moderation_logs, Glimesh.Streams.ChannelModerationLog
 
     timestamps()
   end

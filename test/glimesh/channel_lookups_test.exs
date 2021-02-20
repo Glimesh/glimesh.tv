@@ -84,7 +84,7 @@ defmodule Glimesh.ChannelLookupsTest do
       channel: channel
     } do
       user = user_fixture()
-      {:ok, _} = Glimesh.Streams.follow(streamer, user)
+      {:ok, _} = Glimesh.AccountFollows.follow(streamer, user)
 
       assert length(ChannelLookups.list_live_followed_channels(user)) == 0
 

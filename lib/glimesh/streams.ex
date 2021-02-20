@@ -1,6 +1,6 @@
 defmodule Glimesh.Streams do
   @moduledoc """
-  The Streams context. Contains Channels, Streams, Followers
+  The Streams context. Contains Channels, Streams
   """
 
   import Ecto.Query, warn: false
@@ -8,7 +8,7 @@ defmodule Glimesh.Streams do
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
   alias Glimesh.Repo
-  alias Glimesh.Streams.{Channel, Followers, StreamMetadata}
+  alias Glimesh.Streams.{Channel, StreamMetadata}
 
   defdelegate authorize(action, user, params), to: Glimesh.Streams.Policy
 
@@ -237,76 +237,8 @@ defmodule Glimesh.Streams do
 
   # System API Calls
 
-  ## Following
-
-  def follow(%User{} = streamer, %User{} = user, live_notifications \\ false) do
-    attrs = %{
-      has_live_notifications: live_notifications
-    }
-
-    results =
-      %Followers{
-        streamer: streamer,
-        user: user
-      }
-      |> Followers.changeset(attrs)
-      |> Repo.insert()
-
-    channel = ChannelLookups.get_channel_for_user(streamer)
-
-    if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
-      Glimesh.Chat.create_chat_message(user, channel, %{
-        message: " just followed the stream!",
-        is_followed_message: true
-      })
-    end
-
-    results
-  end
-
-  def unfollow(%User{} = streamer, %User{} = user) do
-    Repo.get_by(Followers, streamer_id: streamer.id, user_id: user.id) |> Repo.delete()
-  end
-
-  def update_following(%Followers{} = following, attrs \\ %{}) do
-    following
-    |> Repo.preload([:user, :streamer])
-    |> Followers.changeset(attrs)
-    |> Repo.update()
-  end
-
-  def is_following?(%User{} = streamer, %User{} = user) do
-    Repo.exists?(
-      from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id
-    )
-  end
-
-  def get_following(%User{} = streamer, %User{} = user) do
-    Repo.one(from f in Followers, where: f.streamer_id == ^streamer.id and f.user_id == ^user.id)
-  end
-
-  def count_followers(%User{} = user) do
-    Repo.one!(from f in Followers, select: count(f.id), where: f.streamer_id == ^user.id)
-  end
-
-  def count_following(%User{} = user) do
-    Repo.one!(from f in Followers, select: count(f.id), where: f.user_id == ^user.id)
-  end
-
   def change_channel(%Channel{} = channel, attrs \\ %{}) do
     Channel.changeset(channel, attrs)
-  end
-
-  def list_all_follows do
-    Repo.all(from(f in Followers))
-  end
-
-  def list_followers(user) do
-    Repo.all(from f in Followers, where: f.streamer_id == ^user.id) |> Repo.preload(:user)
-  end
-
-  def list_following(user) do
-    Repo.all(from f in Followers, where: f.user_id == ^user.id)
   end
 
   def is_live?(%Channel{} = channel) do

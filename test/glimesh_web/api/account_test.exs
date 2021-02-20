@@ -2,8 +2,8 @@ defmodule GlimeshWeb.Api.AccountTest do
   use GlimeshWeb.ConnCase
 
   @myself_query """
-  query getUser($username: String!) {
-    user(username: $username) {
+  query getMyself {
+    myself {
       username
     }
   }

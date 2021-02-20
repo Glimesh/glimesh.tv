@@ -1,4 +1,4 @@
-defmodule Glimesh.Streams.Followers do
+defmodule Glimesh.AccountFollows.Follower do
   @moduledoc false
 
   use Ecto.Schema

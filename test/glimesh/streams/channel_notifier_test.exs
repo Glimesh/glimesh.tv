@@ -10,8 +10,8 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
       user1 = user_fixture()
       user2 = user_fixture()
 
-      Glimesh.Streams.follow(streamer, user1, true)
-      Glimesh.Streams.follow(streamer, user2, false)
+      Glimesh.AccountFollows.follow(streamer, user1, true)
+      Glimesh.AccountFollows.follow(streamer, user2, false)
 
       {:ok, stream} = Glimesh.Streams.start_stream(streamer.channel)
 
@@ -37,7 +37,7 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
     test "deliver_live_channel_notifications/2 wont spam users for the same channel" do
       streamer = streamer_fixture()
       user = user_fixture()
-      Glimesh.Streams.follow(streamer, user, true)
+      Glimesh.AccountFollows.follow(streamer, user, true)
 
       {:ok, stream} = Glimesh.Streams.start_stream(streamer.channel)
 
@@ -60,7 +60,7 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
 
       Enum.map(1..5, fn _ ->
         streamer = streamer_fixture()
-        Glimesh.Streams.follow(streamer, user, true)
+        Glimesh.AccountFollows.follow(streamer, user, true)
         {:ok, stream} = Glimesh.Streams.start_stream(streamer.channel)
 
         assert_delivered_email(
@@ -74,7 +74,7 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
       end)
 
       streamer = streamer_fixture()
-      Glimesh.Streams.follow(streamer, user, true)
+      Glimesh.AccountFollows.follow(streamer, user, true)
       {:ok, _} = Glimesh.Streams.start_stream(streamer.channel)
 
       assert_no_emails_delivered()

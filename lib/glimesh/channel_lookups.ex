@@ -5,17 +5,19 @@ defmodule Glimesh.ChannelLookups do
 
   import Ecto.Query, warn: false
 
+  alias Glimesh.AccountFollows.Follower
   alias Glimesh.Accounts.User
   alias Glimesh.Repo
-  alias Glimesh.Streams.{Category, Channel, Followers, Tag}
+  alias Glimesh.Streams.{Category, Channel, Tag}
 
   ## Filtering
 
-  def list_channels do
+  def list_channels(wheres \\ []) do
     Repo.all(
       from c in Channel,
         join: cat in Category,
-        on: cat.id == c.category_id
+        on: cat.id == c.category_id,
+        where: ^wheres
     )
     |> Repo.preload([:category, :user])
   end
@@ -49,7 +51,7 @@ defmodule Glimesh.ChannelLookups do
   def list_live_subscribed_followers(%Channel{} = channel) do
     Repo.all(
       from u in User,
-        left_join: f in Followers,
+        left_join: f in Follower,
         on: u.id == f.user_id,
         where:
           f.streamer_id == ^channel.user_id and
@@ -61,7 +63,7 @@ defmodule Glimesh.ChannelLookups do
   def list_live_followed_channels(user) do
     Repo.all(
       from c in Channel,
-        join: f in Followers,
+        join: f in Follower,
         on: c.user_id == f.streamer_id,
         where: c.status == "live",
         where: f.user_id == ^user.id
@@ -72,7 +74,7 @@ defmodule Glimesh.ChannelLookups do
   def list_all_followed_channels(user) do
     Repo.all(
       from c in Channel,
-        join: f in Followers,
+        join: f in Follower,
         on: c.user_id == f.streamer_id,
         where: f.user_id == ^user.id
     )
@@ -82,7 +84,7 @@ defmodule Glimesh.ChannelLookups do
   def list_followed_live_notification_channels(user) do
     Repo.all(
       from c in Channel,
-        join: f in Followers,
+        join: f in Follower,
         on: c.user_id == f.streamer_id,
         where: f.user_id == ^user.id and f.has_live_notifications == true
     )

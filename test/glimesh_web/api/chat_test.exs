@@ -16,6 +16,20 @@ defmodule GlimeshWeb.Api.ChatTest do
   }
   """
 
+  @ban_user_mutation """
+  mutation BanUser($channelId: ID!, $userId: ID!) {
+    banUser(channelId: $channelId, userId: $userId) {
+      moderator {
+        username
+      }
+      user {
+        username
+      }
+      action
+    }
+  }
+  """
+
   describe "chat api with user's access token without scope" do
     setup [:create_user, :create_channel]
 
@@ -68,6 +82,32 @@ defmodule GlimeshWeb.Api.ChatTest do
                  "username" => user.username
                }
              }
+    end
+
+    test "can perform moderation actions", %{conn: conn, user: streamer, channel: channel} do
+      user_to_ban = user_fixture()
+
+      conn =
+        post(conn, "/api", %{
+          "query" => @ban_user_mutation,
+          "variables" => %{
+            channelId: "#{channel.id}",
+            userId: "#{user_to_ban.id}"
+          }
+        })
+
+      assert json_response(conn, 200)["data"]["banUser"] == %{
+               "action" => "ban",
+               "moderator" => %{
+                 "username" => streamer.username
+               },
+               "user" => %{
+                 "username" => user_to_ban.username
+               }
+             }
+
+      assert {:error, "You are permanently banned from this channel."} =
+               Glimesh.Chat.create_chat_message(user_to_ban, channel, %{message: "Hello world"})
     end
   end
 

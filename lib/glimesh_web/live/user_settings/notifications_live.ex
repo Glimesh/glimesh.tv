@@ -3,7 +3,6 @@ defmodule GlimeshWeb.NotificationsLive do
 
   alias Glimesh.Accounts
   alias Glimesh.ChannelLookups
-  alias Glimesh.Streams
 
   @impl true
   def mount(_params, session, socket) do
@@ -29,9 +28,9 @@ defmodule GlimeshWeb.NotificationsLive do
   @impl true
   def handle_event("remove_live_notification", %{"streamer" => streamer_id}, socket) do
     streamer = Accounts.get_user!(streamer_id)
-    following = Streams.get_following(streamer, socket.assigns.current_user)
+    following = Glimesh.AccountFollows.get_following(streamer, socket.assigns.current_user)
 
-    case Streams.update_following(following, %{
+    case Glimesh.AccountFollows.update_following(following, %{
            has_live_notifications: false
          }) do
       {:ok, _} ->
