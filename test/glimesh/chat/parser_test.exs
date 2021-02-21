@@ -4,6 +4,18 @@ defmodule Glimesh.Chat.ParserTest do
   alias Glimesh.Chat.Parser
   alias Glimesh.Chat.Token
 
+  # If you are making changes to the parser and you'd like to benchmark it
+  #       {benchmark, :ok} =
+  #    :timer.tc(fn ->
+  #      Parser.parse(
+  #        "https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: "
+  #      )
+  #
+  #      :ok
+  #    end)
+  #
+  #  IO.puts("Time to Parser: #{benchmark}μs") ~186μs on a Mac M1 16GB
+
   describe "chat parser" do
     test "lexes a simple message" do
       assert Parser.parse("") == [%Token{type: "text", text: ""}]
@@ -54,17 +66,6 @@ defmodule Glimesh.Chat.ParserTest do
         Parser.parse(
           "Hello https://glimesh.tv :glimwow: world! How:glimlove:are https://google.com you!"
         )
-
-      {benchmark, :ok} =
-        :timer.tc(fn ->
-          Parser.parse(
-            "https://glimesh.tv  f̷̧͖͈̂̿s̷̖͚̻͍̟͕͈̞͍̑̃̏̿̒d̴̡̦̟̜̪̭̥̖̟̦̮͍̳̤͚̃̈́̀͝f̶͍̤̳̯̱̙̖̲̽̈͒͆̿̄̿̆̀̚͝s̴̮̫̬͔̜͚̬̪̩̔̊͂͗́̌̑̚d̵̢͈̥̱̆̇̈́̎́̍͘͜͝ https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: https://glimesh.tv :glimwow: "
-          )
-
-          :ok
-        end)
-
-      IO.puts("Time to Parser: #{benchmark}μs")
 
       assert parsed == [
                %Token{type: "text", text: "Hello "},
