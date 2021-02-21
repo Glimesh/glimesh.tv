@@ -210,7 +210,10 @@ defmodule GlimeshWeb.UserAuth do
   end
 
   defp maybe_store_return_to(%{method: "GET", request_path: request_path} = conn) do
-    maybe_query_string = unless conn.query_string == "", do: "?#{conn.query_string}", else: ""
+    maybe_query_string = case conn.query_string do
+      "" -> ""
+      _ -> "?#{conn.query_string}"
+    end
     put_session(conn, :user_return_to, request_path <> maybe_query_string)
   end
 
