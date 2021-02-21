@@ -21,14 +21,15 @@ defmodule Glimesh.Repo.Migrations.AddChatTokens do
           )
         )
 
+      config = Glimesh.Chat.get_chat_parser_config(channel)
+
       Enum.each(chat_messages, fn msg ->
-        tokens =
-          Glimesh.Chat.Parser.parse(msg.message, Glimesh.Chat.get_chat_parser_config(channel))
+        tokens = Glimesh.Chat.Parser.parse(msg.message, config)
 
         changeset =
           msg
           |> Ecto.Changeset.change()
-          |> Glimesh.Chat.ChatMessage.token_changeset(tokens)
+          |> Ecto.Changeset.put_embed(:tokens, tokens)
 
         Glimesh.Repo.update!(changeset)
       end)
