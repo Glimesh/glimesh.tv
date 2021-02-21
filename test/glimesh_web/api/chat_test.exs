@@ -12,6 +12,14 @@ defmodule GlimeshWeb.Api.ChatTest do
       user {
         username
       }
+      tokens {
+        type
+        text
+        ... on EmoteToken {
+          src
+          url
+        }
+      }
     }
   }
   """
@@ -80,7 +88,40 @@ defmodule GlimeshWeb.Api.ChatTest do
                "message" => "Hello world",
                "user" => %{
                  "username" => user.username
-               }
+               },
+               "tokens" => [
+                 %{"type" => "text", "text" => "Hello world"}
+               ]
+             }
+    end
+
+    test "can send a emote based message", %{conn: conn, user: user, channel: channel} do
+      conn =
+        post(conn, "/api", %{
+          "query" => @create_chat_message_query,
+          "variables" => %{
+            channelId: "#{channel.id}",
+            message: %{
+              message: "Hello :glimwow: world!"
+            }
+          }
+        })
+
+      assert json_response(conn, 200)["data"]["createChatMessage"] == %{
+               "message" => "Hello :glimwow: world!",
+               "user" => %{
+                 "username" => user.username
+               },
+               "tokens" => [
+                 %{"type" => "text", "text" => "Hello "},
+                 %{
+                   "type" => "emote",
+                   "text" => ":glimwow:",
+                   "src" => "/emotes/svg/glimwow.svg",
+                   "url" => "http://localhost:4002/emotes/svg/glimwow.svg"
+                 },
+                 %{"type" => "text", "text" => " world!"}
+               ]
              }
     end
 
@@ -130,7 +171,10 @@ defmodule GlimeshWeb.Api.ChatTest do
                "message" => "Hello world",
                "user" => %{
                  "username" => user.username
-               }
+               },
+               "tokens" => [
+                 %{"type" => "text", "text" => "Hello world"}
+               ]
              }
     end
   end

@@ -1,45 +1,35 @@
-<div id="chat-messages" class="chat-messages" phx-update="<%= @update_action %>"
-    style="<%= background_style(@channel) %>">
+<div id="chat-messages" class="chat-messages" phx-update="<%= @update_action %>" style="<%= background_style(@channel) %>">
     <div id="channel-header" class="channel-header">
         <span><%= gettext("Welcome to chat! Follow the rules.") %></span>
     </div>
     <%= for chat_message <- @chat_messages do %>
-    <div id="<%= chat_message.id %>"
-        class="<%=if Glimesh.Chat.Effects.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>
+    <div id="<%= chat_message.id %>" class="<%=if Glimesh.Chat.Effects.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>
         <%=if chat_message.is_followed_message, do: "border border-secondary" %> ">
         <div class="user-message-header">
-        <%= unless chat_message.is_followed_message do %>
+            <%= unless chat_message.is_followed_message do %>
             <%= if Map.get(@permissions, :can_short_timeout, false) do %>
-            <i class="short-timeout fas fa-stopwatch fa-fw" phx-click="short_timeout_user"
-                phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip"
-                title="<%= gettext("Timeout user for 5 minutes.") %>"></i>
+            <i class="short-timeout fas fa-stopwatch fa-fw" phx-click="short_timeout_user" phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip" title="<%= gettext("Timeout user for 5 minutes.") %>"></i>
             <% end %>
             <%= if Map.get(@permissions, :can_long_timeout, false)  do %>
-            <i class="long-timeout fas fa-clock fa-fw" phx-click="long_timeout_user"
-                phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip"
-                title="<%= gettext("Timeout user for 15 minutes.") %>"></i>
+            <i class="long-timeout fas fa-clock fa-fw" phx-click="long_timeout_user" phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip" title="<%= gettext("Timeout user for 15 minutes.") %>"></i>
             <% end %>
             <%= if Map.get(@permissions, :can_ban, false)  do %>
-            <i class="ban fas fa-gavel fa-fw" phx-click="ban_user" phx-value-user="<%= chat_message.user.username %>"
-                data-confirm="<%= gettext("Are you sure you wish to permanently ban %{username}?", username: chat_message.user.displayname) %>"
-                data-toggle="tooltip" title="<%= gettext("Ban user from channel.") %>"></i>
+            <i class="ban fas fa-gavel fa-fw" phx-click="ban_user" phx-value-user="<%= chat_message.user.username %>" data-confirm="<%= gettext("Are you sure you wish to permanently ban %{username}?", username: chat_message.user.displayname) %>" data-toggle="tooltip" title="<%= gettext("Ban user from channel.") %>"></i>
             <% end %>
 
             <%= Glimesh.Chat.Effects.render_global_badge(chat_message.user) %>
             <%= Glimesh.Chat.Effects.render_channel_badge(@channel, chat_message.user) %>
 
             <%= Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %>
-        <% end %>
+            <% end %>
             <small id="small-<%= chat_message.id %>" class="text-muted d-none">
-                <local-time id="timestamp-<%= chat_message.id %>" phx-update="ignore"
-                    datetime="<%= "#{chat_message.inserted_at}" <> "Z" %>" format="micro" hour="numeric"
-                    minute="2-digit" second="2-digit"><%= NaiveDateTime.to_time(chat_message.inserted_at) %>
+                <local-time id="timestamp-<%= chat_message.id %>" phx-update="ignore" datetime="<%= "#{chat_message.inserted_at}" <> "Z" %>" format="micro" hour="numeric" minute="2-digit" second="2-digit"><%= NaiveDateTime.to_time(chat_message.inserted_at) %>
                 </local-time>
             </small>
         </div>
         <div class="user-message">
             <%= if chat_message.is_followed_message, do: Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %>
-            <%= Glimesh.Chat.Parser.parse_and_render(chat_message, @channel_chat_parser_config) %>
+            <%= raw(Glimesh.Chat.Renderer.render(chat_message.tokens)) %>
         </div>
     </div>
     <% end %>

@@ -29,7 +29,7 @@ defmodule Glimesh.Schema.ChatTypes do
       resolve(&ChatResolver.short_timeout_user/3)
     end
 
-    @desc "Short timeout (5 minutes) a user from a chat channel."
+    @desc "Long timeout (15 minutes) a user from a chat channel."
     field :long_timeout_user, type: :channel_moderation_log do
       arg(:channel_id, non_null(:id))
       arg(:user_id, non_null(:id))
@@ -67,10 +67,55 @@ defmodule Glimesh.Schema.ChatTypes do
     end
   end
 
+  interface :chat_message_token do
+    field :type, :string
+    field :text, :string
+
+    resolve_type(fn
+      %{type: "text"}, _ -> :text_token
+      %{type: "url"}, _ -> :url_token
+      %{type: "emote"}, _ -> :emote_token
+      _, _ -> nil
+    end)
+  end
+
+  object :text_token do
+    field :type, :string
+    field :text, :string
+
+    interface(:chat_message_token)
+  end
+
+  object :render_token do
+    field :type, :string
+    field :text, :string
+    field :url, :string
+
+    interface(:chat_message_token)
+  end
+
+  object :emote_token do
+    field :type, :string
+    field :text, :string
+
+    field :url, :string do
+      # Resolve URL to our actual public route
+      resolve(fn token, _, _ ->
+        {:ok, GlimeshWeb.Router.Helpers.static_url(GlimeshWeb.Endpoint, token.src)}
+      end)
+    end
+
+    field :src, :string
+
+    interface(:chat_message_token)
+  end
+
   @desc "A chat message sent to a channel by a user."
   object :chat_message do
     field :id, :id
     field :message, :string, description: "The chat message."
+
+    field :tokens, list_of(:chat_message_token)
 
     field :channel, non_null(:channel), resolve: dataloader(Repo)
     field :user, non_null(:user), resolve: dataloader(Repo)

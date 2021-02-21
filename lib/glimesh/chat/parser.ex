@@ -1,125 +1,100 @@
 defmodule Glimesh.Chat.Parser do
   @moduledoc """
-  Converts a simple input into a fully realized HTML output for the chat client.
-
-  This is a simple parser, it essentially loops through a ever-growing list of strings or
-  converted values, searching for any changes it needs to make, before reassembling it.
+  Responsible for splitting a chat message into it's various tokens. The Glimesh.Chat.Renderer puts it back together for display.
   """
 
   defmodule Config do
     @moduledoc """
     Configuration for the parser
     """
-    defstruct allow_links: true, allow_glimojis: true, allow_animated_glimjois: false
+    defstruct allow_links: true, allow_emotes: true, allow_animated_emotes: false, emotes: []
   end
 
-  import Phoenix.HTML
-  import Phoenix.HTML.Tag
-  alias Phoenix.HTML.Link
+  alias Glimesh.Chat.Token
 
-  @hyperlink_regex ~r/ (?:(?:https?|ftp)
-                        :\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))
-                        ?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?
-                      /xi
+  @emote_regex ~r/(?::\w+:)/
+  # credo:disable-for-next-line
+  @hyperlink_regex ~r/((https?):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/
 
-  # Parser
-  def parse(chat_message, %Config{} = config \\ %Config{}) do
-    msg = String.split(chat_message)
+  # Older hyperlink regex
+  # credo:disable-for-next-line
+  # @hyperlink_regex ~r/(?:(?:https?):\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))?/
 
-    glimojis = Glimesh.Emote.list_emotes_by_key_and_image(config.allow_animated_glimjois)
+  def parse(chat_message, config \\ %Config{})
 
-    msg = if config.allow_glimojis, do: replace_glimojies(glimojis, msg), else: msg
-    msg = if config.allow_links, do: replace_links(msg), else: msg
-
-    msg
+  def parse("", _) do
+    [
+      %Token{
+        type: "text",
+        text: ""
+      }
+    ]
   end
 
-  def parse_and_render(
-        %Glimesh.Chat.ChatMessage{} = chat_message,
-        %Config{} = config \\ %Config{}
-      ) do
-    # If the user who posted the ChatMessage has a platform subscription, we allow animated emotes
-    config =
-      Map.put(
-        config,
-        :allow_animated_glimjois,
-        Glimesh.Payments.has_platform_subscription?(chat_message.user)
-      )
+  def parse(chat_message, %Config{} = config) do
+    emotes = Glimesh.Emote.list_emotes_by_key_and_image(config.allow_animated_emotes)
+    config = Map.put(config, :emotes, emotes)
 
-    chat_message.message
-    |> parse(config)
-    |> to_raw_html()
-    |> raw()
+    parsed =
+      [chat_message]
+      |> split_with_regex(@hyperlink_regex)
+      |> split_with_regex(@emote_regex)
+      |> map_to_tokens(config)
+
+    parsed
   end
 
-  def message_contains_link(chat_message) do
-    found_uris = flatten_list(Regex.scan(@hyperlink_regex, chat_message))
+  defp split_with_regex(items, regex) do
+    Enum.map(items, fn item ->
+      Regex.split(regex, item, include_captures: true, trim: true)
+    end)
+    |> List.flatten()
+  end
 
-    for message <- found_uris do
-      case URI.parse(message).scheme do
-        "https" -> true
-        "http" -> true
-        _ -> false
+  defp map_to_tokens(items, %Config{} = config) do
+    # Yes, I'm sorry, I don't know how else to do this.
+    Enum.map(items, fn item ->
+      cond do
+        config.allow_links and Regex.match?(@hyperlink_regex, item) ->
+          link_token(item)
+
+        config.allow_emotes and String.starts_with?(item, ":") ->
+          # credo:disable-for-next-line
+          case Map.get(config.emotes, item) do
+            nil -> text_token(item)
+            src -> emote_token(item, src)
+          end
+
+        true ->
+          text_token(item)
       end
-    end
+    end)
   end
 
-  defp replace_glimojies(glimojis, inputs) when length(inputs) == 1 do
-    [glimoji_to_img(glimojis, hd(inputs), "128px")]
+  defp text_token(text) do
+    %Token{
+      type: "text",
+      text: text
+    }
   end
 
-  defp replace_glimojies(glimojis, inputs) do
-    Enum.map(inputs, &glimoji_to_img(glimojis, &1))
+  defp link_token(link) do
+    # Check if we need to normalize the URL
+    %URI{scheme: scheme} = URI.parse(link)
+    url = if scheme, do: link, else: "http://#{link}"
+
+    %Token{
+      type: "url",
+      text: link,
+      url: url
+    }
   end
 
-  defp replace_links(inputs) do
-    Enum.map(inputs, &link_to_a(&1))
-  end
-
-  defp glimoji_to_img(glimojis, word, size \\ "32px")
-  defp glimoji_to_img(_, {:safe, _} = inp, _), do: inp
-
-  defp glimoji_to_img(glimojis, word, size) do
-    case Map.get(glimojis, word) do
-      nil ->
-        word
-
-      img_path ->
-        img_tag(GlimeshWeb.Router.Helpers.static_path(GlimeshWeb.Endpoint, img_path),
-          width: size,
-          height: size,
-          draggable: "false",
-          alt: word
-        )
-    end
-  end
-
-  defp link_to_a({:safe, _} = inp), do: inp
-
-  defp link_to_a(link) do
-    case URI.parse(link).scheme do
-      "https" -> Link.link(link, to: link, target: "_blank", rel: "ugc")
-      "http" -> Link.link(link, to: link, target: "_blank", rel: "ugc")
-      _ -> link
-    end
-  end
-
-  defp flatten_list([head | tail]), do: flatten_list(head) ++ flatten_list(tail)
-  defp flatten_list([]), do: []
-  defp flatten_list(element), do: [element]
-
-  # Renderer
-  def to_raw_html(safe_list) do
-    safe_list
-    |> Enum.map(&map_to_safe(&1))
-    |> Enum.join(" ")
-  end
-
-  defp map_to_safe({:safe, _} = inp) do
-    safe_to_string(inp)
-  end
-
-  defp map_to_safe(inp) do
-    inp |> html_escape() |> map_to_safe()
+  defp emote_token(emote, src) do
+    %Token{
+      type: "emote",
+      text: emote,
+      src: src
+    }
   end
 end

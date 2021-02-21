@@ -264,6 +264,20 @@ defmodule Glimesh.Payments do
     )
   end
 
+  def is_platform_subscriber?(user) do
+    Repo.exists?(
+      from s in Subscription,
+        where:
+          s.user_id == ^user.id and
+            s.is_active == true and
+            is_nil(s.streamer_id) and
+            s.stripe_product_id in [
+              ^get_platform_sub_supporter_product_id(),
+              ^get_platform_sub_founder_product_id()
+            ]
+    )
+  end
+
   def is_platform_supporter_subscriber?(user) do
     Repo.exists?(
       from s in Subscription,
