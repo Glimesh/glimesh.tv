@@ -33,12 +33,18 @@ defmodule Glimesh.Chat do
   def create_chat_message(%User{} = user, %Channel{} = channel, attrs \\ %{}) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_chat_message, user, channel) do
       if allow_link_in_message(channel, attrs) do
+        config =
+          Glimesh.Chat.get_chat_parser_config(
+            channel,
+            Glimesh.Payments.is_platform_subscriber?(user)
+          )
+
         %ChatMessage{
           channel: channel,
           user: user
         }
         |> ChatMessage.changeset(attrs)
-        |> ChatMessage.put_tokens(channel)
+        |> ChatMessage.put_tokens(config)
         |> Repo.insert()
         |> broadcast(:chat_message)
       else
@@ -159,7 +165,7 @@ defmodule Glimesh.Chat do
       [%ChatMessage{}, ...]
 
   """
-  def list_chat_messages(channel, limit \\ 500) do
+  def list_chat_messages(channel, limit \\ 5) do
     Repo.all(
       from m in ChatMessage,
         where: m.is_visible == true and m.channel_id == ^channel.id,
@@ -207,10 +213,11 @@ defmodule Glimesh.Chat do
     })
   end
 
-  def get_chat_parser_config(%Channel{} = channel) do
+  def get_chat_parser_config(%Channel{} = channel, allow_animated_emotes \\ false) do
     %Glimesh.Chat.Parser.Config{
       allow_links: !channel.disable_hyperlinks,
-      allow_emotes: true
+      allow_emotes: true,
+      allow_animated_emotes: allow_animated_emotes
     }
   end
 

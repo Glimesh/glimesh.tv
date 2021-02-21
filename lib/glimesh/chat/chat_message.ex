@@ -27,10 +27,9 @@ defmodule Glimesh.Chat.ChatMessage do
     |> validate_required([:channel, :user, :message])
   end
 
-  def put_tokens(changeset, channel) do
+  def put_tokens(changeset, config) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{message: message}} ->
-        config = Glimesh.Chat.get_chat_parser_config(channel)
         tokens = Glimesh.Chat.Parser.parse(message, config)
         put_embed(changeset, :tokens, tokens)
 
