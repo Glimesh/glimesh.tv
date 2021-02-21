@@ -38,6 +38,7 @@ defmodule Glimesh.Chat do
           user: user
         }
         |> ChatMessage.changeset(attrs)
+        |> ChatMessage.put_tokens(channel)
         |> Repo.insert()
         |> broadcast(:chat_message)
       else
@@ -158,7 +159,7 @@ defmodule Glimesh.Chat do
       [%ChatMessage{}, ...]
 
   """
-  def list_chat_messages(channel, limit \\ 5) do
+  def list_chat_messages(channel, limit \\ 500) do
     Repo.all(
       from m in ChatMessage,
         where: m.is_visible == true and m.channel_id == ^channel.id,
@@ -209,24 +210,21 @@ defmodule Glimesh.Chat do
   def get_chat_parser_config(%Channel{} = channel) do
     %Glimesh.Chat.Parser.Config{
       allow_links: !channel.disable_hyperlinks,
-      allow_glimojis: true
+      allow_emotes: true
     }
   end
 
   def allow_link_in_message(%Channel{} = channel, attrs) do
     # Need to add this since phoenix likes strings and our tests don't use them :)
-    message_contain_link_helper =
-      if attrs["message"] do
-        Glimesh.Chat.Parser.message_contains_link(attrs["message"])
-      else
-        if attrs.message,
-          do: Glimesh.Chat.Parser.message_contains_link(attrs.message),
-          else: [true]
-      end
+    message = if attrs["message"], do: attrs["message"], else: attrs.message
 
-    case message_contain_link_helper do
-      [true] -> !channel.block_links
-      _ -> true
+    # Dumb fast check to see if there's something that smells like a link
+    # If the channel has links disabled it still wont do anything
+    if is_bitstring(message) and String.contains?(message, "http") and
+         String.contains?(message, "://") do
+      !channel.block_links
+    else
+      true
     end
   end
 

@@ -12,6 +12,8 @@ defmodule Glimesh.Chat.ChatMessage do
     field :is_visible, :boolean, default: true
     field :is_followed_message, :boolean, default: false
 
+    embeds_many :tokens, Glimesh.Chat.Token, on_replace: :delete
+
     belongs_to :channel, Channel
     belongs_to :user, User
 
@@ -23,5 +25,23 @@ defmodule Glimesh.Chat.ChatMessage do
     chat_message
     |> cast(attrs, [:message, :is_visible, :is_followed_message])
     |> validate_required([:channel, :user, :message])
+  end
+
+  def put_tokens(changeset, channel) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{message: message}} ->
+        config = Glimesh.Chat.get_chat_parser_config(channel)
+        tokens = Glimesh.Chat.Parser.parse(message, config)
+        put_embed(changeset, :tokens, tokens)
+
+      _ ->
+        changeset
+    end
+  end
+
+  @doc false
+  def token_changeset(chat_message, tokens \\ []) do
+    chat_message
+    |> put_embed(:tokens, tokens)
   end
 end

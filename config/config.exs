@@ -86,6 +86,8 @@ config :phoenix, :json_library, Jason
 
 config :phoenix, :template_engines, md: PhoenixMarkdown.Engine
 
+config :postgrex, :json_library, Jason
+
 config :stripity_stripe,
   api_key: "sk_test_123",
   public_api_key: "YOUR PUBLIC KEY",
