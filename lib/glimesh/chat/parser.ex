@@ -56,7 +56,7 @@ defmodule Glimesh.Chat.Parser do
     Enum.map(items, fn item ->
       cond do
         config.allow_links and Regex.match?(@hyperlink_regex, item) ->
-          link_token(item)
+          url_token(item)
 
         config.allow_emotes and String.starts_with?(item, ":") ->
           # credo:disable-for-next-line
@@ -78,7 +78,7 @@ defmodule Glimesh.Chat.Parser do
     }
   end
 
-  defp link_token(link) do
+  defp url_token(link) do
     # Check if we need to normalize the URL
     %URI{scheme: scheme} = URI.parse(link)
     url = if scheme, do: link, else: "http://#{link}"
