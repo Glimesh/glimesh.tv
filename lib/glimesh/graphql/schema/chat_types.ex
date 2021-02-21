@@ -86,7 +86,7 @@ defmodule Glimesh.Schema.ChatTypes do
     interface(:chat_message_token)
   end
 
-  object :render_token do
+  object :link_token do
     field :type, :string
     field :text, :string
     field :url, :string
