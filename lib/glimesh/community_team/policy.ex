@@ -76,6 +76,12 @@ defmodule Glimesh.CommunityTeam.Policy do
       else: true
   end
 
+  def authorize(:edit_user, %User{is_gct: true, gct_level: 2} = current_user, user) do
+    if is_self?(current_user, user) || is_user_higher_level?(current_user, user),
+      do: false,
+      else: true
+  end
+
   def authorize(:can_ban, %User{is_gct: true, gct_level: 2} = current_user, user) do
     if is_self?(current_user, user) || is_user_higher_level?(current_user, user),
       do: false,
