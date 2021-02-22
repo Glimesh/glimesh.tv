@@ -21,8 +21,13 @@ defmodule Glimesh.Avatar do
   end
 
   # Override the persisted filenames:
-  def filename(_version, {_file, scope}) do
+  def filename(:original_x2, {_file, scope}) do
     scope.username
+  end
+
+  # Override the persisted filenames:
+  def filename(_version, {_file, scope}) do
+    scope.id
   end
 
   # Override the storage directory:
