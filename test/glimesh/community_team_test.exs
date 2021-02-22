@@ -12,7 +12,7 @@ defmodule Glimesh.CommunityTeamTest do
     end
 
     test "can't edit user if no permission" do
-      user = gct_fixture(%{gct_level: 2, tfa_token: "Fake 2fa token"})
+      user = gct_fixture(%{gct_level: 1, tfa_token: "Fake 2fa token"})
 
       assert Bodyguard.permit?(Glimesh.CommunityTeam, :edit_user, user, user_fixture()) == false
     end
