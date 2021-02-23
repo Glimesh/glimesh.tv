@@ -18,6 +18,10 @@
 
     <p><%= gettext("Once you have completed the form, please upload a copy of it to the embedded Box.com (secure file hosting) page below. Our team will review, and we'll send you an email if we have any questions! After we review, and your account is approved, your subscriptions button will be enabled!") %></p>
 
+    <p>
+        <img src="<%= Routes.static_path(@conn, "/images/payments/w-8-required-fields.jpg")%>" alt="Required fields on the W-8">
+    </p>
+
     <p><%= gettext("If you have problems seeing this embedded page below, try this link:") %> <a href="https://app.box.com/f/450d66ac6daa4c298e15ad3fc43403ac">https://app.box.com/f/450d66ac6daa4c298e15ad3fc43403ac</a></p>
     <iframe src="https://app.box.com/f/450d66ac6daa4c298e15ad3fc43403ac" height="940" width="100%"></iframe>
     <p><%= gettext("Secure file upload provided by Box.com") %></p>
