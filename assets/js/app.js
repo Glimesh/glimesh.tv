@@ -30,6 +30,7 @@ import ClickToCopy from "./hooks/ClickToCopy";
 import LineChart from "./hooks/charts/LineChart";
 import InfiniteScroll from "./hooks/InfiniteScroll";
 import TagSelector from "./hooks/TagSelector";
+import TagSearch from "./hooks/TagSearch";
 import LaunchCountdown from "./hooks/LaunchCountdown";
 
 // https://github.com/github/markdown-toolbar-element
@@ -47,6 +48,7 @@ Hooks.ClickToCopy = ClickToCopy;
 Hooks.LineChart = LineChart;
 Hooks.InfiniteScroll = InfiniteScroll;
 Hooks.TagSelector = TagSelector;
+Hooks.TagSearch = TagSearch;
 Hooks.LaunchCountdown = LaunchCountdown;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
