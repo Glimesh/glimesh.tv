@@ -6,6 +6,9 @@ defmodule GlimeshWeb.GctLive.Components.ChannelButtonArray do
     ~L"""
     <%= live_redirect gettext("Edit Channel"), class: (if @can_edit_channel, do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_channel, @channel.id) %>
     <%= live_redirect gettext("View Chat Log"), class: "btn btn-primary", to: Routes.gct_path(@socket, :channel_chat_log, @channel.id) %>
+    <%= if @channel.status == "live" do %>
+    <%= button gettext("Shutdown Broadcast"), class: (if @can_edit_channel, do: "btn btn-danger", else: "btn btn-danger disabled"), to: Routes.gct_path(@socket, :shutdown_channel, @channel.id), "data-confirm": "Are you sure you wish to shutdown the current stream, and remove this users ability to start a new stream?" %>
+    <% end %>
     """
   end
 
