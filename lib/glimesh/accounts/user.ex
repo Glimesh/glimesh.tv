@@ -31,7 +31,7 @@ defmodule Glimesh.Accounts.User do
     field :social_discord, :string
     field :social_guilded, :string
 
-    field :can_payments, :boolean, default: false
+    field :can_payments, :boolean, default: true
     field :is_stripe_setup, :boolean, default: false
     field :is_tax_verified, :boolean, default: false
     field :tax_withholding_percent, :decimal

@@ -67,10 +67,13 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButtonTest do
         )
 
       assert html =~ "Subscribe"
-      assert html =~ "class=\"btn btn-secondary btn-responsive\""
 
-      modal = view |> element("button", "Subscribe") |> render_click()
-      assert modal =~ "$5.00 / monthly"
+      if Glimesh.has_launched?() do
+        assert html =~ "class=\"btn btn-secondary btn-responsive\""
+
+        modal = view |> element("button", "Subscribe") |> render_click()
+        assert modal =~ "$5.00 / monthly"
+      end
     end
   end
 end

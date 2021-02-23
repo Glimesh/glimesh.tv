@@ -5,9 +5,7 @@
                 <div class="card-body">
                     <h2 class="<%= Glimesh.Chat.Effects.get_username_color(@streamer, "text-color-link") %>">
                         <%= @streamer.displayname %></h2>
-                    <img src="<%= Glimesh.Avatar.url({@streamer.avatar, @streamer}, :original) %>"
-                        alt="Your Profile Picture"
-                        class="img-fluid mb-2 img-avatar <%= if @streamer.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+                    <img src="<%= Glimesh.Avatar.url({@streamer.avatar, @streamer}, :original) %>" alt="Your Profile Picture" class="img-fluid mb-2 img-avatar <%= if @streamer.stripe_user_id, do: "img-verified-streamer", else: "" %>">
 
                     <%= if @streamer.stripe_user_id do %>
                     <div class="mb-4"><span class="badge badge-secondary"><%= gettext("Sub-ready Streamer") %></span>
@@ -36,13 +34,9 @@
                     </div>
 
                     <%= if @streamer == @user do %>
-                    <a class="btn btn-primary btn-sm mt-4" target="_blank"
-                        href="https://twitter.com/intent/tweet?text=<%= @streamer_share_text %>"
-                        data-size="large"><%= gettext("Share my profile on Twitter") %></a>
+                    <a class="btn btn-primary btn-sm mt-4" target="_blank" href="https://twitter.com/intent/tweet?text=<%= @streamer_share_text %>" data-size="large"><%= gettext("Share my profile on Twitter") %></a>
                     <% else  %>
-                    <a class="btn btn-primary btn-sm mt-4" target="_blank"
-                        href="https://twitter.com/intent/tweet?text=<%= @viewer_share_text %>"
-                        data-size="large"><%= gettext("Share on Twitter") %></a>
+                    <a class="btn btn-primary btn-sm mt-4" target="_blank" href="https://twitter.com/intent/tweet?text=<%= @viewer_share_text %>" data-size="large"><%= gettext("Share on Twitter") %></a>
                     <% end %>
 
                     <%= if @user do %>
@@ -65,11 +59,13 @@
 
             <div class="card text-center mt-4">
                 <div class="card-header">
-                    <h5><%= gettext("Pre-Follow Streamer") %></h5>
+                    <h5><%= gettext("Follow Streamer") %></h5>
                 </div>
                 <div class="card-body">
+                    <%= if not Glimesh.has_launched?() do %>
                     <p><%= gettext("Glimesh isn't launched yet, but you can follow %{streamer} now and get automatically notified when they go live!", streamer: @streamer.displayname) %>
                     </P>
+                    <% end %>
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                 </div>
             </div>
@@ -91,10 +87,7 @@
                 <div class="card-body user-content-body">
                     <%= if @youtube_id do %>
                     <div class="embed-responsive embed-responsive-16by9 mb-4">
-                        <iframe class="embed-responsive-item"
-                            src="https://www.youtube-nocookie.com/embed/<%= @youtube_id %>" frameborder="0"
-                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen></iframe>
+                        <iframe class="embed-responsive-item" src="https://www.youtube-nocookie.com/embed/<%= @youtube_id %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                     <% end %>
 
