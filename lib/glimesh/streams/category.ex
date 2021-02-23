@@ -21,6 +21,7 @@ defmodule Glimesh.Streams.Category do
     |> validate_required([:name])
     |> validate_length(:name, min: 2)
     |> set_slug_attribute()
+    |> unique_constraint([:slug])
   end
 
   def set_slug_attribute(changeset) do
