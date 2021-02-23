@@ -17,7 +17,7 @@ defmodule GlimeshWeb.UserSettingsController do
   end
 
   def stream(conn, _params) do
-    launched = Application.get_env(:glimesh, :launched, false)
+    launched = Glimesh.has_launched?()
 
     render(conn, "stream.html",
       page_title: format_page_title(gettext("Channel Settings")),
@@ -96,7 +96,7 @@ defmodule GlimeshWeb.UserSettingsController do
   def update_channel(conn, %{"channel" => channel_params}) do
     channel = conn.assigns.channel
     user = conn.assigns.current_user
-    launched = Application.get_env(:glimesh, :launched, false)
+    launched = Glimesh.has_launched?()
 
     case Streams.update_channel(user, channel, channel_params) do
       {:ok, _} ->

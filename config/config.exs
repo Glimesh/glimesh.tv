@@ -35,7 +35,6 @@ config :glimesh,
   ecto_repos: [Glimesh.Repo],
   environment: Mix.env(),
   email_physical_address: "1234 Fake St.<br>Pittsburgh, PA 15217",
-  launched: false,
   run_stream_pruner: true,
   locales: locales
 

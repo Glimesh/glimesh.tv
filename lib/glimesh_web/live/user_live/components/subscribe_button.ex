@@ -16,7 +16,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
                     <button class="btn btn-secondary btn-responsive" phx-click="show_modal" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Subscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
                 <% end %>
             <% else %>
-                <button class="btn btn-secondary btn-responsive disabled"><span class="d-none d-lg-block"><%= gettext("Subscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
+                <button class="btn btn-secondary btn-responsive disabled" data-toggle="tooltip" data-placement="bottom" title="Subscriptions are not enabled yet, come back after March 2nd at 11AM to subscribe!"><span class="d-none d-lg-block"><%= gettext("Subscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
             <% end %>
         <% else %>
           <span class="d-none d-lg-block"><%= link gettext("Subscribe"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary btn-responsive" %></span><span class="d-lg-none"><i class="fas fa-star"></i></span>
@@ -88,7 +88,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
      |> assign(:show_subscription, false)
      |> assign(:streamer, streamer)
      |> assign(:user, user)
-     |> assign(:can_subscribe, can_subscribe && can_receive_payments)
+     |> assign(:can_subscribe, can_subscribe && can_receive_payments && Glimesh.has_launched?())
      |> assign(:subscribed, subscribed)}
   end
 

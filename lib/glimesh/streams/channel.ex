@@ -85,6 +85,7 @@ defmodule Glimesh.Streams.Channel do
     |> set_chat_rules_content_html()
     |> cast_attachments(attrs, [:poster, :chat_bg])
     |> maybe_put_tags(:tags, attrs)
+    |> unique_constraint([:user_id])
   end
 
   alias Glimesh.Streams.Tag

@@ -25,5 +25,11 @@ defmodule Glimesh.Streams.ChannelBan do
       :reason
     ])
     |> validate_required([:channel, :user])
+    |> unique_constraint([:channel_id, :user_id, :expires_at],
+      name: "channel_bans_unique_index_non_null"
+    )
+    |> unique_constraint([:channel_id, :user_id, :expires_at],
+      name: "channel_bans_unique_index_null"
+    )
   end
 end
