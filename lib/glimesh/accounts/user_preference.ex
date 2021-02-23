@@ -27,5 +27,6 @@ defmodule Glimesh.Accounts.UserPreference do
       :show_timestamps,
       :show_mature_content
     ])
+    |> unique_constraint(:user_id)
   end
 end

@@ -12,8 +12,17 @@ defmodule Glimesh.Repo.Migrations.ForgottenUniqueIndexes do
     create index("channels", [:user_id], unique: true)
 
     # Channel Bans
-    create index("channel_bans", [:channel_id, :user_id], unique: true, where: "expires_at is not null", name: :channel_bans_unique_index_non_null)
-    create index("channel_bans", [:channel_id, :user_id], unique: true, where: "expires_at is null", name: :channel_bans_unique_index_null)
+    create index("channel_bans", [:channel_id, :user_id],
+             unique: true,
+             where: "expires_at is not null",
+             name: :channel_bans_unique_index_non_null
+           )
+
+    create index("channel_bans", [:channel_id, :user_id],
+             unique: true,
+             where: "expires_at is null",
+             name: :channel_bans_unique_index_null
+           )
 
     # User Preferences
     create index("user_preferences", [:user_id], unique: true)
