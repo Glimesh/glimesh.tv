@@ -40,12 +40,10 @@ defmodule Glimesh.Chat.Renderer do
   Safe?
   """
   def render_link(text, url) do
-    try do
-      Phoenix.HTML.Link.link(text, to: url, target: "_blank", rel: "ugc")
-    rescue
-      _ ->
-        text
-    end
+    Phoenix.HTML.Link.link(text, to: url, target: "_blank", rel: "ugc")
+  rescue
+    _ ->
+      text
   end
 
   @doc """
