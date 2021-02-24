@@ -59,7 +59,7 @@ defmodule Glimesh.ChatEffectsTest do
       rendered_avatar = safe_to_string(Effects.render_avatar(user))
 
       assert rendered_username =~ "text-warning"
-      assert rendered_username =~ "Glimesh Founder Subscriber"
+      assert rendered_username =~ "Glimesh Gold Supporter Subscriber"
       assert rendered_avatar =~ "avatar-ring avatar-animated-ring platform-founder-ring"
     end
 
