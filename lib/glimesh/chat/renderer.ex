@@ -13,6 +13,9 @@ defmodule Glimesh.Chat.Renderer do
   def render(unsafe_tokens) do
     Enum.map(unsafe_tokens, &render_token/1)
     |> Enum.map(&map_to_safe(&1))
+  rescue
+    ArgumentError -> "<em>Could not render message</em>"
+    RuntimeError -> "<em>Could not render message</em>"
   end
 
   @doc """

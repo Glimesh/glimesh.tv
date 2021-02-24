@@ -74,7 +74,10 @@ defmodule GlimeshWeb.UserSettingsController do
         |> redirect(to: "/users/settings/stream")
 
       {:error, changeset} ->
-        render(conn, "stream.html", channel_changeset: changeset)
+        render(conn, "stream.html",
+          channel_changeset: changeset,
+          launched: Glimesh.has_launched?()
+        )
     end
   end
 
@@ -89,7 +92,10 @@ defmodule GlimeshWeb.UserSettingsController do
         |> UserAuth.log_in_user(user)
 
       {:error, changeset} ->
-        render(conn, "stream.html", channel_changeset: changeset)
+        render(conn, "stream.html",
+          channel_changeset: changeset,
+          launched: Glimesh.has_launched?()
+        )
     end
   end
 
@@ -106,7 +112,11 @@ defmodule GlimeshWeb.UserSettingsController do
         |> UserAuth.log_in_user(conn.assigns.current_user)
 
       {:error, changeset} ->
-        render(conn, "stream.html", channel_changeset: changeset, launched: launched)
+        render(conn, "stream.html",
+          channel_changeset: changeset,
+          launched: launched,
+          launched: Glimesh.has_launched?()
+        )
     end
   end
 

@@ -34,7 +34,7 @@ defmodule Glimesh.Chat.ParserTest do
              ]
 
       assert Parser.parse("glimesh.tv") == [
-               %Token{type: "url", text: "glimesh.tv", url: "http://glimesh.tv"}
+               %Token{type: "text", text: "glimesh.tv"}
              ]
 
       # Make sure we're not confusing a dot at the end for a URL
