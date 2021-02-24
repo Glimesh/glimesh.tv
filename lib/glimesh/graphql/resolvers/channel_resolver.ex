@@ -89,11 +89,17 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   def upload_stream_thumbnail(_parent, %{stream_id: stream_id, thumbnail: thumbnail}, %{
         context: %{is_admin: true}
       }) do
-    stream = Streams.get_stream!(stream_id)
+    with %Streams.Stream{} = stream <- Streams.get_stream(stream_id),
+         {:ok, stream} <- Streams.update_stream(stream, %{thumbnail: thumbnail}) do
+      {:ok, stream}
+    else
+      nil ->
+        {:error, "Stream ID not found"}
 
-    Streams.update_stream(stream, %{
-      thumbnail: thumbnail
-    })
+      {:error, _} ->
+        # Whenever a DO Spaces error occurs, it throws back an error absinthe can't natively process
+        {:error, "Error uploading thumbnail"}
+    end
   end
 
   def upload_stream_thumbnail(_parent, _args, _resolution) do

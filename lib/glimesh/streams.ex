@@ -94,6 +94,9 @@ defmodule Glimesh.Streams do
   end
 
   # Streams
+  def get_stream(id) do
+    Repo.get_by(Glimesh.Streams.Stream, id: id)
+  end
 
   def get_stream!(id) do
     Repo.get_by!(Glimesh.Streams.Stream, id: id)
