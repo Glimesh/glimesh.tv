@@ -46,7 +46,7 @@ defmodule Glimesh.Chat.Effects do
         Payments.is_platform_founder_subscriber?(user) ->
           [
             "data-toggle": "tooltip",
-            title: gettext("Glimesh Founder Subscriber")
+            title: gettext("Glimesh Gold Supporter Subscriber")
           ]
 
         Payments.is_platform_supporter_subscriber?(user) ->
