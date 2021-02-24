@@ -14,7 +14,11 @@ defmodule Glimesh.Workers.StreamPruner do
   @prune_diff 300
 
   def start_link(_init_args) do
-    GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
+    if Application.get_env(:glimesh, :run_stream_pruner) do
+      GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
+    else
+      :ignore
+    end
   end
 
   def init(:ok) do

@@ -1,80 +1,97 @@
-<div class="container-fluid">
+<div class="hero has-background">
+    <!-- <img class="hero-background" src="<%= @category_background_url %>" alt="<%= gettext("%{category} Streams", category: @list_name) %>"> -->
 
-    <%= if is_nil(List.first(@channels)) do %>
+    <div class="hero-body">
+        <div class="container">
 
-    <div class="container">
-        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
-            <div class="col-md-12 p-lg-5 mx-auto my-5">
-                <h1 class="display-4 font-weight-normal">
-                    <%= gettext("%{category} Streams Coming Soon", category: @list_name) %></h1>
-                <p class="lead font-weight-normal">
-                    <%= gettext("We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!") %>
-                </p>
-            </div>
-        </div>
-    </div>
+            <%= if is_nil(List.first(@original_channels)) do %>
 
-    <% else %>
-
-    <div class="container">
-        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
-            <div class="col-md-12 mx-auto ">
-                <h1 class="display-4 font-weight-normal">
-                    <%= gettext("%{category} Streams", category: @list_name) %>
-                </h1>
-            </div>
-        </div>
-    </div>
-
-
-    <%= if !is_nil(@tags) do %>
-    <div class="card">
-        <div class="card-body align-items-center">
-            <h4 class="float-left">
-                <%= gettext("Tags:") %>
-
-                <%= for tag <- @tags do %>
-                <%= live_patch tag.name, to: Routes.streams_list_path(@socket, :index, @category.slug, %{tag: tag.slug}), class: "badge badge-pill badge-primary" %>
-                <% end %>
-            </h4>
-            <div class="float-right">
-                <%= if @tag_selected do %>
-                <%= live_patch gettext("Clear Filter"), to: Routes.streams_list_path(@socket, :index, @category.slug), class: "btn btn-primary" %>
-                <% end %>
-            </div>
-        </div>
-    </div>
-    <% end %>
-
-    <div class="row">
-        <%= for channel <- @channels do %>
-        <div class="col-sm-12 col-md-6 col-lg-4 mt-4">
-            <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
-            <div class="card card-stream">
-                <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>"
-                    alt="<%= channel.title %>" class="card-img">
-                <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
-                    <div class="card-stream-tags">
-                        <%= for tag <- channel.tags do %>
-                        <span class="badge badge-primary"><%= tag.name %></span>
-                        <% end %>
-                    </div>
-
-                    <div class="media card-stream-streamer">
-                        <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>"
-                            alt="<%= channel.user.displayname%>" width="48" height="48"
-                            class="img-avatar mr-2 <%= if channel.user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
-                        <div class="media-body">
-                            <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
-                            <p class="mb-0 card-stream-username"><%= channel.user.displayname %></p>
-                        </div>
+            <div class="container">
+                <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
+                    <div class="col-md-12 p-lg-5 mx-auto my-5">
+                        <h1 class="display-4 font-weight-normal">
+                            <%= gettext("%{category} Streams Coming Soon", category: @list_name) %></h1>
+                        <p class="lead font-weight-normal">
+                            <%= gettext("We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!") %>
+                        </p>
                     </div>
                 </div>
             </div>
+
+            <% else %>
+
+            <div class="container">
+                <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
+                    <div class="col-md-12 mx-auto ">
+                        <h1 class="display-4 font-weight-normal">
+                            <%= gettext("%{category} Streams", category: @list_name) %>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+
             <% end %>
+        </div>
+        <%= if !is_nil(List.first(@original_channels)) do %>
+        <div class="container container-stream-list pt-4">
+            <%= if !is_nil(@tag_list) do %>
+            <div class="row">
+                <div class="col">
+                    <form class="needs-validation" novalidate>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="validationCustom01">Tags</label>
+                                <div id="tagify" phx-update="ignore">
+                                    <%= text_input :form, :tag_search,
+                                        value: @prefilled_tags,
+                                        class: "tagify",
+                                        "data-tags": @tag_list,
+                                        "phx-hook": "TagSearch",
+                                        "phx-change": "filter_tags",
+                                        placeholder: gettext("Search for a stream by tags") %>
+                                </div>
+                            </div>
+                            <%# <div class="col-md-6 mb-3">
+                                <label for="validationCustom02">Language</label>
+                                 select :form, :locale, @locales, [class: "custom-select", "phx-change": "filter_language"]
+                            </div>
+                            %>
+                        </div>
+                    </form>
+                </div>
+                <div class="col text-right">
+                    <%= gettext("Showing %{count_channels} of %{total_channels} Live Channels", count_channels: length(@visible_channels), total_channels: length(@original_channels)) %>
+                </div>
+            </div>
+            <% end %>
+
+            <div class="row">
+                <%= for channel <- @visible_channels do %>
+                <div class="col-sm-12 col-md-6 col-lg-4 mt-4">
+                    <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
+                    <div class="card card-stream">
+                        <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>" alt="<%= channel.title %>" class="card-img">
+                        <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
+                            <div class="card-stream-tags">
+                                <%= for tag <- channel.tags do %>
+                                <span class="badge badge-primary"><%= tag.name %></span>
+                                <% end %>
+                            </div>
+
+                            <div class="media card-stream-streamer">
+                                <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>" alt="<%= channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if channel.user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+                                <div class="media-body">
+                                    <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
+                                    <p class="mb-0 card-stream-username"><%= channel.user.displayname %></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% end %>
+                </div>
+                <% end %>
+            </div>
         </div>
         <% end %>
     </div>
-    <% end %>
-
 </div>

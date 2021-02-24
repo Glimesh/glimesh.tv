@@ -1,12 +1,7 @@
 categories = ["Art", "Music", "Tech", "IRL", "Education", "Gaming"]
 
 Enum.each(categories, fn name ->
-  Glimesh.Repo.insert!(
-      %Glimesh.Streams.Category{
-        name: name,
-        slug: Slug.slugify(name)
-      },
-      on_conflict: :nothing,
-      conflict_target: :name
-    )
+  if is_nil(Glimesh.ChannelCategories.get_category(Slug.slugify(name))) do
+    Glimesh.ChannelCategories.create_category(%{name: name})
+  end
 end)

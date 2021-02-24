@@ -148,7 +148,8 @@ defmodule Glimesh.ChannelCategories do
         join: ct in "channel_tags",
         on: ct.tag_id == t.id and ct.channel_id == c.id,
         where: c.status == "live" and t.category_id == ^category_id,
-        order_by: [desc: :count_usage]
+        order_by: [desc: :count_usage],
+        group_by: t.id
     )
   end
 
@@ -158,14 +159,20 @@ defmodule Glimesh.ChannelCategories do
         where: t.category_id == ^category_id,
         order_by: [desc: :count_usage]
     )
-    |> Enum.map(fn tag ->
+    |> convert_tags_for_tagify()
+  end
+
+  def convert_tags_for_tagify(tags, include_usage \\ true) do
+    Enum.map(tags, fn tag ->
       %{
         value: tag.name,
-        label: "#{tag.name} (#{tag.count_usage} Uses)",
+        slug: tag.slug,
+        label: "#{tag.name}" <> if(include_usage, do: " (#{tag.count_usage} Uses)", else: ""),
         # placeholder for global tags
         class: ""
       }
     end)
+    |> Jason.encode!()
   end
 
   @doc """
