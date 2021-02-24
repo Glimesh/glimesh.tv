@@ -55,7 +55,8 @@ defmodule Glimesh.Chat.Parser do
     # Yes, I'm sorry, I don't know how else to do this.
     Enum.map(items, fn item ->
       cond do
-        config.allow_links and Regex.match?(@hyperlink_regex, item) ->
+        config.allow_links and String.starts_with?(item, "http") and
+            Regex.match?(@hyperlink_regex, item) ->
           url_token(item)
 
         config.allow_emotes and String.starts_with?(item, ":") ->
@@ -79,14 +80,10 @@ defmodule Glimesh.Chat.Parser do
   end
 
   defp url_token(link) do
-    # Check if we need to normalize the URL
-    %URI{scheme: scheme} = URI.parse(link)
-    url = if scheme, do: link, else: "http://#{link}"
-
     %Token{
       type: "url",
       text: link,
-      url: url
+      url: link
     }
   end
 
