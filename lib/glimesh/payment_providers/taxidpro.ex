@@ -40,7 +40,7 @@ defmodule Glimesh.PaymentProviders.TaxIDPro do
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         {:error, "Unexpected response from API."}
 
-      {:error, _} ->
+      _ ->
         {:error, "Unexpected response from API."}
     end
   end
