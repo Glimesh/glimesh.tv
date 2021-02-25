@@ -177,6 +177,16 @@ defmodule Glimesh.Chat do
   end
 
   @doc """
+  Returns a list of all chat_messages in a channel
+  """
+  def list_all_chat_messages(channel) do
+    ChatMessage
+    |> order_by(desc: :inserted_at)
+    |> where([cm], cm.channel_id == ^channel.id)
+    |> preload([:user, :channel])
+  end
+
+  @doc """
   Gets a single chat_message.
 
   Raises `Ecto.NoResultsError` if the Chat message does not exist.

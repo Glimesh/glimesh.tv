@@ -17,6 +17,7 @@ defmodule Glimesh.CommunityTeam.Policy do
   # Global GCT perms
   def authorize(:view_user, %User{is_gct: true}, _user), do: true
   def authorize(:view_channel, %User{is_gct: true}, _user), do: true
+  def authorize(:view_chat_logs, %User{is_gct: true}, _user), do: true
 
   # GCT Admin perms
   def authorize(:edit_user_profile, %User{is_gct: true, gct_level: 5}, _user), do: true

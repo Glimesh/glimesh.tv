@@ -5,6 +5,7 @@ defmodule GlimeshWeb.GctLive.Components.ChannelButtonArray do
   def render(assigns) do
     ~L"""
     <%= live_redirect gettext("Edit Channel"), class: (if @can_edit_channel, do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_channel, @channel.id) %>
+    <%= live_redirect gettext("View Chat Log"), class: "btn btn-primary", to: Routes.gct_path(@socket, :channel_chat_log, @channel.id) %>
     """
   end
 
