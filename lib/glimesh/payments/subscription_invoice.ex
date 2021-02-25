@@ -48,6 +48,7 @@ defmodule Glimesh.Payments.SubscriptionInvoice do
     |> validate_required([
       :stripe_invoice_id
     ])
+    |> unique_constraint(:stripe_invoice_id)
   end
 
   def update_changeset(invoice, attrs) do

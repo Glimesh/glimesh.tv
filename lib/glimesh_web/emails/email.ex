@@ -15,6 +15,15 @@ defmodule GlimeshWeb.Emails.Email do
     |> from("Glimesh <noreply@glimesh.tv>")
   end
 
+  def user_sub_button_enabled(user, url) do
+    user_base_email()
+    |> to(user.email)
+    |> subject("Your Glimesh Sub Button is LIVE!")
+    |> assign(:user, user)
+    |> assign(:url, url)
+    |> render(:sub_button)
+  end
+
   def user_launch_info(user) do
     user_base_email()
     |> to(user.email)

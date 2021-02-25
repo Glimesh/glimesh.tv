@@ -6,4 +6,17 @@ defmodule GlimeshWeb.WebhookController do
 
     send_resp(conn, :ok, "")
   end
+
+  def taxidpro(%Plug.Conn{assigns: %{taxidpro_body: taxidpro_body}} = conn, _params) do
+    with {:ok, event} <- Jason.decode(taxidpro_body),
+         {:ok, _} <- Glimesh.PaymentProviders.TaxIDPro.handle_webhook(event) do
+      send_resp(conn, :ok, "")
+    else
+      {:error, %Jason.DecodeError{}} ->
+        send_resp(conn, :bad_request, "Error decoding JSON")
+
+      _ ->
+        send_resp(conn, :bad_request, "Unknown error")
+    end
+  end
 end

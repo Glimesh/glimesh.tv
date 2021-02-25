@@ -7,7 +7,7 @@
             <div class="card-body">
                 <h5 class="card-title"><%= gettext("1. Tax Information") %></h5>
                 <p class="card-text"><strong><%= gettext("United States:") %></strong> <%= gettext("During your Stripe Connection Process you will provide the information required to fill out an electronic W-9 that will be submitted to Stripe. Once you have completed your Stripe Connection Process your sub button will be available immediately.") %></p>
-                <p class="card-text"><strong><%= gettext("Other Countries:") %></strong> <%= gettext("After you finish your Stripe Connection Process, you will be redirected to a tax form submission page which will allow you to submit an United States Internal Revenue Service form, called the W-8, that we rquire before we can enable your sub button. Submitted W-8 forms can take up to 14 days for review.") %></p>
+                <p class="card-text"><strong><%= gettext("Other Countries:") %></strong> <%= gettext("After you finish your Stripe Connection Process, you will be redirected to a tax form submission page which will allow you to submit an United States Internal Revenue Service form, called the W-8, that we require before we can enable your sub button. Submitted W-8 forms can take up to 14 days for review.") %></p>
             </div>
         </div>
         <div class="card">

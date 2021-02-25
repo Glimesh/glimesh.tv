@@ -148,6 +148,8 @@ config :glimesh, Glimesh.Socials.Twitter,
 config :libcluster,
   topologies: []
 
+config :glimesh, Glimesh.PaymentProviders.TaxIDPro, webhook_secret: "", api_key: ""
+
 import_config "badwords.exs"
 import_config "emotes.exs"
 # Import environment specific config. This must remain at the bottom

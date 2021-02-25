@@ -27,6 +27,24 @@ defmodule Glimesh.Accounts.UserNotifier do
     end
   end
 
+  def deliver_sub_button_enabled(user, url) do
+    email = Email.user_sub_button_enabled(user, url)
+
+    if Glimesh.Emails.email_sent?(user, subject: email.subject) do
+      {:ok, :debounced}
+    else
+      Mailer.deliver_later(email)
+      |> log_bamboo_delivery(
+        user,
+        "Account Update",
+        "service:sub_button_enabled",
+        email.subject
+      )
+
+      {:ok, %{to: email.to, body: email.text_body}}
+    end
+  end
+
   @doc """
   Deliver instructions to confirm account.
   """

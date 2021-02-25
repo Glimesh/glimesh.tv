@@ -88,7 +88,8 @@ defmodule Glimesh.MixProject do
       {:eqrcode, "~> 0.1.7"},
       {:scrivener_ecto, "~> 2.0"},
       {:libcluster, "~> 3.2"},
-      {:appsignal_phoenix, "~> 2.0.0"}
+      {:appsignal_phoenix, "~> 2.0.0"},
+      {:httpoison, "~> 1.8"}
     ]
   end
 

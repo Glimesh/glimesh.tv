@@ -64,6 +64,7 @@ defmodule GlimeshWeb.Endpoint do
 
   # Pluck out the stripe webhook request if it exists
   plug GlimeshWeb.StripeWebhookPlug
+  plug GlimeshWeb.TaxIDProWebhookPlug
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
