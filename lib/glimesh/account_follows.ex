@@ -7,6 +7,7 @@ defmodule Glimesh.AccountFollows do
   alias Glimesh.AccountFollows.Follower
   alias Glimesh.Accounts.User
   alias Glimesh.ChannelLookups
+  alias Glimesh.Chat
   alias Glimesh.Repo
 
   def get_subscribe_topic(:follows), do: "accounts:follows"
@@ -43,12 +44,13 @@ defmodule Glimesh.AccountFollows do
       |> Follower.changeset(attrs)
       |> Repo.insert()
 
-    broadcast(results, :followers)
-
     channel = ChannelLookups.get_channel_for_user(streamer)
 
-    if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
-      Glimesh.Chat.create_chat_message(user, channel, %{
+    if no_follow_message_recently(channel, user), do: broadcast(results, :followers)
+
+    if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) and
+         no_follow_message_recently(channel, user) do
+      Chat.create_chat_message(user, channel, %{
         message: " just followed the stream!",
         is_followed_message: true
       })
@@ -96,5 +98,22 @@ defmodule Glimesh.AccountFollows do
 
   def list_following(user) do
     Repo.all(from f in Follower, where: f.user_id == ^user.id)
+  end
+
+  defp no_follow_message_recently(channel, user) do
+    follow_message = List.first(Chat.get_follow_chat_message_for_user(channel, user))
+
+    time_since_last_follow_message =
+      case follow_message do
+        nil -> 99999
+        _ -> NaiveDateTime.diff(NaiveDateTime.utc_now(), follow_message.inserted_at)
+      end
+
+    # Checking if the last follow message is older than 6 hours
+    if time_since_last_follow_message > 21600 do
+      true
+    else
+      false
+    end
   end
 end
