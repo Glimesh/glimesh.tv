@@ -105,12 +105,12 @@ defmodule Glimesh.AccountFollows do
 
     time_since_last_follow_message =
       case follow_message do
-        nil -> 99999
+        nil -> 99_999
         _ -> NaiveDateTime.diff(NaiveDateTime.utc_now(), follow_message.inserted_at)
       end
 
     # Checking if the last follow message is older than 6 hours
-    if time_since_last_follow_message > 21600 do
+    if time_since_last_follow_message > 21_600 do
       true
     else
       false
