@@ -46,7 +46,7 @@ defmodule Glimesh.AccountFollows do
 
     channel = ChannelLookups.get_channel_for_user(streamer)
 
-    if no_follow_message_recently(channel, user), do: broadcast(results, :followers)
+    broadcast(results, :followers)
 
     if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) and
          no_follow_message_recently(channel, user) do
