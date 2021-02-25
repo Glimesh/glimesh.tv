@@ -15,9 +15,10 @@
                     <h3>W-8BEN <br><small><%= gettext("For use by individuals") %></small></h3>
                 </div>
                 <div class="card-body">
-                    <p><%= gettext("Glimesh has partnered with a tax service to provide electronic versions of the W-8BEN form. This will help to ensure your information is accurate and complete, and requires less manual intervention. Clicking the link below will take you to our partner's website.") %></p>
+                    <p><%= gettext("Glimesh has partnered with a tax service called Tax ID Pro to provide electronic versions of the W-8BEN form. This will help to ensure your information is accurate and complete, and requires less manual intervention. Clicking the link below will take you to our partner's website.") %></p>
                     <p><a href="<%= @tax_form_url %>" class="btn btn-secondary btn-lg btn-block">Start W-8BEN Tax Form</a></p>
                     <p><%= gettext("Once you have completed the form, it will be automatically submitted to us. Our team will review, and we'll send you an email if we have any questions! After we review, and your account is approved, your subscriptions button will be enabled!") %></p>
+                    <p><a href="https://taxid.pro/" target="_blank">Tax ID Pro Website</a></p>
                 </div>
             </div>
         </div>

@@ -115,6 +115,7 @@ We may also share your personal information with these third party vendors who w
 -   [Gravatar](https://en.gravatar.com/) - default avatar image generator
 -   [mailgun](https://www.mailgun.com/) - email sending service
 -   [AppSignal](https://appsignal.com/) - error reporting & collection
+-   [Tax ID Pro](https://taxid.pro/) - tax form collection for some users
 
 We may also share your information as follows:
 
