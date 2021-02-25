@@ -120,6 +120,18 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
           })
 
         if is_tax_verified do
+          channel_url =
+            GlimeshWeb.Router.Helpers.user_stream_url(
+              GlimeshWeb.Endpoint,
+              :index,
+              user.username
+            )
+
+          Glimesh.Accounts.UserNotifier.deliver_sub_button_enabled(
+            user,
+            channel_url
+          )
+
           response
         else
           {:pending_taxes,

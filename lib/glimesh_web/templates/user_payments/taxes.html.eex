@@ -2,29 +2,39 @@
     <h2 class="mt-4"><%= gettext("Submit Tax Forms") %></h2>
 
     <%= if @can_payments do %>
-    <p><%= gettext("Thank you for setting up your account with our payments partner Stripe! Next up is to verify your tax withholding amount by uploading a W-8 form. This form is provided by the Internal Revenue Service of the United States, and is required to collect so we can properly withhold tax on your payouts. You will need to download the appropriate form below, and have a tax professional assist you with the information it requires.") %></p>
+    <p><%= gettext("Thank you for setting up your account with our payments partner Stripe! Next up is to verify your tax withholding amount by uploading a W-8 form. This form is provided by the Internal Revenue Service of the United States, and is required to collect so we can properly withhold tax on your payouts.") %></p>
 
     <div class="alert alert-secondary" role="alert">
         <%= gettext("Glimesh will be paying you royalties based on the Copyright License you provided for us to use your content, per our Terms of Service. If you need help filling out your tax forms, please contact a local tax professional. Glimesh is not equipped, nor able to help you with support issues related to tax forms.") %>
     </div>
 
-    <h3><%= gettext("Form Types") %></h3>
-    <ul>
-        <li><a target="_blank" href="https://www.irs.gov/pub/irs-pdf/fw8ben.pdf"><%= gettext("W-8BEN - For use by individuals") %></a></li>
-        <li><a target="_blank" href="https://www.irs.gov/pub/irs-pdf/fw8bene.pdf"><%= gettext("W-8BEN-E - For use by business or legal entities") %></a></li>
-    </ul>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h3>W-8BEN <br><small><%= gettext("For use by individuals") %></small></h3>
+                </div>
+                <div class="card-body">
+                    <p><%= gettext("Glimesh has partnered with a tax service to provide electronic versions of the W-8BEN form. This will help to ensure your information is accurate and complete, and requires less manual intervention. Clicking the link below will take you to our partner's website.") %></p>
+                    <p><a href="<%= @tax_form_url %>" class="btn btn-secondary btn-lg btn-block">Start W-8BEN Tax Form</a></p>
+                    <p><%= gettext("Once you have completed the form, it will be automatically submitted to us. Our team will review, and we'll send you an email if we have any questions! After we review, and your account is approved, your subscriptions button will be enabled!") %></p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h3>W-8BEN-E <br><small><%= gettext("For use by business or legal entities") %></small></h3>
+                </div>
+                <div class="card-body">
+                    <p>You can download the <a target="_blank" href="https://www.irs.gov/pub/irs-pdf/fw8bene.pdf">W-8BEN-E</a> from the IRS's website.</p>
 
-    <p><a href="https://support.glimesh.tv/en-us/5-subscriptions-payments/111-guide-to-w-8-forms" target="_blank" class="btn btn-info"><%= gettext("Glimesh Guide to W-8 Forms") %></a></p>
+                    <p>Please contact us at <a href="mailto:support@glimesh.tv">support@glimesh.tv</a> if you need to submit a W-8BEN-E.</p>
+                </div>
+            </div>
 
-    <p><%= gettext("Once you have completed the form, please upload a copy of it to the embedded Box.com (secure file hosting) page below. Our team will review, and we'll send you an email if we have any questions! After we review, and your account is approved, your subscriptions button will be enabled!") %></p>
-
-    <p>
-        <img src="<%= Routes.static_path(@conn, "/images/payments/w-8-required-fields.jpg")%>" alt="Required fields on the W-8">
-    </p>
-
-    <p><%= gettext("If you have problems seeing this embedded page below, try this link:") %> <a href="https://app.box.com/f/450d66ac6daa4c298e15ad3fc43403ac">https://app.box.com/f/450d66ac6daa4c298e15ad3fc43403ac</a></p>
-    <iframe src="https://app.box.com/f/450d66ac6daa4c298e15ad3fc43403ac" height="940" width="100%"></iframe>
-    <p><%= gettext("Secure file upload provided by Box.com") %></p>
+        </div>
+    </div>
 
     <% else %>
     <div class="alert alert-primary" role="alert">

@@ -180,6 +180,15 @@ if appsignal_api_key = System.get_env("APPSIGNAL_API_KEY") do
     ]
 end
 
+# Twitter Config
+if taxidpro_api_key = System.get_env("TAXIDPRO_API_KEY") do
+  taxidpro_webhook_secret = System.fetch_env!("TAXIDPRO_WEBHOOK_SECRET")
+
+  config :glimesh, Glimesh.PaymentProviders.TaxIDPro,
+    webhook_secret: taxidpro_webhook_secret,
+    api_key: taxidpro_api_key
+end
+
 # Glimesh Configuration
 if email_physical_address = System.get_env("GLIMESH_EMAIL_PHYSICAL_ADDRESS") do
   config :glimesh,

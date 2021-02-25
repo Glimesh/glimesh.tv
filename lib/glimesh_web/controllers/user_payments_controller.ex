@@ -5,7 +5,7 @@ defmodule GlimeshWeb.UserPaymentsController do
   alias Glimesh.PaymentProviders.StripeProvider
   alias Glimesh.Payments
 
-  plug :put_layout, "user-sidebar.html"
+  plug(:put_layout, "user-sidebar.html")
 
   def index(conn, _params) do
     user = conn.assigns.current_user
@@ -73,11 +73,34 @@ defmodule GlimeshWeb.UserPaymentsController do
       |> put_flash(:info, "Your tax information has already been collected.")
       |> redirect(to: Routes.user_payments_path(conn, :index))
     else
-      render(conn, "taxes.html",
-        page_title: format_page_title(gettext("Submit Tax Forms")),
-        can_payments: Accounts.can_use_payments?(user)
-      )
+      return_url = Routes.user_payments_url(conn, :taxes_pending)
+
+      case Glimesh.PaymentProviders.TaxIDPro.request_w8ben(user, return_url) do
+        {:ok, url} ->
+          render(conn, "taxes.html",
+            page_title: format_page_title(gettext("Submit Tax Forms")),
+            tax_form_url: url,
+            can_payments: Accounts.can_use_payments?(user)
+          )
+
+        {:error, _} ->
+          conn
+          |> put_flash(
+            :info,
+            "There was a problem accessing our Tax Provider, please try again later."
+          )
+          |> redirect(to: Routes.user_payments_path(conn, :index))
+      end
     end
+  end
+
+  def taxes_pending(conn, _params) do
+    conn
+    |> put_flash(
+      :info,
+      "Your tax information has been collected and is currently being processed. Tax forms can take up to 14 days to process."
+    )
+    |> redirect(to: Routes.user_payments_path(conn, :index))
   end
 
   def connect(conn, _params) do
