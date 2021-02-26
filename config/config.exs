@@ -30,8 +30,8 @@ locales = [
   "Limba Română": "ro",
   "Português Brasileiro": "pt_br",
   Português: "pt",
-  "Chinese(Simplified)": "zh_Hans",
-  "Chinese (Traditional)": "zh_Hant"
+  "中文 (简体)": "zh_Hans",
+  "中文 (繁体)": "zh_Hant"
 ]
 
 config :glimesh,
