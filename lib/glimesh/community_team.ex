@@ -65,9 +65,8 @@ defmodule Glimesh.CommunityTeam do
 
   def get_audit_log_entry_from_id!(id) do
     Repo.one(
-      from(al in AuditLog,
+      from al in AuditLog,
         where: al.id == ^id
-      )
     )
     |> Repo.preload([:user])
   end

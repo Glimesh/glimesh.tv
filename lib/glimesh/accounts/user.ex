@@ -8,51 +8,51 @@ defmodule Glimesh.Accounts.User do
 
   @derive {Inspect, except: [:password, :hashed_password, :tfa_token]}
   schema "users" do
-    field(:username, :string)
-    field(:displayname, :string)
-    field(:email, :string)
-    field(:password, :string, virtual: true)
-    field(:hashed_password, :string)
-    field(:confirmed_at, :naive_datetime)
+    field :username, :string
+    field :displayname, :string
+    field :email, :string
+    field :password, :string, virtual: true
+    field :hashed_password, :string
+    field :confirmed_at, :naive_datetime
 
-    field(:can_stream, :boolean, default: false)
+    field :can_stream, :boolean, default: false
 
-    field(:team_role, :string)
-    field(:is_admin, :boolean, default: false)
-    field(:is_gct, :boolean, default: false)
-    field(:gct_level, :integer)
-    field(:is_banned, :boolean, default: false)
-    field(:ban_reason, :string)
+    field :team_role, :string
+    field :is_admin, :boolean, default: false
+    field :is_gct, :boolean, default: false
+    field :gct_level, :integer
+    field :is_banned, :boolean, default: false
+    field :ban_reason, :string
 
-    field(:avatar, Glimesh.Avatar.Type)
-    field(:social_twitter, :string)
-    field(:social_youtube, :string)
-    field(:social_instagram, :string)
-    field(:social_discord, :string)
-    field(:social_guilded, :string)
+    field :avatar, Glimesh.Avatar.Type
+    field :social_twitter, :string
+    field :social_youtube, :string
+    field :social_instagram, :string
+    field :social_discord, :string
+    field :social_guilded, :string
 
-    field(:can_payments, :boolean, default: true)
-    field(:is_stripe_setup, :boolean, default: false)
-    field(:is_tax_verified, :boolean, default: false)
-    field(:tax_withholding_percent, :decimal)
+    field :can_payments, :boolean, default: true
+    field :is_stripe_setup, :boolean, default: false
+    field :is_tax_verified, :boolean, default: false
+    field :tax_withholding_percent, :decimal
 
-    field(:stripe_user_id, :string)
-    field(:stripe_customer_id, :string)
-    field(:stripe_payment_method, :string)
+    field :stripe_user_id, :string
+    field :stripe_customer_id, :string
+    field :stripe_payment_method, :string
 
-    field(:youtube_intro_url, :string)
-    field(:profile_content_md, :string)
-    field(:profile_content_html, :string)
+    field :youtube_intro_url, :string
+    field :profile_content_md, :string
+    field :profile_content_html, :string
 
-    field(:tfa_token, :string)
+    field :tfa_token, :string
 
-    field(:allow_glimesh_newsletter_emails, :boolean, default: false)
-    field(:allow_live_subscription_emails, :boolean, default: true)
+    field :allow_glimesh_newsletter_emails, :boolean, default: false
+    field :allow_live_subscription_emails, :boolean, default: true
 
-    has_one(:channel, Glimesh.Streams.Channel)
-    has_one(:user_preference, Glimesh.Accounts.UserPreference)
+    has_one :channel, Glimesh.Streams.Channel
+    has_one :user_preference, Glimesh.Accounts.UserPreference
 
-    has_many(:socials, Glimesh.Accounts.UserSocial)
+    has_many :socials, Glimesh.Accounts.UserSocial
 
     timestamps()
   end
