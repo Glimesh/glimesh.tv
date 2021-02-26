@@ -7,10 +7,10 @@ defmodule GlimeshWeb.UserSettingsController do
   alias Glimesh.Streams
   alias GlimeshWeb.UserAuth
 
-  plug(:put_layout, "user-sidebar.html")
+  plug :put_layout, "user-sidebar.html"
 
-  plug(:assign_profile_changesets)
-  plug(:assign_channel_changesets)
+  plug :assign_profile_changesets
+  plug :assign_channel_changesets
 
   def profile(conn, _params) do
     render(conn, "profile.html", page_title: format_page_title(gettext("Your Profile")))

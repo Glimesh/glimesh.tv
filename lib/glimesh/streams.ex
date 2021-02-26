@@ -227,11 +227,10 @@ defmodule Glimesh.Streams do
 
   def get_last_stream_metadata(%Glimesh.Streams.Stream{} = stream) do
     Repo.one(
-      from(sm in StreamMetadata,
+      from sm in StreamMetadata,
         where: sm.stream_id == ^stream.id,
         limit: 1,
         order_by: [desc: sm.inserted_at]
-      )
     )
   end
 
