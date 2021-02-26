@@ -49,7 +49,7 @@ defmodule Glimesh.AccountFollows do
     broadcast(results, :followers)
 
     if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) and
-         no_follow_message_recently(channel, user) do
+         sent_follow_message_recently?(channel, user) do
       Chat.create_chat_message(user, channel, %{
         message: " just followed the stream!",
         is_followed_message: true
