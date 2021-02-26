@@ -3,6 +3,8 @@ defmodule Glimesh.PaymentProviders.TaxIDPro do
   API Wrapper for Tax ID Pro
   """
 
+  require Logger
+
   alias Glimesh.Accounts.User
 
   @doc """
@@ -98,6 +100,8 @@ defmodule Glimesh.PaymentProviders.TaxIDPro do
 
   defp determine_tax_percent(%{"w8ben" => w8}) do
     selected_rate = Map.get(w8, "line10Rate", nil)
+    # temporary production debugging, non-sensetive info
+    Logger.info("Selected Rate: #{inspect(selected_rate)}")
 
     cond do
       Map.get(w8, "line6ForeignTin", "") == "" ->
@@ -119,6 +123,9 @@ defmodule Glimesh.PaymentProviders.TaxIDPro do
       is_float(selected_rate) ->
         # If we have a real rate
         selected_rate
+
+      selected_rate == 0 ->
+        0.00
 
       true ->
         # Default if all else fails
