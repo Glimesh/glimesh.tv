@@ -28,7 +28,10 @@ locales = [
   Suomi: "fi",
   Polski: "pl",
   "Limba Română": "ro",
-  "Português Brasileiro": "pt_br"
+  "Português Brasileiro": "pt_br",
+  Português: "pt",
+  "中文 (简体)": "zh_Hans",
+  "中文 (繁体)": "zh_Hant"
 ]
 
 config :glimesh,

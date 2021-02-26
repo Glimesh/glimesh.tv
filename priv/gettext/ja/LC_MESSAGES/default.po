@@ -104,7 +104,7 @@ msgstr "%{number}と等しくなければなりません。"
 #: lib/glimesh_web/templates/user_payments/index.html.eex:39 lib/glimesh_web/templates/user_reset_password/edit.html.eex:6
 #: lib/glimesh_web/templates/user_security/edit.html.eex:13 lib/glimesh_web/templates/user_security/edit.html.eex:45
 msgid "Oops, something went wrong! Please check the errors below."
-msgstr "おっと、何かが間違っていました! 以下のエラーを確認してください。"
+msgstr "おっと、何かが間違っていました！ 以下のエラーを確認してください。"
 
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:53
 msgid "Confirmation link is invalid or it has expired."
@@ -211,7 +211,7 @@ msgstr "言語"
 
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:177 lib/glimesh_web/templates/user_settings/preference.html.eex:49
 msgid "Update Settings"
-msgstr "設定を更新する"
+msgstr "設定を更新"
 
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:117
 msgid "YouTube Teaser URL"
@@ -568,7 +568,7 @@ msgstr "間もなく登場する%{category}ストリーム"
 #: lib/glimesh_web/live/user_live/index.ex:14
 #: lib/glimesh_web/live/user_live/index.html.leex:2
 msgid "Our Users"
-msgstr "私たちユーザー"
+msgstr "Our Users"
 
 #: lib/glimesh_web/live/user_live/components/channel_title.ex:24
 msgid "Save Info"
@@ -580,7 +580,7 @@ msgstr "グリメッシュはまだリリースされていませんが、%{stre
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:10
 msgid "Report User"
-msgstr "レポートユーザー"
+msgstr "ユーザーを報告する"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:54
 msgid "Copyright Infringement / Law Violation"
@@ -623,7 +623,7 @@ msgstr "本気ですか？"
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:27
 #: lib/glimesh_web/templates/user_applications/new.html.eex:7
 msgid "Back"
-msgstr "バック"
+msgstr "戻る"
 
 #: lib/glimesh_web/live/admin/category_live/form_component.ex:52
 msgid "Category created successfully"
@@ -1077,7 +1077,7 @@ msgstr "私たちに関して"
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:72 lib/glimesh_web/templates/channel_moderator/index.html.eex:81
 #: lib/glimesh_web/templates/channel_moderator/show.html.eex:41
 msgid "Action"
-msgstr "作用"
+msgstr "Action"
 
 #: lib/glimesh_web/controllers/channel_moderator_controller.ex:50
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:7 lib/glimesh_web/templates/channel_moderator/new.html.eex:4
@@ -1133,7 +1133,7 @@ msgstr "プラットフォームをサポートすることを選択した美し
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:98
 #: lib/glimesh_web/templates/layout/user-sidebar.html.eex:26
 msgid "Channel"
-msgstr "Channel"
+msgstr "チャンネル"
 
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:48
 msgid "Channel Bans"
@@ -1163,7 +1163,7 @@ msgstr "チャンネル設定"
 
 #: lib/glimesh/chat/effects.ex:116
 msgid "Channel Subscriber"
-msgstr "チャネルサブスクライバー"
+msgstr "チャンネルサブスクライバー"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:70
 msgid "Channel Title"
@@ -1237,11 +1237,11 @@ msgstr "無効な画像です。pngまたはjpgのいずれかでなければな
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:26
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:20
 msgid "Long Timeout"
-msgstr "ロングタイムアウト"
+msgstr "Long Timeout"
 
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:80
 msgid "Moderator"
-msgstr "モデレーター"
+msgstr "Moderator"
 
 #: lib/glimesh_web/templates/channel_moderator/show.html.eex:21
 msgid "Moderator Since: %{date}"
@@ -1249,7 +1249,7 @@ msgstr "モデレーター: %{date}から"
 
 #: lib/glimesh_web/templates/layout/user-sidebar.html.eex:33
 msgid "Moderators"
-msgstr "モデレーターたち"
+msgstr "モデレーター"
 
 #: lib/glimesh_web/views/channel_moderator_view.ex:5
 msgid "No"
@@ -1282,12 +1282,12 @@ msgstr "プロフィールコンテンツ (%{a_start}Markdown%{a_end}サポー�
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:44
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:23
 msgid "Remove Ban"
-msgstr "Banを外す"
+msgstr "Remove Ban"
 
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:38
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:22
 msgid "Remove Timeout"
-msgstr "タイムアウトを解除する"
+msgstr "Remove Timeout"
 
 #: lib/glimesh_web/templates/user_applications/show.html.eex:107
 msgid "Rotate Keys"
@@ -1329,7 +1329,7 @@ msgstr "ユーザーを5分間タイムアウトします。"
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:18
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:83 lib/glimesh_web/templates/channel_moderator/show.html.eex:43
 msgid "Timestamp"
-msgstr "タイムスタンプ"
+msgstr "Timestamps"
 
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:64
 msgid "Unban"
@@ -1713,7 +1713,7 @@ msgstr "ライブチャンネル通知"
 
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:14
 msgid "Look & Feel"
-msgstr "Look & Feel"
+msgstr "外観"
 
 #: lib/glimesh_web/templates/gct/index.html.eex:33
 msgid "Lookup Channel"

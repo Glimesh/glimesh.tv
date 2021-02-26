@@ -122,11 +122,11 @@ msgstr "E-postendringslenken er ugyldig, eller den er utløpt."
 
 #: lib/glimesh_web/controllers/user_reset_password_controller.ex:58
 msgid "Reset password link is invalid or it has expired."
-msgstr "Tilbakestill passordkoblingen er ugyldig, eller den er utløpt."
+msgstr "Tilbakestill passord-lenken er ugyldig, eller den er utløpt."
 
 #: lib/glimesh/accounts/user.ex:176
 msgid "Display name must match Username"
-msgstr "Visningsnavn må samsvare med brukernavn"
+msgstr "Visningsnavn må stemme med brukernavn"
 
 #: lib/glimesh/accounts/user.ex:194
 msgid "Email is the same"
@@ -156,7 +156,7 @@ msgstr "Gjeldende passord"
 
 #: lib/glimesh_web/templates/user_security/edit.html.eex:8
 msgid "Change e-mail"
-msgstr "Endre epost"
+msgstr "Endre e-post"
 
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:97
 msgid "Discord Server URL"
@@ -445,7 +445,7 @@ msgstr "Betalingsmetode slettet!"
 
 #: lib/glimesh_web/controllers/user_payments_controller.ex:51
 msgid "Stripe account linked successfully, welcome to the sub club!"
-msgstr "Stripekonto koblet vellykket, velkommen til sub-klubben!"
+msgstr "Stripe-konto tilkoblet, velkommen til sub-klubben!"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:43
 msgid "Delete Saved Payment"
@@ -1012,7 +1012,7 @@ msgstr "Utbetalingshistorikk"
 #: lib/glimesh_web/live/about/open_data_live.ex:21
 #: lib/glimesh_web/live/about/open_data_live.html.leex:10
 msgid "Platform User Growth"
-msgstr "Platform brukervekst"
+msgstr "Platform-brukervekst"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:13
 msgid "Receiving Monthly"
@@ -1379,7 +1379,7 @@ msgstr "Du har ikke tilgang til å oppdatere denne appens tilganger."
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:12
 msgid "%{user}'s Avatar"
-msgstr "%{user}'s Avatar"
+msgstr "%{user} sin avatar"
 
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:54
 msgid "2FA Token"
@@ -1387,7 +1387,7 @@ msgstr "2FA Token"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:41
 msgid "5 Custom Emotes"
-msgstr "5 Egendefinert Emoter"
+msgstr "5 egendefinerte emoter"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:12
 msgid "A key used to uniquely identify and connect to your stream. Treat your Stream Key as a password."
@@ -1400,7 +1400,7 @@ msgstr "Om Glimesh"
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:22
 msgid "Access Level: %{value}"
-msgstr "Tilgangs nivå: %{value}"
+msgstr "Tilgangsnivå: %{value}"
 
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:9
 msgid "Accessibility"
@@ -1413,19 +1413,19 @@ msgstr "Admin"
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:14
 #: lib/glimesh_web/templates/user_registration/new.html.eex:54
 msgid "Allow Glimesh Newsletter Emails"
-msgstr "Tillat Glimesh Nyhetsbrev Emails"
+msgstr "Tillat Glimesh-nyhetsbrev-eposter"
 
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:47
 msgid "Allow Live Channel Emails"
-msgstr "Tillat Live-kanaler Emails"
+msgstr "Tillat Direkte-kanaler-eposter"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:40
 msgid "Animated Avatar Ring"
-msgstr "Animert Avatar Ring"
+msgstr "Animert avatar-ring"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:18
 msgid "Animated Emotes"
-msgstr "Animert Emoter"
+msgstr "Animerte emoter"
 
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:52
 msgid "Are you sure you want to disconnect your Twitter account?"
@@ -1438,7 +1438,7 @@ msgstr "Revisjonslogg"
 
 #: lib/glimesh_web/templates/layout/root.html.leex:101
 msgid "BLOG"
-msgstr "BLOG"
+msgstr "BLOGG"
 
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:19
 msgid "Backend: %{value}"
@@ -1447,20 +1447,20 @@ msgstr "Baksiden: %{value}"
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:37
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:117 lib/glimesh_web/templates/gct/lookup_user.html.eex:112
 msgid "Ban Reason"
-msgstr "Ban Grunn"
+msgstr "Ban-grunn"
 
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:13
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:28 lib/glimesh_web/live/gct_live/components/button_array.ex:41
 msgid "Ban User"
-msgstr "Ban Bruker"
+msgstr "Utesteng bruker"
 
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:112
 msgid "Banned"
-msgstr "Banned"
+msgstr "Utestengt"
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:19
 msgid "Banned: %{value}"
-msgstr "Banned: %{value}"
+msgstr "Utestengt: %{value}"
 
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:16
 msgid "Belongs to: %{value}"
@@ -1468,11 +1468,11 @@ msgstr "Tilhører: %{value}"
 
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:67
 msgid "Billing Settings"
-msgstr "Fakturerings Innstillinger"
+msgstr "Faktureringsinnstillinger"
 
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:21
 msgid "Blocked links: %{value}"
-msgstr "Blokert linker: %{value}"
+msgstr "Blokkerte linker: %{value}"
 
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:47
 msgid "Can stream"
@@ -1485,7 +1485,7 @@ msgstr "Kategori"
 
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:37
 msgid "Change your Glimesh experience to feel a little lighter, or a little darker."
-msgstr "Forandre din Glimesh opplevelse med lit lysere eller mørkere farger."
+msgstr "Forandre din Glimesh opplevelse med litt lysere eller mørkere farger."
 
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:25
 msgid "Changing a username will break the user's avatar."
@@ -1505,15 +1505,15 @@ msgstr "Kanal oppdatert suksessfullt"
 
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:48
 msgid "Chat Rules"
-msgstr "Chat Regler"
+msgstr "Chat-regler"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:17
 msgid "Colored Avatar Ring"
-msgstr "Farget Avatar Ring"
+msgstr "Farget avatar-ring"
 
 #: lib/glimesh_web/templates/layout/root.html.leex:128
 msgid "Copyright © 2021 Glimesh, Inc."
-msgstr "Copyright © 2021 Glimesh, Inc."
+msgstr "Opphavsrett © 2021 Glimesh, Inc."
 
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:17
 msgid "Created At: %{value} UTC"
@@ -1521,7 +1521,7 @@ msgstr "Laget: %{value} UTC"
 
 #: lib/glimesh_web/live/homepage_live.html.leex:11
 msgid "Customize Your Profile"
-msgstr "Tilpass Din Profil"
+msgstr "Tilpass din profil"
 
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:65
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:27
@@ -1530,7 +1530,7 @@ msgstr "Mørk"
 
 #: lib/glimesh_web/templates/layout/gct-sidebar.html.eex:3
 msgid "Dashboard"
-msgstr "Dashbord"
+msgstr "Kontrollpanel"
 
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:61
 msgid "Details for Audit Log #%{log_number}"
@@ -1538,11 +1538,11 @@ msgstr "Detalj for revisjonslogg #%{log_number}"
 
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:62
 msgid "Disable Live Notifications"
-msgstr "Deaktiver Live Notifikasjoner"
+msgstr "Deaktiver live-varsler"
 
 #: lib/glimesh_web/live/chat_live/message_form.html.leex:37
 msgid "Disable Timestamps"
-msgstr "Deaktiver Timestamps"
+msgstr "Deaktiver tidsmerking"
 
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:20
 msgid "Disabled hyperlinks: %{value}"
@@ -1550,7 +1550,7 @@ msgstr "Deaktivert hyperlinker: %{value}"
 
 #: lib/glimesh_web/live/user_settings/notifications_live.ex:42
 msgid "Disabled live channel notifications for %{streamer}"
-msgstr "Deaktivert live notifikasjoner for %{streamer}"
+msgstr "Deaktivert live-varsler for %{streamer}"
 
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:49
 msgid "Disallowing Live Subscriptions will disable them across the board, even if you have channels listed\n"
@@ -1568,27 +1568,27 @@ msgstr "Eksisterer ikke"
 
 #: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:7
 msgid "Edit Channel"
-msgstr "Editer Kanal"
+msgstr "Endre kanal"
 
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:10
 msgid "Edit Profile"
-msgstr "Editer Profil"
+msgstr "Endre profil"
 
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:11
 msgid "Edit User"
-msgstr "Editer Bruker"
+msgstr "Endre bruker"
 
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:35
 msgid "Email Confirmed At"
-msgstr "Email Bekreftet kl"
+msgstr "E-post bekreftet kl"
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:17
 msgid "Email Confirmed At: %{value}"
-msgstr "Email Bekreftet kl. %{value}"
+msgstr "E-post bekreftet kl. %{value}"
 
 #: lib/glimesh_web/live/chat_live/message_form.html.leex:37
 msgid "Enable Timestamps"
-msgstr "Aktiver Timestamps"
+msgstr "Aktiver tidsmerking"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:19
 msgid "Error copying Stream Key"
@@ -1637,11 +1637,11 @@ msgstr "GLIMESH.TV"
 
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:14
 msgid "General Settings"
-msgstr "Generelle Instillinger"
+msgstr "Generelle innstillinger"
 
 #: lib/glimesh_web/templates/gct/index.html.eex:2
 msgid "Glimesh Community Team Dashboard | Your access level is: %{level}"
-msgstr "Glimesh Community Team Dashbord | Din tilgangs nivå er: %{level}"
+msgstr "Glimesh Community Team Dashbord | Din tilgangsnivå er: %{level}"
 
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:27
 msgid "Glimesh is not yet launched, so this page is still missing some critical information you need for streaming. You can customize your stream, but check back once we've launched for more!"
@@ -1651,7 +1651,7 @@ msgstr "Glimesh er ennå ikke lansert, så denne siden mangler fortsatt viktig i
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:9 lib/glimesh_web/templates/gct/edit_user_profile.html.eex:7
 #: lib/glimesh_web/templates/gct/invalid_user.html.eex:4
 msgid "Go Back"
-msgstr "Gå Tilbake"
+msgstr "Gå tilbake"
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:89
 msgid "Guilded"
@@ -1659,7 +1659,7 @@ msgstr "Guilded"
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:18
 msgid "Has Channel: %{value}"
-msgstr "Har Kanal: %{value}"
+msgstr "Har kanal: %{value}"
 
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:14
 msgid "ID"
@@ -1667,7 +1667,7 @@ msgstr "ID"
 
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:42
 msgid "If enabled, we can send alerts whenever your favorite followed streams go live. To get live notifications you must be following the channel, with the bell checked, and \"Allow Live Subscriptions\" must be enabled below."
-msgstr "Hvis aktivert, kan vi sende varsler når favorittstrømmene dine går live. For å få live-meldinger må du være følgende kanalen, med bjellen, og \"Tillat live Varsel\" må være aktivert under."
+msgstr "Hvis aktivert, kan vi sende varsler når favorittstrømmene dine går live. For å få live-meldinger må du være følgende kanalen, med bjellen, og \"Tillat live-varsel\" må være aktivert under."
 
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:6
 msgid "If you're not authorized to edit this user you must return to the previous page."
@@ -1705,19 +1705,19 @@ msgstr "Linket Twitter Bruker @%{username}"
 
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:39
 msgid "Live Channel Notifications"
-msgstr "Live Kanal Notifikasjoner"
+msgstr "Live kanal-varsler"
 
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:14
 msgid "Look & Feel"
-msgstr "Look & Feel"
+msgstr "Utseende"
 
 #: lib/glimesh_web/templates/gct/index.html.eex:33
 msgid "Lookup Channel"
-msgstr "Søk opp Kanal"
+msgstr "Søk opp kanal"
 
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:78
 msgid "More Details"
-msgstr "Mer Detaljer"
+msgstr "Mer detaljer"
 
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:10
 msgid "More accessibility options are coming soon to make Glimesh more comfortable for everyone."
@@ -1842,16 +1842,16 @@ msgstr "Emnte"
 
 #: lib/glimesh_web/controllers/user_social_controller.ex:41
 msgid "Successfully disconnected your social account."
-msgstr "Suksessfullt frakoblet din sosial konto."
+msgstr "Din sosiale konto er nå frakoblet."
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:38
 msgid "Supporter Perks"
-msgstr "Supporter-fortdeler"
+msgstr "Supporter-fordeler"
 
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:17
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:75
 msgid "Target"
-msgstr ""
+msgstr "Mål"
 
 #: lib/glimesh_web/controllers/about_controller.ex:44
 msgid "Terms of Service"
@@ -1896,7 +1896,7 @@ msgstr "Type e-post"
 
 #: lib/glimesh_web/controllers/gct_controller.ex:311
 msgid "Unauthorized. This attempt has been logged."
-msgstr "Uautorisert. Forsøket har blitt loggført"
+msgstr "Uautorisert. Forsøket har blitt loggført."
 
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:15
 msgid "Unban User"
@@ -1925,7 +1925,7 @@ msgstr "Bruker-ID: %{value}"
 #: lib/glimesh_web/controllers/gct_controller.ex:117
 #: lib/glimesh_web/controllers/gct_controller.ex:180
 msgid "User updated successfully"
-msgstr "Bruker oppdaert"
+msgstr "Bruker oppdatert"
 
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:22
 msgid "Username"
@@ -1961,11 +1961,11 @@ msgstr "Din epost-logg"
 
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:11
 msgid "Your account's email is already confirmed."
-msgstr "Din kontos epost har allerede blitt verifisert"
+msgstr "Din konto sin epost har allerede blitt verifisert"
 
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:7
 msgid "Your email has not be verified, in order to stream on Glimesh you need to verify your email."
-msgstr "Din email har ikke blidt verifisert. Får å strømme til Glimesh må du verifisere din email."
+msgstr "Din epost har ikke blitt verifisert. Får å strømme til Glimesh må du verifisere din epost."
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:71
 msgid "Youtube"
@@ -2017,11 +2017,11 @@ msgstr "Samfunn"
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:34
 msgid "Copyrights are protections given to creative works and their owners. You can simply think of copyrights as the right to copy a creative work. As the owner of a creative work you have the right to copy that work in any way you'd like and copyright laws like the DMCA protect you from anyone else copying that work without your permission. By default the law gives you some basic copyrights the moment you create an original work, however you can register your work online which can help your creative work be instantly protected by Copyright laws."
-msgstr ""
+msgstr "Opphavsrett er beskyttelse til kreative verk og deres eiere. Du kan tenke på opphavsrett som retten til å kopiere et kreativt verk. Som eier av et kreativt verk har du rett til å kopiere det verket på den måten du vil, og copyright-lover som DMCA beskytter deg mot andre som kopierer verket uten din tillatelse. Som standard gir loven deg noen grunnleggende opphavsrettigheter i det øyeblikket du oppretter et originalt verk, men du kan registrere arbeidet ditt på nettet, noe som kan hjelpe det kreative arbeidet ditt umiddelbart å bli beskyttet av lov om opphavsrett."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:140
 msgid "Counter Notice"
-msgstr "Counter-varsel"
+msgstr "Mot-varsel"
 
 #: lib/glimesh_web/templates/about/streaming.html.eex:111
 msgid "Customize Your Channel"
@@ -2041,7 +2041,7 @@ msgstr "Oppdagbarhet"
 
 #: lib/glimesh_web/templates/about/streaming.html.eex:17
 msgid "Discoverability is a primary focus of our platform. During our initial launch, it will be straightforward to find new content to watch. However, as we grow, this becomes more of a problem, and we want to experiment with a couple of different options for making it easy to find new and smaller streams. From the very beginning, we are working hard on making streaming equitable for all, so you don’t have to compete with unfair advantages."
-msgstr "Oppdagbarhet er et hovedfokus for plattformen vår. Under vår første lansering vil det være greit å finne nytt innhold å se på. Når vi vokser, blir dette imidlertid mer et problem, og vi vil eksperimentere med et par forskjellige alternativer for å gjøre det enkelt å finne nye og mindre bekker. Helt fra begynnelsen jobber vi hardt med å gjøre streaming rettferdig for alle, slik at du ikke trenger å konkurrere med urettferdige fordeler."
+msgstr "Oppdagbarhet er et hovedfokus for plattformen vår. Under vår første lansering vil det være greit å finne nytt innhold å se på. Når vi vokser, blir dette imidlertid mer et problem, og vi vil eksperimentere med et par forskjellige alternativer for å gjøre det enkelt å finne nye og mindre direktesendinger. Helt fra begynnelsen har vi jobbet hardt med å gjøre strømming rettferdig for alle, slik at du ikke trenger å konkurrere med urettferdige fordeler."
 
 #: lib/glimesh_web/templates/gct/index.html.eex:19
 msgid "Email/Username/User ID"
@@ -2077,7 +2077,7 @@ msgstr "Glimesh har som mål å være fullt kompatibel med DMCA, og på grunn av
 
 #: lib/glimesh_web/templates/about/index.html.eex:20
 msgid "Glimesh came out of the shutdown of Mixer. When Microsoft pulled the plug on the platform overnight, communities were left without a home, streamers were left without a paycheck, and technologists were left without a viable alternative to the \"FTL\" product Mixer offered. To us, this event was painful to watch, and we decided then that streamers deserve better. We started working on an early alpha preview immediately to prove the technology and the business we wanted to build. We hosted a charity stream within a month that raised over $3,000 powered by our platform. Since then, we've been hard at work building the remaining features & scaling requirements for an alpha launch, and that brings us to today!"
-msgstr "Glimesh er en følge av stengingen av Mixer. Da Microsoft trakk støpselet på plattformen over natten, ble lokalsamfunnene stående uten et hjem, streamere ble stående uten lønnsslipp, og teknologer ble stående uten et levedyktig alternativ til \"FTL\" -produktet Mixer tilbys. For oss var denne hendelsen smertefull å se på, og vi bestemte oss da for at streamere fortjener bedre. Vi begynte å jobbe med en tidlig alfa-forhåndsvisning umiddelbart for å bevise teknologien og virksomheten vi ønsket å bygge. Vi var vert for en veldedighetsstrøm i løpet av en måned som samlet inn over $3000 drevet av plattformen vår. Siden da har vi jobbet hardt med å bygge de gjenværende funksjonene og skaleringskravene for en alfa-lansering, og det bringer oss til i dag!"
+msgstr "Glimesh er en følge av stengingen av Mixer. Da Microsoft trakk støpselet på plattformen over natten, ble lokalsamfunnene stående uten et hjem, streamere ble stående uten lønnsslipp, og teknologer ble stående uten et levedyktig alternativ til \"FTL\" -produktet Mixer leverte. For oss var denne hendelsen smertefull å se på, og vi bestemte oss da for at streamere fortjener bedre. Vi begynte å jobbe med en tidlig alfa-forhåndsvisning umiddelbart for å vise teknologien og virksomheten vi ønsket å bygge. Vi var vert for en veldedighetsstrøm som i løp av en måned samlet inn $3000 drevet av plattformen vår. Siden da har vi jobbet hardt med å bygge de gjenværende funksjonene og skaleringskravene for en alfa-lansering, og det bringer oss til i dag!"
 
 #: lib/glimesh_web/templates/about/index.html.eex:10
 msgid "Glimesh is the next generation streaming platform built by the community for the community. We know establishing a following is hard, and the hours are long. Our platform focuses on increasing discoverability for content creators and implementing the latest in streaming technology to level the playing field. We understand the importance of interaction between content creators and their fans, and we’re dedicated to innovating new ways to bring communities closer together."
@@ -2149,7 +2149,7 @@ msgstr "Til slutt jobber Glimesh for å samarbeide med musikkleverandører eller
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:38
 msgid "Let's say you make an original drawing or an original piece of music. You as the creator have some basic copyrights being the first one to create that piece. But let's say someone online takes your music or your art and begins to distribute. You as the copyright owner have rights under the DMCA to go and request that that person stop doing that and get your permission first. Under the DMCA it is our responsibility as a platform to acknowledge that you own that art or music and take down any content that is redistributing your content without your permission. Without the DMCA and other copyright laws anyone could take your creation and use it for their own gains without you being able to do anything."
-msgstr ""
+msgstr "La oss si at du lager en original tegning eller et originalt stykke musikk. Du som skaper har noen grunnleggende opphavsrettigheter som den første til å lage det stykket. Men la oss si at noen på nettet tar musikken din eller kunsten din og begynner å distribuere den. Du som copyright-eier har rettigheter under DMCA til å be om at personen slutter å gjøre det og få din tillatelse først. Under DMCA er det vårt ansvar som en plattform å erkjenne at du eier den kunsten eller musikken og tar ned alt innhold som distribuerer innholdet ditt uten din tillatelse. Uten DMCA og andre lover om opphavsrett kan hvem som helst ta opprettelsen din og bruke den til egen gevinst uten at du kan gjøre noe."
 
 #: lib/glimesh_web/live/admin/tag_live/index.html.leex:2
 msgid "Listing Tags"
@@ -2194,7 +2194,7 @@ msgstr "Vårt oppdrag på Glimesh er å skape en bærekraftig plattform, der all
 
 #: lib/glimesh_web/templates/about/streaming.html.eex:63
 msgid "Our platform is designed to be accessible, user friendly, and blazing fast to make your streaming or viewing experience amazing! We are constantly building, tweaking, and iterating on our platform to continue to strive for perfection."
-msgstr ""
+msgstr "Plattformen vår er designet for å være tilgjengelig, brukervennlig og lynrask for å gjøre streaming- eller seeropplevelsen fantastisk! Vi bygger hele tiden, justerer og forbedrer plattformen vår for å fortsette å streve etter perfeksjon."
 
 #: lib/glimesh_web/templates/about/streaming.html.eex:53
 msgid "Our streaming technology is built on open standards and gives your streams unimaginable levels of interactivity. We're continually pushing the boundaries of live video, and of course, it's open source. Our Mixer-derived FTL protocol has sub-second latency, and under good network conditions, you can expect as low as 250ms of delay."
@@ -2202,35 +2202,35 @@ msgstr "Strømmeteknologien vår er bygget på åpne standarder og gir streamene
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:100
 msgid "Part 1. A copyright owner will contact Glimesh and will send us a DMCA Takedown request that must follow our formatting as outlined in the Terms of Service. "
-msgstr ""
+msgstr "Del 1. En opphavsrettseier vil kontakte Glimesh og sende oss en DMCA-fjerningsforespørsel som må følge vår formatering som beskrevet i vilkårene for bruk."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:123
 msgid "Part 2. Once we receive this request we are required to remove the content from public access as soon as possible. This is to reduce the spread of unauthorized sharing of copyright material."
-msgstr ""
+msgstr "Del 2. Når vi mottar denne forespørselen, må vi fjerne innholdet fra offentlig tilgang så snart som mulig. Dette er for å redusere spredningen av uautorisert deling av opphavsrettsbeskyttet materiale."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:126
 msgid "Part 3a. Glimesh will contact you stating why your content was removed, exactly what content was brought into question, and who is requesting that the content be removed. "
-msgstr ""
+msgstr "Del 3a. Glimesh vil kontakte deg og oppgi hvorfor innholdet ditt ble fjernet, nøyaktig hvilket innhold som ble tatt i betraktning, og hvem som ber om at innholdet blir fjernet."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:129
 msgid "Part 3b. We will then post the takedown request on our Github page with private information removed. These requests will be public and anyone can comment on them. "
-msgstr ""
+msgstr "Del 3b. Vi vil da legge ut forespørselen om fjerning på Github-siden vår med privat informasjon fjernet. Disse forespørslene vil være offentlige, og alle kan kommentere dem."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:132
 msgid "Part 4. You at this time have options. You may counter notice if you feel that you have a viable reason that you may use that content (i.e. you have a license, you feel its fair use). You may also reach out to the copyright owner and see about getting the proper licensing to use the content. You may also comply with the takedown and have the content removed. "
-msgstr ""
+msgstr "Del 4. Du har på dette tidspunktet muligheter. Du kan motsette varsel hvis du føler at du har en levedyktig grunn til at du kan bruke det innholdet (dvs. du har lisens, du føler at det er rimelig bruk). Du kan også kontakte copyright-eieren og se om du får riktig lisensiering til å bruke innholdet. Du kan også overholde fjerningen og fjerne innholdet."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:60
 msgid "Promptly remove access to content that has been reported as unauthorized use."
-msgstr ""
+msgstr "Fjern tilgangen til innhold som er rapportert som uautorisert bruk."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:66
 msgid "Remove those who repeatedly, after warning, continue to use unlicensed material."
-msgstr ""
+msgstr "Fjern de som gjentatte ganger, etter advarsel, fortsetter å bruke ulisensiert materiale."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:76
 msgid "Safe Harbors"
-msgstr ""
+msgstr "Safe Harbors"
 
 #: lib/glimesh_web/templates/about/streaming.html.eex:107
 msgid "Start Now"
@@ -2267,15 +2267,15 @@ msgstr "Team-rolle: %{value}"
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:81
 msgid "The DMCA is not just about copyrights though. The DMCA has some built in protections for sites like Glimesh called Safe Harbor. Simply put, Safe Harbor provisions are rules in the DMCA that protect websites from being shut down or sued by copyright owners as long as the site remains compliant. As long as Glimesh remains compliant to the process these Safe Harbor provisions in the DMCA will keep us safe from Lawsuits for copyright violations."
-msgstr ""
+msgstr "DMCA handler ikke bare om opphavsrett. DMCA har noen innebygde beskyttelser for nettsteder som Glimesh kalt Safe Harbor. Enkelt sagt, Safe Harbor-bestemmelser er regler i DMCA som beskytter nettsteder mot å bli stengt eller saksøkt av copyright-eiere så lenge nettstedet forblir kompatibelt. Så lenge Glimesh er i samsvar med prosessen, vil disse Safe Harbor-bestemmelsene i DMCA beskytte oss mot søksmål for brudd på opphavsretten."
 
 #: lib/glimesh_web/templates/about/streaming.html.eex:40
 msgid "The Glimesh Community Team is here with one goal in mind - to support the Glimesh community. We do this through global moderation, responding to tickets and reports, and by offering guidance. You'll find us dropping into channels to say hello or answer questions, as well as talking to the community in the Glimesh Discord! Our aim is to keep Glimesh a fun, welcoming, and most importantly a safe place for any content creator or viewer."
-msgstr ""
+msgstr "Glimesh Community Team er her med ett mål i tankene - å støtte Glimesh-samfunnet. Vi gjør dette gjennom global moderering, ved å svare på billetter og rapporter og tilby veiledning. Du finner oss når vi går inn i kanaler for å hilse eller svare på spørsmål, samt snakke med samfunnet i Glimesh Discord! Målet vårt er å holde Glimesh et morsomt, imøtekommende og viktigst av alt et trygt sted for enhver innholdsskaper eller seer."
 
 #: lib/glimesh_web/templates/about/team.html.eex:10
 msgid "The Glimesh Team is a core group responsible for our company and the platform we provide our users. We're a diverse group of individuals working together for a common cause and trying to leave the industry better than we found it. We run Glimesh as an open company with an unusually flat organizational hierarchy."
-msgstr ""
+msgstr "Glimesh-teamet er en kjernegruppe som er ansvarlig for selskapet vårt og plattformen vi tilbyr brukerne våre. Vi er en mangfoldig gruppe enkeltpersoner som jobber sammen for en felles sak og prøver å forlate bransjen bedre enn vi fant den. Vi driver Glimesh som et åpent selskap med et uvanlig flatt organisasjonshierarki."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:97
 msgid "The Steps"
@@ -2288,7 +2288,7 @@ msgstr "Teamet"
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:21
 msgid "To start with Glimesh's policies on the DMCA we have to begin with a basic understanding of what the DMCA is. The DMCA is not an organization that polices digital copyrights but it was an act back in 1998 that helped establish rules around copyright materials and their use on the internet. For us the DMCA defines how we as a service provider responsibly and fairly handle copyrighted material."
-msgstr ""
+msgstr "For å starte med Glimeshs retningslinjer for DMCA, må vi begynne med en grunnleggende forståelse av hva DMCA er. DMCA er ikke en organisasjon som politiserer digitale opphavsrettigheter, men det var en handling tilbake i 1998 som bidro til å etablere regler rundt copyright-materiale og deres bruk på internett. For oss definerer DMCA hvordan vi som tjenesteleverandør ansvarlig og rettferdig håndterer opphavsrettsbeskyttet materiale."
 
 #: lib/glimesh_web/templates/gct/index.html.eex:34
 msgid "Username/Channel ID"
@@ -2304,23 +2304,23 @@ msgstr "Vis profil"
 
 #: lib/glimesh_web/templates/about/team.html.eex:39
 msgid "We also encourage our community to become part of our team as we know there are many talented people out there who wish to be part of something new. If you feel that you can offer Glimesh and the community your talents, whether that’s web development, designing, or moderation, then we would love to hear from you. If this is of any interest, please reach out to us in our Discord and mention your interest within our #volunteer channel."
-msgstr ""
+msgstr "Vi oppfordrer også samfunnet vårt til å bli en del av teamet vårt, ettersom vi vet at det er mange talentfulle mennesker der ute som ønsker å være en del av noe nytt. Hvis du føler at du kan tilby Glimesh og samfunnet talentene dine, enten det er webutvikling, design eller moderering, vil vi gjerne høre fra deg. Hvis dette er av interesse, kan du kontakte oss i Discord og nevne din interesse i vår #volunteer kanal."
 
 #: lib/glimesh_web/templates/about/streaming.html.eex:30
 msgid "We also offer a competitive 50/50 split for your subscriptions, with the fees taken out of our side. Included for free is our chargeback protection for your subscriptions."
-msgstr ""
+msgstr "Vi tilbyr også en konkurransedyktig 50/50 split for abonnementene dine, med gebyrene tatt ut av vår side. Inkludert gratis er tilbakeføringsbeskyttelse for abonnementene dine."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:210
 msgid "We appreciate this document may leave you wondering what to do moving forward should you enjoy playing music in your stream. Thankfully there are several music platforms available to you that allow you benefit of being able to play music whilst you stream without the concern or risk surrounding the above information. As such, please see below a couple that we’d suggest checking out:"
-msgstr ""
+msgstr "Vi setter pris på at dette dokumentet kan la deg lure på hva du skal gjøre fremover hvis du liker å spille musikk i strømmen din. Heldigvis er det flere musikkplattformer tilgjengelig for deg som gir deg fordelen av å kunne spille musikk mens du streamer uten bekymring eller risiko rundt informasjonen ovenfor. Som sådan, se nedenfor et par som vi vil anbefale å sjekke ut:"
 
 #: lib/glimesh_web/templates/about/index.html.eex:14
 msgid "We believe in being transparent in our work too. Glimesh is an Open Company with a strong commitment to transparency & fairness. All of our financial statements are public record, all our development work is available through Github, and we organize using public tools like GitHub & Trello. We make a commitment to treating our community fairly and building sustainable income for our streamers, the platform, and the families of those who build it."
-msgstr ""
+msgstr "Vi tror på å være gjennomsiktige i arbeidet vårt også. Glimesh er et åpent selskap med en sterk forpliktelse til åpenhet og rettferdighet. Alle regnskapene våre er offentlige, alt vårt utviklingsarbeid er tilgjengelig gjennom Github, og vi organiserer ved hjelp av offentlige verktøy som GitHub & Trello. Vi forplikter oss til å behandle samfunnet vårt rettferdig og bygge bærekraftig inntekt for streamere, plattformen og familiene til de som bygger det."
 
 #: lib/glimesh_web/templates/about/streaming.html.eex:73
 msgid "We have a fantastic community, and we massively encourage you to join! Everyone is super supportive and happy to help! Regardless of your experience with streaming, you will always feel welcome!"
-msgstr ""
+msgstr "Vi har et fantastisk fellesskap, og vi oppfordrer deg sterkt til å bli med! Alle er superstøttende og hjelper gjerne! Uansett din erfaring med streaming, vil du alltid føle deg velkommen!"
 
 #: lib/glimesh_web/templates/about/index.html.eex:3
 msgid "Welcome to Glimesh"
@@ -2344,41 +2344,41 @@ msgstr "Ja! Vi forstår at dette er ganske frustrerende for mange innholdsskaper
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:108
 msgid "a description of the copyrighted work or other intellectual property that you claim has been infringed;"
-msgstr ""
+msgstr "en beskrivelse av det opphavsrettsbeskyttede verket eller annen intellektuell eiendom som du hevder er blitt krenket;"
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:111
 msgid "a description of where the material that you claim is infringing is located on the Site, with enough detail that we may find it on the Site;"
-msgstr ""
+msgstr "en beskrivelse av hvor materialet du hevder krenker, ligger på nettstedet, med nok detaljer til at vi kan finne det på nettstedet;"
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:116
 msgid "a statement by you that you have a good faith belief that the disputed use is not authorized by the copyright or intellectual property owner, its agent, or the law;"
-msgstr ""
+msgstr "en uttalelse fra deg om at du er i god tro på at den omstridte bruken ikke er autorisert av copyright eller immateriell eiendomsinnehaver, dens agent eller loven;"
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:119
 msgid "a statement by you, made under penalty of perjury, that the above information in your Notice is accurate and that you are the copyright or intellectual property owner or authorized to act on the copyright or intellectual property owner’s behalf."
-msgstr ""
+msgstr "en erklæring fra deg, gitt under straff for mened, om at informasjonen ovenfor i merknaden din er nøyaktig, og at du er rettighetshaver eller immateriell eiendom eller autorisert til å handle på opphavsrett eller immateriell rettighets vegne."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:161
 msgid "a statement that you have a good faith belief that the content was removed or disabled as a result of mistake or a misidentification of the content; an"
-msgstr ""
+msgstr "en uttalelse om at du har god tro på at innholdet ble fjernet eller deaktivert på grunn av feil eller feilidentifisering av innholdet; og"
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:105
 msgid "an electronic or physical signature of the person authorized to act on behalf of the owner of the copyright or other intellectual property interest;"
-msgstr ""
+msgstr "en elektronisk eller fysisk signatur fra den personen som er autorisert til å handle på vegne av eieren av copyright eller annen intellektuell eiendomsinteresse;"
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:158
 msgid "identification of the content that has been removed or to which access has been disabled and the location at which the content appeared before it was removed or disabled;"
-msgstr ""
+msgstr "identifikasjon av innholdet som er fjernet eller som tilgang er deaktivert og stedet der innholdet dukket opp før det ble fjernet eller deaktivert;"
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:114
 msgid "your address, telephone number, and email address;"
-msgstr ""
+msgstr "din adresse, telefonnummer og e-postadresse;"
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:164
 msgid "your name, address, telephone number, and email address, a statement that you consent to the jurisdiction of the federal court located within Allegheny County of Pennsylvania and a statement that you will accept service of process from the person who provided notification of the alleged infringement."
-msgstr ""
+msgstr "ditt navn, adresse, telefonnummer og e-postadresse, en erklæring om at du samtykker til jurisdiksjonen til den føderale domstolen i Allegheny County i Pennsylvania, og en erklæring om at du vil godta forkynnelse av den personen som ga beskjed om den påståtte overtredelse."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:155
 msgid "your physical or electronic signature;"
-msgstr ""
+msgstr "din fysiske eller elektroniske signatur;"
 
