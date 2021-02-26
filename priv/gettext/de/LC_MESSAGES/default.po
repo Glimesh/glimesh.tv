@@ -2062,7 +2062,7 @@ msgstr "DMCA Richtlinie"
 #: lib/glimesh_web/templates/about/streaming.html.eex:15
 #, fuzzy
 msgid "Discoverability"
-msgstr "Entdeckbarkeit"
+msgstr "Sichtbarkeit"
 
 #: lib/glimesh_web/templates/about/streaming.html.eex:17
 msgid "Discoverability is a primary focus of our platform. During our initial launch, it will be straightforward to find new content to watch. However, as we grow, this becomes more of a problem, and we want to experiment with a couple of different options for making it easy to find new and smaller streams. From the very beginning, we are working hard on making streaming equitable for all, so you don’t have to compete with unfair advantages."
