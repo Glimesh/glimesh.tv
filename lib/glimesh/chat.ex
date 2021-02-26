@@ -203,7 +203,6 @@ defmodule Glimesh.Chat do
       order_by: [desc: :inserted_at],
       limit: 1
     )
-    |> Enum.reverse()
   end
 
   @doc """
