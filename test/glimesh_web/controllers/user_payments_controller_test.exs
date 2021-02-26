@@ -4,11 +4,11 @@ defmodule GlimeshWeb.UserPaymentsControllerTest do
   setup :register_and_log_in_user
 
   describe "GET /users/payments" do
-    # test "renders settings page", %{conn: conn} do
-    #   conn = get(conn, Routes.user_payments_path(conn, :index))
-    #   response = html_response(conn, 200)
-    #   assert response =~ "<h2>Your Payment Portal</h2>"
-    # end
+    test "renders settings page", %{conn: conn} do
+      conn = get(conn, Routes.user_payments_path(conn, :index))
+      response = html_response(conn, 200)
+      assert response =~ "Your Payment Portal</h2>"
+    end
 
     test "redirects if user is not logged in" do
       conn = build_conn()

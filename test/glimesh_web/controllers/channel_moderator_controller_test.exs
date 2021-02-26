@@ -94,6 +94,26 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
     end
   end
 
+  describe "unban user" do
+    test "successfully unbans a valid user", %{conn: conn} do
+      some_valid_user = user_fixture()
+      conn = get(conn, Routes.channel_moderator_path(conn, :index))
+
+      # Need to actually ban the user first
+      channel = Glimesh.ChannelLookups.get_channel_for_user(conn.assigns.current_user)
+      {:ok, result} = Glimesh.Chat.ban_user(conn.assigns.current_user, channel, some_valid_user)
+      assert result.action == "ban"
+
+      # Now that we've confirmed they're banned we unban
+      conn =
+        delete(conn, Routes.channel_moderator_path(conn, :unban_user, some_valid_user.username))
+      assert get_flash(conn, :info) =~ "User unbanned successfully"
+
+      response = html_response(get(conn, Routes.channel_moderator_path(conn, :index)), 200)
+      refute response == some_valid_user.username
+    end
+  end
+
   describe "new channel_moderator" do
     test "renders form", %{conn: conn} do
       conn = get(conn, Routes.channel_moderator_path(conn, :new))

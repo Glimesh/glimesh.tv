@@ -83,6 +83,44 @@ defmodule GlimeshWeb.UserAuthTest do
     end
   end
 
+  describe "ban_user/1" do
+    test "erases session and cookies", %{conn: conn, user: user} do
+      user_token = Accounts.generate_user_session_token(user)
+
+      conn =
+        conn
+        |> put_session(:user_token, user_token)
+        |> put_req_cookie("user_remember_me", user_token)
+        |> fetch_cookies()
+        |> UserAuth.ban_user()
+
+      refute get_session(conn, :user_token)
+      refute conn.cookies["user_remember_me"]
+      assert %{max_age: 0} = conn.resp_cookies["user_remember_me"]
+      refute Accounts.get_user_by_session_token(user_token)
+    end
+
+    test "broadcasts to the given live_socket_id", %{conn: conn} do
+      live_socket_id = "users_sessions:abcdef-token"
+      GlimeshWeb.Endpoint.subscribe(live_socket_id)
+
+      conn
+      |> put_session(:live_socket_id, live_socket_id)
+      |> UserAuth.ban_user()
+
+      assert_receive %Phoenix.Socket.Broadcast{
+        event: "disconnect",
+        topic: "users_sessions:abcdef-token"
+      }
+    end
+
+    test "works even if user is already logged out", %{conn: conn} do
+      conn = conn |> fetch_cookies() |> UserAuth.ban_user()
+      refute get_session(conn, :user_token)
+      assert %{max_age: 0} = conn.resp_cookies["user_remember_me"]
+    end
+  end
+
   describe "fetch_current_user/2" do
     test "authenticates user from session", %{conn: conn, user: user} do
       user_token = Accounts.generate_user_session_token(user)
@@ -156,6 +194,28 @@ defmodule GlimeshWeb.UserAuthTest do
 
     test "does not redirect if user is authenticated", %{conn: conn, user: user} do
       conn = conn |> assign(:current_user, user) |> UserAuth.require_authenticated_user([])
+      refute conn.halted
+      refute conn.status
+    end
+  end
+
+  describe "require_user_has_channel/2" do
+    test "redirects if user doesn't have channel", %{conn: conn} do
+      conn = conn |> fetch_flash() |> UserAuth.require_user_has_channel([])
+      assert conn.halted
+      assert redirected_to(conn) == Routes.user_settings_path(conn, :stream)
+      assert get_flash(conn, :error) == "You must have a channel to access this page."
+    end
+  end
+
+  describe "require_authenticated_user_api/2" do
+    test "errors out if user is not authenticated", %{conn: conn} do
+      conn = conn |> UserAuth.require_authenticated_user_api([])
+      assert conn.halted
+    end
+
+    test "proceeds if user is authenticated", %{conn: conn, user: user} do
+      conn = conn |> assign(:current_user, user) |> UserAuth.require_authenticated_user_api([])
       refute conn.halted
       refute conn.status
     end

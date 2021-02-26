@@ -295,7 +295,8 @@ defmodule GlimeshWeb.GctController do
           render(conn, "edit_channel.html",
             channel: channel,
             channel_changeset: changeset,
-            categories: ChannelCategories.list_categories_for_select()
+            categories: ChannelCategories.list_categories_for_select(),
+            channel_delete_disabled: Kernel.not(Bodyguard.permit?(Glimesh.CommunityTeam, :soft_delete_channel, current_user, channel.user))
           )
 
         {:error, :unauthorized} ->
