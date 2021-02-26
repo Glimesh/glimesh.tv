@@ -61,6 +61,28 @@ defmodule Glimesh.StreamsTest do
       {:ok, channel: streamer.channel, streamer: streamer}
     end
 
+    test "create_channel/1 creates a channel" do
+      {:ok, channel} = Streams.create_channel(user_fixture())
+
+      assert channel.title == "Live Stream!"
+    end
+
+    test "delete_channel/1 inactivates a channel", %{channel: channel, streamer: streamer} do
+      {:ok, channel} = Streams.delete_channel(streamer, channel)
+      assert channel.inaccessible
+      assert is_nil(Glimesh.ChannelLookups.get_channel_for_user(streamer))
+
+      assert Glimesh.ChannelLookups.get_any_channel_for_user(streamer).inaccessible
+    end
+
+    test "create_channel/1 will recreate a channel", %{channel: channel, streamer: streamer} do
+      {:ok, channel} = Streams.delete_channel(streamer, channel)
+
+      {:ok, new_channel} = Streams.create_channel(streamer)
+
+      assert channel.id == new_channel.id
+    end
+
     test "rotate_stream_key/1 changes a hmac key", %{channel: channel, streamer: streamer} do
       {:ok, new_channel} = Streams.rotate_stream_key(streamer, channel)
       assert new_channel.hmac_key != channel.hmac_key
@@ -139,9 +161,10 @@ defmodule Glimesh.StreamsTest do
       {:ok, _} = Streams.start_stream(channel)
 
       assert Repo.one(
-               from s in Glimesh.Streams.Stream,
+               from(s in Glimesh.Streams.Stream,
                  where: s.channel_id == ^channel.id and is_nil(s.ended_at),
                  select: count(s.id)
+               )
              ) == 1
     end
 

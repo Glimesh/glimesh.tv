@@ -135,4 +135,11 @@ defmodule Glimesh.ChannelLookups do
     )
     |> Repo.preload([:category, :user])
   end
+
+  @doc """
+  Get any channel for a user, even if it is deactivated
+  """
+  def get_any_channel_for_user(user) do
+    Repo.one(from c in Channel, where: c.user_id == ^user.id)
+  end
 end

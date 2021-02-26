@@ -48,11 +48,18 @@ defmodule Glimesh.Streams do
         attrs \\ %{category_id: Enum.at(ChannelCategories.list_categories(), 0).id}
       ) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_channel, user) do
-      %Channel{
-        user: user
-      }
-      |> Channel.create_changeset(attrs)
-      |> Repo.insert()
+      case ChannelLookups.get_any_channel_for_user(user) do
+        %Channel{} = channel ->
+          # User has an existing deactivated channel
+          reactivate_channel(user, channel)
+
+        nil ->
+          %Channel{
+            user: user
+          }
+          |> Channel.create_changeset(attrs)
+          |> Repo.insert()
+      end
     end
   end
 
@@ -79,6 +86,16 @@ defmodule Glimesh.Streams do
       channel
       |> change_channel()
       |> Channel.hmac_key_changeset()
+      |> Repo.update()
+    end
+  end
+
+  def reactivate_channel(%User{} = user, %Channel{} = channel) do
+    with :ok <- Bodyguard.permit(__MODULE__, :delete_channel, user, channel) do
+      attrs = %{inaccessible: false}
+
+      channel
+      |> Channel.changeset(attrs)
       |> Repo.update()
     end
   end
