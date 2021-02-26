@@ -4,14 +4,12 @@ defmodule Glimesh.Repo.Migrations.FixBlankDisplaynames do
   import Ecto.Query
 
   def change do
-
     Glimesh.Repo.update_all(
       from(u in "users",
-      where: is_nil(u.displayname),
-      update: [set: [displayname: u.username]]
+        where: is_nil(u.displayname),
+        update: [set: [displayname: u.username]]
       ),
       []
     )
-
   end
 end

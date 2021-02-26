@@ -58,6 +58,11 @@ defmodule Glimesh.CommunityTeam do
     end
   end
 
+  def paginate_chat_message(chat_messages, params \\ []) do
+    chat_messages
+    |> Repo.paginate(params)
+  end
+
   def get_audit_log_entry_from_id!(id) do
     Repo.one(
       from al in AuditLog,
