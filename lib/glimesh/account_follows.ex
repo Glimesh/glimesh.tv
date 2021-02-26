@@ -100,7 +100,7 @@ defmodule Glimesh.AccountFollows do
     Repo.all(from f in Follower, where: f.user_id == ^user.id)
   end
 
-  defp no_follow_message_recently(channel, user) do
+  defp sent_follow_message_recently?(channel, user) do
     follow_message = List.first(Chat.get_follow_chat_message_for_user(channel, user))
 
     time_since_last_follow_message =
