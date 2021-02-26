@@ -79,6 +79,23 @@
                     <%= error_tag f, :can_payments %>
                 </div>
             </div>
+            <div class="row mt-1">
+                <div class="col">
+                    <%= label f, gettext("Is Stripe Setup") %>
+                    <%= select f, :is_stripe_setup, [Yes: true, No: false], [class: "form-control"] %>
+                    <%= error_tag f, :is_stripe_setup %>
+                </div>
+                <div class="col">
+                    <%= label f, gettext("Is Tax Verified") %>
+                    <%= select f, :is_tax_verified, [Yes: true, No: false], [class: "form-control"] %>
+                    <%= error_tag f, :is_tax_verified %>
+                </div>
+                <div class="col">
+                    <%= label f, gettext("Tax Withholding Percent") %>
+                    <%= number_input f, :tax_withholding_percent, [class: "form-control", step: "0.01", min: "0"] %>
+                    <%= error_tag f, :tax_withholding_percent %>
+                </div>
+            </div>
             <% end %>
             <%= if @conn.assigns.current_user.gct_level >= 4 || @conn.assigns.current_user.is_admin do %>
             <hr>

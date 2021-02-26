@@ -79,7 +79,7 @@
                             </div>
 
                             <div class="media card-stream-streamer">
-                                <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>" alt="<%= channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if channel.user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+                                <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>" alt="<%= channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(channel.user), do: "img-verified-streamer", else: "" %>">
                                 <div class="media-body">
                                     <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
                                     <p class="mb-0 card-stream-username"><%= channel.user.displayname %></p>

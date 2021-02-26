@@ -19,7 +19,7 @@
                     <h4 class="<%= Glimesh.Chat.Effects.get_username_color(user, "text-color-link") %>">
                         <%= user.displayname %></h4>
                     <div class="media flex-wrap">
-                        <img src="<%= Glimesh.Avatar.url({user.avatar, user}, :original) %>" alt="<%= user.displayname %>" height="128" class="mr-3 img-avatar <%= if user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+                        <img src="<%= Glimesh.Avatar.url({user.avatar, user}, :original) %>" alt="<%= user.displayname %>" height="128" class="mr-3 img-avatar <%= if Glimesh.Accounts.can_receive_payments?(user), do: "img-verified-streamer", else: "" %>">
                         <div class="media-body">
                             <ul class="list-unstyled">
                                 <li>

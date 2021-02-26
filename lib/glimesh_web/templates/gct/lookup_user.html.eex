@@ -1,8 +1,7 @@
 <div class="container">
     <h2 class="mt-4"><%= gettext("Information for %{user}", user: @user.displayname) %></h2>
     <div class="form-group">
-        <span
-            class="form-group-btn"><%= live_render(@conn, GlimeshWeb.GctLive.Components.ButtonArray, id: "button-array", session: %{"admin" => @conn.assigns.current_user, "user" => @user}) %></span>
+        <span class="form-group-btn"><%= live_render(@conn, GlimeshWeb.GctLive.Components.ButtonArray, id: "button-array", session: %{"admin" => @conn.assigns.current_user, "user" => @user}) %></span>
     </div>
     <div class="card">
         <div class="card-body">
@@ -10,8 +9,7 @@
                 <div class="col-md-4">
                     <div class="text-center">
                         <h5 class="mt-4"><%= gettext("%{user}'s Avatar", user: @user.displayname) %></h5>
-                        <img src="<%= Glimesh.Avatar.url({@user.avatar, @user}, :original) %>"
-                            class="img-fluid mb-4 img-avatar">
+                        <img src="<%= Glimesh.Avatar.url({@user.avatar, @user}, :original) %>" class="img-fluid mb-4 img-avatar">
                         <div>
                             <p><%= gettext("User ID: %{value}", value: @user.id) %></p>
                             <p><%= gettext("Email Confirmed At: %{value}", value: @user.confirmed_at) %></p>
@@ -21,10 +19,13 @@
                                 <p><%= gettext("GCT: %{value}", value: (if @user.is_gct, do: "✅", else: "❌")) %></p>
                                 <p><%= gettext("Access Level: %{value}", value: Glimesh.CommunityTeam.access_level_to_title(@user.gct_level)) %>
                                 </p>
-                                <p><%= gettext("Sub Ready: %{value}", value: (if @user.stripe_user_id, do: "✅", else: "❌")) %>
-                                </p>
                                 <p>
                                     <%= gettext("Team Role: %{value}", value: @user.team_role) %>
+                                </p>
+                                <p><%= gettext("Stripe Setup: %{value}", value: (if @user.is_stripe_setup, do: "✅", else: "❌")) %></p>
+                                <p><%= gettext("Tax Verified: %{value}", value: (if @user.is_tax_verified, do: "✅", else: "❌")) %>
+                                </p>
+                                <p><%= gettext("Sub Ready: %{value}", value: (if Glimesh.Accounts.can_receive_payments?(@user), do: "✅", else: "❌")) %>
                                 </p>
                                 <%= if @user.stripe_user_id do %>
                                 <p><%= gettext("Stripe Customer ID: %{value}", value: @user.stripe_customer_id) %></p>
