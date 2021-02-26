@@ -48,7 +48,7 @@ defmodule Glimesh.Streams do
         attrs \\ %{category_id: Enum.at(ChannelCategories.list_categories(), 0).id}
       ) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_channel, user) do
-      case ChannelLookups.get_channel_for_user(user, true) do
+      case ChannelLookups.get_any_channel_for_user(user) do
         %Channel{} = channel ->
           # User has an existing deactivated channel
           reactivate_channel(user, channel)

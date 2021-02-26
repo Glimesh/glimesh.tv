@@ -72,7 +72,7 @@ defmodule Glimesh.StreamsTest do
       assert channel.inaccessible
       assert is_nil(Glimesh.ChannelLookups.get_channel_for_user(streamer))
 
-      assert Glimesh.ChannelLookups.get_channel_for_user(streamer, true).inaccessible
+      assert Glimesh.ChannelLookups.get_any_channel_for_user(streamer).inaccessible
     end
 
     test "create_channel/1 will recreate a channel", %{channel: channel, streamer: streamer} do

@@ -134,15 +134,22 @@ defmodule Glimesh.ChannelLookups do
     |> Repo.preload([:category, :user])
   end
 
-  def get_channel_for_user(user, include_inaccessible \\ false) do
+  def get_channel_for_user(user) do
     Repo.one(
       from(c in Channel,
         join: u in User,
         on: c.user_id == u.id,
         where: u.id == ^user.id,
-        where: c.inaccessible == ^include_inaccessible
+        where: c.inaccessible == false
       )
     )
     |> Repo.preload([:category, :user])
+  end
+
+  @doc """
+  Get any channel for a user, even if it is deactivated
+  """
+  def get_any_channel_for_user(user) do
+    Repo.one(from c in Channel, where: c.user_id == ^user.id)
   end
 end
