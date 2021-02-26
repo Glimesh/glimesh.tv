@@ -10,14 +10,11 @@
                 <div class="card-body">
                     <div class="text-md-center">
                         <h4><%= follower.user.displayname %></h2>
-                        <img src="<%= Glimesh.Avatar.url({follower.user.avatar, follower.user}, :original) %>"
-                            alt="Your Profile Picture"
-                            style="width: 80% !important;"
-                            class="img-fluid mb-2 img-avatar <%= if follower.user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+                            <img src="<%= Glimesh.Avatar.url({follower.user.avatar, follower.user}, :original) %>" alt="Your Profile Picture" style="width: 80% !important;" class="img-fluid mb-2 img-avatar <%= if Glimesh.Accounts.can_receive_payments?(follower.user), do: "img-verified-streamer", else: "" %>">
 
-                        <%= if follower.user.stripe_user_id do %>
-                        <div class="mb-4"><span class="badge badge-secondary"><%= gettext("Sub Ready!") %></span></div>
-                        <% end %>
+                            <%= if Glimesh.Accounts.can_receive_payments?(follower.user) do %>
+                            <div class="mb-4"><span class="badge badge-secondary"><%= gettext("Sub Ready!") %></span></div>
+                            <% end %>
                     </div>
                 </div>
             </div>

@@ -134,5 +134,4 @@ defmodule GlimeshWeb.UserSecurityControllerTest do
       assert redirected_to(conn) == Routes.user_session_path(conn, :new)
     end
   end
-
 end

@@ -107,6 +107,7 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
       # Now that we've confirmed they're banned we unban
       conn =
         delete(conn, Routes.channel_moderator_path(conn, :unban_user, some_valid_user.username))
+
       assert get_flash(conn, :info) =~ "User unbanned successfully"
 
       response = html_response(get(conn, Routes.channel_moderator_path(conn, :index)), 200)

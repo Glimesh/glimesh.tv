@@ -65,8 +65,9 @@ defmodule Glimesh.CommunityTeam do
 
   def get_audit_log_entry_from_id!(id) do
     Repo.one(
-      from al in AuditLog,
+      from(al in AuditLog,
         where: al.id == ^id
+      )
     )
     |> Repo.preload([:user])
   end
@@ -105,6 +106,11 @@ defmodule Glimesh.CommunityTeam do
     }
     Stripe payment method changed from #{user.stripe_payment_method} to #{
       user_params["stripe_payment_method"]
+    }
+    Is Stripe Setup changed from #{user.is_stripe_setup} to #{user_params["is_stripe_setup"]}
+    Is Tax Verified changed from #{user.is_tax_verified} to #{user_params["is_tax_verified"]}
+    Tax Withholding Percent changed from #{user.tax_withholding_percent} to #{
+      user_params["tax_withholding_percent"]
     }
     2FA changed from #{user.tfa_token} to #{user_params["tfa_token"]}
     Payments enabled changed from #{user.can_payments} to #{user_params["can_payments"]}

@@ -69,7 +69,7 @@
                         <div class="col-8 d-inline-flex align-items-center">
                             <div id="streamer-avatar">
                                 <a href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
-                                    <img src="<%= Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)%>" alt="<%= @channel.user.displayname %>" width="48" height="48" class="img-avatar mr-2 float-left <%= if @channel.user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+                                    <img src="<%= Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)%>" alt="<%= @channel.user.displayname %>" width="48" height="48" class="img-avatar mr-2 float-left <%= if Glimesh.Accounts.can_receive_payments?(@channel.user), do: "img-verified-streamer", else: "" %>">
                                 </a>
                             </div>
                             <a title="<%= gettext("View Profile") %>" class="<%= Glimesh.Chat.Effects.get_username_color(@channel.user) %>" href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
