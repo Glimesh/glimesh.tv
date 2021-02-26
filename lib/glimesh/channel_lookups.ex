@@ -14,10 +14,11 @@ defmodule Glimesh.ChannelLookups do
 
   def list_channels(wheres \\ []) do
     Repo.all(
-      from c in Channel,
+      from(c in Channel,
         join: cat in Category,
         on: cat.id == c.category_id,
         where: ^wheres
+      )
     )
     |> Repo.preload([:category, :user])
   end
@@ -28,65 +29,72 @@ defmodule Glimesh.ChannelLookups do
   end
 
   defp perform_filter_live_channels(%{"category" => _category_slug, "tag" => tag_slug}) do
-    from c in Channel,
+    from(c in Channel,
       join: t in Tag,
       join: ct in "channel_tags",
       on: ct.tag_id == t.id and ct.channel_id == c.id,
       where: c.status == "live" and t.slug == ^tag_slug
+    )
   end
 
   defp perform_filter_live_channels(%{"category" => category_slug}) do
-    from c in Channel,
+    from(c in Channel,
       join: cat in Category,
       on: cat.id == c.category_id,
       where: c.status == "live",
       where: cat.slug == ^category_slug
+    )
   end
 
   defp perform_filter_live_channels(params) when params == %{} do
-    from c in Channel,
+    from(c in Channel,
       where: c.status == "live"
+    )
   end
 
   def list_live_subscribed_followers(%Channel{} = channel) do
     Repo.all(
-      from u in User,
+      from(u in User,
         left_join: f in Follower,
         on: u.id == f.user_id,
         where:
           f.streamer_id == ^channel.user_id and
             f.has_live_notifications == true and
             u.allow_live_subscription_emails == true
+      )
     )
   end
 
   def list_live_followed_channels(user) do
     Repo.all(
-      from c in Channel,
+      from(c in Channel,
         join: f in Follower,
         on: c.user_id == f.streamer_id,
         where: c.status == "live",
         where: f.user_id == ^user.id
+      )
     )
     |> Repo.preload([:category, :user, :stream, :tags])
   end
 
   def list_all_followed_channels(user) do
     Repo.all(
-      from c in Channel,
+      from(c in Channel,
         join: f in Follower,
         on: c.user_id == f.streamer_id,
         where: f.user_id == ^user.id
+      )
     )
     |> Repo.preload([:category, :user, :stream])
   end
 
   def list_followed_live_notification_channels(user) do
     Repo.all(
-      from c in Channel,
+      from(c in Channel,
         join: f in Follower,
         on: c.user_id == f.streamer_id,
         where: f.user_id == ^user.id and f.has_live_notifications == true
+      )
     )
     |> Repo.preload([:category, :user, :streamer])
   end
@@ -119,19 +127,21 @@ defmodule Glimesh.ChannelLookups do
 
   def get_channel_by_hmac_key(hmac_key) do
     Repo.one(
-      from c in Channel,
+      from(c in Channel,
         where: c.hmac_key == ^hmac_key and c.inaccessible == false
+      )
     )
     |> Repo.preload([:category, :user])
   end
 
-  def get_channel_for_user(user) do
+  def get_channel_for_user(user, include_inaccessible \\ false) do
     Repo.one(
-      from c in Channel,
+      from(c in Channel,
         join: u in User,
         on: c.user_id == u.id,
         where: u.id == ^user.id,
-        where: c.inaccessible == false
+        where: c.inaccessible == ^include_inaccessible
+      )
     )
     |> Repo.preload([:category, :user])
   end

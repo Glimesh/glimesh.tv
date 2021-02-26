@@ -15,9 +15,7 @@
         <input type="text" value="<%= @stream_key %>" class="form-control stream-key" readonly="readonly">
 
         <div class="input-group-append">
-            <button class="btn btn-info click-to-copy" type="button" data-copy-value="<%= @stream_key %>"
-                data-copied-error-text="<%= gettext("Error copying Stream Key") %>"
-                data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
+            <button class="btn btn-info click-to-copy" type="button" data-copy-value="<%= @stream_key %>" data-copied-error-text="<%= gettext("Error copying Stream Key") %>" data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
             <button class="btn btn-danger" type="button" phx-click="rotate_stream_key" phx-throttle="5000">Reset Stream
                 Key</button>
         </div>
@@ -39,8 +37,7 @@
             <%= label f, gettext("Mature Content") %>
             <div class="custom-control custom-switch">
                 <%= checkbox f, :mature_content, class: "custom-control-input" %>
-                <label class="custom-control-label"
-                    for="<%= input_id(f, :mature_content) %>"><%= gettext("Channel contains mature content") %></label>
+                <label class="custom-control-label" for="<%= input_id(f, :mature_content) %>"><%= gettext("Channel contains mature content") %></label>
             </div>
             <%= error_tag f, :mature_content %>
         </div>
@@ -124,7 +121,7 @@
 <div class="row">
     <div class="col-sm-6">
         <%= submit gettext("Update Channel"), class: "btn btn-primary" %>
-        <%= button(gettext("Delete Channel"), to: @delete_route, method: "put", class: "btn btn-danger", disabled: @channel_delete_disabled, data: [confirm: "Pressing OK will: \n - Delete your channel \n - Wipe all settings tied to the channel \n - Clear all followers for the channel \n\nPressing OK will NOT: \n- Delete your Glimesh account \n- Remove all profile related settings \n\nAre you sure you want to do this?"]) %>
+        <%= button(gettext("Deactivate Channel"), to: @delete_route, method: "put", class: "btn btn-danger", disabled: @channel_delete_disabled, data: [confirm: "Pressing OK will: \n- Deactivate your channel until you restore it\n\nPressing OK will NOT: \n- Delete your Glimesh account \n- Remove all profile related settings \n\nAre you sure you want to do this?"]) %>
     </div>
 </div>
 </form>
