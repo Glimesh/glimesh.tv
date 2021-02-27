@@ -275,6 +275,22 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
       assert resp["id"] == "#{stream.id}"
       assert resp["thumbnail"] =~ "#{stream.id}.jpg"
     end
+
+    test "returns normal errors", %{conn: conn} do
+      conn =
+        post(conn, "/api", %{
+          "query" => @start_stream_query,
+          "variables" => %{channelId: "0"}
+        })
+
+      assert [
+               %{
+                 "locations" => _,
+                 "message" => "Could not find resource",
+                 "path" => _
+               }
+             ] = json_response(conn, 200)["errors"]
+    end
   end
 
   def create_channel(%{user: user}) do
