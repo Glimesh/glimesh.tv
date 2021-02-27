@@ -11,6 +11,7 @@ defmodule Glimesh.Chat.ChatMessage do
     field :message, :string
     field :is_visible, :boolean, default: true
     field :is_followed_message, :boolean, default: false
+    field :is_subscription_message, :boolean, default: false
 
     embeds_many :tokens, Glimesh.Chat.Token, on_replace: :delete
 
@@ -23,7 +24,7 @@ defmodule Glimesh.Chat.ChatMessage do
   @doc false
   def changeset(chat_message, attrs) do
     chat_message
-    |> cast(attrs, [:message, :is_visible, :is_followed_message])
+    |> cast(attrs, [:message, :is_visible, :is_followed_message, :is_subscription_message])
     |> validate_required([:channel, :user, :message])
   end
 
