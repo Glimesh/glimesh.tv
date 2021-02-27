@@ -230,7 +230,7 @@ defmodule Glimesh.Payments do
   end
 
   def resubscribe(%Subscription{is_active: false}) do
-    {:error, "Cannot resubscribe a expired subscription."}
+    {:error, "Cannot resubscribe an expired subscription."}
   end
 
   def unsubscribe(subscription) do
