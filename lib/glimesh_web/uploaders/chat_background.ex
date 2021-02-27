@@ -33,6 +33,13 @@ defmodule Glimesh.ChatBackground do
     "uploads/chat-backgrounds"
   end
 
+  def s3_object_headers(_version, {file, _scope}) do
+    [
+      cache_control: "public, max-age=604800",
+      content_type: MIME.from_path(file.file_name)
+    ]
+  end
+
   # Provide a default URL if there hasn't been a file uploaded
   def default_url(_version, _scope) do
     "/images/bg.png"

@@ -79,6 +79,9 @@ defmodule Glimesh.Streams do
           broadcast({:ok, broadcast_message}, :channel)
       end
     end
+  catch
+    :exit, _ ->
+      {:error, "Failed to upload channel images"}
   end
 
   def rotate_stream_key(%User{} = user, %Channel{} = channel) do
@@ -223,6 +226,9 @@ defmodule Glimesh.Streams do
     stream
     |> Glimesh.Streams.Stream.changeset(attrs)
     |> Repo.update()
+  catch
+    :exit, _ ->
+      {:error, "Failed to upload thumbnail"}
   end
 
   def get_last_stream_metadata(%Glimesh.Streams.Stream{} = stream) do

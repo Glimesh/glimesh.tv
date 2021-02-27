@@ -43,7 +43,8 @@ config :glimesh,
 
 config :waffle,
   storage: Waffle.Storage.Local,
-  storage_dir: "uploads"
+  storage_dir: "uploads",
+  version_timeout: 4_000
 
 # Configures the endpoint
 config :glimesh, GlimeshWeb.Endpoint,
