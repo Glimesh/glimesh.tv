@@ -349,6 +349,9 @@ defmodule Glimesh.Accounts do
     user
     |> User.profile_changeset(attrs)
     |> Repo.update()
+  catch
+    :exit, _ ->
+      {:error, "Failed to upload avatar"}
   end
 
   @doc """
