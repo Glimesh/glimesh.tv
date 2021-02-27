@@ -217,7 +217,7 @@ defmodule GlimeshWeb.GctController do
       channel =
         case parse_channel_query(query) do
           "channel_id" -> ChannelLookups.get_channel!(query)
-          "username" -> ChannelLookups.get_channel_for_username!(query, true)
+          "username" -> ChannelLookups.get_channel_for_username(query, true)
         end
 
       if channel do

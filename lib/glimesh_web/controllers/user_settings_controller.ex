@@ -83,7 +83,7 @@ defmodule GlimeshWeb.UserSettingsController do
 
   def delete_channel(conn, _params) do
     user = conn.assigns.current_user
-    channel = ChannelLookups.get_channel_for_username!(user.username)
+    channel = ChannelLookups.get_channel_for_username(user.username)
 
     case Streams.delete_channel(user, channel) do
       {:ok, _} ->
@@ -133,7 +133,7 @@ defmodule GlimeshWeb.UserSettingsController do
   end
 
   defp assign_channel_changesets(conn, _opts) do
-    channel = ChannelLookups.get_channel_for_username!(conn.assigns.current_user.username)
+    channel = ChannelLookups.get_channel_for_username(conn.assigns.current_user.username)
 
     if channel do
       conn

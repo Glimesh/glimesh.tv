@@ -282,7 +282,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :price, :integer
     field :product_name, :string
 
-    field :streamer, non_null(:user), resolve: dataloader(Repo)
+    field :streamer, :user, resolve: dataloader(Repo)
     field :user, non_null(:user), resolve: dataloader(Repo)
 
     field :inserted_at, non_null(:naive_datetime)
