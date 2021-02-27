@@ -137,8 +137,26 @@ defmodule Glimesh.Payments do
       product_name: product.name
     }
 
-    Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"])
-    |> handle_stripe_subscription_create(user, sub_attrs)
+    results =
+      Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"])
+      |> handle_stripe_subscription_create(user, sub_attrs)
+
+    case results do
+      {:ok, %Subscription{}} ->
+        channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
+
+        if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
+          Glimesh.Chat.create_chat_message(user, channel, %{
+            message: " just subscribed!",
+            is_subscription_message: true
+          })
+        end
+
+        results
+
+      _ ->
+        results
+    end
   end
 
   @doc """
