@@ -57,7 +57,6 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   end
 
   # Streams
-
   def start_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
     with %Glimesh.Streams.Channel{} = channel <- ChannelLookups.get_channel(channel_id),
          {:ok, channel} <- Streams.start_stream(channel) do
@@ -95,7 +94,11 @@ defmodule Glimesh.Resolvers.ChannelResolver do
         context: %{is_admin: true}
       }) do
     if stream = Streams.get_stream(stream_id) do
-      Streams.log_stream_metadata(stream, metadata)
+      if is_nil(stream.ended_at) do
+        Streams.log_stream_metadata(stream, metadata)
+      else
+        {:error, "Stream has ended"}
+      end
     else
       {:error, @error_not_found}
     end

@@ -184,6 +184,7 @@ defmodule GlimeshWeb.Router do
 
     # Editing channel scopes
     get "/edit/channel/:channel_id", GctController, :edit_channel
+    post "/edit/channel/:channel_id/shutdown", GctController, :shutdown_channel
     put "/edit/channel/:channel_id/update", GctController, :update_channel
     put "/edit/channel/:channel_id/delete", GctController, :delete_channel
 

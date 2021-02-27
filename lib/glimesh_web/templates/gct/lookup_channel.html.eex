@@ -1,56 +1,62 @@
 <div class="container">
     <h2 class="mt-4"><%= gettext("Information for %{user}'s channel", user: @channel.user.displayname) %></h2>
     <div class="form-group">
-        <span class="form-group-btn"><!-- Make channel button array here :)--></span>
+        <span class="form-group-btn">
+            <!-- Make channel button array here :)--></span>
         <span class="form-group-btn"><%= live_render(@conn, GlimeshWeb.GctLive.Components.ChannelButtonArray, id: "button-array", session: %{"admin" => @conn.assigns.current_user, "channel" => @channel}) %></span>
     </div>
     <div class="card">
         <div class="card-body">
             <div class="row">
-            <div class="col-md-4 text-center">
-                <h5><%= gettext("Channel thumbnail") %></h5>
-                <img src="<%= Glimesh.StreamThumbnail.url({@channel.thumbnail, @channel}, :original) %>"
-                                        alt="<%= @channel.title %>" class="card-img">
-                <div class="mt-2">
-                    <p><%= gettext("Channel ID: %{value}", value: @channel.id ) %></p>
-                    <p><%= link(gettext("Belongs to: %{value}", value: @channel.user.username ), to: Routes.gct_path(@conn, :username_lookup, query: @channel.user.username)) %></p>
-                    <p><%= gettext("Created At: %{value} UTC", value: @channel.inserted_at ) %></p>
-                    <p><%= gettext("Status: %{value}", value: @channel.status ) %></p>
-                    <p><%= gettext("Backend: %{value}", value: @channel.backend ) %></p>
-                    <p><%= gettext("Disabled hyperlinks: %{value}", value: @channel.disable_hyperlinks ) %></p>
-                    <p><%= gettext("Blocked links: %{value}", value: @channel.block_links ) %></p>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <!-- Row start -->
-                <div class="row mb-2">
-                    <div class="col">
-                        <%= label :channel, gettext("Title") %>
-                        <%= text_input :channel, :channel, [value: @channel.title, class: "form-control", disabled: true] %>
+                <div class="col-md-4 text-center">
+                    <h5><%= gettext("Channel thumbnail") %></h5>
+                    <img src="<%= Glimesh.StreamThumbnail.url({@channel.thumbnail, @channel}, :original) %>" alt="<%= @channel.title %>" class="card-img">
+                    <div class="mt-2">
+                        <%= if @channel.status == "live" do %>
+                        <span class="badge badge-danger">Live</span>
+                        <% else %>
+                        <span class="badge badge-secondary">Offline</span>
+                        <% end %>
+
+                        <p><%= gettext("Channel ID: %{value}", value: @channel.id ) %></p>
+                        <p><%= link(gettext("Belongs to: %{value}", value: @channel.user.username ), to: Routes.gct_path(@conn, :username_lookup, query: @channel.user.username)) %></p>
+                        <p><%= gettext("Created At: %{value} UTC", value: @channel.inserted_at ) %></p>
+                        <p><%= gettext("Status: %{value}", value: @channel.status ) %></p>
+                        <p><%= gettext("Backend: %{value}", value: @channel.backend ) %></p>
+                        <p><%= gettext("Disabled hyperlinks: %{value}", value: @channel.disable_hyperlinks ) %></p>
+                        <p><%= gettext("Blocked links: %{value}", value: @channel.block_links ) %></p>
                     </div>
                 </div>
-                <!-- Row end -->
-                <!-- Row start -->
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <%= label :channel, gettext("Category") %>
-                        <%= select :channel, :category_id, @categories, [value: @channel.category_id, class: "form-control", disabled: true] %>
+                <div class="col-md-8">
+                    <!-- Row start -->
+                    <div class="row mb-2">
+                        <div class="col">
+                            <%= label :channel, gettext("Title") %>
+                            <%= text_input :channel, :channel, [value: @channel.title, class: "form-control", disabled: true] %>
+                        </div>
                     </div>
-                    <div class="col-sm-6">
-                        <%= label :channel, gettext("To be added") %>
-                        <%= text_input :channel, :channel, [value: "Nothing", class: "form-control", disabled: true] %>
+                    <!-- Row end -->
+                    <!-- Row start -->
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <%= label :channel, gettext("Category") %>
+                            <%= select :channel, :category_id, @categories, [value: @channel.category_id, class: "form-control", disabled: true] %>
+                        </div>
+                        <div class="col-sm-6">
+                            <%= label :channel, gettext("To be added") %>
+                            <%= text_input :channel, :channel, [value: "Nothing", class: "form-control", disabled: true] %>
+                        </div>
                     </div>
+                    <!-- Row end -->
+                    <!-- Row start -->
+                    <div class="row">
+                        <div class="col">
+                            <%= label :channel, gettext("Chat Rules") %>
+                            <%= textarea :channel, :channel, [value: @channel.chat_rules_md ,class: "form-control mb-4", id: "textarea_edit", rows: 7, disabled: true]  %>
+                        </div>
+                    </div>
+                    <!-- Row end -->
                 </div>
-                <!-- Row end -->
-                <!-- Row start -->
-                <div class="row">
-                    <div class="col">
-                        <%= label :channel, gettext("Chat Rules") %>
-                        <%= textarea :channel, :channel, [value: @channel.chat_rules_md ,class: "form-control mb-4", id: "textarea_edit", rows: 7, disabled: true]  %>
-                    </div>
-                </div>
-                <!-- Row end -->
-            </div>
             </div>
         </div>
     </div>
