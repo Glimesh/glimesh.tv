@@ -11,7 +11,11 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
         <%= if @user do %>
             <%= if @can_subscribe do %>
                 <%= if @subscribed do %>
-                    <button class="btn btn-secondary btn-responsive" phx-click="unsubscribe" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Unsubscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
+                    <%= if @canceling do %>
+                    <button class="btn btn-secondary btn-responsive" phx-click="show_resub_modal" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Resubscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
+                    <% else %>
+                    <button class="btn btn-secondary btn-responsive" phx-click="unsubscribe" phx-throttle="5000" data-confirm="<%= gettext("Are you sure you want to unsubscribe?") %>"><span class="d-none d-lg-block"><%= gettext("Unsubscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
+                    <% end %>
                 <% else %>
                     <button class="btn btn-secondary btn-responsive" phx-click="show_modal" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Subscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
                 <% end %>
@@ -54,6 +58,42 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
             </div>
         </div>
         <% end %>
+        <%= if @show_resub_modal do %>
+        <div id="resubModal" class="live-modal"
+            phx-capture-click="hide_resub_modal"
+            phx-window-keydown="hide_resub_modal"
+            phx-key="escape"
+            phx-target="#resubModal"
+            phx-page-loading>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><%= gettext("Resubscribe") %></h5>
+                        <button type="button" class="close" phx-click="hide_resub_modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <%= if @stripe_error do %>
+                          <div class="alert alert-danger" role="alert">
+                            <%= @stripe_error %>
+                          </div>
+                        <% end %>
+
+                        <p><%= gettext("Your subscription is currently set to automatically cancel at the end of your billing cycle.") %></p>
+                        <p><%= gettext("You can resubscribe by clicking the button below, and your subscription will be renewed until you cancel it.") %></p>
+
+                        <button class="btn btn-primary btn-block btn-lg" phx-click="resubscribe" phx-throttle="5000"><%= gettext("Resubscribe") %></button>
+
+                        <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider."
+                        class="img-fluid mt-4 mx-auto d-block">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <% end %>
     </div>
     """
   end
@@ -66,12 +106,14 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
      |> assign(:can_subscribe, false)
      |> assign(:user, nil)
      |> assign(:subscribed, false)
+     |> assign(:canceling, false)
+     |> assign(:show_resub_modal, false)
      |> assign(:show_subscription, false)}
   end
 
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
-    subscribed = Glimesh.Payments.has_channel_subscription?(user, streamer)
+    subscription = Glimesh.Payments.get_channel_subscription(user, streamer)
 
     can_subscribe = if Accounts.can_use_payments?(user), do: user.id != streamer.id, else: false
     can_receive_payments = Accounts.can_receive_payments?(streamer)
@@ -86,10 +128,12 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
      |> assign(:price_id, Payments.get_channel_sub_base_price_id())
      |> assign(:price, Payments.get_channel_sub_base_price())
      |> assign(:show_subscription, false)
+     |> assign(:show_resub_modal, false)
      |> assign(:streamer, streamer)
      |> assign(:user, user)
      |> assign(:can_subscribe, can_subscribe && can_receive_payments && Glimesh.has_launched?())
-     |> assign(:subscribed, subscribed)}
+     |> assign(:canceling, if(subscription, do: subscription.is_canceling, else: false))
+     |> assign(:subscribed, !is_nil(subscription))}
   end
 
   @impl true
@@ -134,8 +178,22 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
 
     case Payments.unsubscribe(subscription) do
       {:ok, _} ->
-        {:noreply,
-         socket |> assign(:subscribed, Payments.has_channel_subscription?(user, streamer))}
+        {:noreply, socket |> assign(:canceling, true)}
+
+      {:error, error_msg} ->
+        {:noreply, socket |> assign(:stripe_error, error_msg)}
+    end
+  end
+
+  @impl true
+  def handle_event("resubscribe", _value, socket) do
+    streamer = socket.assigns.streamer
+    user = socket.assigns.user
+    subscription = Payments.get_channel_subscription!(user, streamer)
+
+    case Payments.resubscribe(subscription) do
+      {:ok, _} ->
+        {:noreply, socket |> assign(:show_resub_modal, false) |> assign(:canceling, false)}
 
       {:error, error_msg} ->
         {:noreply, socket |> assign(:stripe_error, error_msg)}
@@ -150,5 +208,15 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
   @impl true
   def handle_event("hide_modal", _value, socket) do
     {:noreply, socket |> assign(:show_subscription, false)}
+  end
+
+  @impl true
+  def handle_event("show_resub_modal", _value, socket) do
+    {:noreply, socket |> assign(:show_resub_modal, true)}
+  end
+
+  @impl true
+  def handle_event("hide_resub_modal", _value, socket) do
+    {:noreply, socket |> assign(:show_resub_modal, false)}
   end
 end

@@ -225,13 +225,63 @@ defmodule Glimesh.Payments do
     end
   end
 
-  def unsubscribe(subscription) do
-    with {:ok, _} <- Stripe.Subscription.delete(subscription.stripe_subscription_id),
-         {:ok, sub} <- update_subscription(subscription, %{is_active: false}) do
+  @doc """
+  Resubscribe to the subscription.
+  Only allowed if the stripe subscription is not cancelled
+  """
+  def resubscribe(%Subscription{is_active: true} = subscription) do
+    with {:ok, stripe_sub} <-
+           Stripe.Subscription.update(subscription.stripe_subscription_id, %{
+             cancel_at_period_end: false
+           }),
+         {:ok, sub} <-
+           update_subscription(subscription, %{
+             is_canceling: false,
+             ended_at:
+               stripe_sub.current_period_end |> DateTime.from_unix!() |> DateTime.to_naive()
+           }) do
       {:ok, sub}
     else
       {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
       {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
+    end
+  end
+
+  def resubscribe(%Subscription{is_active: false}) do
+    {:error, "Cannot resubscribe an expired subscription."}
+  end
+
+  def unsubscribe(subscription) do
+    with {:ok, stripe_sub} <-
+           Stripe.Subscription.update(subscription.stripe_subscription_id, %{
+             cancel_at_period_end: true
+           }),
+         {:ok, sub} <-
+           update_subscription(subscription, %{
+             is_canceling: true,
+             ended_at:
+               stripe_sub.current_period_end |> DateTime.from_unix!() |> DateTime.to_naive()
+           }) do
+      {:ok, sub}
+    else
+      {:error, %Stripe.Error{} = error} -> {:error, error.user_message || error.message}
+      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
+    end
+  end
+
+  @doc """
+  Immediately cancel a subscription -- do not use unless working with Stripe webhooks
+  """
+  def cancel(subscription) do
+    case update_subscription(subscription, %{is_canceling: false, is_active: false}) do
+      {:ok, sub} ->
+        {:ok, sub}
+
+      {:error, %Stripe.Error{} = error} ->
+        {:error, error.user_message || error.message}
+
+      {:error, %Ecto.Changeset{errors: errors}} ->
+        {:error, errors}
     end
   end
 
@@ -251,7 +301,7 @@ defmodule Glimesh.Payments do
   def process_unsuccessful_renewal(stripe_subscription_id) do
     case get_subscription_by_stripe_id(stripe_subscription_id) do
       %Subscription{} = sub ->
-        unsubscribe(sub)
+        cancel(sub)
 
       _ ->
         {:error, "Unable to find subscription by stripe_subscription_id"}
@@ -267,7 +317,7 @@ defmodule Glimesh.Payments do
 
   def get_subscription_by_stripe_id(nil), do: nil
 
-  def get_platform_subscription!(user) do
+  def get_platform_subscription(user) do
     Repo.one(
       from s in Subscription,
         where: s.user_id == ^user.id and s.is_active == true and is_nil(s.streamer_id)

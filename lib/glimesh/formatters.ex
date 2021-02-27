@@ -8,16 +8,15 @@ defmodule Glimesh.Formatters do
   def format_price(nil), do: "0.00"
   def format_price(iprice), do: :erlang.float_to_binary(iprice / 100, decimals: 2)
 
-  def format_datetime(nil), do: "Unknown"
-
   def format_datetime(timestamp) when is_integer(timestamp) do
-    d = DateTime.from_unix!(timestamp)
-    "#{d.year}/#{d.month}/#{d.day}"
+    format_datetime(DateTime.from_unix!(timestamp))
   end
 
-  def format_datetime(%{year: year, month: month, day: day}) do
-    "#{year}/#{month}/#{day}"
+  def format_datetime(%{year: _, month: _, day: _y} = datetime) do
+    Calendar.strftime(datetime, "%b %d %Y")
   end
+
+  def format_datetime(_), do: "Unknown"
 
   def format_page_title(nil) do
     "Glimesh"

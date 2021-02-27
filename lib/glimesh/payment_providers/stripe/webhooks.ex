@@ -80,6 +80,22 @@ defmodule Glimesh.PaymentProviders.StripeProvider.Webhooks do
     end
   end
 
+  def handle_webhook(%{
+        type: "customer.subscription.deleted",
+        data: %{object: %Stripe.Subscription{} = subscription}
+      }) do
+    case subscription.status do
+      "canceled" ->
+        Payments.process_unsuccessful_renewal(subscription.id)
+
+      "unpaid" ->
+        Payments.process_unsuccessful_renewal(subscription.id)
+
+      _ ->
+        {:ok, ""}
+    end
+  end
+
   def handle_webhook(%{type: type} = webhook) do
     #   Fall through webhook handler for stripe events, logging into prod for now so we can figure
     # out the right methods to implement.
