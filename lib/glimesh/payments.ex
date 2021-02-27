@@ -308,6 +308,11 @@ defmodule Glimesh.Payments do
     |> Repo.preload([:user, :streamer])
   end
 
+  def get_channel_subscription(user, streamer) do
+    Repo.get_by(Subscription, user_id: user.id, is_active: true, streamer_id: streamer.id)
+    |> Repo.preload([:user, :streamer])
+  end
+
   def get_channel_subscription!(user, streamer) do
     Repo.get_by!(Subscription, user_id: user.id, is_active: true, streamer_id: streamer.id)
     |> Repo.preload([:user, :streamer])

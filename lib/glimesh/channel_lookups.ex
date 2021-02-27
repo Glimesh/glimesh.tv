@@ -99,7 +99,7 @@ defmodule Glimesh.ChannelLookups do
     Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :user, :tags])
   end
 
-  def get_channel_for_username!(username, ignore_banned \\ false) do
+  def get_channel_for_username(username, ignore_banned \\ false) do
     query =
       Channel
       |> join(:inner, [u], assoc(u, :user), as: :user)

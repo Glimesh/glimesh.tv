@@ -16,7 +16,7 @@ defmodule GlimeshWeb.UserLive.Stream do
       Process.send(self(), :load_stream, [])
     end
 
-    case ChannelLookups.get_channel_for_username!(session["username"]) do
+    case ChannelLookups.get_channel_for_username(session["username"]) do
       %Glimesh.Streams.Channel{} = channel ->
         maybe_user = Accounts.get_user_by_session_token(session["user_token"])
         streamer = Accounts.get_user!(channel.streamer_id)
@@ -52,7 +52,7 @@ defmodule GlimeshWeb.UserLive.Stream do
       Process.send(self(), :load_stream, [])
     end
 
-    case ChannelLookups.get_channel_for_username!(streamer_username) do
+    case ChannelLookups.get_channel_for_username(streamer_username) do
       %Glimesh.Streams.Channel{} = channel ->
         maybe_user = Accounts.get_user_by_session_token(session["user_token"])
         streamer = Accounts.get_user!(channel.streamer_id)

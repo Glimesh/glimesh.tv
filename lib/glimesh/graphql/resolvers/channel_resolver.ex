@@ -1,20 +1,23 @@
 defmodule Glimesh.Resolvers.ChannelResolver do
   @moduledoc false
   alias Glimesh.Accounts
+  alias Glimesh.Accounts.User
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
   alias Glimesh.Payments
+  alias Glimesh.Payments.Subscription
   alias Glimesh.Streams
+
+  @error_not_found "Could not find resource"
+  @error_access_denied "Access denied"
 
   # Channels
 
   def all_channels(%{status: status, category_slug: category_slug}, _) do
-    case ChannelCategories.get_category(category_slug) do
-      %Glimesh.Streams.Category{id: category_id} ->
-        {:ok, ChannelLookups.list_channels(status: status, category_id: category_id)}
-
-      _ ->
-        {:error, "Invalid channel slug."}
+    if category = ChannelCategories.get_category(category_slug) do
+      {:ok, ChannelLookups.list_channels(status: status, category_id: category.id)}
+    else
+      {:error, @error_not_found}
     end
   end
 
@@ -27,11 +30,19 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   end
 
   def find_channel(%{id: id}, _) do
-    {:ok, ChannelLookups.get_channel!(id)}
+    if channel = ChannelLookups.get_channel!(id) do
+      {:ok, channel}
+    else
+      {:error, @error_not_found}
+    end
   end
 
   def find_channel(%{username: username}, _) do
-    {:ok, ChannelLookups.get_channel_for_username!(username)}
+    if channel = ChannelLookups.get_channel_for_username(username) do
+      {:ok, channel}
+    else
+      {:error, @error_not_found}
+    end
   end
 
   def find_channel(%{hmac_key: hmac_key}, %{context: %{is_admin: true}}) do
@@ -48,22 +59,28 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   # Streams
 
   def start_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
-    channel = ChannelLookups.get_channel!(channel_id)
+    with %Glimesh.Streams.Channel{} = channel <- ChannelLookups.get_channel(channel_id),
+         {:ok, channel} <- Streams.start_stream(channel) do
+      {:ok, channel}
+    else
+      nil ->
+        {:error, @error_not_found}
 
-    case Streams.start_stream(channel) do
-      {:error, _} -> {:error, "User is unauthorized to start a stream."}
-      other -> other
+      {:error, _} ->
+        {:error, "User is unauthorized to start a stream."}
     end
   end
 
   def start_stream(_parent, _args, _resolution) do
-    {:error, "Access denied"}
+    {:error, @error_access_denied}
   end
 
   def end_stream(_parent, %{stream_id: stream_id}, %{context: %{is_admin: true}}) do
-    stream = Streams.get_stream!(stream_id)
-
-    Streams.end_stream(stream)
+    if stream = Streams.get_stream(stream_id) do
+      Streams.end_stream(stream)
+    else
+      {:error, @error_not_found}
+    end
   end
 
   def end_stream(_parent, _args, %{context: %{is_admin: true}}) do
@@ -71,19 +88,21 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   end
 
   def end_stream(_parent, _args, _resolution) do
-    {:error, "Access denied"}
+    {:error, @error_access_denied}
   end
 
   def log_stream_metadata(_parent, %{stream_id: stream_id, metadata: metadata}, %{
         context: %{is_admin: true}
       }) do
-    stream = Streams.get_stream!(stream_id)
-
-    Streams.log_stream_metadata(stream, metadata)
+    if stream = Streams.get_stream(stream_id) do
+      Streams.log_stream_metadata(stream, metadata)
+    else
+      {:error, @error_not_found}
+    end
   end
 
   def log_stream_metadata(_parent, _args, _resolution) do
-    {:error, "Access denied"}
+    {:error, @error_access_denied}
   end
 
   def upload_stream_thumbnail(_parent, %{stream_id: stream_id, thumbnail: thumbnail}, %{
@@ -94,7 +113,7 @@ defmodule Glimesh.Resolvers.ChannelResolver do
       {:ok, stream}
     else
       nil ->
-        {:error, "Stream ID not found"}
+        {:error, @error_not_found}
 
       {:error, _} ->
         # Whenever a DO Spaces error occurs, it throws back an error absinthe can't natively process
@@ -103,7 +122,7 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   end
 
   def upload_stream_thumbnail(_parent, _args, _resolution) do
-    {:error, "Access denied"}
+    {:error, @error_access_denied}
   end
 
   # Categories
@@ -113,28 +132,43 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   end
 
   def find_category(%{slug: slug}, _) do
-    {:ok, ChannelCategories.get_category(slug)}
+    if category = ChannelCategories.get_category(slug) do
+      {:ok, category}
+    else
+      {:error, @error_not_found}
+    end
   end
 
   # Subscriptions
 
   def all_subscriptions(%{streamer_username: streamer_username}, _) do
-    streamer = Accounts.get_by_username(streamer_username)
-
-    {:ok, Payments.list_streamer_subscribers(streamer)}
+    if streamer = Accounts.get_by_username(streamer_username) do
+      {:ok, Payments.list_streamer_subscribers(streamer)}
+    else
+      {:error, @error_not_found}
+    end
   end
 
   def all_subscriptions(%{user_username: user_username}, _) do
-    user = Accounts.get_by_username(user_username)
-
-    {:ok, Payments.list_user_subscriptions(user)}
+    if user = Accounts.get_by_username(user_username) do
+      {:ok, Payments.list_user_subscriptions(user)}
+    else
+      {:error, @error_not_found}
+    end
   end
 
   def all_subscriptions(%{streamer_username: streamer_username, user_username: user_username}, _) do
-    user = Accounts.get_by_username(user_username)
-    streamer = Accounts.get_by_username(streamer_username)
+    with %User{} = streamer <- Accounts.get_by_username(streamer_username),
+         %User{} = user <- Accounts.get_by_username(user_username),
+         %Subscription{} = sub <- Payments.get_channel_subscription(user, streamer) do
+      {:ok, sub}
+    else
+      nil ->
+        {:error, @error_not_found}
 
-    {:ok, Payments.get_channel_subscription!(user, streamer)}
+      _ ->
+        {:error, "Unexpected error"}
+    end
   end
 
   def all_subscriptions(_, _) do
