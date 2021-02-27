@@ -29,7 +29,7 @@ defmodule Glimesh.Accounts.Profile do
   def safe_user_markdown_to_html(profile_content_md) do
     case Earmark.as_html(profile_content_md) do
       {:ok, html_doc, []} ->
-        {:ok, format_profile_images(html_doc)}
+        {:ok, format_contents(html_doc)}
 
       {:ok, _, error_messages} ->
         {:error, format_earmark_messages(error_messages)}
@@ -92,9 +92,20 @@ defmodule Glimesh.Accounts.Profile do
     }
   end
 
-  def format_profile_images(html_doc) do
+  def format_contents(html_doc) do
     html_doc
     |> HtmlSanitizeEx.basic_html()
+    |> format_images()
+    |> links_in_new_tab()
+  end
+
+  defp links_in_new_tab(doc) do
+    doc
+    |> String.replace("<a ", "<a rel=\"ugc\" target=\"_blank\" ")
+  end
+
+  defp format_images(doc) do
+    doc
     |> String.replace("\n  ", "")
     |> String.replace("\n</a>", "</a>")
     |> String.replace(">  <img", "><img")
