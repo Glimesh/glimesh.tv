@@ -174,11 +174,12 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
     potential_payout_amount = total_amount - glimesh_cut
 
     # Withholding is calculated from the potential payout amount, not the full amount
+    # Rounded UP in the event the withholding is a fractional percent eg 2.50 - 0.125 = 2.38
     withholding_amount =
       if streamer.tax_withholding_percent,
         do:
           Decimal.to_integer(
-            Decimal.mult(potential_payout_amount, streamer.tax_withholding_percent)
+            Decimal.round(Decimal.mult(potential_payout_amount, streamer.tax_withholding_percent))
           ),
         else: 0
 

@@ -99,7 +99,7 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
     end
   end
 
-  describe "Witholding Payouts" do
+  describe "Witholding Payouts 30%" do
     setup do
       {:ok, streamer} =
         Glimesh.Accounts.set_stripe_attrs(streamer_fixture(), %{
@@ -133,6 +133,44 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
       Enum.map(paid_out_transfers, fn {result, data} ->
         assert result == :ok
         assert data.amount == 350
+      end)
+    end
+  end
+
+  describe "Witholding Payouts 5%" do
+    setup do
+      {:ok, streamer} =
+        Glimesh.Accounts.set_stripe_attrs(streamer_fixture(), %{
+          is_stripe_setup: true,
+          is_tax_verified: true,
+          tax_withholding_percent: 0.05
+        })
+
+      %{
+        streamer: streamer,
+        user: user_fixture()
+      }
+    end
+
+    test "prepare_payouts/0 prepares the correct amount with withholding", %{
+      streamer: streamer,
+      user: user
+    } do
+      {:ok, _} = channel_subscription_fixture(streamer, user, "456")
+      {:ok, _} = channel_subscription_fixture(streamer, user, "789")
+
+      create_and_pay_invoice("1", "456")
+      {:ok, subscription_invoice} = create_and_pay_invoice("2", "789")
+      assert subscription_invoice.total_amount == 500
+      assert subscription_invoice.withholding_amount == 13
+      assert subscription_invoice.payout_amount == 237
+
+      transfers = Transfers.prepare_payouts()
+      paid_out_transfers = Transfers.commit_payouts(transfers)
+
+      Enum.map(paid_out_transfers, fn {result, data} ->
+        assert result == :ok
+        assert data.amount == 474
       end)
     end
   end

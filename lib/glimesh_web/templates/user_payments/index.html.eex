@@ -103,10 +103,14 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"><%= @platform_subscription.product_name %></h5>
-                    <p class="card-text">
-                        <%= gettext("Subscribed since %{date}.", date: format_datetime(@platform_subscription.started_at)) %>
+                    <p>
+                        <%= gettext("Subscribed since %{date}", date: format_datetime(@platform_subscription.started_at)) %>
                     </p>
+                    <%= if @platform_subscription.is_canceling do %>
+                    <%= gettext("Canceling on %{date}", date: format_datetime(@platform_subscription.ended_at)) %>
+                    <% else %>
                     <%= link gettext("Unsubscribe"), to: Routes.platform_subscription_index_path(@conn, :index), class: "btn btn-danger btn-sm" %>
+                    <% end %>
                 </div>
             </div>
         </div>
@@ -116,9 +120,13 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"><%= sub.streamer.displayname %></h5>
-                    <p class="card-text">
+                    <p>
                         <%= gettext("Subscribed since %{date}", date: format_datetime(sub.started_at)) %></p>
+                    <%= if sub.is_canceling do %>
+                    <%= gettext("Canceling on %{date}", date: format_datetime(sub.ended_at)) %>
+                    <% else %>
                     <%= link "Unsubscribe", to: Routes.user_stream_path(@conn, :index, sub.streamer.displayname), class: "btn btn-danger btn-sm" %>
+                    <% end %>
                 </div>
             </div>
         </div>

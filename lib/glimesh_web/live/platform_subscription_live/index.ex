@@ -11,6 +11,8 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
     # If the viewer is logged in set their locale, otherwise it defaults to English
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
+    subscription = Payments.get_platform_subscription(user)
+
     {:ok,
      socket
      |> assign(:user, user)
@@ -21,7 +23,8 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
      |> assign(:price, Payments.get_platform_sub_founder_price())
      |> assign(:stripe_public_key, Application.get_env(:stripity_stripe, :public_api_key))
      |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
-     |> assign(:subscription, Payments.get_platform_subscription!(user))
+     |> assign(:subscription, subscription)
+     |> assign(:canceling, if(subscription, do: subscription.is_canceling, else: false))
      |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
   end
 
@@ -71,7 +74,7 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
        socket
        |> assign(:user, Accounts.get_user!(user.id))
        |> assign(:show_subscription, false)
-       |> assign(:subscription, Payments.get_platform_subscription!(user))
+       |> assign(:subscription, Payments.get_platform_subscription(user))
        |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
     else
       # {:pending_requires_action, error_msg} ->
@@ -90,12 +93,24 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
   def handle_event("cancel-subscription", %{}, socket) do
     user = socket.assigns.user
 
-    subscription = Payments.get_platform_subscription!(user)
+    subscription = Payments.get_platform_subscription(user)
 
     case Payments.unsubscribe(subscription) do
-      {:ok, _} ->
-        {:noreply,
-         socket |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
+      {:ok, subscription} ->
+        {:noreply, socket |> assign(:subscription, subscription) |> assign(:canceling, true)}
+
+      {:error, error_msg} ->
+        {:noreply, socket |> assign(:stripe_error, error_msg)}
+    end
+  end
+
+  @impl true
+  def handle_event("resubscribe", %{}, socket) do
+    subscription = socket.assigns.subscription
+
+    case Payments.resubscribe(subscription) do
+      {:ok, subscription} ->
+        {:noreply, socket |> assign(:subscription, subscription) |> assign(:canceling, false)}
 
       {:error, error_msg} ->
         {:noreply, socket |> assign(:stripe_error, error_msg)}

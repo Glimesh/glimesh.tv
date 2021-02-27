@@ -24,7 +24,7 @@ defmodule GlimeshWeb.UserPaymentsController do
       incoming: Payments.sum_incoming(user),
       outgoing: Payments.sum_outgoing(user),
       stripe_countries: countries,
-      platform_subscription: Payments.get_platform_subscription!(user),
+      platform_subscription: Payments.get_platform_subscription(user),
       subscriptions: Payments.get_channel_subscriptions(user),
       default_payment_changeset: Accounts.change_stripe_default_payment(user),
       has_payment_method: !is_nil(user.stripe_payment_method),

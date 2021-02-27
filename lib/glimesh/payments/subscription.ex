@@ -32,6 +32,7 @@ defmodule Glimesh.Payments.Subscription do
     field :product_name, :string
 
     field :is_active, :boolean
+    field :is_canceling, :boolean
     field :started_at, :naive_datetime
     field :ended_at, :naive_datetime
 
@@ -76,7 +77,7 @@ defmodule Glimesh.Payments.Subscription do
   @doc false
   def update_changeset(subscription, attrs) do
     subscription
-    |> cast(attrs, [:stripe_current_period_end, :ended_at, :is_active])
+    |> cast(attrs, [:stripe_current_period_end, :ended_at, :is_active, :is_canceling])
     |> validate_required([:stripe_current_period_end, :ended_at, :is_active])
   end
 
