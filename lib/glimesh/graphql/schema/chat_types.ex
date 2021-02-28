@@ -130,7 +130,6 @@ defmodule Glimesh.Schema.ChatTypes do
         message =
           message
           |> Repo.preload([:channel, :user])
-          |> IO.inspect()
 
         if message.user_id == message.channel.user_id do
           {:ok, true}
