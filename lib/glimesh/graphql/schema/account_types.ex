@@ -22,14 +22,19 @@ defmodule Glimesh.Schema.AccountTypes do
     @desc "Query individual user"
     field :user, :user do
       arg(:id, :integer)
-      arg(:username, :string)
+      arg(:username, :string, deprecate: "Use ids for future as these will be removed later")
       resolve(&AccountResolver.find_user/2)
     end
 
     @desc "List all follows or followers"
     field :followers, list_of(:follower) do
-      arg(:streamer_username, :string)
-      arg(:user_username, :string)
+      arg(:streamer_username, :string,
+        deprecate: "Use ids for future as these will be removed later"
+      )
+
+      arg(:user_username, :string, deprecate: "Use ids for future as these will be removed later")
+      arg(:streamer_id, :integer)
+      arg(:user_id, :integer)
       resolve(&AccountResolver.all_followers/2)
     end
   end

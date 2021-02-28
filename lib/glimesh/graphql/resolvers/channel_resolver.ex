@@ -45,6 +45,14 @@ defmodule Glimesh.Resolvers.ChannelResolver do
     end
   end
 
+  def find_channel(%{user_id: user_id}, _) do
+    if channel = ChannelLookups.get_channel_for_user_id(user_id) do
+      {:ok, channel}
+    else
+      {:error, @error_not_found}
+    end
+  end
+
   def find_channel(%{hmac_key: hmac_key}, %{context: %{is_admin: true}}) do
     case ChannelLookups.get_channel_by_hmac_key(hmac_key) do
       %Glimesh.Streams.Channel{} = channel -> {:ok, channel}
@@ -163,6 +171,36 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   def all_subscriptions(%{streamer_username: streamer_username, user_username: user_username}, _) do
     with %User{} = streamer <- Accounts.get_by_username(streamer_username),
          %User{} = user <- Accounts.get_by_username(user_username),
+         %Subscription{} = sub <- Payments.get_channel_subscription(user, streamer) do
+      {:ok, sub}
+    else
+      nil ->
+        {:error, @error_not_found}
+
+      _ ->
+        {:error, "Unexpected error"}
+    end
+  end
+
+  def all_subscriptions(%{streamer_id: streamer_id}, _) do
+    if streamer = Accounts.get_user(streamer_id) do
+      {:ok, Payments.list_streamer_subscribers(streamer)}
+    else
+      {:error, @error_not_found}
+    end
+  end
+
+  def all_subscriptions(%{user_id: user_id}, _) do
+    if user = Accounts.get_user(user_id) do
+      {:ok, Payments.list_user_subscriptions(user)}
+    else
+      {:error, @error_not_found}
+    end
+  end
+
+  def all_subscriptions(%{streamer_id: streamer_id, user_id: user_id}, _) do
+    with %User{} = streamer <- Accounts.get_user(streamer_id),
+         %User{} = user <- Accounts.get_user(user_id),
          %Subscription{} = sub <- Payments.get_channel_subscription(user, streamer) do
       {:ok, sub}
     else

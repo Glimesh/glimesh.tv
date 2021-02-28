@@ -64,6 +64,33 @@ defmodule Glimesh.Resolvers.AccountResolver do
     end
   end
 
+  def all_followers(%{streamer_id: streamer_id, user_id: user_id}, _) do
+    streamer = Accounts.get_user(streamer_id)
+    user = Accounts.get_user(user_id)
+
+    if !is_nil(streamer) and !is_nil(user) do
+      {:ok, AccountFollows.get_following(streamer, user)}
+    else
+      {:error, @error_not_found}
+    end
+  end
+
+  def all_followers(%{streamer_id: streamer_id}, _) do
+    if streamer = Accounts.get_user(streamer_id) do
+      {:ok, AccountFollows.list_followers(streamer)}
+    else
+      {:error, @error_not_found}
+    end
+  end
+
+  def all_followers(%{user_id: user_id}, _) do
+    if user = Accounts.get_user(user_id) do
+      {:ok, AccountFollows.list_following(user)}
+    else
+      {:error, @error_not_found}
+    end
+  end
+
   def all_followers(_, _) do
     {:ok, AccountFollows.list_all_follows()}
   end
