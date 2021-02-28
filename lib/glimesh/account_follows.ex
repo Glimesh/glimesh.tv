@@ -101,7 +101,7 @@ defmodule Glimesh.AccountFollows do
   end
 
   defp sent_follow_message_recently?(channel, user) do
-    follow_message = List.first(Chat.get_follow_chat_message_for_user(channel, user))
+    follow_message = Chat.get_follow_chat_message_for_user(channel, user)
 
     time_since_last_follow_message =
       case follow_message do
