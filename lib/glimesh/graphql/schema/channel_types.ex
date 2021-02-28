@@ -42,7 +42,8 @@ defmodule Glimesh.Schema.ChannelTypes do
     @desc "Query individual channel"
     field :channel, :channel do
       arg(:id, :id)
-      arg(:username, :string)
+      arg(:username, :string, deprecate: "Use ids for future as these will be removed later")
+      arg(:user_id, :integer)
       arg(:hmac_key, :string)
       resolve(&ChannelResolver.find_channel/2)
     end
@@ -60,8 +61,13 @@ defmodule Glimesh.Schema.ChannelTypes do
 
     @desc "List all subscribers or subscribees"
     field :subscriptions, list_of(:sub) do
-      arg(:streamer_username, :string)
-      arg(:user_username, :string)
+      arg(:streamer_username, :string,
+        deprecate: "Use ids for future as these will be removed later"
+      )
+
+      arg(:user_username, :string, deprecate: "Use ids for future as these will be removed later")
+      arg(:streamer_id, :integer)
+      arg(:user_id, :integer)
       resolve(&ChannelResolver.all_subscriptions/2)
     end
   end
