@@ -13,7 +13,8 @@ if System.get_env("ENABLE_LIBCLUSTER") do
         config: [
           hosts: [
             :"glimesh@do-nyc3-web1.us-east.web.glimesh.tv",
-            :"glimesh@do-nyc3-web2.us-east.web.glimesh.tv"
+            :"glimesh@do-nyc3-web2.us-east.web.glimesh.tv",
+            :"glimesh@do-nyc3-web3.us-east.web.glimesh.tv"
           ]
         ]
       ]
