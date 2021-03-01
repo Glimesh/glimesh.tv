@@ -19,7 +19,7 @@ defmodule Glimesh.Chat.Effects do
     ""
   end
 
-  def get_username_color(user, default \\ "text-white") do
+  def get_username_color(user, default \\ "text-color-link") do
     cond do
       user.is_admin -> "text-danger"
       user.is_gct -> "text-success"

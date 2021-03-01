@@ -68,7 +68,7 @@ defmodule Glimesh.ChatEffectsTest do
       rendered_username = safe_to_string(Effects.render_username(user))
       rendered_avatar = safe_to_string(Effects.render_avatar(user))
 
-      assert rendered_username =~ "text-white"
+      assert rendered_username =~ "text-color-link"
       assert rendered_username =~ "Glimesh Supporter Subscriber"
       assert rendered_avatar =~ "avatar-ring platform-supporter-ring"
     end
@@ -99,7 +99,7 @@ defmodule Glimesh.ChatEffectsTest do
       rendered_username = safe_to_string(Effects.render_username(user))
       rendered_avatar = safe_to_string(Effects.render_avatar(user))
 
-      assert rendered_username =~ "text-white"
+      assert rendered_username =~ "text-color-link"
       assert rendered_username =~ user.displayname
       assert rendered_avatar =~ "avatar-ring"
     end
