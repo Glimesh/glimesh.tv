@@ -26,10 +26,12 @@ defmodule GlimeshWeb.UserLive.Stream do
         {:ok,
          socket
          |> put_page_title(channel.title)
+         |> assign(:show_bottom, false)
          |> assign(:country, Map.get(session, "country"))
          |> assign(:prompt_mature, Streams.prompt_mature_content(channel, maybe_user))
          |> assign(:custom_meta, Profile.meta_tags(streamer, avatar_url))
          |> assign(:streamer, channel.user)
+         |> assign(:can_receive_payments, Accounts.can_receive_payments?(channel.user))
          |> assign(:channel, channel)
          |> assign(:backend, channel.backend)
          |> assign(:janus_url, "Pending...")
@@ -39,7 +41,7 @@ defmodule GlimeshWeb.UserLive.Stream do
          |> assign(:user, maybe_user)}
 
       nil ->
-        {:ok, redirect(socket, to: "/derp/profile")}
+        {:ok, socket}
     end
   end
 
@@ -62,6 +64,7 @@ defmodule GlimeshWeb.UserLive.Stream do
         {:ok,
          socket
          |> put_page_title(channel.title)
+         |> assign(:show_bottom, true)
          |> assign(:country, Map.get(session, "country"))
          |> assign(:prompt_mature, Streams.prompt_mature_content(channel, maybe_user))
          |> assign(:custom_meta, Profile.meta_tags(streamer, avatar_url))
@@ -81,16 +84,17 @@ defmodule GlimeshWeb.UserLive.Stream do
   end
 
   def handle_info(:load_stream, socket) do
-    # Keep track of viewers using their socket ID, but later we'll keep track of chatters by their user
-    Presence.track_presence(
-      self(),
-      Streams.get_subscribe_topic(:viewers, socket.assigns.channel_id),
-      socket.id,
-      %{}
-    )
-
     case Glimesh.Janus.get_closest_edge_location(socket.assigns.country) do
-      %Glimesh.Janus.EdgeRoute{url: janus_url, hostname: janus_hostname} ->
+      %Glimesh.Janus.EdgeRoute{id: janus_edge_id, url: janus_url, hostname: janus_hostname} ->
+        Presence.track_presence(
+          self(),
+          Streams.get_subscribe_topic(:viewers, socket.assigns.channel_id),
+          socket.id,
+          %{
+            janus_edge_id: janus_edge_id
+          }
+        )
+
         {:noreply,
          socket
          |> push_event("load_video", %{
