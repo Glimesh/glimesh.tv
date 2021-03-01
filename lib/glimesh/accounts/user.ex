@@ -85,6 +85,7 @@ defmodule Glimesh.Accounts.User do
     |> validate_username()
     |> validate_email()
     |> validate_password()
+    |> put_change(:can_stream, Glimesh.has_launched?())
     |> cast_assoc(:user_preference,
       required: true,
       with: &Glimesh.Accounts.UserPreference.changeset/2
