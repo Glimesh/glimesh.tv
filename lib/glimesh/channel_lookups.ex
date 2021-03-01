@@ -32,7 +32,8 @@ defmodule Glimesh.ChannelLookups do
       join: t in Tag,
       join: ct in "channel_tags",
       on: ct.tag_id == t.id and ct.channel_id == c.id,
-      where: c.status == "live" and t.slug == ^tag_slug
+      where: c.status == "live" and t.slug == ^tag_slug,
+      order_by: fragment("RANDOM()")
   end
 
   defp perform_filter_live_channels(%{"category" => category_slug}) do
@@ -40,12 +41,14 @@ defmodule Glimesh.ChannelLookups do
       join: cat in Category,
       on: cat.id == c.category_id,
       where: c.status == "live",
-      where: cat.slug == ^category_slug
+      where: cat.slug == ^category_slug,
+      order_by: fragment("RANDOM()")
   end
 
   defp perform_filter_live_channels(params) when params == %{} do
     from c in Channel,
-      where: c.status == "live"
+      where: c.status == "live",
+      order_by: fragment("RANDOM()")
   end
 
   def list_live_subscribed_followers(%Channel{} = channel) do

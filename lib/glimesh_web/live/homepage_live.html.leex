@@ -1,8 +1,7 @@
 <div class="fancy-bg">
     <%= if @show_prelaunch_stream do %>
     <div class="container-fluid">
-        <h1 class="display-2 text-center font-weight-bold">The <span class="text-color-alpha">Alpha</span> Preshow!</h1>
-        <%= live_render(@socket, GlimeshWeb.UserLive.Stream, id: "stream", session: %{"username" => "anissa.cartwright"}) %>
+        <%= live_render(@socket, GlimeshWeb.UserLive.Stream, id: "stream", session: %{"username" => "Glimesh"}) %>
     </div>
     <% else %>
     <div class="container">

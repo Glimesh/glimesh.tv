@@ -26,9 +26,18 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCountTest do
 
       assert render(view) =~ "0 Viewers"
 
-      {:ok, _, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+      Glimesh.Janus.create_edge_route(%{
+        hostname: "some-server",
+        url: "https://some-server/janus",
+        priority: 1.0,
+        available: true,
+        country_codes: []
+      })
 
-      # Due to a bug with LiveView in testing, the above live statement triggers two viewers, one with CSRF and one without
+      {:ok, stream_view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+      # Poke janus to ensure we show up as a viewer
+      assert render(stream_view) =~ "1 Viewers"
+
       assert render(view) =~ "1 Viewers"
     end
 
