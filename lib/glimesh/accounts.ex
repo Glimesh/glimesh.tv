@@ -351,7 +351,7 @@ defmodule Glimesh.Accounts do
     |> Repo.update()
   catch
     :exit, _ ->
-      {:error, "Failed to upload avatar"}
+      {:upload_exit, "Failed to upload avatar"}
   end
 
   @doc """

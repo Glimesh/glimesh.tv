@@ -118,7 +118,7 @@ defmodule Glimesh.Resolvers.ChannelResolver do
       nil ->
         {:error, @error_not_found}
 
-      {:error, _} ->
+      {:upload_exit, _} ->
         # Whenever a DO Spaces error occurs, it throws back an error absinthe can't natively process
         {:error, "Error uploading thumbnail"}
     end

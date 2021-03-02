@@ -61,6 +61,11 @@ defmodule GlimeshWeb.UserSettingsController do
 
       {:error, changeset} ->
         render(conn, "profile.html", profile_changeset: changeset)
+
+      {:upload_exit, _} ->
+        conn
+        |> put_flash(:error, gettext("Problem uploading avatar, please try again later."))
+        |> redirect(to: Routes.user_settings_path(conn, :profile))
     end
   end
 
@@ -117,6 +122,11 @@ defmodule GlimeshWeb.UserSettingsController do
           launched: launched,
           launched: Glimesh.has_launched?()
         )
+
+      {:upload_exit, _} ->
+        conn
+        |> put_flash(:error, gettext("Problem uploading stream images, please try again later."))
+        |> redirect(to: Routes.user_settings_path(conn, :stream))
     end
   end
 
