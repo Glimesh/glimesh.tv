@@ -27,7 +27,7 @@ defmodule GlimeshWeb.HomepageLive do
      |> assign(:hours, hours)
      |> assign(:minutes, minutes)
      |> assign(:seconds, seconds)
-     |> assign(:show_prelaunch_stream, show_prelaunch_stream)
+     |> assign(:show_prelaunch_stream, false)
      |> assign(:current_user, maybe_user)}
   end
 
