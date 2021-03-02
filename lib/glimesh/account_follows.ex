@@ -89,15 +89,15 @@ defmodule Glimesh.AccountFollows do
   end
 
   def list_all_follows do
-    Repo.all(from(f in Follower))
+    from(f in Follower)
   end
 
   def list_followers(user) do
-    Repo.all(from f in Follower, where: f.streamer_id == ^user.id) |> Repo.preload(:user)
+    from(f in Follower, where: f.streamer_id == ^user.id) |> Repo.preload(:user)
   end
 
   def list_following(user) do
-    Repo.all(from f in Follower, where: f.user_id == ^user.id)
+    from(f in Follower, where: f.user_id == ^user.id)
   end
 
   defp sent_follow_message_recently?(channel, user) do

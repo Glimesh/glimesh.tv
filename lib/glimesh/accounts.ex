@@ -11,7 +11,8 @@ defmodule Glimesh.Accounts do
   ## Database getters
 
   def list_users do
-    Repo.all(from u in User, where: u.is_banned == false)
+    User
+    |> where([u], u.is_banned == false)
   end
 
   def search_users(query, current_page, per_page) do

@@ -1,6 +1,7 @@
 defmodule Glimesh.Schema.ChatTypes do
   @moduledoc false
   use Absinthe.Schema.Notation
+  use Absinthe.Relay.Schema.Notation, :modern
 
   import Absinthe.Resolution.Helpers
 
@@ -146,6 +147,23 @@ defmodule Glimesh.Schema.ChatTypes do
     field :updated_at, non_null(:naive_datetime)
   end
 
+  connection node_type: :chat_message do
+    field :count, :integer do
+      resolve(fn
+        _, %{source: conn} ->
+          {:ok, length(conn.edges)}
+      end)
+    end
+
+    edge do
+      field :node, :chat_message do
+        resolve(fn %{node: message}, _args, _info ->
+          {:ok, message}
+        end)
+      end
+    end
+  end
+
   @desc "A channel timeout or ban"
   object :channel_ban do
     field :channel, non_null(:channel), resolve: dataloader(Repo)
@@ -156,6 +174,23 @@ defmodule Glimesh.Schema.ChatTypes do
 
     field :inserted_at, non_null(:naive_datetime)
     field :updated_at, non_null(:naive_datetime)
+  end
+
+  connection node_type: :channel_ban do
+    field :count, :integer do
+      resolve(fn
+        _, %{source: conn} ->
+          {:ok, length(conn.edges)}
+      end)
+    end
+
+    edge do
+      field :node, :channel_ban do
+        resolve(fn %{node: message}, _args, _info ->
+          {:ok, message}
+        end)
+      end
+    end
   end
 
   @desc "A channel moderator"
@@ -173,6 +208,23 @@ defmodule Glimesh.Schema.ChatTypes do
     field :updated_at, non_null(:naive_datetime)
   end
 
+  connection node_type: :channel_moderator do
+    field :count, :integer do
+      resolve(fn
+        _, %{source: conn} ->
+          {:ok, length(conn.edges)}
+      end)
+    end
+
+    edge do
+      field :node, :channel_moderator do
+        resolve(fn %{node: message}, _args, _info ->
+          {:ok, message}
+        end)
+      end
+    end
+  end
+
   @desc "A moderation event that happened"
   object :channel_moderation_log do
     field :channel, non_null(:channel), resolve: dataloader(Repo)
@@ -183,5 +235,22 @@ defmodule Glimesh.Schema.ChatTypes do
 
     field :inserted_at, non_null(:naive_datetime)
     field :updated_at, non_null(:naive_datetime)
+  end
+
+  connection node_type: :channel_moderation_log do
+    field :count, :integer do
+      resolve(fn
+        _, %{source: conn} ->
+          {:ok, length(conn.edges)}
+      end)
+    end
+
+    edge do
+      field :node, :channel_moderation_log do
+        resolve(fn %{node: message}, _args, _info ->
+          {:ok, message}
+        end)
+      end
+    end
   end
 end

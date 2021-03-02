@@ -1,11 +1,15 @@
 defmodule Glimesh.Resolvers.ChannelResolver do
   @moduledoc false
+  import Ecto.Query
+
   alias Glimesh.Accounts
   alias Glimesh.Accounts.User
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
+  alias Glimesh.Chat.ChatMessage
   alias Glimesh.Payments
   alias Glimesh.Payments.Subscription
+  alias Glimesh.Repo
   alias Glimesh.Streams
 
   @error_not_found "Could not find resource"
@@ -13,7 +17,7 @@ defmodule Glimesh.Resolvers.ChannelResolver do
 
   # Channels
 
-  def all_channels(%{status: status, category_slug: category_slug}, _) do
+  def all_channels(%{status: status, category_slug: category_slug}) do
     if category = ChannelCategories.get_category(category_slug) do
       {:ok, ChannelLookups.list_channels(status: status, category_id: category.id)}
     else
@@ -21,12 +25,22 @@ defmodule Glimesh.Resolvers.ChannelResolver do
     end
   end
 
-  def all_channels(%{status: status}, _) do
+  def all_channels(%{status: status}) do
     {:ok, ChannelLookups.list_channels(status: status)}
   end
 
-  def all_channels(_, _) do
+  def all_channels(_) do
     {:ok, ChannelLookups.list_channels()}
+  end
+
+  def all_channels(args, _) do
+    case all_channels(args) do
+      {:ok, channels} ->
+        Absinthe.Relay.Connection.from_query(channels, &Repo.all/1, args)
+
+      _ ->
+        {:error, @error_not_found}
+    end
   end
 
   def find_channel(%{id: id}, _) do
@@ -214,5 +228,46 @@ defmodule Glimesh.Resolvers.ChannelResolver do
 
   def all_subscriptions(_, _) do
     {:ok, Payments.list_all_subscriptions()}
+  end
+
+  # Chat
+
+  def get_messages(args, %{source: channel}) do
+    # Set the chat message load count to be at 100 since it has to be hitting the repo 202 times for the the messages with isMod queried
+    args = Map.put(args, :first, min(Map.get(args, :first), 100))
+
+    ChatMessage
+    |> where(channel_id: ^channel.id)
+    |> order_by(:inserted_at)
+    |> Absinthe.Relay.Connection.from_query(&Repo.all/1, args)
+  end
+
+  # Moderations
+
+  def get_bans(args, %{source: channel}) do
+    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
+
+    Streams.ChannelBan
+    |> where(channel_id: ^channel.id)
+    |> order_by(:inserted_at)
+    |> Absinthe.Relay.Connection.from_query(&Repo.all/1, args)
+  end
+
+  def get_moderators(args, %{source: channel}) do
+    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
+
+    Streams.ChannelModerator
+    |> where(channel_id: ^channel.id)
+    |> order_by(:inserted_at)
+    |> Absinthe.Relay.Connection.from_query(&Repo.all/1, args)
+  end
+
+  def get_moderation_logs(args, %{source: channel}) do
+    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
+
+    Streams.ChannelModerationLog
+    |> where(channel_id: ^channel.id)
+    |> order_by(:inserted_at)
+    |> Absinthe.Relay.Connection.from_query(&Repo.all/1, args)
   end
 end
