@@ -13,13 +13,11 @@ defmodule Glimesh.ChannelLookups do
   ## Filtering
 
   def list_channels(wheres \\ []) do
-    Repo.all(
-      from c in Channel,
-        join: cat in Category,
-        on: cat.id == c.category_id,
-        where: ^wheres
-    )
-    |> Repo.preload([:category, :user])
+    Channel
+    |> join(:inner, [c], cat in Category, on: c.category_id == cat.id)
+    |> where(^wheres)
+    |> order_by(:id)
+    |> preload([:category, :user])
   end
 
   def filter_live_channels(params \\ %{}) do
