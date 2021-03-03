@@ -101,4 +101,26 @@ defmodule Glimesh.AccountsProfileTest do
       refute {:ok, bad_html} == Profile.safe_user_markdown_to_html(bad_markdown)
     end
   end
+
+  describe "discord stripping" do
+    @test_urls [
+      {"ZmchGCpX", "ZmchGCpX"},
+      {"https://discord.gg/ZmchGCpX", "ZmchGCpX"},
+      {"https://discord.com/invite/ZmchGCpX", "ZmchGCpX"},
+      {"https://discord.gg/invite/ZmchGCpX", "ZmchGCpX"},
+      {"https://discordapp.com/invite/ZmchGCpX", "ZmchGCpX"}
+    ]
+
+    for {lhs, rhs} <- @test_urls do
+      @pair {lhs, rhs}
+
+      test "test url: #{lhs}", context do
+        {l, r} = context.registered.pair
+
+        {:ok, out} = Profile.strip_invite_link_from_discord_url(l)
+
+        assert out =~ r
+      end
+    end
+  end
 end

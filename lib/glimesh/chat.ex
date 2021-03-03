@@ -202,16 +202,16 @@ defmodule Glimesh.Chat do
   """
   def get_chat_message!(id), do: Repo.get!(ChatMessage, id) |> Repo.preload([:user, :channel])
 
-
   @doc """
   Gets the latest follower message from a channel for a user
   """
   def get_follow_chat_message_for_user(channel, user) do
     Repo.one(
       from m in ChatMessage,
-      where: m.channel_id == ^channel.id and m.user_id == ^user.id and m.is_followed_message == true,
-      order_by: [desc: :inserted_at],
-      limit: 1
+        where:
+          m.channel_id == ^channel.id and m.user_id == ^user.id and m.is_followed_message == true,
+        order_by: [desc: :inserted_at],
+        limit: 1
     )
   end
 
