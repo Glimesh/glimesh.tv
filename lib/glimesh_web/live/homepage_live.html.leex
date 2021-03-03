@@ -5,7 +5,7 @@
         <div class="position-relative overflow-hidden p-3 p-md-5 text-center">
             <div class="col-md-12 p-lg-4 mx-auto">
                 <h1 class="display-2 font-weight-bold text-white">The <span class="text-color-alpha">Alpha</span> Is Here!</h1>
-                <p class="lead"><%= gettext("Thanks for joining us! We're still getting out homepage settled, but please check out our categories!") %></p>
+                <p class="lead text-white"><%= gettext("Thanks for joining us! We're still getting our homepage settled, but please check out our categories!") %></p>
 
                 <%= live_redirect gettext("Gaming"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "gaming") %>
                 <%= live_redirect gettext("Art"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "art") %>
@@ -31,12 +31,12 @@
 
     <div class="container">
 
-        <h2><span class="text-color-alpha">Alpha</span> Features</h2>
+        <h2 class="text-white" ><span class="text-color-alpha">Alpha</span> Features</h2>
 
         <div class="row mt-4 mb-4">
             <div class="col mb-2">
                 <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4" style="margin:-1px">Profiles</h5>
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px">Profiles</h5>
                     <div class="d-flex align-items-center card-body p-3">
                         <p class="card-text text-center">Start right away with securing your profile and then make it yours! With loads of customizable features, you can really edit and bring your profiles to life to help show people who you are and what you are about!</p>
                     </div>
@@ -44,7 +44,7 @@
             </div>
             <div class="col mb-2">
                 <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4" style="margin:-1px">Streaming</h5>
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px">Streaming</h5>
                     <div class="d-flex align-items-center card-body p-3">
                         <p class="card-text text-center">You'll be able to create your stream, go live, and begin growing your communities. Interacting with them will be a whole lot easier with the FTL streaming technology – they will be able to view your stream in real-time!</p>
                     </div>
@@ -52,7 +52,7 @@
             </div>
             <div class="col mb-2">
                 <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4" style="margin:-1px">Subscriptions</h5>
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px">Subscriptions</h5>
                     <div class="d-flex align-items-center card-body p-3">
                         <p class="card-text text-center">Subscription buttons will be available, with payouts, and you will not need to meet any viewership requirements for them. During early phases, this will only be available to limited countries. </p>
                     </div>
@@ -60,7 +60,7 @@
             </div>
             <div class="col mb-2">
                 <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4" style="margin:-1px">Live Events</h5>
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px">Live Events</h5>
                     <div class="d-flex align-items-center card-body p-3">
                         <p class="card-text text-center">Our Glimesh Community Team will be hosting live events filled with content from all of our various categories. Keep an eye out on our Twitter, for now, to stay up to date with these.</p>
                     </div>
@@ -68,7 +68,7 @@
             </div>
             <div class="col mb-2">
                 <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4" style="margin:-1px">More!</h5>
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px">More!</h5>
                     <div class="d-flex align-items-center card-body p-3">
                         <p class="card-text text-center">Remember, this is just the Alpha! We are excited to continue to develop features you expect while still continuing to innovate on brand new ideas. You can check out our <a href="https://glimesh.tv/blog/2020-08-13-glimesh-alpha-roadmap">Alpha Roadmap</a> for planned features.</p>
                     </div>
@@ -77,10 +77,10 @@
         </div>
 
 
-        <h2><span class="text-color-alpha">Alpha</span> Support</h2>
+        <h2 class="text-white" ><span class="text-color-alpha">Alpha</span> Support</h2>
 
         <div class="card mt-2">
-            <h3 class="card-header bg-primary text-center rounded-lg py-4">What to Expect</h3>
+            <h3 class="card-header bg-primary text-center rounded-lg py-4 text-white">What to Expect</h3>
             <div class="card-body">
                 <p class="card-text text-center">We are very excited to be launching the Alpha version of Glimesh and we're proud to say that all of our alpha features will be available to everyone! During this very early phase, we want to set expectations correctly. You can expect that we'll have issues, bugs, and even downtime early on but we will continue to improve and strive for excellence. We invite everyone in early to help us find these issues, to help us create new products, and to continue growing Glimesh into the best platform it can be. We encourage everyone to try new things on the platform and to report issues when you see them! If you need any support or help along the way, we'll be there for you.
                 </p>
@@ -88,7 +88,7 @@
         </div>
 
         <div class="card mt-4">
-            <h3 class="card-header bg-primary text-center rounded-lg py-4">Help Us Improve</h3>
+            <h3 class="card-header bg-primary text-center rounded-lg py-4 text-white">Help Us Improve</h3>
             <div class="card-body card-glimfamily">
                 <div class="row justify-content-md-center">
                     <div class="col-md-7">
@@ -118,7 +118,7 @@
         <div class="row mt-4 mb-4">
             <div class="col-md-6">
                 <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4">Useful Documents</h5>
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white">Useful Documents</h5>
                     <div class="card-body">
                         <h4>Get up to speed with our Terms of Service!</h4>
                         <p>Before you use the platform, you must review our Terms of Service to ensure your streams and content do not violate any of our conditions. The Terms of Service also includes information about your rights and usage of the website.</p>
@@ -139,7 +139,7 @@
             </div>
             <div class="col-md-6">
                 <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4">Additional Support</h5>
+                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white">Additional Support</h5>
                     <div class="card-body">
                         <h4>Streaming on Glimesh Guide!</h4>
                         <p>We have created a useful guide to help get you underway with streaming on Glimesh, regardless of your streaming experience! Remember if you run into any issues, give us a shout and we will always do our best to help!</p>

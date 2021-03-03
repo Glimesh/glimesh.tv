@@ -105,4 +105,18 @@ defmodule Glimesh.Accounts.Profile do
     |> String.replace(">  <img", "><img")
     |> String.replace(">\n<a href", "><a href")
   end
+
+  def strip_invite_link_from_discord_url(discord_url) do
+    if String.contains?(discord_url, "discord") do
+      results_captured = Regex.scan(~r/discord.*\/([\w]+)$/, discord_url)
+
+      if Enum.empty?(results_captured) do
+        {:error, "Invalid Discord URL"}
+      else
+        {:ok, List.last(List.first(results_captured))}
+      end
+    else
+      {:ok, discord_url}
+    end
+  end
 end

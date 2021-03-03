@@ -20,7 +20,7 @@
         // margin: 15px;
         padding: 1px;
 
-        background: rgba(0, 0, 0, 0.8);
+        background: var(--stream-card-streamer-background);
         border-radius: 30px;
     }
     .card-stream-streamer.sub-ready {

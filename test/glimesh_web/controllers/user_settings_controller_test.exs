@@ -121,7 +121,7 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
       profile_conn =
         put(conn, Routes.user_settings_path(conn, :update_profile), %{
           "user" => %{
-            "social_discord" => "some-fake-discord-url"
+            "social_discord" => "inviteurl"
           }
         })
 
@@ -129,7 +129,7 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
       assert get_flash(profile_conn, :info) =~ "Profile updated successfully"
 
       response = html_response(get(conn, Routes.user_settings_path(conn, :profile)), 200)
-      assert response =~ "some-fake-discord-url"
+      assert response =~ "inviteurl"
     end
 
     test "does update displayname if case changes", %{conn: conn, user: user} do

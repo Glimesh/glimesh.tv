@@ -230,6 +230,7 @@ defmodule Glimesh.Accounts.User do
     |> validate_required(:displayname)
     |> validate_youtube_url(:youtube_intro_url)
     |> validate_displayname()
+    |> strip_discord_invite()
     |> set_profile_content_html()
     |> cast_attachments(attrs, [:avatar])
   end
@@ -355,6 +356,22 @@ defmodule Glimesh.Accounts.User do
       changeset
     else
       add_error(changeset, :tfa, "Invalid 2FA code")
+    end
+  end
+
+  def strip_discord_invite(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{social_discord: social_discord}} ->
+        case Glimesh.Accounts.Profile.strip_invite_link_from_discord_url(social_discord) do
+          {:ok, maybe_invite_code} ->
+            put_change(changeset, :social_discord, maybe_invite_code)
+
+          {:error, _message} ->
+            add_error(changeset, :social_discord, gettext("Invalid Discord invite URL"))
+        end
+
+      _ ->
+        changeset
     end
   end
 end

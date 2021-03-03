@@ -218,7 +218,7 @@ defmodule GlimeshWeb.GctControllerTest do
         put(conn, Routes.gct_path(conn, :update_user_profile, valid_user.username), %{
           "user" => %{
             "social_twitter" => "some-fake-twitter-url",
-            "social_discord" => "some-fake-discord-url",
+            "social_discord" => "inviteurl",
             "social_instagram" => "some-fake-insta-url",
             "social_youtube" => "some-fake-yt-url"
           }
@@ -236,7 +236,7 @@ defmodule GlimeshWeb.GctControllerTest do
         )
 
       assert response =~ "some-fake-twitter-url"
-      assert response =~ "some-fake-discord-url"
+      assert response =~ "inviteurl"
       assert response =~ "some-fake-insta-url"
       assert response =~ "some-fake-yt-url"
     end

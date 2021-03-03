@@ -167,8 +167,8 @@ defmodule Glimesh.CommunityTeam do
   def shutdown_channel(%Channel{} = channel, %User{} = gct_member) do
     with :ok <- Bodyguard.permit(__MODULE__, :edit_channel, gct_member, channel.user) do
       channel.user
-        |> User.gct_user_changeset(%{can_stream: false})
-        |> Glimesh.Repo.update()
+      |> User.gct_user_changeset(%{can_stream: false})
+      |> Glimesh.Repo.update()
 
       Glimesh.Streams.end_stream(channel)
     end
