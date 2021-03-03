@@ -294,7 +294,7 @@ defmodule GlimeshWeb.GctController do
     current_user = conn.assigns.current_user
     channel = ChannelLookups.get_channel!(channel_id)
 
-    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_channel, current_user) do
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_channel, current_user, channel.user) do
       case Streams.update_channel(current_user, channel, channel_params) do
         {:ok, channel} ->
           create_audit_entry_channel(
@@ -381,10 +381,18 @@ defmodule GlimeshWeb.GctController do
            ) do
       case CommunityTeam.shutdown_channel(channel, current_user) do
         {:ok, _} ->
-          create_audit_entry_channel(current_user, "shutdown channel", channel.user.username, false)
+          create_audit_entry_channel(
+            current_user,
+            "shutdown channel",
+            channel.user.username,
+            false
+          )
 
           conn
-          |> put_flash(:info, "Channel stream shutdown successfully and the user can no longer stream.")
+          |> put_flash(
+            :info,
+            "Channel stream shutdown successfully and the user can no longer stream."
+          )
           |> redirect(to: Routes.gct_path(conn, :index))
 
         {:error, _changeset} ->
