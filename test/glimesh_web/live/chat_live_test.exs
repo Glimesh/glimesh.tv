@@ -55,7 +55,7 @@ defmodule GlimeshWeb.ChatLiveTest do
       |> element(target)
       |> render_click()
 
-      refute render(view) =~ "bad word"
+      assert render(view) =~ "hidden"
     end
 
     test "long timeout removes chat message", %{conn: conn} do
@@ -76,7 +76,7 @@ defmodule GlimeshWeb.ChatLiveTest do
       |> element(target)
       |> render_click()
 
-      refute render(view) =~ "bad word"
+      assert render(view) =~ "hidden"
     end
 
     test "ban removes chat message", %{conn: conn} do
@@ -97,7 +97,7 @@ defmodule GlimeshWeb.ChatLiveTest do
       |> element(target)
       |> render_click()
 
-      refute render(view) =~ "bad word"
+      assert render(view) =~ "hidden"
     end
   end
 
