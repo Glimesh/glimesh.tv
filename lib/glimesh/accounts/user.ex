@@ -15,7 +15,7 @@ defmodule Glimesh.Accounts.User do
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
 
-    field :can_stream, :boolean, default: false
+    field :can_stream, :boolean, default: true
 
     field :team_role, :string
     field :is_admin, :boolean, default: false
@@ -85,7 +85,6 @@ defmodule Glimesh.Accounts.User do
     |> validate_username()
     |> validate_email()
     |> validate_password()
-    |> put_change(:can_stream, Glimesh.has_launched?())
     |> cast_assoc(:user_preference,
       required: true,
       with: &Glimesh.Accounts.UserPreference.changeset/2

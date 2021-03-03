@@ -40,7 +40,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButtonTest do
         live_isolated(conn, @component, session: %{"user" => user, "streamer" => streamer})
 
       assert html =~ "Subscribe"
-      assert html =~ "btn btn-secondary btn-responsive disabled"
+      assert html =~ "btn btn-secondary btn-responsive"
     end
 
     test "shows a disabled subscription button for when the user is the streamer", %{
