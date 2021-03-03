@@ -1,26 +1,24 @@
 <div class="fancy-bg">
-    <%= if @show_prelaunch_stream do %>
-    <div class="container-fluid">
-        <%= live_render(@socket, GlimeshWeb.UserLive.Stream, id: "stream", session: %{"username" => "Glimesh"}) %>
-    </div>
-    <% else %>
+
     <div class="container">
 
         <div class="position-relative overflow-hidden p-3 p-md-5 text-center">
             <div class="col-md-12 p-lg-4 mx-auto">
-                <h1 class="display-2 font-weight-bold text-white">The <span class="text-color-alpha">Alpha</span> Is Coming!</h1>
-                <div id="timer" phx-hook="LaunchCountdown">
-                    <div class="days"><span class="text">Days</span> <span class="count"><%= @days %></span></div>
-                    <div class="spacer">:</div>
-                    <div class="hours"><span class="text">Hours</span><span class="count"><%= @hours %></span></div>
-                    <div class="spacer">:</div>
-                    <div class="min"><span class="text">Minutes</span><span class="count"><%= @minutes %></span></div>
-                    <div class="spacer">:</div>
-                    <div class="sec"><span class="text">Seconds</span><span class="count"><%= @seconds %></span></div>
-                </div>
+                <h1 class="display-2 font-weight-bold text-white">The <span class="text-color-alpha">Alpha</span> Is Here!</h1>
+                <p class="lead"><%= gettext("Thanks for joining us! We're still getting out homepage settled, but please check out our categories!") %></p>
+
+                <%= live_redirect gettext("Gaming"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "gaming") %>
+                <%= live_redirect gettext("Art"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "art") %>
+                <%= live_redirect gettext("Music"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "music") %>
+                <%= live_redirect gettext("Tech"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "tech") %>
+                <%= live_redirect gettext("IRL"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "irl") %>
+                <%= live_redirect gettext("Education"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "education") %>
+
+                <br><br><br>
+
                 <%= if @current_user do %>
-                <%= link gettext("Customize Your Profile"), to: Routes.user_settings_path(@socket, :profile), class: "btn btn-primary btn-lg mt-3 mx-3" %>
-                <%= link gettext("Create Your Channel"), to: Routes.user_settings_path(@socket, :stream), class: "btn btn-primary btn-lg mt-3 mx-3" %>
+                <%= link gettext("Customize Your Profile"), to: Routes.user_settings_path(@socket, :profile), class: "btn btn-info mt-3 mx-3" %>
+                <%= link gettext("Create Your Channel"), to: Routes.user_settings_path(@socket, :stream), class: "btn btn-info mt-3 mx-3" %>
                 <%# link gettext("Setup Payouts"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3 mx-3" %>
                 <% else %>
                 <%= link gettext("Register Your Account"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-lg mt-3" %>
@@ -29,7 +27,7 @@
         </div>
 
     </div>
-    <% end %>
+
 
     <div class="container">
 

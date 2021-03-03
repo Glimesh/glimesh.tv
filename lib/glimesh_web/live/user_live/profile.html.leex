@@ -62,10 +62,6 @@
                     <h5><%= gettext("Follow Streamer") %></h5>
                 </div>
                 <div class="card-body">
-                    <%= if not Glimesh.has_launched?() do %>
-                    <p><%= gettext("Glimesh isn't launched yet, but you can follow %{streamer} now and get automatically notified when they go live!", streamer: @streamer.displayname) %>
-                    </P>
-                    <% end %>
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                 </div>
             </div>

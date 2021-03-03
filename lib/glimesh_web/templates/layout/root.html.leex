@@ -69,6 +69,13 @@
     <div id="app">
         <%= if Map.get(assigns, :render_nav, true) do %>
         <%= render("_navbar.html", assigns) %>
+
+        <%= if message = Glimesh.Configurations.get_configuration_value("system_message") do %>
+        <div class="container">
+            <p class="alert alert-warning"><strong>System Message:</strong> <%= message %></p>
+        </div>
+        <% end %>
+
         <% end %>
 
         <%= @inner_content %>

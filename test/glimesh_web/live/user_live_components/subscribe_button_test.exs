@@ -31,18 +31,6 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButtonTest do
   describe "subscription button authed user" do
     setup [:register_and_log_in_user, :create_streamer]
 
-    test "shows a disabled subscription button for user without can_payments", %{
-      conn: conn,
-      user: user,
-      streamer: streamer
-    } do
-      {:ok, _, html} =
-        live_isolated(conn, @component, session: %{"user" => user, "streamer" => streamer})
-
-      assert html =~ "Subscribe"
-      assert html =~ "btn btn-secondary btn-responsive disabled"
-    end
-
     test "shows a disabled subscription button for when the user is the streamer", %{
       conn: conn,
       streamer: streamer
