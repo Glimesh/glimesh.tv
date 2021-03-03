@@ -35,6 +35,10 @@ $color-teal: #48D1BD;
     --input-group-addon-border-color: #1b2e4b;
 
     --stream-card-streamer-background: rgba(0, 0, 0, 0.8);
+
+    --chat-bubble-background: #0e1726;
+
+    --text-muted-color: #6c757d;
 }
 
 [data-theme="light"] {
@@ -63,6 +67,10 @@ $color-teal: #48D1BD;
     --input-group-addon-border-color: #ced4da;
 
     --stream-card-streamer-background: rgba(255, 255, 255, 0.8);
+
+    --chat-bubble-background: #fff;
+
+    --text-muted-color: #000;
 }
 
 $font-family-base: 'Roboto', sans-serif; 

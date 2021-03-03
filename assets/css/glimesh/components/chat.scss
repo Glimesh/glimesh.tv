@@ -27,9 +27,9 @@
             margin-bottom: 10px;
 
             span {
-                color: $color-light-white;
+                color: var(--body-color);
                 margin-bottom: 0;
-                background: $color-cosmic-blue;
+                background: var(--chat-bubble-background);
                 padding: 7px 20px;
                 border-radius: 5px;
                 box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
@@ -39,15 +39,14 @@
         .bubble {
             flex: 0 1 auto;
             align-self: flex-start;
-            background-color: lightgreen;
             border-radius: 5px;
             margin: 3px;
             padding: 10px;
             max-width: 370px;
             word-break: break-word;
-            color: $color-light-white;
+            color: var(--body-color);
 
-            background-color: $color-cosmic-blue;
+            background-color: var(--chat-bubble-background);
             box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
 
             .img-chat-avatar {
