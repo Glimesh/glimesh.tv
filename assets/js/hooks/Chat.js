@@ -89,5 +89,13 @@ export default {
             this.maybeScrollToBottom(chatMessages);
         });
 
+        this.handleEvent("remove_timed_out_user_messages", (e) => {
+            let offendingUserID = e["bad_user_id"];
+            let offendingChatMessage = chatMessages.querySelectorAll(`[data-user-id=${CSS.escape(offendingUserID)}]`);
+            Array.prototype.forEach.call(offendingChatMessage, function(node) {
+                node.hidden = true; // Have to hide them otherwise the tooltip gets stuck on removing the element
+            });
+        })
+
     }
 };

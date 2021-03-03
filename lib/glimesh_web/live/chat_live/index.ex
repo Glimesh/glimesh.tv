@@ -139,7 +139,7 @@ defmodule GlimeshWeb.ChatLive.Index do
   end
 
   @impl true
-  def handle_info({:user_timedout, _bad_user}, socket) do
+  def handle_info({:user_timedout, bad_user}, socket) do
     # Gotta figure out why messages here is [], I guess it's the temporary assigns above? But why does :chat_sent work?
     # {:noreply, socket |> assign(:update_action, "replace") |> update(:chat_messages, fn messages -> Enum.reject(messages, fn x -> x.user_id === bad_user.id end) |> IO.inspect() end)}
 
@@ -151,8 +151,7 @@ defmodule GlimeshWeb.ChatLive.Index do
 
     {:noreply,
      socket
-     |> assign(:update_action, "replace")
-     |> assign(:chat_messages, list_chat_messages(socket.assigns.channel))
+     |> push_event("remove_timed_out_user_messages", %{bad_user_id: bad_user.id})
      |> push_event("update_previous_messages_with_timestamp_state", %{
        show_timestamps: show_timestamps
      })}
