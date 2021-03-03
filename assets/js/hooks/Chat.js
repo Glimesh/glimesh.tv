@@ -14,7 +14,7 @@ export default {
         el.scrollTop = el.scrollHeight;
     },
     isUserNearBottom(el) {
-        const threshold = document.body.scrollHeight / 2;
+        const threshold = el.offsetHeight / 2;
         const position = el.scrollTop + el.offsetHeight;
         const height = el.scrollHeight;
         return position > height - threshold;
@@ -22,15 +22,6 @@ export default {
 
     emotes() {
         return JSON.parse(this.el.dataset.emotes);
-    },
-    injectEmojiWithSpaces(leading, emoji, trailing) {
-        if (leading.charAt(leading.length - 1) !== " ") {
-            leading = leading + " ";
-        }
-        if (trailing.charAt(0) !== " ") {
-            trailing = " " + trailing;
-        }
-        return leading + emoji + trailing;
     },
     mounted() {
         const glimeshEmojis = this.emotes();
@@ -64,11 +55,7 @@ export default {
             }
 
             const [start, end] = [chat.selectionStart, chat.selectionEnd];
-            chat.value = this.injectEmojiWithSpaces(
-                chat.value.substring(0, start),
-                value,
-                chat.value.substring(end, chat.value.length)
-            );
+            chat.value = chat.value.substring(0, start) + value + chat.value.substring(end, chat.value.length);
         });
 
         this.scrollToBottom(chatMessages);

@@ -42,6 +42,9 @@ defmodule Glimesh.ChannelCategories do
       nil
 
   """
+  def get_category(nil),
+    do: nil
+
   def get_category(slug),
     do: Repo.one(from c in Category, where: c.slug == ^slug)
 

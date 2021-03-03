@@ -29,7 +29,7 @@ defmodule GlimeshWeb.StreamsLive.List do
   def mount(params, session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
-    case ChannelCategories.get_category(params["category"]) do
+    case ChannelCategories.get_category(Map.get(params, "category", nil)) do
       %Streams.Category{} = category ->
         live_tags = ChannelCategories.list_live_tags(category.id)
 

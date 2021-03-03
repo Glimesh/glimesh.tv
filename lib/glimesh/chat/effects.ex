@@ -106,6 +106,17 @@ defmodule Glimesh.Chat.Effects do
       channel.user_id == user.id ->
         Tag.content_tag(:span, "Streamer", class: "badge badge-primary")
 
+      Glimesh.Chat.is_moderator?(channel, user) and Payments.is_subscribed?(channel, user) ->
+        [
+          Tag.content_tag(:span, "Mod", class: "badge badge-primary"),
+          " ",
+          Tag.content_tag(:span, Tag.content_tag(:i, "", class: "fas fa-trophy"),
+            class: "badge badge-secondary",
+            "data-toggle": "tooltip",
+            title: gettext("Channel Subscriber")
+          )
+        ]
+
       Glimesh.Chat.is_moderator?(channel, user) ->
         Tag.content_tag(:span, "Mod", class: "badge badge-primary")
 
