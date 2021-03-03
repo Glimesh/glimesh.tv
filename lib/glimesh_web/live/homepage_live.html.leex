@@ -5,7 +5,7 @@
         <div class="position-relative overflow-hidden p-3 p-md-5 text-center">
             <div class="col-md-12 p-lg-4 mx-auto">
                 <h1 class="display-2 font-weight-bold text-white">The <span class="text-color-alpha">Alpha</span> Is Here!</h1>
-                <p class="lead text-white"><%= gettext("Thanks for joining us! We're still getting out homepage settled, but please check out our categories!") %></p>
+                <p class="lead text-white"><%= gettext("Thanks for joining us! We're still getting our homepage settled, but please check out our categories!") %></p>
 
                 <%= live_redirect gettext("Gaming"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "gaming") %>
                 <%= live_redirect gettext("Art"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "art") %>
