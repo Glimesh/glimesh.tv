@@ -186,9 +186,13 @@ defmodule Glimesh.Streams do
         ended_at: DateTime.utc_now() |> DateTime.to_naive()
       })
 
-    channel
-    |> Channel.stop_changeset(%{})
-    |> Repo.update()
+    {:ok, channel} =
+      channel
+      |> Channel.stop_changeset(%{})
+      |> Repo.update()
+
+    broadcast_message = Repo.preload(channel, :category, force: true)
+    broadcast({:ok, broadcast_message}, :channel)
 
     {:ok, stream}
   end
@@ -199,9 +203,13 @@ defmodule Glimesh.Streams do
         ended_at: DateTime.utc_now() |> DateTime.to_naive()
       })
 
-    ChannelLookups.get_channel!(stream.channel_id)
-    |> Channel.stop_changeset(%{})
-    |> Repo.update()
+    {:ok, channel} =
+      ChannelLookups.get_channel!(stream.channel_id)
+      |> Channel.stop_changeset(%{})
+      |> Repo.update()
+
+    broadcast_message = Repo.preload(channel, :category, force: true)
+    broadcast({:ok, broadcast_message}, :channel)
 
     {:ok, stream}
   end
