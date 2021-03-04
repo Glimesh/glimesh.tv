@@ -35,6 +35,8 @@ defmodule Glimesh.Resolvers.AccountResolver do
     end
   end
 
+  def find_user(_, _), do: {:error, @error_not_found}
+
   # Followers
 
   def all_followers(%{streamer_username: streamer_username, user_username: user_username}, _) do
