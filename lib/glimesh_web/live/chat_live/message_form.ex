@@ -1,6 +1,8 @@
 defmodule GlimeshWeb.ChatLive.MessageForm do
   use GlimeshWeb, :live_component
 
+  import Appsignal.Phoenix.LiveView, only: [instrument: 4]
+
   alias Glimesh.Chat
 
   @impl true
@@ -23,7 +25,9 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
 
   @impl true
   def handle_event("send", %{"chat_message" => chat_message_params}, socket) do
-    save_chat_message(socket, socket.assigns.channel, socket.assigns.user, chat_message_params)
+    instrument(__MODULE__, "send", socket, fn ->
+      save_chat_message(socket, socket.assigns.channel, socket.assigns.user, chat_message_params)
+    end)
   end
 
   defp save_chat_message(socket, channel, user, chat_message_params) do
