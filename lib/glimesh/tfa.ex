@@ -86,5 +86,11 @@ defmodule Glimesh.Tfa do
     key
     |> Bcrypt.hash_pwd_salt()
     |> Base.encode32(padding: false)
+    |> truncate_secret()
+  end
+
+  defp truncate_secret(input) do
+    <<truncated::92-binary, _::binary>> = input
+    truncated
   end
 end
