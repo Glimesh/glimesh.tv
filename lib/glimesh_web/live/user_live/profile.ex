@@ -20,6 +20,7 @@ defmodule GlimeshWeb.UserLive.Profile do
 
         streamer_share_text = Profile.streamer_share_text(streamer, profile_url)
         viewer_share_text = Profile.viewer_share_text(streamer, profile_url)
+        maybe_channel = if Glimesh.ChannelLookups.get_channel_for_user(streamer), do: Glimesh.ChannelLookups.get_channel_for_user(streamer), else: nil
 
         {:ok,
          socket
@@ -31,6 +32,7 @@ defmodule GlimeshWeb.UserLive.Profile do
          |> assign(:streamer_share_text, streamer_share_text)
          |> assign(:viewer_share_text, viewer_share_text)
          |> assign(:streamer, streamer)
+         |> assign(:channel, maybe_channel)
          |> assign(:user, maybe_user)}
 
       nil ->
