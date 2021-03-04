@@ -106,7 +106,7 @@ defmodule Glimesh.Accounts.Profile do
     |> String.replace(">\n<a href", "><a href")
   end
 
-  def strip_invite_link_from_discord_url(discord_url) do
+  def strip_invite_link_from_discord_url(discord_url) when not is_nil(discord_url) do
     if String.contains?(discord_url, "discord") do
       results_captured = Regex.scan(~r/discord.*\/([\w]+)$/, discord_url)
 
@@ -118,5 +118,9 @@ defmodule Glimesh.Accounts.Profile do
     else
       {:ok, discord_url}
     end
+  end
+
+  def strip_invite_link_from_discord_url(discord_url) do
+    {:ok, discord_url}
   end
 end
