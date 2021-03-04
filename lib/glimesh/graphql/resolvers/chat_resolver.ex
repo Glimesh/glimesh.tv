@@ -1,8 +1,11 @@
 defmodule Glimesh.Resolvers.ChatResolver do
   @moduledoc false
 
+  use Appsignal.Instrumentation.Decorators
+
   alias Glimesh.Chat
 
+  @decorate transaction_event()
   def create_chat_message(
         _parent,
         %{channel_id: channel_id, message: message_obj},
@@ -15,18 +18,22 @@ defmodule Glimesh.Resolvers.ChatResolver do
     end
   end
 
+  @decorate transaction_event()
   def short_timeout_user(parent, params, context) do
     perform_channel_action(parent, params, context, :short_timeout)
   end
 
+  @decorate transaction_event()
   def long_timeout_user(parent, params, context) do
     perform_channel_action(parent, params, context, :long_timeout)
   end
 
+  @decorate transaction_event()
   def ban_user(parent, params, context) do
     perform_channel_action(parent, params, context, :ban)
   end
 
+  @decorate transaction_event()
   def unban_user(parent, params, context) do
     perform_channel_action(parent, params, context, :unban)
   end
