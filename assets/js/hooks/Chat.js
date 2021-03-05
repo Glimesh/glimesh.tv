@@ -65,26 +65,16 @@ export default {
 
             // Apply a BS init to just the new chat message
             BSN.initCallback(document.getElementById(e.message_id));
-            
-            //Timestamp handler
-            if (e["show_timestamps"]) {
-                let timestamp = document.getElementById("small-" + e["message_id"]);
-                timestamp.classList.remove("d-none");
-            }
         });
 
         /* 
         For populating the initial X messages with the current timestamp state.
         */
-        this.handleEvent("update_previous_messages_with_timestamp_state", (e) => {
-            let childSmalls = chatMessages.getElementsByTagName("small");
-            for (let i = 0; i < childSmalls.length; i++) {
-                let childSmall = childSmalls[i];
-                if (e["show_timestamps"]) {
-                    childSmall.classList.remove("d-none");
-                } else {
-                    childSmall.classList.add("d-none");
-                }
+        this.handleEvent("toggle_timestamps", (e) => {
+            if (e["show_timestamps"]) {
+                chatMessages.classList.add("show-timestamps");
+            } else {
+                chatMessages.classList.remove("show-timestamps");
             }
             this.maybeScrollToBottom(chatMessages);
         });

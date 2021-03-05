@@ -54,9 +54,6 @@ defmodule GlimeshWeb.ChatLive.Index do
         |> assign(:chat_messages, list_chat_messages(channel))
         |> assign(:chat_message, %ChatMessage{})
         |> assign(:show_timestamps, user_preferences.show_timestamps)
-        |> push_event("update_previous_messages_with_timestamp_state", %{
-          show_timestamps: user_preferences.show_timestamps
-        })
         |> assign(:user_preferences, user_preferences)
 
       {:ok, new_socket, temporary_assigns: [chat_messages: []]}
@@ -102,10 +99,9 @@ defmodule GlimeshWeb.ChatLive.Index do
 
     {:noreply,
      socket
-     |> assign(:update_action, "append")
      |> assign(:show_timestamps, timestamp_state)
      |> assign(:user_preferences, %{show_timestamps: timestamp_state})
-     |> push_event("update_previous_messages_with_timestamp_state", %{
+     |> push_event("toggle_timestamps", %{
        show_timestamps: timestamp_state
      })}
   end
@@ -121,11 +117,9 @@ defmodule GlimeshWeb.ChatLive.Index do
 
     {:noreply,
      socket
-     # Needed so the chat doesn't empty and reload the DOM
-     |> assign(:update_action, "append")
      |> assign(:show_timestamps, timestamp_state)
      |> assign(:user_preferences, user_preferences)
-     |> push_event("update_previous_messages_with_timestamp_state", %{
+     |> push_event("toggle_timestamps", %{
        show_timestamps: timestamp_state
      })}
   end
@@ -137,7 +131,6 @@ defmodule GlimeshWeb.ChatLive.Index do
        socket
        |> assign(:update_action, "append")
        |> push_event("new_chat_message", %{
-         show_timestamps: socket.assigns.user_preferences.show_timestamps,
          message_id: message.id
        })
        |> update(:chat_messages, fn messages -> [message | messages] end)}
@@ -146,18 +139,7 @@ defmodule GlimeshWeb.ChatLive.Index do
 
   @impl true
   def handle_info({:user_timedout, bad_user}, socket) do
-    # Must tell the JS function to re-assign the timestamps since a timeout seems to re-render the entire DOM.
-    show_timestamps =
-      if socket.assigns.user,
-        do: Accounts.get_user_preference!(socket.assigns.user).show_timestamps,
-        else: false
-
-    {:noreply,
-     socket
-     |> push_event("remove_timed_out_user_messages", %{bad_user_id: bad_user.id})
-     |> push_event("update_previous_messages_with_timestamp_state", %{
-       show_timestamps: show_timestamps
-     })}
+    {:noreply, push_event(socket, "remove_timed_out_user_messages", %{bad_user_id: bad_user.id})}
   end
 
   defp list_chat_messages(channel) do
