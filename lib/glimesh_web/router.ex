@@ -14,6 +14,7 @@ defmodule GlimeshWeb.Router do
     plug GlimeshWeb.Plugs.Locale
     plug GlimeshWeb.Plugs.CfCountryPlug
     plug GlimeshWeb.Plugs.Ban
+    plug GlimeshWeb.UniqueUserPlug
   end
 
   pipeline :api do
