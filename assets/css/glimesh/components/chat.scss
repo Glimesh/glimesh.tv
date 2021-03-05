@@ -64,9 +64,15 @@
             border: 2px solid $red;
         }
 
-        // .bubble.you {
-        //     align-self: flex-end;
-        // }
+        .chat-timestamp {
+            display: none;
+        }
+
+        &.show-timestamps {
+            .chat-timestamp {
+                display: inline-block;
+            }
+        }
     }
 
 
