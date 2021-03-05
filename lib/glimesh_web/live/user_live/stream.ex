@@ -27,6 +27,7 @@ defmodule GlimeshWeb.UserLive.Stream do
          socket
          |> put_page_title(channel.title)
          |> assign(:show_bottom, true)
+         |> assign(:unique_user, Map.get(session, "unique_user"))
          |> assign(:country, Map.get(session, "country"))
          |> assign(:prompt_mature, Streams.prompt_mature_content(channel, maybe_user))
          |> assign(:custom_meta, Profile.meta_tags(streamer, avatar_url))
@@ -51,7 +52,7 @@ defmodule GlimeshWeb.UserLive.Stream do
         Presence.track_presence(
           self(),
           Streams.get_subscribe_topic(:viewers, socket.assigns.channel_id),
-          socket.id,
+          socket.assigns.unique_user,
           %{
             janus_edge_id: janus_edge_id
           }

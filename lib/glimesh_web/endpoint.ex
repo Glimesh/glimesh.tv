@@ -8,6 +8,7 @@ defmodule GlimeshWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_glimesh_key",
+    same_site: "Lax",
     signing_salt:
       Application.compile_env(:glimesh, [GlimeshWeb.Endpoint, :live_view, :signing_salt])
   ]
