@@ -13,6 +13,7 @@ defmodule GlimeshWeb.ChatLive.Index do
   @impl true
   def mount(_params, %{"channel_id" => channel_id} = session, socket) do
     instrument(__MODULE__, "mount", socket, fn ->
+      if session["locale"], do: Gettext.put_locale(session["locale"])
       if connected?(socket), do: Streams.subscribe_to(:chat, channel_id)
 
       channel = ChannelLookups.get_channel!(channel_id)

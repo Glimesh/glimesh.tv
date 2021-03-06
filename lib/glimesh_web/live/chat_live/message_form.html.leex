@@ -26,15 +26,14 @@
     </div>
     <% end %>
 
-    <%= text_input f, :message, class: "mail-write-box form-control", placeholder: "Send a message", autocomplete: "off", maxlength: "255", disabled: @disabled %>
+    <%= text_input f, :message, class: "mail-write-box form-control", placeholder: gettext("Send a message"), autocomplete: "off", maxlength: "255", disabled: @disabled %>
 
     <div id="chat-settings" class="input-group-append dropup">
       <a href="#" class="input-group-text dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false"><i class="fas fa-cog"></i></a>
       <div class="dropdown-menu dropdown-menu-right">
         <a class="dropdown-item" href="#"
-          onclick="window.open('<%= Routes.chat_pop_out_url(@socket, :index, @channel_username) %>', '_blank', 'width=400,height=600,location=no,menubar=no,toolbar=no')">Pop-out
-          Chat</a>
+          onclick="window.open('<%= Routes.chat_pop_out_url(@socket, :index, @channel_username) %>', '_blank', 'width=400,height=600,location=no,menubar=no,toolbar=no')"><%= gettext("Pop-out Chat") %></a>
         <a id="toggle-timestamps" class="dropdown-item" , href="#" phx-click="toggle_timestamps"
           <%= if @user, do: 'phx-value-user=#{@user.username}' %>><%= if @show_timestamps, do: gettext("Disable Timestamps"), else: gettext("Enable Timestamps") %>
         </a>
