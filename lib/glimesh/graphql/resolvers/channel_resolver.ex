@@ -59,6 +59,8 @@ defmodule Glimesh.Resolvers.ChannelResolver do
     {:error, "Unauthorized to access hmacKey query."}
   end
 
+  def find_channel(_, _), do: {:error, @error_not_found}
+
   # Streams
   @decorate transaction_event()
   def start_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
