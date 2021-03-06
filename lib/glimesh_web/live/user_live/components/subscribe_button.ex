@@ -99,7 +99,9 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
   end
 
   @impl true
-  def mount(_params, %{"streamer" => streamer, "user" => nil}, socket) do
+  def mount(_params, %{"streamer" => streamer, "user" => nil} = session, socket) do
+    if session["locale"], do: Gettext.put_locale(session["locale"])
+
     {:ok,
      socket
      |> assign(:streamer, streamer)
@@ -112,7 +114,8 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
   end
 
   @impl true
-  def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
+  def mount(_params, %{"streamer" => streamer, "user" => user} = session, socket) do
+    if session["locale"], do: Gettext.put_locale(session["locale"])
     subscription = Glimesh.Payments.get_channel_subscription(user, streamer)
 
     can_subscribe = if Accounts.can_use_payments?(user), do: user.id != streamer.id, else: false
