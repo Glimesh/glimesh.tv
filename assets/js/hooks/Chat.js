@@ -20,6 +20,9 @@ export default {
         return position > height - threshold;
     },
 
+    theme() {
+        return this.el.dataset.theme;
+    },
     emotes() {
         return JSON.parse(this.el.dataset.emotes);
     },
@@ -27,12 +30,25 @@ export default {
         const glimeshEmojis = this.emotes();
 
         const picker = new EmojiButton({
-            theme: 'dark',
+            theme: this.theme(),
             position: 'top-start',
             autoHide: false,
             style: 'twemoji',
             emojiSize: '32px',
             custom: glimeshEmojis,
+            categories: [
+                'custom',
+                'smileys',
+                'people',
+                'animals',
+                'food',
+                'activities',
+                'travel',
+                'objects',
+                'flags',
+                'symbols',
+            ],
+            initialCategory: 'custom'
         });
 
         const trigger = document.querySelector('.emoji-activator');
@@ -63,8 +79,9 @@ export default {
             // Scroll if we need to
             this.maybeScrollToBottom(chatMessages);
 
+            let thisMessage = document.getElementById(e.message_id);
             // Apply a BS init to just the new chat message
-            BSN.initCallback(document.getElementById(e.message_id));
+            BSN.initCallback(thisMessage);
         });
 
         /* 
