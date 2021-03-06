@@ -20,8 +20,8 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
 
     <%= if @editing do %>
         <div id="channelEditor" class="live-modal"
-            phx-capture-click="hide_editing"
-            phx-window-keydown="hide_editing"
+            phx-capture-click="toggle-edit"
+            phx-window-keydown="toggle-edit"
             phx-key="escape"
             phx-target="#channelEditor"
             phx-page-loading>
@@ -29,7 +29,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title"><%= gettext("Stream Info") %></h5>
-                        <button type="button" class="close" phx-click="hide_editing" aria-label="Close">
+                        <button type="button" class="close" phx-click="toggle-edit" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
