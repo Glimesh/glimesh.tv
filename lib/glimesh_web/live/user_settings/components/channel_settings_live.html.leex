@@ -15,7 +15,7 @@
         <input type="text" value="<%= @stream_key %>" class="form-control stream-key" readonly="readonly">
 
         <div class="input-group-append">
-            <button class="btn btn-info click-to-copy" type="button" data-copy-value="<%= @stream_key %>" data-copied-error-text="<%= gettext("Error copying Stream Key") %>" data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
+            <%= live_render(@socket, GlimeshWeb.Components.ClickToCopy, id: "stream_key_copy", session: %{"value" => @stream_key}) %>
             <button class="btn btn-danger" type="button" phx-click="rotate_stream_key" phx-throttle="5000">Reset Stream
                 Key</button>
         </div>

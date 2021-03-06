@@ -34,31 +34,3 @@
 
     <% end %>
 </div>
-
-
-<script>
-    var clicksToCopy = document.querySelectorAll(".click-to-copy")
-    for (var button of clicksToCopy) {
-        if (navigator.clipboard === undefined) {
-            button.remove();
-            continue;
-        }
-
-        button.addEventListener('click', function (event) {
-            var oldText = event.target.innerText;
-            var copiedText = event.target.dataset.copiedText;
-            var copiedErrorText = event.target.dataset.copiedText;
-            var value = event.target.dataset.copyValue;
-
-            navigator.clipboard.writeText(value).then(function () {
-                event.target.innerText = copiedText;
-
-                setTimeout(function () {
-                    event.target.innerText = oldText;
-                }, 5000);
-            }, function (err) {
-                event.target.innerText = copiedErrorText;
-            });
-        })
-    }
-</script>
