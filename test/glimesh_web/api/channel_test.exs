@@ -7,7 +7,7 @@ defmodule GlimeshWeb.Api.ChannelTest do
 
   @channels_query """
   query getChannels {
-    channels {
+    channels(first: 200) {
       title
       streamer { username }
     }
