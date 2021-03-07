@@ -436,6 +436,12 @@ defmodule Glimesh.Accounts do
 
   ## Session
 
+  def update_user_ip(user, ip_address) do
+    user
+    |> User.user_ip_changeset(ip_address)
+    |> Repo.update()
+  end
+
   @doc """
   Generates a session token.
   """

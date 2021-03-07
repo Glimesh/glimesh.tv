@@ -30,6 +30,9 @@ defmodule GlimeshWeb.UserAuth do
     user_return_to = get_session(conn, :user_return_to)
     user_preference = Accounts.get_user_preference!(user)
 
+    user_ip = conn.remote_ip |> :inet.ntoa() |> to_string()
+    {:ok, _} = Accounts.update_user_ip(user, user_ip)
+
     conn
     |> renew_session()
     |> put_session(:user_token, token)

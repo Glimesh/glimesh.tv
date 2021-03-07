@@ -15,6 +15,9 @@ defmodule Glimesh.Accounts.User do
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
 
+    field :raw_user_ip, :string, virtual: true
+    field :user_ip, :string
+
     field :can_stream, :boolean, default: true
 
     field :team_role, :string
@@ -71,6 +74,7 @@ defmodule Glimesh.Accounts.User do
       :username,
       :email,
       :password,
+      :raw_user_ip,
       :displayname,
       :allow_glimesh_newsletter_emails,
       :is_admin,
@@ -85,6 +89,7 @@ defmodule Glimesh.Accounts.User do
     |> validate_username()
     |> validate_email()
     |> validate_password()
+    |> prepare_changes(&encrypt_user_ip/1)
     |> cast_assoc(:user_preference,
       required: true,
       with: &Glimesh.Accounts.UserPreference.changeset/2
@@ -174,6 +179,15 @@ defmodule Glimesh.Accounts.User do
     changeset
     |> put_change(:hashed_password, Bcrypt.hash_pwd_salt(password))
     |> delete_change(:password)
+  end
+
+  defp encrypt_user_ip(changeset) do
+    raw_user_ip = get_change(changeset, :raw_user_ip)
+    secret = Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:secret_key_base]
+
+    changeset
+    |> put_change(:user_ip, Phoenix.Token.encrypt(GlimeshWeb.Endpoint, secret, raw_user_ip))
+    |> delete_change(:raw_user_ip)
   end
 
   def validate_displayname(changeset) do
@@ -283,6 +297,12 @@ defmodule Glimesh.Accounts.User do
   def confirm_changeset(user) do
     now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     change(user, confirmed_at: now)
+  end
+
+  def user_ip_changeset(user, ip_address) do
+    change(user)
+    |> put_change(:raw_user_ip, ip_address)
+    |> prepare_changes(&encrypt_user_ip/1)
   end
 
   @doc """
