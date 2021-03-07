@@ -5,6 +5,7 @@ defmodule Glimesh.ChannelLookupsTest do
   import Glimesh.AccountsFixtures
   alias Glimesh.ChannelLookups
   alias Glimesh.ChannelCategories
+  alias Glimesh.Repo
 
   defp create_channel(_) do
     streamer =
@@ -23,7 +24,7 @@ defmodule Glimesh.ChannelLookupsTest do
     setup :create_channel
 
     test "list_channels/0 lists all channels" do
-      assert length(ChannelLookups.list_channels()) == 1
+      assert length(Repo.all(ChannelLookups.list_channels())) == 1
     end
 
     test "filter_live_channels/0 lists all live channels", %{channel: channel} do
