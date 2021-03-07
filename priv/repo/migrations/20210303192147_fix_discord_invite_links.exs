@@ -12,15 +12,18 @@ defmodule Glimesh.Repo.Migrations.FixDiscordInviteLinks do
 
     Enum.each(users, fn user ->
       if user.social_discord do
-        {:ok, new_social_discord} =
-          Glimesh.Accounts.Profile.strip_invite_link_from_discord_url(user.social_discord)
+        case Glimesh.Accounts.Profile.strip_invite_link_from_discord_url(user.social_discord) do
+          {:ok, new_social_discord} ->
+            changeset =
+              user
+              |> Ecto.Changeset.change()
+              |> Ecto.Changeset.put_change(:social_discord, new_social_discord)
 
-        changeset =
-          user
-          |> Ecto.Changeset.change()
-          |> Ecto.Changeset.put_change(:social_discord, new_social_discord)
+            Glimesh.Repo.update!(changeset)
+          _ ->
+            nil
 
-        Glimesh.Repo.update!(changeset)
+        end
       end
     end)
   end
