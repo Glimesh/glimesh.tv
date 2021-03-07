@@ -1,4 +1,4 @@
-<div id="chat-messages" class="chat-messages" phx-update="<%= @update_action %>" style="<%= background_style(@channel) %>">
+<div id="chat-messages" class="chat-messages <%= if @show_timestamps, do: "show-timestamps" %>" phx-update="<%= @update_action %>" style="<%= background_style(@channel) %>">
     <div id="channel-header" class="channel-header">
         <span><%= gettext("Welcome to chat! Follow the rules.") %></span>
     </div>
@@ -23,7 +23,7 @@
 
             <%= Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %>
             <% end %>
-            <small id="small-<%= chat_message.id %>" class="text-muted d-none">
+            <small id="small-<%= chat_message.id %>" class="text-muted chat-timestamp">
                 <local-time id="timestamp-<%= chat_message.id %>" phx-update="ignore" datetime="<%= "#{chat_message.inserted_at}" <> "Z" %>" format="micro" hour="numeric" minute="2-digit" second="2-digit"><%= NaiveDateTime.to_time(chat_message.inserted_at) %>
                 </local-time>
             </small>
@@ -42,6 +42,7 @@
             chat_message: @chat_message,
             channel: @channel,
             user: @user,
+            theme: @theme,
             show_timestamps: @show_timestamps
         %>
 </div>

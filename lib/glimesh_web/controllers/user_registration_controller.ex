@@ -16,6 +16,9 @@ defmodule GlimeshWeb.UserRegistrationController do
       site_theme: GlimeshWeb.LayoutView.site_theme(conn)
     }
 
+    user_ip = conn.remote_ip |> :inet.ntoa() |> to_string()
+    user_params = Map.put(user_params, "raw_user_ip", user_ip)
+
     case Hcaptcha.verify(captcha_response) do
       {:ok, _} ->
         case Accounts.register_user(user_params, existing_preferences) do

@@ -4,17 +4,28 @@ defmodule GlimeshWeb.Plugs.CfCountryPlug do
   def init(_opts), do: nil
 
   def call(conn, _opts) do
-    case get_req_header(conn, "cf-ipcountry") do
-      [country] when is_binary(country) ->
-        persist_country(conn, country)
+    conn
+    |> persist_country(get_req_header(conn, "cf-ipcountry"))
+    |> persist_ip_address(get_req_header(conn, "cf-connecting-ip"))
+  end
 
-      _ ->
-        conn
+  defp persist_country(conn, [country]) when is_binary(country) do
+    conn
+    |> put_session(:country, String.upcase(country))
+  end
+
+  defp persist_country(conn, _) do
+    conn
+  end
+
+  defp persist_ip_address(conn, [ip_address]) when is_binary(ip_address) do
+    case ip_address |> String.to_charlist() |> :inet.parse_address() do
+      {:ok, remote_ip} -> %Plug.Conn{conn | remote_ip: remote_ip}
+      {:error, _} -> conn
     end
   end
 
-  defp persist_country(conn, country) do
+  defp persist_ip_address(conn, _) do
     conn
-    |> put_session(:country, String.upcase(country))
   end
 end

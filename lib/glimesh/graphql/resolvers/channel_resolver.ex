@@ -1,5 +1,6 @@
 defmodule Glimesh.Resolvers.ChannelResolver do
   @moduledoc false
+  use Appsignal.Instrumentation.Decorators
   import Ecto.Query
 
   alias Glimesh.Accounts
@@ -78,7 +79,10 @@ defmodule Glimesh.Resolvers.ChannelResolver do
     {:error, "Unauthorized to access hmacKey query."}
   end
 
+  def find_channel(_, _), do: {:error, @error_not_found}
+
   # Streams
+  @decorate transaction_event()
   def start_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
     with %Glimesh.Streams.Channel{} = channel <- ChannelLookups.get_channel(channel_id),
          {:ok, channel} <- Streams.start_stream(channel) do
@@ -96,6 +100,7 @@ defmodule Glimesh.Resolvers.ChannelResolver do
     {:error, @error_access_denied}
   end
 
+  @decorate transaction_event()
   def end_stream(_parent, %{stream_id: stream_id}, %{context: %{is_admin: true}}) do
     if stream = Streams.get_stream(stream_id) do
       Streams.end_stream(stream)
@@ -112,6 +117,7 @@ defmodule Glimesh.Resolvers.ChannelResolver do
     {:error, @error_access_denied}
   end
 
+  @decorate transaction_event()
   def log_stream_metadata(_parent, %{stream_id: stream_id, metadata: metadata}, %{
         context: %{is_admin: true}
       }) do
@@ -130,6 +136,7 @@ defmodule Glimesh.Resolvers.ChannelResolver do
     {:error, @error_access_denied}
   end
 
+  @decorate transaction_event()
   def upload_stream_thumbnail(_parent, %{stream_id: stream_id, thumbnail: thumbnail}, %{
         context: %{is_admin: true}
       }) do

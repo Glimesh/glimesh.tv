@@ -18,7 +18,8 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCount do
   end
 
   @impl true
-  def mount(_params, %{"channel_id" => channel_id}, socket) do
+  def mount(_params, %{"channel_id" => channel_id} = session, socket) do
+    if session["locale"], do: Gettext.put_locale(session["locale"])
     {:ok, topic} = Streams.subscribe_to(:viewers, channel_id)
 
     viewer_count = Presence.list_presences(topic) |> Enum.count()
@@ -30,14 +31,11 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCount do
   def handle_info(
         %{
           event: "presence_diff",
-          topic: "streams:viewers:" <> _streamer,
-          payload: %{joins: joins, leaves: leaves}
+          topic: "streams:viewers:" <> _streamer = topic
         },
-        %{assigns: %{viewer_count: count}} = socket
+        socket
       ) do
-    viewer_count = count + map_size(joins) - map_size(leaves)
-
-    {:noreply, socket |> assign(:viewer_count, viewer_count)}
+    {:noreply, socket |> assign(:viewer_count, Presence.list_presences(topic) |> Enum.count())}
   end
 
   @impl true
