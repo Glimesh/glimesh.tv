@@ -51,11 +51,22 @@ defmodule GlimeshWeb.UserLive.Components.ReportButtonTest do
       # Should render a modal at this point
       assert button =~ "Submit Report"
 
-      assert render_submit(view, "save", %{"report_reason" => "other", "notes" => "Some notes"}) =~
+      assert render_submit(view, "save", %{
+               "report_reason" => "other",
+               "location" => "some location",
+               "notes" => "Some notes"
+             }) =~
                "Report submitted, thank you!"
 
       email =
-        GlimeshWeb.Emails.Email.user_report_alert(admin, user, streamer, "other", "Some notes")
+        GlimeshWeb.Emails.Email.user_report_alert(
+          admin,
+          user,
+          streamer,
+          "other",
+          "some location",
+          "Some notes"
+        )
 
       assert_delivered_email(email)
     end
