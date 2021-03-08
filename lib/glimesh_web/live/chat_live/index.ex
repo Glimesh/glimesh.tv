@@ -51,7 +51,7 @@ defmodule GlimeshWeb.ChatLive.Index do
         |> assign(:update_action, "replace")
         |> assign(:channel, channel)
         |> assign(:user, session["user"])
-        |> assign(:theme, session["site_theme"])
+        |> assign(:theme, Map.get(session, "site_theme", "dark"))
         |> assign(:permissions, Chat.get_moderator_permissions(channel, session["user"]))
         |> assign(:chat_messages, list_chat_messages(channel))
         |> assign(:chat_message, %ChatMessage{})
