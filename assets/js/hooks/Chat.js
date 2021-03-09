@@ -14,10 +14,14 @@ export default {
         el.scrollTop = el.scrollHeight;
     },
     isUserNearBottom(el) {
-        const threshold = el.offsetHeight / 2;
+        // 5 chat messages with padding
+        const threshold = 404;
         const position = el.scrollTop + el.offsetHeight;
         const height = el.scrollHeight;
-        return position > height - threshold;
+        const isNearBottom = position > height - threshold;
+        // For when you need to debug chat scrolling
+        // console.log(`scrollTop=${el.scrollTop} offsetHeight=${el.offsetHeight} threshold=${threshold} position=${position} height=${height} isNearBottom=${isNearBottom}`);
+        return isNearBottom;
     },
 
     theme() {
