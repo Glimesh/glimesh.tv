@@ -4,19 +4,27 @@ defmodule GlimeshWeb.WebhookController do
   def stripe(%Plug.Conn{assigns: %{stripe_event: stripe_event}} = conn, _params) do
     Glimesh.PaymentProviders.StripeProvider.Webhooks.handle_webhook(stripe_event)
 
-    send_resp(conn, :ok, "")
+    conn
+    |> send_resp(:ok, "")
+    |> halt()
   end
 
   def taxidpro(%Plug.Conn{assigns: %{taxidpro_body: taxidpro_body}} = conn, _params) do
     with {:ok, event} <- Jason.decode(taxidpro_body),
          {:ok, _} <- Glimesh.PaymentProviders.TaxIDPro.handle_webhook(event) do
-      send_resp(conn, :ok, "")
+      conn
+      |> send_resp(:ok, "")
+      |> halt()
     else
       {:error, %Jason.DecodeError{}} ->
-        send_resp(conn, :bad_request, "Error decoding JSON")
+        conn
+        |> send_resp(:bad_request, "Error decoding JSON")
+        |> halt()
 
       _ ->
-        send_resp(conn, :bad_request, "Unknown error")
+        conn
+        |> send_resp(:bad_request, "Unknown error")
+        |> halt()
     end
   end
 end
