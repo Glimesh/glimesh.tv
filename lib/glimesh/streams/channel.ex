@@ -22,6 +22,8 @@ defmodule Glimesh.Streams.Channel do
     field :backend, :string
     field :disable_hyperlinks, :boolean, default: false
     field :block_links, :boolean, default: false
+    field :require_confirmed_email, :boolean, default: false
+    field :minimum_account_age, :integer, default: 0
 
     field :chat_rules_md, :string
     field :chat_rules_html, :string
@@ -78,10 +80,16 @@ defmodule Glimesh.Streams.Channel do
       :inaccessible,
       :status,
       :disable_hyperlinks,
-      :block_links
+      :block_links,
+      :require_confirmed_email,
+      :minimum_account_age
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)
+    |> validate_number(:minimum_account_age,
+      greater_than_or_equal_to: 0,
+      less_than_or_equal_to: 720
+    )
     |> set_chat_rules_content_html()
     |> cast_attachments(attrs, [:poster, :chat_bg])
     |> maybe_put_tags(:tags, attrs)

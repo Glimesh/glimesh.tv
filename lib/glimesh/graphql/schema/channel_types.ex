@@ -190,6 +190,11 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :chat_rules_md, :string
     field :chat_rules_html, :string
 
+    field :disable_hyperlinks, :boolean
+    field :block_links, :boolean
+    field :require_confirmed_email, :boolean
+    field :minimum_account_age, :integer
+
     field :stream, :stream, resolve: dataloader(Repo)
 
     field :streamer, non_null(:user), resolve: dataloader(Repo)

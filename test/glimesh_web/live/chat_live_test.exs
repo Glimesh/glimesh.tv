@@ -36,6 +36,86 @@ defmodule GlimeshWeb.ChatLiveTest do
     end
   end
 
+  describe "normal chat stuff" do
+    setup do
+      streamer = streamer_fixture()
+
+      %{
+        streamer: streamer,
+        channel: streamer.channel,
+        user: user_fixture()
+      }
+    end
+
+    test "can post a chat message", %{conn: conn, channel: channel, user: user} do
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => user, "channel_id" => channel.id}
+        )
+
+      view
+      |> element("form")
+      |> render_submit(%{"chat_message" => %{message: "Hello world"}})
+
+      assert render(view) =~ "Hello world"
+    end
+  end
+
+  describe "chat preventions" do
+    setup do
+      streamer = streamer_fixture()
+
+      %{
+        streamer: streamer,
+        channel: streamer.channel,
+        user: user_fixture()
+      }
+    end
+
+    test "cannot post a chat message if you have been channel banned", %{
+      conn: conn,
+      streamer: streamer,
+      channel: channel,
+      user: user
+    } do
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => user, "channel_id" => channel.id}
+        )
+
+      # We want to test an async platform ban where the user's session is not rejected
+      {:ok, _} = Glimesh.Chat.ban_user(streamer, channel, user)
+
+      assert view
+             |> element("form")
+             |> render_submit(%{"chat_message" => %{message: "Hello world"}}) =~
+               "You are permanently banned from this channel"
+
+      refute render(view) =~ "Hello world"
+    end
+
+    test "cannot post a chat message if you have been platform banned", %{
+      conn: conn,
+      channel: channel,
+      user: user
+    } do
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => user, "channel_id" => channel.id}
+        )
+
+      # We want to test an async platform ban where the user's session is not rejected
+      {:ok, _} = Glimesh.Accounts.ban_user(admin_fixture(), user, "Noperino")
+
+      assert view
+             |> element("form")
+             |> render_submit(%{"chat_message" => %{message: "Hello world"}}) =~
+               "You are banned from Glimesh"
+
+      refute render(view) =~ "Hello world"
+    end
+  end
+
   describe "mod actions" do
     test "short timeout removes chat message", %{conn: conn} do
       streamer = streamer_fixture()
