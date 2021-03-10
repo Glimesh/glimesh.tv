@@ -9,7 +9,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
     <%= if @user do %>
       <%= if @following do %>
         <div class="btn-group" role="group">
-          <button class="btn btn-primary btn-block follow-button btn-responsive" phx-click="unfollow"><span class="d-none d-lg-block"><%= gettext("Unfollow") %></span><span class="d-lg-none"><i class="fas fa-user-minus"></i></span></button>
+          <button class="btn btn-primary btn-block follow-button btn-responsive" phx-click="unfollow" data-confirm="<%= gettext("Are you sure?")%>"><span class="d-none d-lg-block"><%= gettext("Unfollow") %></span><span class="d-lg-none"><i class="fas fa-user-minus"></i></span></button>
           <%= if @following.has_live_notifications do %>
           <button type="button" class="btn btn-primary live-notifications-button btn-responsive" phx-click="disable_live_notifications"><i class="fas fa-bell"></i></button>
           <% else %>
