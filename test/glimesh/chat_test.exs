@@ -331,4 +331,33 @@ defmodule Glimesh.ChatTest do
       assert user_preferences.show_timestamps == true
     end
   end
+
+  describe "chat safety & security" do
+    alias Glimesh.Chat.ChatMessage
+
+    setup do
+      streamer = streamer_fixture()
+
+      %{
+        channel: streamer.channel,
+        streamer: streamer
+      }
+    end
+
+    test "create_chat_message/3 with an account under 3 hours old fails when configured",
+         %{channel: channel, streamer: streamer} do
+      {:ok, channel} = Streams.update_channel(streamer, channel, %{minimum_account_age: 3})
+
+      assert {:error, "You must wait 180 more minutes to chat."} =
+               Chat.create_chat_message(user_fixture(), channel, "Hello world")
+    end
+
+    test "create_chat_message/3 with an unverified account fails when configured ",
+         %{channel: channel, streamer: streamer} do
+      {:ok, channel} = Streams.update_channel(streamer, channel, %{require_confirmed_email: true})
+
+      assert {:error, "You must confirm your email address before chatting."} =
+               Chat.create_chat_message(user_fixture(), channel, "Hello world")
+    end
+  end
 end

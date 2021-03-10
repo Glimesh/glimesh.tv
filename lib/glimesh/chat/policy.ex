@@ -26,6 +26,8 @@ defmodule Glimesh.Chat.Policy do
       do: true
 
   def authorize(:create_chat_message, %User{} = user, %Channel{} = channel) do
+    account_age = NaiveDateTime.diff(NaiveDateTime.utc_now(), user.inserted_at, :second)
+
     cond do
       # Specific Channel Ban
       expiry = Chat.is_banned_until(channel, user) ->
@@ -43,6 +45,17 @@ defmodule Glimesh.Chat.Policy do
       # Global Account Ban
       Glimesh.Accounts.is_user_banned?(user) ->
         {:error, gettext("You are banned from Glimesh.")}
+
+      # Require all chatters to have a verified email
+      channel.require_confirmed_email and is_nil(user.confirmed_at) ->
+        {:error, gettext("You must confirm your email address before chatting.")}
+
+      # Require a minimum account age before following
+      channel.minimum_account_age > 0 and account_age < channel.minimum_account_age * 60 * 60 ->
+        time_left = trunc((channel.minimum_account_age * 60 * 60 - account_age) / 60)
+
+        {:error,
+         gettext("You must wait %{time_left} more minutes to chat.", time_left: time_left)}
 
       true ->
         true

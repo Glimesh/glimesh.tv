@@ -67,7 +67,7 @@ defmodule GlimeshWeb.ChatLive.Index do
     Chat.short_timeout_user(
       socket.assigns.user,
       socket.assigns.channel,
-      Accounts.get_by_username!(to_ban_user)
+      Accounts.get_by_username!(to_ban_user, true)
     )
 
     {:noreply, socket}
@@ -78,7 +78,7 @@ defmodule GlimeshWeb.ChatLive.Index do
     Chat.long_timeout_user(
       socket.assigns.user,
       socket.assigns.channel,
-      Accounts.get_by_username!(to_ban_user)
+      Accounts.get_by_username!(to_ban_user, true)
     )
 
     {:noreply, socket}
@@ -89,7 +89,7 @@ defmodule GlimeshWeb.ChatLive.Index do
     Chat.ban_user(
       socket.assigns.user,
       socket.assigns.channel,
-      Accounts.get_by_username!(to_ban_user)
+      Accounts.get_by_username!(to_ban_user, true)
     )
 
     {:noreply, assign(socket, :chat_messages, list_chat_messages(socket.assigns.channel))}
