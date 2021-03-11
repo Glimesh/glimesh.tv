@@ -1,0 +1,97 @@
+.pop-out-chat {
+    width: 100vw;
+    height: 100vh;
+}
+
+#chat {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    overflow: hidden;
+
+    border-radius: 6px;
+
+    .chat-messages {
+        flex: 1 1 90%;
+        display: flex;
+        flex-direction: column;
+        // justify-content: flex-end;
+        overflow-y: scroll;
+
+        --chat-bg-image: url('/images/bg.png');
+        background-image: var(--chat-bg-image);
+
+        .channel-header {
+            align-self: center;
+            margin-top: 15px;
+            margin-bottom: 10px;
+
+            span {
+                color: var(--body-color);
+                margin-bottom: 0;
+                background: var(--chat-bubble-background);
+                padding: 7px 20px;
+                border-radius: 5px;
+                box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        .bubble {
+            flex: 0 1 auto;
+            align-self: flex-start;
+            border-radius: 5px;
+            margin: 3px;
+            padding: 10px;
+            max-width: 370px;
+            word-break: break-word;
+            color: var(--body-color);
+
+            background-color: var(--chat-bubble-background);
+            box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+
+            .img-chat-avatar {
+                height: 20px;
+                width: 20px;
+                border-radius: 50%;
+            }
+
+            .user-message {
+                margin-top: 5px;
+            }
+        }
+
+        .mention {
+            border: 2px solid $red;
+        }
+
+        .chat-timestamp {
+            display: none;
+        }
+
+        &.show-timestamps {
+            .chat-timestamp {
+                display: inline-block;
+            }
+        }
+    }
+
+
+    .channel-footer {
+        text-align: center;
+        margin-top: 15px;
+        margin-bottom: 10px;
+
+        span {
+            color: $color-light-white;
+            margin-bottom: 0;
+            background: $color-cosmic-blue;
+            padding: 7px 20px;
+            border-radius: 5px;
+            box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    .chat-form {
+        flex: 0 0;
+    }
+}

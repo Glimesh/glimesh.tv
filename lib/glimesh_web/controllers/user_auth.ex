@@ -3,6 +3,7 @@ defmodule GlimeshWeb.UserAuth do
   import Phoenix.Controller
 
   alias Glimesh.Accounts
+  alias GlimeshWeb.Endpoint
   alias GlimeshWeb.Router.Helpers, as: Routes
 
   # Make the remember me cookie valid for 60 days.
@@ -27,12 +28,17 @@ defmodule GlimeshWeb.UserAuth do
   def log_in_user(conn, user, params \\ %{}) do
     token = Accounts.generate_user_session_token(user)
     user_return_to = get_session(conn, :user_return_to)
+    user_preference = Accounts.get_user_preference!(user)
+
+    user_ip = conn.remote_ip |> :inet.ntoa() |> to_string()
+    {:ok, _} = Accounts.update_user_ip(user, user_ip)
 
     conn
     |> renew_session()
     |> put_session(:user_token, token)
     |> put_session(:live_socket_id, "users_sessions:#{Base.url_encode64(token)}")
-    |> put_session(:locale, user.locale)
+    |> put_session(:locale, user_preference.locale)
+    |> put_session(:site_theme, user_preference.site_theme)
     |> maybe_write_remember_me_cookie(token, params)
     |> redirect(to: user_return_to || signed_in_path(conn))
   end
@@ -76,13 +82,26 @@ defmodule GlimeshWeb.UserAuth do
     user_token && Accounts.delete_session_token(user_token)
 
     if live_socket_id = get_session(conn, :live_socket_id) do
-      GlimeshWeb.Endpoint.broadcast(live_socket_id, "disconnect", %{})
+      Endpoint.broadcast(live_socket_id, "disconnect", %{})
     end
 
     conn
     |> renew_session()
     |> delete_resp_cookie(@remember_me_cookie)
     |> redirect(to: "/")
+  end
+
+  def ban_user(conn) do
+    user_token = get_session(conn, :user_token)
+    user_token && Accounts.delete_session_token(user_token)
+
+    if live_socket_id = get_session(conn, :live_socket_id) do
+      Endpoint.broadcast(live_socket_id, "disconnect", %{})
+    end
+
+    conn
+    |> renew_session()
+    |> delete_resp_cookie(@remember_me_cookie)
   end
 
   @doc """
@@ -141,6 +160,21 @@ defmodule GlimeshWeb.UserAuth do
   end
 
   @doc """
+  Used for routes that require the user to have a channel.
+  """
+  def require_user_has_channel(conn, _opts) do
+    if Map.has_key?(conn.assigns, :current_user) and
+         Glimesh.ChannelLookups.get_channel_for_user(conn.assigns[:current_user]) do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must have a channel to access this page.")
+      |> redirect(to: Routes.user_settings_path(conn, :stream))
+      |> halt()
+    end
+  end
+
+  @doc """
   Used for routes that require the user to be an administrator.
   """
   def require_admin_user(conn, _opts) do
@@ -149,7 +183,17 @@ defmodule GlimeshWeb.UserAuth do
     else
       conn
       |> put_flash(:error, "You must be an administrator to access this page.")
-      |> maybe_store_return_to()
+      |> redirect(to: Routes.user_session_path(conn, :new))
+      |> halt()
+    end
+  end
+
+  def require_gct_user(conn, _opts) do
+    if conn.assigns[:current_user] && conn.assigns[:current_user].is_gct &&
+         conn.assigns[:current_user].tfa_token do
+      conn
+    else
+      conn
       |> redirect(to: Routes.user_session_path(conn, :new))
       |> halt()
     end
@@ -169,7 +213,13 @@ defmodule GlimeshWeb.UserAuth do
   end
 
   defp maybe_store_return_to(%{method: "GET", request_path: request_path} = conn) do
-    put_session(conn, :user_return_to, request_path)
+    maybe_query_string =
+      case conn.query_string do
+        "" -> ""
+        _ -> "?#{conn.query_string}"
+      end
+
+    put_session(conn, :user_return_to, request_path <> maybe_query_string)
   end
 
   defp maybe_store_return_to(conn), do: conn

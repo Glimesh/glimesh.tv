@@ -12,6 +12,9 @@ defmodule GlimeshWeb.Router do
     plug :put_secure_browser_headers
     plug :fetch_current_user
     plug GlimeshWeb.Plugs.Locale
+    plug GlimeshWeb.Plugs.CfCountryPlug
+    plug GlimeshWeb.Plugs.Ban
+    plug GlimeshWeb.UniqueUserPlug
   end
 
   pipeline :api do
@@ -45,10 +48,21 @@ defmodule GlimeshWeb.Router do
     post "/introspec", Oauth2Provider.TokenController, :introspec
   end
 
+  scope "/api/webhook", GlimeshWeb do
+    pipe_through :api
+
+    post "/stripe", WebhookController, :stripe
+    post "/taxidpro", WebhookController, :taxidpro
+  end
+
   scope "/api" do
     pipe_through :graphql
 
-    forward "/", Absinthe.Plug, schema: Glimesh.Schema
+    forward "/", Absinthe.Plug.GraphiQL,
+      schema: Glimesh.Schema,
+      socket: GlimeshWeb.ApiSocket,
+      default_url: {__MODULE__, :graphiql_default_url},
+      socket_url: {__MODULE__, :graphiql_socket_url}
   end
 
   ## Authentication routes
@@ -70,13 +84,27 @@ defmodule GlimeshWeb.Router do
   scope "/", GlimeshWeb do
     pipe_through [:browser, :require_authenticated_user]
 
+    live "/platform_subscriptions", PlatformSubscriptionLive.Index, :index
+
+    get "/users/social/twitter", UserSocialController, :twitter
+    delete "/users/social/disconnect/:platform", UserSocialController, :disconnect
+
+    get "/users/payments", UserPaymentsController, :index
+    post "/users/payments/setup", UserPaymentsController, :setup
+    get "/users/payments/taxes", UserPaymentsController, :taxes
+    get "/users/payments/taxes_pending", UserPaymentsController, :taxes_pending
+    get "/users/payments/connect", UserPaymentsController, :connect
+    put "/users/payments/delete_default_payment", UserPaymentsController, :delete_default_payment
+
     get "/users/settings/profile", UserSettingsController, :profile
     get "/users/settings/stream", UserSettingsController, :stream
     put "/users/settings/create_channel", UserSettingsController, :create_channel
     put "/users/settings/delete_channel", UserSettingsController, :delete_channel
-    get "/users/settings/settings", UserSettingsController, :settings
+    get "/users/settings/preference", UserSettingsController, :preference
+    put "/users/settings/preference", UserSettingsController, :update_preference
     put "/users/settings/update_profile", UserSettingsController, :update_profile
     put "/users/settings/update_channel", UserSettingsController, :update_channel
+    get "/users/settings/notifications", UserSettingsController, :notifications
 
     get "/users/settings/security", UserSecurityController, :index
     put "/users/settings/update_password", UserSecurityController, :update_password
@@ -86,6 +114,7 @@ defmodule GlimeshWeb.Router do
     get "/users/settings/get_tfa", UserSecurityController, :get_tfa
     get "/users/settings/tfa_registered", UserSecurityController, :tfa_registered
 
+    put "/users/settings/applications/:id/rotate", UserApplicationsController, :rotate
     resources "/users/settings/applications", UserApplicationsController
 
     resources "/users/settings/authorizations", Oauth2Provider.AuthorizedApplicationController,
@@ -98,18 +127,22 @@ defmodule GlimeshWeb.Router do
     delete "/oauth/authorize", Oauth2Provider.AuthorizationController, :delete
   end
 
+  scope "/", GlimeshWeb do
+    pipe_through [:browser, :require_authenticated_user, :require_user_has_channel]
+
+    delete "/users/settings/channel/mods/unban_user/:username",
+           ChannelModeratorController,
+           :unban_user
+
+    resources "/users/settings/channel/mods", ChannelModeratorController
+  end
+
   scope "/admin", GlimeshWeb do
     pipe_through [:browser, :require_admin_user]
 
     import Phoenix.LiveDashboard.Router
 
     live_dashboard "/phoenix/dashboard", metrics: GlimeshWeb.Telemetry
-
-    live "/platform_subscriptions", PlatformSubscriptionLive.Index, :index
-
-    get "/users/payments", UserPaymentsController, :index
-    get "/users/payments/connect", UserPaymentsController, :connect
-    put "/users/payments/delete_default_payment", UserPaymentsController, :delete_default_payment
 
     get "/blog/new", ArticleController, :new
     get "/blog/:slug/edit", ArticleController, :edit
@@ -124,21 +157,64 @@ defmodule GlimeshWeb.Router do
 
     live "/categories/:id", Admin.CategoryLive.Show, :show
     live "/categories/:id/show/edit", Admin.CategoryLive.Show, :edit
+
+    live "/tags", Admin.TagLive.Index, :index
+    live "/tags/new", Admin.TagLive.Index, :new
+    live "/tags/:id/edit", Admin.TagLive.Index, :edit
+  end
+
+  scope "/gct", GlimeshWeb do
+    pipe_through [:browser, :require_gct_user]
+
+    get "/", GctController, :index
+    get "/me", GctController, :edit_self
+    get "/unauthorized", GctController, :unauthorized
+
+    # Lookup scopes
+    get "/lookup/user", GctController, :username_lookup
+    get "/lookup/channel", GctController, :channel_lookup
+    get "/lookup/channel/:channel_id/chat", GctController, :channel_chat_log
+
+    # Editing profile scopes
+    get "/edit/profile/:username", GctController, :edit_user_profile
+    put "/edit/profile/:username/update", GctController, :update_user_profile
+
+    # Editing user scopes
+    get "/edit/:username", GctController, :edit_user
+    put "/edit/:username/update", GctController, :update_user
+
+    # Editing channel scopes
+    get "/edit/channel/:channel_id", GctController, :edit_channel
+    post "/edit/channel/:channel_id/shutdown", GctController, :shutdown_channel
+    put "/edit/channel/:channel_id/update", GctController, :update_channel
+    put "/edit/channel/:channel_id/delete", GctController, :delete_channel
+
+    # Audit log
+    get "/audit-log", GctController, :audit_log
   end
 
   scope "/", GlimeshWeb do
     pipe_through [:browser]
 
     get "/about", AboutController, :index
+    get "/about/streaming", AboutController, :streaming
+    get "/about/team", AboutController, :team
+    get "/about/mission", AboutController, :mission
     get "/about/faq", AboutController, :faq
     get "/about/privacy", AboutController, :privacy
     get "/about/terms", AboutController, :terms
+    get "/about/conduct", AboutController, :conduct
+    get "/about/credits", AboutController, :credits
+    get "/about/dmca", AboutController, :dmca
+
+    live "/about/open-data", About.OpenDataLive, :index
+    live "/about/open-data/subscriptions", About.OpenDataLive, :subscriptions
+    live "/about/open-data/streams", About.OpenDataLive, :streams
 
     get "/blog", ArticleController, :index
     get "/blog/:slug", ArticleController, :show
 
     live "/", HomepageLive, :index
-    live "/streams", StreamsLive.List, :index
     live "/streams/:category", StreamsLive.List, :index
 
     live "/users", UserLive.Index, :index
@@ -148,9 +224,24 @@ defmodule GlimeshWeb.Router do
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :confirm
 
+    post "/quick_preferences", QuickPreferenceController, :update_preference
+
     # This must be the last route
     live "/:username", UserLive.Stream, :index
     live "/:username/profile", UserLive.Profile, :index
     live "/:username/profile/followers", UserLive.Followers, :index
+    live "/:username/chat", ChatLive.PopOut, :index
+  end
+
+  alias GlimeshWeb.Router.Helpers, as: Routes
+
+  def graphiql_default_url(conn) do
+    Routes.url(conn) <> "/api"
+  end
+
+  def graphiql_socket_url(conn) do
+    (Routes.url(conn) <> "/api/socket")
+    |> String.replace("http", "ws")
+    |> String.replace("https", "wss")
   end
 end

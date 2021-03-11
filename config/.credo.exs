@@ -8,7 +8,7 @@
       },
       checks: [
         {Credo.Check.Design.AliasUsage,
-         if_called_more_often_than: 1,
+         if_called_more_often_than: 2,
          excluded_namespaces: [
            "Ecto",
            "File",

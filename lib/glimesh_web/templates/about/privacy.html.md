@@ -1,3 +1,5 @@
+# Privacy Policy
+
 This Privacy Policy explains how your personal information is collected, used, and disclosed by Glimesh, its subsidiaries, and affiliated companies (“Glimesh”). In the Privacy Policy the terms “We”, “Us”, and “Our” refer to Glimesh, its subsidiaries, and affiliated companies. “You” and “your” refers to the end user of our products and services. “Site” and “Services” refer to any products offered by Glimesh.
 
 This Privacy Policy includes but is not limited to; the websites of Glimesh, including [https://glimesh.tv/](https://glimesh.tv/) and all subdomains (“Sites”), Glimesh’s other products, services or any other features, technologies or functionalities offered by us on our Sites or through any other means (collectively, “Services”).
@@ -59,15 +61,31 @@ When you visit our Sites or use our Services, some information is automatically 
     We use Plausible [Plausible.io](https://plausible.io/privacy) to collect basic anonymized analytics about our site, and it’s usage. We collect this data to better understand our users, their referrals, and how they utilize our Services. Please see their Privacy Policy for more information.
     
 10.  Cookies  
-    We automatically collect information using “cookies.” Cookies are small data files stored on your hard drive by a website. Among other things, cookies help us improve our Sites, Services and your experience. You can usually choose to set your browser to remove and/or reject cookies. If you choose to remove or reject cookies, this could affect certain features or services of our Sites or Services. For example, you will not be able to login to the Glimesh Services. Glimesh provides a single functional cookie for our users to track their logged in state
-    * Our Cookies
+    We automatically collect information using “cookies.” Cookies are small data files stored on your hard drive by a website. Among other things, cookies help us improve our Sites, Services and your experience. You can usually choose to set your browser to remove and/or reject cookies. If you choose to remove or reject cookies, this could affect certain features or services of our Sites or Services. For example, you will not be able to login to the Glimesh Services. Glimesh uses only strictly necessary cookies for our website. We do not allow any marketing, analytical, or preference cookies.
+    * Our Functional Website Cookie
         * Name: __glimesh_key    
         * Provider: Glimesh    
         * Purpose: Track state of users    
         * Country: United States
         * Type: http_cookie
         * Expires: Session (on logout)
-        
+    * Our Functional Load Balancer Cookie
+        * Name: __glimesh_lb    
+        * Provider: Glimesh    
+        * Purpose: Keep users on the same load balancer    
+        * Country: United States
+        * Type: http_cookie
+        * Expires: 1 hour
+    * Our Functional Support Portal Cookie
+        * Name: _zammad_session   
+        * Provider: Glimesh
+        * Purpose: Track state of users   
+        * Country: United States
+        * Type: http_cookie
+        * Expires: Session (on logout)
+    * Partner Cookies
+        * Stripe: [https://stripe.com/cookies-policy/legal](https://stripe.com/cookies-policy/legal)
+        * CloudFlare: [https://www.cloudflare.com/cookie-policy](https://www.cloudflare.com/cookie-policy)
 
 11.  Web Beacons  
     We may also collect information using "Web Beacons". Web Beacons are electronic images that are utilized by our sites, our services, and by our emails. We utilize Web Beacons to deliver cookies, count page visits, understand campaign usage and effectiveness, and check the engagement of emails that we send out. If you'd like more information on Web Beacons please see [Wikipedia Web Beacon Article](https://en.wikipedia.org/wiki/Web_beacon)
@@ -89,13 +107,15 @@ Glimesh stores and processes personal information in the United States.
 
 We may also share your personal information with these third party vendors who work on our behalf:
 
--   [reCAPTCHA](https://www.google.com/recaptcha/intro/v3.html) - anti-robot service for preventing spam.
+-   [DigitalOcean](https://www.digitalocean.com/) - hosting provider for user data
+-   [CloudFlare](https://www.cloudflare.com/) - web performance and security
+-   [hCaptcha](https://hcaptcha.com/) - anti-robot service for preventing spam
 -   [Plausible.io](https://plausible.io/) - privacy focused analytics provider
-
-We may also share your personal information with these third parties during our charity streams:
--   [Tiltify](https://tiltify.com/) - charity organization & donation service
--   [Pusher](https://pusher.com/) - live update service for donation widget from Tiltify
--   [Google Analytics](https://analytics.google.com/) - analytics service used by Tiltify
+-   [Stripe](https://stripe.com/) - payment processor
+-   [Gravatar](https://en.gravatar.com/) - default avatar image generator
+-   [mailgun](https://www.mailgun.com/) - email sending service
+-   [AppSignal](https://appsignal.com/) - error reporting & collection
+-   [Tax ID Pro](https://taxid.pro/) - tax form collection for some users
 
 We may also share your information as follows:
 

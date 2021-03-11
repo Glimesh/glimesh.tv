@@ -24,6 +24,15 @@ defmodule GlimeshWeb do
       import Plug.Conn
       import GlimeshWeb.Gettext
       alias GlimeshWeb.Router.Helpers, as: Routes
+
+      import Glimesh.Formatters
+
+      def unauthorized(conn) do
+        conn
+        |> put_status(403)
+        |> send_resp(403, "Unauthorized")
+        |> halt()
+      end
     end
   end
 
@@ -32,6 +41,8 @@ defmodule GlimeshWeb do
       use Phoenix.View,
         root: "lib/glimesh_web/templates",
         namespace: GlimeshWeb
+
+      use Appsignal.Phoenix.View
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -44,6 +55,8 @@ defmodule GlimeshWeb do
           controller_module: 1
         ]
 
+      import Glimesh.Formatters
+
       # Include shared imports and aliases for views
       unquote(view_helpers())
     end
@@ -54,6 +67,8 @@ defmodule GlimeshWeb do
       use Phoenix.LiveView,
         layout: {GlimeshWeb.LayoutView, "live.html"}
 
+      import Glimesh.Formatters
+
       unquote(view_helpers())
     end
   end
@@ -61,6 +76,8 @@ defmodule GlimeshWeb do
   def live_component do
     quote do
       use Phoenix.LiveComponent
+
+      import Glimesh.Formatters
 
       unquote(view_helpers())
     end

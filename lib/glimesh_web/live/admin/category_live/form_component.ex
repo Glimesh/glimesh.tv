@@ -1,18 +1,18 @@
 defmodule GlimeshWeb.Admin.CategoryLive.FormComponent do
   use GlimeshWeb, :live_component
 
-  alias Glimesh.Streams
+  alias Glimesh.ChannelCategories
 
   @impl true
   def update(%{category: category} = assigns, socket) do
-    changeset = Streams.change_category(category)
+    changeset = ChannelCategories.change_category(category)
 
     {:ok,
      socket
      |> assign(assigns)
      |> assign(
        :existing_categories,
-       Enum.map(Streams.list_parent_categories(), &{&1.name, &1.id})
+       ChannelCategories.list_categories_for_select()
      )
      |> assign(:changeset, changeset)}
   end
@@ -21,7 +21,7 @@ defmodule GlimeshWeb.Admin.CategoryLive.FormComponent do
   def handle_event("validate", %{"category" => category_params}, socket) do
     changeset =
       socket.assigns.category
-      |> Streams.change_category(category_params)
+      |> ChannelCategories.change_category(category_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
@@ -32,7 +32,7 @@ defmodule GlimeshWeb.Admin.CategoryLive.FormComponent do
   end
 
   defp save_category(socket, :edit, category_params) do
-    case Streams.update_category(socket.assigns.category, category_params) do
+    case ChannelCategories.update_category(socket.assigns.category, category_params) do
       {:ok, _category} ->
         {:noreply,
          socket
@@ -45,7 +45,7 @@ defmodule GlimeshWeb.Admin.CategoryLive.FormComponent do
   end
 
   defp save_category(socket, :new, category_params) do
-    case Streams.create_category(category_params) do
+    case ChannelCategories.create_category(category_params) do
       {:ok, _category} ->
         {:noreply,
          socket

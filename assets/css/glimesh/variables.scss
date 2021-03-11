@@ -1,20 +1,142 @@
-$font-family-base: "Quicksand";
 
-$secondary: #5c1ac3;
+$color-secondary: #5c1ac3;
 
+$secondary: $color-secondary;
+
+$color-light-white: #e0e6ed;
 $color-bone-white: #f1f2f3;
 $color-navy-blue: #1b2e4b;
 $color-cosmic-blue: #0e1726;
-$color-teal: #009688;
+$color-teal: #48D1BD;
+ 
+:root {
+    --body-bg-color: #060818;
+    --body-color: #fff; 
+
+    --navbar-bg-color: #0e1726;
+    --navbar-border-color: #3b3f5c;
+    --navbar-color: #fff;
+
+    --secondary-color: #48D1BD; 
+    --secondary-bg-color: #0e1726; 
+    --secondary-hover-bg-color: #1b2e4b;
+
+    --footer-bg-color: #000000;
+    --footer-main-bg-color: #0e1726;
+    --footer-main-bg: url("/images/subtle-glims.png");
+
+    --input-bg-color: #1b2e4b;
+    --input-color: #48D1BD;
+    --input-border-color: #1b2e4b;
+    --input-focus-border-color: #3b3f5c;
+
+    --input-group-addon-bg-color: #191e3a;
+    --input-group-addon-color: #888ea8;
+    --input-group-addon-border-color: #1b2e4b;
+
+    --stream-card-streamer-background: rgba(0, 0, 0, 0.8);
+
+    --chat-bubble-background: #0e1726;
+
+    --text-muted-color: #6c757d;
+}
+
+[data-theme="light"] {
+    --body-bg-color: #ffffff;
+    --body-color: #000;
+
+    --navbar-bg-color: #fff;
+    --navbar-border-color: #fff;
+    --navbar-color: #000;
+
+    --secondary-color: #0e1726; 
+    --secondary-bg-color: #fff;  
+    --secondary-hover-bg-color: #e9ecef;
+
+    --footer-bg-color: #e9ecef;
+    --footer-main-bg-color: #e9ecef;
+    --footer-main-bg: url("/images/subtle-glims.png");
+
+    --input-bg-color: #fff;
+    --input-color: #495057;
+    --input-border-color: #ced4da;
+    --input-focus-border-color: #ced4da;
+
+    --input-group-addon-bg-color: #e9ecef;
+    --input-group-addon-color: #495057;
+    --input-group-addon-border-color: #ced4da;
+
+    --stream-card-streamer-background: rgba(255, 255, 255, 0.8);
+
+    --chat-bubble-background: #fff;
+
+    --text-muted-color: #000;
+}
+
+$font-family-base: 'Roboto', sans-serif; 
+$font-weight-normal: 300;
+$headings-font-family: 'Noto Sans', sans-serif;
+$headings-font-weight: 700;
+ 
+$body-bg: var(--body-bg-color);
+$body-color: var(--body-color);
+$pre-color: var(--body-color);
+
+$dropdown-bg: var(--input-bg-color);
+$dropdown-color: var(--input-color);
+$dropdown-link-color: var(--input-color);
 
 // List Groups
-$list-group-bg: $color-cosmic-blue;
-$list-group-hover-bg: $color-navy-blue;
+$list-group-bg: var(--secondary-bg-color);
+$list-group-hover-bg: var(--secondary-hover-bg-color);
 
-$list-group-active-bg: $color-navy-blue;
-$list-group-active-color: $color-teal;
+$list-group-active-bg: var(--secondary-hover-bg-color);
+$list-group-active-color: var(--body-color);
 
-$list-group-action-hover-color: $color-teal;
-$list-group-action-color: $color-bone-white;
-$list-group-action-active-color: $color-teal;
-$list-group-action-active-bg: $color-navy-blue;
+$list-group-action-hover-color: var(--secondary-color);
+$list-group-action-color: var(--body-color);
+$list-group-action-active-color: var(--secondary-color);
+$list-group-action-active-bg: var(--secondary-hover-bg-color);
+
+
+// Cards
+$card-bg: var(--secondary-bg-color);
+
+// Inputs
+$input-bg:                              var(--input-bg-color);
+$input-disabled-bg:                     var(--input-bg-color);
+$input-color: var(--input-color);
+$input-border-color: var(--input-border-color);
+
+$input-group-addon-color:               var(--input-group-addon-color);
+$input-group-addon-bg:                  var(--input-group-addon-bg-color);
+$input-group-addon-border-color:        var(--input-group-addon-border-color);
+$input-focus-border-color:              var(--input-focus-border-color);
+
+$custom-select-bg: var(--input-bg-color); 
+$custom-select-color: var(--input-color); 
+$custom-select-border-color: var(--input-border-color); 
+$custom-select-focus-border-color: var(--input-border-color); 
+
+// Tables
+$table-color:                 var(--body-color);
+$table-border-color:          var(--secondary-hover-bg-color);
+
+// Modals
+$modal-content-bg: var(--secondary-bg-color);
+$close-color: var(--secondary-color);
+
+// Navbar
+.navbar {
+    background-color: var(--navbar-bg-color);
+    border-color: var(--navbar-border-color);
+    color: var(--navbar-color);
+
+    a {
+        color: var(--navbar-color);
+    }
+
+    .navbar-toggler {
+        color: var(--body-color);
+    }
+}

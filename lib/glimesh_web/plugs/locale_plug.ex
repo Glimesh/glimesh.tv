@@ -27,7 +27,8 @@ defmodule GlimeshWeb.Plugs.Locale do
 
   def locale_from_user(conn) do
     if conn.assigns.current_user do
-      conn.assigns.current_user.locale |> validate_locale
+      user_preference = Glimesh.Accounts.get_user_preference!(conn.assigns.current_user)
+      user_preference.locale |> validate_locale
     end
   end
 

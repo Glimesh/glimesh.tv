@@ -1,133 +1,96 @@
 <div class="container mt-4">
-  <div class="row">
-    <div class="col-9">
-      <h2><%= gettext("Applications") %></h2>
-    </div>
-    <div class="col-3">
-      <%= link gettext("Create Application"), class: "btn btn-primary btn-block", to: Routes.user_applications_path(@conn, :new) %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-3">
-      <div class="list-group">
-        <%= for app <- @applications do %>
-        <%= link app.name, class: "list-group-item list-group-item-action", to: Routes.user_applications_path(@conn, :show, app) %>
-        <% end %>
-      </div>
-    </div>
-    <div class="col-md-9">
-
-      <div class="card">
-        <div class="card-body">
-          <div class="media">
-            <img class="mr-3" src="<%= Glimesh.AppLogo.url({@application.logo, @application}, :original) %>"
-              alt="Generic placeholder image">
-            <div class="media-body">
-              <h5 class="mt-0"><%= @application.name %></h5>
-              <p><%= @application.description %></p>
-              <p><i class="fas fa-wifi fa-w"></i> <%= @application.homepage_url %></p>
-            </div>
-          </div>
-
-          <h3><%= gettext("Credentials") %></h3>
-          <div class="form-group">
-            <label for="clientId"><%= gettext("Client ID") %></label>
-            <div class="input-group">
-              <input id="clientId" type="text" class="form-control" readonly
-                value="<%= @application.oauth_application.uid %>">
-              <div class="input-group-append">
-                <button class="btn btn-info click-to-copy" type="button"
-                  data-copy-value="<%= @application.oauth_application.uid %>"
-                  data-copied-error-text="<%= gettext("Error") %>"
-                  data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="secretKey"><%= gettext("Secret Key") %></label>
-            <div class="input-group">
-              <input id="secretKey" type="text" class="form-control" readonly
-                value="<%= @application.oauth_application.secret %>">
-              <div class="input-group-append">
-                <button class="btn btn-info click-to-copy" type="button"
-                  data-copy-value="<%= @application.oauth_application.secret %>"
-                  data-copied-error-text="<%= gettext("Error") %>"
-                  data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="tokenRoute"><%= gettext("OAuth Token URL") %></label>
-            <div class="input-group">
-              <input id="tokenRoute" type="text" class="form-control" readonly
-                value="<%= Routes.token_url(@conn, :create) %>">
-              <div class="input-group-append">
-                <button class="btn btn-info click-to-copy" type="button"
-                  data-copy-value="<%= Routes.token_url(@conn, :create) %>"
-                  data-copied-error-text="<%= gettext("Error") %>"
-                  data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="authorizationRoute"><%= gettext("OAuth Authorization URL") %></label>
-            <div class="input-group">
-              <input id="authorizationRoute" type="text" class="form-control" readonly
-                value="<%= Routes.authorization_url(@conn, :new) %>">
-              <div class="input-group-append">
-                <button class="btn btn-info click-to-copy" type="button"
-                  data-copy-value="<%= Routes.authorization_url(@conn, :new) %>"
-                  data-copied-error-text="<%= gettext("Error") %>"
-                  data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
-              </div>
-            </div>
-          </div>
-
-
-          <h3><%= gettext("Callbacks") %></h3>
-          <table class="table">
-            <tbody>
-              <%= for redirect_uri <- String.split(@application.oauth_application.redirect_uri) do %>
-              <tr>
-                <td>
-                  <code><%= redirect_uri %></code>
-                </td>
-                <td>
-                  <%= link gettext("Authorize"), to: Routes.authorization_path(@conn, :new, client_id: @application.oauth_application.uid, redirect_uri: redirect_uri, response_type: "code", scope: @application.oauth_application.scopes), target: '_blank' %>
-                </td>
-              </tr>
-              <% end %>
-            </tbody>
-          </table>
+    <div class="row">
+        <div class="col-9">
+            <h2><%= gettext("Applications") %></h2>
         </div>
-        <div class="card-footer">
-          <%= link gettext("Edit Application"), class: "btn btn-primary", to: Routes.user_applications_path(@conn, :edit, @application) %>
+        <div class="col-3">
+            <%= link gettext("Create Application"), class: "btn btn-primary btn-block", to: Routes.user_applications_path(@conn, :new) %>
         </div>
-      </div>
     </div>
-  </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                <%= for app <- @applications do %>
+                <%= link app.name, class: "list-group-item list-group-item-action", to: Routes.user_applications_path(@conn, :show, app) %>
+                <% end %>
+            </div>
+        </div>
+        <div class="col-md-9">
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="media">
+                        <img class="mr-3" src="<%= Glimesh.AppLogo.url({@application.logo, @application}, :original) %>" alt="Generic placeholder image">
+                        <div class="media-body">
+                            <h5 class="mt-0"><%= @application.name %></h5>
+                            <p><%= @application.description %></p>
+                            <p><i class="fas fa-wifi fa-w"></i> <%= @application.homepage_url %></p>
+                        </div>
+                    </div>
+
+                    <h3><%= gettext("Credentials") %></h3>
+                    <div class="form-group">
+                        <label for="clientId"><%= gettext("Client ID") %></label>
+                        <div class="input-group">
+                            <input id="clientId" type="text" class="form-control" readonly value="<%= @application.oauth_application.uid %>">
+                            <div class="input-group-append">
+                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_uid", session: %{"value" => @application.oauth_application.uid}) %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="secretKey"><%= gettext("Secret Key") %></label>
+                        <div class="input-group">
+                            <input id="secretKey" type="text" class="form-control" readonly value="<%= @application.oauth_application.secret %>">
+                            <div class="input-group-append">
+                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_secret", session: %{"value" => @application.oauth_application.secret}) %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tokenRoute"><%= gettext("OAuth Token URL") %></label>
+                        <div class="input-group">
+                            <input id="tokenRoute" type="text" class="form-control" readonly value="<%= Routes.token_url(@conn, :create) %>">
+                            <div class="input-group-append">
+                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_token_url", session: %{"value" => Routes.token_url(@conn, :create)}) %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="authorizationRoute"><%= gettext("OAuth Authorization URL") %></label>
+                        <div class="input-group">
+                            <input id="authorizationRoute" type="text" class="form-control" readonly value="<%= Routes.authorization_url(@conn, :new) %>">
+                            <div class="input-group-append">
+                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_authorization_url", session: %{"value" => Routes.authorization_url(@conn, :new)}) %>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <h3><%= gettext("Callbacks") %></h3>
+                    <table class="table">
+                        <tbody>
+                            <%= for redirect_uri <- String.split(@application.oauth_application.redirect_uri) do %>
+                            <tr>
+                                <td>
+                                    <code><%= redirect_uri %></code>
+                                </td>
+                                <td>
+                                    <%= link gettext("Authorize"), to: Routes.authorization_path(@conn, :new, client_id: @application.oauth_application.uid, redirect_uri: redirect_uri, response_type: "code", scope: @application.oauth_application.scopes), target: '_blank' %>
+                                </td>
+                            </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <%= link gettext("Edit Application"), class: "btn btn-primary", to: Routes.user_applications_path(@conn, :edit, @application) %>
+                    &nbsp;
+                    <%= button gettext("Rotate Keys"), class: "btn btn-danger", method: :put, to: Routes.user_applications_path(@conn, :rotate, @application), "data-confirm": "Are you sure you want to rotate the Client ID and Secret Key? This will require updating your applications as well." %>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
-
-<script>
-  var clicksToCopy = document.querySelectorAll(".click-to-copy")
-  for (var button of clicksToCopy) {
-    button.addEventListener('click', function (event) {
-      var oldText = event.target.innerText;
-      var copiedText = event.target.dataset.copiedText;
-      var copiedErrorText = event.target.dataset.copiedText;
-      var value = event.target.dataset.copyValue;
-
-      navigator.clipboard.writeText(value).then(function () {
-        event.target.innerText = copiedText;
-
-        setTimeout(function () {
-          event.target.innerText = oldText;
-        }, 5000);
-      }, function (err) {
-        event.target.innerText = copiedErrorText;
-      });
-    })
-  }
-</script>

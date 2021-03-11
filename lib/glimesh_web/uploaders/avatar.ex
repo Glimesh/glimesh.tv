@@ -8,17 +8,11 @@ defmodule Glimesh.Avatar do
 
   @versions [:original]
 
-  # To add a thumbnail version:
-  # @versions [:original, :thumb]
-
-  # Override the bucket on a per definition basis:
-  # def bucket do
-  #   :custom_bucket_name
-  # end
+  def acl(:original, _), do: :public_read
 
   # Whitelist file extensions:
   def validate({file, _}) do
-    ~w(.jpg .jpeg .png) |> Enum.member?(Path.extname(file.file_name))
+    Glimesh.FileValidation.validate(file, [:png, :jpg])
   end
 
   # Define a thumbnail transformation:
@@ -36,17 +30,16 @@ defmodule Glimesh.Avatar do
     "uploads/avatars"
   end
 
-  # Provide a default URL if there hasn't been a file uploaded
-  def default_url(_version, _scope) do
-    "/images/200x200.jpg"
+  def s3_object_headers(_version, {file, _scope}) do
+    [
+      cache_control: "public, max-age=604800",
+      content_type: MIME.from_path(file.file_name)
+    ]
   end
 
-  # Specify custom headers for s3 objects
-  # Available options are [:cache_control, :content_disposition,
-  #    :content_encoding, :content_length, :content_type,
-  #    :expect, :expires, :storage_class, :website_redirect_location]
-  #
-  # def s3_object_headers(version, {file, scope}) do
-  #   [content_type: MIME.from_path(file.file_name)]
-  # end
+  # Provide a default URL if there hasn't been a file uploaded
+  def default_url(_version, scope) do
+    hash = :crypto.hash(:md5, String.downcase(scope.email)) |> Base.encode16(case: :lower)
+    "https://www.gravatar.com/avatar/#{hash}?s=200&d=wavatar"
+  end
 end

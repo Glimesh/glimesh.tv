@@ -23,14 +23,7 @@ body {
     }
 }
 
-
-@font-face {
-    font-family: "Quicksand";
-    font-style: normal;
-    font-weight: 400;
-    src: local(""), url("../fonts/quicksand-v21-latin-regular.woff2") format("woff2"),
-        url("../fonts/quicksand-v21-latin-regular.woff") format("woff");
-}
+@import "glimesh/fonts";
 
 // We encourage everyone to use bootstrap as our UI framework, and make stylistic changes as necessary.
 @import "glimesh/variables";
@@ -43,13 +36,169 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "~@fortawesome/fontawesome-free/scss/brands";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 
-// Cork SCSS
-// You must have the correct repo access to use this code.
-@import "cork/cork";
 
 // Glimesh SCSS
+@import "glimesh/components/choices";
 @import "glimesh/components/live-modal";
 @import "glimesh/components/img-avatar";
 @import "glimesh/components/card-stream";
-@import "glimesh/components/oauth-template.scss";
-@import "glimesh/components/user-content-body.scss";
+@import "glimesh/components/oauth-template";
+@import "glimesh/components/user-content-body";
+@import "glimesh/components/loading";
+@import "glimesh/components/chat";
+@import "glimesh/components/stream";
+@import "glimesh/components/forms";
+@import "glimesh/components/sidebar";
+@import "glimesh/components/footer";
+@import "glimesh/components/jumbotron";
+@import "glimesh/components/card-graphics";
+@import "glimesh/components/nav";
+@import "glimesh/components/tagify";
+@import "glimesh/components/scrollbar";
+@import "glimesh/components/follow-button.scss";
+
+@import "glimesh/pages/dmca";
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.layout-spacing {
+    padding-bottom: 40px;
+}
+
+.text-color-link {
+    color: var(--body-color);
+}
+
+.text-muted {
+    color: var(--text-muted-color) !important;
+}
+
+.text-color-alpha {
+    color: #FF4343;
+}
+
+.stream-key:not(:focus) {
+    color: transparent;
+    text-shadow: 0 0 10px var(--input-color);
+}
+
+.fancy-bg {
+    .position-relative {
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 5px;
+        margin-bottom: 40px;
+    }
+}
+
+#timer {
+    margin-top: 40px;
+    text-align: center;
+
+    color: #fff;
+
+    // text-shadow: 0px 0px 3px #000;
+
+    div {
+        display: inline-block;
+    }
+
+    .text {
+        display: block;
+        font-size: 20px;
+    }
+
+    .spacer {
+        font-weight: bold;
+        font-size: 4rem;
+    }
+
+    .count {
+        display: block;
+        font-size: 4rem;
+        font-weight: bold;
+        color: #FF4343;
+    }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+    #timer {
+        div {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .text {
+            font-size: 20px;
+        }
+
+        .spacer,
+        .count {
+            font-size: 80px;
+        }
+    }
+}
+
+@media (min-width: 1200px) {
+    #timer {
+        div {
+
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+
+        .text {
+            font-size: 20px;
+        }
+
+        .spacer,
+        .count {
+            font-size: 130px;
+        }
+    }
+}
+
+.fancy-bg {
+    // It's worth using WebP only for this image, saves almost 1MB in size, no harm if users don't see it.
+    background: url("/images/homepage/background-resized.webp") no-repeat center top;
+    background-size: contain;
+}
+
+.container-stream-list {
+    max-width: 2200px;
+}
+
+// .bg-category {
+//     background: no-repeat center center;
+//     background-size: cover;
+//     // background-size: auto 500px;
+//     margin-top: -15px;
+// }
+
+.hero {
+    position: relative;
+    margin: 0 auto;
+
+
+    &.has-background {
+        margin-top: -15px;
+        // position: relative;
+        // overflow: hidden;
+    }
+
+    .hero-background {
+        // max-width: 100%;
+        position: absolute;
+        object-fit: cover;
+        // object-position: center 70%;
+        width: 100%;
+        height: 1000px;
+        // height: 100%;
+    }
+
+    .hero-body {
+        position: relative;
+    }
+}

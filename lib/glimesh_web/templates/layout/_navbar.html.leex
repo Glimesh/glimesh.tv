@@ -1,10 +1,9 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg">
     <%= live_redirect class: "navbar-brand", to: Routes.homepage_path(@conn, :index) do %>
-    <img src="/images/logos/logo-for-navbar.png" class="d-inline-block align-top" alt="">
+    <img src="/images/logos/logo-alpha.png" class="d-inline-block align-top" alt="Glimesh | Alpha" height="38">
     <% end %>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#primaryNav"
-        aria-controls="primaryNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#primaryNav" aria-controls="primaryNav" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
     </button>
 
     <div class="collapse navbar-collapse" id="primaryNav">
@@ -28,14 +27,25 @@
                 <%= live_redirect gettext("Education"), class: "nav-link", to: Routes.streams_list_path(@conn, :index, "education") %>
             </li>
             <li class="nav-item dropdown user-profile-dropdown">
-                <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="moreDropdown"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="moreDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <%= gettext("More") %>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="moreDropdown">
                     <%= link class: "dropdown-item", to: Routes.user_index_path(@conn, :index) do %>
-                    <i class="fas fa-user"></i>
-                    <%= gettext("Users") %>
+                    <i class="fas fa-user fa-fw"></i>
+                    <%= gettext("User List") %>
+                    <% end %>
+                    <%= link class: "dropdown-item", to: Routes.article_path(@conn, :index) do %>
+                    <i class="fas fa-newspaper fa-fw"></i>
+                    <%= gettext("Blog") %>
+                    <% end %>
+                    <%= link class: "dropdown-item", to: "https://glim.shop/", target: "_blank" do %>
+                    <i class="fas fa-tshirt fa-fw"></i>
+                    <%= gettext("Merch") %>
+                    <% end %>
+                    <%= link class: "dropdown-item", to: "https://support.glimesh.tv/", target: "_blank" do %>
+                    <i class="fas fa-question fa-fw"></i>
+                    <%= gettext("Support") %>
                     <% end %>
                 </div>
             </li>
@@ -45,17 +55,65 @@
             </li>
             <% end %>
         </ul>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav d-lg-flex align-items-lg-center">
+            <li class="nav-item">
+                <%= link class: "nav-link", to: "https://support.glimesh.tv/", "data-toggle": "tooltip", "data-placement": "bottom", title: gettext("Support"), target: "_blank" do %>
+                <i class="fas fa-question fa-fw"></i>
+                <% end %></li>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="settingsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <%= site_locale_label(@conn) %> <%= site_theme_label(@conn) %>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="settingsDropdown">
+                    <%= f = form_for :user_preference, Routes.quick_preference_path(@conn, :update_preference), [class: "px-4 py-3"]%>
+                    <%= hidden_input f, :user_return_to, value: @conn.request_path %>
+                    <div class="form-group">
+                        <label for="exampleDropdownFormEmail1">Site Language</label>
+                        <%= select f, :locale, Application.get_env(:glimesh, :locales), [selected: site_locale_label(@conn)] %>
+                    </div>
+                    <div class="form-group">
+                        <label for="user_preference_Site Theme: ">Site Theme: </label>
+                        <div class="custom-control custom-radio">
+                            <%= radio_button f, :site_theme, "dark", [checked: site_theme(@conn) == "dark", id: "darkMode", class: "custom-control-input"] %>
+                            <label class="custom-control-label" for="darkMode"><%= gettext("Dark") %></label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <%= radio_button f, :site_theme, "light", [checked: site_theme(@conn) == "light", id: "lightMode", class: "custom-control-input"] %>
+                            <label class="custom-control-label" for="lightMode"><%= gettext("Light") %></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <%= submit "Save", class: "btn btn-primary btn-block" %>
+                    </div>
+                    </form>
+                </div>
+            </li>
             <%= if assigns[:current_user] do %>
             <li class="nav-item dropdown user-profile-dropdown">
-                <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <%= @current_user.displayname %>
-                    <img src="<%= Glimesh.Avatar.url({@current_user.avatar, @current_user}, :original) %>" alt="avatar"
-                        width="34" height="34"
-                        class="img-avatar <%= if @current_user.stripe_user_id, do: "img-verified-streamer", else: "" %>">
+                    <img src="<%= Glimesh.Avatar.url({@current_user.avatar, @current_user}, :original) %>" alt="avatar" width="34" height="34" class="img-avatar <%= if Glimesh.Accounts.can_receive_payments?(@current_user), do: "img-verified-streamer", else: "" %>">
                 </a>
-                <div class="dropdown-menu" aria-labelledby="userProfileDropdown">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userProfileDropdown">
+                    <%= if @current_user.is_gct do %>
+                    <%= link class: "dropdown-item", to: Routes.gct_path(@conn, :index) do %>
+                    <i class="fas fa-user fa-fw"></i>
+                    <%= gettext("GCT Dash") %>
+                    <% end %>
+                    <% end %>
+                    <!-- Check for a channel and display an option to go to it -->
+                    <%= if Glimesh.ChannelLookups.get_channel_for_user(@current_user) do %>
+                    <%= link class: "dropdown-item", to: Routes.user_stream_path(@conn, :index, @current_user.username) do %>
+                    <i class="fas fa-tv fa-fw"></i>
+                    <%= gettext("Channel") %>
+                    <% end %>
+                    <% end %>
+                    <%= link class: "dropdown-item", to: Routes.user_profile_path(@conn, :index, @current_user.username) do %>
+                    <i class="fas fa-user fa-fw"></i>
+                    <%= gettext("Profile") %>
+                    <% end %>
+                    <div class="dropdown-divider"></div>
                     <%= live_redirect class: "dropdown-item text-warning", to: Routes.platform_subscription_index_path(@conn, :index) do %>
                     <i class="fas fa-cookie fa-fw"></i>
                     <%= gettext("Upgrade!") %>
@@ -65,7 +123,7 @@
                     <%= gettext("Payments") %>
                     <% end %>
                     <%= link class: "dropdown-item", to: Routes.user_settings_path(@conn, :profile) do %>
-                    <i class="fas fa-user fa-fw"></i>
+                    <i class="fas fa-cog fa-fw"></i>
                     <%= gettext("Settings") %>
                     <% end %>
                     <%= link class: "dropdown-item", to: Routes.user_session_path(@conn, :delete), method: :delete do %>

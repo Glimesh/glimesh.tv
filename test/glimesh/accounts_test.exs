@@ -17,21 +17,33 @@ defmodule Glimesh.AccountsTest do
     end
   end
 
-  describe "get_user_by_email_and_password/1" do
+  describe "get_user_by_login_and_password/1" do
     test "does not return the user if the email does not exist" do
-      refute Accounts.get_user_by_email_and_password("unknown@example.com", "hello world!")
+      refute Accounts.get_user_by_login_and_password("unknown@example.com", "hello world!")
     end
 
-    test "does not return the user if the password is not valid" do
+    test "does not return the user with email if the password is not valid" do
       user = user_fixture()
-      refute Accounts.get_user_by_email_and_password(user.email, "invalid")
+      refute Accounts.get_user_by_login_and_password(user.email, "invalid")
+    end
+
+    test "does not return the user with username if the password is not valid" do
+      user = user_fixture()
+      refute Accounts.get_user_by_login_and_password(user.username, "invalid")
     end
 
     test "returns the user if the email and password are valid" do
       %{id: id} = user = user_fixture()
 
       assert %User{id: ^id} =
-               Accounts.get_user_by_email_and_password(user.email, valid_user_password())
+               Accounts.get_user_by_login_and_password(user.email, valid_user_password())
+    end
+
+    test "returns the user if the username and password are valid" do
+      %{id: id} = user = user_fixture()
+
+      assert %User{id: ^id} =
+               Accounts.get_user_by_login_and_password(user.username, valid_user_password())
     end
   end
 
@@ -147,12 +159,19 @@ defmodule Glimesh.AccountsTest do
 
       assert %{username: ["This username contains a bad word"]} = errors_on(changeset)
     end
+
+    test "creates settings for user when registered" do
+      user = user_fixture()
+
+      assert %Glimesh.Accounts.UserPreference{} = user.user_preference
+      assert user.user_preference.site_theme == "dark"
+    end
   end
 
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:password, :email, :username]
+      assert changeset.required == [:user_preference, :password, :email, :username]
     end
   end
 
@@ -318,7 +337,7 @@ defmodule Glimesh.AccountsTest do
           displayname: "SomethingDifferent"
         })
 
-      assert %{displayname: ["Display name must match username"]} = errors_on(changeset)
+      assert %{displayname: ["Display name must match Username"]} = errors_on(changeset)
     end
   end
 
@@ -363,7 +382,7 @@ defmodule Glimesh.AccountsTest do
         })
 
       assert is_nil(user.password)
-      assert Accounts.get_user_by_email_and_password(user.email, "new valid password")
+      assert Accounts.get_user_by_login_and_password(user.email, "new valid password")
     end
 
     test "deletes all tokens for the given user", %{user: user} do
@@ -568,7 +587,7 @@ defmodule Glimesh.AccountsTest do
     test "updates the password", %{user: user} do
       {:ok, updated_user} = Accounts.reset_user_password(user, %{password: "new valid password"})
       assert is_nil(updated_user.password)
-      assert Accounts.get_user_by_email_and_password(user.email, "new valid password")
+      assert Accounts.get_user_by_login_and_password(user.email, "new valid password")
     end
 
     test "deletes all tokens for the given user", %{user: user} do

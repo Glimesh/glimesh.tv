@@ -13,7 +13,7 @@ defmodule GlimeshWeb.UserConfirmationControllerTest do
     test "renders the confirmation page", %{conn: conn} do
       conn = get(conn, Routes.user_confirmation_path(conn, :new))
       response = html_response(conn, 200)
-      assert response =~ "<h1 class=\"mt-4 text-center\" >Resend confirmation instructions</h1>"
+      assert response =~ "<h3>Resend Confirmation Email</h3>"
     end
   end
 
@@ -28,7 +28,7 @@ defmodule GlimeshWeb.UserConfirmationControllerTest do
       assert redirected_to(conn) == "/"
 
       assert get_flash(conn, :info) =~
-               "If your email is in our system and it has not been confirmed yet, you will receive an email with instructions shortly."
+               "If your e-mail is in our system and it has not been confirmed yet, you will receive an e-mail with instructions shortly."
 
       assert Repo.get_by!(Accounts.UserToken, user_id: user.id).context == "confirm"
     end
@@ -44,7 +44,7 @@ defmodule GlimeshWeb.UserConfirmationControllerTest do
       assert redirected_to(conn) == "/"
 
       assert get_flash(conn, :info) =~
-               "If your email is in our system and it has not been confirmed yet, you will receive an email with instructions shortly."
+               "If your e-mail is in our system and it has not been confirmed yet, you will receive an e-mail with instructions shortly."
 
       refute Repo.get_by(Accounts.UserToken, user_id: user.id)
     end
@@ -58,7 +58,7 @@ defmodule GlimeshWeb.UserConfirmationControllerTest do
       assert redirected_to(conn) == "/"
 
       assert get_flash(conn, :info) =~
-               "If your email is in our system and it has not been confirmed yet, you will receive an email with instructions shortly."
+               "If your e-mail is in our system and it has not been confirmed yet, you will receive an e-mail with instructions shortly."
 
       assert Repo.all(Accounts.UserToken) == []
     end

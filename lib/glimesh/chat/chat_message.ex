@@ -5,12 +5,18 @@ defmodule Glimesh.Chat.ChatMessage do
   import Ecto.Changeset
 
   alias Glimesh.Accounts.User
+  alias Glimesh.Streams.Channel
 
   schema "chat_messages" do
-    belongs_to :streamer, User
-    belongs_to :user, User
     field :message, :string
     field :is_visible, :boolean, default: true
+    field :is_followed_message, :boolean, default: false
+    field :is_subscription_message, :boolean, default: false
+
+    embeds_many :tokens, Glimesh.Chat.Token, on_replace: :delete
+
+    belongs_to :channel, Channel
+    belongs_to :user, User
 
     timestamps()
   end
@@ -18,7 +24,19 @@ defmodule Glimesh.Chat.ChatMessage do
   @doc false
   def changeset(chat_message, attrs) do
     chat_message
-    |> cast(attrs, [:message, :is_visible])
-    |> validate_required([:streamer, :user, :message])
+    |> cast(attrs, [:message, :is_visible, :is_followed_message, :is_subscription_message])
+    |> validate_required([:channel, :user, :message])
+  end
+
+  @doc false
+  def put_tokens(changeset, config) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{message: message}} ->
+        tokens = Glimesh.Chat.Parser.parse(message, config)
+        put_embed(changeset, :tokens, tokens)
+
+      _ ->
+        changeset
+    end
   end
 end

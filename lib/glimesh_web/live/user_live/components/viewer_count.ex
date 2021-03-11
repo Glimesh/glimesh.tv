@@ -7,30 +7,39 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCount do
   @impl true
   def render(assigns) do
     ~L"""
-      <button class="btn btn-danger"><%= gettext(" %{count} Viewers", count: @viewer_count) %></button>
+      <button class="btn btn-danger btn-responsive" data-toggle="tooltip" title="Viewers" phx-click="toggle">
+      <%= if @visible do %>
+      <span class="d-none d-lg-block"><%= gettext("%{count} Viewers", count: @viewer_count) %></span><span class="d-lg-none"><%= gettext("%{count} ", count: @viewer_count) %><i class="far fa-eye"></i></span>
+      <% else %>
+      <i class="far fa-eye-slash"></i>
+      <% end %>
+      </button>
     """
   end
 
   @impl true
-  def mount(_params, %{"streamer_id" => streamer_id}, socket) do
-    {:ok, topic} = Streams.subscribe_to(:viewers, streamer_id)
+  def mount(_params, %{"channel_id" => channel_id} = session, socket) do
+    if session["locale"], do: Gettext.put_locale(session["locale"])
+    {:ok, topic} = Streams.subscribe_to(:viewers, channel_id)
 
     viewer_count = Presence.list_presences(topic) |> Enum.count()
 
-    {:ok, assign(socket, :viewer_count, viewer_count)}
+    {:ok, socket |> assign(:visible, true) |> assign(:viewer_count, viewer_count)}
   end
 
   @impl true
   def handle_info(
         %{
           event: "presence_diff",
-          topic: "streams:viewers:" <> _streamer,
-          payload: %{joins: joins, leaves: leaves}
+          topic: "streams:viewers:" <> _streamer = topic
         },
-        %{assigns: %{viewer_count: count}} = socket
+        socket
       ) do
-    viewer_count = count + map_size(joins) - map_size(leaves)
+    {:noreply, socket |> assign(:viewer_count, Presence.list_presences(topic) |> Enum.count())}
+  end
 
-    {:noreply, socket |> assign(:viewer_count, viewer_count)}
+  @impl true
+  def handle_event("toggle", %{}, socket) do
+    {:noreply, assign(socket, :visible, !socket.assigns.visible)}
   end
 end

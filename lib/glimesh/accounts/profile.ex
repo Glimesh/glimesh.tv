@@ -1,9 +1,49 @@
 defmodule Glimesh.Accounts.Profile do
   @moduledoc false
 
+  alias Glimesh.Accounts.User
+
+  def user_role_color(%User{team_role: team_role}) do
+    case team_role do
+      "Core Team" ->
+        "bg-danger"
+
+      "Community Team" ->
+        "bg-success"
+
+      "Design Team" ->
+        "bg-info"
+
+      "Product Dev Team" ->
+        "bg-secondary"
+
+      _ ->
+        ""
+    end
+  end
+
+  def safe_user_markdown_to_html(nil) do
+    {:ok, nil}
+  end
+
   def safe_user_markdown_to_html(profile_content_md) do
-    {:ok, html_doc, []} = Earmark.as_html(profile_content_md)
-    html_doc |> HtmlSanitizeEx.basic_html()
+    case Earmark.as_html(profile_content_md) do
+      {:ok, html_doc, []} ->
+        {:ok, format_contents(html_doc)}
+
+      {:ok, _, error_messages} ->
+        {:error, format_earmark_messages(error_messages)}
+
+      {:error, _, error_messages} ->
+        {:error, format_earmark_messages(error_messages)}
+    end
+  end
+
+  defp format_earmark_messages(error_messages) do
+    Enum.map(error_messages, fn {_severity, line, message} ->
+      "#{message} on line #{line}"
+    end)
+    |> Enum.join("\n")
   end
 
   def youtube_video_id(youtube_intro_url) do
@@ -17,32 +57,23 @@ defmodule Glimesh.Accounts.Profile do
   end
 
   def viewer_share_text(streamer, profile_url) do
-    if streamer.social_twitter do
-      # just incase they included the URL or at symbol
-      twitter_username =
-        streamer.social_twitter
-        |> String.replace_leading("https://twitter.com/", "")
-        |> String.replace_leading("@", "")
+    name =
+      if twitter_user = Glimesh.Socials.get_social(streamer, "twitter") do
+        twitter_user.username
+      else
+        if streamer.social_twitter do
+          streamer.social_twitter
+        else
+          streamer.displayname
+        end
+      end
 
-      URI.encode_www_form(
-        "Just followed @#{twitter_username} on @Glimesh! I can't wait until they can start streaming! Check them out at #{
-          profile_url
-        }"
-      )
-    else
-      URI.encode_www_form(
-        "Just followed #{streamer.displayname} on @Glimesh! I can't wait until they can start streaming! Check them out at #{
-          profile_url
-        }"
-      )
-    end
+    URI.encode_www_form("Just followed @#{name} on @Glimesh! Check them out at #{profile_url}")
   end
 
   def streamer_share_text(_streamer, profile_url) do
     URI.encode_www_form(
-      "Just created my @Glimesh Profile Page. I'll be streaming here when they launch but in the mean time you can follow me at #{
-        profile_url
-      }"
+      "Just created my @Glimesh Profile Page. You can follow me at #{profile_url} to see when I go live!"
     )
   end
 
@@ -53,5 +84,43 @@ defmodule Glimesh.Accounts.Profile do
         "#{streamer.displayname}'s new profile page on Glimesh, the next-gen live streaming platform.",
       image_url: avatar_path
     }
+  end
+
+  def format_contents(html_doc) do
+    html_doc
+    |> HtmlSanitizeEx.basic_html()
+    |> format_images()
+    |> links_in_new_tab()
+  end
+
+  defp links_in_new_tab(doc) do
+    doc
+    |> String.replace("<a ", "<a rel=\"ugc\" target=\"_blank\" ")
+  end
+
+  defp format_images(doc) do
+    doc
+    |> String.replace("\n  ", "")
+    |> String.replace("\n</a>", "</a>")
+    |> String.replace(">  <img", "><img")
+    |> String.replace(">\n<a href", "><a href")
+  end
+
+  def strip_invite_link_from_discord_url(discord_url) when not is_nil(discord_url) do
+    if String.contains?(discord_url, "discord") do
+      results_captured = Regex.scan(~r/discord.*\/([\w]+)$/, discord_url)
+
+      if Enum.empty?(results_captured) do
+        {:error, "Invalid Discord URL"}
+      else
+        {:ok, List.last(List.first(results_captured))}
+      end
+    else
+      {:ok, discord_url}
+    end
+  end
+
+  def strip_invite_link_from_discord_url(discord_url) do
+    {:ok, discord_url}
   end
 end

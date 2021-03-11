@@ -2,16 +2,28 @@ import BSN from "bootstrap.native";
 
 export default {
     stripe: null,
+    formDisabled: false,
+
+    savingForm() {
+        this.formDisabled = true;
+        this.el.querySelector("button[type=submit]").disabled = true;
+        this.el.classList.add("loading");
+    },
+
+    resetForm() {
+        this.formDisabled = false;
+        this.el.querySelector("button[type=submit]").disabled = false;
+        this.el.classList.remove("loading");
+    },
 
     onSubscriptionComplete(result) {
         // Don't really need to do anything here since it's all handled by the backend
-        console.log(result);
+        this.resetForm();
     },
 
     displayError(err) {
         console.error(err);
     },
-
 
     showCardError(event) {
         let displayError = document.getElementById('card-errors');
@@ -27,9 +39,8 @@ export default {
         return new Promise((resolve, reject) => {
             this.pushEvent("subscriptions.subscribe", {
                 customerId: customerId,
-                paymentMethodId: paymentMethodId,
-                priceId: priceId,
-            }, function(results) {
+                paymentMethodId: paymentMethodId
+            }, function (results) {
                 resolve(results);
             });
         })
@@ -46,6 +57,13 @@ export default {
         })
     },
 
+    productId() {
+        return this.el.dataset.stripeProductId
+    },
+    priceId() {
+        return this.el.dataset.stripePriceId
+    },
+
     stripePublicKey() {
         return this.el.dataset.stripePublicKey
     },
@@ -56,6 +74,10 @@ export default {
         return this.el.dataset.stripePaymentMethod
     },
 
+    updated() {
+        console.log("updated")
+    },
+
     mounted() {
         let backend = this;
 
@@ -63,7 +85,7 @@ export default {
 
         let form = document.getElementById('subscription-form');
 
-        if( ! this.stripePaymentMethod()) {
+        if (!this.stripePaymentMethod()) {
             // No default payment method
             // Let's figure out payment details
             let billingName = document.getElementById("paymentName");
@@ -74,7 +96,6 @@ export default {
             var style = {
                 base: {
                     color: "#009688",
-                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
                     fontSmoothing: "antialiased",
                     fontSize: "16px",
                     "::placeholder": {
@@ -90,7 +111,7 @@ export default {
             var card = elements.create("card", {
                 style: style
             });
-            if(document.getElementById("card-element")) {
+            if (document.getElementById("card-element")) {
                 card.mount("#card-element");
             }
             card.on('change', backend.showCardError);
@@ -98,16 +119,22 @@ export default {
 
         form.addEventListener('submit', function (ev) {
             ev.preventDefault();
+            if (backend.formDisabled) {
+                return;
+            }
+            backend.savingForm();
 
             if (backend.stripePaymentMethod()) {
-                backend.createSubscription(backend.customerId(), backend.stripePaymentMethod(), "price_1H8TwGBLNaYgaiU5uwYJO2Vb")
+                backend.createSubscription(backend.customerId(), backend.stripePaymentMethod(), backend.priceId())
                     .then(backend.onSubscriptionComplete.bind(backend));
             } else {
                 // Create a payment method first if we don't have one...
                 let billingName = document.getElementById("paymentName");
 
-                backend.createPaymentMethod(card, billingName.value).then(function({paymentMethod}) {
-                    backend.createSubscription(backend.customerId(), paymentMethod.id, "price_1H8TwGBLNaYgaiU5uwYJO2Vb")
+                backend.createPaymentMethod(card, billingName.value).then(function ({
+                    paymentMethod
+                }) {
+                    backend.createSubscription(backend.customerId(), paymentMethod.id, backend.priceId())
                         .then(backend.onSubscriptionComplete.bind(backend));
                 });
             }

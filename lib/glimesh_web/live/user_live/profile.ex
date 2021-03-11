@@ -3,7 +3,6 @@ defmodule GlimeshWeb.UserLive.Profile do
 
   alias Glimesh.Accounts
   alias Glimesh.Accounts.Profile
-  alias Glimesh.Streams
 
   def mount(%{"username" => username}, session, socket) do
     # If the viewer is logged in set their locale, otherwise it defaults to English
@@ -17,22 +16,27 @@ defmodule GlimeshWeb.UserLive.Profile do
 
         profile_url = Routes.user_profile_url(socket, :index, streamer.username)
 
-        avatar_url =
-          Routes.static_url(socket, Glimesh.Avatar.url({streamer.avatar, streamer}, :original))
+        avatar_url = Glimesh.Avatar.url({streamer.avatar, streamer}, :original)
 
         streamer_share_text = Profile.streamer_share_text(streamer, profile_url)
         viewer_share_text = Profile.viewer_share_text(streamer, profile_url)
 
+        maybe_channel =
+          if channel = Glimesh.ChannelLookups.get_channel_for_user(streamer),
+            do: channel,
+            else: nil
+
         {:ok,
          socket
+         |> put_page_title("#{streamer.displayname}'s Profile")
          |> assign(:custom_meta, Profile.meta_tags(streamer, avatar_url))
-         |> assign(:page_title, "#{streamer.displayname}'s Profile")
-         |> assign(:following_count, Streams.count_following(streamer))
-         |> assign(:followers_count, Streams.count_followers(streamer))
+         |> assign(:following_count, Glimesh.AccountFollows.count_following(streamer))
+         |> assign(:followers_count, Glimesh.AccountFollows.count_followers(streamer))
          |> assign(:youtube_id, video_id)
          |> assign(:streamer_share_text, streamer_share_text)
          |> assign(:viewer_share_text, viewer_share_text)
          |> assign(:streamer, streamer)
+         |> assign(:channel, maybe_channel)
          |> assign(:user, maybe_user)}
 
       nil ->

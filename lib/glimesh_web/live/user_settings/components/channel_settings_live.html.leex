@@ -1,0 +1,144 @@
+<%= f = form_for @channel_changeset, @route, [phx_change: :change_channel, multipart: true, class: "form"] %>
+<%= if @channel_changeset.action do %>
+<div class="alert alert-danger text-center">
+    <%= gettext("Oops, something went wrong! Please check the errors below.") %>
+</div>
+<% end %>
+
+<%= if @user.can_stream do %>
+<div class="form-group">
+    <%= label f, gettext("Stream Key") %>
+    <p class="text-muted form-text">
+        <%= gettext("A key used to uniquely identify and connect to your stream. Treat your Stream Key as a password.") %>
+    </p>
+    <div class="input-group">
+        <input type="text" value="<%= @stream_key %>" class="form-control stream-key" readonly="readonly">
+
+        <div class="input-group-append">
+            <%= live_render(@socket, GlimeshWeb.Components.ClickToCopy, id: "stream_key_copy", session: %{"value" => @stream_key}) %>
+            <button class="btn btn-danger" type="button" phx-click="rotate_stream_key" phx-throttle="5000">Reset Stream
+                Key</button>
+        </div>
+    </div>
+    <%= error_tag f, :hmac_key %>
+</div>
+<% end %>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <%= label f, gettext("Channel Primary Language") %>
+            <%= select f, :language, Application.get_env(:glimesh, :locales), class: "form-control" %>
+            <%= error_tag f, :language %>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <%= label f, gettext("Mature Content") %>
+            <div class="custom-control custom-switch">
+                <%= checkbox f, :mature_content, class: "custom-control-input" %>
+                <label class="custom-control-label" for="<%= input_id(f, :mature_content) %>"><%= gettext("Channel contains mature content") %></label>
+            </div>
+            <%= error_tag f, :mature_content %>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <%= label f, :poster, gettext("Channel Poster") %>
+            <p class="text-muted form-text">
+                <%= gettext("An image for your channel that will be shown whenever you are offline. Will be resized or cropped to 1920x1080.") %>
+            </p>
+
+            <div class="custom-file">
+                <%= file_input f, :poster, class: "custom-file-input", accept: "image/png, image/jpeg" %>
+                <%= label f, gettext("Choose file"), class: "custom-file-label" %>
+            </div>
+            <%= if f.errors[:poster] do %>
+            <div>
+                <span class="text-danger"><%= gettext("Invalid image. Must be either a PNG or JPG.")%></span>
+            </div>
+            <% end %>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <%= label f, :chat_bg, gettext("Chat Background") %>
+            <p class="text-muted form-text">
+                <%= gettext("A repeatable background for your chat. Make sure it's not too noisy, and it's an image that can repeat nicely right and down. Max Size: 100Kb") %>
+            </p>
+
+            <div class="custom-file">
+                <%= file_input f, :chat_bg, class: "custom-file-input", accept: "image/png, image/jpeg" %>
+                <%= label f, :chat_bg, gettext("Choose file"), class: "custom-file-label" %>
+            </div>
+            <%= if f.errors[:chat_bg] do %>
+            <div>
+                <span class="text-danger"><%= gettext("Invalid image. Max size is 100KB.")%></span>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <%= label f, gettext("Channel Title") %>
+            <%= text_input f, :title, [class: "form-control"] %>
+            <%= error_tag f, :title %>
+        </div>
+        <div class="form-group">
+            <%= label f, gettext("Chat Rules (Markdown Supported)") %>
+            <%= textarea f, :chat_rules_md, [class: "form-control mb-4", rows: 20] %>
+            <%= error_tag f, :chat_rules_md %>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <%= label f, gettext("Channel Category") %>
+            <%= select f, :category_id, @categories, [class: "form-control"] %>
+            <%= error_tag f, :category_id %>
+        </div>
+        <div class="form-group">
+            <%= label f, gettext("Tags") %>
+            <%= live_component(@socket, GlimeshWeb.UserLive.Components.TagSelector, form: f, field: :tags, category_id: @current_category_id) %>
+            <%= error_tag f, :tags %>
+        </div>
+        <h3 class="mt-4"><%= gettext("Chat Safety") %></h3>
+        <div class="form-group">
+            <%= label f, :disable_hyperlinks, gettext("Should links automatically be clickable?") %>
+            <%= select f, :disable_hyperlinks, [Yes: false, No: true], [class: "form-control", disabled: @channel.block_links] %>
+            <%= error_tag f, :disable_hyperlinks %>
+        </div>
+        <div class="form-group">
+            <%= label f, :block_links, gettext("Block viewers from posting links?") %>
+            <%= select f, :block_links, [Yes: true, No: false],[class: "form-control"] %>
+            <%= error_tag f, :block_links %>
+        </div>
+        <div class="form-group">
+            <%= label f, :require_confirmed_email, gettext("Require confirmed email before chatting?") %>
+            <%= select f, :require_confirmed_email, [Yes: true, No: false], [class: "form-control"] %>
+            <%= error_tag f, :require_confirmed_email %>
+        </div>
+        <div class="form-group">
+            <%= label f, :minimum_account_age, gettext("Require minimum account length before chatting?") %>
+            <div class="input-group mb-3">
+                <%= number_input f, :minimum_account_age, [class: "form-control", min: "0", max: "720"] %>
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2"><%= gettext("Hours") %></span>
+                </div>
+            </div>
+            <small class="form-text text-muted"><%= gettext("How many hours should the account exist before they can chat? Set to zero to disable.") %></small>
+            <%= error_tag f, :minimum_account_age %>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <%= submit gettext("Update Channel"), class: "btn btn-primary" %>
+        <%= button(gettext("Deactivate Channel"), to: @delete_route, method: "put", class: "btn btn-danger", disabled: @channel_delete_disabled, data: [confirm: "Pressing OK will: \n- Deactivate your channel until you restore it\n\nPressing OK will NOT: \n- Delete your Glimesh account \n- Remove all profile related settings \n\nAre you sure you want to do this?"]) %>
+    </div>
+</div>
+</form>

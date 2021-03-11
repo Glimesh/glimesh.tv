@@ -1,41 +1,48 @@
+<div id="chat-messages" class="chat-messages <%= if @show_timestamps, do: "show-timestamps" %>" phx-update="<%= @update_action %>" style="<%= background_style(@channel) %>">
+    <div id="channel-header" class="channel-header">
+        <span><%= gettext("Welcome to chat! Follow the rules.") %></span>
+    </div>
+    <%= for chat_message <- @chat_messages do %>
+    <div id="<%= chat_message.id %>" data-user-id="<%= chat_message.user.id %>" class="<%=if Glimesh.Chat.Effects.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>
+        <%= if chat_message.is_subscription_message, do: "bg-secondary" %>
+        <%= if chat_message.is_followed_message, do: "border border-info" %>">
+        <div class="user-message-header">
+            <%= unless chat_message.is_followed_message or chat_message.is_subscription_message do %>
+            <%= if Map.get(@permissions, :can_short_timeout, false) do %>
+            <i class="short-timeout fas fa-stopwatch fa-fw" phx-click="short_timeout_user" phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip" title="<%= gettext("Timeout user for 5 minutes.") %>"></i>
+            <% end %>
+            <%= if Map.get(@permissions, :can_long_timeout, false)  do %>
+            <i class="long-timeout fas fa-clock fa-fw" phx-click="long_timeout_user" phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip" title="<%= gettext("Timeout user for 15 minutes.") %>"></i>
+            <% end %>
+            <%= if Map.get(@permissions, :can_ban, false)  do %>
+            <i class="ban fas fa-gavel fa-fw" phx-click="ban_user" phx-value-user="<%= chat_message.user.username %>" data-confirm="<%= gettext("Are you sure you wish to permanently ban %{username}?", username: chat_message.user.displayname) %>" data-toggle="tooltip" title="<%= gettext("Ban user from channel.") %>"></i>
+            <% end %>
 
-<div class="chat-system">
+            <%= Glimesh.Chat.Effects.render_global_badge(chat_message.user) %>
+            <%= Glimesh.Chat.Effects.render_channel_badge(@channel, chat_message.user) %>
 
-      <div class="chat-box">
-          <div class="chat-box-inner">
-              <div class="chat-conversation-box">
-                  <div id="chat-conversation-box-scroll" class="chat-conversation-box-scroll">
-                      <div id="chat-messages" class="chat active-chat" phx-update="<%= @update_action %>">
-                        <div class="conversation-start">
-                            <span>Welcome to chat! Follow the rules.</span>
-                        </div>
-                            <%= for chat_message <- @chat_messages do %>
-                                <div id="<%= chat_message.id %>" class="<%=if Glimesh.Chat.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>">
-                                    <%= if @is_moderator do %>
-                                    <i class="fas fa-times-circle" phx-click="timeout_user" phx-value-user="<%= chat_message.user.username %>"></i>
-                                    <% end %>
-                                    <%= Glimesh.Chat.render_global_badge(chat_message.user) %>
-                                    <%= Glimesh.Chat.render_stream_badge(@streamer, chat_message.user) %>
-                                    <img src="<%= Glimesh.Avatar.url({chat_message.user.avatar, chat_message.user}, :original) %>" width="20" height="20" class="img-chat-avatar" />
-                                    <%= link chat_message.user.displayname, to: Routes.user_profile_path(@socket, :index, chat_message.user.username), class: "text-white" %>:
-                                    <br>
-                                    <%= chat_message.message %>
-                                </div>
-                            <% end %>
-                      </div>
-                  </div>
-              </div>
-              <div class="chat-footer chat-active">
-                  <div class="chat-input">
-                      <%= live_component @socket, GlimeshWeb.ChatLive.MessageForm,
-                          id: :new,
-                          action: :new,
-                          chat_message: @chat_message,
-                          streamer: @streamer,
-                          user: @user
-                      %>
-                  </div>
-              </div>
-          </div>
-      </div>
+            <%= Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %>
+            <% end %>
+            <small id="small-<%= chat_message.id %>" class="text-muted chat-timestamp">
+                <local-time id="timestamp-<%= chat_message.id %>" phx-update="ignore" datetime="<%= "#{chat_message.inserted_at}" <> "Z" %>" format="micro" hour="numeric" minute="2-digit" second="2-digit"><%= NaiveDateTime.to_time(chat_message.inserted_at) %>
+                </local-time>
+            </small>
+        </div>
+        <div class="user-message">
+            <%= if chat_message.is_followed_message or chat_message.is_subscription_message, do: Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %>
+            <%= raw(Glimesh.Chat.Renderer.render(chat_message.tokens)) %>
+        </div>
+    </div>
+    <% end %>
+</div>
+<div class="chat-form">
+    <%= live_component @socket, GlimeshWeb.ChatLive.MessageForm,
+            id: :new,
+            action: :new,
+            chat_message: @chat_message,
+            channel: @channel,
+            user: @user,
+            theme: @theme,
+            show_timestamps: @show_timestamps
+        %>
 </div>

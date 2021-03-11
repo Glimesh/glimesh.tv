@@ -55,6 +55,18 @@ defmodule GlimeshWeb.ConnCase do
   end
 
   @doc """
+  Setup helper that registers and logs in a streamer.
+
+      setup :register_and_log_in_streamer
+
+  """
+  def register_and_log_in_streamer(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.streamer_fixture()
+    channel = Glimesh.ChannelLookups.get_channel_for_user(user)
+    %{conn: log_in_user(conn, user), user: user, channel: channel}
+  end
+
+  @doc """
   Setup helper that registers and logs in admin user.
 
       setup :register_and_log_in_admin_user
@@ -62,6 +74,27 @@ defmodule GlimeshWeb.ConnCase do
   """
   def register_and_log_in_admin_user(%{conn: conn}) do
     user = Glimesh.AccountsFixtures.admin_fixture()
+    %{conn: log_in_user(conn, user), user: user}
+  end
+
+  @doc """
+  Setup helper that registers and logs in admin user.
+
+      setup :register_and_log_in_admin_user
+
+  """
+  def register_and_log_in_gct_user(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.gct_fixture(%{tfa_token: "Fake 2fa token", gct_level: 5})
+    %{conn: log_in_user(conn, user), user: user}
+  end
+
+  def register_and_log_in_gct_user_without_perms(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.gct_fixture(%{tfa_token: "Fake 2fa token", gct_level: 1})
+    %{conn: log_in_user(conn, user), user: user}
+  end
+
+  def register_and_log_in_gct_user_without_tfa(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.gct_fixture(%{tfa_token: nil, gct_level: 5})
     %{conn: log_in_user(conn, user), user: user}
   end
 
@@ -90,9 +123,9 @@ defmodule GlimeshWeb.ConnCase do
     create_token_and_return_context(conn, user)
   end
 
-  defp create_token_and_return_context(conn, user) do
+  def create_token_and_return_context(conn, user, scopes \\ "public email chat streamkey") do
     {:ok, %{token: token}} =
-      ExOauth2Provider.AccessTokens.create_token(user, %{}, otp_app: :glimesh)
+      ExOauth2Provider.AccessTokens.create_token(user, %{scopes: scopes}, otp_app: :glimesh)
 
     %{
       conn: conn |> Plug.Conn.put_req_header("authorization", "Bearer #{token}"),

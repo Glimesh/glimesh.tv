@@ -1,0 +1,99 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-9">
+      <h2><%= gettext("Channel Moderators") %></h2>
+    </div>
+    <div class="col-3">
+      <%= link gettext("Add Moderator"), to: Routes.channel_moderator_path(@conn, :new), class: "btn btn-primary btn-block" %>
+    </div>
+  </div>
+
+  <div class="card">
+
+    <div class="card-body">
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th><%= gettext("User") %></th>
+            <th><%= gettext("Short Timeout") %></th>
+            <th><%= gettext("Long Timeout") %></th>
+            <th><%= gettext("Ban") %></th>
+            <th><%= gettext("Remove Timeout") %></th>
+            <th><%= gettext("Remove Ban") %></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="channel_moderators">
+          <%= for channel_moderator <- @channel_moderators do %>
+          <tr id="channel_moderator-<%= channel_moderator.id %>">
+            <td><%= channel_moderator.user.displayname %></td>
+            <td><%= yes_or_no(channel_moderator.can_short_timeout) %></td>
+            <td><%= yes_or_no(channel_moderator.can_long_timeout) %></td>
+            <td><%= yes_or_no(channel_moderator.can_ban) %></td>
+            <td><%= yes_or_no(channel_moderator.can_un_timeout) %></td>
+            <td><%= yes_or_no(channel_moderator.can_unban) %></td>
+
+            <td>
+              <%= link gettext("Show"), to: Routes.channel_moderator_path(@conn, :show, channel_moderator), class: "btn btn-info btn-sm" %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card mt-4">
+    <div class="card-header">
+      <h5><%= gettext("Channel Bans") %></h5>
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th><%= gettext("User") %></th>
+            <th><%= gettext("Banned At") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for ban <- @channel_bans do %>
+          <tr>
+            <td><%= ban.user.displayname %></td>
+            <td><%= ban.inserted_at %></td>
+            <td>
+              <%= link gettext("Unban"), to: Routes.channel_moderator_path(@conn, :unban_user, ban.user.username), method: :delete, class: "btn btn-danger btn-sm" %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card mt-4">
+    <div class="card-header">
+      <h5><%= gettext("Channel Moderation Log") %></h5>
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th><%= gettext("Moderator") %></th>
+            <th><%= gettext("Action") %></th>
+            <th><%= gettext("User") %></th>
+            <th><%= gettext("Timestamp") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for log <- @moderation_log do %>
+          <tr>
+            <td><%= log.moderator.displayname %></td>
+            <td><%= log.action %></td>
+            <td><%= log.user.displayname %></td>
+            <td><%= log.inserted_at %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

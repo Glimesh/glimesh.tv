@@ -6,7 +6,7 @@ defmodule Glimesh.Accounts.User do
   import GlimeshWeb.Gettext
   import Ecto.Changeset
 
-  @derive {Inspect, except: [:password]}
+  @derive {Inspect, except: [:password, :hashed_password, :tfa_token]}
   schema "users" do
     field :username, :string
     field :displayname, :string
@@ -15,14 +15,29 @@ defmodule Glimesh.Accounts.User do
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
 
-    field :can_stream, :boolean, default: false
+    field :raw_user_ip, :string, virtual: true
+    field :user_ip, :string
+
+    field :can_stream, :boolean, default: true
+
+    field :team_role, :string
     field :is_admin, :boolean, default: false
+    field :is_gct, :boolean, default: false
+    field :gct_level, :integer
+    field :is_banned, :boolean, default: false
+    field :ban_reason, :string
 
     field :avatar, Glimesh.Avatar.Type
     field :social_twitter, :string
     field :social_youtube, :string
     field :social_instagram, :string
     field :social_discord, :string
+    field :social_guilded, :string
+
+    field :can_payments, :boolean, default: true
+    field :is_stripe_setup, :boolean, default: false
+    field :is_tax_verified, :boolean, default: false
+    field :tax_withholding_percent, :decimal
 
     field :stripe_user_id, :string
     field :stripe_customer_id, :string
@@ -34,7 +49,14 @@ defmodule Glimesh.Accounts.User do
 
     field :tfa_token, :string
 
-    field :locale, :string, default: "en"
+    field :allow_glimesh_newsletter_emails, :boolean, default: false
+    field :allow_live_subscription_emails, :boolean, default: true
+
+    has_one :channel, Glimesh.Streams.Channel
+    has_one :user_preference, Glimesh.Accounts.UserPreference
+
+    has_many :socials, Glimesh.Accounts.UserSocial
+
     timestamps()
   end
 
@@ -48,17 +70,48 @@ defmodule Glimesh.Accounts.User do
   """
   def registration_changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :email, :password, :displayname, :is_admin])
+    |> cast(attrs, [
+      :username,
+      :email,
+      :password,
+      :raw_user_ip,
+      :displayname,
+      :allow_glimesh_newsletter_emails,
+      :is_admin,
+      :can_stream,
+      :can_payments,
+      :is_stripe_setup,
+      :is_banned,
+      :is_gct,
+      :gct_level,
+      :tfa_token
+    ])
     |> validate_username()
     |> validate_email()
     |> validate_password()
+    |> prepare_changes(&encrypt_user_ip/1)
+    |> cast_assoc(:user_preference,
+      required: true,
+      with: &Glimesh.Accounts.UserPreference.changeset/2
+    )
+  end
+
+  def notifications_changeset(user, attrs) do
+    user
+    |> cast(attrs, [
+      :allow_glimesh_newsletter_emails,
+      :allow_live_subscription_emails
+    ])
   end
 
   defp validate_username(changeset) do
     changeset
     |> validate_required([:username])
-    |> validate_format(:username, ~r/^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/i)
-    |> validate_length(:username, min: 3, max: 50)
+    # It's important to make sure username's cannot look like emails, so don't allow @'s
+    |> validate_format(:username, ~r/^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/i,
+      message: "Use only alphanumeric characters, no spaces"
+    )
+    |> validate_length(:username, min: 3, max: 24)
     |> unsafe_validate_unique(:username, Glimesh.Repo)
     |> unique_constraint(:username)
     |> validate_username_reserved_words(:username)
@@ -128,6 +181,15 @@ defmodule Glimesh.Accounts.User do
     |> delete_change(:password)
   end
 
+  defp encrypt_user_ip(changeset) do
+    raw_user_ip = get_change(changeset, :raw_user_ip)
+    secret = Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:secret_key_base]
+
+    changeset
+    |> put_change(:user_ip, Phoenix.Token.encrypt(GlimeshWeb.Endpoint, secret, raw_user_ip))
+    |> delete_change(:raw_user_ip)
+  end
+
   def validate_displayname(changeset) do
     validate_change(changeset, :displayname, fn current_field, value ->
       if String.downcase(value) !== String.downcase(get_field(changeset, :username)) do
@@ -170,27 +232,63 @@ defmodule Glimesh.Accounts.User do
     user
     |> cast(attrs, [
       :displayname,
-      :locale,
       :social_twitter,
       :social_youtube,
       :social_instagram,
       :social_discord,
+      :social_guilded,
       :youtube_intro_url,
       :profile_content_md
     ])
     |> validate_length(:profile_content_md, max: 8192)
+    |> validate_required(:displayname)
     |> validate_youtube_url(:youtube_intro_url)
     |> validate_displayname()
+    |> strip_discord_invite()
     |> set_profile_content_html()
     |> cast_attachments(attrs, [:avatar])
   end
 
+  def gct_user_changeset(user, attrs) do
+    user
+    |> cast(attrs, [
+      :displayname,
+      :username,
+      :email,
+      :is_admin,
+      :can_stream,
+      :stripe_user_id,
+      :stripe_customer_id,
+      :stripe_payment_method,
+      :is_stripe_setup,
+      :is_tax_verified,
+      :tax_withholding_percent,
+      :tfa_token,
+      :is_banned,
+      :ban_reason,
+      :can_payments,
+      :is_gct,
+      :gct_level,
+      :team_role
+    ])
+    |> validate_length(:ban_reason, max: 8192)
+    |> validate_username()
+    |> validate_email()
+  end
+
   @doc """
-  A user changeset for changing the stripe customer id.
+  A user changeset for changing the stripe.
   """
   def stripe_changeset(user, attrs) do
     user
-    |> cast(attrs, [:stripe_customer_id, :stripe_user_id, :stripe_payment_method])
+    |> cast(attrs, [
+      :stripe_customer_id,
+      :stripe_user_id,
+      :stripe_payment_method,
+      :is_stripe_setup,
+      :is_tax_verified,
+      :tax_withholding_percent
+    ])
   end
 
   @doc """
@@ -199,6 +297,12 @@ defmodule Glimesh.Accounts.User do
   def confirm_changeset(user) do
     now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     change(user, confirmed_at: now)
+  end
+
+  def user_ip_changeset(user, ip_address) do
+    change(user)
+    |> put_change(:raw_user_ip, ip_address)
+    |> prepare_changes(&encrypt_user_ip/1)
   end
 
   @doc """
@@ -251,11 +355,13 @@ defmodule Glimesh.Accounts.User do
   def set_profile_content_html(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{profile_content_md: profile_content_md}} ->
-        put_change(
-          changeset,
-          :profile_content_html,
-          Glimesh.Accounts.Profile.safe_user_markdown_to_html(profile_content_md)
-        )
+        case Glimesh.Accounts.Profile.safe_user_markdown_to_html(profile_content_md) do
+          {:ok, content} ->
+            put_change(changeset, :profile_content_html, content)
+
+          {:error, message} ->
+            add_error(changeset, :profile_content_md, message)
+        end
 
       _ ->
         changeset
@@ -270,6 +376,22 @@ defmodule Glimesh.Accounts.User do
       changeset
     else
       add_error(changeset, :tfa, "Invalid 2FA code")
+    end
+  end
+
+  def strip_discord_invite(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{social_discord: social_discord}} ->
+        case Glimesh.Accounts.Profile.strip_invite_link_from_discord_url(social_discord) do
+          {:ok, maybe_invite_code} ->
+            put_change(changeset, :social_discord, maybe_invite_code)
+
+          {:error, _message} ->
+            add_error(changeset, :social_discord, gettext("Invalid Discord invite URL"))
+        end
+
+      _ ->
+        changeset
     end
   end
 end

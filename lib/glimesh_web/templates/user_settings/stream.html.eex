@@ -1,52 +1,36 @@
 <div class="container">
-    <h2 class="mt-4"><%= gettext("Stream Settings") %></h2>
-    <%= if !@channel do %>
-        <h5><%= gettext("You currently don't have a channel setup. Press the button below if you'd like to setup your channel!") %></h5>
-        <%= button gettext("Create Channel"), class: "btn btn-primary", to: Routes.user_settings_path(@conn, :create_channel), method: "put"%>
-    <% else %>
-    <%= form_for @channel_changeset, Routes.user_settings_path(@conn, :update_channel), [multipart: true, class: "form"], fn f -> %>
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <%= if @channel_changeset.action do %>
-                <div class="alert alert-danger">
-                    <p> <%= gettext("Oops, something went wrong! Please check the errors below.") %></p>
-                </div>
-                <% end %>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <%= label f, gettext("Stream Title") %>
-                        <%= text_input f, :title, [class: "form-control"] %>
-                        <%= error_tag f, :title %>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <%= label f, gettext("Stream Category") %>
-                        <%= select f, :category_id, @categories, [class: "form-control", "phx-hook": "Choices", "phx-update": "ignore"] %>
-                        <%= error_tag f, :category_id %>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <%= label f, gettext("Chat Rules (Markdown Supported)") %>
-                        <%= textarea f, :chat_rules_md, [class: "form-control mb-4", rows: 20] %>
-                        <%= error_tag f, :chat_rules_md %>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <%= submit gettext("Update Settings"), class: "btn btn-primary" %>
-                </div>
-            </div>
-        </div>
+    <h2 class="mt-4"><%= gettext("Channel Settings") %></h2>
+
+    <%= if is_nil(@current_user.confirmed_at) do %>
+    <div class="alert alert-warning" role="alert">
+        <strong><%= gettext("Unverified Account") %></strong>
+        <%= gettext("Your email has not be verified, in order to stream on Glimesh you need to verify your email.") %>
+
+        <%= link gettext("Verify Email"), to: Routes.user_confirmation_path(@conn, :new), class: "btn btn-primary btn-sm" %>
     </div>
     <% end %>
-    <%= button(gettext("Delete Channel"), to: Routes.user_settings_path(@conn, :delete_channel), method: "put", class: "btn btn-danger mt-4", data: [confirm: "Pressing OK will: \n - Delete your channel \n - Wipe all settings tied to the channel \n - Clear all followers for the channel \n\nPressing OK will NOT: \n- Delete your Glimesh account \n- Remove all profile related settings \n\nAre you sure you want to do this?"]) %>
+
+    <%= if !@channel do %>
+    <div class="card">
+        <div class="card-body">
+            <p><%= gettext("You currently don't have a channel setup. Press the button below if you'd like to setup your channel!") %>
+            </p>
+            <%= button gettext("Create Channel"), class: "btn btn-primary", to: Routes.user_settings_path(@conn, :create_channel), method: "put"%>
+        </div>
+    </div>
+    <% else %>
+
+    <div class="card">
+        <div class="card-body">
+            <%= if not @launched do %>
+            <div class="alert alert-primary" role="alert">
+                <%= gettext("Glimesh is not yet launched, so this page is still missing some critical information you need for streaming. You can customize your stream, but check back once we've launched for more!") %>
+            </div>
+            <% end %>
+            <%= live_render(@conn, GlimeshWeb.UserSettings.Components.ChannelSettingsLive, id: "channel-settings-form", session: %{"route" => Routes.user_settings_path(@conn, :update_channel), "channel_changeset" => @channel_changeset, "categories" => @categories, "channel" => @channel, "user" => @current_user, "delete_route" => Routes.user_settings_path(@conn, :delete_channel), "channel_delete_disabled" => false}) %>
+
+        </div>
+    </div>
+
     <% end %>
 </div>

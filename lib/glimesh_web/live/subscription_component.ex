@@ -2,7 +2,6 @@ defmodule GlimeshWeb.SubscriptionComponent do
   use GlimeshWeb, :live_component
 
   alias Glimesh.Accounts
-  alias Glimesh.Payments
 
   @impl true
   def render(assigns) do
@@ -11,34 +10,37 @@ defmodule GlimeshWeb.SubscriptionComponent do
         phx-hook="ProcessPayment"
         data-stripe-public-key="<%= @stripe_public_key %>"
         data-stripe-customer-id="<%= @stripe_customer_id %>"
-        data-stripe-payment-method="<%= @stripe_payment_method %>">
+        data-stripe-payment-method="<%= @stripe_payment_method %>"
+        data-stripe-product-id="<%= @stripe_product_id %>"
+        data-stripe-price-id="<%= @stripe_price_id %>">
           <%= if @stripe_payment_method do %>
             <p><%= gettext("Payment method already attached!") %> </p>
           <% else %>
-            <div class="form-group">
-              <label for="paymentName"><%= gettext("Your Name") %></label>
-              <input id="paymentName" name="name" placeholder="Name on Your Card" required class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="card-element"><%= gettext("Payment Details") %></label>
-              <div id="card-element" class="form-control">
-              <!-- Elements will create input elements here -->
+            <div id="subscription-form-ignore" phx-update="ignore">
+              <div class="form-group">
+                <label for="paymentName"><%= gettext("Your Name") %></label>
+                <input id="paymentName" name="name" placeholder="Name on Your Card" required class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="card-element"><%= gettext("Payment Details") %></label>
+                <div id="card-element" class="form-control">
+                <!-- Elements will create input elements here -->
+                </div>
               </div>
             </div>
           <% end %>
 
-          <%= if @stripe_error do %>
-            <div class="alert alert-danger" role="alert">
-              <%= @stripe_error %>
-            </div>
-          <% end %>
-
-          <h4><%= gettext("Total Charge") %></h4>
-            <div class="pricing-plan-label billed-monthly-label">
-            <strong>$5</strong>/ <%= gettext("monthly") %>
-          </div>
+          <h4 class="text-center mt-4 mb-4"><small><%= gettext("Total Charge") %></small><br>
+            $<%= @price %> / <%= gettext("monthly") %>
+          </h4>
 
           <div id="card-errors" role="alert"></div>
+
+          <div class="text-center">
+            <div class="show-on-loading spinner-border mb-4" style="width: 3rem; height: 3rem;" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
 
           <button type="submit" class="btn btn-primary btn-block btn-lg"><%= gettext("Subscribe") %></button>
       </form>
@@ -58,53 +60,15 @@ defmodule GlimeshWeb.SubscriptionComponent do
   end
 
   @impl true
-  def update(%{type: :platform, user: user}, socket) do
+  def update(%{user: user} = data, socket) do
     {
       :ok,
       socket
+      |> assign(:stripe_product_id, data.product_id)
+      |> assign(:stripe_price_id, data.price_id)
+      |> assign(:price, format_price(data.price))
       |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
       |> assign(:stripe_payment_method, user.stripe_payment_method)
     }
-  end
-
-  @impl true
-  def update(%{type: :channel, user: user, streamer: _}, socket) do
-    {
-      :ok,
-      socket
-      |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
-      |> assign(:stripe_payment_method, user.stripe_payment_method)
-    }
-  end
-
-  @impl true
-  def handle_event(
-        "subscriptions.channel.subscribe",
-        %{"paymentMethodId" => payment_method, "priceId" => price_id},
-        socket
-      ) do
-    streamer = socket.assigns.streamer
-    user = socket.assigns.user
-
-    with {:ok, _} <- Payments.set_payment_method(user, payment_method),
-         {:ok, subscription} <-
-           Payments.subscribe(:channel, user, streamer, "prod_HhtjnDMhfliLrf", price_id) do
-      {:reply, subscription,
-       socket
-       |> assign(:show_subscription, false)
-       |> assign(
-         :subscribed,
-         Payments.has_channel_subscription?(socket.assigns.user, socket.assigns.streamer)
-       )}
-    else
-      {:pending_requires_action, error_msg} ->
-        {:noreply, socket |> assign(:stripe_error, error_msg)}
-
-      {:pending_requires_payment_method, error_msg} ->
-        {:noreply, socket |> assign(:stripe_error, error_msg)}
-
-      {:error, error_msg} ->
-        {:noreply, socket |> assign(:stripe_error, error_msg)}
-    end
   end
 end

@@ -1,6 +1,7 @@
 defmodule Glimesh.Streams.Stream do
   @moduledoc false
   use Ecto.Schema
+  use Waffle.Ecto.Schema
   import Ecto.Changeset
 
   schema "streams" do
@@ -22,11 +23,34 @@ defmodule Glimesh.Streams.Stream do
     field :new_subscribers, :integer
     field :resub_subscribers, :integer
 
+    field :global_tags, {:array, :integer}
+    field :category_tags, {:array, :integer}
+
+    field :thumbnail, Glimesh.StreamThumbnail.Type
+
+    has_many :metadata, Glimesh.Streams.StreamMetadata
+
     timestamps()
   end
 
   def changeset(stream, attrs \\ %{}) do
     stream
-    |> cast(attrs, [])
+    |> cast(attrs, [
+      :title,
+      :category_id,
+      :started_at,
+      :ended_at,
+      :count_viewers,
+      :count_chatters,
+      :peak_viewers,
+      :peak_chatters,
+      :avg_viewers,
+      :avg_chatters,
+      :new_subscribers,
+      :resub_subscribers,
+      :global_tags,
+      :category_tags
+    ])
+    |> cast_attachments(attrs, [:thumbnail])
   end
 end

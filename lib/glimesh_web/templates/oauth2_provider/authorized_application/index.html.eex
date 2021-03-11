@@ -24,7 +24,11 @@
           <%= for application <- @applications do %>
           <tr>
             <td><%= application.name %></td>
-            <td><%= link application.app.homepage_url, to: application.app.homepage_url %></td>
+            <%= if application.app.homepage_url do%>
+              <td><%= link application.app.homepage_url, to: application.app.homepage_url %></td>
+            <% else %>
+              <td>N/A</td>
+            <% end %>
             <td><%= application.inserted_at %></td>
             <td>
               <%= link gettext("Unauthorize"), to: Routes.authorized_application_path(@conn, :delete, application), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>

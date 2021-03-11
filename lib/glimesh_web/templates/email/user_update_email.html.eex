@@ -1,0 +1,44 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td style="padding-bottom: 10px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td class="tbrr p30-15" style="padding: 60px 30px; border-radius:6px 6px 0px 0px;"
+                        bgcolor="#0e1726">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="h1 pb25"
+                                    style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:40px; line-height:46px; text-align:center; padding-bottom:25px;">
+                                    Change Your Email</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center pb25"
+                                    style="color:#ebedf2; font-family:'Roboto', Arial,sans-serif; font-size:16px; line-height:30px; text-align:center; padding-bottom:25px;">
+                                    Hi <%= @user.displayname %>! Please confirm you want to make this your new email by
+                                    clicking the link below:</td>
+                            </tr>
+                            <!-- Button -->
+                            <tr>
+                                <td align="center">
+                                    <table class="center" border="0" cellspacing="0" cellpadding="0"
+                                        style="text-align:center;">
+                                        <tr>
+                                            <td class="pink-button text-button"
+                                                style="background:#1b55e2; color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:6px; font-weight:bold;">
+                                                <a href="<%= @url %>" target="_blank" class="link-white"
+                                                    style="color:#ffffff; text-decoration:none;"><span
+                                                        class="link-white"
+                                                        style="color:#ffffff; text-decoration:none;">Change Email
+                                                        Address</span></a></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <!-- END Button -->
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

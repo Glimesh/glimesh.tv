@@ -10,6 +10,10 @@ defmodule Glimesh.Payments.Subscription do
              :stripe_product_id,
              :stripe_price_id,
              :stripe_current_period_end,
+             :price,
+             :fee,
+             :payout,
+             :product_name,
              :is_active,
              :started_at,
              :ended_at
@@ -22,10 +26,17 @@ defmodule Glimesh.Payments.Subscription do
     field :stripe_product_id, :string
     field :stripe_price_id, :string
     field :stripe_current_period_end, :integer
+    field :price, :integer
+    field :fee, :integer
+    field :payout, :integer
+    field :product_name, :string
 
     field :is_active, :boolean
+    field :is_canceling, :boolean
     field :started_at, :naive_datetime
     field :ended_at, :naive_datetime
+
+    has_many :invoices, Glimesh.Payments.SubscriptionInvoice
 
     timestamps()
   end
@@ -38,6 +49,10 @@ defmodule Glimesh.Payments.Subscription do
       :stripe_product_id,
       :stripe_price_id,
       :stripe_current_period_end,
+      :price,
+      :fee,
+      :payout,
+      :product_name,
       :started_at,
       :ended_at,
       :is_active
@@ -50,6 +65,10 @@ defmodule Glimesh.Payments.Subscription do
       :stripe_product_id,
       :stripe_price_id,
       :stripe_current_period_end,
+      :price,
+      :fee,
+      :payout,
+      :product_name,
       :started_at,
       :ended_at
     ])
@@ -58,7 +77,7 @@ defmodule Glimesh.Payments.Subscription do
   @doc false
   def update_changeset(subscription, attrs) do
     subscription
-    |> cast(attrs, [:stripe_current_period_end, :ended_at, :is_active])
+    |> cast(attrs, [:stripe_current_period_end, :ended_at, :is_active, :is_canceling])
     |> validate_required([:stripe_current_period_end, :ended_at, :is_active])
   end
 

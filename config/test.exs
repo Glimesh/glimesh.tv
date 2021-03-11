@@ -25,3 +25,28 @@ config :glimesh, GlimeshWeb.Emails.Mailer, adapter: Bamboo.TestAdapter
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+# Use a mock server for Stripe
+# https://github.com/stripe/stripe-mock
+config :stripity_stripe, :api_base_url, "http://localhost:12111/v1/"
+
+config :hcaptcha,
+  http_client: Hcaptcha.Http.MockClient,
+  secret: "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
+
+config :glimesh, :stripe_config,
+  platform_sub_supporter_product_id: "prod_platform_supporter",
+  platform_sub_supporter_price_id: "price_platform_supporter",
+  platform_sub_supporter_price: 500,
+  platform_sub_founder_product_id: "prod_platform_founder",
+  platform_sub_founder_price_id: "price_platform_founder",
+  platform_sub_founder_price: 2500,
+  channel_sub_base_product_id: "prod_channel_sub",
+  channel_sub_base_price_id: "price_channel_sub",
+  channel_sub_base_price: 500
+
+config :appsignal, :config, active: false
+
+config :glimesh, GlimeshWeb.Gettext,
+  default_locale: "glim-en",
+  locales: ~w(glim-en)

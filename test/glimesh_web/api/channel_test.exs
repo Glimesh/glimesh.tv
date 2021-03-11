@@ -3,6 +3,8 @@ defmodule GlimeshWeb.Api.ChannelTest do
 
   alias Glimesh.Streams
 
+  import Glimesh.AccountsFixtures
+
   @channels_query """
   query getChannels {
     channels {
@@ -17,6 +19,10 @@ defmodule GlimeshWeb.Api.ChannelTest do
     channel(username: $username) {
       title
       streamer { username }
+
+      tags {
+        name
+      }
     }
   }
   """
@@ -53,7 +59,12 @@ defmodule GlimeshWeb.Api.ChannelTest do
                "data" => %{
                  "channel" => %{
                    "title" => "Live Stream!",
-                   "streamer" => %{"username" => user.username}
+                   "streamer" => %{"username" => user.username},
+                   "tags" => [
+                     %{
+                       "name" => "World of Warcraft"
+                     }
+                   ]
                  }
                }
              }
@@ -74,12 +85,16 @@ defmodule GlimeshWeb.Api.ChannelTest do
     category(slug: $slug) {
       name
       slug
+
+      tags {
+        name
+      }
     }
   }
   """
 
   describe "categories api" do
-    setup [:register_and_set_user_token]
+    setup [:register_and_set_user_token, :create_tag]
 
     test "returns all categories", %{conn: conn} do
       conn =
@@ -104,31 +119,34 @@ defmodule GlimeshWeb.Api.ChannelTest do
                "data" => %{
                  "category" => %{
                    "name" => "Gaming",
-                   "slug" => "gaming"
+                   "slug" => "gaming",
+                   "tags" => [
+                     %{
+                       "name" => "World of Warcraft"
+                     }
+                   ]
                  }
                }
              }
     end
   end
 
-  @subscriptions_query """
-  query getSubscriptions {
-    subscriptions {
-      streamer { username }
-      user { username }
-    }
-  }
-  """
-  @followers_query """
-  query getFollowers {
-    followers {
-      streamer { username }
-      user { username }
-    }
-  }
-  """
-
   def create_channel(%{user: user}) do
-    %{channel: Streams.create_channel(user)}
+    {:ok, channel} = Streams.create_channel(user)
+
+    %{tag: tag} = create_tag(%{})
+
+    {:ok, _} =
+      channel
+      |> Glimesh.Repo.preload(:tags)
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:tags, [tag])
+      |> Glimesh.Repo.update()
+
+    %{channel: channel}
+  end
+
+  def create_tag(_) do
+    %{tag: tag_fixture()}
   end
 end

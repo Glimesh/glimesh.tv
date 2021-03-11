@@ -1,16 +1,46 @@
-<div id="chat-form" phx-hook="Chat">
+<div id="chat-form" phx-hook="Chat" data-emotes="<%= @emotes %>" data-theme="<%= @theme %>">
   <%= if @disabled do %>
-    <p class="text-center">You must be logged in to chat. <%= link "Register", to: Routes.user_registration_path(@socket, :new) %></p>
+  <div id="channel-footer" class="channel-footer">
+    <span>You must be logged in to chat. <%= link "Register", to: Routes.user_registration_path(@socket, :new) %></span>
+  </div>
   <% end %>
 
   <%= f = form_for @changeset, "#",
     id: "chat_message-form",
     class: ["chat-form"],
     phx_target: @myself,
-    phx_change: "validate",
     phx_submit: "send" %>
-    <i class="far fa-smile-beam emoji-activator"></i>
-    <%= text_input f, :message, class: ["mail-write-box form-control"], autocomplete: "off", disabled: @disabled %>
-    <%= error_tag f, :message %>
+
+  <%= if message = f.errors[:message] do %>
+  <div id="channel-footer" class="channel-footer ">
+    <span class="text-danger"><%= translate_error(message) %></span>
+  </div>
+  <% end %>
+
+  <div class="input-group">
+    <%= if not @disabled do %>
+    <div id="emoji-selector" class="input-group-prepend">
+      <a href="#" class="input-group-text <%= if @disabled, do: "", else: "emoji-activator" %>" type="button">
+        <i class="far fa-smile-beam"></i>
+      </a>
+    </div>
+    <% end %>
+
+    <%= text_input f, :message, class: "mail-write-box form-control", placeholder: gettext("Send a message"), autocomplete: "off", maxlength: "255", disabled: @disabled %>
+
+    <div id="chat-settings" class="input-group-append dropup">
+      <a href="#" class="input-group-text dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false"><i class="fas fa-cog"></i></a>
+      <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="#"
+          onclick="window.open('<%= Routes.chat_pop_out_url(@socket, :index, @channel_username) %>', '_blank', 'width=400,height=600,location=no,menubar=no,toolbar=no')"><%= gettext("Pop-out Chat") %></a>
+        <a id="toggle-timestamps" class="dropdown-item" , href="#" phx-click="toggle_timestamps"
+          <%= if @user, do: 'phx-value-user=#{@user.username}' %>><%= if @show_timestamps, do: gettext("Disable Timestamps"), else: gettext("Enable Timestamps") %>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
   </form>
 </div>

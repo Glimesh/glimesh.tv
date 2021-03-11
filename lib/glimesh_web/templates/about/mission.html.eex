@@ -1,0 +1,26 @@
+<div class="jumbotron jumbotron-fluid jumbotron-glimesh d-flex align-items-center">
+    <div class="container">
+        <h1 class="display-4 text-center"><%= gettext("Our Mission") %></h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="row mt-4 mb-4 justify-content-md-center">
+            <div class="col-md-10">
+                <blockquote class="blockquote">
+                    <p class="mb-0">
+                        <%= gettext("Our mission at Glimesh is to create a platform of sustainability, where every content creator has a fair oppourtunity to grow and create an income, while being given simple and powerful tools they can rely on.") %>
+                    </p>
+                    <footer class="blockquote-footer"><%= gettext("Luke Strickland, Founder of Glimesh") %></footer>
+                </blockquote>
+            </div>
+        </div>
+
+        <p class="text-center mt-4">
+            <img src="/images/logos/logo-for-navbar.png" alt="Glimesh">
+        </p>
+
+    </div>
+</div>

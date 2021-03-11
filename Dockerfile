@@ -1,7 +1,7 @@
-FROM elixir:1.10.4-alpine AS build
+FROM elixir:1.11.2-alpine AS build
 
 # install build dependencies
-RUN apk add --no-cache build-base npm git python
+RUN apk add --no-cache build-base npm git
 
 # prepare build dir
 WORKDIR /app
@@ -17,6 +17,9 @@ ENV MIX_ENV=prod
 COPY mix.exs mix.lock ./
 COPY config config
 RUN mix do deps.get, deps.compile
+
+# workaround for janus npm install
+RUN git config --global url."https://github.com".insteadOf ssh://git@github.com
 
 # build assets
 COPY assets/package.json assets/package-lock.json ./assets/
@@ -34,7 +37,7 @@ COPY lib lib
 RUN mix do compile, release
 
 # prepare release image
-FROM alpine:3.9 AS app
+FROM alpine:3.12 AS app
 RUN apk add --no-cache openssl ncurses-libs imagemagick
 
 WORKDIR /app

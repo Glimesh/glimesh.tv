@@ -26,16 +26,30 @@ import ProcessPayment from './hooks/ProcessPayment';
 import Chat from './hooks/Chat';
 import Choices from "./hooks/Choices";
 import FtlVideo from "./hooks/FtlVideo";
-import OvenVideo from "./hooks/OvenVideo";
 import ClickToCopy from "./hooks/ClickToCopy";
+import LineChart from "./hooks/charts/LineChart";
+import InfiniteScroll from "./hooks/InfiniteScroll";
+import TagSelector from "./hooks/TagSelector";
+import TagSearch from "./hooks/TagSearch";
+import LaunchCountdown from "./hooks/LaunchCountdown";
+
+// https://github.com/github/markdown-toolbar-element
+import "@github/markdown-toolbar-element";
+
+// https://github.com/github/time-elements
+import "@github/time-elements";
 
 let Hooks = {};
 Hooks.ProcessPayment = ProcessPayment;
 Hooks.Chat = Chat;
 Hooks.Choices = Choices;
 Hooks.FtlVideo = FtlVideo;
-Hooks.OvenVideo = OvenVideo;
 Hooks.ClickToCopy = ClickToCopy;
+Hooks.LineChart = LineChart;
+Hooks.InfiniteScroll = InfiniteScroll;
+Hooks.TagSelector = TagSelector;
+Hooks.TagSearch = TagSearch;
+Hooks.LaunchCountdown = LaunchCountdown;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
@@ -45,19 +59,32 @@ let liveSocket = new LiveSocket("/live", Socket, {
     hooks: Hooks
 });
 
+// Make sure no dropdown form's are automatically closed on action
+function ignoreDropdownFormClosing() {
+    document.querySelectorAll('.dropdown-menu form').forEach(function(el) { 
+        el.onclick = function(e) { e.stopPropagation(); } 
+    })
+}
+
 // Init the file upload handler
 bsCustomFileInput.init();
+ignoreDropdownFormClosing()
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", () => {});
 window.addEventListener("phx:page-loading-stop", info => {
-    BSN.initCallback(document.body);
-    bsCustomFileInput.init();
+    if (info.detail && info.detail.kind && info.detail.kind === "initial") {
+        // Only do a full reload of dom whenever the entire page changes 
+        BSN.initCallback(document.body);
+        bsCustomFileInput.init();
 
-    // Close the nav bar on navigate
-    if (document.getElementById("primaryNav")) {
-        document.getElementById("primaryNav").classList.remove('show');
+        // Close the nav bar on navigate
+        if (document.getElementById("primaryNav")) {
+            document.getElementById("primaryNav").classList.remove('show');
+        }
     }
+
+    ignoreDropdownFormClosing()
 });
 
 // connect if there are any LiveViews on the page

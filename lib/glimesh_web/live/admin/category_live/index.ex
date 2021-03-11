@@ -1,7 +1,7 @@
 defmodule GlimeshWeb.Admin.CategoryLive.Index do
   use GlimeshWeb, :live_view
 
-  alias Glimesh.Streams
+  alias Glimesh.ChannelCategories
   alias Glimesh.Streams.Category
 
   @impl true
@@ -16,31 +16,31 @@ defmodule GlimeshWeb.Admin.CategoryLive.Index do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
-    |> assign(:page_title, gettext("Edit Category"))
-    |> assign(:category, Streams.get_category_by_id!(id))
+    |> put_page_title(gettext("Edit Category"))
+    |> assign(:category, ChannelCategories.get_category_by_id!(id))
   end
 
   defp apply_action(socket, :new, _params) do
     socket
-    |> assign(:page_title, gettext("New Category"))
+    |> put_page_title(gettext("New Category"))
     |> assign(:category, %Category{})
   end
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, gettext("Listing Categories"))
+    |> put_page_title(gettext("Listing Categories"))
     |> assign(:category, nil)
   end
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    category = Streams.get_category_by_id!(id)
-    {:ok, _} = Streams.delete_category(category)
+    category = ChannelCategories.get_category_by_id!(id)
+    {:ok, _} = ChannelCategories.delete_category(category)
 
     {:noreply, assign(socket, :categories, list_categories())}
   end
 
   defp list_categories do
-    Streams.list_categories()
+    ChannelCategories.list_categories()
   end
 end

@@ -1,10 +1,13 @@
 name: Elixir CI
 
+env: 
+  MIX_ENV: test
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 on:
   push:
-    branches: [ master ]
+    branches: [ dev ]
   pull_request:
-    branches: [ master ]
 
 jobs:
   build:
@@ -24,20 +27,31 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
     - name: Set up Elixir
-      uses: actions/setup-elixir@v1
+      uses: erlef/setup-elixir@v1
       with:
-        elixir-version: '1.10.3' # Define the elixir version [required]
-        otp-version: '22.3' # Define the OTP version [required]
+        elixir-version: '1.11.2'
+        otp-version: '23'
+
     - name: Restore dependencies cache
       uses: actions/cache@v2
       with:
         path: deps
         key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
         restore-keys: ${{ runner.os }}-mix-
+
     - name: Install dependencies
       run: mix deps.get
+
+    - name: Start stripe-mock
+      run: docker run -d -p 12111-12112:12111-12112 stripemock/stripe-mock && sleep 5
+
     - name: Run tests
       run: mix test
+
     - name: Code Quality
       run: mix code_quality
+
+    - name: Code Coverage
+      run: mix coveralls.github

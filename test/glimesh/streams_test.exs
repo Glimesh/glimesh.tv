@@ -3,64 +3,16 @@ defmodule Glimesh.StreamsTest do
   use Bamboo.Test
 
   import Glimesh.AccountsFixtures
-  alias Glimesh.Chat
+  alias Glimesh.AccountFollows
+  alias Glimesh.ChannelLookups
   alias Glimesh.Streams
 
-  describe "timeout_user/3" do
-    setup do
-      %{
-        streamer: streamer_fixture(),
-        moderator: user_fixture(),
-        user: user_fixture()
-      }
-    end
-
-    test "times out a user and removes messages successfully", %{
-      streamer: streamer,
-      moderator: moderator,
-      user: user
-    } do
-      {:ok, _} = Chat.create_chat_message(streamer, user, %{message: "bad message"})
-      {:ok, _} = Chat.create_chat_message(streamer, moderator, %{message: "good message"})
-      assert length(Chat.list_chat_messages(streamer)) == 2
-
-      {:ok, _} = Glimesh.Streams.add_moderator(streamer, moderator)
-
-      {:ok, _} = Streams.timeout_user(streamer, moderator, user)
-      assert length(Chat.list_chat_messages(streamer)) == 1
-    end
-
-    test "adds log of timeout action", %{streamer: streamer, moderator: moderator, user: user} do
-      {:ok, _} = Glimesh.Streams.add_moderator(streamer, moderator)
-      {:ok, record} = Streams.timeout_user(streamer, moderator, user)
-
-      assert record.streamer.id == streamer.id
-      assert record.moderator.id == moderator.id
-      assert record.user.id == user.id
-      assert record.action == "timeout"
-    end
-
-    test "moderation privileges are required to timeout", %{
-      streamer: streamer,
-      moderator: moderator,
-      user: user
-    } do
-      assert_raise RuntimeError,
-                   "User does not have permission to moderate.",
-                   fn -> Streams.timeout_user(streamer, moderator, user) end
-    end
-  end
-
   describe "followers" do
-    @valid_attrs %{has_live_notifications: true}
-    @update_attrs %{has_live_notifications: false}
-    @invalid_attrs %{has_live_notifications: nil}
-
     def followers_fixture do
       streamer = streamer_fixture()
       user = user_fixture()
 
-      {:ok, followers} = Streams.follow(streamer, user)
+      {:ok, followers} = AccountFollows.follow(streamer, user)
 
       followers
     end
@@ -68,9 +20,9 @@ defmodule Glimesh.StreamsTest do
     test "follow/2 successfully follows streamer" do
       streamer = streamer_fixture()
       user = user_fixture()
-      Streams.follow(streamer, user)
+      AccountFollows.follow(streamer, user)
 
-      followed = Streams.list_followed_channels(user)
+      followed = ChannelLookups.list_all_followed_channels(user)
 
       assert Enum.map(followed, fn x -> x.user.username end) == [streamer.username]
     end
@@ -78,93 +30,188 @@ defmodule Glimesh.StreamsTest do
     test "unfollow/2 successfully unfollows streamer" do
       streamer = streamer_fixture()
       user = user_fixture()
-      Streams.follow(streamer, user)
-      followed = Streams.list_followed_channels(user)
+      AccountFollows.follow(streamer, user)
+      followed = ChannelLookups.list_all_followed_channels(user)
 
       assert Enum.map(followed, fn x -> x.user.username end) == [streamer.username]
 
-      Streams.unfollow(streamer, user)
-      assert Streams.list_followed_channels(user) == []
+      AccountFollows.unfollow(streamer, user)
+      assert ChannelLookups.list_all_followed_channels(user) == []
     end
 
     test "is_following?/1 detects active follow" do
       streamer = streamer_fixture()
       user = user_fixture()
-      Streams.follow(streamer, user)
-      assert Streams.is_following?(streamer, user) == true
+      AccountFollows.follow(streamer, user)
+      assert AccountFollows.is_following?(streamer, user) == true
     end
 
     test "follow/2 twice returns error changeset" do
       streamer = streamer_fixture()
       user = user_fixture()
 
-      Streams.follow(streamer, user)
-      assert {:error, %Ecto.Changeset{}} = Streams.follow(streamer, user)
+      AccountFollows.follow(streamer, user)
+      assert {:error, %Ecto.Changeset{}} = AccountFollows.follow(streamer, user)
     end
   end
 
-  describe "categories" do
-    alias Glimesh.Streams.Category
-
-    @valid_attrs %{
-      name: "some name"
-    }
-    @update_attrs %{
-      name: "some updated name"
-    }
-    @invalid_attrs %{name: nil}
-
-    def category_fixture(attrs \\ %{}) do
-      {:ok, category} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Streams.create_category()
-
-      category
+  describe "channels" do
+    setup do
+      streamer = streamer_fixture()
+      {:ok, channel: streamer.channel, streamer: streamer}
     end
 
-    test "list_categories/0 returns all categories" do
-      category = category_fixture()
-      assert Enum.member?(Enum.map(Streams.list_categories(), fn x -> x.name end), category.name)
+    test "create_channel/1 creates a channel" do
+      {:ok, channel} = Streams.create_channel(user_fixture())
+
+      assert channel.title == "Live Stream!"
     end
 
-    test "get_category_by_id!/1 returns the category with given id" do
-      category = category_fixture()
-      assert Streams.get_category_by_id!(category.id) == category
+    test "delete_channel/1 inactivates a channel", %{channel: channel, streamer: streamer} do
+      {:ok, channel} = Streams.delete_channel(streamer, channel)
+      assert channel.inaccessible
+      assert is_nil(Glimesh.ChannelLookups.get_channel_for_user(streamer))
+
+      assert Glimesh.ChannelLookups.get_any_channel_for_user(streamer).inaccessible
     end
 
-    test "create_category/1 with valid data creates a category" do
-      assert {:ok, %Category{} = category} = Streams.create_category(@valid_attrs)
-      assert category.name == "some name"
-      assert category.slug == "some-name"
+    test "create_channel/1 will recreate a channel", %{channel: channel, streamer: streamer} do
+      {:ok, channel} = Streams.delete_channel(streamer, channel)
+
+      {:ok, new_channel} = Streams.create_channel(streamer)
+
+      assert channel.id == new_channel.id
     end
 
-    test "create_category/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Streams.create_category(@invalid_attrs)
+    test "rotate_stream_key/1 changes a hmac key", %{channel: channel, streamer: streamer} do
+      {:ok, new_channel} = Streams.rotate_stream_key(streamer, channel)
+      assert new_channel.hmac_key != channel.hmac_key
     end
 
-    test "update_category/2 with valid data updates the category" do
-      category = category_fixture()
-      assert {:ok, %Category{} = category} = Streams.update_category(category, @update_attrs)
-      assert category.name == "some updated name"
-      assert category.slug == "some-updated-name"
+    test "prompt_mature_content/2 flags content correctly", %{
+      streamer: streamer,
+      channel: channel
+    } do
+      user = user_fixture()
+      assert Streams.prompt_mature_content(channel, user) == false
+
+      {:ok, channel} =
+        Streams.update_channel(streamer, channel, %{
+          mature_content: true
+        })
+
+      assert Streams.prompt_mature_content(channel, user) == true
+      assert Streams.prompt_mature_content(channel, nil) == true
+
+      user_pref = Glimesh.Accounts.get_user_preference!(user)
+
+      {:ok, _} =
+        Glimesh.Accounts.update_user_preference(user_pref, %{
+          show_mature_content: true
+        })
+
+      user = Glimesh.Accounts.get_user!(user.id)
+
+      assert Streams.prompt_mature_content(channel, user) == false
+    end
+  end
+
+  describe "ingest stream api" do
+    setup do
+      %{channel: channel} = streamer_fixture()
+
+      {:ok, channel: channel}
     end
 
-    test "update_category/2 with invalid data returns error changeset" do
-      category = category_fixture()
-      assert {:error, %Ecto.Changeset{}} = Streams.update_category(category, @invalid_attrs)
-      assert category == Streams.get_category_by_id!(category.id)
+    test "start_stream/1 successfully starts a stream", %{channel: channel} do
+      {:ok, stream} = Streams.start_stream(channel)
+      new_channel = ChannelLookups.get_channel!(channel.id)
+
+      assert stream.started_at != nil
+      assert stream.ended_at == nil
+      assert stream.id == new_channel.stream_id
+      assert stream.category_id == new_channel.category_id
+      assert new_channel.status == "live"
     end
 
-    test "delete_category/1 deletes the category" do
-      category = category_fixture()
-      assert {:ok, %Category{}} = Streams.delete_category(category)
-      assert_raise Ecto.NoResultsError, fn -> Streams.get_category_by_id!(category.id) end
+    test "start_stream/1 stores historical tags", %{channel: channel} do
+      tag = tag_fixture()
+
+      {:ok, channel} =
+        channel
+        |> Glimesh.Repo.preload(:tags)
+        |> Ecto.Changeset.change()
+        |> Ecto.Changeset.put_assoc(:tags, [tag])
+        |> Glimesh.Repo.update()
+
+      {:ok, stream} = Streams.start_stream(channel)
+
+      assert stream.category_tags == [tag.id]
     end
 
-    test "change_category/1 returns a category changeset" do
-      category = category_fixture()
-      assert %Ecto.Changeset{} = Streams.change_category(category)
+    test "start_stream/1 stops any other streams that still are lingering", %{channel: channel} do
+      %Glimesh.Streams.Stream{channel: channel}
+      |> Glimesh.Streams.Stream.changeset(%{})
+      |> Glimesh.Repo.insert()
+
+      %Glimesh.Streams.Stream{channel: channel}
+      |> Glimesh.Streams.Stream.changeset(%{})
+      |> Glimesh.Repo.insert()
+
+      {:ok, _} = Streams.start_stream(channel)
+
+      assert Repo.one(
+               from(s in Glimesh.Streams.Stream,
+                 where: s.channel_id == ^channel.id and is_nil(s.ended_at),
+                 select: count(s.id)
+               )
+             ) == 1
+    end
+
+    test "end_stream/1 successfully stops a stream", %{channel: channel} do
+      {:ok, _} = Streams.start_stream(channel)
+      fresh_channel = ChannelLookups.get_channel!(channel.id)
+      {:ok, stream} = Streams.end_stream(fresh_channel)
+      new_channel = ChannelLookups.get_channel!(channel.id)
+
+      assert stream.started_at != nil
+      assert stream.ended_at != nil
+      assert new_channel.status == "offline"
+      assert new_channel.stream_id == nil
+    end
+
+    test "end_stream/1 successfully stops a stream with stream", %{channel: channel} do
+      {:ok, stream} = Streams.start_stream(channel)
+      {:ok, stream} = Streams.end_stream(stream)
+      new_channel = ChannelLookups.get_channel!(channel.id)
+
+      assert stream.started_at != nil
+      assert stream.ended_at != nil
+      assert new_channel.status == "offline"
+      assert new_channel.stream_id == nil
+    end
+
+    test "log_stream_metadata/1 successfully logs some metadata", %{channel: channel} do
+      {:ok, stream} = Streams.start_stream(channel)
+
+      incoming_attrs = %{
+        audio_codec: "mp3",
+        ingest_server: "test",
+        ingest_viewers: 32,
+        stream_time_seconds: 1024,
+        lost_packets: 0,
+        nack_packets: 0,
+        recv_packets: 100,
+        source_bitrate: 5000,
+        source_ping: 100,
+        vendor_name: "OBS",
+        vendor_version: "1.0.0",
+        video_codec: "mp4",
+        video_height: 1024,
+        video_width: 768
+      }
+
+      assert {:ok, %{}} = Streams.log_stream_metadata(stream, incoming_attrs)
     end
   end
 end

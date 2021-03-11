@@ -13,7 +13,7 @@ defmodule GlimeshWeb.UserResetPasswordControllerTest do
     test "renders the reset password page", %{conn: conn} do
       conn = get(conn, Routes.user_reset_password_path(conn, :new))
       response = html_response(conn, 200)
-      assert response =~ "<h3>Forgot your password? "
+      assert response =~ "<h3>Forgot your password?</h3>"
     end
   end
 
@@ -28,7 +28,7 @@ defmodule GlimeshWeb.UserResetPasswordControllerTest do
       assert redirected_to(conn) == "/"
 
       assert get_flash(conn, :info) =~
-               "If your email is in our system, you will receive instructions to reset your password shortly."
+               "If your e-mail is in our system, you will receive instructions to reset your password shortly."
 
       assert Repo.get_by!(Accounts.UserToken, user_id: user.id).context == "reset_password"
     end
@@ -42,7 +42,7 @@ defmodule GlimeshWeb.UserResetPasswordControllerTest do
       assert redirected_to(conn) == "/"
 
       assert get_flash(conn, :info) =~
-               "If your email is in our system, you will receive instructions to reset your password shortly."
+               "If your e-mail is in our system, you will receive instructions to reset your password shortly."
 
       assert Repo.all(Accounts.UserToken) == []
     end
@@ -60,7 +60,7 @@ defmodule GlimeshWeb.UserResetPasswordControllerTest do
 
     test "renders reset password", %{conn: conn, token: token} do
       conn = get(conn, Routes.user_reset_password_path(conn, :edit, token))
-      assert html_response(conn, 200) =~ "<h1>Reset Password</h1>"
+      assert html_response(conn, 200) =~ "<h1>Reset password</h1>"
     end
 
     test "does not render reset password with invalid token", %{conn: conn} do
@@ -92,7 +92,7 @@ defmodule GlimeshWeb.UserResetPasswordControllerTest do
       assert redirected_to(conn) == Routes.user_session_path(conn, :new)
       refute get_session(conn, :user_token)
       assert get_flash(conn, :info) =~ "Password reset successfully"
-      assert Accounts.get_user_by_email_and_password(user.email, "new valid password")
+      assert Accounts.get_user_by_login_and_password(user.email, "new valid password")
     end
 
     test "does not reset password on invalid data", %{conn: conn, token: token} do
@@ -105,8 +105,8 @@ defmodule GlimeshWeb.UserResetPasswordControllerTest do
         })
 
       response = html_response(conn, 200)
-      assert response =~ "<h1>Reset Password</h1>"
-      assert response =~ "Must be at least 8 characters"
+      assert response =~ "<h1>Reset password</h1>"
+      assert response =~ "should be at least 8 character(s)"
       assert response =~ "Password does not match"
     end
 

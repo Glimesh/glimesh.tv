@@ -6,16 +6,37 @@ defmodule Glimesh.Accounts do
   import Ecto.Query, warn: false
 
   alias Glimesh.Repo
-  alias Glimesh.Accounts.{User, UserNotifier, UserToken}
+  alias Glimesh.Accounts.{User, UserNotifier, UserPreference, UserToken}
 
   ## Database getters
 
   def list_users do
-    Repo.all(from u in User, where: not is_nil(u.confirmed_at))
+    Repo.all(from u in User, where: u.is_banned == false)
+  end
+
+  def search_users(query, current_page, per_page) do
+    like = "%#{query}%"
+
+    Repo.all(
+      from u in User,
+        where: ilike(u.username, ^like),
+        where: u.is_banned == false,
+        order_by: [asc: u.id],
+        offset: ^((current_page - 1) * per_page),
+        limit: ^per_page
+    )
   end
 
   def list_admins do
     Repo.all(from u in User, where: u.is_admin == true)
+  end
+
+  def list_team_users do
+    Repo.all(
+      from u in User,
+        where: not is_nil(u.team_role),
+        order_by: [asc: u.username]
+    )
   end
 
   @doc """
@@ -46,29 +67,38 @@ defmodule Glimesh.Accounts do
       nil
 
   """
-  def get_by_username(username) when is_binary(username) do
-    Repo.get_by(User, username: username)
+  def get_by_username(username, ignore_banned \\ false) when is_binary(username) do
+    case ignore_banned do
+      false -> Repo.get_by(User, username: username, is_banned: false)
+      true -> Repo.get_by(User, username: username)
+    end
   end
 
-  def get_by_username!(username) when is_binary(username) do
-    Repo.get_by!(User, username: username)
+  def get_by_username!(username, ignore_banned \\ false) when is_binary(username) do
+    case ignore_banned do
+      false -> Repo.get_by!(User, username: username, is_banned: false)
+      true -> Repo.get_by!(User, username: username)
+    end
   end
 
   @doc """
-  Gets a user by email and password.
+  Gets a user by email or username and verify password.
 
   ## Examples
 
-      iex> get_user_by_email_and_password("foo@example.com", "correct_password")
+      iex> get_user_by_login_and_password("foo@example.com", "correct_password")
       %User{}
 
-      iex> get_user_by_email_and_password("foo@example.com", "invalid_password")
+      iex> get_user_by_login_and_password("some_username", "correct_password")
+      %User{}
+
+      iex> get_user_by_login_and_password("foo@example.com", "invalid_password")
       nil
 
   """
-  def get_user_by_email_and_password(email, password)
-      when is_binary(email) and is_binary(password) do
-    user = Repo.get_by(User, email: email)
+  def get_user_by_login_and_password(login, password)
+      when is_binary(login) and is_binary(password) do
+    user = Repo.one(from u in User, where: u.email == ^login or u.username == ^login)
     if User.valid_password?(user, password), do: user
   end
 
@@ -87,6 +117,14 @@ defmodule Glimesh.Accounts do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
+  def get_user(id), do: Repo.get(User, id)
+
+  def is_user_banned?(%User{} = user), do: user.is_banned
+
+  def is_user_banned_by_username?(username) do
+    user = Repo.get_by(User, username: username)
+    user.is_banned
+  end
 
   ## User registration
 
@@ -102,7 +140,7 @@ defmodule Glimesh.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
-  def register_user(attrs) do
+  def register_user(attrs, existing_preferences \\ %UserPreference{}) do
     # Check to see if the register_user function was called from a test or the live site
     attrs =
       cond do
@@ -111,9 +149,14 @@ defmodule Glimesh.Accounts do
         true -> attrs
       end
 
-    %User{}
-    |> User.registration_changeset(attrs)
-    |> Repo.insert()
+    user_insert =
+      %User{
+        user_preference: existing_preferences
+      }
+      |> User.registration_changeset(attrs)
+      |> Repo.insert()
+
+    user_insert
   end
 
   @doc """
@@ -130,6 +173,35 @@ defmodule Glimesh.Accounts do
   end
 
   ## Settings
+
+  def change_user_notifications(%User{} = user, attrs \\ %{}) do
+    User.notifications_changeset(user, attrs)
+  end
+
+  def update_user_notifications(%User{} = user, attrs \\ %{}) do
+    change_user_notifications(user, attrs)
+    |> Repo.update()
+  end
+
+  def get_user_preference!(%User{} = user) do
+    Repo.get_by!(UserPreference, user_id: user.id)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for changing user's preference.
+  """
+  def change_user_preference(%UserPreference{} = user_preference, attrs \\ %{}) do
+    UserPreference.changeset(user_preference, attrs)
+  end
+
+  @doc """
+  Updates a users preference
+  """
+  def update_user_preference(%UserPreference{} = user_preference, attrs \\ %{}) do
+    user_preference
+    |> UserPreference.changeset(attrs)
+    |> Repo.update()
+  end
 
   @doc """
   Returns an `%Ecto.Changeset{}` for changing the user e-mail.
@@ -277,6 +349,9 @@ defmodule Glimesh.Accounts do
     user
     |> User.profile_changeset(attrs)
     |> Repo.update()
+  catch
+    :exit, _ ->
+      {:upload_exit, "Failed to upload avatar"}
   end
 
   @doc """
@@ -302,6 +377,16 @@ defmodule Glimesh.Accounts do
       stripe_customer_id ->
         stripe_customer_id
     end
+  end
+
+  def set_stripe_attrs(%User{} = user, attrs \\ %{}) do
+    user
+    |> User.stripe_changeset(attrs)
+    |> Repo.update()
+  end
+
+  def get_user_by_stripe_user_id(user_id) do
+    Repo.one(from u in User, where: u.stripe_user_id == ^user_id)
   end
 
   def set_stripe_user_id(user, user_id) do
@@ -350,6 +435,12 @@ defmodule Glimesh.Accounts do
   end
 
   ## Session
+
+  def update_user_ip(user, ip_address) do
+    user
+    |> User.user_ip_changeset(ip_address)
+    |> Repo.update()
+  end
 
   @doc """
   Generates a session token.
@@ -485,5 +576,61 @@ defmodule Glimesh.Accounts do
       {:ok, %{user: user}} -> {:ok, user}
       {:error, :user, changeset, _} -> {:error, changeset}
     end
+  end
+
+  def can_stream?(user), do: user.can_stream
+
+  def can_use_payments?(user) do
+    user.can_payments
+  end
+
+  def can_receive_payments?(user) do
+    user.is_stripe_setup && user.is_tax_verified
+  end
+
+  def get_user_locale(%User{} = user) do
+    prefs = get_user_preference!(user)
+    prefs.locale
+  end
+
+  def ban_user(%User{} = admin, %User{} = user, reason) do
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :can_ban, admin, user) do
+      case reason do
+        # Doesn't actually do anything since the ban popup doesn't handle errors. Will eventually do something.
+        # For now it just stops the ban going through if the reason is blank.
+        "" ->
+          throw_error_on_action(
+            "Ban reason required",
+            %{is_banned: true, ban_reason: reason},
+            :ban
+          )
+
+        _ ->
+          user
+          |> User.gct_user_changeset(%{is_banned: true, ban_reason: reason})
+          |> Repo.update()
+      end
+    end
+  end
+
+  def unban_user(%User{} = admin, %User{} = user) do
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :can_ban, admin, user) do
+      user
+      |> User.gct_user_changeset(%{is_banned: false, ban_reason: nil})
+      |> Repo.update()
+    end
+  end
+
+  defp throw_error_on_action(error_message, attrs, action) do
+    {:error,
+     %Ecto.Changeset{
+       action: action,
+       changes: attrs,
+       errors: [
+         message: {error_message, [validation: :required]}
+       ],
+       data: %User{},
+       valid?: false
+     }}
   end
 end

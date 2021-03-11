@@ -6,7 +6,10 @@ defmodule Glimesh.Application do
   use Application
 
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies)
+
     children = [
+      {Cluster.Supervisor, [topologies, [name: Glimesh.ClusterSupervisor]]},
       # Start the Ecto repository
       Glimesh.Repo,
       # Start the Telemetry supervisor
@@ -16,12 +19,15 @@ defmodule Glimesh.Application do
       # Who and where are you?
       Glimesh.Presence,
       # Start the Endpoint (http/https)
-      GlimeshWeb.Endpoint
+      GlimeshWeb.Endpoint,
       # Start a worker by calling: Glimesh.Worker.start_link(arg)
+      {Absinthe.Subscription, GlimeshWeb.Endpoint},
+      Glimesh.Workers.StreamMetrics,
+      Glimesh.Workers.StreamPruner
       # {Glimesh.Worker, arg}
     ]
 
-    :ets.new(:banned_list, [:named_table, :public])
+    GlimeshWeb.ApiLogger.start_logger()
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

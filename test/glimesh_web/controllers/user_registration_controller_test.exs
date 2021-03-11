@@ -26,6 +26,7 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
 
       conn =
         post(conn, Routes.user_registration_path(conn, :create), %{
+          "h-captcha-response" => "valid_response",
           "user" => %{
             "username" => username,
             "email" => email,
@@ -40,20 +41,80 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
       conn = get(conn, "/")
       response = html_response(conn, 200)
       assert response =~ username
-      assert response =~ "\nSettings</a>"
-      assert response =~ "\nSign Out</a>"
+      assert response =~ "Settings"
+      assert response =~ "Sign Out"
+    end
+
+    test "creates account and remembers preferences", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(site_theme: "light", locale: "de")
+
+      username = unique_user_username()
+      email = unique_user_email()
+
+      conn =
+        post(conn, Routes.user_registration_path(conn, :create), %{
+          "h-captcha-response" => "valid_response",
+          "user" => %{
+            "username" => username,
+            "email" => email,
+            "password" => valid_user_password()
+          }
+        })
+
+      assert get_session(conn, :user_token)
+      assert redirected_to(conn) =~ "/"
+
+      # Now do a logged in request and assert on the menu
+      conn = get(conn, "/")
+      response = html_response(conn, 200)
+      assert response =~ username
+      assert response =~ "de ☀️"
+
+      user = Glimesh.Accounts.get_by_username!(username)
+      prefs = Glimesh.Accounts.get_user_preference!(user)
+
+      assert prefs.site_theme == "light"
+      assert prefs.locale == "de"
     end
 
     test "render errors for invalid data", %{conn: conn} do
       conn =
         post(conn, Routes.user_registration_path(conn, :create), %{
+          "h-captcha-response" => "valid_response",
           "user" => %{"email" => "with spaces", "password" => "short"}
         })
 
       response = html_response(conn, 200)
       assert response =~ "<h3>Register for our Alpha!</h3>"
       assert response =~ "must have the @ sign and no spaces"
-      assert response =~ "Must be at least 8 characters"
+      assert response =~ "should be at least 8 character(s)"
+    end
+
+    test "render errors if hcaptcha is invalid", %{conn: conn} do
+      conn =
+        post(conn, Routes.user_registration_path(conn, :create), %{
+          "h-captcha-response" => "invalid_response",
+          "user" => %{"email" => "with spaces", "password" => "short"}
+        })
+
+      assert redirected_to(conn) == Routes.user_registration_path(conn, :create)
+
+      assert get_flash(conn, :error) =~
+               "Captcha validation failed, please try again."
+    end
+
+    test "render errors if hcaptcha does not load for some reason", %{conn: conn} do
+      conn =
+        post(conn, Routes.user_registration_path(conn, :create), %{
+          "user" => %{"email" => "with spaces", "password" => "short"}
+        })
+
+      assert redirected_to(conn) == Routes.user_registration_path(conn, :create)
+
+      assert get_flash(conn, :error) =~
+               "Captcha validation failed, please make sure you have JavaScript enabled."
     end
   end
 end
