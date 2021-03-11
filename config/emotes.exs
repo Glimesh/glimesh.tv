@@ -2,8 +2,8 @@ use Mix.Config
 
 config :glimesh,
   emotes: %{
-    ":climchu:" => %{svg: "/emotes/svg/climchu.svg", png: "/emotes/png/climchu.png"},
-    ":climcoffee:" => %{svg: "/emotes/svg/climcoffee.svg", png: "/emotes/png/climcoffee.png"},
+    ":glimchu:" => %{svg: "/emotes/svg/climchu.svg", png: "/emotes/png/climchu.png"},
+    ":glimcoffee:" => %{svg: "/emotes/svg/climcoffee.svg", png: "/emotes/png/climcoffee.png"},
     ":glimangry:" => %{svg: "/emotes/svg/glimangry.svg", png: "/emotes/png/glimangry.png"},
     ":glimbanhammer:" => %{svg: "/emotes/svg/glimbanhammer.svg", png: "/emotes/png/glimbanhammer.png"},
     ":glimcrazy:" => %{svg: "/emotes/svg/glimcrazy.svg", png: "/emotes/png/glimcrazy.png"},
