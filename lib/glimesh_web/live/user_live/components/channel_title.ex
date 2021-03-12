@@ -14,6 +14,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
       <a class="fas fa-edit" phx-click="toggle-edit" href="#" aria-label="<%= gettext("Edit") %>"></a>
       <% end %>
     </h5>
+    <span class="badge badge-pill badge-info"><%= Glimesh.Streams.get_channel_language(@channel) %></span>
     <%= for tag <- @channel.tags do %>
       <%= live_patch tag.name, to: Routes.streams_list_path(@socket, :index, @channel.category.slug, tags: [tag.slug]), class: "badge badge-pill badge-primary" %>
     <% end %>

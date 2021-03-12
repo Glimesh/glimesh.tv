@@ -73,9 +73,12 @@ defmodule GlimeshWeb.StreamsLive.List do
         ""
       end
 
+    # prefilled_language = Map.get(params, "language", "Any Language")
+
     {:noreply,
      socket
      |> assign(:prefilled_tags, prefilled_tags)
+     #  |> assign(:prefilled_language, prefilled_language)
      |> assign(:original_channels, channels)
      |> filter_tags(Map.get(params, "tags", []))}
   end
@@ -89,6 +92,12 @@ defmodule GlimeshWeb.StreamsLive.List do
        to: Routes.streams_list_path(socket, :index, socket.assigns.category.slug, tags: tags)
      )}
   end
+
+  # def handle_event("filter_language", params, socket) do
+  #   IO.inspect(params, label: "filter_language")
+
+  #   {:noreply, socket |> filter_language("English")}
+  # end
 
   defp filter_tags(socket, []) do
     socket |> assign(:visible_channels, socket.assigns.original_channels)
@@ -111,21 +120,23 @@ defmodule GlimeshWeb.StreamsLive.List do
     end
   end
 
-  # def handle_event("filter_language", params, socket) do
-  #   IO.inspect(params, label: "filter_language")
-
-  #   {:noreply, socket |> filter_language("English")}
-  # end
-
   # defp filter_language(socket, "Any Language") do
   #   socket |> assign(:visible_channels, socket.assigns.original_channels)
   # end
-  # defp filter_language(socket, locale) do
-  #   channels = Enum.filter(socket.assigns.original_channels, fn channel ->
-  #     channel.language == locale
-  #   end)
 
-  #   socket |> assign(:visible_channels, channels)
+  # defp filter_language(socket, locale) do
+  #   channels =
+  #     Enum.filter(socket.assigns.original_channels, fn channel ->
+  #       channel.language == locale
+  #     end)
+
+  #   if length(channels) > 0 do
+  #     socket |> assign(:visible_channels, channels)
+  #   else
+  #     # No streams, probably bad lang or no live channels anymore
+  #     socket
+  #     |> push_patch(to: Routes.streams_list_path(socket, :index, socket.assigns.category.slug))
+  #   end
   # end
 
   defp category_background_url(slug) do

@@ -258,6 +258,8 @@ defmodule Glimesh.Streams do
     {:ok, stream |> Repo.preload([:metadata])}
   end
 
+  # System API Calls
+
   def prompt_mature_content(%Channel{mature_content: true}, %User{} = user) do
     user_pref = Glimesh.Accounts.get_user_preference!(user)
 
@@ -269,10 +271,15 @@ defmodule Glimesh.Streams do
 
   def get_stream_key(%Channel{id: id, hmac_key: hmac_key}), do: "#{id}-#{hmac_key}"
 
-  # System API Calls
-
   def change_channel(%Channel{} = channel, attrs \\ %{}) do
     Channel.changeset(channel, attrs)
+  end
+
+  def get_channel_language(%Channel{language: locale}) do
+    case Application.get_env(:glimesh, :locales) |> List.keyfind(locale, 1) do
+      {name, _} -> Atom.to_string(name)
+      _ -> ""
+    end
   end
 
   def is_live?(%Channel{} = channel) do

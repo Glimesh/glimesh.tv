@@ -3,11 +3,20 @@
         transition: transform .2s;
     }
 
+    .card-img {
+        width: 100%;
+        height: auto;
+        text-align: center;
+    }
+
+    .card-img-overlay {
+        transition: opacity .2s;
+    }
+
     .card-stream-title {
         text-overflow: ellipsis;
-        // overflow: hidden;
-        // white-space: nowrap;
     }
+
     .card-stream-tags {
         text-align: right;
     }
@@ -23,6 +32,7 @@
         background: var(--stream-card-streamer-background);
         border-radius: 30px;
     }
+
     .card-stream-streamer.sub-ready {
         background: $color-secondary !important;
     }
@@ -30,6 +40,10 @@
     &:hover {
         img {
             transform: scale(1.03);
+        }
+
+        .card-img-overlay {
+            opacity: 0.2;
         }
 
         color: var(--body-color);
