@@ -50,9 +50,14 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
         })
 
       nil ->
-        # Invoice doesn't already exist, should we create?
-        Logger.warn("Unable to find an existing Glimesh Subscription Invoice for #{invoice.id}")
-        create_invoice(invoice)
+        # Invoice doesn't already exist
+        case create_invoice(invoice) do
+          {:ok, _} ->
+            pay_invoice(invoice)
+
+          {:error, msg} ->
+            {:error, msg}
+        end
     end
   end
 
