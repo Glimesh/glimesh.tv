@@ -51,11 +51,12 @@
                                         placeholder: gettext("Search for a stream by tags") %>
                                 </div>
                             </div>
-                            <%# <div class="col-md-6 mb-3">
+                            <%#
+                            <div class="col-md-6 mb-3">
                                 <label for="validationCustom02">Language</label>
-                                 select :form, :locale, @locales, [class: "custom-select", "phx-change": "filter_language"]
+                                select :form, :locale, @locales, [value: @prefilled_language, class: "custom-select", "phx-change": "filter_language"]
                             </div>
-                            %>
+                             %>
                         </div>
                     </form>
                 </div>
@@ -67,12 +68,14 @@
 
             <div class="row">
                 <%= for channel <- @visible_channels do %>
-                <div class="col-sm-12 col-md-6 col-lg-4 mt-4">
+                <div class="col-sm-12 col-md-6 col-xl-4 mt-4">
                     <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
                     <div class="card card-stream">
-                        <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>" alt="<%= channel.title %>" class="card-img">
+                        <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>" alt="<%= channel.title %>" class="card-img" height="468" width="832">
                         <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
+
                             <div class="card-stream-tags">
+                                <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
                                 <%= for tag <- channel.tags do %>
                                 <span class="badge badge-primary"><%= tag.name %></span>
                                 <% end %>
