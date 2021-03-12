@@ -308,6 +308,36 @@ defmodule Glimesh.Payments do
     end
   end
 
+  @doc """
+  Does the user have payout history we should not be deleting from Stripe?
+  """
+  def has_payout_history?(%User{} = user) do
+    Repo.exists?(from s in Subscription, where: s.streamer_id == ^user.id)
+  end
+
+  @doc """
+  Delete a Stripe Connect Account
+
+  Will error if the account still has a balance
+  """
+  def delete_stripe_account(%User{stripe_user_id: stripe_user_id} = user)
+      when not is_nil(stripe_user_id) do
+    if has_payout_history?(user) == false do
+      case Stripe.Account.delete(stripe_user_id) do
+        {:ok, _} ->
+          Glimesh.Accounts.set_stripe_attrs(user, %{
+            stripe_user_id: nil,
+            is_stripe_setup: false
+          })
+
+        {:error, %Stripe.Error{} = error} ->
+          {:error, error.user_message || error.message}
+      end
+    else
+      {:error, "User has payout history, cannot delete Stripe account."}
+    end
+  end
+
   def get_subscription_by_stripe_id(subscription_id) when is_binary(subscription_id) do
     Repo.one(
       from s in Subscription,
