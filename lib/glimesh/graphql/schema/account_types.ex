@@ -32,6 +32,13 @@ defmodule Glimesh.Schema.AccountTypes do
       arg(:user_username, :string)
       resolve(&AccountResolver.all_followers/2)
     end
+
+    @desc "Count all follows or followers"
+    field :followers, list_of(:follower) do
+      arg(:streamer_username, :string)
+      arg(:user_username, :string)
+      resolve(&AccountResolver.count_followers/2)
+    end
   end
 
   object :account_subscriptions do
