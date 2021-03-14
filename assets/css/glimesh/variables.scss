@@ -122,6 +122,15 @@ $custom-select-focus-border-color: var(--input-border-color);
 $table-color:                 var(--body-color);
 $table-border-color:          var(--secondary-hover-bg-color);
 
+// Apex charts
+.apexcharts-menu {
+    background: var(--secondary-hover-bg-color) !important;
+}
+ 
+.apexcharts-menu-item:hover {
+    background: var(--navbar-border-color) !important;
+}
+
 // Modals
 $modal-content-bg: var(--secondary-bg-color);
 $close-color: var(--secondary-color);
