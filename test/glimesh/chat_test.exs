@@ -202,6 +202,8 @@ defmodule Glimesh.ChatTest do
     setup do
       streamer = streamer_fixture()
       moderator = user_fixture()
+      # Banned user fixtures
+      banned_streamer = streamer_fixture(%{is_banned: true})
 
       {:ok, _} =
         StreamModeration.create_channel_moderator(streamer, streamer.channel, moderator, %{
@@ -213,6 +215,8 @@ defmodule Glimesh.ChatTest do
       %{
         channel: streamer.channel,
         streamer: streamer,
+        banned_streamer: banned_streamer,
+        banned_channel: banned_streamer.channel,
         moderator: moderator,
         user: user_fixture()
       }
@@ -223,6 +227,16 @@ defmodule Glimesh.ChatTest do
 
       assert {:error, "You are banned from Glimesh."} =
                Chat.create_chat_message(user, channel, %{message: "not allowed?"})
+    end
+
+    test "global account ban prohibits streamer from chat", %{
+      banned_channel: banned_channel,
+      banned_streamer: banned_streamer
+    } do
+      assert {:error, "You are banned from Glimesh."} =
+               Chat.create_chat_message(banned_streamer, banned_channel, %{
+                 message: "not allowed?"
+               })
     end
 
     test "times out a user and removes messages successfully", %{
