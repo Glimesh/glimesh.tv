@@ -163,7 +163,7 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
   end
 
   defp create_subscription_invoice(%Subscription{streamer_id: streamer_id} = subscription, %Stripe.Invoice{} = invoice)
-       when not is_nil(streamer_id: streamer_id) do
+       when not is_nil(streamer_id) do
     # Channel Subscription
     # Create invoice for this subscription
     user = Accounts.get_user!(subscription.user_id)
