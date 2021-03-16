@@ -16,6 +16,7 @@ defmodule Glimesh.Streams.ChannelModerator do
     field :can_un_timeout, :boolean
     field :can_ban, :boolean
     field :can_unban, :boolean
+    field :can_delete, :boolean
 
     timestamps()
   end
@@ -28,7 +29,8 @@ defmodule Glimesh.Streams.ChannelModerator do
       :can_long_timeout,
       :can_un_timeout,
       :can_ban,
-      :can_unban
+      :can_unban,
+      :can_delete
     ])
     |> validate_required([:channel, :user])
     |> unique_constraint([:channel_id, :user_id])

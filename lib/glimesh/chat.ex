@@ -7,6 +7,7 @@ defmodule Glimesh.Chat do
 
   alias Glimesh.Accounts.User
   alias Glimesh.Chat.ChatMessage
+  alias Glimesh.Events
   alias Glimesh.Repo
   alias Glimesh.Streams
   alias Glimesh.Streams.Channel
@@ -154,6 +155,26 @@ defmodule Glimesh.Chat do
     end
   end
 
+  def delete_message(
+        %User{} = moderator,
+        %Channel{} = channel,
+        %User{} = message_author,
+        message_id
+      ) do
+    with :ok <- Bodyguard.permit(__MODULE__, :delete, moderator, channel) do
+      delete_chat_message(channel, message_id)
+      broadcast_delete({:ok, channel.id, message_id}, :message_deleted)
+
+      %ChannelModerationLog{
+        channel: channel,
+        moderator: moderator,
+        user: message_author
+      }
+      |> ChannelModerationLog.changeset(%{action: "delete_message"})
+      |> Repo.insert()
+    end
+  end
+
   # System API Calls
 
   @doc """
@@ -275,7 +296,8 @@ defmodule Glimesh.Chat do
     do: %{
       can_short_timeout: false,
       can_long_timeout: false,
-      can_ban: false
+      can_ban: false,
+      can_delete: false
     }
 
   def get_moderator_permissions(%Channel{} = channel, %User{} = user) do
@@ -283,7 +305,8 @@ defmodule Glimesh.Chat do
       can_short_timeout: Bodyguard.permit?(__MODULE__, :short_timeout, user, channel),
       can_long_timeout: Bodyguard.permit?(__MODULE__, :long_timeout, user, channel),
       can_ban: Bodyguard.permit?(__MODULE__, :ban, user, channel),
-      can_unban: Bodyguard.permit?(__MODULE__, :unban, user, channel)
+      can_unban: Bodyguard.permit?(__MODULE__, :unban, user, channel),
+      can_delete: Bodyguard.permit?(__MODULE__, :delete, user, channel)
     }
   end
 
@@ -375,10 +398,21 @@ defmodule Glimesh.Chat do
     Repo.update_all(query, set: [is_visible: false])
   end
 
+  defp delete_chat_message(%Channel{} = channel, message_id) do
+    query =
+      from m in ChatMessage,
+        where:
+          m.is_visible == true and
+            m.channel_id == ^channel.id and
+            m.id == ^message_id
+
+    Repo.update_all(query, set: [is_visible: false])
+  end
+
   defp broadcast({:error, _reason} = error, _event), do: error
 
   defp broadcast({:ok, chat_message}, event) do
-    Glimesh.Events.broadcast(
+    Events.broadcast(
       Streams.get_subscribe_topic(:chat, chat_message.channel_id),
       Streams.get_subscribe_topic(:chat),
       event,
@@ -389,7 +423,7 @@ defmodule Glimesh.Chat do
   end
 
   defp broadcast_timeout({:ok, channel_id, bad_user}, :user_timedout) do
-    Glimesh.Events.broadcast(
+    Events.broadcast(
       Streams.get_subscribe_topic(:chat, channel_id),
       Streams.get_subscribe_topic(:chat),
       :user_timedout,
@@ -397,5 +431,14 @@ defmodule Glimesh.Chat do
     )
 
     {:ok, bad_user}
+  end
+
+  defp broadcast_delete({:ok, channel_id, message_id}, :message_deleted) do
+    Events.broadcast(
+      Streams.get_subscribe_topic(:chat, channel_id),
+      Streams.get_subscribe_topic(:chat),
+      :message_deleted,
+      message_id
+    )
   end
 end
