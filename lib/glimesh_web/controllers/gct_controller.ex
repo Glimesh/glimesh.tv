@@ -87,7 +87,10 @@ defmodule GlimeshWeb.GctController do
           verbose_required: true
         })
 
-        render(conn, "user_chat_log.html", user: user, page_title: format_page_title("Chat Log - #{user.displayname}"))
+        render(conn, "user_chat_log.html",
+          user: user,
+          page_title: format_page_title("Chat Log - #{user.displayname}")
+        )
       end
     end
   end
@@ -270,8 +273,10 @@ defmodule GlimeshWeb.GctController do
           verbose_required: true
         })
 
-        render(conn, "channel_chat_log.html", channel: channel,
-          page_title: format_page_title("Chat Log - #{channel.user.displayname}"))
+        render(conn, "channel_chat_log.html",
+          channel: channel,
+          page_title: format_page_title("Chat Log - #{channel.user.displayname}")
+        )
       end
     end
   end

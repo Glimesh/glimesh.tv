@@ -47,7 +47,9 @@ defmodule GlimeshWeb.GctLive.Components.UserChatLogTable do
       total_entries: total_entries,
       total_pages: total_pages
     } =
-      CommunityTeam.paginate_chat_message(Chat.list_all_chat_messages_for_user(user), page: page_number)
+      CommunityTeam.paginate_chat_message(Chat.list_all_chat_messages_for_user(user),
+        page: page_number
+      )
 
     [
       chat_log: entries,
