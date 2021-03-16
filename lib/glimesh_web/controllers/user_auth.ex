@@ -194,8 +194,8 @@ defmodule GlimeshWeb.UserAuth do
       conn
     else
       conn
-      |> redirect(to: Routes.user_session_path(conn, :new))
-      |> halt()
+      #|> redirect(to: Routes.user_session_path(conn, :new))
+      #|> halt()
     end
   end
 

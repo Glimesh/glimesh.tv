@@ -45,5 +45,11 @@
   <%= error_tag f, :can_unban %>
 </div>
 
+<div class="custom-control custom-checkbox">
+  <%= checkbox f, :can_delete, class: "custom-control-input" %>
+  <%= label f, :can_delete, gettext("Delete Message"), class: "custom-control-label" %>
+  <%= error_tag f, :can_delete %>
+</div>
+
 <%= submit gettext("Save"), class: "btn btn-primary", role: "button" %>
 <% end %>
