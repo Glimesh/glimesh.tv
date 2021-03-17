@@ -10,6 +10,7 @@ defmodule GlimeshWeb.UserLive.Components.TagSelector do
         class: "tagify",
         "data-category": @current_category_id,
         "data-tags": @tags,
+        "data-allowed-regex": "^[A-Za-z0-9 \\:\\-]{2,18}$",
         "phx-hook": "TagSelector",
         placeholder: gettext("Add tags to describe your stream! Limit 10.") %>
     </div>

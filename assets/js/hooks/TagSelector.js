@@ -9,23 +9,35 @@ export default {
     mounted() {
         this.tagify();
     },
+    maxTags() {
+        if (this.el.dataset.maxTags) {
+            return parseInt(this.el.dataset.maxTags);
+        } else {
+            return 10;
+        }
+    },
     tagify() {
+        console.log(this.el.dataset)
         let tags = JSON.parse(this.el.dataset.tags);
         let categoryId = this.el.dataset.category;
-        let allowedRegex = /^[A-Za-z0-9: -]{2,18}$/;
+        let optionMaxTags = this.maxTags()
+        let allowedRegex = new RegExp(this.el.dataset.allowedRegex);
+        // Allow existing weirdness to still exist
+        let parsedWhitelist = tags.map((value) => value.value)
 
         return new Tagify(this.el, {
             whitelist: tags,
             trim: true,
-            maxTags: 10,
+            maxTags: optionMaxTags,
             originalInputValueFormat: (valuesArr) => {
                 return JSON.stringify(
                     valuesArr.map(item => {
                         return {
-                        category_id: categoryId,
-                        value: item.value
-                    }
-                }));
+                            category_id: categoryId,
+                            value: item.value
+                        }
+                    })
+                );
             },
             templates: {
                 tag: function(tagData) {
@@ -52,7 +64,11 @@ export default {
                 }
             },
             validate: function({value: input}) {
-                if ( ! allowedRegex.test(input)) {
+                if (parsedWhitelist.includes(input)) {
+                    return true;
+                }
+
+                if (!allowedRegex.test(input)) {
                     return "Tags must be alphanumerical and may contain colon's, spaces, and dashes. Min length 2, Max length 18";
                 }
 

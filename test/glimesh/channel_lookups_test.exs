@@ -7,13 +7,23 @@ defmodule Glimesh.ChannelLookupsTest do
   alias Glimesh.ChannelCategories
 
   defp create_channel(_) do
+    gaming_id = ChannelCategories.get_category("gaming").id
+
+    {:ok, subcategory} =
+      ChannelCategories.create_subcategory(%{
+        name: "Testing",
+        category_id: gaming_id
+      })
+
     streamer =
       streamer_fixture(%{}, %{
         # Force ourselves to have a gaming stream
-        category_id: ChannelCategories.get_category("gaming").id
+        category_id: gaming_id,
+        subcategory_id: subcategory.id
       })
 
     %{
+      subcategory: subcategory,
       channel: streamer.channel,
       streamer: streamer
     }
@@ -24,6 +34,50 @@ defmodule Glimesh.ChannelLookupsTest do
 
     test "list_channels/0 lists all channels" do
       assert length(ChannelLookups.list_channels()) == 1
+    end
+
+    test "channel_search/1 lists channels conditionally for category", %{channel: channel} do
+      random_streamer =
+        streamer_fixture(%{}, %{category_id: ChannelCategories.get_category("art").id})
+
+      {:ok, _} = Glimesh.Streams.start_stream(random_streamer.channel)
+      {:ok, _} = Glimesh.Streams.start_stream(channel)
+
+      channels =
+        ChannelLookups.search_live_channels(%{
+          "category_id" => channel.category_id
+        })
+
+      assert length(channels) == 1
+      assert hd(channels).id == channel.id
+    end
+
+    test "channel_search/1 lists channels conditionally for category and subcategory", %{
+      channel: channel,
+      subcategory: subcategory
+    } do
+      gaming_id = ChannelCategories.get_category("gaming").id
+
+      {:ok, another_subcategory} =
+        ChannelCategories.create_subcategory(%{
+          name: "Not the one",
+          category_id: gaming_id
+        })
+
+      random_streamer =
+        streamer_fixture(%{}, %{category_id: gaming_id, subcategory_id: another_subcategory.id})
+
+      {:ok, _} = Glimesh.Streams.start_stream(random_streamer.channel)
+      {:ok, _} = Glimesh.Streams.start_stream(channel)
+
+      channels =
+        ChannelLookups.search_live_channels(%{
+          "category_id" => channel.category_id,
+          "subcategory_id" => subcategory.id
+        })
+
+      assert length(channels) == 1
+      assert hd(channels).id == channel.id
     end
 
     test "filter_live_channels/0 lists all live channels", %{channel: channel} do

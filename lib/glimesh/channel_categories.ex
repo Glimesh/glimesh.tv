@@ -7,6 +7,7 @@ defmodule Glimesh.ChannelCategories do
 
   alias Glimesh.Repo
   alias Glimesh.Streams.Category
+  alias Glimesh.Streams.Subcategory
   alias Glimesh.Streams.Channel
   alias Glimesh.Streams.Tag
 
@@ -290,5 +291,96 @@ defmodule Glimesh.ChannelCategories do
   """
   def change_tag(%Tag{} = tag, attrs \\ %{}) do
     Tag.changeset(tag, attrs)
+  end
+
+  # Subcategories
+
+  def get_subcategory_by_category_id_and_slug(category_id, slug) do
+    Repo.one(from c in Subcategory, where: c.category_id == ^category_id and c.slug == ^slug)
+  end
+
+  def list_subcategories(category_id) do
+    Repo.all(
+      from c in Subcategory,
+        where: c.category_id == ^category_id
+    )
+  end
+
+  @spec list_subcategories_for_tagify(integer) :: binary
+  def list_subcategories_for_tagify(category_id) do
+    list_subcategories(category_id)
+    |> convert_subcategories_for_tagify()
+  end
+
+  def convert_subcategories_for_tagify(subcategories) do
+    Enum.map(subcategories, fn category ->
+      %{
+        value: category.name,
+        slug: category.slug,
+        label: category.name,
+        # placeholder for global tags
+        class: ""
+      }
+    end)
+    |> Jason.encode!()
+  end
+
+  @doc """
+  Creates a subcategory.
+
+  ## Examples
+
+      iex> create_subcategory(%{field: value})
+      {:ok, %Category{}}
+
+      iex> create_subcategory(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_subcategory(attrs \\ %{}) do
+    %Subcategory{}
+    |> Subcategory.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a subcategory.
+
+  ## Examples
+
+      iex> update_subcategory(category, %{field: new_value})
+      {:ok, %Category{}}
+
+      iex> update_subcategory(category, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_subcategory(%Subcategory{} = category, attrs) do
+    category
+    |> Subcategory.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Creates or updates a subcategory based on source+source_id existance
+  """
+  @spec upsert_subcategory_from_source(binary(), binary(), map) ::
+          {:ok, %Category{}} | {:error, any()}
+  def upsert_subcategory_from_source(source, source_id, attrs) do
+    if subcategory = subcategory_source_exists?(source, source_id) do
+      update_subcategory(subcategory, attrs)
+    else
+      insert_map =
+        Map.merge(attrs, %{
+          source: source,
+          source_id: source_id
+        })
+
+      create_subcategory(insert_map)
+    end
+  end
+
+  defp subcategory_source_exists?(source, source_id) do
+    Repo.one(from s in Subcategory, where: s.source == ^source and s.source_id == ^source_id)
   end
 end

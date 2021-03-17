@@ -9,7 +9,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   def render(assigns) do
     ~L"""
     <h5 class="mb-0">
-      <%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.name %></span> <%= @channel.title %>
+      <%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.name %><%= if @channel.subcategory do %>: <%= @channel.subcategory.name %><% end %></span> <%= @channel.title %>
       <%= if @can_change do %>
       <a class="fas fa-edit" phx-click="toggle-edit" href="#" aria-label="<%= gettext("Edit") %>"></a>
       <% end %>
@@ -38,17 +38,22 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
                     <div class="modal-body">
                       <%= f = form_for @changeset, "#", [phx_submit: :save, phx_change: :change_channel] %>
                           <div class="form-group">
-                              <%= label f, gettext("Title") %>
+                              <%= label f, :title, gettext("Title") %>
                               <%= text_input f, :title, [class: "form-control", phx_update: "ignore"] %>
                               <%= error_tag f, :title %>
                           </div>
                           <div class="form-group">
-                              <%= label f, gettext("Category") %>
+                              <%= label f, :category_id, gettext("Category") %>
                               <%= select f, :category_id, @categories, [class: "form-control"] %>
                               <%= error_tag f, :category_id %>
                           </div>
                           <div class="form-group">
-                              <%= label f, gettext("Tags") %>
+                            <%= label f, :subcategory, gettext("Game") %>
+                            <%= live_component(@socket, GlimeshWeb.UserLive.Components.SubcategorySelector, form: f, field: :subcategory, category_id: @current_category_id) %>
+                            <%= error_tag f, :subcategory %>
+                          </div>
+                          <div class="form-group">
+                              <%= label f, :tags, gettext("Tags") %>
                               <%= live_component(@socket, GlimeshWeb.UserLive.Components.TagSelector, form: f, field: :tags, category_id: @current_category_id) %>
                               <%= error_tag f, :tags %>
                           </div>

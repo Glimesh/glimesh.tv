@@ -1,73 +1,72 @@
-<div class="hero has-background">
-    <!-- <img class="hero-background" src="<%= @category_background_url %>" alt="<%= gettext("%{category} Streams", category: @list_name) %>"> -->
+<div class="container">
 
-    <div class="hero-body">
-        <div class="container">
-
-            <%= if is_nil(List.first(@original_channels)) do %>
-
-            <div class="container">
-                <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
-                    <div class="col-md-12 p-lg-5 mx-auto my-5">
-                        <h1 class="display-4 font-weight-normal">
-                            <%= gettext("%{category} Streams Coming Soon", category: @list_name) %></h1>
-                        <p class="lead font-weight-normal">
-                            <%= gettext("We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!") %>
-                        </p>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
+            <div class="col-md-12 mx-auto ">
+                <h1 class="display-4 font-weight-normal">
+                    <%= gettext("%{category} Streams", category: @list_name) %>
+                </h1>
             </div>
-
-            <% else %>
-
-            <div class="container">
-                <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
-                    <div class="col-md-12 mx-auto ">
-                        <h1 class="display-4 font-weight-normal">
-                            <%= gettext("%{category} Streams", category: @list_name) %>
-                        </h1>
-                    </div>
-                </div>
-            </div>
-
-            <% end %>
         </div>
-        <%= if !is_nil(List.first(@original_channels)) do %>
-        <div class="container container-stream-list pt-4">
-            <%= if !is_nil(@tag_list) do %>
-            <div class="row">
-                <div class="col">
-                    <form class="needs-validation" novalidate>
-                        <div class="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label for="validationCustom01">Tags</label>
-                                <div id="tagify" phx-update="ignore">
-                                    <%= text_input :form, :tag_search,
-                                        value: @prefilled_tags,
-                                        class: "tagify",
-                                        "data-tags": @tag_list,
-                                        "phx-hook": "TagSearch",
-                                        "phx-change": "filter_tags",
-                                        placeholder: gettext("Search for a stream by tags") %>
-                                </div>
-                            </div>
-                            <%#
-                            <div class="col-md-6 mb-3">
-                                <label for="validationCustom02">Language</label>
-                                select :form, :locale, @locales, [value: @prefilled_language, class: "custom-select", "phx-change": "filter_language"]
-                            </div>
-                             %>
-                        </div>
-                    </form>
-                </div>
-                <div class="col text-right">
-                    <%= gettext("Showing %{count_channels} of %{total_channels} Live Channels", count_channels: length(@visible_channels), total_channels: length(@original_channels)) %>
-                </div>
-            </div>
-            <% end %>
+    </div>
 
+</div>
+
+<div class="container container-stream-list pt-4">
+    <%= if !is_nil(@tag_list) do %>
+    <div class="row">
+        <div class="col-md-10">
+            <form phx-change="filter_change">
+                <div class="form-row">
+                    <div class="col mb-3">
+                        <label for="validationCustom01">Game</label>
+                        <div id="subcategoryFilter" phx-update="ignore">
+                            <%= text_input :form, :subcategory_search,
+                                value: @prefilled_subcategory,
+                                class: "tagify",
+                                "data-tags": @subcategory_list,
+                                "phx-hook": "TagSearch",
+                                placeholder: gettext("Search for a stream by subcategory") %>
+                        </div>
+                    </div>
+                    <div class="col mb-3">
+                        <label for="validationCustom01">Tags</label>
+                        <div id="tagify" phx-update="ignore">
+                            <%= text_input :form, :tag_search,
+                                value: @prefilled_tags,
+                                class: "tagify",
+                                "data-tags": @tag_list,
+                                "phx-hook": "TagSearch",
+                                placeholder: gettext("Search for a stream by tags") %>
+                        </div>
+                    </div>
+                    <div class="col mb-3">
+                        <label for="validationCustom02">Language</label>
+                        <%= select :form, :language, @locales, [value: @prefilled_language, class: "custom-select"] %>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col text-right">
+            <%= gettext("Showing %{count_channels} of %{total_channels} Live Channels", count_channels: @shown_channels, total_channels: @total_channels) %>
+
+            <br>
+
+            <%= link gettext("Remove Filters"), to: Routes.streams_list_path(@socket, :index, @category.slug), class: "btn btn-primary" %>
+        </div>
+    </div>
+    <% end %>
+
+    <%= if !is_nil(List.first(@channels)) do %>
+
+    <%= for {row, i} <- Enum.with_index(@blocks) do %>
+    <div class="channel-block has-bg-image mt-4 mb-4 pb-4" style="<%= if row.background_image_url, do: "--background-image: url('#{row.background_image_url}')", else: "" %>">
+        <div class="channel-list">
+            <%= if row.title do %>
+            <h3 class="display-4"><%= row.title %></h3>
+            <% end %>
             <div class="row">
-                <%= for channel <- @visible_channels do %>
+                <%= for channel <- row.channels do %>
                 <div class="col-sm-12 col-md-6 col-xl-4 mt-4">
                     <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
                     <div class="card card-stream">
@@ -94,7 +93,19 @@
                 </div>
                 <% end %>
             </div>
+            <%= if length(row.all_channels) > 0 do %>
+            <div class="row">
+                <div class="col-auto ml-auto"><button class="btn btn-primary btn-lg m-4" phx-click="show_more_streams" phx-value-index="<%= i %>">Show more streams</button></div>
+            </div>
+            <% end %>
+
         </div>
-        <% end %>
     </div>
+    <% end %>
+
+    <% else %>
+
+    <h1>No streams dawg!</h1>
+
+    <% end %>
 </div>

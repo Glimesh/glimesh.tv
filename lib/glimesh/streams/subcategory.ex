@@ -1,16 +1,21 @@
-defmodule Glimesh.Streams.Category do
+defmodule Glimesh.Streams.Subcategory do
   @moduledoc false
 
   use Ecto.Schema
   use Waffle.Ecto.Schema
   import Ecto.Changeset
 
-  schema "categories" do
+  schema "subcategories" do
+    belongs_to :category, Glimesh.Streams.Category
+
     field :name, :string
     field :slug, :string
 
-    has_many :tags, Glimesh.Streams.Tag
-    has_many :subcategories, Glimesh.Streams.Subcategory
+    field :user_created, :boolean
+    field :source, :string, default: nil
+    field :source_id, :string
+
+    field :background_image, :string
 
     timestamps()
   end
@@ -19,8 +24,13 @@ defmodule Glimesh.Streams.Category do
   def changeset(category, attrs) do
     category
     |> cast(attrs, [
+      :category_id,
       :name,
-      :slug
+      :slug,
+      :user_created,
+      :source,
+      :source_id,
+      :background_image
     ])
     |> validate_required([:name])
     |> validate_length(:name, min: 2)

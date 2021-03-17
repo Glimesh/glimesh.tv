@@ -11,6 +11,58 @@ defmodule Glimesh.ChannelLookups do
   alias Glimesh.Streams.{Category, Channel, Tag}
 
   ## Filtering
+  @spec search_live_channels(map) :: list
+  def search_live_channels(params) do
+    IO.inspect(params, label: "filter_params")
+
+    Channel
+    |> where([c], c.status == "live")
+    |> apply_filter(:category, params)
+    |> apply_filter(:subcategory, params)
+    |> apply_filter(:tags, params)
+    |> apply_filter(:language, params)
+    |> order_by(fragment("RANDOM()"))
+    |> preload([:category, :subcategory, :user, :stream, :tags])
+    |> Repo.all()
+  end
+
+  defp apply_filter(query, :category, %{"category" => category_slug})
+       when is_binary(category_slug) do
+    category = Glimesh.ChannelCategories.get_category(category_slug)
+
+    where(query, [c], c.category_id == ^category.id)
+  end
+
+  defp apply_filter(query, :subcategory, %{
+         "category" => category_slug,
+         "subcategory" => subcategories
+       })
+       when is_binary(category_slug) and is_list(subcategories) do
+    category = Glimesh.ChannelCategories.get_category(category_slug)
+
+    query
+    |> join(:inner, [c], assoc(c, :subcategory), as: :subcategory)
+    |> where([subcategory: sc], sc.category_id == ^category.id)
+    |> where([subcategory: sc], sc.slug in ^subcategories)
+  end
+
+  defp apply_filter(query, :tags, %{"tags" => tags}) when is_list(tags) do
+    query
+    |> join(:inner, [c], assoc(c, :tags), as: :tags)
+    |> where([tags: t], t.slug in ^tags)
+  end
+
+  defp apply_filter(query, :language, %{"language" => language}) when is_binary(language) do
+    where(query, [c], c.language == ^language)
+  end
+
+  defp apply_filter(query, :language, %{"language" => languages}) when is_list(languages) do
+    where(query, [c], c.language in ^languages)
+  end
+
+  defp apply_filter(query, _field, _params) do
+    query
+  end
 
   def list_channels(wheres \\ []) do
     Repo.all(
@@ -95,11 +147,11 @@ defmodule Glimesh.ChannelLookups do
   end
 
   def get_channel(id) do
-    Repo.get_by(Channel, id: id) |> Repo.preload([:category, :user, :tags])
+    Repo.get_by(Channel, id: id) |> Repo.preload([:category, :subcategory, :user, :tags])
   end
 
   def get_channel!(id) do
-    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :user, :tags])
+    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :subcategory, :user, :tags])
   end
 
   def get_channel_for_username(username, ignore_banned \\ false) do
