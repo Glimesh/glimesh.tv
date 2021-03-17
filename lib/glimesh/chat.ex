@@ -166,9 +166,14 @@ defmodule Glimesh.Chat do
 
   """
   def list_chat_messages(channel, limit \\ 5) do
+    timeframe = NaiveDateTime.add(NaiveDateTime.utc_now(), -(60 * 60), :second)
+
     Repo.all(
       from m in ChatMessage,
-        where: m.is_visible == true and m.channel_id == ^channel.id,
+        where:
+          m.is_visible == true and
+            m.channel_id == ^channel.id and
+            m.inserted_at >= ^timeframe,
         order_by: [desc: :inserted_at],
         limit: ^limit
     )
