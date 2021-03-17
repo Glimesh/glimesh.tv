@@ -21,9 +21,16 @@ defmodule Glimesh.Chat.Policy do
 
   def authorize(:create_chat_message, %User{is_admin: true}, _channel), do: true
 
-  def authorize(:create_chat_message, %User{id: user_id}, %Channel{user_id: channel_user_id})
-      when user_id == channel_user_id,
-      do: true
+  def authorize(:create_chat_message, %User{id: user_id} = user, %Channel{
+        user_id: channel_user_id
+      })
+      when user_id == channel_user_id do
+    if Glimesh.Accounts.is_user_banned?(user) do
+      {:error, gettext("You are banned from Glimesh.")}
+    else
+      true
+    end
+  end
 
   def authorize(:create_chat_message, %User{} = user, %Channel{} = channel) do
     account_age = NaiveDateTime.diff(NaiveDateTime.utc_now(), user.inserted_at, :second)
