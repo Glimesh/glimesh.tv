@@ -62,7 +62,7 @@ defmodule Glimesh.OauthHandler.Token do
 
     result =
       {:ok, %{client: client, resource_owner: resource_owner, scopes: post_request["scope"]}}
-      |> maybe_create_access_token(config)
+      |> create_access_token(config)
 
     case result do
       {:ok, {:error, error}} -> Error.add_error({:ok, params}, error)
@@ -132,9 +132,9 @@ defmodule Glimesh.OauthHandler.Token do
   defp validate_redirect_uri({:ok, params}, _config),
     do: Error.add_error({:ok, params}, Error.invalid_request())
 
-  defp maybe_create_access_token({:error, _} = error, _config), do: error
+  defp create_access_token({:error, _} = error, _config), do: error
 
-  defp maybe_create_access_token(
+  defp create_access_token(
          {:ok, %{resource_owner: resource_owner, client: application, scopes: scopes}},
          config
        ) do
@@ -145,12 +145,7 @@ defmodule Glimesh.OauthHandler.Token do
       expires_in: 604_800
     }
 
-    resource_owner
-    |> AccessTokens.get_token_for(application, scopes, config)
-    |> case do
-      nil -> AccessTokens.create_token(resource_owner, token_params, config)
-      access_token -> {:ok, access_token}
-    end
+    AccessTokens.create_token(resource_owner, token_params, config)
   end
 
   def authorize_response({:ok, params}, config),
