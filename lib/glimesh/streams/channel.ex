@@ -117,6 +117,11 @@ defmodule Glimesh.Streams.Channel do
   end
 
   def maybe_put_subcategory(changeset, key, %{"subcategory" => subcategory_json})
+      when subcategory_json == "" do
+    changeset |> put_assoc(key, nil)
+  end
+
+  def maybe_put_subcategory(changeset, key, %{"subcategory" => subcategory_json})
       when is_binary(subcategory_json) do
     {:ok, [%{"value" => value, "category_id" => category_id}]} = Jason.decode(subcategory_json)
     slug = Slug.slugify(value)

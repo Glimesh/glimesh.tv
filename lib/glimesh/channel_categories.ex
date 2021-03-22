@@ -145,6 +145,16 @@ defmodule Glimesh.ChannelCategories do
     )
   end
 
+  def list_live_subcategories(category_id) do
+    Repo.all(
+      from sc in Subcategory,
+        join: c in Channel,
+        on: sc.id == c.subcategory_id,
+        where: c.status == "live" and sc.category_id == ^category_id,
+        group_by: sc.id
+    )
+  end
+
   def list_live_tags(category_id) do
     Repo.all(
       from t in Tag,

@@ -13,8 +13,6 @@ defmodule Glimesh.ChannelLookups do
   ## Filtering
   @spec search_live_channels(map) :: list
   def search_live_channels(params) do
-    IO.inspect(params, label: "filter_params")
-
     Channel
     |> where([c], c.status == "live")
     |> apply_filter(:category, params)
@@ -22,6 +20,7 @@ defmodule Glimesh.ChannelLookups do
     |> apply_filter(:tags, params)
     |> apply_filter(:language, params)
     |> order_by(fragment("RANDOM()"))
+    |> group_by([c], c.id)
     |> preload([:category, :subcategory, :user, :stream, :tags])
     |> Repo.all()
   end
@@ -62,6 +61,14 @@ defmodule Glimesh.ChannelLookups do
 
   defp apply_filter(query, _field, _params) do
     query
+  end
+
+  def count_live_channels(%Category{id: category_id}) do
+    Repo.one(
+      from c in Channel,
+        select: count(c.id),
+        where: c.status == "live" and c.category_id == ^category_id
+    )
   end
 
   def list_channels(wheres \\ []) do
@@ -169,7 +176,7 @@ defmodule Glimesh.ChannelLookups do
       end
 
     Repo.one(query)
-    |> Repo.preload([:category, :user, :tags])
+    |> Repo.preload([:category, :subcategory, :user, :tags])
   end
 
   def get_channel_by_hmac_key(hmac_key) do

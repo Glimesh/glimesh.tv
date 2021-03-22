@@ -31,8 +31,9 @@ defmodule Glimesh.Subcategories.RawgSource do
     end
   end
 
-  defp background_image(%{"background_image" => image, "esrb_rating" => esrb_rating}) do
-    if Map.get(esrb_rating, "slug", nil) == "adults-only" do
+  defp background_image(%{"background_image" => image, "esrb_rating" => esrb_rating})
+       when is_binary(image) do
+    if !is_nil(esrb_rating) and Map.get(esrb_rating, "slug", nil) == "adults-only" do
       ""
     else
       image

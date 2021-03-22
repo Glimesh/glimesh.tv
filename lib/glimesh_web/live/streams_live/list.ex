@@ -30,7 +30,7 @@ defmodule GlimeshWeb.StreamsLive.List do
     case ChannelCategories.get_category(Map.get(params, "category", nil)) do
       %Streams.Category{} = category ->
         live_tags = ChannelCategories.list_live_tags(category.id)
-        subcategories = ChannelCategories.list_subcategories(category.id)
+        subcategories = ChannelCategories.list_live_subcategories(category.id)
 
         tags_and_slugs =
           Enum.reduce(live_tags, %{}, fn tag, acc ->
@@ -74,16 +74,22 @@ defmodule GlimeshWeb.StreamsLive.List do
     channels = Glimesh.ChannelLookups.search_live_channels(params)
 
     blocks =
-      if Map.has_key?(params, "subcategory") do
-        Glimesh.Streams.Organizer.organize(channels, limit: 6, group_by: :subcategory)
-      else
-        Glimesh.Streams.Organizer.organize(channels)
+      cond do
+        Map.has_key?(params, "subcategory") ->
+          Glimesh.Streams.Organizer.organize(channels, limit: 6, group_by: :subcategory)
+
+        Map.has_key?(params, "tags") ->
+          # In the future, we can design a new group by interface for tags
+          # Glimesh.Streams.Organizer.organize(channels, limit: 6, group_by: :tag)
+          Glimesh.Streams.Organizer.organize(channels)
+
+        true ->
+          Glimesh.Streams.Organizer.organize(channels)
       end
 
     shown_channels = Enum.sum(Enum.map(blocks, fn x -> length(x.channels) end))
 
-    total_channels =
-      Enum.sum(Enum.map(blocks, fn x -> length(x.all_channels) |> IO.inspect() end))
+    total_channels = Glimesh.ChannelLookups.count_live_channels(socket.assigns.category)
 
     prefilled_tags =
       if tags = Map.get(params, "tags") do

@@ -31,12 +31,6 @@ defmodule GlimeshWeb.UserLive.Components.SubcategorySelector do
      |> assign(:tags, tags)}
   end
 
-  def handle_event("load_suggestions", params, socket) do
-    IO.inspect(params, label: "load_suggestions")
-
-    {:noreply, socket}
-  end
-
   defp existing_subcategory(%Glimesh.Streams.Channel{subcategory: subcategory}) do
     if subcategory do
       subcategory.name

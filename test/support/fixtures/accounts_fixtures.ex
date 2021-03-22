@@ -45,7 +45,7 @@ defmodule Glimesh.AccountsFixtures do
       )
 
     Glimesh.Accounts.get_user!(streamer.id)
-    |> Glimesh.Repo.preload(channel: [:category, :tags])
+    |> Glimesh.Repo.preload(channel: [:category, :subcategory, :tags])
   end
 
   def user_fixture(attrs \\ %{}) do

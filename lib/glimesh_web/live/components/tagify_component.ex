@@ -29,7 +29,7 @@ defmodule GlimeshWeb.TagifyComponent do
      )}
   end
 
-  def handle_event("suggest", %{"value" => query}, socket) when byte_size(query) <= 100 do
+  def handle_event("suggest", %{"value" => query}, socket) do
     results = socket.assigns.search_func.(query, socket)
 
     {:noreply,

@@ -9,12 +9,14 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   def render(assigns) do
     ~L"""
     <h5 class="mb-0">
-      <%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.name %><%= if @channel.subcategory do %>: <%= @channel.subcategory.name %><% end %></span> <%= @channel.title %>
+      <%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.name %></span> <%= @channel.title %>
       <%= if @can_change do %>
       <a class="fas fa-edit" phx-click="toggle-edit" href="#" aria-label="<%= gettext("Edit") %>"></a>
       <% end %>
     </h5>
-    <span class="badge badge-pill badge-info"><%= Glimesh.Streams.get_channel_language(@channel) %></span>
+    <%= if @channel.subcategory do %>
+    <%= live_patch @channel.subcategory.name, to: Routes.streams_list_path(@socket, :index, @channel.category.slug, subcategory: [@channel.subcategory.slug]), class: "badge badge-pill badge-info" %>
+    <% end %>
     <%= for tag <- @channel.tags do %>
       <%= live_patch tag.name, to: Routes.streams_list_path(@socket, :index, @channel.category.slug, tags: [tag.slug]), class: "badge badge-pill badge-primary" %>
     <% end %>
@@ -127,23 +129,12 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
     {:ok,
      socket
      |> assign_categories()
+     |> assign_subcategory(channel.category)
+     |> assign_existing_tags(channel)
      |> assign(:channel, channel)
      |> assign(:user, user)
      |> assign(:channel, channel)
      |> assign(:changeset, Streams.change_channel(channel))
-     |> assign(
-       :existing_subcategory,
-       if(channel.subcategory, do: channel.subcategory.name, else: "")
-     )
-     |> assign(:existing_tags, Enum.map(channel.tags, fn tag -> tag.name end) |> Enum.join(", "))
-     |> assign(
-       :subcategory_label,
-       Glimesh.ChannelCategories.get_subcategory_label(channel.category)
-     )
-     |> assign(
-       :subcategory_placeholder,
-       Glimesh.ChannelCategories.get_subcategory_select_label_description(channel.category)
-     )
      |> assign(:current_category_id, channel.category_id)
      |> assign(:category, channel.category)
      |> assign(:can_change, Bodyguard.permit?(Glimesh.Streams, :update_channel, user, channel))
@@ -151,7 +142,6 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   end
 
   def search_categories(query, socket) do
-    IO.inspect(socket.assigns.category, label: "search")
     Glimesh.ChannelCategories.tagify_search_for_subcategories(socket.assigns.category, query)
   end
 
@@ -161,7 +151,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
 
   @impl true
   def handle_event("toggle-edit", _value, socket) do
-    {:noreply, socket |> assign(:editing, socket.assigns.editing |> Kernel.not())}
+    {:noreply, socket |> assign(:editing, !socket.assigns.editing)}
   end
 
   @impl true
@@ -174,14 +164,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
 
     {:noreply,
      socket
-     |> assign(
-       :subcategory_label,
-       Glimesh.ChannelCategories.get_subcategory_label(category)
-     )
-     |> assign(
-       :subcategory_placeholder,
-       Glimesh.ChannelCategories.get_subcategory_select_label_description(category)
-     )
+     |> assign_subcategory(category)
      |> assign(:existing_subcategory, "")
      |> assign(:existing_tags, "")
      |> assign(:category, category)
@@ -194,15 +177,15 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
 
   @impl true
   def handle_event("save", %{"channel" => channel}, socket) do
-    IO.inspect(channel, label: "channel")
-
     case Streams.update_channel(socket.assigns.user, socket.assigns.channel, channel) do
-      {:ok, changeset} ->
+      {:ok, channel} ->
         {:noreply,
          socket
+         |> assign_subcategory(channel.category)
+         |> assign_existing_tags(channel)
          |> assign(:editing, false)
-         |> assign(:channel, changeset)
-         |> assign(:changeset, Streams.change_channel(changeset))}
+         |> assign(:channel, channel)
+         |> assign(:changeset, Streams.change_channel(channel))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
@@ -210,8 +193,35 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   end
 
   @impl true
-  def handle_info({:channel, data}, socket) do
-    {:noreply, assign(socket, channel: data)}
+  def handle_info({:channel, channel}, socket) do
+    {:noreply,
+     socket
+     |> assign_subcategory(channel.category)
+     |> assign_existing_tags(channel)
+     |> assign(:editing, false)
+     |> assign(:channel, channel)
+     |> assign(:changeset, Streams.change_channel(channel))}
+  end
+
+  defp assign_subcategory(socket, category) do
+    socket
+    |> assign(
+      :subcategory_label,
+      Glimesh.ChannelCategories.get_subcategory_label(category)
+    )
+    |> assign(
+      :subcategory_placeholder,
+      Glimesh.ChannelCategories.get_subcategory_select_label_description(category)
+    )
+  end
+
+  defp assign_existing_tags(socket, channel) do
+    socket
+    |> assign(
+      :existing_subcategory,
+      if(channel.subcategory, do: channel.subcategory.name, else: "")
+    )
+    |> assign(:existing_tags, Enum.map(channel.tags, fn tag -> tag.name end) |> Enum.join(", "))
   end
 
   defp assign_categories(socket) do

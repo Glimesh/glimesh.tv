@@ -4,18 +4,31 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
   alias Glimesh.Streams
 
   @impl true
-  def mount(_params, session, socket) do
+  def mount(_params, %{"channel" => channel} = session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
     {:ok,
      socket
      |> put_flash(:info, nil)
      |> put_flash(:error, nil)
-     |> assign(:stream_key, Glimesh.Streams.get_stream_key(session["channel"]))
+     |> assign(:stream_key, Glimesh.Streams.get_stream_key(channel))
      |> assign(:channel_changeset, session["channel_changeset"])
      |> assign(:categories, session["categories"])
-     |> assign(:channel, session["channel"])
-     |> assign(:current_category_id, session["channel"].category_id)
+     |> assign(:channel, channel)
+     |> assign(:category, channel.category)
+     |> assign(
+       :subcategory_label,
+       Glimesh.ChannelCategories.get_subcategory_label(channel.category)
+     )
+     |> assign(
+       :subcategory_placeholder,
+       Glimesh.ChannelCategories.get_subcategory_select_label_description(channel.category)
+     )
+     |> assign(
+       :existing_subcategory,
+       if(channel.subcategory, do: channel.subcategory.name, else: "")
+     )
+     |> assign(:existing_tags, Enum.map(channel.tags, fn tag -> tag.name end) |> Enum.join(", "))
      |> assign(:route, session["route"])
      |> assign(:user, session["user"])
      |> assign(:delete_route, session["delete_route"])
@@ -28,7 +41,22 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
         %{"_target" => ["channel", "category_id"], "channel" => channel},
         socket
       ) do
-    {:noreply, socket |> assign(:current_category_id, channel["category_id"])}
+    category = Glimesh.ChannelCategories.get_category_by_id!(channel["category_id"])
+
+    {:noreply,
+     socket
+     |> assign(:category, category)
+     |> assign(
+       :subcategory_label,
+       Glimesh.ChannelCategories.get_subcategory_label(category)
+     )
+     |> assign(
+       :subcategory_placeholder,
+       Glimesh.ChannelCategories.get_subcategory_select_label_description(category)
+     )
+     |> assign(:existing_subcategory, "")
+     |> assign(:existing_tags, "")
+     |> assign(:current_category_id, channel["category_id"])}
   end
 
   def handle_event("change_channel", _params, socket) do
@@ -56,5 +84,13 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
           {:noreply, socket}
       end
     end
+  end
+
+  def search_categories(query, socket) do
+    Glimesh.ChannelCategories.tagify_search_for_subcategories(socket.assigns.category, query)
+  end
+
+  def search_tags(query, socket) do
+    Glimesh.ChannelCategories.tagify_search_for_tags(socket.assigns.category, query)
   end
 end

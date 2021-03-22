@@ -45,7 +45,7 @@ defmodule Glimesh.ChannelLookupsTest do
 
       channels =
         ChannelLookups.search_live_channels(%{
-          "category_id" => channel.category_id
+          "category" => "gaming"
         })
 
       assert length(channels) == 1
@@ -53,8 +53,7 @@ defmodule Glimesh.ChannelLookupsTest do
     end
 
     test "channel_search/1 lists channels conditionally for category and subcategory", %{
-      channel: channel,
-      subcategory: subcategory
+      channel: channel
     } do
       gaming_id = ChannelCategories.get_category("gaming").id
 
@@ -72,8 +71,8 @@ defmodule Glimesh.ChannelLookupsTest do
 
       channels =
         ChannelLookups.search_live_channels(%{
-          "category_id" => channel.category_id,
-          "subcategory_id" => subcategory.id
+          "category" => "gaming",
+          "subcategory" => ["testing"]
         })
 
       assert length(channels) == 1
