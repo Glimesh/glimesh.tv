@@ -8,7 +8,7 @@ defmodule Glimesh.ChannelLookups do
   alias Glimesh.AccountFollows.Follower
   alias Glimesh.Accounts.User
   alias Glimesh.Repo
-  alias Glimesh.Streams.{Category, Channel, Tag}
+  alias Glimesh.Streams.{Category, Channel}
 
   ## Filtering
   @spec search_live_channels(map) :: list
@@ -81,33 +81,8 @@ defmodule Glimesh.ChannelLookups do
     |> Repo.preload([:category, :user])
   end
 
-  def filter_live_channels(params \\ %{}) do
-    Repo.all(perform_filter_live_channels(params))
-    |> Repo.preload([:category, :user, :stream, :tags])
-  end
-
-  defp perform_filter_live_channels(%{"category" => _category_slug, "tag" => tag_slug}) do
-    from c in Channel,
-      join: t in Tag,
-      join: ct in "channel_tags",
-      on: ct.tag_id == t.id and ct.channel_id == c.id,
-      where: c.status == "live" and t.slug == ^tag_slug,
-      order_by: fragment("RANDOM()")
-  end
-
-  defp perform_filter_live_channels(%{"category" => category_slug}) do
-    from c in Channel,
-      join: cat in Category,
-      on: cat.id == c.category_id,
-      where: c.status == "live",
-      where: cat.slug == ^category_slug,
-      order_by: fragment("RANDOM()")
-  end
-
-  defp perform_filter_live_channels(params) when params == %{} do
-    from c in Channel,
-      where: c.status == "live",
-      order_by: fragment("RANDOM()")
+  def list_live_channels do
+    search_live_channels(%{})
   end
 
   def list_live_subscribed_followers(%Channel{} = channel) do
