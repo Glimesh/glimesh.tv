@@ -1,6 +1,7 @@
 defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
   use GlimeshWeb, :live_view
 
+  alias Glimesh.ChannelCategories
   alias Glimesh.Streams
 
   @impl true
@@ -11,18 +12,18 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
      socket
      |> put_flash(:info, nil)
      |> put_flash(:error, nil)
-     |> assign(:stream_key, Glimesh.Streams.get_stream_key(channel))
+     |> assign(:stream_key, Streams.get_stream_key(channel))
      |> assign(:channel_changeset, session["channel_changeset"])
      |> assign(:categories, session["categories"])
      |> assign(:channel, channel)
      |> assign(:category, channel.category)
      |> assign(
        :subcategory_label,
-       Glimesh.ChannelCategories.get_subcategory_label(channel.category)
+       ChannelCategories.get_subcategory_label(channel.category)
      )
      |> assign(
        :subcategory_placeholder,
-       Glimesh.ChannelCategories.get_subcategory_select_label_description(channel.category)
+       ChannelCategories.get_subcategory_select_label_description(channel.category)
      )
      |> assign(
        :existing_subcategory,
@@ -41,18 +42,18 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
         %{"_target" => ["channel", "category_id"], "channel" => channel},
         socket
       ) do
-    category = Glimesh.ChannelCategories.get_category_by_id!(channel["category_id"])
+    category = ChannelCategories.get_category_by_id!(channel["category_id"])
 
     {:noreply,
      socket
      |> assign(:category, category)
      |> assign(
        :subcategory_label,
-       Glimesh.ChannelCategories.get_subcategory_label(category)
+       ChannelCategories.get_subcategory_label(category)
      )
      |> assign(
        :subcategory_placeholder,
-       Glimesh.ChannelCategories.get_subcategory_select_label_description(category)
+       ChannelCategories.get_subcategory_select_label_description(category)
      )
      |> assign(:existing_subcategory, "")
      |> assign(:existing_tags, "")
@@ -67,7 +68,7 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
   def handle_event("rotate_stream_key", _params, socket) do
     with :ok <-
            Bodyguard.permit(
-             Glimesh.Streams,
+             Streams,
              :update_channel,
              socket.assigns.channel.user,
              socket.assigns.channel
@@ -77,7 +78,7 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
           {:noreply,
            socket
            |> put_flash(:info, "Stream key reset")
-           |> assign(:stream_key, Glimesh.Streams.get_stream_key(channel))
+           |> assign(:stream_key, Streams.get_stream_key(channel))
            |> assign(:channel_changeset, Streams.Channel.changeset(channel))}
 
         {:error, _changeset} ->
@@ -87,10 +88,10 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
   end
 
   def search_categories(query, socket) do
-    Glimesh.ChannelCategories.tagify_search_for_subcategories(socket.assigns.category, query)
+    ChannelCategories.tagify_search_for_subcategories(socket.assigns.category, query)
   end
 
   def search_tags(query, socket) do
-    Glimesh.ChannelCategories.tagify_search_for_tags(socket.assigns.category, query)
+    ChannelCategories.tagify_search_for_tags(socket.assigns.category, query)
   end
 end

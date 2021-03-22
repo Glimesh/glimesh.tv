@@ -4,6 +4,10 @@ defmodule Glimesh.Streams.Organizer do
   """
 
   defmodule Block do
+    @moduledoc """
+    A block of channels
+    """
+
     defstruct [:type, :title, :channels, :all_channels, :background_image_url]
   end
 

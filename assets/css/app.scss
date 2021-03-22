@@ -212,38 +212,3 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
         }
     }
 }
-
-
-.hero {
-    position: relative;
-    margin: 0 auto;
-    // margin-top: 50px;
-    border: 5px solid red;
-
-
-    &.has-background {
-        margin-top: -15px;
-        // position: relative;
-        // overflow: hidden;
-    }
-
-    .hero-background {
-        // max-width: 100%;
-
-        position: absolute;
-        // object-fit: cover;
-        // object-position: center 70%;
-        width: 100%;
-        height: 1000px;
-        // height: 100%;
-        // filter: blur(2px);
-    }
-
-    .hero-body {
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(255, 0, 0, 0) 100%);
-        position: relative;
-
-        padding-top: 20px;
-
-    }
-}

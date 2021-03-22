@@ -4,6 +4,7 @@ defmodule GlimeshWeb.StreamsLive.List do
   alias Glimesh.Accounts
   alias Glimesh.ChannelCategories
   alias Glimesh.Streams
+  alias Glimesh.Streams.Organizer
 
   @impl true
   def mount(%{"category" => "following"}, session, socket) do
@@ -47,7 +48,7 @@ defmodule GlimeshWeb.StreamsLive.List do
 
         subcategory_list =
           subcategories
-          |> Glimesh.ChannelCategories.convert_subcategories_for_tagify()
+          |> ChannelCategories.convert_subcategories_for_tagify()
           |> Jason.encode!()
 
         locales = ["Any Language": ""] ++ Application.get_env(:glimesh, :locales)
@@ -76,15 +77,15 @@ defmodule GlimeshWeb.StreamsLive.List do
     blocks =
       cond do
         Map.has_key?(params, "subcategory") ->
-          Glimesh.Streams.Organizer.organize(channels, limit: 6, group_by: :subcategory)
+          Organizer.organize(channels, limit: 6, group_by: :subcategory)
 
         Map.has_key?(params, "tags") ->
           # In the future, we can design a new group by interface for tags
           # Glimesh.Streams.Organizer.organize(channels, limit: 6, group_by: :tag)
-          Glimesh.Streams.Organizer.organize(channels)
+          Organizer.organize(channels)
 
         true ->
-          Glimesh.Streams.Organizer.organize(channels)
+          Organizer.organize(channels)
       end
 
     shown_channels = Enum.sum(Enum.map(blocks, fn x -> length(x.channels) end))

@@ -142,11 +142,11 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   end
 
   def search_categories(query, socket) do
-    Glimesh.ChannelCategories.tagify_search_for_subcategories(socket.assigns.category, query)
+    ChannelCategories.tagify_search_for_subcategories(socket.assigns.category, query)
   end
 
   def search_tags(query, socket) do
-    Glimesh.ChannelCategories.tagify_search_for_tags(socket.assigns.category, query)
+    ChannelCategories.tagify_search_for_tags(socket.assigns.category, query)
   end
 
   @impl true
@@ -160,7 +160,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
         %{"_target" => ["channel", "category_id"], "channel" => channel},
         socket
       ) do
-    category = Glimesh.ChannelCategories.get_category_by_id!(channel["category_id"])
+    category = ChannelCategories.get_category_by_id!(channel["category_id"])
 
     {:noreply,
      socket
@@ -207,11 +207,11 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
     socket
     |> assign(
       :subcategory_label,
-      Glimesh.ChannelCategories.get_subcategory_label(category)
+      ChannelCategories.get_subcategory_label(category)
     )
     |> assign(
       :subcategory_placeholder,
-      Glimesh.ChannelCategories.get_subcategory_select_label_description(category)
+      ChannelCategories.get_subcategory_select_label_description(category)
     )
   end
 

@@ -7,8 +7,8 @@ defmodule Glimesh.ChannelCategories do
 
   alias Glimesh.Repo
   alias Glimesh.Streams.Category
-  alias Glimesh.Streams.Subcategory
   alias Glimesh.Streams.Channel
+  alias Glimesh.Streams.Subcategory
   alias Glimesh.Streams.Tag
 
   ## Categories

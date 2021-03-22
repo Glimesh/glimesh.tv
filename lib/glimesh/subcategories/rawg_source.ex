@@ -5,7 +5,7 @@ defmodule Glimesh.Subcategories.RawgSource do
 
   @source_name "rawg"
 
-  def update_game_list() do
+  def update_game_list do
     {:ok, games} = list_games()
 
     # Enum.map(games, fn x -> create_subcategory_for_game(x, gaming_id) end)
@@ -67,8 +67,8 @@ defmodule Glimesh.Subcategories.RawgSource do
          {:ok, %{"next" => next, "results" => games}} <- Jason.decode(body) do
       existing_list = existing_list ++ games
 
-      if not is_nil(next) and length(existing_list) < 10000 do
-        Enum.map(games, fn x -> create_subcategory_for_game(x, gaming_id) end)
+      if not is_nil(next) and length(existing_list) < 10_000 do
+        Enum.each(games, fn x -> create_subcategory_for_game(x, gaming_id) end)
 
         aggregate_page(next, existing_list)
       else
@@ -83,7 +83,7 @@ defmodule Glimesh.Subcategories.RawgSource do
     end
   end
 
-  defp api_key() do
+  defp api_key do
     Application.get_env(:glimesh, Glimesh.Subcategories.RawgSource)[:api_key]
   end
 end

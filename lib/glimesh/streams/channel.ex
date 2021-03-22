@@ -99,6 +99,7 @@ defmodule Glimesh.Streams.Channel do
     |> unique_constraint([:user_id])
   end
 
+  alias Glimesh.ChannelCategories
   alias Glimesh.Streams.Tag
 
   def tags_changeset(channel, tags) do
@@ -127,12 +128,11 @@ defmodule Glimesh.Streams.Channel do
     slug = Slug.slugify(value)
 
     subcategory =
-      if existing =
-           Glimesh.ChannelCategories.get_subcategory_by_category_id_and_slug(category_id, slug) do
+      if existing = ChannelCategories.get_subcategory_by_category_id_and_slug(category_id, slug) do
         existing
       else
         {:ok, category} =
-          Glimesh.ChannelCategories.create_subcategory(%{
+          ChannelCategories.create_subcategory(%{
             name: value,
             user_created: true,
             category_id: category_id
