@@ -2,64 +2,47 @@ import Tagify from '@yaireo/tagify';
 
 export default {
     updated() {
-        console.log("Updated");
-        let tagify = this.tagify();
-        tagify.removeAllTags();
+        // Whenever the parent DOM changes, it's likely because a category ID change happened, which means we want to start over.
+        this.mounted();
     },
     mounted() {
         let parent = this;
         let tagify = this.tagify();
 
-        console.log(tagify);
+        parent.handleEvent(this.el.dataset.suggestionsEvent, ({value, results}) => {
+            tagify.settings.whitelist.splice(0, results.length, ...results)
+
+            tagify.loading(false).dropdown.show.call(tagify, value);
+        });
 
         tagify.on('input', function(e) {
-            
             var value = e.detail.value;
-            console.log("got input: " + value)
+
             tagify.settings.whitelist.length = 0; // reset the whitelist
-          
-            // If the user is typing fast it prevents multiple calls to the same url
-            // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
-            // controller && controller.abort();
-            // controller = new AbortController();
-          
-            // show loading animation and hide the suggestions dropdown
             tagify.loading(true).dropdown.hide.call(tagify);
 
-            parent.pushEventTo(parent.el.id, "load_suggestions", {
-                value: value
-            });
-          
-            // fetch('http://get_suggestions.com?value=' + value, {signal:controller.signal})
-            //   .then(RES => RES.json())
-            //   .then(function(whitelist){
-            //     // update inwhitelist Array in-place
-            //     tagify.settings.whitelist.splice(0, whitelist.length, ...whitelist)
-            //     tagify.loading(false).dropdown.show.call(tagify, value); // render the suggestions dropdown
-            //   })
-          
+            // Target the DOM selector ID to get to the child component
+            parent.pushEventTo(`#${parent.el.id}`, "suggest", { value: value });
         });
     },
-    maxTags() {
-        if (this.el.dataset.maxTags) {
-            return parseInt(this.el.dataset.maxTags);
-        } else {
-            return 10;
-        }
-    },
     tagify() {
-        console.log(this.el.dataset)
-        let tags = JSON.parse(this.el.dataset.tags);
         let categoryId = this.el.dataset.category;
-        let optionMaxTags = this.maxTags()
         let allowedRegex = new RegExp(this.el.dataset.allowedRegex);
-        // Allow existing weirdness to still exist
-        let parsedWhitelist = tags.map((value) => value.value)
+        let allowEdit = (this.el.dataset.allowEdit == "true" ? true : false);
+        let whitelist = [];
+        console.log(this.el.value);
+        if (allowEdit === false && this.el.value) {
+            // whitelist.push(this.el.value);
+        }
+
+        console.log(whitelist);
 
         return new Tagify(this.el, {
-            whitelist: tags,
+            whitelist: whitelist,
             trim: true,
-            maxTags: optionMaxTags,
+            enforceWhitelist: !allowEdit,
+            editTags: allowEdit,
+            maxTags: parseInt(this.el.dataset.maxOptions),
             originalInputValueFormat: (valuesArr) => {
                 return JSON.stringify(
                     valuesArr.map(item => {
@@ -95,13 +78,14 @@ export default {
                 }
             },
             validate: function({value: input}) {
-                if (parsedWhitelist.includes(input)) {
-                    return true;
-                }
+                // if (parsedWhitelist.includes(input)) {
+                //     return true;
+                // }
+                
 
-                if (!allowedRegex.test(input)) {
-                    return "Tags must be alphanumerical and may contain colon's, spaces, and dashes. Min length 2, Max length 18";
-                }
+                // if (!allowedRegex.test(input)) {
+                //     return "Tags must be alphanumerical and may contain colon's, spaces, and dashes. Min length 2, Max length 18";
+                // }
 
                 return true;
             },

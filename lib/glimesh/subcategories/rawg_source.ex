@@ -7,22 +7,40 @@ defmodule Glimesh.Subcategories.RawgSource do
 
   def update_game_list() do
     {:ok, games} = list_games()
-    %{id: gaming_id} = Glimesh.ChannelCategories.get_category("gaming")
 
-    Enum.map(games, fn x -> create_subcategory_for_game(x, gaming_id) end)
+    # Enum.map(games, fn x -> create_subcategory_for_game(x, gaming_id) end)
   end
 
   def create_subcategory_for_game(game, gaming_category_id) do
-    Glimesh.ChannelCategories.upsert_subcategory_from_source(
-      @source_name,
-      Integer.to_string(game["id"]),
-      %{
-        name: game["name"],
-        user_created: false,
-        category_id: gaming_category_id,
-        background_image: Map.get(game, "background_image")
-      }
-    )
+    case Glimesh.ChannelCategories.upsert_subcategory_from_source(
+           @source_name,
+           Integer.to_string(game["id"]),
+           %{
+             name: game["name"],
+             slug: game["slug"],
+             user_created: false,
+             category_id: gaming_category_id,
+             background_image: background_image(game)
+           }
+         ) do
+      {:ok, _game} ->
+        IO.puts("Loaded: " <> game["name"])
+
+      {:error, _} ->
+        IO.puts("Failed to Load: " <> game["name"])
+    end
+  end
+
+  defp background_image(%{"background_image" => image, "esrb_rating" => esrb_rating}) do
+    if Map.get(esrb_rating, "slug", nil) == "adults-only" do
+      ""
+    else
+      image
+    end
+  end
+
+  defp background_image(_) do
+    ""
   end
 
   @spec list_games :: {:error, list} | {:ok, list}
@@ -39,6 +57,8 @@ defmodule Glimesh.Subcategories.RawgSource do
 
   @spec aggregate_page(binary, list) :: {:error, list} | {:ok, list}
   def aggregate_page(next_url, existing_list) do
+    %{id: gaming_id} = Glimesh.ChannelCategories.get_category("gaming")
+
     with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
            HTTPoison.get(next_url, [
              {"Content-Type", "application/json"}
@@ -46,7 +66,9 @@ defmodule Glimesh.Subcategories.RawgSource do
          {:ok, %{"next" => next, "results" => games}} <- Jason.decode(body) do
       existing_list = existing_list ++ games
 
-      if not is_nil(next) and length(existing_list) < 40 do
+      if not is_nil(next) and length(existing_list) < 10000 do
+        Enum.map(games, fn x -> create_subcategory_for_game(x, gaming_id) end)
+
         aggregate_page(next, existing_list)
       else
         {:ok, existing_list}

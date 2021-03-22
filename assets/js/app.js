@@ -32,6 +32,7 @@ import InfiniteScroll from "./hooks/InfiniteScroll";
 import TagSelector from "./hooks/TagSelector";
 import TagSearch from "./hooks/TagSearch";
 import LaunchCountdown from "./hooks/LaunchCountdown";
+import Tagify from "./hooks/Tagify";
 
 // https://github.com/github/markdown-toolbar-element
 import "@github/markdown-toolbar-element";
@@ -50,6 +51,7 @@ Hooks.InfiniteScroll = InfiniteScroll;
 Hooks.TagSelector = TagSelector;
 Hooks.TagSearch = TagSearch;
 Hooks.LaunchCountdown = LaunchCountdown;
+Hooks.Tagify = Tagify;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {

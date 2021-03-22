@@ -8,12 +8,13 @@ defmodule GlimeshWeb.UserLive.Components.SubcategorySelector do
       <%= text_input @form, @field,
         value: @existing_subcategory,
         class: "tagify",
-        "data-category": @current_category_id,
+        "data-category": assigns.category_id,
         "data-tags": @tags,
         "data-allowed-regex": "^[A-Za-z0-9' \\:\\-\\+\\(\\)]{2,48}$",
         "data-max-tags": "1",
         "phx-hook": "TagSelector",
-        placeholder: subcategory_name(@current_category_id) %>
+        "phx-target": @myself,
+        placeholder: assigns.placeholder %>
     </div>
     """
   end
@@ -30,6 +31,12 @@ defmodule GlimeshWeb.UserLive.Components.SubcategorySelector do
      |> assign(:tags, tags)}
   end
 
+  def handle_event("load_suggestions", params, socket) do
+    IO.inspect(params, label: "load_suggestions")
+
+    {:noreply, socket}
+  end
+
   defp existing_subcategory(%Glimesh.Streams.Channel{subcategory: subcategory}) do
     if subcategory do
       subcategory.name
@@ -40,16 +47,5 @@ defmodule GlimeshWeb.UserLive.Components.SubcategorySelector do
 
   defp existing_subcategory(_) do
     ""
-  end
-
-  defp subcategory_name(category_id) do
-    case category_id do
-      15 -> "Game"
-      1 -> "Style"
-      4 -> "Topic"
-      36 -> "Topic"
-      43 -> "Genre"
-      47 -> "Topic"
-    end
   end
 end

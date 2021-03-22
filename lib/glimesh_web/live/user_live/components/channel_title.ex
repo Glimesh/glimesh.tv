@@ -48,13 +48,37 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
                               <%= error_tag f, :category_id %>
                           </div>
                           <div class="form-group">
-                            <%= label f, :subcategory, gettext("Game") %>
-                            <%= live_component(@socket, GlimeshWeb.UserLive.Components.SubcategorySelector, form: f, field: :subcategory, category_id: @current_category_id) %>
+                            <%= label f, :subcategory, @subcategory_label %>
+                            <%= live_component(
+                                @socket,
+                                GlimeshWeb.TagifyComponent,
+                                id: "category-selector",
+                                form: f, field: :subcategory,
+                                max_options: 1,
+                                allow_edit: "true",
+                                value: @existing_subcategory,
+                                placeholder: @subcategory_placeholder,
+                                category: @category,
+                                search_func: &search_categories/2
+                            )
+                            %>
                             <%= error_tag f, :subcategory %>
                           </div>
                           <div class="form-group">
                               <%= label f, :tags, gettext("Tags") %>
-                              <%= live_component(@socket, GlimeshWeb.UserLive.Components.TagSelector, form: f, field: :tags, category_id: @current_category_id) %>
+                              <%= live_component(
+                                  @socket,
+                                  GlimeshWeb.TagifyComponent,
+                                  id: "tag-selector",
+                                  form: f, field: :tags,
+                                  value: @existing_tags,
+                                  placeholder: gettext("Search for tags to describe your stream"),
+                                  max_options: 10,
+                                  allow_edit: "true",
+                                  category: @category,
+                                  search_func: &search_tags/2
+                              )
+                              %>
                               <%= error_tag f, :tags %>
                           </div>
 
@@ -107,9 +131,32 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
      |> assign(:user, user)
      |> assign(:channel, channel)
      |> assign(:changeset, Streams.change_channel(channel))
+     |> assign(
+       :existing_subcategory,
+       if(channel.subcategory, do: channel.subcategory.name, else: "")
+     )
+     |> assign(:existing_tags, Enum.map(channel.tags, fn tag -> tag.name end) |> Enum.join(", "))
+     |> assign(
+       :subcategory_label,
+       Glimesh.ChannelCategories.get_subcategory_label(channel.category)
+     )
+     |> assign(
+       :subcategory_placeholder,
+       Glimesh.ChannelCategories.get_subcategory_select_label_description(channel.category)
+     )
      |> assign(:current_category_id, channel.category_id)
+     |> assign(:category, channel.category)
      |> assign(:can_change, Bodyguard.permit?(Glimesh.Streams, :update_channel, user, channel))
      |> assign(:editing, false)}
+  end
+
+  def search_categories(query, socket) do
+    IO.inspect(socket.assigns.category, label: "search")
+    Glimesh.ChannelCategories.tagify_search_for_subcategories(socket.assigns.category, query)
+  end
+
+  def search_tags(query, socket) do
+    Glimesh.ChannelCategories.tagify_search_for_tags(socket.assigns.category, query)
   end
 
   @impl true
@@ -123,7 +170,22 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
         %{"_target" => ["channel", "category_id"], "channel" => channel},
         socket
       ) do
-    {:noreply, socket |> assign(:current_category_id, channel["category_id"])}
+    category = Glimesh.ChannelCategories.get_category_by_id!(channel["category_id"])
+
+    {:noreply,
+     socket
+     |> assign(
+       :subcategory_label,
+       Glimesh.ChannelCategories.get_subcategory_label(category)
+     )
+     |> assign(
+       :subcategory_placeholder,
+       Glimesh.ChannelCategories.get_subcategory_select_label_description(category)
+     )
+     |> assign(:existing_subcategory, "")
+     |> assign(:existing_tags, "")
+     |> assign(:category, category)
+     |> assign(:current_category_id, channel["category_id"])}
   end
 
   def handle_event("change_channel", _params, socket) do
@@ -132,6 +194,8 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
 
   @impl true
   def handle_event("save", %{"channel" => channel}, socket) do
+    IO.inspect(channel, label: "channel")
+
     case Streams.update_channel(socket.assigns.user, socket.assigns.channel, channel) do
       {:ok, changeset} ->
         {:noreply,

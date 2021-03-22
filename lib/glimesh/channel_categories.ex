@@ -157,6 +157,18 @@ defmodule Glimesh.ChannelCategories do
     )
   end
 
+  def tagify_search_for_tags(%Category{} = category, search_value)
+      when is_binary(search_value) do
+    search_param = "%#{search_value}%"
+
+    Repo.all(
+      from t in Tag,
+        where: t.category_id == ^category.id and ilike(t.name, ^search_param),
+        limit: 15
+    )
+    |> convert_tags_for_tagify()
+  end
+
   def list_tags_for_tagify(category_id) do
     Repo.all(
       from t in Tag,
@@ -176,7 +188,6 @@ defmodule Glimesh.ChannelCategories do
         class: ""
       }
     end)
-    |> Jason.encode!()
   end
 
   @doc """
@@ -294,6 +305,52 @@ defmodule Glimesh.ChannelCategories do
   end
 
   # Subcategories
+  import GlimeshWeb.Gettext
+
+  def tagify_search_for_subcategories(%Category{} = category, search_value)
+      when is_binary(search_value) do
+    search_param = "%#{search_value}%"
+
+    Repo.all(
+      from c in Subcategory,
+        where: c.category_id == ^category.id and ilike(c.name, ^search_param),
+        limit: 10
+    )
+    |> convert_subcategories_for_tagify()
+  end
+
+  def get_subcategory_label(%Category{slug: slug}) do
+    case slug do
+      "gaming" -> gettext("Game")
+      "art" -> gettext("Style")
+      "education" -> gettext("Topic")
+      "irl" -> gettext("Topic")
+      "music" -> gettext("Genre")
+      "tech" -> gettext("Topic")
+    end
+  end
+
+  def get_subcategory_select_label_description(%Category{slug: slug}) do
+    case slug do
+      "gaming" -> gettext("What game are you playing?")
+      "art" -> gettext("What type of art are you doing?")
+      "education" -> gettext("What topic are you teaching?")
+      "irl" -> gettext("What topic are you discussing?")
+      "music" -> gettext("What genre of music?")
+      "tech" -> gettext("What topic are you discussing?")
+    end
+  end
+
+  def get_subcategory_search_label_description(%Category{slug: slug}) do
+    case slug do
+      "gaming" -> gettext("Search by Game")
+      "art" -> gettext("Search by Style")
+      "education" -> gettext("Search by Topic")
+      "irl" -> gettext("Search by Topic")
+      "music" -> gettext("Search by Genre")
+      "tech" -> gettext("Search by Topic")
+    end
+  end
 
   def get_subcategory_by_category_id_and_slug(category_id, slug) do
     Repo.one(from c in Subcategory, where: c.category_id == ^category_id and c.slug == ^slug)
@@ -322,7 +379,6 @@ defmodule Glimesh.ChannelCategories do
         class: ""
       }
     end)
-    |> Jason.encode!()
   end
 
   @doc """

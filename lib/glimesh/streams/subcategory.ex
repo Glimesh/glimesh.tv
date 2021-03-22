@@ -5,6 +5,7 @@ defmodule Glimesh.Streams.Subcategory do
   use Waffle.Ecto.Schema
   import Ecto.Changeset
 
+  # @derive {Jason.Encoder, only: [:id, :name, :slug, :category_id]}
   schema "subcategories" do
     belongs_to :category, Glimesh.Streams.Category
 
@@ -35,7 +36,7 @@ defmodule Glimesh.Streams.Subcategory do
     |> validate_required([:name])
     |> validate_length(:name, min: 2)
     |> set_slug_attribute()
-    |> unique_constraint([:slug])
+    |> unique_constraint([:category_id, :slug])
   end
 
   def set_slug_attribute(changeset) do

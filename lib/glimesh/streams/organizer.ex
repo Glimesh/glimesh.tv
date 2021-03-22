@@ -14,7 +14,14 @@ defmodule Glimesh.Streams.Organizer do
     list_of_channels
     |> group_by(Keyword.get(options, :group_by))
     |> limit_channels(limit)
+    |> sort_channels()
     |> count_channels()
+  end
+
+  defp sort_channels(blocks) do
+    Enum.sort(blocks, fn a, b ->
+      a.title < b.title
+    end)
   end
 
   defp group_by(channels, nil) do
@@ -28,7 +35,7 @@ defmodule Glimesh.Streams.Organizer do
     |> Enum.map(&produce_block/1)
   end
 
-  defp limit_channels(blocks, limit) do
+  defp limit_channels(blocks, limit) when length(blocks) > 1 do
     Enum.map(blocks, fn b ->
       if length(b.channels) > limit do
         %Block{b | channels: Enum.take(b.channels, limit), all_channels: b.channels}
@@ -38,9 +45,17 @@ defmodule Glimesh.Streams.Organizer do
     end)
   end
 
+  defp limit_channels(blocks, _limit) do
+    blocks
+  end
+
   defp count_channels(blocks) do
     Enum.map(blocks, fn b ->
-      b
+      if is_nil(Map.get(b, :all_channels)) do
+        %Block{b | all_channels: []}
+      else
+        b
+      end
     end)
   end
 

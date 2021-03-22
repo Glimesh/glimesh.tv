@@ -42,10 +42,13 @@ defmodule GlimeshWeb.StreamsLive.List do
             Map.put(acc, subcategory.slug, subcategory.name)
           end)
 
-        tag_list = live_tags |> ChannelCategories.convert_tags_for_tagify(false)
+        tag_list =
+          live_tags |> ChannelCategories.convert_tags_for_tagify(false) |> Jason.encode!()
 
         subcategory_list =
-          subcategories |> Glimesh.ChannelCategories.convert_subcategories_for_tagify()
+          subcategories
+          |> Glimesh.ChannelCategories.convert_subcategories_for_tagify()
+          |> Jason.encode!()
 
         locales = ["Any Language": ""] ++ Application.get_env(:glimesh, :locales)
 
