@@ -48,6 +48,45 @@ defmodule GlimeshWeb.StreamsLive.ListTest do
       assert html =~ channel.title
     end
 
+    test "can filter streams by tags", %{
+      conn: conn,
+      category: category,
+      channel: channel
+    } do
+      random_stream =
+        streamer_fixture(%{}, %{
+          category_id: category.id
+        })
+
+      Glimesh.Streams.start_stream(random_stream.channel)
+
+      tag = tag_fixture(%{name: "Some Tag", category_id: category.id})
+
+      {:ok, channel} =
+        channel
+        |> Ecto.Changeset.change()
+        |> Ecto.Changeset.put_assoc(:tags, [tag])
+        |> Glimesh.Repo.update()
+
+      {:ok, view, html} = live(conn, Routes.streams_list_path(conn, :index, category.slug))
+
+      assert html =~ "Showing 2 of 2 Live Channels"
+
+      html =
+        render_change(view, "filter_change", %{
+          "form" => %{
+            "subcategory_search" => "",
+            "language" => "",
+            "tag_search" => Jason.encode!([%{"slug" => tag.slug}])
+          }
+        })
+
+      assert html =~ "#{category.name} Streams"
+      assert html =~ "Showing 1 of 2 Live Channels"
+      assert html =~ tag.name
+      assert html =~ channel.title
+    end
+
     test "can filter streams by subcategory", %{
       conn: conn,
       category: category,

@@ -4,10 +4,26 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitleTest do
   import Phoenix.LiveViewTest
   import Glimesh.AccountsFixtures
 
+  alias Glimesh.ChannelCategories
+
   @component GlimeshWeb.UserLive.Components.ChannelTitle
 
   defp create_channel(_) do
-    streamer = streamer_fixture()
+    gaming_id = ChannelCategories.get_category("gaming").id
+
+    {:ok, subcategory} =
+      ChannelCategories.create_subcategory(%{
+        name: "Some Subcategory",
+        category_id: gaming_id
+      })
+
+    streamer =
+      streamer_fixture(%{}, %{
+        # Force ourselves to have a gaming stream
+        category_id: gaming_id,
+        subcategory_id: subcategory.id,
+        language: "en"
+      })
 
     %{
       channel: streamer.channel,
@@ -18,11 +34,13 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitleTest do
   describe "channel title unauthed user" do
     setup :create_channel
 
-    test "shows the channels title", %{conn: conn, channel: channel} do
+    test "shows the channels title and data", %{conn: conn, channel: channel} do
       {:ok, _, html} =
         live_isolated(conn, @component, session: %{"user" => nil, "channel_id" => channel.id})
 
       assert html =~ "Live Stream!"
+      assert html =~ "Gaming"
+      assert html =~ "Some Subcategory"
       assert String.contains?(html, "Live!") == false
     end
 

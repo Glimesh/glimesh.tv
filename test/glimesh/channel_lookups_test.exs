@@ -19,12 +19,23 @@ defmodule Glimesh.ChannelLookupsTest do
       streamer_fixture(%{}, %{
         # Force ourselves to have a gaming stream
         category_id: gaming_id,
-        subcategory_id: subcategory.id
+        subcategory_id: subcategory.id,
+        language: "en"
       })
+
+    tag = tag_fixture(%{name: "Some Tag", category_id: gaming_id})
+
+    {:ok, channel} =
+      streamer.channel
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:tags, [tag])
+      |> Glimesh.Repo.update()
+
+    {:ok, _} = Glimesh.Streams.start_stream(channel)
 
     %{
       subcategory: subcategory,
-      channel: streamer.channel,
+      channel: channel,
       streamer: streamer
     }
   end
@@ -41,7 +52,6 @@ defmodule Glimesh.ChannelLookupsTest do
         streamer_fixture(%{}, %{category_id: ChannelCategories.get_category("art").id})
 
       {:ok, _} = Glimesh.Streams.start_stream(random_streamer.channel)
-      {:ok, _} = Glimesh.Streams.start_stream(channel)
 
       channels =
         ChannelLookups.search_live_channels(%{
@@ -67,7 +77,6 @@ defmodule Glimesh.ChannelLookupsTest do
         streamer_fixture(%{}, %{category_id: gaming_id, subcategory_id: another_subcategory.id})
 
       {:ok, _} = Glimesh.Streams.start_stream(random_streamer.channel)
-      {:ok, _} = Glimesh.Streams.start_stream(channel)
 
       channels =
         ChannelLookups.search_live_channels(%{
@@ -79,6 +88,58 @@ defmodule Glimesh.ChannelLookupsTest do
       assert hd(channels).id == channel.id
     end
 
+    test "channel_search/1 searches by tags", %{
+      channel: channel
+    } do
+      random_streamer =
+        streamer_fixture(%{}, %{category_id: ChannelCategories.get_category("gaming").id})
+
+      Glimesh.Streams.start_stream(random_streamer.channel)
+
+      channels =
+        ChannelLookups.search_live_channels(%{
+          "category" => "gaming",
+          "tags" => ["some-tag"]
+        })
+
+      assert length(channels) == 1
+      assert hd(channels).id == channel.id
+    end
+
+    test "channel_search/1 searches by languages", %{
+      channel: channel
+    } do
+      random_streamer =
+        streamer_fixture(%{}, %{
+          category_id: ChannelCategories.get_category("gaming").id,
+          language: "es_AR"
+        })
+
+      Glimesh.Streams.start_stream(random_streamer.channel)
+
+      channels =
+        ChannelLookups.search_live_channels(%{
+          "category" => "gaming",
+          "language" => ["en"]
+        })
+
+      assert length(channels) == 1
+      assert hd(channels).id == channel.id
+
+      channels =
+        ChannelLookups.search_live_channels(%{
+          "category" => "gaming",
+          "language" => "en"
+        })
+
+      assert length(channels) == 1
+      assert hd(channels).id == channel.id
+    end
+
+    test "list_live_channels/0 lists all live channels", %{} do
+      assert length(ChannelLookups.list_live_channels()) == 1
+    end
+
     test "list_live_followed_channels/1 lists live followed channels", %{
       streamer: streamer,
       channel: channel
@@ -86,10 +147,10 @@ defmodule Glimesh.ChannelLookupsTest do
       user = user_fixture()
       {:ok, _} = Glimesh.AccountFollows.follow(streamer, user)
 
-      assert length(ChannelLookups.list_live_followed_channels(user)) == 0
-
-      {:ok, _} = Glimesh.Streams.start_stream(channel)
       assert length(ChannelLookups.list_live_followed_channels(user)) == 1
+
+      {:ok, _} = Glimesh.Streams.end_stream(channel)
+      assert length(ChannelLookups.list_live_followed_channels(user)) == 0
     end
   end
 end
