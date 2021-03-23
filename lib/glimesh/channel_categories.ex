@@ -377,6 +377,11 @@ defmodule Glimesh.ChannelCategories do
 
   def get_subcategory_by_category_id_and_slug(category_id, slug) do
     Repo.one(from c in Subcategory, where: c.category_id == ^category_id and c.slug == ^slug)
+    |> Repo.preload(:category)
+  end
+
+  def list_subcategories(%Category{id: id}) do
+    list_subcategories(id)
   end
 
   def list_subcategories(category_id) do
@@ -386,7 +391,7 @@ defmodule Glimesh.ChannelCategories do
     )
   end
 
-  @spec list_subcategories_for_tagify(integer) :: binary
+  @spec list_subcategories_for_tagify(integer) :: list
   def list_subcategories_for_tagify(category_id) do
     list_subcategories(category_id)
     |> convert_subcategories_for_tagify()

@@ -205,4 +205,134 @@ defmodule Glimesh.ChannelCategoriesTest do
       assert new_tag.count_usage == 1
     end
   end
+
+  describe "subcategories" do
+    alias Glimesh.Streams.Category
+    alias Glimesh.Streams.Subcategory
+
+    @update_attrs %{
+      name: "some updated name"
+    }
+    @invalid_attrs %{name: nil}
+
+    setup do
+      subcategory = subcategory_fixture() |> Glimesh.Repo.preload(:category)
+
+      %{
+        category: subcategory.category,
+        subcategory: subcategory
+      }
+    end
+
+    test "list_subcategories/1 returns all subcategories for a category", %{
+      subcategory: subcategory,
+      category: category
+    } do
+      assert Enum.member?(
+               Enum.map(ChannelCategories.list_subcategories(category), fn x -> x.name end),
+               subcategory.name
+             )
+    end
+
+    test "list_subcategories_for_tagify/1 returns the right stuff", %{
+      subcategory: subcategory,
+      category: category
+    } do
+      assert ChannelCategories.list_subcategories_for_tagify(category) == [
+               %{
+                 value: subcategory.name,
+                 slug: subcategory.slug,
+                 label: subcategory.name,
+                 class: ""
+               }
+             ]
+    end
+
+    test "update_category/2 with valid data updates the category", %{subcategory: subcategory} do
+      assert {:ok, %Subcategory{} = subcategory} =
+               ChannelCategories.update_subcategory(subcategory, @update_attrs)
+
+      assert subcategory.name == "some updated name"
+      assert subcategory.slug == "some-updated-name"
+    end
+
+    test "update_subcategory/2 with invalid data returns error changeset", %{
+      subcategory: subcategory,
+      category: category
+    } do
+      assert {:error, %Ecto.Changeset{}} =
+               ChannelCategories.update_subcategory(subcategory, @invalid_attrs)
+
+      assert subcategory ==
+               ChannelCategories.get_subcategory_by_category_id_and_slug(
+                 category.id,
+                 subcategory.slug
+               )
+    end
+
+    test "upsert_subcategory_from_source/3 upserts" do
+      assert {:ok, %Subcategory{} = subcategory} =
+               ChannelCategories.upsert_subcategory_from_source("fake-source", "123", %{
+                 name: "Hello world"
+               })
+
+      assert {:ok, %Subcategory{} = new_subcategory} =
+               ChannelCategories.upsert_subcategory_from_source("fake-source", "123", %{
+                 name: "Derp"
+               })
+
+      assert subcategory.id == new_subcategory.id
+    end
+
+    test "get_subcategory_label/1 returns correct values" do
+      assert ChannelCategories.get_subcategory_label(%Category{slug: "gaming"}) == "Game"
+      assert ChannelCategories.get_subcategory_label(%Category{slug: "art"}) == "Style"
+      assert ChannelCategories.get_subcategory_label(%Category{slug: "education"}) == "Topic"
+      assert ChannelCategories.get_subcategory_label(%Category{slug: "irl"}) == "Topic"
+      assert ChannelCategories.get_subcategory_label(%Category{slug: "music"}) == "Genre"
+      assert ChannelCategories.get_subcategory_label(%Category{slug: "tech"}) == "Topic"
+    end
+
+    test "get_subcategory_select_label_description/1 returns correct values" do
+      assert ChannelCategories.get_subcategory_select_label_description(%Category{slug: "gaming"}) ==
+               "What game are you playing?"
+
+      assert ChannelCategories.get_subcategory_select_label_description(%Category{slug: "art"}) ==
+               "What type of art are you doing?"
+
+      assert ChannelCategories.get_subcategory_select_label_description(%Category{
+               slug: "education"
+             }) == "What topic are you teaching?"
+
+      assert ChannelCategories.get_subcategory_select_label_description(%Category{slug: "irl"}) ==
+               "What topic are you discussing?"
+
+      assert ChannelCategories.get_subcategory_select_label_description(%Category{slug: "music"}) ==
+               "What genre of music?"
+
+      assert ChannelCategories.get_subcategory_select_label_description(%Category{slug: "tech"}) ==
+               "What topic are you discussing?"
+    end
+
+    test "get_subcategory_search_label_description/1 returns correct values" do
+      assert ChannelCategories.get_subcategory_search_label_description(%Category{slug: "gaming"}) ==
+               "Search by Game"
+
+      assert ChannelCategories.get_subcategory_search_label_description(%Category{slug: "art"}) ==
+               "Search by Style"
+
+      assert ChannelCategories.get_subcategory_search_label_description(%Category{
+               slug: "education"
+             }) == "Search by Topic"
+
+      assert ChannelCategories.get_subcategory_search_label_description(%Category{slug: "irl"}) ==
+               "Search by Topic"
+
+      assert ChannelCategories.get_subcategory_search_label_description(%Category{slug: "music"}) ==
+               "Search by Genre"
+
+      assert ChannelCategories.get_subcategory_search_label_description(%Category{slug: "tech"}) ==
+               "Search by Topic"
+    end
+  end
 end
