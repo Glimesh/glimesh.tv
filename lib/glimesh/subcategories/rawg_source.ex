@@ -8,10 +8,10 @@ defmodule Glimesh.Subcategories.RawgSource do
   def update_game_list do
     {:ok, games} = list_games()
 
-    # Enum.map(games, fn x -> create_subcategory_for_game(x, gaming_id) end)
+    IO.puts("Loaded #{length(games)} games into the database")
   end
 
-  def create_subcategory_for_game(game, gaming_category_id) do
+  defp create_subcategory_for_game(game, gaming_category_id) do
     case Glimesh.ChannelCategories.upsert_subcategory_from_source(
            @source_name,
            Integer.to_string(game["id"]),
@@ -44,8 +44,7 @@ defmodule Glimesh.Subcategories.RawgSource do
     ""
   end
 
-  @spec list_games :: {:error, list} | {:ok, list}
-  def list_games do
+  defp list_games do
     params =
       URI.encode_query(%{
         "key" => api_key(),
@@ -53,13 +52,24 @@ defmodule Glimesh.Subcategories.RawgSource do
         "ordering" => "-metacritic"
       })
 
-    aggregate_page("https://api.rawg.io/api/games?#{params}", [])
-  end
-
-  @spec aggregate_page(binary, list) :: {:error, list} | {:ok, list}
-  def aggregate_page(next_url, existing_list) do
     %{id: gaming_id} = Glimesh.ChannelCategories.get_category("gaming")
 
+    aggregate_page("https://api.rawg.io/api/games?#{params}", [], fn new_games ->
+      # Loop through all of the games until we start getting unreviewed
+      # games, then we know we're into the trash
+      filtered = Enum.reject(new_games, fn x -> is_nil(x["metacritic"]) end)
+
+      if filtered == [] do
+        :stop
+      else
+        Enum.each(filtered, fn x -> create_subcategory_for_game(x, gaming_id) end)
+
+        :ok
+      end
+    end)
+  end
+
+  defp aggregate_page(next_url, existing_list, save_games) do
     with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
            HTTPoison.get(next_url, [
              {"Content-Type", "application/json"}
@@ -67,12 +77,9 @@ defmodule Glimesh.Subcategories.RawgSource do
          {:ok, %{"next" => next, "results" => games}} <- Jason.decode(body) do
       existing_list = existing_list ++ games
 
-      if not is_nil(next) and length(existing_list) < 10_000 do
-        Enum.each(games, fn x -> create_subcategory_for_game(x, gaming_id) end)
-
-        aggregate_page(next, existing_list)
-      else
-        {:ok, existing_list}
+      case save_games.(games) do
+        :ok -> aggregate_page(next, existing_list, save_games)
+        :stop -> {:ok, existing_list}
       end
     else
       {:ok, %HTTPoison.Response{status_code: 404}} ->

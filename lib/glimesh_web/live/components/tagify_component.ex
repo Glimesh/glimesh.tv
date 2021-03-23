@@ -9,7 +9,7 @@ defmodule GlimeshWeb.TagifyComponent do
         class: "tagify",
         "data-suggestions-event": "suggestions-#{@id}",
         "data-category": @category.id,
-        "data-allowed-regex": "^[A-Za-z0-9 \\:\\-]{2,18}$",
+        "data-create-regex": @create_regex,
         "data-allow-edit": @allow_edit,
         "data-max-options": @max_options,
         "phx-target": @myself,
@@ -24,6 +24,7 @@ defmodule GlimeshWeb.TagifyComponent do
      |> assign(
        value: "",
        allow_edit: "false",
+       create_regex: "^[A-Za-z0-9: -]{2,18}$",
        max_options: "1",
        placeholder: "Search"
      )}

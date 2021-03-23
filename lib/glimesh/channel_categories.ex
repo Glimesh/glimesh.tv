@@ -362,6 +362,19 @@ defmodule Glimesh.ChannelCategories do
     end
   end
 
+  def get_subcategory_attribution(%Category{slug: slug}) do
+    case slug do
+      "gaming" ->
+        gettext("Game Database powered by %{link}",
+          link: "<a href=\"https://rawg.io\">RAWG</a>"
+        )
+
+      _ ->
+        ""
+    end
+    |> Phoenix.HTML.raw()
+  end
+
   def get_subcategory_by_category_id_and_slug(category_id, slug) do
     Repo.one(from c in Subcategory, where: c.category_id == ^category_id and c.slug == ^slug)
   end

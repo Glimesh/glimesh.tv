@@ -134,6 +134,21 @@ defmodule Glimesh.StreamsTest do
       assert new_channel.status == "live"
     end
 
+    test "start_stream/1 stores subcategory", %{channel: channel} do
+      subcategory = subcategory_fixture()
+
+      {:ok, channel} =
+        channel
+        |> Glimesh.Repo.preload(:subcategory)
+        |> Ecto.Changeset.change()
+        |> Ecto.Changeset.put_assoc(:subcategory, subcategory)
+        |> Glimesh.Repo.update()
+
+      {:ok, stream} = Streams.start_stream(channel)
+
+      assert stream.subcategory_id == subcategory.id
+    end
+
     test "start_stream/1 stores historical tags", %{channel: channel} do
       tag = tag_fixture()
 

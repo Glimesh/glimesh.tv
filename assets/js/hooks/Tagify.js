@@ -2,7 +2,8 @@ import Tagify from '@yaireo/tagify';
 
 export default {
     updated() {
-        // Whenever the parent DOM changes, it's likely because a category ID change happened, which means we want to start over.
+        // Whenever the parent DOM changes, it's likely because a category ID 
+        // change happened, which means we want to start over.
         this.mounted();
     },
     mounted() {
@@ -10,7 +11,7 @@ export default {
         let tagify = this.tagify();
 
         parent.handleEvent(this.el.dataset.suggestionsEvent, ({value, results}) => {
-            tagify.settings.whitelist.splice(0, results.length, ...results)
+            tagify.settings.whitelist.splice(0, results.length, ...results);
 
             tagify.loading(false).dropdown.show.call(tagify, value);
         });
@@ -27,15 +28,12 @@ export default {
     },
     tagify() {
         let categoryId = this.el.dataset.category;
-        let allowedRegex = new RegExp(this.el.dataset.allowedRegex);
+        let allowedCreateRegex = new RegExp(this.el.dataset.createRegex);
         let allowEdit = (this.el.dataset.allowEdit == "true" ? true : false);
         let whitelist = [];
-        console.log(this.el.value);
-        if (allowEdit === false && this.el.value) {
-            // whitelist.push(this.el.value);
+        if (this.el.value) {
+            whitelist.push({value: this.el.value});
         }
-
-        console.log(whitelist);
 
         return new Tagify(this.el, {
             whitelist: whitelist,
@@ -77,15 +75,15 @@ export default {
                     }
                 }
             },
-            validate: function({value: input}) {
-                // if (parsedWhitelist.includes(input)) {
-                //     return true;
-                // }
-                
+            validate: function( {value: input}) {
+                let parsedWhitelist = this.whitelist.map(({value: v}) => v);
+                if (parsedWhitelist.includes(input)) {
+                    return true;
+                }
 
-                // if (!allowedRegex.test(input)) {
-                //     return "Tags must be alphanumerical and may contain colon's, spaces, and dashes. Min length 2, Max length 18";
-                // }
+                if (allowEdit && allowedCreateRegex.test(input) === false) {
+                    return "Must be alphanumerical and may contain colon's, spaces, and dashes.";
+                }
 
                 return true;
             },

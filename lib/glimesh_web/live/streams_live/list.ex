@@ -1,28 +1,9 @@
 defmodule GlimeshWeb.StreamsLive.List do
   use GlimeshWeb, :live_view
 
-  alias Glimesh.Accounts
   alias Glimesh.ChannelCategories
   alias Glimesh.Streams
   alias Glimesh.Streams.Organizer
-
-  @impl true
-  def mount(%{"category" => "following"}, session, socket) do
-    case Accounts.get_user_by_session_token(session["user_token"]) do
-      %Glimesh.Accounts.User{} = user ->
-        if session["locale"], do: Gettext.put_locale(session["locale"])
-
-        {:ok,
-         socket
-         |> put_page_title(gettext("Followed Streams"))
-         |> assign(:current_user, user)
-         |> assign(:tag_list, nil)
-         |> assign(:list_name, "Followed")}
-
-      nil ->
-        {:ok, redirect(socket, to: "/")}
-    end
-  end
 
   @impl true
   def mount(params, session, socket) do

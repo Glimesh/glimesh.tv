@@ -9,7 +9,6 @@
 </div>
 
 <div class="container container-stream-list mb-4">
-
     <form phx-change="filter_change">
         <div class="row">
             <div class="col-md-6 col-lg-3 mb-2">
@@ -22,6 +21,7 @@
                                 "phx-hook": "TagSearch",
                                 placeholder: Glimesh.ChannelCategories.get_subcategory_search_label_description(@category) %>
                 </div>
+                <p><%= Glimesh.ChannelCategories.get_subcategory_attribution(@category) %></p>
             </div>
             <div class="col-md-6 col-lg-3 mb-2">
                 <label for="validationCustom01"><%= gettext("Tags") %></label>

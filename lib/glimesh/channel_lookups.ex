@@ -105,7 +105,7 @@ defmodule Glimesh.ChannelLookups do
         where: c.status == "live",
         where: f.user_id == ^user.id
     )
-    |> Repo.preload([:category, :user, :stream, :tags])
+    |> Repo.preload([:category, :user, :stream, :subcategory, :tags])
   end
 
   def list_all_followed_channels(user) do

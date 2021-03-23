@@ -34,7 +34,7 @@ defmodule Glimesh.Streams.Subcategory do
       :background_image
     ])
     |> validate_required([:name])
-    |> validate_length(:name, min: 2)
+    |> validate_length(:name, min: 2, max: 255)
     |> set_slug_attribute()
     |> unique_constraint([:category_id, :slug])
   end

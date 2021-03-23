@@ -142,6 +142,7 @@ defmodule Glimesh.Streams do
         create_stream(channel, %{
           title: channel.title,
           category_id: channel.category_id,
+          subcategory_id: channel.subcategory_id,
           category_tags: Enum.map(tags, & &1.id),
           started_at: DateTime.utc_now() |> DateTime.to_naive()
         })

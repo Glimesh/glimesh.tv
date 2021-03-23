@@ -26,6 +26,10 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
        ChannelCategories.get_subcategory_select_label_description(channel.category)
      )
      |> assign(
+       :subcategory_attribution,
+       Glimesh.ChannelCategories.get_subcategory_attribution(channel.category)
+     )
+     |> assign(
        :existing_subcategory,
        if(channel.subcategory, do: channel.subcategory.name, else: "")
      )
@@ -54,6 +58,10 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
      |> assign(
        :subcategory_placeholder,
        ChannelCategories.get_subcategory_select_label_description(category)
+     )
+     |> assign(
+       :subcategory_attribution,
+       Glimesh.ChannelCategories.get_subcategory_attribution(category)
      )
      |> assign(:existing_subcategory, "")
      |> assign(:existing_tags, "")

@@ -95,6 +95,7 @@ defmodule GlimeshWeb.Api.ChannelTest do
 
       subcategories {
         name
+        backgroundImageUrl
       }
 
       tags {
@@ -133,7 +134,8 @@ defmodule GlimeshWeb.Api.ChannelTest do
                    "slug" => "gaming",
                    "subcategories" => [
                      %{
-                       "name" => "World of Warcraft"
+                       "name" => "World of Warcraft",
+                       "backgroundImageUrl" => nil
                      }
                    ],
                    "tags" => [

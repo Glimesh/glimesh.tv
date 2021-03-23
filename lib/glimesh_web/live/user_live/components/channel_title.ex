@@ -58,12 +58,14 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
                                 form: f, field: :subcategory,
                                 max_options: 1,
                                 allow_edit: "true",
+                                create_regex: "^[A-Za-z0-9: -]{2,40}$",
                                 value: @existing_subcategory,
                                 placeholder: @subcategory_placeholder,
                                 category: @category,
                                 search_func: &search_categories/2
                             )
                             %>
+                            <p><%= @subcategory_attribution %></p>
                             <%= error_tag f, :subcategory %>
                           </div>
                           <div class="form-group">
@@ -77,6 +79,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
                                   placeholder: gettext("Search for tags to describe your stream"),
                                   max_options: 10,
                                   allow_edit: "true",
+                                  create_regex: "^[A-Za-z0-9: -]{2,18}$",
                                   category: @category,
                                   search_func: &search_tags/2
                               )
@@ -212,6 +215,10 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
     |> assign(
       :subcategory_placeholder,
       ChannelCategories.get_subcategory_select_label_description(category)
+    )
+    |> assign(
+      :subcategory_attribution,
+      Glimesh.ChannelCategories.get_subcategory_attribution(category)
     )
   end
 
