@@ -41,8 +41,7 @@ config :glimesh,
   run_stream_pruner: true,
   locales: locales
 
-config :glimesh, Glimesh.Repo,
-  prepare: :unnamed
+config :glimesh, Glimesh.Repo, prepare: :unnamed
 
 config :waffle,
   storage: Waffle.Storage.Local,

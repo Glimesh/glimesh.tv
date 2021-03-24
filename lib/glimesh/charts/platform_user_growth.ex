@@ -23,7 +23,9 @@ defmodule Glimesh.Charts.PlatformUserGrowth do
   end
 
   def json do
-    chart(Glimesh.Charts.query_to_struct(query(), WeekData)) |> Jason.encode!()
+    Glimesh.QueryCache.get_and_store!("Glimesh.Charts.PlatformUserGrowth.json()", fn ->
+      {:ok, chart(Glimesh.Charts.query_to_struct(query(), WeekData)) |> Jason.encode!()}
+    end)
   end
 
   def chart(data) do
