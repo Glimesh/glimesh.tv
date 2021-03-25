@@ -1,110 +1,113 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
 msgid ""
 msgstr ""
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Project-Id-Version: Glimesh\n"
-"Language: zh-Hans\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: sl\n"
+"Plural-Forms: nplurals=4\n"
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:30
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:12
 msgid "Are you sure?"
-msgstr "你确定吗?"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:27
 #: lib/glimesh_web/templates/user_applications/new.html.eex:7
 msgid "Back"
-msgstr "回去"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:67
 msgid "Cancel Subscription"
-msgstr "取消订阅"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/form_component.ex:52
 msgid "Category created successfully"
-msgstr "类别创建成功的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/form_component.ex:39
 msgid "Category updated successfully"
-msgstr "类别更新成功的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:53
 msgid "Confirmation link is invalid or it has expired."
-msgstr "验证邮件无效或过期的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:196
 msgid "Display name must match Username"
-msgstr "显示名必须匹配用户名"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:26
 #: lib/glimesh_web/live/user_live/components/channel_title.ex:14
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:123
 msgid "Edit"
-msgstr "编辑"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.ex:19
 #: lib/glimesh_web/live/admin/category_live/show.ex:20
 msgid "Edit Category"
-msgstr "编辑类别"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_security_controller.ex:50
 msgid "Email change link is invalid or it has expired."
-msgstr "电邮变更链接无效或过期"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:214
 msgid "Email is the same"
-msgstr "电邮一样的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/article/index.html.eex:2
 msgid "Glimesh Blog"
-msgstr "《Glimesh》博客"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:11
 msgid "Help us fund the platform & grow!"
-msgstr "帮助我们资助这个平台, 还有发展!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:348
 msgid "Incorrect YouTube URL format"
-msgstr "《Youtube》网址格式错的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:339
 msgid "Invalid Password"
-msgstr "密码的无效"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.ex:31
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:2
 msgid "Listing Categories"
-msgstr "列表类别"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:16
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:15 lib/glimesh_web/templates/user_applications/form.html.eex:9
 msgid "Name"
-msgstr "名字"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.ex:25
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:37
 msgid "New Category"
-msgstr "新类别"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:4
@@ -113,1607 +116,1623 @@ msgstr "新类别"
 #: lib/glimesh_web/templates/user_payments/index.html.eex:39 lib/glimesh_web/templates/user_reset_password/edit.html.eex:6
 #: lib/glimesh_web/templates/user_security/edit.html.eex:13 lib/glimesh_web/templates/user_security/edit.html.eex:45
 msgid "Oops, something went wrong! Please check the errors below."
-msgstr "哎呀, 出问题了! 请看下面的错误"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:224
 msgid "Password does not match"
-msgstr "密码不匹配"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/article/index.html.eex:15
 msgid "Read More"
-msgstr "阅读更多"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_reset_password_controller.ex:58
 msgid "Reset password link is invalid or it has expired."
-msgstr "重设密码链接无效或过期的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:22
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:43
 msgid "Select"
-msgstr "选择"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/show.ex:19
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:1
 msgid "Show Category"
-msgstr "显示类别"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:17
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:20
 msgid "Slug"
-msgstr "可读网址"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:31
 msgid "Support Glimesh's future with your wallet! Get special perks to show off."
-msgstr "用你的钱包支持 《Glimesh》! 获得特殊炫耀的津贴"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:52
 msgid "You're subscribed!"
-msgstr "你是订阅了!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:13
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:33 lib/glimesh_web/live/platform_subscription_live/index.html.leex:64
 #: lib/glimesh_web/live/subscription_component.ex:34
 msgid "monthly"
-msgstr "月的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:2
 #: lib/glimesh_web/live/streams_live/list.html.leex:27
 msgid "%{category} Streams"
-msgstr "%{category}的直播"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:13
 msgid "%{category} Streams Coming Soon"
-msgstr "%{category}即将播出"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:106
 #: lib/glimesh_web/templates/user_session/tfa.html.eex:18
 msgid "2FA Code"
-msgstr "双重认证码"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:46
 msgid "Account confirmed successfully."
-msgstr "确认帐户成功"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:11
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:15
 msgid "Art"
-msgstr "艺术"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:35
 msgid "Change E-mail"
-msgstr "换电邮"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:74
 msgid "Change Password"
-msgstr "换密码"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:12
 msgid "Click Update Settings down below when you've chosen the file."
-msgstr "点击下面的更新设定当你选择文件了好后的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:66
 msgid "Confirm New Password"
-msgstr "确认新密码"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:14
 msgid "Confirm new password"
-msgstr "确认新密码"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:68
 msgid "Copyright Infringement / Law Violation"
-msgstr "侵犯版权 / 违反法律"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:27
 #: lib/glimesh_web/templates/user_security/edit.html.eex:58 lib/glimesh_web/templates/user_security/edit.html.eex:114
 #: lib/glimesh_web/templates/user_security/edit.html.eex:122
 msgid "Current Password"
-msgstr "当前密码"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:42
 msgid "Delete Saved Payment"
-msgstr "删除保存的付款方式"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:34 lib/glimesh_web/templates/gct/edit_user.html.eex:17
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:48
 msgid "Display Name"
-msgstr "显示名称"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_security_controller.ex:43
 msgid "E-mail changed successfully."
-msgstr "电子邮件更改成功"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:15
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:27
 msgid "Education"
-msgstr "教育"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:30
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:55 lib/glimesh_web/templates/user_reset_password/new.html.eex:11
 #: lib/glimesh_web/templates/user_security/edit.html.eex:20
 msgid "Email"
-msgstr "电邮"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:20
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:24
 msgid "Follow"
-msgstr "追随"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.ex:17
 msgid "Followed Streams"
-msgstr "关注的广播"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:32
 msgid "Followers"
-msgstr "关注者"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:37
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:54
 msgid "Following"
-msgstr "关注"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:10
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:12
 msgid "Gaming"
-msgstr "赌博"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:56
 msgid "Hate Speech"
-msgstr "仇恨言论"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:14
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:24
 msgid "IRL"
-msgstr "现实生活中"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:34
 msgid "If your e-mail is in our system and it has not been confirmed yet, "
-msgstr "万一你的电邮是在我们系统中但呢未确认的,"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:62
 msgid "Inappropriate Content"
-msgstr "不适当的内容"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:72
 msgid "Instagram Username"
-msgstr "《Instagram》用户名"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:40
 msgid "Language"
-msgstr "语言"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:38
 msgid "Logged out successfully."
-msgstr "登出成功"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:31
 msgid "More"
-msgstr "跟多"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:12
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:18
 msgid "Music"
-msgstr "音乐"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:10
 #: lib/glimesh_web/templates/user_security/edit.html.eex:53
 msgid "New password"
-msgstr "新密码"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:81
 msgid "Notes"
-msgstr "笔记"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:74
 msgid "Other"
-msgstr "其他的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/index.ex:14
 #: lib/glimesh_web/live/user_live/index.html.leex:2
 msgid "Our Users"
-msgstr "我们的用户"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_reset_password_controller.ex:41
 msgid "Password reset successfully."
-msgstr "重设密码成功地"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_security_controller.ex:62
 msgid "Password updated successfully."
-msgstr "密码更改成功"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:25
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:39
 msgid "Payment Details"
-msgstr "付款详情"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:149
 #: lib/glimesh_web/templates/user_payments/index.html.eex:150
 msgid "Payment History"
-msgstr "支付方式"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:17
 msgid "Payment method already attached!"
-msgstr "付款方法早就附了!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_payments_controller.ex:155
 msgid "Payment method deleted!"
-msgstr "付款方法删除的!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:58
 msgid "Profile updated successfully."
-msgstr "个人资料更新的成功"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:136
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:24
 msgid "Register"
-msgstr "注册"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:24
 #: lib/glimesh_web/templates/about/streaming.html.eex:113
 msgid "Register Your Account"
-msgstr "注册你的账户"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:137
 msgid "Remove Two Factor Authentication"
-msgstr "去掉两要素认证码"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:10
 msgid "Report User"
-msgstr "报告用户"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:1
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:19
 msgid "Reset password"
-msgstr "重设密码"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:31
 msgid "Saved Payment Method"
-msgstr "保存的付款方式"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:47
 msgid "Setup Payment Method"
-msgstr "设置付款方式"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:42
 msgid "Share my profile on Twitter"
-msgstr "在《Twitter》上分享我的个人资料"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:44
 msgid "Share on Twitter"
-msgstr "在《Twitter》上分享"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:131
 msgid "Sign Out"
-msgstr "登出"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:137
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:25
 msgid "Sign in"
-msgstr "登入"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:45
 msgid "Social"
-msgstr "社交媒体"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/followers.html.leex:16
 msgid "Sub Ready!"
-msgstr "订阅准备了!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:11
 msgid "Sub-ready Streamer"
-msgstr "订阅准备的直播人"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:85
 msgid "Submit Report"
-msgstr "提交报告"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:132
 msgid "Submit Two Factor Authentication"
-msgstr "提交此两要素认证"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:45
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:20 lib/glimesh_web/live/user_live/components/subscribe_button.ex:23
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:26
 msgid "Subscribe"
-msgstr "订阅"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:107
 #: lib/glimesh_web/templates/user_payments/index.html.eex:124
 msgid "Subscribed since %{date}"
-msgstr "从昨%{date}始就订阅了"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:13
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:21
 msgid "Tech"
-msgstr "科技"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:33
 msgid "Total Charge"
-msgstr "总费用"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:12
 msgid "Unfollow"
-msgstr "未追随"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:17
 #: lib/glimesh_web/templates/user_payments/index.html.eex:112
 msgid "Unsubscribe"
-msgstr "退订"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:161 lib/glimesh_web/templates/user_settings/preference.html.eex:66
 msgid "Update Settings"
-msgstr "更新设定"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:119
 msgid "Upgrade!"
-msgstr "升级!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_registration_controller.ex:33
 msgid "User created successfully."
-msgstr "用户创建成功地"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:58
 msgid "User followed successfully"
-msgstr "用户关注成功"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:72
 msgid "User unfollowed successfully"
-msgstr "用户未关注成功"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/streams_live/list.html.leex:15
 msgid "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!"
-msgstr "我们偶尔广播特别活动还是别的独特的广播, 但一旦我们上线的这些网页将会充满很多现场直播的!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:52
 msgid "What has this user done wrong?"
-msgstr "这个用户做错了什么?"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:51
 msgid "You can link a payment method by creating a subscription to a channel, or the platform."
-msgstr "你可以连接一个付款方法通过创建一个订阅到一个频道, 或者这个平台"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:33
 msgid "You have an existing saved payment method. You can delete it by clicking the button below."
-msgstr "你有一个现有的付款方法. 你可以通过点击下面的按钮将其删除"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:112
 msgid "YouTube Teaser URL"
-msgstr "《Youtube》宣传网址"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:83
 msgid "YouTube Username"
-msgstr "《Youtube》用户名"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:21
 msgid "Your Name"
-msgstr "你的名字"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_payments_controller.ex:25
 #: lib/glimesh_web/templates/user_payments/index.html.eex:2
 msgid "Your Payment Portal"
-msgstr "你的支付门户"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:99
 msgid "Your Subscriptions"
-msgstr "你的订阅"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_confirmation/new.html.eex:10
 msgid "email"
-msgstr "电子邮件"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:35
 msgid "you will receive an e-mail with instructions shortly."
-msgstr "你会收到一个带有说明的电子电邮的电邮"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:81
 msgid "2FA Setup"
-msgstr "双重认证建立"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_security_controller.ex:30
 msgid "A link to confirm your e-mail change has been sent to the new address."
-msgstr "电子邮件确认的链接发送到您的电子邮件地址"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:8
 msgid "Change e-mail"
-msgstr "更改电邮"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:39
 msgid "Change password"
-msgstr "换密码"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_reset_password_controller.ex:24
 msgid "If your e-mail is in our system, you will receive instructions to reset your password shortly."
-msgstr "万一你的电邮实在我们的系统, 你很快就会收到重置你的密码"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:16
 #: lib/glimesh_web/templates/user_settings/profile.html.eex:2
 msgid "Your Profile"
-msgstr "你的个人资料"
+msgstr ""
 
 msgid "can't be blank"
-msgstr "不能空的"
+msgstr ""
 
 msgid "has already been taken"
-msgstr "已被注册得"
+msgstr ""
 
 msgid "is invalid"
-msgstr "无效地"
+msgstr ""
 
 msgid "must be accepted"
-msgstr "必须得接受"
+msgstr ""
 
 msgid "has invalid format"
-msgstr "无效地格式"
+msgstr ""
 
 msgid "has an invalid entry"
-msgstr "无效地输入"
+msgstr ""
 
 msgid "is reserved"
-msgstr "预定了"
+msgstr ""
 
 msgid "does not match confirmation"
-msgstr "确认不符"
+msgstr ""
 
 msgid "is still associated with this entry"
-msgstr "仍然与数据条目相关的"
+msgstr ""
 
 msgid "are still associated with this entry"
-msgstr "仍然与数据条目相关得"
+msgstr ""
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] "必须到%{count}字符"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] "必须有%{count}东西"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] "必须有最少%{count}字符"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] "必须有最少%{count}东西"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] "一定不得超过%{count}字符"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] "不能有%{count}跟多的东西"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 msgid "must be less than %{number}"
-msgstr "比数比%{number}少的"
+msgstr ""
 
 msgid "must be greater than %{number}"
-msgstr "比数比%{number}多的"
+msgstr ""
 
 msgid "must be less than or equal to %{number}"
-msgstr "比数比%{number}少的或者等于到"
+msgstr ""
 
 msgid "must be greater than or equal to %{number}"
-msgstr "比数比%{number}多的或者等于到"
+msgstr ""
 
 msgid "must be equal to %{number}"
-msgstr "必修要等于到 %{number}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_session/tfa.html.eex:27
 msgid "Don't have access anymore?"
-msgstr "不再无法访问了?"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_session/tfa.html.eex:6
 msgid "Enter your 2FA code!"
-msgstr "输入你的双重认证码!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:28
 msgid "Invalid 2FA code, if you need help please email %{email}"
-msgstr "无效的双重认证码, 万一你需要帮助请给%{email}发电子邮件"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:123 sidebar.html.eex:9
 msgid "Payments"
-msgstr "付款"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_session/tfa.html.eex:27
 msgid "Please contact %{email}"
-msgstr "请联系%{email}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:49
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:114 sidebar.html.eex:6
 msgid "Profile"
-msgstr "人资料"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_security_controller.ex:13
 #: sidebar.html.eex:18 lib/glimesh_web/templates/user_security/edit.html.eex:2
 msgid "Security"
-msgstr "安全"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:8
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:22 lib/glimesh_web/templates/layout/_navbar.html.leex:127
 msgid "Settings"
-msgstr "设定"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:93
 msgid "Chat Rules (Markdown Supported)"
-msgstr "聊天规则 (Markdown支持的)"
+msgstr ""
 
 #, elixir-format
 #: sidebar.html.eex:37
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:18
 msgid "Create Channel"
-msgstr "建立频道"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:115
 msgid "Stream settings updated successfully"
-msgstr "流设置更新成功"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:16
 msgid "You currently don't have a channel setup. Press the button below if you'd like to setup your channel!"
-msgstr "你现在没有一个频道设定. 按下按钮如果你想设置你的频道!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:20
 msgid "Actions"
-msgstr "动作"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/form.html.eex:38
 msgid "Allowed Redirect URI's"
-msgstr "允许重定向网址"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:17
 msgid "Application"
-msgstr "申请"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/oauth2_controllers/authorized_application_controller.ex:28
 msgid "Application revoked."
-msgstr "申请撤消"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:17
 #: sidebar.html.eex:46 lib/glimesh_web/templates/user_applications/index.html.eex:4
 #: lib/glimesh_web/templates/user_applications/show.html.eex:4
 msgid "Applications"
-msgstr "申请"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:16
 msgid "Are you sure you wish to authorize %{name} to use your account? This application will be able to:"
-msgstr "你确定要授权%{name}用哪个你的户口?\n"
-"这个应用将能够:"
+msgstr ""
 
 #, elixir-format
 #: sidebar.html.eex:21
 msgid "Authorizations"
-msgstr "授权书"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:35
 #: lib/glimesh_web/templates/user_applications/show.html.eex:80
 msgid "Authorize"
-msgstr "授权"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:6
 msgid "Authorize %{name}?"
-msgstr "授权%{name}?"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/oauth2_controllers/authorized_application_controller.ex:14
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:4
 msgid "Authorized Applications"
-msgstr "授权的应用"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/form.html.eex:31
 msgid "Browse for Images"
-msgstr "浏览图片"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:71
 msgid "Callbacks"
-msgstr "回叫"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:57
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:75 lib/glimesh_web/templates/user_applications/form.html.eex:31
 msgid "Choose file"
-msgstr "选择文件"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/components/click_to_copy.ex:14
 msgid "Click to Copy"
-msgstr "点击复制"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:34
 msgid "Client ID"
-msgstr "客户名分"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/components/click_to_copy.ex:14
 msgid "Copied to Clipboard"
-msgstr "复制到剪贴板"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:38
 #: lib/glimesh_web/templates/user_applications/index.html.eex:7 lib/glimesh_web/templates/user_applications/new.html.eex:4
 #: lib/glimesh_web/templates/user_applications/show.html.eex:7
 msgid "Create Application"
-msgstr "创建应用"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:32
 msgid "Credentials"
-msgstr "证书"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:38
 msgid "Deny"
-msgstr "拒绝"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/form.html.eex:21
 #: lib/glimesh_web/templates/user_payments/index.html.eex:160
 msgid "Description"
-msgstr "描述"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/edit.html.eex:2
 #: lib/glimesh_web/templates/user_applications/show.html.eex:88
 msgid "Edit Application"
-msgstr "编辑应用"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/components/click_to_copy.ex:13
 msgid "Error"
-msgstr "出错"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:18 lib/glimesh_web/templates/user_applications/form.html.eex:15
 msgid "Homepage"
-msgstr "主页"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:140 lib/glimesh_web/templates/user_applications/form.html.eex:27
 msgid "Image"
-msgstr "图片"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:19
 msgid "Installed at"
-msgstr "安装在"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:61
 msgid "OAuth Authorization URL"
-msgstr "认证授权网址"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:52
 msgid "OAuth Token URL"
-msgstr "认证令牌网址"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/form.html.eex:47
 msgid "Save Application"
-msgstr "保存申请"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:43
 msgid "Secret Key"
-msgstr "密钥"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/oauth2_provider/authorized_application/index.html.eex:34
 msgid "Unauthorize"
-msgstr "未经授权"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/form.html.eex:41
 msgid "Use one line per URI"
-msgstr "用一行给每一个统一资源标志符"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:8
 msgid "scopechat"
-msgstr "允许这个应用去在聊天中代表您行事"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:7
 msgid "scopeemail"
-msgstr "允许这个应用去查看您的电子邮件地址"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:6
 msgid "scopepublic"
-msgstr "允许这个应用去知道你是谁"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/views/oauth2_provider/authorization_view.ex:9
 msgid "scopestream"
-msgstr "允许这个应用去查看您的流密钥"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/followers.html.leex:3
 msgid "%{username}'s Followers"
-msgstr "%{username}的关注者"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/index.html.eex:27
 msgid "API Documentation"
-msgstr "API 文件资料"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_security/edit.html.eex:97
 msgid "Black & White 2FA Image"
-msgstr "黑白双重认证图片"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:132
 msgid "Bold"
-msgstr "黑体"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:138
 msgid "Code"
-msgstr "码"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:154
 msgid "Coming soon!"
-msgstr "快来了!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:134
 msgid "Heading"
-msgstr "标题"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:133
 msgid "Italic"
-msgstr "斜体"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:139
 msgid "Link"
-msgstr "链接"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:145
 msgid "Ordered List"
-msgstr "有序列表"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:124
 msgid "Preview"
-msgstr "预习"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:137
 msgid "Quote"
-msgstr "引用"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:143
 msgid "Unordered List"
-msgstr "无序列表"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:98
 #: lib/glimesh_web/live/user_live/stream.html.leex:120
 msgid "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the right hand corner!"
-msgstr "欢迎到我的个人资料页! 我还没有定制它, 但我可以轻松做到这一点通过点击我的用户名在右上角的一角!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:116
 msgid "Block viewers from posting links?"
-msgstr "阻止观众发布链接的?"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_registration_controller.ex:44
 msgid "Captcha validation failed, please try again."
-msgstr "验证码验证失败, 请再试一遍"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.html.leex:19
 msgid "Current active channel subscriptions totals, including net-new each week and totals."
-msgstr "总当前的活跃频道订阅, 包括净新的每个礼拜还有每礼拜总计"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:21
 msgid "Giving Monthly"
-msgstr "每月给"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.ex:38
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:2
 msgid "Glimesh Platform Subscriptions"
-msgstr "《Glimesh》平台订阅"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.html.leex:3
 msgid "Glimesh takes transparency to the exteme, as an open company we build in the public light, and we operate in the public light. We've built graphs for a couple common metrics we use, but if you have any questions about how we run, let us know!"
-msgstr "《Glimesh》将它发挥到极致. 因为我们是一个开放的共识, 我们建立还有操作在公众视野下完成的. 我们做了几个图表给几个共同的指标, 但万一你哟问题关于我们如何的运作, 请让我们知道的!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.ex:33
 #: lib/glimesh_web/live/about/open_data_live.html.leex:24
 msgid "Live Streams"
-msgstr "现场直播"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:3
 msgid "Manage your ongoing subscriptions, see your transaction history, and setup your payout information subscriptions!"
-msgstr "管理你的持续订阅, 查看你的交易记录, 还有设置你的支付信息!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.html.leex:26
 msgid "Number of live streams each week."
-msgstr "每周直播数"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.html.leex:12
 msgid "Number of users on the platform over time, and net-new each week."
-msgstr "随着时间的推移平台上的用户数, 还有净新的每周"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.html.leex:2
 #: lib/glimesh_web/templates/layout/root.html.leex:97
 msgid "Open Data"
-msgstr "开数据"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:126
 #: lib/glimesh_web/templates/user_payments/index.html.eex:138
 msgid "Payout History"
-msgstr "付款历史"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.ex:21
 #: lib/glimesh_web/live/about/open_data_live.html.leex:10
 msgid "Platform User Growth"
-msgstr "平台用户增长"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:13
 msgid "Receiving Monthly"
-msgstr "每月接收"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/about/open_data_live.ex:27
 #: lib/glimesh_web/live/about/open_data_live.html.leex:16
 msgid "Recurring Subscriptions"
-msgstr "定期订阅"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:111
 msgid "Should links automatically be clickable?"
-msgstr "该链接自动可以点击的?"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:3
 msgid "Support the platform directly and get a couple of extra perks to really stand out!"
-msgstr "支持这个平台, 并获得几个多津贴真的脱颖而出!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:10
 msgid "Supporter"
-msgstr "支持者"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:60
 msgid "Thanks for supporting Glimesh. Your genuine support is appreciated."
-msgstr "感谢你支持《Glimesh》. 你的真正的支持表示赞赏"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:58
 msgid "User account is banned. Please contact support at %{email} for more information."
-msgstr "用户帐户被禁止了. 请联系我们在%{email}获取更多信息"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/index.html.eex:24
 msgid "Want to build a chat bot, an online tool, or other service that integrates with Glimesh? You're in the right place! Create an Application to get started and check out our API documentation if you need some guidance."
-msgstr "想要盖一个聊天機器人, 一个在线工具, 还是其他的服务与《Glimesh》整合的? 你是在对的地方!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:89
 #: lib/glimesh_web/templates/user_payments/index.html.eex:182 lib/glimesh_web/templates/user_payments/setup.html.eex:51
 #: lib/glimesh_web/templates/user_payments/taxes.html.eex:42
 msgid "We're not quite ready to accept payments yet. Once we launch the platform, you'll be able to access this page!"
-msgstr "我们还没有准备接受付款的. 一旦我们启动平台, 你将能够连接此网页!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:70
 msgid "A repeatable background for your chat. Make sure it's not too noisy, and it's an image that can repeat nicely right and down. Max Size: 100Kb"
-msgstr "有一个可重复的背景图给你的聊天框. 确保背景图像不是太杂讯, 还有那个图像可以很好的重复的\n"
-"最大尺寸: 100千字节"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/about.html.eex:5
 #: lib/glimesh_web/templates/layout/root.html.leex:93
 msgid "About Us"
-msgstr "关于我们的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:16
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:72 lib/glimesh_web/templates/channel_moderator/index.html.eex:81
 #: lib/glimesh_web/templates/channel_moderator/show.html.eex:41
 msgid "Action"
-msgstr "动作"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/channel_moderator_controller.ex:50
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:7 lib/glimesh_web/templates/channel_moderator/new.html.eex:4
 msgid "Add Moderator"
-msgstr "加主持人"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:130
 msgid "All rights reserved."
-msgstr "版权所有"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:161
 msgid "Amount"
-msgstr "数量"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:52
 msgid "An image for your channel that will be shown whenever you are offline. Will be resized or cropped to 1920x1080."
-msgstr "一个图片给你的频道会显示每当你离线. 图片将被调整还是裁剪到 1920x1080"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:49
 msgid "Application created successfully."
-msgstr "应用创建成功"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:76
 msgid "Application updated successfully."
-msgstr "应用更新成功"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/chat_live/index.html.leex:18
 msgid "Are you sure you wish to permanently ban %{username}?"
-msgstr "你确定你要你确定你要%{username}?"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/new.html.eex:7
 #: lib/glimesh_web/templates/channel_moderator/show.html.eex:7
 msgid "Back to Moderator List"
-msgstr "回去到主持人名单"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:32
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:21
 msgid "Ban"
-msgstr "禁止"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/chat_live/index.html.leex:18
 msgid "Ban user from channel."
-msgstr "禁止用户访问此频道"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:55
 msgid "Banned At"
-msgstr "禁止在"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:4
 msgid "Beautiful people who choose to support the platform."
-msgstr "支持这个平台的很棒的人"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:109 sidebar.html.eex:26
 msgid "Channel"
-msgstr "频道"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:48
 msgid "Channel Bans"
-msgstr "频道禁止"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:100
 msgid "Channel Category"
-msgstr "频道类别"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:74
 msgid "Channel Moderation Log"
-msgstr "频道管理记录"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/channel_moderator_controller.ex:21
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:4
 msgid "Channel Moderators"
-msgstr "频道主持人"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:50
 msgid "Channel Poster"
-msgstr "频道招贴"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:23
 #: sidebar.html.eex:30 lib/glimesh_web/templates/user_settings/stream.html.eex:2
 msgid "Channel Settings"
-msgstr "频道设定"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/chat/effects.ex:116 lib/glimesh/chat/effects.ex:127
 msgid "Channel Subscriber"
-msgstr "频道订户人"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:88
 msgid "Channel Title"
-msgstr "频道名"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:68
 msgid "Chat Background"
-msgstr "聊天框背景"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:74
 #: lib/glimesh_web/templates/layout/root.html.leex:94
 msgid "Credits"
-msgstr "片尾"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:159
 msgid "Date / Time"
-msgstr "日期 / 时间"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:104
 msgid "Disabled channel notifications"
-msgstr "禁用音频频道通知"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/show.html.eex:4
 msgid "Edit %{username}"
-msgstr "编辑%{username}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:66
 msgid "Elixir Libraries"
-msgstr "《Elixir》库"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:88
 msgid "Enabled channel notifications"
-msgstr "启用频道通知"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:46
 msgid "FTL Libraries"
-msgstr "超光速库"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/chat/effects.ex:43
 msgid "Glimesh Community Team"
-msgstr "《Glimesh》社区团队"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:3
 msgid "Glimesh Platform Subscribers"
-msgstr "《Glimesh》平台订户"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/chat/effects.ex:37
 msgid "Glimesh Staff"
-msgstr "《Glimesh》职员"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/chat/effects.ex:55
 msgid "Glimesh Supporter Subscriber"
-msgstr "《Glimesh》支持者订户"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:104
 msgid "Guilded Server URL"
-msgstr "公会服务器网址"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:15
 msgid "Invalid image. Must be either png or jpg."
-msgstr "无效图片. 必须是 png 还是 jpg 的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:26
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:20
 msgid "Long Timeout"
-msgstr "超时时间长"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:80
 msgid "Moderator"
-msgstr "主持人"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/show.html.eex:21
 msgid "Moderator Since: %{date}"
-msgstr "从%{date}开始主持"
+msgstr ""
 
 #, elixir-format
 #: sidebar.html.eex:33
 msgid "Moderators"
-msgstr "主持人"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/views/channel_moderator_view.ex:5
 msgid "No"
-msgstr "不"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:86
 msgid "NodeJS Libraries"
-msgstr "NodeJS库"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:144
 msgid "Not available"
-msgstr "无法使用"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:97
 msgid "OAuth Client ID & Client Secret rotated successfully."
-msgstr "开放授权客户名分和客户机密轮换成功的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:35
 msgid "Open Source Libraries"
-msgstr "开源库"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:16
 msgid "Permissions"
-msgstr "权限"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:119
 msgid "Profile Content (%{a_start}Markdown%{a_end} supported)"
-msgstr "个人资料内容(%{a_start}Markdown%{a_end} 支持)"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:44
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:23
 msgid "Remove Ban"
-msgstr "取消禁令"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:38
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:22
 msgid "Remove Timeout"
-msgstr "取消超时"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_applications/show.html.eex:90
 msgid "Rotate Keys"
-msgstr "旋转密钥"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/channel_title.ex:56
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:48
 msgid "Save"
-msgstr "保存"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:153
 msgid "See something you don't expect? Need a refund? Please email us at %{email} and we'll be happy to help!"
-msgstr "看到一些没想到的东西? 需要一个退款? 给我们发电子邮件在%{email}, 我们将很乐意提供帮助!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:20
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:19
 msgid "Short Timeout"
-msgstr "超时短"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:38
 msgid "Show"
-msgstr "显示"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:162
 msgid "Status"
-msgstr "状态"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:23
 msgid "Supporters"
-msgstr "支持者"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/chat_live/index.html.leex:15
 msgid "Timeout user for 15 minutes."
-msgstr "超时用户给十五分钟"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/chat_live/index.html.leex:12
 msgid "Timeout user for 5 minutes."
-msgstr "超时用户给五分钟"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:18
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:83 lib/glimesh_web/templates/channel_moderator/show.html.eex:43
 msgid "Timestamp"
-msgstr "时间戳记"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:64
 msgid "Unban"
-msgstr "解禁"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:15
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:18 lib/glimesh_web/templates/channel_moderator/index.html.eex:54
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:82 lib/glimesh_web/templates/channel_moderator/show.html.eex:42
 msgid "User"
-msgstr "用户"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/channel_moderator/show.html.eex:35
 msgid "User Moderation Log"
-msgstr "用户审核记录"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_payments/index.html.eex:142
 msgid "View on Stripe"
-msgstr "在《Stripe》上查看"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/credits.html.eex:36
 msgid "We use numerous open source projects to power Glimesh, and without them this project would never have been possible. This is not a comprehensive list, unfortunately. You can find a full list by browsing our core repositories:"
-msgstr "我们使用多种开源项目去供电《Glimesh》, 还有 没有他们这个都不可能的. 可惜, 这不是一个全面的名单. 你可以浏览核心职责找到一个全名单:"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/chat_live/index.html.leex:3
 msgid "Welcome to chat! Follow the rules."
-msgstr "欢迎来到聊天室! 请遵守规则"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/views/channel_moderator_view.ex:5
 msgid "Yes"
-msgstr "是"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/chat/policy.ex:29 lib/glimesh/chat/policy.ex:54
 msgid "You are banned from Glimesh."
-msgstr "你是从《Glimesh》被取缔"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/chat/policy.ex:47
 msgid "You are banned from this channel for %{minutes} more minutes."
-msgstr "你是从这个频道被取缔给再过%{minutes}分钟"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh/chat/policy.ex:42
 msgid "You are permanently banned from this channel."
-msgstr "你被禁止从这个频道"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:102
 msgid "You do not have permission to rotate this apps keys."
-msgstr "你没有权限旋转这个应用键"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:84
 msgid "You do not have permission to update this app."
-msgstr "你没有权限更新这个应用"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:11
 msgid "%{user}'s Avatar"
-msgstr "%{user}的头像"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:42
 msgid "2FA Token"
-msgstr "双重认证令牌"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:12
 msgid "A key used to uniquely identify and connect to your stream. Treat your Stream Key as a password."
-msgstr "一个钥唯一识别和连接频道的. 认为那是一个密码"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:7
 #: lib/glimesh_web/templates/layout/about.html.eex:9
 msgid "About Glimesh"
-msgstr "关于《Glimesh》"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:20
 msgid "Access Level: %{value}"
-msgstr "访问等级: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:9
 msgid "Accessibility"
-msgstr "可及性"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:105
 msgid "Admin"
-msgstr "管理员"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:14
 #: lib/glimesh_web/templates/user_registration/new.html.eex:54
 msgid "Allow Glimesh Newsletter Emails"
-msgstr "允许《Glimesh》电邮通讯"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:47
 msgid "Allow Live Channel Emails"
-msgstr "允许直播电邮"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:17
 msgid "Animated Emotes"
-msgstr "动画表情"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:51
 msgid "Are you sure you want to disconnect your Twitter account?"
-msgstr "你确定要"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/index.html.eex:7 sidebar.html.eex:7
 msgid "Audit Log"
-msgstr "审核日志"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:103
 msgid "BLOG"
-msgstr "博客"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:25
 msgid "Backend: %{value}"
-msgstr "后端: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:48
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:139 lib/glimesh_web/templates/gct/lookup_user.html.eex:113
 msgid "Ban Reason"
-msgstr "禁止原因"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:14
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:39 lib/glimesh_web/live/gct_live/components/button_array.ex:52
 msgid "Ban User"
-msgstr "禁止用户"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:134
 msgid "Banned"
-msgstr "禁止的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:17
 msgid "Banned: %{value}"
-msgstr "禁止的: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:22
 msgid "Belongs to: %{value}"
-msgstr "属于: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:57
 msgid "Billing Settings"
-msgstr "帐单设定"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:27
 msgid "Blocked links: %{value}"
-msgstr "挡住链接: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:110
 msgid "Can stream"
-msgstr "可以播"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/tag_live/form_component.html.leex:10
 #: lib/glimesh_web/live/user_live/components/channel_title.ex:46 lib/glimesh_web/templates/gct/lookup_channel.html.eex:42
 msgid "Category"
-msgstr "类别"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:53
 msgid "Change your Glimesh experience to feel a little lighter, or a little darker."
-msgstr "改变你的《Glimesh》经验以使其感觉亮或暗"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:25
 msgid "Changing a username will break the user's avatar."
-msgstr "改变用户名会损害用户的图像"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:21
 msgid "Channel ID: %{value}"
-msgstr "频道名分: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:12
 msgid "Channel thumbnail"
-msgstr "频道缩图"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/gct_controller.ex:340
 msgid "Channel updated successfully"
-msgstr "频道更新成功"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:54
 msgid "Chat Rules"
-msgstr "聊天规则"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:130
 msgid "Copyright © 2021 Glimesh, Inc."
-msgstr "版权 © 2021《Glimesh, Inc.》"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:23
 msgid "Created At: %{value} UTC"
-msgstr "在%{value} UTC创建的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/homepage_live.html.leex:20
 msgid "Customize Your Profile"
-msgstr "定制你的个人资料"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:79
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:43
 msgid "Dark"
-msgstr "深"
+msgstr ""
 
 #, elixir-format
 #: sidebar.html.eex:3
 msgid "Dashboard"
-msgstr "仪表盘"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:61
 msgid "Details for Audit Log #%{log_number}"
-msgstr "细节给审核记录#%{log_number}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:62
 msgid "Disable Live Notifications"
-msgstr "禁用实时通知"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/chat_live/message_form.html.leex:38
 msgid "Disable Timestamps"
-msgstr "禁用时间戳记"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:26
 msgid "Disabled hyperlinks: %{value}"
-msgstr "禁用的超联: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.ex:41
 msgid "Disabled live channel notifications for %{streamer}"
-msgstr "禁用的实时通知给%{streamer}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:49
@@ -1723,202 +1742,202 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:79
 msgid "Discord"
-msgstr "《Discord》"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/invalid_user.html.eex:3
 msgid "Does not exist"
-msgstr "不存在的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:7
 msgid "Edit Channel"
-msgstr "编辑频道"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:10
 msgid "Edit Profile"
-msgstr "编辑资料"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:11
 msgid "Edit User"
-msgstr "编辑用户"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:35
 msgid "Email Confirmed At"
-msgstr "电邮确认的在"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:15
 msgid "Email Confirmed At: %{value}"
-msgstr "电邮确认的在: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/chat_live/message_form.html.leex:38
 msgid "Enable Timestamps"
-msgstr "允许时间戳"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:30
 msgid "Followers:"
-msgstr "关注者:"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:34
 msgid "Following:"
-msgstr "关注:"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:32
 #: lib/glimesh_web/templates/layout/root.html.leex:96
 msgid "Frequently Asked Questions"
-msgstr "常问的问题"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:124
 msgid "GCT Access Level"
-msgstr "GCT 访问等级"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:102
 msgid "GCT Dash"
-msgstr "GCT仪表板"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:69
 msgid "GCT Member"
-msgstr "GCT人员"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:116
 msgid "GCT Settings"
-msgstr "GCT设置"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:19
 msgid "GCT: %{value}"
-msgstr "GCT: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:91
 msgid "GLIMESH.TV"
-msgstr "GLIMESH.TV"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:14
 msgid "General Settings"
-msgstr "常规设置"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/index.html.eex:2
 msgid "Glimesh Community Team Dashboard | Your access level is: %{level}"
-msgstr "《Discord》社区团队仪表盘 | 你的访问等级是: %{level}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:27
 msgid "Glimesh is not yet launched, so this page is still missing some critical information you need for streaming. You can customize your stream, but check back once we've launched for more!"
-msgstr "《Glimesh》还没有启动的, 所以这个网页还是缺少几个重要信息你需要给直播的. 你可以定制你的直播, 但查回来检查一旦我们启动给更多的!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:4
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:9 lib/glimesh_web/templates/gct/edit_user_profile.html.eex:7
 #: lib/glimesh_web/templates/gct/invalid_user.html.eex:4
 msgid "Go Back"
-msgstr "回去"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:90
 msgid "Guilded"
-msgstr "公会的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:16
 msgid "Has Channel: %{value}"
-msgstr "有频道: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:14
 msgid "ID"
-msgstr "名分"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:42
 msgid "If enabled, we can send alerts whenever your favorite followed streams go live. To get live notifications you must be following the channel, with the bell checked, and \"Allow Live Subscriptions\" must be enabled below."
-msgstr "如果使能的, 我们可以送警报每当你的喜欢跟着的直播上线的. 为得到实时通知你必须在跟随频道, 把哪个铃图标选择了, 还有 \"允许实时通知\" 必须在下面启用的上一页的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:6
 msgid "If you're not authorized to edit this user you must return to the previous page."
-msgstr "万一你不是授权编辑这个用户你必须要回去上一页的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:2
 msgid "Information for %{user}"
-msgstr "信息给%{user}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:2
 msgid "Information for %{user}'s channel"
-msgstr "信息给%{user}频道"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:83
 msgid "Instagram"
-msgstr "《Instagram》"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:119
 msgid "Is GCT"
-msgstr "是GCT"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:26
 msgid "Joined:"
-msgstr "加入的:"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:83
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:48
 msgid "Light"
-msgstr "浅"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/social_buttons.ex:9
 #: lib/glimesh_web/live/user_live/index.html.leex:39
 msgid "Linked Twitter Account @%{username}"
-msgstr "连接的《Twitter》户口 @%{username}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:39
 msgid "Live Channel Notifications"
-msgstr "实时频道通知"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:35
 msgid "Look & Feel"
-msgstr "外观和感觉"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/index.html.eex:33
 msgid "Lookup Channel"
-msgstr "查找频道"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:78
 msgid "More Details"
-msgstr "多的细节"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:10
 msgid "More accessibility options are coming soon to make Glimesh more comfortable for everyone."
-msgstr "跟多辅助功能选项会快来了让《Glimesh》更方便的给大家"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:8
 msgid "Newsletter Subscriptions"
-msgstr "通讯订阅"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:16
@@ -1929,163 +1948,163 @@ msgstr ""
 #: lib/glimesh_web/controllers/user_settings_controller.ex:33
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:2 sidebar.html.eex:15
 msgid "Notifications"
-msgstr "通知"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:19
 msgid "Options"
-msgstr "选项"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:77
 msgid "Payments Enabled"
-msgstr "付款启用的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_settings_controller.ex:29
 #: sidebar.html.eex:12 lib/glimesh_web/templates/user_settings/preference.html.eex:2
 msgid "Preferences"
-msgstr "优先"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/quick_preference_controller.ex:23
 #: lib/glimesh_web/controllers/quick_preference_controller.ex:38 lib/glimesh_web/controllers/user_settings_controller.ex:43
 msgid "Preferences updated successfully."
-msgstr "优先更新成功的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:38
 #: lib/glimesh_web/templates/layout/root.html.leex:133
 msgid "Privacy & Cookie Policy"
-msgstr "隐私和Cookie政策"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:105
 msgid "Profile Content"
-msgstr "个人资料内容"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_confirmation/new.html.eex:16
 msgid "Resend"
-msgstr "再送"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.ex:63
 msgid "Saved notification preferences."
-msgstr "省得通知首选项"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/index.html.eex:22
 #: lib/glimesh_web/templates/gct/index.html.eex:37
 msgid "Search"
-msgstr "搜索"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/index.html.leex:8
 msgid "Search for usernames"
-msgstr "搜索给用户名"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_reset_password/new.html.eex:17
 msgid "Send Reset Email"
-msgstr "送重置电邮"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:86
 msgid "Sent At"
-msgstr "发送在"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:60
 msgid "Show Chat Timestamps"
-msgstr "显示聊天的时间戳记"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:63
 msgid "Show the time a message was posted in chat."
-msgstr "显示聊天中发布的消息的时间"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:24
 msgid "Status: %{value}"
-msgstr "状况: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:10
 msgid "Stream Key"
-msgstr "直播流密钥"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:65
 msgid "Stripe Customer ID"
-msgstr "《Stripe》顾客名分"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:31
 msgid "Stripe Customer ID: %{value}"
-msgstr "《Stripe》顾客名分: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:72
 msgid "Stripe Payment Method"
-msgstr "《Stripe》付款方法"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:35
 msgid "Stripe Payment Method: %{value}"
-msgstr "《Stripe》付款方法: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:60
 msgid "Stripe User ID"
-msgstr "《Stripe》用户名分"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:34
 msgid "Stripe User ID: %{value}"
-msgstr "《Stripe》用户名分: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:28
 msgid "Sub Ready: %{value}"
-msgstr "订阅准备了: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:85
 msgid "Subject"
-msgstr "主题"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_social_controller.ex:41
 msgid "Successfully disconnected your social account."
-msgstr "断开你的社交媒体帐户成功"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:17
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:75
 msgid "Target"
-msgstr "定位"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:44
 #: lib/glimesh_web/templates/layout/root.html.leex:131
 msgid "Terms of Service"
-msgstr "服务条款"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_social_controller.ex:46
 msgid "There was a problem disconnecting your social account."
-msgstr "有一个问题断开你的社交媒体户口"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_social_controller.ex:30
 msgid "There was a problem linking your account."
-msgstr "有一个问题连接你社交媒体的户口"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_social_controller.ex:17
 msgid "There was a problem linking your account: "
-msgstr "有一个问题连接你社交媒体的户口: "
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:78
@@ -2095,629 +2114,629 @@ msgstr ""
 #, elixir-format
 #: lib/glimesh_web/controllers/user_social_controller.ex:24
 msgid "This social account has already been linked to another user."
-msgstr "这个社交媒体户口早就被连接跟另外一个账户了"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/channel_title.ex:41
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:34
 msgid "Title"
-msgstr "头衔"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:46
 msgid "To be added"
-msgstr "要添加的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:64
 msgid "Twitter"
-msgstr "《Twitter》"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:84
 msgid "Type of Email"
-msgstr "电邮类型"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/gct_controller.ex:369
 msgid "Unauthorized. This attempt has been logged."
-msgstr "擅自. 这个尝试被记录"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:16
 msgid "Unban User"
-msgstr "解禁用户"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:6
 msgid "Unverified Account"
-msgstr "未验证的户口"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_applications_controller.ex:62
 msgid "Update Application"
-msgstr "更新申请"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:140
 msgid "Update Channel"
-msgstr "更新频道"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:145
 msgid "Update User"
-msgstr "更新用户"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:14
 msgid "User ID: %{value}"
-msgstr "用户名分: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/gct_controller.ex:142
 #: lib/glimesh_web/controllers/gct_controller.ex:206
 msgid "User updated successfully"
-msgstr "用户更新成功的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/report_button.ex:45
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:22
 msgid "Username"
-msgstr "用户名"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:9
 msgid "Verify Email"
-msgstr "验证电邮"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:49
 msgid "View on GCT"
-msgstr "在GCT上查看"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:3
 msgid "WARNING YOU'RE CURRENTLY EDITING %{user}"
-msgstr "警告你身在在编辑%{user}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:2
 msgid "WARNING YOU'RE CURRENTLY EDITING %{user}'s CHANNEL"
-msgstr "警告你身在在编辑%{user}的频道"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user_profile.html.eex:4
 msgid "WARNING YOU'RE CURRENTLY EDITING %{user}'s PROFILE SETTINGS"
-msgstr "警告你身在在编辑%{user}的个人资料设置"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:80
 msgid "We use Stripe as our payment provider."
-msgstr "我们用《Stripe》作为我们的付款提供商"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:75
 msgid "Your Email Log"
-msgstr "你的电邮记录"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_confirmation_controller.ex:11
 msgid "Your account's email is already confirmed."
-msgstr "你的户口的电邮是已经确认"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:7
 msgid "Your email has not be verified, in order to stream on Glimesh you need to verify your email."
-msgstr "你的电邮还没有被确认的, 为了直播在《Glimesh》上, 你需要验证你的电邮"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:72
 msgid "Youtube"
-msgstr "《Youtube》"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:96
 msgid "Youtube Teaser URL"
-msgstr "《Youtube》预告片网址"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:44
 msgid "username"
-msgstr "用户名"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/viewer_count.ex:12
 msgid "%{count} "
-msgstr "%{count} "
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/viewer_count.ex:12
 msgid "%{count} Viewers"
-msgstr "%{count}的观众人"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:146
 msgid "* This is an excerpt from the Terms of Service"
-msgstr "*这个是一个摘抄从服务条款"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/tag_selector.ex:14
 msgid "Add tags to describe your stream! Limit 10."
-msgstr "加标签来描述你的直播! 限制10个"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:51
 msgid "At Glimesh we want to make sure that everyone's creative work is safe while also educating our creators on how they can be legally compliant to the DMCA and other copyright laws. "
-msgstr "在《Glimesh》我们想要确保每个的创作是安全的同时也教育我们的创作者关于如何他们怎么可以是合法合规跟数字千年版权法和别的版权法"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:8
 msgid "At Glimesh, we value an excellent experience while streaming. So we've taken a great deal of consideration into how and why we are designing features to make you and your viewers experience an excellent one. Let's take a brief look at what makes us stand out in the crowd."
-msgstr "在《Glimesh》, 我们重视一个出色的经验在直播的时候. 所以我们有大量的考虑给真么和为什么我们在设计特征使你和你的观看者的经验一个很好的. 让我们来简要看看什么在人群中来自区别我们."
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_registration_controller.ex:54
 msgid "Captcha validation failed, please make sure you have JavaScript enabled."
-msgstr "验证码验证失败了, 请确保你有Javascript启用"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:71
 msgid "Community"
-msgstr "社区"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:34
 msgid "Copyrights are protections given to creative works and their owners. You can simply think of copyrights as the right to copy a creative work. As the owner of a creative work you have the right to copy that work in any way you'd like and copyright laws like the DMCA protect you from anyone else copying that work without your permission. By default the law gives you some basic copyrights the moment you create an original work, however you can register your work online which can help your creative work be instantly protected by Copyright laws."
-msgstr "版权是个保护给创作还有他们的拥有者. 你可以简单地想到版权像一个权利去复制一个创作. 作为创作的所有者, 你有权利去复制那个创作以你喜欢的任何方式还有版权法像数字千年版权法保护你免受从别人别人未经您的许可复制的. 默认情况下法律会给你基本的版权你创建一个创作, 但, 你可以登记你的创作在线注册的这可以帮助你的创作被版权法即刻保护的."
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:140
 msgid "Counter Notice"
-msgstr "反通知"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:111
 msgid "Customize Your Channel"
-msgstr "定制你的频道"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:57
 msgid "DMCA"
-msgstr "数字千年版权法"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/root.html.leex:95
 msgid "DMCA Policy"
-msgstr "数字千年版权法政策"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:15
 msgid "Discoverability"
-msgstr "可发现性"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:17
 msgid "Discoverability is a primary focus of our platform. During our initial launch, it will be straightforward to find new content to watch. However, as we grow, this becomes more of a problem, and we want to experiment with a couple of different options for making it easy to find new and smaller streams. From the very beginning, we are working hard on making streaming equitable for all, so you don’t have to compete with unfair advantages."
-msgstr "可发现性是一个主要的重点给这个平台. 在我们的首次启动, 这将很直截了当的去找新的内容去观看. 但, 当我们长的时候, 这回变成更多的问题, 所以我们想要试验几个不同的选项给帮助你找心得和小一点的直播. 冲一开始的时候我们在努力的工作在把现场直播搞得公平给大家, 所以你不需要跟不公平的优势竞争"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/index.html.eex:19
 msgid "Email/Username/User ID"
-msgstr "电邮/用户名/用户名分"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:51
 msgid "Faster Than Light (FTL)"
-msgstr "超光速"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:6
 msgid "Features & Focuses"
-msgstr "特征和重点"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:27
 msgid "From day one, we want to give you the ability to monetize your streams so that you can create income straight away. That’s right! You do not need to have a minimum viewer count or following to obtain this feature!"
-msgstr "从第一天, 我们想要给你能力去营利你的直播所以你可以马上创造收入的. 没错的! 你不需要有个最小观看者数量它来得到这个特征的!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:63
 msgid "Give the party whose content has been removed a clear notice that their content has been removed and the reason why."
-msgstr "给那个内容受到影响的党一个明确的通知说他们的内容被删除了还有原因为什么的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:4
 msgid "Glimesh DMCA Policies"
-msgstr "《Glimesh》数字千年版权法政策"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:195
 msgid "Glimesh aims to be fair as possible. While we cannot condone improper use of copyright material we know that not all DMCA claims are fair. We will be open to help in whatever ways possible to ensure you have the best opportunity to correct DMCA claims. While we are not lawyers and cannot offer legal advice we will do our best to help you get in the right direction for correcting any claims in a fair manner."
-msgstr "《Glimesh》的目标是尽可能公平的. 虽然我们不能宽容不当使用版权的材料我们知道不每一个数字千年版权法主张是公平的. 我们愿意以任何方式提供帮助确保你有最好的机会去改变数字千年版权法的主张. 当我们不是律师所以不能给你法律咨询我们会尽最大努力去帮助你朝正确的方向去以公平的方式改变任何的主张."
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:184
 msgid "Glimesh aims to be fully compliant to the DMCA and because of that a lot of our processes will look similar to others. Here are the highlights though of how Glimesh will be different."
-msgstr "《Glimesh》的目标是完全符合数字千年版权法的因此许多个我们的过程会很相其别的网站. 这里是亮点关于《Glimesh》真么会不同的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/index.html.eex:20
 msgid "Glimesh came out of the shutdown of Mixer. When Microsoft pulled the plug on the platform overnight, communities were left without a home, streamers were left without a paycheck, and technologists were left without a viable alternative to the \"FTL\" product Mixer offered. To us, this event was painful to watch, and we decided then that streamers deserve better. We started working on an early alpha preview immediately to prove the technology and the business we wanted to build. We hosted a charity stream within a month that raised over $3,000 powered by our platform. Since then, we've been hard at work building the remaining features & scaling requirements for an alpha launch, and that brings us to today!"
-msgstr "《Glimesh》在从《Mixer》关闭的时候开始的. 当微软一夜之间的关闭那个平台, 社区都留给没有一个家, 直播人都留给没有一个薪水, 还有技术人员都留给没有一个可行的超光速方案《Mixer》提供的. 给我们, 这个事件很痛苦看的, 所以我们就然后决定直播人应该得到更好的. 我们开始工作到一个早期初步的预览证明技术和商业我们想要盖的. 我们举办慈善直播在一个月内筹集超过$3000由我们的平台驱动的. 自那以后, 我们一直在努力工作盖剩余的特征和扩展要求给个初步启动的, 这就导致我们到今天!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/index.html.eex:10
 msgid "Glimesh is the next generation streaming platform built by the community for the community. We know establishing a following is hard, and the hours are long. Our platform focuses on increasing discoverability for content creators and implementing the latest in streaming technology to level the playing field. We understand the importance of interaction between content creators and their fans, and we’re dedicated to innovating new ways to bring communities closer together."
-msgstr "《Glimesh》是下一代的直播平台由社区为社区的. 我们知道建立一个追随者是很难的, 还有小是恒久的. 我们的平台是重点在增加可发现性的给内容创建者和实施最新的直播技术去平整运动场. 我们理解主机和观众之间的互动的重要性, 所以我们是致力于创新的方式吧使社区更紧密."
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:192
 msgid "Glimesh will be clear as to how the rules work. There will be no guessing as to how to counter notice or how the process works. Also Glimesh will require that takedown notices include very specifically where the copyright content is so that you are not guessing what you may have a strike for."
-msgstr "《Glimesh》会很清楚的说规则如何运作. 那不会有猜测怎么反通知或者该过程如何进行. 《Glimesh》也会要求移除通知非常具体的包括哪里那个版权内容在哪里所以你不会在猜什么呢你可能有为此警示的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:189
 msgid "Glimesh will be fully transparent about DMCA Takedown requests. We will be posting DMCA requests on our Github with private information removed. This way the community as a whole can see who is issuing takedown notices and can help aide those who have the requests if the request is false."
-msgstr "《Glimesh》将是完全清楚关于数字千年版权法移除要求的. 我们将发布数字千年版权法要求在我们的《Github》上跟私人信息消除的. 这样整个社区可以看到谁是在发行移除要求的还有帮助谁有呢个要求的万一那个要求是假的."
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:88
 msgid "Glimesh's Process"
-msgstr "《Glimesh》的过程"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:94
 msgid "Glimesh’s process will be very similar to the industry standard with some inspiration from Github and Lumen. Our goal for the process is to make it simple, effective, and transparent for both parties. Simple so that neither party has to guess what they need to do, effective so that the process complies to the DMCA while also being fair to the user, and transparent so that the community can openly see and understand the process in action."
-msgstr "《Glimesh》的过程会很相工业的标准和《Github》跟《Lumen》来自的灵感的. 我们的目标给那个过程是使之双方的简单,有效, 和明晰的. 很简单, 这样双方都不需要猜测的, 有效的所以这个过程符合数字千年版权法的但是还公平给哪个用户的, 和很清楚的所以社区可以公开看到和明白呢个行动中的过程"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/index.html.eex:24
 msgid "Granted, this journey has not been easy, nor will it be in the future. We’re not aiming to take down the competitors and sell for billions of dollars to the next ephemeral tech company; instead, we’re aiming to create a home."
-msgstr "固然, 这次旅程不是容易的, 也不会在未来的时候容易的. 我们不是在把目标放在击败竞争对手的和卖给卖出数十亿美元给下一件短暂的科技公司; 相反, 我们将把目标放在建立一个家."
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:170
 msgid "If a counter-notice is received by the Copyright Agent, Glimesh will send a copy of the counter-notice to the original complaining party informing that person that it may replace the removed content or cease disabling it in 10 business days. Unless the copyright owner files an action seeking a court order against the content provider, member or user, the removed content may be replaced, or access to it restored, in 10 to 14 business days or more after receipt of the counter-notice, at our sole discretion."
-msgstr "万一一个反通知是被版权代理收到了,《Glimesh》会送一个反通知的副本给原投诉方通知那个人告知他们可以返回删除的内容还是停止禁用的在10个工作日内. 除非著作权人提起诉讼寻求法院命令对内容提供者, 成员或者用户, 那个去除的内容可以返回, 或者访问它恢复的在10至14个工作日内或者更多的在收到反通知的, 由我们自行决定"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:150
 msgid "If you believe that your User Content that was removed (or to which access was disabled) is not infringing, or that you have the authorization from the copyright owner, the copyright owner’s agent, or pursuant to the law, to upload and use the content in your User Content, you may send a counter-notice containing the following information to legal@glimesh.tv:"
-msgstr "万一你相信你的用户已移除的(还是访问被禁止了)内容不是侵权的, 还是著作权人的, 还是著作权人的代理的, 还是依照法律的授权, 去上传和使用那个内容在你的用户内容, 你可以送一个反通知包括以下信息去 legal@glimesh.tv:"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:55
 msgid "In order for us to be compliant with DMCA laws we must:"
-msgstr "为了我们符合的数字千年版权法法律我们需要:"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:61
 msgid "Interface"
-msgstr "界面"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/user_session_controller.ex:16
 msgid "Invalid e-mail / username or password"
-msgstr "无效的 / 用户名还是密码"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:79
 msgid "Invalid image. Max size is 100KB."
-msgstr "图片无效. 最大尺寸是 100KB"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:61
 msgid "Invalid image. Must be either a PNG or JPG."
-msgstr "图片无效. 它必须是PNG或者JPG"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/team.html.eex:36
 msgid "Join Us!"
-msgstr "加入我们!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/team.html.eex:44
 msgid "Join our Discord"
-msgstr "加入我们 《Discord》"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:41
 msgid "Language settings moved to your Preferences, or the top nav."
-msgstr "语言设置移动到你的优先, 还是上面的导航面板"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:198
 msgid "Lastly Glimesh is working to partner with music providers or independant artists who will provide proper music licenses for you to use."
-msgstr "最后, 《Glimesh》正在努力将与音乐提供者和独立艺术家合作去给你适当的音乐许可给你用的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:38
 msgid "Let's say you make an original drawing or an original piece of music. You as the creator have some basic copyrights being the first one to create that piece. But let's say someone online takes your music or your art and begins to distribute. You as the copyright owner have rights under the DMCA to go and request that that person stop doing that and get your permission first. Under the DMCA it is our responsibility as a platform to acknowledge that you own that art or music and take down any content that is redistributing your content without your permission. Without the DMCA and other copyright laws anyone could take your creation and use it for their own gains without you being able to do anything."
-msgstr "比如说你做了一个原画还是一个原创的音乐. 你作为创作者会有一些基本的版权作为第一个人去创造它的. 但比如说某人在网上的把你的音乐或者艺术开始分发的. 你作为版权拥有者拥有数字千年版权法的权利去要求要他们停止得到你的允许先. 根据数字千年版权法的规定这是我们的责任作为平台去承认你拥有那个图画或者那个音乐所以会取下来任何内容在未经您的许可分发内容. 万一数字千年版权法没有的, 任何人都可以拿和为了自己的利益用和你无能为力"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/admin/tag_live/index.html.leex:2
 msgid "Listing Tags"
-msgstr "列表的标签"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:114
 msgid "Login"
-msgstr "登录"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/index.html.eex:18
 msgid "Lookup User"
-msgstr "查找一个用户"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/mission.html.eex:16
 msgid "Luke Strickland, Founder of Glimesh"
-msgstr "Luke Strickland, 《Glimesh》的创办人"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:38
 msgid "Moderation"
-msgstr "主持"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:205
 msgid "Moving Forward"
-msgstr "向前进"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/index.html.eex:17
 msgid "Our History"
-msgstr "我们的历史"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:24
 #: lib/glimesh_web/templates/about/mission.html.eex:3 lib/glimesh_web/templates/layout/about.html.eex:18
 msgid "Our Mission"
-msgstr "我们的任务"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:45
 msgid "Our Responsibility to the DMCA"
-msgstr "我们的责任给数字千年版权法的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/mission.html.eex:14
 msgid "Our mission at Glimesh is to create a platform of sustainability, where every content creator has a fair oppourtunity to grow and create an income, while being given simple and powerful tools they can rely on."
-msgstr "我们的使命在《Glimesh》是去创建一个可持续性的平台, 这样每个内容创建者有一个公平的机会去长还有创造收入同时被给予简单和强大的工具他们可以依靠的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:63
 msgid "Our platform is designed to be accessible, user friendly, and blazing fast to make your streaming or viewing experience amazing! We are constantly building, tweaking, and iterating on our platform to continue to strive for perfection."
-msgstr "我们的平台是设计的访问,方便使用的, 和超快的去让你的直播或者观看的经验惊人的! 我们在不断地盖, 调, 和重复我们的平台去努力追求完美的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:53
 msgid "Our streaming technology is built on open standards and gives your streams unimaginable levels of interactivity. We're continually pushing the boundaries of live video, and of course, it's open source. Our Mixer-derived FTL protocol has sub-second latency, and under good network conditions, you can expect as low as 250ms of delay."
-msgstr "我们的直播科技是建造在开放标准还有给你的直播不可想象的互动性水平. 我们在不断的突破实况视频的界限, 而且当然, 这是开源的. 我们的《Glimesh》派生的超光速协议有亚秒的潜伏, 在良好的条件下, 你可以你可以低至250毫秒的延迟"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:100
 msgid "Part 1. A copyright owner will contact Glimesh and will send us a DMCA Takedown request that must follow our formatting as outlined in the Terms of Service. "
-msgstr "第一部分. 版权拥有者会联系《Glimesh》还有送我们一个数字千年版权法移除要求需要遵循我们的格式化在我们的服务条款概要的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:123
 msgid "Part 2. Once we receive this request we are required to remove the content from public access as soon as possible. This is to reduce the spread of unauthorized sharing of copyright material."
-msgstr "第二部分. 一旦我们收到这个要求我们需要把内容尽快地从公共访问中删除的. 这样做是为了减少未经授权共享版权材料的传播"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:126
 msgid "Part 3a. Glimesh will contact you stating why your content was removed, exactly what content was brought into question, and who is requesting that the content be removed. "
-msgstr "第3部分第a节. 《Glimesh》会接触你说明为什么你的内容被删除了, 到底是什么内容被删除的, 还有谁在要求那个内容要删除的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:129
 msgid "Part 3b. We will then post the takedown request on our Github page with private information removed. These requests will be public and anyone can comment on them. "
-msgstr "第3部分第b节. 我们再会发布那个移除要求在《Github》上跟把私人信息都已删除的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:132
 msgid "Part 4. You at this time have options. You may counter notice if you feel that you have a viable reason that you may use that content (i.e. you have a license, you feel its fair use). You may also reach out to the copyright owner and see about getting the proper licensing to use the content. You may also comply with the takedown and have the content removed. "
-msgstr "第4部分. 你在这时候会有选项的. 你可以提交反通知万一你觉得你有一个正当的理由可以用那个内容 (就是说 你有一个许可, 你觉得那是合理使用). 你也可以与著作权人联系看有关去获取许可去使用内容的. 你也可以遵守那个把内容删除"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:60
 msgid "Promptly remove access to content that has been reported as unauthorized use."
-msgstr "及时删除举报未经授权使用内容的访问"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:66
 msgid "Remove those who repeatedly, after warning, continue to use unlicensed material."
-msgstr "删除那些反复警告使用未经许可材料的人"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:76
 msgid "Safe Harbors"
-msgstr "安全港条款"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:107
 msgid "Start Now"
-msgstr "现在开始"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:11
 #: lib/glimesh_web/templates/layout/about.html.eex:12
 msgid "Streaming"
-msgstr "直播"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:3
 msgid "Streaming on Glimesh"
-msgstr "流媒体在《Glimesh》上"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:25
 msgid "Subscriptions"
-msgstr "订阅"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/components/channel_title.ex:51
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:105
 msgid "Tags"
-msgstr "标签"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:48
 msgid "Team Role"
-msgstr "团队角色"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:23
 msgid "Team Role: %{value}"
-msgstr "团队角色: %{value}"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:81
 msgid "The DMCA is not just about copyrights though. The DMCA has some built in protections for sites like Glimesh called Safe Harbor. Simply put, Safe Harbor provisions are rules in the DMCA that protect websites from being shut down or sued by copyright owners as long as the site remains compliant. As long as Glimesh remains compliant to the process these Safe Harbor provisions in the DMCA will keep us safe from Lawsuits for copyright violations."
-msgstr "数字千年版权法不是就关于版权的但. 数字千年版权法有内置保护措施给网站像《Glimesh》叫做安全港条款. 简单的说, 就是安全港条款是规则在数字千年版权法的里面防止网站关掉还是上法庭给版权的只要那个网站保持合规的. 只要《Glimesh》保持合规跟那个过程这个安全港条款在数字千年版权法里会确保我们的从诉讼给版权侵犯的安全"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:40
 msgid "The Glimesh Community Team is here with one goal in mind - to support the Glimesh community. We do this through global moderation, responding to tickets and reports, and by offering guidance. You'll find us dropping into channels to say hello or answer questions, as well as talking to the community in the Glimesh Discord! Our aim is to keep Glimesh a fun, welcoming, and most importantly a safe place for any content creator or viewer."
-msgstr "《Glimesh》社区团队在这里跟只一个目标 - 去支持《Glimesh》的社区. 我们通过全球适度, 回应票和报告, 和提供得指导. 你可以找到我们通过进入我们的频道打个招呼, 也与社区交谈在《Glimesh》的《Discord》服务器! 我们的目标是保持《Glimesh》是一个有趣的, 欢迎的, 和最重要的是安全的地方给任何内容创建者或者观看者."
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/team.html.eex:10
 msgid "The Glimesh Team is a core group responsible for our company and the platform we provide our users. We're a diverse group of individuals working together for a common cause and trying to leave the industry better than we found it. We run Glimesh as an open company with an unusually flat organizational hierarchy."
-msgstr "《Glimesh》的团队是核心小组负责我们的公司和那个平台我们提供给我们的用户. 我们是一个多元化的一群人来一起为共同事业而工作的和试图留这行业处于比发现它的时候更好的. 我们以开放的公司跟一个异常平坦的组织层次的身份经营《Glimesh》的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:97
 msgid "The Steps"
-msgstr "步骤"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/controllers/about_controller.ex:18
 #: lib/glimesh_web/templates/about/team.html.eex:3 lib/glimesh_web/templates/layout/about.html.eex:15
 msgid "The Team"
-msgstr "团队"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:21
 msgid "To start with Glimesh's policies on the DMCA we have to begin with a basic understanding of what the DMCA is. The DMCA is not an organization that polices digital copyrights but it was an act back in 1998 that helped establish rules around copyright materials and their use on the internet. For us the DMCA defines how we as a service provider responsibly and fairly handle copyrighted material."
-msgstr "开始《Glimesh》的政策在数字千年版权法上我们需要开始跟一个基本了解什么是数字千年版权法. 数字千年版权法不是一个组织在制定版权的政策但是一个法早在1998年帮助建立版权规则还有他们的运用在网上. 为我们, 数字千年版权法定义我们作为服务提供商怎么负责任地和相当 处理版权保护的材料"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/index.html.eex:34
 msgid "Username/Channel ID"
-msgstr "用户名/频道名分"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.leex:24
 msgid "View Channel"
-msgstr "查看频道"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/stream.html.leex:75
 msgid "View Profile"
-msgstr "查看资料"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/team.html.eex:39
 msgid "We also encourage our community to become part of our team as we know there are many talented people out there who wish to be part of something new. If you feel that you can offer Glimesh and the community your talents, whether that’s web development, designing, or moderation, then we would love to hear from you. If this is of any interest, please reach out to us in our Discord and mention your interest within our #volunteer channel."
-msgstr "我们也鼓励我们的社区去成为团队的一部分因为我们知道有很多人想希望成为新事物的一部分. 如果你觉得你可以提供《Glimesh》和那社区你的人才, 不管是网开发, 设计, 或者主持, 那么我们期待你的来信. 万一这对你来说很有趣, 请联系我们在我们的《Discord》在提到你的兴趣在我们的 #volunteer 频道"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:30
 msgid "We also offer a competitive 50/50 split for your subscriptions, with the fees taken out of our side. Included for free is our chargeback protection for your subscriptions."
-msgstr "我们也提供一个竞争的50/50分裂给你的订阅, 跟从我们那边掏出的费用. 免费包括了是我们的退款保护给你的订阅"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:210
 msgid "We appreciate this document may leave you wondering what to do moving forward should you enjoy playing music in your stream. Thankfully there are several music platforms available to you that allow you benefit of being able to play music whilst you stream without the concern or risk surrounding the above information. As such, please see below a couple that we’d suggest checking out:"
-msgstr "我们感谢这个文件会让你想知道向前进干什么万一你想要播放音乐在直播上. 谢天谢地有几种音乐平台可供你使用让你受益能够在直播上可没有顾虑或风险围绕以上的信息以得播放的. 因此, 亲看见下面给几个我们建议签出的:"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/index.html.eex:14
 msgid "We believe in being transparent in our work too. Glimesh is an Open Company with a strong commitment to transparency & fairness. All of our financial statements are public record, all our development work is available through Github, and we organize using public tools like GitHub & Trello. We make a commitment to treating our community fairly and building sustainable income for our streamers, the platform, and the families of those who build it."
-msgstr "我们也相信对我们的工作坦诚的. 《Glimesh》是一个开明的公司跟一个坚定的承诺对开明的和公平的. 每一个我们的财务记录是公开记录,  每一个我们的开发工作通过该《Github》获得, 还有我们组织用公共的工具想《Github》和《Trello》的. 我们作出承诺去公平对地待我们的社区, 和建立可持续收入给我们的直播人, 呢个平台, 和网站建立者的家庭."
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/streaming.html.eex:73
 msgid "We have a fantastic community, and we massively encourage you to join! Everyone is super supportive and happy to help! Regardless of your experience with streaming, you will always feel welcome!"
-msgstr "我们有一个极好的社区, 也我们大力鼓励你去加入的! 不管你的直播的经验, 你将永远感到宾至欢迎!"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/index.html.eex:3
 msgid "Welcome to Glimesh"
-msgstr "欢迎来《Glimesh》"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:29
 msgid "What are Copyrights?"
-msgstr "什么是版权?"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:17
 msgid "What is the DMCA?"
-msgstr "数字千年版权法是什麽?"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:178
 msgid "Why Is Glimesh Different?"
-msgstr "为什么《Glimesh》不同?"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:9
 msgid "Yes! We understand this is quite a frustrating topic for many content creators and we do not wish to bore you with a load of information, however this is also a very important topic and we want to ensure you are as knowledgeable as possible surrounding this. As such the below document has been created to not only educate you on this particular subject but more importantly to give you the guidance to ensure your streams are not only the best but are also compliant."
-msgstr "是的! 我们明白这是个相当令人沮丧的话题所以我们不想要跟很多信息烦你的, 但, 这也是一个很重要的话题所以我们想要确保你是尽可能地了解围绕这个话题的. 所以如下这文件被建造给不仅要教育你, 但更重要的是给你确保你的直播不是就最好的但也是符合的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:108
 msgid "a description of the copyrighted work or other intellectual property that you claim has been infringed;"
-msgstr "一个描述说那个受版权保护的作品或则别的知识产权你声称被侵权的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:111
 msgid "a description of where the material that you claim is infringing is located on the Site, with enough detail that we may find it on the Site;"
-msgstr "一个描述说哪里那个材料你声称是侵权的在这个网站上, 有足够的细节 所以我们可以在网站遭到的"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:116
 msgid "a statement by you that you have a good faith belief that the disputed use is not authorized by the copyright or intellectual property owner, its agent, or the law;"
-msgstr "你的陈述说你有一个真诚的信念有争议的使用未经授权被版权拥有者或者知识产权所有者的, 它的代理人, 或者法律;"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:119
 msgid "a statement by you, made under penalty of perjury, that the above information in your Notice is accurate and that you are the copyright or intellectual property owner or authorized to act on the copyright or intellectual property owner’s behalf."
-msgstr "你的陈述说, 受到伪证处罚, 那个上面的信息在你的通知你面是准确的还有你是版权或者知识产权拥有者或者被版权或者知识产权拥有者的代表的授权采取行动"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:161
 msgid "a statement that you have a good faith belief that the content was removed or disabled as a result of mistake or a misidentification of the content; an"
-msgstr "一个陈述说你有个诚信信念呢个内容被删除或禁用作为一个错误或者内容错误识别的结果; 还有"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:105
 msgid "an electronic or physical signature of the person authorized to act on behalf of the owner of the copyright or other intellectual property interest;"
-msgstr "一个电子或物理来自人已获授权代表版权拥有者或者别的知识产权利益的签名;"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:158
 msgid "identification of the content that has been removed or to which access has been disabled and the location at which the content appeared before it was removed or disabled;"
-msgstr "鉴定给呢个已移除的或者访问已被禁用的内容还有删除或禁用之前的内容出现的位置;"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:114
 msgid "your address, telephone number, and email address;"
-msgstr "你的地址, 电话号码, 还有电子邮件地址;"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:164
 msgid "your name, address, telephone number, and email address, a statement that you consent to the jurisdiction of the federal court located within Allegheny County of Pennsylvania and a statement that you will accept service of process from the person who provided notification of the alleged infringement."
-msgstr "你的名字, 地址, 电话号码, 还有电子邮件地址, 一个陈述说你同意宾夕法尼亚州阿勒格尼县辖, 和一个声明说你会接受流程服务来自提供涉嫌侵权的通知的人"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/about/dmca.html.eex:155
 msgid "your physical or electronic signature;"
-msgstr "你的物理或电子签名;"
+msgstr ""
 
 #, elixir-format
 #: lib/glimesh_web/templates/gct/channel_chat_log.html.eex:2
