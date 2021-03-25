@@ -124,24 +124,30 @@ defmodule Glimesh.Streams.Channel do
 
   def maybe_put_subcategory(changeset, key, %{"subcategory" => subcategory_json})
       when is_binary(subcategory_json) do
-    {:ok, [%{"value" => value, "category_id" => category_id}]} = Jason.decode(subcategory_json)
-    slug = Slug.slugify(value)
+    case Jason.decode(subcategory_json) do
+      {:ok, [%{"value" => value, "category_id" => category_id}]} ->
+        slug = Slug.slugify(value)
 
-    subcategory =
-      if existing = ChannelCategories.get_subcategory_by_category_id_and_slug(category_id, slug) do
-        existing
-      else
-        {:ok, category} =
-          ChannelCategories.create_subcategory(%{
-            name: value,
-            user_created: true,
-            category_id: category_id
-          })
+        subcategory =
+          if existing =
+               ChannelCategories.get_subcategory_by_category_id_and_slug(category_id, slug) do
+            existing
+          else
+            {:ok, category} =
+              ChannelCategories.create_subcategory(%{
+                name: value,
+                user_created: true,
+                category_id: category_id
+              })
 
-        category
-      end
+            category
+          end
 
-    changeset |> put_assoc(key, subcategory)
+        changeset |> put_assoc(key, subcategory)
+
+      _ ->
+        changeset
+    end
   end
 
   def maybe_put_subcategory(changeset, _, _) do
