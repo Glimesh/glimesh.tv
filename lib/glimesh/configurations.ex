@@ -20,14 +20,20 @@ defmodule Glimesh.Configurations do
 
   """
   def get_configuration_value(key) do
-    Repo.one(
-      from c in Configuration,
-        where: c.key == ^key,
-        limit: 1
+    Glimesh.QueryCache.get_and_store!(
+      "Glimesh.Configurations.get_configuration_value(#{key})",
+      fn ->
+        {:ok,
+         Repo.one(
+           from c in Configuration,
+             where: c.key == ^key,
+             limit: 1
+         )
+         |> case do
+           %Configuration{value: value} -> value
+           nil -> nil
+         end}
+      end
     )
-    |> case do
-      %Configuration{value: value} -> value
-      nil -> nil
-    end
   end
 end

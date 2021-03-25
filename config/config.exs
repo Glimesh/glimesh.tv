@@ -31,7 +31,14 @@ locales = [
   "Português Brasileiro": "pt_br",
   Português: "pt",
   "中文 (简体)": "zh_Hans",
-  "中文 (繁体)": "zh_Hant"
+  "中文 (繁体)": "zh_Hant",
+  "العامية المصرية": "ar_eg",
+  čeština: "cs",
+  Dansk: "da",
+  "Magyar Nyelv": "hu",
+  Gaeilge: "ga",
+  slovenščina: "sl",
+  Türkçe: "tr"
 ]
 
 config :glimesh,
@@ -40,6 +47,8 @@ config :glimesh,
   email_physical_address: "1234 Fake St.<br>Pittsburgh, PA 15217",
   run_stream_pruner: true,
   locales: locales
+
+config :glimesh, Glimesh.Repo, prepare: :unnamed
 
 config :waffle,
   storage: Waffle.Storage.Local,

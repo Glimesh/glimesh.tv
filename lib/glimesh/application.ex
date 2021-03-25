@@ -25,9 +25,13 @@ defmodule Glimesh.Application do
       Glimesh.Presence,
       # Start the Endpoint (http/https)
       GlimeshWeb.Endpoint,
-      # Start a worker by calling: Glimesh.Worker.start_link(arg)
+      {ConCache,
+       [
+         name: Glimesh.QueryCache.name(),
+         ttl_check_interval: :timer.seconds(5),
+         global_ttl: :timer.seconds(30)
+       ]},
       {Absinthe.Subscription, GlimeshWeb.Endpoint}
-      # {Glimesh.Worker, arg}
     ]
 
     GlimeshWeb.ApiLogger.start_logger()

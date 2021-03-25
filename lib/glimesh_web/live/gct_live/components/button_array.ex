@@ -9,6 +9,7 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
     ~L"""
     <%= live_redirect gettext("Edit Profile"), class: (if @can_edit_profile, do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_user_profile, @user.username) %>
     <%= live_redirect gettext("Edit User"), class: (if @can_edit_user, do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_user, @user.username) %>
+    <%= live_redirect gettext("View Chat Logs"), class: (if @view_chat_logs, do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :user_chat_log, @user.id) %>
     <%= unless @user.is_banned do %>
       <button class="btn btn-danger" phx-click="show_ban_modal" <%= unless @can_ban, do: "disabled" %> ><%= gettext("Ban User") %></button>
     <% else %>
@@ -64,6 +65,7 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
     can_ban = Bodyguard.permit?(Glimesh.CommunityTeam, :can_ban, admin, user)
     can_edit_user = Bodyguard.permit?(Glimesh.CommunityTeam, :edit_user, admin, user)
     can_edit_payments = Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, admin, user)
+    view_chat_logs = Bodyguard.permit?(Glimesh.CommunityTeam, :view_chat_logs, admin, user)
 
     can_edit_user_profile =
       Bodyguard.permit?(Glimesh.CommunityTeam, :edit_user_profile, admin, user)
@@ -76,6 +78,7 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
      |> assign(:can_ban, can_ban)
      |> assign(:can_edit_user, can_edit_user)
      |> assign(:can_edit_profile, can_edit_user_profile)
+     |> assign(:view_chat_logs, view_chat_logs)
      |> assign(:can_edit_payments, can_edit_payments)}
   end
 
