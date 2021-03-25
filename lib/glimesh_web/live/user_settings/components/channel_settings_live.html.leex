@@ -102,8 +102,40 @@
             <%= error_tag f, :category_id %>
         </div>
         <div class="form-group">
-            <%= label f, gettext("Tags") %>
-            <%= live_component(@socket, GlimeshWeb.UserLive.Components.TagSelector, form: f, field: :tags, category_id: @current_category_id) %>
+            <%= label f, :subcategory, @subcategory_label %>
+            <%= live_component(
+                @socket,
+                GlimeshWeb.TagifyComponent,
+                id: "category-selector",
+                form: f, field: :subcategory,
+                max_options: 1,
+                allow_edit: "true",
+                create_regex: "^[A-Za-z0-9: -]{2,40}$",
+                value: @existing_subcategory,
+                placeholder: @subcategory_placeholder,
+                category: @category,
+                search_func: &search_categories/2
+            )
+            %>
+            <p><%= @subcategory_attribution %></p>
+            <%= error_tag f, :subcategory %>
+        </div>
+        <div class="form-group">
+            <%= label f, :tags, gettext("Tags") %>
+            <%= live_component(
+                @socket,
+                GlimeshWeb.TagifyComponent,
+                id: "tag-selector",
+                form: f, field: :tags,
+                value: @existing_tags,
+                placeholder: gettext("Search for tags to describe your stream"),
+                max_options: 10,
+                create_regex: "^[A-Za-z0-9: -]{2,18}$",
+                allow_edit: "true",
+                category: @category,
+                search_func: &search_tags/2
+            )
+            %>
             <%= error_tag f, :tags %>
         </div>
         <h3 class="mt-4"><%= gettext("Chat Safety") %></h3>

@@ -34,7 +34,7 @@ defmodule Glimesh.Workers.StreamPruner do
   end
 
   defp prune_old_streams do
-    channels = ChannelLookups.filter_live_channels()
+    channels = ChannelLookups.list_live_channels()
     Logger.info("Checking for stale streams to prune")
 
     current_time = NaiveDateTime.local_now()

@@ -171,35 +171,45 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     max-width: 2200px;
 }
 
-// .bg-category {
-//     background: no-repeat center center;
-//     background-size: cover;
-//     // background-size: auto 500px;
-//     margin-top: -15px;
-// }
-
-.hero {
-    position: relative;
-    margin: 0 auto;
-
-
-    &.has-background {
-        margin-top: -15px;
-        // position: relative;
-        // overflow: hidden;
-    }
-
-    .hero-background {
-        // max-width: 100%;
-        position: absolute;
-        object-fit: cover;
-        // object-position: center 70%;
-        width: 100%;
-        height: 1000px;
-        // height: 100%;
-    }
-
-    .hero-body {
+.block-container {
+    .channel-block {
         position: relative;
+
+        margin-bottom: 4rem;
+
+        &.has-bg-image::before {
+            content: "";
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            position: absolute;
+            z-index: -1;
+
+            background-image: var(--background-image);
+            background-size: cover;
+            background-position: center center;
+            opacity: 0.30;
+            border-radius: calc(0.25rem - 1px);
+        }
+
+        .channel-list-title {
+            font-size: 2.3rem;
+        }
+    }
+
+    .channel-block:only-child {
+
+        .channel-list-title {
+            @extend .display-3;
+
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+            text-align: center;
+        }
+
+        .channel-list {
+            padding-bottom: 5rem;
+        }
     }
 }

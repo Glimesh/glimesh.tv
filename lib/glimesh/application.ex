@@ -8,6 +8,11 @@ defmodule Glimesh.Application do
   def start(_type, _args) do
     topologies = Application.get_env(:libcluster, :topologies)
 
+    server_children = [
+      Glimesh.Workers.StreamMetrics,
+      Glimesh.Workers.StreamPruner
+    ]
+
     children = [
       {Cluster.Supervisor, [topologies, [name: Glimesh.ClusterSupervisor]]},
       # Start the Ecto repository
@@ -26,13 +31,17 @@ defmodule Glimesh.Application do
          ttl_check_interval: :timer.seconds(5),
          global_ttl: :timer.seconds(30)
        ]},
-      {Absinthe.Subscription, GlimeshWeb.Endpoint},
-      Glimesh.Workers.StreamMetrics,
-      Glimesh.Workers.StreamPruner
-      # {Glimesh.Worker, arg}
+      {Absinthe.Subscription, GlimeshWeb.Endpoint}
     ]
 
     GlimeshWeb.ApiLogger.start_logger()
+
+    children =
+      if Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:server] do
+        children ++ server_children
+      else
+        children
+      end
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

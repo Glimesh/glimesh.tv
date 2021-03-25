@@ -142,6 +142,7 @@ defmodule Glimesh.Streams do
         create_stream(channel, %{
           title: channel.title,
           category_id: channel.category_id,
+          subcategory_id: channel.subcategory_id,
           category_tags: Enum.map(tags, & &1.id),
           started_at: DateTime.utc_now() |> DateTime.to_naive()
         })
@@ -179,22 +180,11 @@ defmodule Glimesh.Streams do
   Archives the stream
   """
   def end_stream(%Channel{} = channel) do
-    channel = Repo.preload(channel, [:stream])
+    channel =
+      ChannelLookups.get_channel(channel.id)
+      |> Repo.preload(:stream)
 
-    {:ok, stream} =
-      update_stream(channel.stream, %{
-        ended_at: DateTime.utc_now() |> DateTime.to_naive()
-      })
-
-    {:ok, channel} =
-      channel
-      |> Channel.stop_changeset(%{})
-      |> Repo.update()
-
-    broadcast_message = Repo.preload(channel, :category, force: true)
-    broadcast({:ok, broadcast_message}, :channel)
-
-    {:ok, stream}
+    end_stream(channel.stream)
   end
 
   def end_stream(%Glimesh.Streams.Stream{} = stream) do
