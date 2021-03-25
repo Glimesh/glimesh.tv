@@ -30,6 +30,13 @@ export default {
     emotes() {
         return JSON.parse(this.el.dataset.emotes);
     },
+
+    updated() {
+        this.scrollToBottom(document.getElementById('chat-messages'));
+    },
+    reconnected() {
+        this.scrollToBottom(document.getElementById('chat-messages'));
+    },
     mounted() {
         const glimeshEmojis = this.emotes();
 
@@ -65,6 +72,9 @@ export default {
 
         const chat = document.getElementById('chat_message-form_message');
         const chatMessages = document.getElementById('chat-messages');
+
+        // Whenever the user changes their browser size, re-scroll them to the bottom
+        window.addEventListener('resize', () => this.scrollToBottom(chatMessages));
 
         picker.on('emoji', selection => {
             let value = '';
