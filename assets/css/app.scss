@@ -2,7 +2,7 @@
 html,
 body {
     height: 100%;
-
+    background-color: #0e1726 !important;
     // this is the final part to lock the fotter to the bottom you are welcome to try and figure out the best dynamic way to set this but have fun with that function
     #app {
         @media(min-height: 558px) {
@@ -57,6 +57,11 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "glimesh/components/scrollbar";
 @import "glimesh/components/follow-button.scss";
 @import "glimesh/components/apex-charts.scss";
+@import "glimesh/components/badge.scss";
+@import "glimesh/components/button.scss";
+@import "glimesh/components/card-general.scss";
+@import "glimesh/components/list.scss";
+
 
 @import "glimesh/pages/dmca";
 
@@ -87,9 +92,12 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
 .fancy-bg {
     .position-relative {
-        background: rgba(0, 0, 0, 0.7);
-        border-radius: 5px;
         margin-bottom: 40px;
+        background: #060818 !important;
+        border-radius: 25px !important;
+        box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.25) !important;
+        background: url(/images/homepage/background-resized-6bc48b1….webp?vsn=d)
+          no-repeat top;
     }
 }
 
@@ -163,13 +171,18 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
 .fancy-bg {
     // It's worth using WebP only for this image, saves almost 1MB in size, no harm if users don't see it.
-    background: url("/images/homepage/background-resized.webp") no-repeat center top;
-    background-size: contain;
+    padding-top: 40px;
+    background: none !important;
 }
 
 .container-stream-list {
     max-width: 2200px;
 }
+
+.container-fluid > .row {
+    margin-right: 5% !important;
+    margin-left: 5% !important;
+  }
 
 // .bg-category {
 //     background: no-repeat center center;
@@ -202,4 +215,40 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     .hero-body {
         position: relative;
     }
+}
+
+h5.mb-0 {
+    background: none !important;
+}
+
+h1.display-4.font-weight-normal {
+    text-align: center;
+}
+
+.alert-warning {
+    color: #ffffff !important;
+    background-color: #c82333 !important;
+    border-radius: 25px !important;
+    border: none !important;
+    box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.25) !important;
+    width: fit-content !important;
+    margin: auto !important;
+  }
+
+.embed-responsive {
+    width: 100% !important;
+}
+
+#app {
+    background: #0e1726 !important;
+}
+
+.col-md-12 {
+    text-align: left !important;
+    padding: 0 !important;
+  }
+
+.p-lg-5 {
+    padding: 0 !important;
+    margin: 0 !important;
 }

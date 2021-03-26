@@ -3,6 +3,8 @@
     #chat {
         min-height: 400px;
         max-height: 400px;
+        height: auto;
+        margin-bottom: 165px;
     }
 }
 
@@ -10,6 +12,8 @@
     #chat-column {
         #chat {
             max-height: calc(100vh - 90px);
+            height: auto;
+            margin-bottom: 165px;
         }
     }
 
@@ -36,5 +40,15 @@
 }
 
 input#channel_title {
-    height: 45px;   
+    height: 45px;
+}
+
+video#video-player {
+    border-radius: 25px;
+}
+
+#streamer-avatar > a > img {
+    width: 142px !important;
+    height: 142px !important;
+    border-radius: 25px !important;
 }

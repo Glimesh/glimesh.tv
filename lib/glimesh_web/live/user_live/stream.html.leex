@@ -3,30 +3,6 @@
 
         <div id="video-column" class="col-lg-9 layout-spacing">
             <div class="card">
-                <div class="card-header p-1">
-                    <div class="row">
-                        <div class="col align-self-center">
-                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
-                        </div>
-                        <div class="col-auto">
-                            <div class="float-right">
-                                <div class="stream-info btn-toolbar">
-                                    <div class="btn-group mr-sm-2" role="group" aria-label="First group">
-                                        <%= if @can_receive_payments do %>
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                                        <% end %>
-                                    </div>
-                                    <div class="btn-group mr-1" role="group" aria-label="Second group">
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                                    </div>
-                                    <div class="btn-group" role="group" aria-label="Third group">
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="card-body p-1">
                     <%= if @prompt_mature do %>
                     <div class="jumbotron jumbotron-fluid jumbotron-mature-content mb-0">
@@ -65,13 +41,15 @@
                     <% end %>
                 </div>
                 <div class="card-footer p-1 d-none d-sm-block">
+                <div id="streamer-avatar">
+                    <a href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
+                    <img src="<%= Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)%>" alt="<%= @channel.user.displayname %>" width="142" height="142" class="img-avatar mr-2 float-left <%= if Glimesh.Accounts.can_receive_payments?(@channel.user), do: "img-verified-streamer", else: "" %>">
+                    </a>
+                </div>
+
+
                     <div class="row">
                         <div class="col-8 d-inline-flex align-items-center">
-                            <div id="streamer-avatar">
-                                <a href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
-                                    <img src="<%= Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)%>" alt="<%= @channel.user.displayname %>" width="48" height="48" class="img-avatar mr-2 float-left <%= if Glimesh.Accounts.can_receive_payments?(@channel.user), do: "img-verified-streamer", else: "" %>">
-                                </a>
-                            </div>
                             <a title="<%= gettext("View Profile") %>" class="<%= Glimesh.Chat.Effects.get_username_color(@channel.user) %>" href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
                                 <h3 class="mb-0"><%= @channel.user.displayname %></h3>
                             </a>
@@ -91,6 +69,30 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card-header p-1">
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
+                        </div>
+                        <div class="col-auto">
+                            <div class="float-right">
+                                <div class="stream-info btn-toolbar">
+                                    <div class="btn-group mr-sm-2" role="group" aria-label="First group">
+                                        <%= if @can_receive_payments do %>
+                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                                        <% end %>
+                                    </div>
+                                    <div class="btn-group mr-1" role="group" aria-label="Second group">
+                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                                    </div>
+                                    <div class="btn-group" role="group" aria-label="Third group">
+                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>

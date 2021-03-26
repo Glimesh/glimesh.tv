@@ -36,7 +36,8 @@ defmodule GlimeshWeb.UserApplicationsController do
 
     render(conn, "new.html",
       page_title: format_page_title(gettext("Create Application")),
-      changeset: changeset
+      changeset: changeset,
+
     )
   end
 

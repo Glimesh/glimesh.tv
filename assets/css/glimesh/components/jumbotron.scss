@@ -2,8 +2,9 @@
     background-color: transparent;
     background-image: url("/images/banner.png");
     background-size: cover;
-    height: 274px;
-    border-radius: 15px;
+    background: transparent !important;
+    height: 62.5vh !important;
+    border-radius: 25px !important;
 
     color: var(--white);
 }
@@ -12,7 +13,8 @@
     background-color: transparent;
     background-image: url("/images/banner.png");
     background-size: cover;
-    border-radius: 15px;
+    height: 62.5vh !important;
+    border-radius: 25px !important;
 
     color: var(--white);
 }

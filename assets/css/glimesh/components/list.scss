@@ -1,0 +1,9 @@
+.list-group-item.active {
+    border-radius: 100px !important;
+  }
+
+.list-group-item-action:active,
+.list-group-item-action:focus,
+.list-group-item-action:hover {
+    border-radius: 100px !important;
+}

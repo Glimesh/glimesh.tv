@@ -1,7 +1,7 @@
 
 .img-avatar {
   border-radius: 50%;
-  border: 2px solid #3b3f5c;
+  border: none !important;
   max-width: 200px;
   max-height: 200px;
 }
@@ -53,19 +53,19 @@
   background-color: gold;
 }
 
-@keyframes spin { 
-  from { 
-    transform: rotate(0deg); 
-  } 
-  to { 
-    transform: rotate(360deg); 
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
-@keyframes spin-reverse { 
-  from { 
-    transform: rotate(0deg); 
+@keyframes spin-reverse {
+  from {
+    transform: rotate(0deg);
   }
-  to { 
-    transform: rotate(-360deg); 
+  to {
+    transform: rotate(-360deg);
   }
 }

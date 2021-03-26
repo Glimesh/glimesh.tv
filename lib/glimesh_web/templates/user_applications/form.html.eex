@@ -45,5 +45,6 @@
 
 <div class="form-group">
   <%= submit gettext("Save Application"), class: "btn btn-primary" %>
+  <a class="btn btn-info" href="https://glimesh.github.io/api-docs" target="_blank">Application Info</a>
 </div>
 <% end %>

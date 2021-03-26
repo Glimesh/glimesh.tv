@@ -6,7 +6,7 @@
      src: local(''),
           url('../fonts/noto-sans-v11-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
           url('../fonts/noto-sans-v11-latin-regular.woff') format('woff'), /* Modern Browsers */
-          url('../fonts/noto-sans-v11-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */; 
+          url('../fonts/noto-sans-v11-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */;
 }
 /* noto-sans-700 - latin */
 @font-face {
@@ -39,3 +39,9 @@
           url('../fonts/roboto-v20-latin-regular.woff') format('woff'), /* Modern Browsers */
           url('../fonts/roboto-v20-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */;
 }
+/* Meshed UI */
+@font-face {
+    font-family: "quicksand";
+    src: local(''),
+     url("../fonts/quicksand.ttf") format('truetype',)
+  }
