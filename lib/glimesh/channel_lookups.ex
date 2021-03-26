@@ -151,7 +151,7 @@ defmodule Glimesh.ChannelLookups do
       end
 
     Repo.one(query)
-    |> Repo.preload([:category, :subcategory, :user, :tags])
+    |> Repo.preload([:category, :stream, :subcategory, :user, :tags])
   end
 
   def get_channel_by_hmac_key(hmac_key) do

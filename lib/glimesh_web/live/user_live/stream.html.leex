@@ -49,12 +49,16 @@
                     </div>
 
                     <% else %>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <%= if @backend == "ftl" do %>
-                        <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo" poster="<%= Glimesh.ChannelPoster.url({@channel.poster, @channel}, :original) %>" controls playsinline></video>
-                        <% else %>
-                        No video player backend specified.
-                        <% end %>
+                    <div id="video-container" class="embed-responsive embed-responsive-16by9">
+                        <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo" controls playsinline poster="<%= @channel_poster %>"></video>
+                        <div id="video-loading-container" class="">
+                            <div class="lds-ring">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
                     </div>
 
                     <%= if @player_error do %>
@@ -79,20 +83,55 @@
                             <span class="badge badge-pill badge-info ml-2"><%= Glimesh.Streams.get_channel_language(@channel) %></span>
 
                             <%= live_render(@socket, GlimeshWeb.UserLive.Components.SocialButtons, id: "social-buttons", container: {:ul, class: "list-inline ml-2 mb-0"}, session: %{"user_id" => @streamer.id}) %>
-
-                            <!--
-                            Video Edge Information
-                            Edge Hostname: <%= @janus_hostname %>
-                            Edge URL: <%= @janus_url %>
-                            -->
-                            <%# live_render(@socket, GlimeshWeb.UserLive.ViewerHeads, id: "viewer-heads", session: %{"user" => @user, "streamer" => @streamer.username, "fake_multiplier" => 12}) %>
                         </div>
                         <div class="col-4 align-self-center">
                             <div class="float-right mr-sm-2">
-                                <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                                <div class="d-inline-block mr-sm-2">
+                                    <a href="#" phx-click="toggle_debug" class="text-color-link">
+                                        <i class="fas fa-signal"></i>
+                                        <span class="sr-only">Debug</span>
+                                    </a>
+                                </div>
+                                <div class="d-inline-block">
+                                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <%= if @show_debug do %>
+                    <div id="debug-info">
+                        <h3 class="mt-4">Debug Information</h3>
+                        <pre class="px-2">
+== Janus Edge Information ==
+Edge Hostname: <%= @janus_hostname %>
+Edge URL: <%= @janus_url %>
+Reported Lost Packets: <%= @lost_packets %>
+<br>
+== Stream Metadata ==
+ingest_server: <%= @stream_metadata.ingest_server %>
+ingest_viewers: <%= @stream_metadata.ingest_viewers %> // unused
+stream_time_seconds: <%= @stream_metadata.stream_time_seconds %>
+
+source_bitrate: <%= @stream_metadata.source_bitrate %>
+source_ping: <%= @stream_metadata.source_ping %> // unused
+
+recv_packets: <%= @stream_metadata.recv_packets %>
+lost_packets: <%= @stream_metadata.lost_packets %> // unused
+nack_packets: <%= @stream_metadata.nack_packets %> // unused
+
+vendor_name: <%= @stream_metadata.vendor_name %>
+vendor_version: <%= @stream_metadata.vendor_version %>
+
+audio_codec: <%= @stream_metadata.audio_codec %>
+video_codec: <%= @stream_metadata.video_codec %>
+video_height: <%= @stream_metadata.video_height %> // unused
+video_width: <%= @stream_metadata.video_width %> // unused
+
+inserted_at: <%= @stream_metadata.inserted_at %>
+updated_at: <%= @stream_metadata.updated_at %>
+</pre>
+                    </div>
+                    <% end %>
                 </div>
             </div>
         </div>
@@ -107,7 +146,6 @@
 
     </div>
 
-    <%= if @show_bottom do %>
     <div class="row">
         <div class="col-lg-9 layout-spacing">
             <div class="card">
@@ -158,6 +196,5 @@
             </div>
         </div>
     </div>
-    <% end %>
 
 </div>
