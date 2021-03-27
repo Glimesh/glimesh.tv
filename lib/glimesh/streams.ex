@@ -15,10 +15,12 @@ defmodule Glimesh.Streams do
   ## Broadcasting Functions
 
   def get_subscribe_topic(:channel), do: "streams:channel"
+  def get_subscribe_topic(:stream), do: "streams:stream"
   def get_subscribe_topic(:chat), do: "streams:chat"
   def get_subscribe_topic(:chatters), do: "streams:chatters"
   def get_subscribe_topic(:viewers), do: "streams:viewers"
   def get_subscribe_topic(:channel, channel_id), do: "streams:channel:#{channel_id}"
+  def get_subscribe_topic(:stream, stream_id), do: "streams:stream:#{stream_id}"
   def get_subscribe_topic(:chat, channel_id), do: "streams:chat:#{channel_id}"
   def get_subscribe_topic(:chatters, channel_id), do: "streams:chatters:#{channel_id}"
   def get_subscribe_topic(:viewers, channel_id), do: "streams:viewers:#{channel_id}"
@@ -30,7 +32,7 @@ defmodule Glimesh.Streams do
 
   defp broadcast({:error, _reason} = error, _event), do: error
 
-  defp broadcast({:ok, %Channel{} = channel}, :channel = event) do
+  defp broadcast({:ok, %Channel{} = channel} = input, :channel = event) do
     Glimesh.Events.broadcast(
       get_subscribe_topic(:channel, channel.id),
       get_subscribe_topic(:channel),
@@ -38,7 +40,18 @@ defmodule Glimesh.Streams do
       channel
     )
 
-    {:ok, channel}
+    input
+  end
+
+  defp broadcast({:ok, %Glimesh.Streams.Stream{} = stream} = input, :stream = event) do
+    Glimesh.Events.broadcast(
+      get_subscribe_topic(:stream, stream.id),
+      get_subscribe_topic(:stream),
+      event,
+      stream
+    )
+
+    input
   end
 
   # User API Calls
@@ -167,7 +180,7 @@ defmodule Glimesh.Streams do
       )
 
       # 5. Broadcast to anyone who's listening
-      broadcast_message = Repo.preload(channel, :category, force: true)
+      broadcast_message = Repo.preload(channel, [:category, :stream], force: true)
       broadcast({:ok, broadcast_message}, :channel)
 
       {:ok, stream}
@@ -209,7 +222,12 @@ defmodule Glimesh.Streams do
       s in Glimesh.Streams.Stream,
       where: s.channel_id == ^channel.id and is_nil(s.ended_at)
     )
-    |> Glimesh.Repo.update_all(set: [ended_at: DateTime.utc_now() |> DateTime.to_naive()])
+    |> Repo.all()
+    |> Enum.map(fn stream ->
+      update_stream(stream, %{
+        ended_at: DateTime.utc_now() |> DateTime.to_naive()
+      })
+    end)
   end
 
   def create_stream(%Channel{} = channel, attrs \\ %{}) do
@@ -218,12 +236,14 @@ defmodule Glimesh.Streams do
     }
     |> Glimesh.Streams.Stream.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:stream)
   end
 
   def update_stream(%Glimesh.Streams.Stream{} = stream, attrs) do
     stream
     |> Glimesh.Streams.Stream.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:stream)
   catch
     :exit, _ ->
       {:upload_exit, "Failed to upload thumbnail"}
@@ -244,8 +264,6 @@ defmodule Glimesh.Streams do
     }
     |> StreamMetadata.changeset(attrs)
     |> Repo.insert()
-
-    {:ok, stream |> Repo.preload([:metadata])}
   end
 
   # System API Calls

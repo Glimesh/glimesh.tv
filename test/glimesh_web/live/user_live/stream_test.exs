@@ -79,8 +79,11 @@ defmodule GlimeshWeb.UserLive.StreamTest do
 
       {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
 
-      assert render(view) =~ "some-de-server"
-      assert render(view) =~ "https://some-de-server/janus"
+      html = render_click(view, "toggle_debug")
+
+      assert html =~ "Debug Information"
+      assert html =~ "some-de-server"
+      assert html =~ "https://some-de-server/janus"
     end
   end
 end

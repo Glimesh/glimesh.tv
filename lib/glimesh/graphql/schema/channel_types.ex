@@ -82,7 +82,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     end
 
     @desc "Update a stream's metadata"
-    field :log_stream_metadata, type: :stream do
+    field :log_stream_metadata, type: :stream_metadata do
       arg(:stream_id, non_null(:id))
       arg(:metadata, non_null(:stream_metadata_input))
 

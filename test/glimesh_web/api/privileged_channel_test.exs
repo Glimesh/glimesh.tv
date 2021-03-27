@@ -248,7 +248,8 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
           }
         })
 
-      assert json_response(conn, 200)["data"]["logStreamMetadata"] == %{"id" => "#{stream.id}"}
+      metadata = Glimesh.Streams.get_last_stream_metadata(stream)
+      assert json_response(conn, 200)["data"]["logStreamMetadata"] == %{"id" => "#{metadata.id}"}
     end
 
     test "can upload stream thumbnails", %{conn: conn, channel: channel} do
