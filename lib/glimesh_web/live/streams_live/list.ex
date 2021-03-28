@@ -38,6 +38,7 @@ defmodule GlimeshWeb.StreamsLive.List do
          socket
          |> put_page_title(category.name)
          |> assign(:list_name, category.name)
+         |> assign(:show_filters, false)
          |> assign(:locales, locales)
          |> assign(:tags_and_slugs, tags_and_slugs)
          |> assign(:subcategories_and_slugs, subcategories_and_slugs)
@@ -65,6 +66,10 @@ defmodule GlimeshWeb.StreamsLive.List do
           # Glimesh.Streams.Organizer.organize(channels, limit: 6, group_by: :tag)
           Organizer.organize(channels)
 
+        Map.has_key?(params, "preview_subcategories") ->
+          # Used so we can preview in production
+          Organizer.organize(channels, group_by: :subcategory)
+
         true ->
           Organizer.organize(channels)
       end
@@ -89,15 +94,25 @@ defmodule GlimeshWeb.StreamsLive.List do
 
     prefilled_language = Map.get(params, "language", "Any Language")
 
+    has_filters =
+      Map.has_key?(params, "subcategory") or Map.has_key?(params, "tags") or
+        Map.has_key?(params, "language")
+
     {:noreply,
      socket
      |> assign(:blocks, blocks)
+     |> assign(:show_filters, has_filters)
      |> assign(:prefilled_tags, prefilled_tags)
      |> assign(:prefilled_subcategory, prefilled_subcategory)
      |> assign(:prefilled_language, prefilled_language)
      |> assign(:shown_channels, shown_channels)
      |> assign(:total_channels, total_channels)
      |> assign(:channels, channels)}
+  end
+
+  @impl true
+  def handle_event("toggle_filters", _, socket) do
+    {:noreply, socket |> assign(show_filters: !socket.assigns.show_filters)}
   end
 
   @impl true
