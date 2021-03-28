@@ -253,7 +253,7 @@ defmodule Glimesh.ChatTest do
       assert length(Chat.list_chat_messages(channel)) == 1
     end
 
-    test "delete deletes message", %{channel: channel, moderator: moderator, user: user} do
+    test "delete_message/4 deletes message", %{channel: channel, moderator: moderator, user: user} do
       {:ok, bad_message} = Chat.create_chat_message(user, channel, %{message: "bad message"})
       {:ok, _} = Chat.create_chat_message(moderator, channel, %{message: "good message"})
       assert length(Chat.list_chat_messages(channel)) == 2
