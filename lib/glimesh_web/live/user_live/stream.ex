@@ -104,13 +104,18 @@ defmodule GlimeshWeb.UserLive.Stream do
   end
 
   def handle_event("lost_packets", %{"uplink" => uplink, "lostPackets" => lostPackets}, socket) do
+    message =
+      if lostPackets > 3,
+        do:
+          gettext(
+            "We're detecting some networking problems between you and the streamer. You may experience video drops, jitter, or other issues!"
+          ),
+        else: nil
+
     {:noreply,
      socket
      |> update(:lost_packets, &(&1 + lostPackets))
-     |> assign(
-       :player_error,
-       gettext("We're detecting some networking problems with this stream, trying to reconnect!")
-     )}
+     |> assign(:player_error, message)}
   end
 
   defp get_stream_thumbnail(channel) do
