@@ -8,6 +8,14 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   @impl true
   def render(assigns) do
     ~L"""
+    <!-- Mobile -->
+    <div class="d-block d-sm-none">
+      <p class="mb-0">
+        <span class="badge badge-primary"><%= @channel.category.name %></span> <%= @channel.title %>
+      </p>
+    </div>
+    <!-- Anything else -->
+    <div class="d-none d-sm-block">
     <h5 class="mb-0">
       <%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.name %></span> <%= @channel.title %>
       <%= if @can_change do %>
@@ -20,6 +28,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
     <%= for tag <- @channel.tags do %>
       <%= live_patch tag.name, to: Routes.streams_list_path(@socket, :index, @channel.category.slug, tags: [tag.slug]), class: "badge badge-pill badge-primary" %>
     <% end %>
+    </div>
 
     <%= if @editing do %>
         <div id="channelEditor" class="live-modal"

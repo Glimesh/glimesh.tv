@@ -216,6 +216,7 @@ defmodule GlimeshWeb.Router do
     get "/blog/:slug", ArticleController, :show
 
     live "/", HomepageLive, :index
+    live "/streams", StreamsLive.Index, :index
     live "/streams/following", StreamsLive.Following, :index
     live "/streams/:category", StreamsLive.List, :index
 

@@ -103,7 +103,7 @@ defmodule GlimeshWeb.UserLive.Stream do
     {:noreply, assign(socket, :show_debug, !socket.assigns.show_debug)}
   end
 
-  def handle_event("lost_packets", %{"uplink" => uplink, "lostPackets" => lostPackets}, socket) do
+  def handle_event("lost_packets", %{"uplink" => _uplink, "lostPackets" => lostPackets}, socket) do
     message =
       if lostPackets > 3,
         do:
