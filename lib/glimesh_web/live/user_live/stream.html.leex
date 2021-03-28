@@ -1,17 +1,17 @@
-<div class="container-fluid">
-    <div class="row mt-3">
+<div class="container-fluid container-stream">
+    <div class="row mt-lg-3">
 
         <div id="video-column" class="col-lg-9 layout-spacing">
             <div class="card">
                 <div class="card-header p-1">
                     <div class="row">
-                        <div class="col align-self-center">
+                        <div class="col align-self-center d-block text-truncate">
                             <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
                         </div>
                         <div class="col-auto">
                             <div class="float-right">
                                 <div class="stream-info btn-toolbar">
-                                    <div class="btn-group mr-sm-2" role="group" aria-label="First group">
+                                    <div class="btn-group mr-1" role="group" aria-label="First group">
                                         <%= if @can_receive_payments do %>
                                         <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                                         <% end %>
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body p-1">
+                <div class="card-body p-0 p-md-1">
                     <%= if @prompt_mature do %>
                     <div class="jumbotron jumbotron-fluid jumbotron-mature-content mb-0">
                         <div class="container p-5">

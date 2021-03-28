@@ -61,13 +61,16 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
 @import "glimesh/pages/dmca";
 
+@include media-breakpoint-up(lg) {
+    .layout-spacing {
+        padding-bottom: 40px;
+    }
+}
+
 .nowrap {
     white-space: nowrap;
 }
 
-.layout-spacing {
-    padding-bottom: 40px;
-}
 
 .text-color-link {
     color: var(--body-color);
@@ -166,51 +169,4 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     // It's worth using WebP only for this image, saves almost 1MB in size, no harm if users don't see it.
     background: url("/images/homepage/background-resized.webp") no-repeat center top;
     background-size: contain;
-}
-
-.container-stream-list {
-    max-width: 2200px;
-}
-
-.block-container {
-    .channel-block {
-        position: relative;
-
-        margin-bottom: 4rem;
-
-        &.has-bg-image::before {
-            content: "";
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            position: absolute;
-            z-index: -1;
-
-            background-image: var(--background-image);
-            background-size: cover;
-            background-position: center center;
-            opacity: 0.30;
-            border-radius: calc(0.25rem - 1px);
-        }
-
-        .channel-list-title {
-            font-size: 2.3rem;
-        }
-    }
-
-    .channel-block:only-child {
-
-        .channel-list-title {
-            @extend .display-3;
-
-            padding-top: 5rem;
-            padding-bottom: 5rem;
-            text-align: center;
-        }
-
-        .channel-list {
-            padding-bottom: 5rem;
-        }
-    }
 }

@@ -48,7 +48,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButtonTest do
         )
 
       assert html =~ "Follow"
-      assert html =~ "class=\"btn btn-primary btn-block follow-button btn-responsive\""
+      assert html =~ "class=\"btn btn-primary follow-button btn-responsive\""
 
       new_button = view |> element("button", "Follow") |> render_click()
       assert new_button =~ "Unfollow"
