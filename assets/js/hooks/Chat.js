@@ -118,8 +118,7 @@ export default {
         });
 
         this.handleEvent("remove_deleted_message", (e) => {
-            let offendingMessageID = e["message_id"];
-            document.getElementById(offendingMessageID).hidden = true;
+            document.getElementById(e["message_id"]).hidden = true;
         })
 
     }
