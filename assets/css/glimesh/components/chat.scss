@@ -21,7 +21,6 @@
         --chat-bg-image: url('/images/bg.png');
         background-image: var(--chat-bg-image);
 
-        border-radius: 25px;
         margin-bottom: 20px !important;
 
         .channel-header {
@@ -103,22 +102,18 @@
 .input-group {
     width: 91%;
     border-radius: 25px !important;
-    background: #060818;
     height: 38px;
     margin: auto;
   }
 
-a.input-group-text.emoji-activator {
-    background: transparent;
-}
-
-a.input-group-text.dropdown-toggle {
-    background: transparent;
-}
-
-
 .input-group-text {
     border: none !important;
+    border-radius: 25px !important;
+}
+
+input {
+    border-radius: 25px !important;
+    margin: 0 10px !important;
 }
 
 .chat-messages::-webkit-scrollbar {
@@ -126,7 +121,6 @@ a.input-group-text.dropdown-toggle {
 }
 
 .form-control {
-    background-color: #060818 !important;
     border: none !important;
 }
 
