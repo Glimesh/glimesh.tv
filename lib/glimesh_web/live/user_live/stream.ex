@@ -105,7 +105,7 @@ defmodule GlimeshWeb.UserLive.Stream do
 
   def handle_event("lost_packets", %{"uplink" => _uplink, "lostPackets" => lostPackets}, socket) do
     message =
-      if lostPackets > 3,
+      if lostPackets > 6,
         do:
           gettext(
             "We're detecting some networking problems between you and the streamer. You may experience video drops, jitter, or other issues!"
