@@ -45,7 +45,7 @@ defmodule Glimesh.MixProject do
       {:bcrypt_elixir, "~> 2.0"},
       {:phoenix, "~> 1.5.8"},
       {:phoenix_ecto, "~> 4.2.1"},
-      {:ecto_sql, "~> 3.4"},
+      {:ecto_sql, "~> 3.5"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_live_view, "~> 0.15.4"},
       {:phoenix_html, "~> 2.11"},
@@ -55,6 +55,7 @@ defmodule Glimesh.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      {:ecto_psql_extras, "~> 0.2"},
       # Authentication & Authorization
       {:comeonin, "~> 5.3"},
       {:bodyguard, "~> 2.4"},
