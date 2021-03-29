@@ -150,8 +150,12 @@
 
                             <%= textarea f, :profile_content_md, [class: "form-control mb-4 text-monospace", id: "textarea_edit", rows: 20] %>
                         </div>
-                        <div class="tab-pane form-control mb-4" id="preview">
-                            <p><%= gettext("Coming soon!") %></p>
+                        <div class="tab-pane form-control mb-4" style="height:auto" id="preview">
+                            <%= if @user.profile_content_html do %>
+                                <%= raw(@user.profile_content_html) %>
+                            <% else %>
+                                <p>No Profile Content</p>
+                            <% end %>
                         </div>
                     </div>
 
@@ -159,6 +163,7 @@
                 </div>
 
                 <%= submit gettext("Update Settings"), class: "btn btn-primary" %>
+                <a class="btn btn-info" href="/<%= @user.username %>/profile" target="_blank">View Profile</a>
             </div>
         </div>
     </div>
