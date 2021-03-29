@@ -59,7 +59,7 @@
     <%= for {row, i} <- Enum.with_index(@blocks) do %>
     <div class="channel-block has-bg-image" style="<%= if row.background_image_url, do: "--background-image: url('#{row.background_image_url}')", else: "" %>">
 
-        <div class="channel-list p-1 p-lg-0">
+        <div class="channel-list p-1 p-lg-2">
             <%= if row.title do %>
             <h3 class="channel-list-title display-5 mt-4 mb-2"><%= row.title %></h3>
             <% end %>

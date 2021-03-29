@@ -99,9 +99,18 @@
                         </div>
                     </div>
                     <%= if @show_debug do %>
-                    <div id="debug-info">
-                        <h3 class="mt-4">Debug Information</h3>
-                        <pre class="px-2">
+                    <div id="debugModal" class="live-modal" phx-capture-click="toggle_debug" phx-window-keydown="toggle_debug" phx-key="escape" phx-target="#debugModal" phx-page-loading>
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title"><%= gettext("Debug Information") %></h5>
+                                    <button type="button" class="close" phx-click="toggle_debug" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <pre class="px-2">
 == Janus Edge Information ==
 Edge Hostname: <%= @janus_hostname %>
 Edge URL: <%= @janus_url %>
@@ -130,6 +139,10 @@ video_width: <%= @stream_metadata.video_width %> // unused
 inserted_at: <%= @stream_metadata.inserted_at %>
 updated_at: <%= @stream_metadata.updated_at %>
 </pre>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                     <% end %>
                 </div>
