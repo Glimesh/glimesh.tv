@@ -97,11 +97,12 @@ defmodule GlimeshWeb.ChatLive.Index do
 
   @impl true
   def handle_event("delete_message", %{"message" => message_id, "user" => message_author}, socket) do
+    chat_message = Chat.get_chat_message!(message_id)
     Chat.delete_message(
       socket.assigns.user,
       socket.assigns.channel,
       Accounts.get_by_username!(message_author, true),
-      message_id
+      chat_message
     )
 
     {:noreply, socket}

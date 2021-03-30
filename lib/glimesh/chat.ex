@@ -159,11 +159,11 @@ defmodule Glimesh.Chat do
         %User{} = moderator,
         %Channel{} = channel,
         %User{} = message_author,
-        message_id
+        message
       ) do
     with :ok <- Bodyguard.permit(__MODULE__, :delete, moderator, channel) do
-      delete_chat_message(channel, message_id)
-      broadcast_delete({:ok, channel.id, message_id}, :message_deleted)
+      delete_chat_message(message)
+      broadcast_delete({:ok, message}, :message_deleted)
 
       %ChannelModerationLog{
         channel: channel,
@@ -398,15 +398,10 @@ defmodule Glimesh.Chat do
     Repo.update_all(query, set: [is_visible: false])
   end
 
-  defp delete_chat_message(%Channel{} = channel, message_id) do
-    query =
-      from m in ChatMessage,
-        where:
-          m.is_visible == true and
-            m.channel_id == ^channel.id and
-            m.id == ^message_id
-
-    Repo.update_all(query, set: [is_visible: false])
+  defp delete_chat_message(%ChatMessage{} = chat_message) do
+    chat_message
+    |> ChatMessage.changeset(%{is_visible: false})
+    |> Repo.update()
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error
@@ -433,12 +428,12 @@ defmodule Glimesh.Chat do
     {:ok, bad_user}
   end
 
-  defp broadcast_delete({:ok, channel_id, message_id}, :message_deleted) do
+  defp broadcast_delete({:ok, chat_message}, :message_deleted) do
     Events.broadcast(
-      Streams.get_subscribe_topic(:chat, channel_id),
+      Streams.get_subscribe_topic(:chat, chat_message.channel_id),
       Streams.get_subscribe_topic(:chat),
       :message_deleted,
-      message_id
+      chat_message.id
     )
   end
 end
