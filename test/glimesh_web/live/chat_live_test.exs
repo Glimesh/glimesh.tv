@@ -188,7 +188,9 @@ defmodule GlimeshWeb.ChatLiveTest do
         generate_message_for_removal_test(user_fixture(), streamer, channel, @valid_chat_message)
 
       {:ok, view, _html} =
-        live_isolated(conn, GlimeshWeb.ChatLive.Index, session: %{"user" => streamer, "channel_id" => channel.id})
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => streamer, "channel_id" => channel.id}
+        )
 
       target = "##{chat_message.id} > div.user-message-header > i.delete-message"
 

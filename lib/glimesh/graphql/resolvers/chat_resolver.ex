@@ -4,6 +4,7 @@ defmodule Glimesh.Resolvers.ChatResolver do
   use Appsignal.Instrumentation.Decorators
 
   alias Glimesh.Accounts
+  alias Glimesh.ChannelLookups
   alias Glimesh.Chat
 
   @decorate transaction_event()
@@ -13,7 +14,7 @@ defmodule Glimesh.Resolvers.ChatResolver do
         %{context: %{user_access: ua}}
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Resolvers.Scopes, :chat, ua) do
-      channel = Glimesh.ChannelLookups.get_channel!(channel_id)
+      channel = ChannelLookups.get_channel!(channel_id)
       # Force a refresh of the user just in case they are platform banned
       user = Accounts.get_user!(ua.user.id)
 
@@ -56,7 +57,7 @@ defmodule Glimesh.Resolvers.ChatResolver do
         action
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Resolvers.Scopes, :chat, ua) do
-      channel = Glimesh.ChannelLookups.get_channel!(channel_id)
+      channel = ChannelLookups.get_channel!(channel_id)
       moderator = Accounts.get_user!(ua.user.id)
       user = Accounts.get_user!(user_id)
 
@@ -72,9 +73,11 @@ defmodule Glimesh.Resolvers.ChatResolver do
   @doc """
   Sends a delete chat message call, but make sure user_access is allowed
   """
-  def delete_chat_message_action(_parent, %{channel_id: channel_id, message_id: message_id}, %{context: %{user_access: ua}}) do
+  def delete_chat_message_action(_parent, %{channel_id: channel_id, message_id: message_id}, %{
+        context: %{user_access: ua}
+      }) do
     with :ok <- Bodyguard.permit(Glimesh.Resolvers.Scopes, :chat, ua) do
-      channel = Glimesh.ChannelLookups.get_channel!(channel_id)
+      channel = ChannelLookups.get_channel!(channel_id)
       moderator = Accounts.get_user!(ua.user.id)
       chat_message = Chat.get_chat_message!(message_id)
       user = Accounts.get_user!(chat_message.user_id)
