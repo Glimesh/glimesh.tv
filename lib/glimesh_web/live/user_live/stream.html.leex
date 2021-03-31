@@ -60,12 +60,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <%= if @player_error do %>
-                    <div class="alert alert-warning mt-2" role="alert">
-                        <%= @player_error %>
-                    </div>
-                    <% end %>
                     <% end %>
                 </div>
                 <div class="card-footer p-1 d-none d-sm-block">
@@ -87,7 +81,7 @@
                         <div class="col-4 align-self-center">
                             <div class="float-right mr-sm-2">
                                 <div class="d-inline-block mr-sm-2">
-                                    <a href="#" phx-click="toggle_debug" class="text-color-link">
+                                    <a href="#" phx-click="toggle_debug" class="text-color-link <%= if @player_error, do: "text-warning", else: "" %>">
                                         <i class="fas fa-signal"></i>
                                         <span class="sr-only">Debug</span>
                                     </a>
@@ -99,9 +93,23 @@
                         </div>
                     </div>
                     <%= if @show_debug do %>
-                    <div id="debug-info">
-                        <h3 class="mt-4">Debug Information</h3>
-                        <pre class="px-2">
+                    <div id="debugModal" class="live-modal" phx-capture-click="toggle_debug" phx-window-keydown="toggle_debug" phx-key="escape" phx-target="#debugModal" phx-page-loading>
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title"><%= gettext("Debug Information") %></h5>
+                                    <button type="button" class="close" phx-click="toggle_debug" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <%= if @player_error do %>
+                                    <div class="alert alert-warning" role="alert">
+                                        <%= @player_error %>
+                                    </div>
+                                    <% end %>
+                                    <pre class="px-2">
 == Janus Edge Information ==
 Edge Hostname: <%= @janus_hostname %>
 Edge URL: <%= @janus_url %>
@@ -130,6 +138,10 @@ video_width: <%= @stream_metadata.video_width %> // unused
 inserted_at: <%= @stream_metadata.inserted_at %>
 updated_at: <%= @stream_metadata.updated_at %>
 </pre>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                     <% end %>
                 </div>

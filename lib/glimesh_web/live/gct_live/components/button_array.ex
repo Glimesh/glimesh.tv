@@ -176,14 +176,4 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
   def handle_event("hide_ban_modal", _value, socket) do
     {:noreply, socket |> assign(:show_ban, false)}
   end
-
-  @impl true
-  def handle_event("show_ban_modal", _value, socket) do
-    {:noreply, socket |> assign(:show_ban, true)}
-  end
-
-  @impl true
-  def handle_event("hide_ban_modal", _value, socket) do
-    {:noreply, socket |> assign(:show_ban, false)}
-  end
 end

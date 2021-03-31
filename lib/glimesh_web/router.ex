@@ -142,7 +142,7 @@ defmodule GlimeshWeb.Router do
 
     import Phoenix.LiveDashboard.Router
 
-    live_dashboard "/phoenix/dashboard", metrics: GlimeshWeb.Telemetry
+    live_dashboard "/phoenix/dashboard", metrics: GlimeshWeb.Telemetry, ecto_repos: [Glimesh.Repo]
 
     get "/blog/new", ArticleController, :new
     get "/blog/:slug/edit", ArticleController, :edit
