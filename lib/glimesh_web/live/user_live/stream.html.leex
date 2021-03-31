@@ -60,13 +60,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <%= if @player_error do %>
-                    <div class="alert alert-warning mt-2 d-none d-sm-block" role="alert">
-                        <%= @player_error %>
-                    </div>
-                    <p class="d-sm-none text-warning mb-0 p-1 text-center"><%= gettext("We're experiencing network issues playing this stream!") %></p>
-                    <% end %>
                     <% end %>
                 </div>
                 <div class="card-footer p-1 d-none d-sm-block">
@@ -88,7 +81,7 @@
                         <div class="col-4 align-self-center">
                             <div class="float-right mr-sm-2">
                                 <div class="d-inline-block mr-sm-2">
-                                    <a href="#" phx-click="toggle_debug" class="text-color-link">
+                                    <a href="#" phx-click="toggle_debug" class="text-color-link <%= if @player_error, do: "text-warning", else: "" %>">
                                         <i class="fas fa-signal"></i>
                                         <span class="sr-only">Debug</span>
                                     </a>
@@ -111,6 +104,11 @@
                                 </div>
 
                                 <div class="modal-body">
+                                    <%= if @player_error do %>
+                                    <div class="alert alert-warning" role="alert">
+                                        <%= @player_error %>
+                                    </div>
+                                    <% end %>
                                     <pre class="px-2">
 == Janus Edge Information ==
 Edge Hostname: <%= @janus_hostname %>

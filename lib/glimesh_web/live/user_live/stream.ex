@@ -131,7 +131,15 @@ defmodule GlimeshWeb.UserLive.Stream do
   defp get_last_stream_metadata(stream) do
     case stream do
       %Glimesh.Streams.Stream{} = stream ->
-        Glimesh.Streams.get_last_stream_metadata(stream)
+        # Sometimes the stream can be live without metadata, usually happens within the
+        # first couple of seconds of loading the page
+        case Glimesh.Streams.get_last_stream_metadata(stream) do
+          %Glimesh.Streams.StreamMetadata{} = metadata ->
+            metadata
+
+          _ ->
+            %Glimesh.Streams.StreamMetadata{}
+        end
 
       _ ->
         %Glimesh.Streams.StreamMetadata{}
