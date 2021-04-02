@@ -1,26 +1,19 @@
 <div class="container">
 
-    <h2 class="mt-4"><%= gettext("%{username}'s Followers", username: @streamer.displayname) %></h2>
+    <h2 class="mt-4"><%= @page_title %></h2>
+    <ul class="nav nav-pills mb-4">
+        <li class="nav-item">
+            <%= live_redirect "Followers", to: Routes.user_followers_path(@socket, :followers, @streamer.username), class: "nav-link " <> (if @live_action == :followers, do: "active", else: "") %>
+        </li>
+        <li class="nav-item">
+            <%= live_redirect "Following", to: Routes.user_followers_path(@socket, :following, @streamer.username), class: "nav-link " <> (if @live_action == :following, do: "active", else: "") %>
+        </li>
+    </ul>
     <div class="row layout-top-spacing">
         <%= for follower <- @users do %>
-
-        <div class="col-md-2 mb-4">
-            <%= live_redirect to: Routes.user_profile_path(@socket, :index, follower.user.username) do %>
-            <div class="card">
-                <div class="card-body">
-                    <div class="text-md-center">
-                        <h4><%= follower.user.displayname %></h2>
-                            <img src="<%= Glimesh.Avatar.url({follower.user.avatar, follower.user}, :original) %>" alt="Your Profile Picture" style="width: 80% !important;" class="img-fluid mb-2 img-avatar <%= if Glimesh.Accounts.can_receive_payments?(follower.user), do: "img-verified-streamer", else: "" %>">
-
-                            <%= if Glimesh.Accounts.can_receive_payments?(follower.user) do %>
-                            <div class="mb-4"><span class="badge badge-secondary"><%= gettext("Sub Ready!") %></span></div>
-                            <% end %>
-                    </div>
-                </div>
-            </div>
-            <% end %>
+        <div class="col-md-4 mb-4">
+            <%= live_component(@socket, GlimeshWeb.Components.UserCard, user: (if @live_action == :followers, do: follower.user, else: follower.streamer)) %>
         </div>
-
         <% end %>
     </div>
 </div>

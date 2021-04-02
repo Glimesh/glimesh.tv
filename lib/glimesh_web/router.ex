@@ -232,7 +232,8 @@ defmodule GlimeshWeb.Router do
     # This must be the last route
     live "/:username", UserLive.Stream, :index
     live "/:username/profile", UserLive.Profile, :index
-    live "/:username/profile/followers", UserLive.Followers, :index
+    live "/:username/profile/followers", UserLive.Followers, :followers
+    live "/:username/profile/following", UserLive.Followers, :following
     live "/:username/chat", ChatLive.PopOut, :index
   end
 
