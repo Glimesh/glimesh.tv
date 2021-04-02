@@ -116,6 +116,8 @@ Edge URL: <%= @janus_url %>
 Reported Lost Packets: <%= @lost_packets %>
 <br>
 == Stream Metadata ==
+# Stream Metadata no longer auto reloads,
+# close & reopen modal to see newest data.
 ingest_server: <%= @stream_metadata.ingest_server %>
 ingest_viewers: <%= @stream_metadata.ingest_viewers %> // unused
 stream_time_seconds: <%= @stream_metadata.stream_time_seconds %>
