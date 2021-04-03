@@ -71,10 +71,7 @@ defmodule GlimeshWeb.Api.OauthTest do
       conn = post(conn, Routes.token_path(conn, :create, client_id: app.oauth_application.uid, client_secret: app.oauth_application.secret, refresh_token: refresh_token_one, grant_type: "refresh_token"))
       assert %{"access_token" => access_token_two, "created_at" => created_at_two, "expires_in" => 21600, "refresh_token" => refresh_token_two, "scope" => "public", "token_type" => "bearer"} = json_response(conn, 200)
       assert access_token_one != access_token_two
-      #! this test checks wrong at the current time due to the oauth lib doing the wrong thing when `"grant_type": "refresh_token"` is called
-      # TODO fix this test to check if token one and two does not match once oauth is written from ground up
-      assert created_at_one == created_at_two
-      assert refresh_token_one == refresh_token_two
+      assert refresh_token_one != refresh_token_two
     end
 
     test "POST /api/oauth/introspec inspect token", %{conn: conn, oauth_app: app, user: user} do
