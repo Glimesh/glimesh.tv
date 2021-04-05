@@ -13,7 +13,7 @@ jobs:
   build:
 
     name: Build and test
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     services:
       db:
@@ -31,7 +31,7 @@ jobs:
     - name: Set up Elixir
       uses: erlef/setup-elixir@v1
       with:
-        elixir-version: '1.11.4'
+        elixir-version: '1.11.2'
         otp-version: '23'
 
     - name: Restore dependencies cache
