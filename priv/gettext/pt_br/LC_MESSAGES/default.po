@@ -210,7 +210,7 @@ msgstr "Nome de exibição"
 
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:40
 msgid "Language"
-msgstr "Língua"
+msgstr "Idioma"
 
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:161 lib/glimesh_web/templates/user_settings/preference.html.eex:66
 msgid "Update Settings"
@@ -2471,7 +2471,7 @@ msgstr "Leia esta página com atenção"
 #: lib/glimesh_web/controllers/about_controller.ex:50
 #: lib/glimesh_web/templates/layout/root.html.leex:132
 msgid "Rules of Conduct"
-msgstr "Regras de conduta"
+msgstr "Regras de Conduta"
 
 #: lib/glimesh_web/live/streams_live/list.html.leex:51
 msgid "Search for a stream by tags"
@@ -2526,7 +2526,7 @@ msgstr "Envie seu formulário W-8"
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:48
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:60 lib/glimesh_web/templates/layout/root.html.leex:98
 msgid "Support"
-msgstr "Apoiar"
+msgstr "Suporte"
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:26
 msgid "Tax Verified: %{value}"
@@ -2619,7 +2619,7 @@ msgstr "Horas"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:133
 msgid "How many hours should the account exist before they can chat? Set to zero to disable."
-msgstr "quantas horas a conta deve existir antes que eles possam usar o bate papo? Defina como zero para desativar."
+msgstr "quantas horas a conta deve existir antes que eles possam usar o chat? Defina como zero para desativar."
 
 #: lib/glimesh/accounts/user.ex:390
 msgid "Invalid Discord invite URL"
@@ -2659,7 +2659,7 @@ msgstr "Requer e-mail confirmado antes de usar o bater papo?"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:126
 msgid "Require minimum account length before chatting?"
-msgstr "Requer um comprimento mínimo de conta antes de usar o bater papo?"
+msgstr "Requer um comprimento mínimo de conta antes de usar o chat?"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:58
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:15 lib/glimesh_web/live/user_live/components/subscribe_button.ex:71

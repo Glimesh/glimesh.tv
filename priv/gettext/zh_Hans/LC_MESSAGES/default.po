@@ -2578,156 +2578,156 @@ msgstr "你的户口设置还是在等待中."
 
 #: lib/glimesh_web/templates/gct/user_chat_log.html.eex:2
 msgid "%{user}'s Chat Logs"
-msgstr ""
+msgstr "%{user}的聊天记录"
 
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:17
 msgid "Are you sure you want to unsubscribe?"
-msgstr ""
+msgstr "你确定你想要退订?"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:110
 #: lib/glimesh_web/templates/user_payments/index.html.eex:126
 msgid "Canceling on %{date}"
-msgstr ""
+msgstr "在%{date}取消"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:109
 msgid "Chat Safety"
-msgstr ""
+msgstr "聊天安全"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:141
 msgid "Deactivate Channel"
-msgstr ""
+msgstr "停用频道"
 
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:24
 msgid "Delete Stripe Account"
-msgstr ""
+msgstr "删除《Stripe》帐户"
 
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:93
 msgid "Discord Invite Code"
-msgstr ""
+msgstr "《Discord》邀请码"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:38
 msgid "Gold Username"
-msgstr ""
+msgstr "金色用户名"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:130
 msgid "Hours"
-msgstr ""
+msgstr "小时"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:133
 msgid "How many hours should the account exist before they can chat? Set to zero to disable."
-msgstr ""
+msgstr "几个小时户口需要存在才能够聊天的? 设置到零以禁用."
 
 #: lib/glimesh/accounts/user.ex:390
 msgid "Invalid Discord invite URL"
-msgstr ""
+msgstr "无效《Discord》邀请码"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:46
 msgid "Not on Glimesh"
-msgstr ""
+msgstr "不在《Glimesh》上"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:82
 msgid "Other details you'd like to share"
-msgstr ""
+msgstr "别的细节你想要分享"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:48
 msgid "Please include relevant links in the notes section."
-msgstr ""
+msgstr "请包括相关的链接在笔记部分里."
 
 #: lib/glimesh_web/live/chat_live/message_form.html.leex:36
 msgid "Pop-out Chat"
-msgstr ""
+msgstr "弹出聊天"
 
 #: lib/glimesh_web/controllers/user_settings_controller.ex:67
 msgid "Problem uploading avatar, please try again later."
-msgstr ""
+msgstr "问题上传头像, 请稍后再试."
 
 #: lib/glimesh_web/controllers/user_settings_controller.ex:128
 msgid "Problem uploading stream images, please try again later."
-msgstr ""
+msgstr "问题上传直播图片, 请稍后再试."
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:44
 msgid "Profile Text or Avatar"
-msgstr ""
+msgstr "个人资料文字或者头像照片"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:121
 msgid "Require confirmed email before chatting?"
-msgstr ""
+msgstr "需要确认的电邮在闲聊之前?"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:126
 msgid "Require minimum account length before chatting?"
-msgstr ""
+msgstr "需要确认的最短持续自创建以来的时间在闲聊之前?"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:58
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:15 lib/glimesh_web/live/user_live/components/subscribe_button.ex:71
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:87
 msgid "Resubscribe"
-msgstr ""
+msgstr "重新订阅"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:41
 msgid "Select One"
-msgstr ""
+msgstr "选择一个"
 
 #: lib/glimesh_web/live/chat_live/message_form.html.leex:29
 msgid "Send a message"
-msgstr ""
+msgstr "送一个信息"
 
 #: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:10
 msgid "Shutdown Broadcast"
-msgstr ""
+msgstr "关掉直播"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:43
 msgid "Stream Chat"
-msgstr ""
+msgstr "直播聊天"
 
 #: lib/glimesh_web/live/user_live/components/channel_title.ex:32
 msgid "Stream Info"
-msgstr ""
+msgstr "直播信息"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:42
 msgid "Stream Video Content"
-msgstr ""
+msgstr "直播视频内容"
 
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:21
 msgid "Stripe Actions"
-msgstr ""
+msgstr "《Stripe》行动"
 
 #: lib/glimesh_web/live/gct_live/components/user_chat_log_table.html.leex:8
 msgid "Target Channel"
-msgstr ""
+msgstr "目标平道"
 
 #: lib/glimesh_web/live/homepage_live.html.leex:8
 msgid "Thanks for joining us! We're still getting our homepage settled, but please check out our categories!"
-msgstr ""
+msgstr "感谢你加入我们! 我们还在整理我们的主页, 但请签出我们的类别."
 
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:12
 msgid "View Chat Logs"
-msgstr ""
+msgstr "查看聊天记录"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:39
 msgid "Where did this happen?"
-msgstr ""
+msgstr "这在那里发生的?"
 
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:85
 msgid "You can resubscribe by clicking the button below, and your subscription will be renewed until you cancel it."
-msgstr ""
+msgstr "你可以通过点击下面的按钮重新订阅, 进而你的订阅会被更新直到你取消它."
 
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:23
 msgid "You cannot subscribe to this user."
-msgstr ""
+msgstr "你不能订阅这个用户."
 
 #: lib/glimesh/chat/policy.ex:58
 msgid "You must confirm your email address before chatting."
-msgstr ""
+msgstr "你必须要闲聊前先确认你的电子邮件."
 
 #: lib/glimesh/chat/policy.ex:65
 msgid "You must wait %{time_left} more minutes to chat."
-msgstr ""
+msgstr "你必须要再等%{time_left}分钟去聊天."
 
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:84
 msgid "Your subscription is currently set to automatically cancel at the end of your billing cycle."
-msgstr ""
+msgstr "你的订阅目前已设置为自动取消在你的结算周期结束时."
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:56
 msgid "Your subscription is set to be canceled automatically at the end of the billing cycle."
-msgstr ""
+msgstr "你的订阅目前已设置为自动取消在结算周期结束时."
 

@@ -318,7 +318,7 @@ msgstr "正常にログアウトしました。"
 
 #: lib/glimesh_web/templates/article/index.html.eex:2
 msgid "Glimesh Blog"
-msgstr "グリメッシュ Blog"
+msgstr "Glimeshブログ"
 
 #: lib/glimesh_web/templates/article/index.html.eex:15
 msgid "Read More"
@@ -361,7 +361,7 @@ msgstr "Music"
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:136
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:24
 msgid "Register"
-msgstr "レジスター"
+msgstr "登録"
 
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:131
 msgid "Sign Out"
@@ -437,7 +437,7 @@ msgstr "お支払い方法は付属(゜.゜)"
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:20 lib/glimesh_web/live/user_live/components/subscribe_button.ex:23
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:26
 msgid "Subscribe"
-msgstr "Subscribe"
+msgstr "サブスクライブ"
 
 #: lib/glimesh_web/live/subscription_component.ex:33
 msgid "Total Charge"
@@ -468,7 +468,7 @@ msgstr "選択"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:31
 msgid "Support Glimesh's future with your wallet! Get special perks to show off."
-msgstr "お財布でGlimeshの未来を応援しよう! これ見よがしのスペシャル特典を手に入れよう。"
+msgstr "お財布でGlimeshの未来を応援しよう！ これ見よがしのスペシャル特典を手に入れよう。"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:52
 msgid "You're subscribed!"
@@ -882,7 +882,7 @@ msgstr "毎月の寄付"
 #: lib/glimesh_web/live/platform_subscription_live/index.ex:38
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:2
 msgid "Glimesh Platform Subscriptions"
-msgstr "グリメッシュプラットフォームサブスクリプション"
+msgstr "Glimeshプラットフォームサブスクリプション"
 
 #: lib/glimesh_web/live/about/open_data_live.html.leex:3
 msgid "Glimesh takes transparency to the exteme, as an open company we build in the public light, and we operate in the public light. We've built graphs for a couple common metrics we use, but if you have any questions about how we run, let us know!"
@@ -895,7 +895,7 @@ msgstr "ライブストリーム"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:3
 msgid "Manage your ongoing subscriptions, see your transaction history, and setup your payout information subscriptions!"
-msgstr "現在進行中のサブスクリプションを管理し、取引履歴を確認し、支払情報を設定しましょう!"
+msgstr "現在進行中のサブスクリプションを管理し、取引履歴を確認し、支払情報を設定しましょう！"
 
 #: lib/glimesh_web/live/about/open_data_live.html.leex:26
 msgid "Number of live streams each week."
@@ -1054,7 +1054,7 @@ msgstr "Channel Moderators"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:50
 msgid "Channel Poster"
-msgstr "Channel Poster"
+msgstr "チャンネルポスター"
 
 #: lib/glimesh_web/controllers/user_settings_controller.ex:23
 #: lib/glimesh_web/templates/layout/user-sidebar.html.eex:30 lib/glimesh_web/templates/user_settings/stream.html.eex:2
@@ -1248,7 +1248,7 @@ msgstr "私たちは多くのオープンソースプロジェクトを利用し
 
 #: lib/glimesh_web/live/chat_live/index.html.leex:3
 msgid "Welcome to chat! Follow the rules."
-msgstr "チャットへようこそ! ルールに従ってください。"
+msgstr "チャットへようこそ！ ルールに従ってください。"
 
 #: lib/glimesh_web/views/channel_moderator_view.ex:5
 msgid "Yes"
@@ -2294,7 +2294,7 @@ msgstr "アニメーションゴールドアバターリング"
 
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:31
 msgid "Automatically bypass our Mature Content warning by enabling this preference."
-msgstr "この設定を有効にすることで、大人向けコンテンツの警告を自動的に回避します。"
+msgstr "この設定を有効にすることで、成人向けコンテンツの警告を自動的に回避します。"
 
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:131
 msgid "Ban Settings"
@@ -2302,7 +2302,7 @@ msgstr "Ban設定"
 
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:40
 msgid "Blog"
-msgstr "Blog"
+msgstr "ブログ"
 
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:26
 msgid "Bypass Mature Content Warning"
@@ -2314,7 +2314,7 @@ msgstr "チャンネルの主な言語"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:40
 msgid "Channel contains mature content"
-msgstr "チャンネルには大人向けコンテンツが含まれています"
+msgstr "チャンネルには成人向けコンテンツが含まれています"
 
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:57
 msgid "Chat Timestamp Visibility:"
@@ -2382,7 +2382,7 @@ msgstr "金色のアバターリング"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:30
 msgid "Gold Supporter"
-msgstr "Gold Supporter"
+msgstr "黄金のサポーター"
 
 #: lib/glimesh_web/templates/about/credits.html.eex:6
 msgid "Gold Supporters"
@@ -2435,7 +2435,7 @@ msgstr "成人向けコンテンツの警告"
 
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:44
 msgid "Merch"
-msgstr "Merch"
+msgstr "公式グッズ"
 
 #: lib/glimesh_web/live/gct_live/components/channel_chat_log_table.html.leex:9
 #: lib/glimesh_web/live/gct_live/components/user_chat_log_table.html.leex:9
@@ -2456,7 +2456,7 @@ msgstr "その他の国: "
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:18
 msgid "Our Thanks!"
-msgstr "ありがとうございます"
+msgstr "Our Thanks!"
 
 #: lib/glimesh_web/templates/user_payments/setup.html.eex:35
 msgid "Payouts happen Wednesday"
@@ -2486,7 +2486,7 @@ msgstr "Glimeshの支払い設定"
 
 #: lib/glimesh_web/live/streams_live/list.html.leex:64
 msgid "Showing %{count_channels} of %{total_channels} Live Channels"
-msgstr "%{total_channels}ライブチャンネルの%{count_channels}を表示"
+msgstr "%{total_channels}ライブチャンネル中%{count_channels}を表示"
 
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:13
 msgid "Site Content"
@@ -2584,156 +2584,156 @@ msgstr "アカウントの設定はまだ保留中です。"
 
 #: lib/glimesh_web/templates/gct/user_chat_log.html.eex:2
 msgid "%{user}'s Chat Logs"
-msgstr ""
+msgstr "%{user}'s チャットログ"
 
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:17
 msgid "Are you sure you want to unsubscribe?"
-msgstr ""
+msgstr "本当に退会してよろしいですか？"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:110
 #: lib/glimesh_web/templates/user_payments/index.html.eex:126
 msgid "Canceling on %{date}"
-msgstr ""
+msgstr "%{date}にキャンセル"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:109
 msgid "Chat Safety"
-msgstr ""
+msgstr "チャットの安全性"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:141
 msgid "Deactivate Channel"
-msgstr ""
+msgstr "チャンネルを非アクティブ化"
 
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:24
 msgid "Delete Stripe Account"
-msgstr ""
+msgstr "Stripeアカウントを削除する"
 
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:93
 msgid "Discord Invite Code"
-msgstr ""
+msgstr "Discordの招待コード"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:38
 msgid "Gold Username"
-msgstr ""
+msgstr "金色のユーザー名"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:130
 msgid "Hours"
-msgstr ""
+msgstr "時間"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:133
 msgid "How many hours should the account exist before they can chat? Set to zero to disable."
-msgstr ""
+msgstr "チャットができるようになるまで、アカウントは何時間存在する必要がありますか？無効にするには0に設定します。"
 
 #: lib/glimesh/accounts/user.ex:390
 msgid "Invalid Discord invite URL"
-msgstr ""
+msgstr "無効なDiscordの招待URL"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:46
 msgid "Not on Glimesh"
-msgstr ""
+msgstr "Not on Glimesh"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:82
 msgid "Other details you'd like to share"
-msgstr ""
+msgstr "その他の共有したい内容"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:48
 msgid "Please include relevant links in the notes section."
-msgstr ""
+msgstr "備考欄に関連するリンクを記載してください。"
 
 #: lib/glimesh_web/live/chat_live/message_form.html.leex:36
 msgid "Pop-out Chat"
-msgstr ""
+msgstr "チャットのポップアウト"
 
 #: lib/glimesh_web/controllers/user_settings_controller.ex:67
 msgid "Problem uploading avatar, please try again later."
-msgstr ""
+msgstr "アバターのアップロードで問題が発生しました。後でもう一度お試しください。"
 
 #: lib/glimesh_web/controllers/user_settings_controller.ex:128
 msgid "Problem uploading stream images, please try again later."
-msgstr ""
+msgstr "ストリーム画像のアップロードで問題が発生しました。後でもう一度お試しください。"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:44
 msgid "Profile Text or Avatar"
-msgstr ""
+msgstr "プロフィールテキストまたはアバター"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:121
 msgid "Require confirmed email before chatting?"
-msgstr ""
+msgstr "チャットをする前にメールアドレスの確認が必要ですか？"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:126
 msgid "Require minimum account length before chatting?"
-msgstr ""
+msgstr "チャットをする前にアカウントの長さを確認する必要がありますか？"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:58
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:15 lib/glimesh_web/live/user_live/components/subscribe_button.ex:71
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:87
 msgid "Resubscribe"
-msgstr ""
+msgstr "再サブスクライブ"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:41
 msgid "Select One"
-msgstr ""
+msgstr "一つ選択してください"
 
 #: lib/glimesh_web/live/chat_live/message_form.html.leex:29
 msgid "Send a message"
-msgstr ""
+msgstr "メッセージの送信"
 
 #: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:10
 msgid "Shutdown Broadcast"
-msgstr ""
+msgstr "配信停止"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:43
 msgid "Stream Chat"
-msgstr ""
+msgstr "ストリームチャット"
 
 #: lib/glimesh_web/live/user_live/components/channel_title.ex:32
 msgid "Stream Info"
-msgstr ""
+msgstr "配信情報"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:42
 msgid "Stream Video Content"
-msgstr ""
+msgstr "ストリームビデオコンテンツ"
 
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:21
 msgid "Stripe Actions"
-msgstr ""
+msgstr "Stripeアクション"
 
 #: lib/glimesh_web/live/gct_live/components/user_chat_log_table.html.leex:8
 msgid "Target Channel"
-msgstr ""
+msgstr "ターゲットチャンネル"
 
 #: lib/glimesh_web/live/homepage_live.html.leex:8
 msgid "Thanks for joining us! We're still getting our homepage settled, but please check out our categories!"
-msgstr ""
+msgstr "ご参加ありがとうございます。私たちのホームページはまだ完成していませんが、カテゴリーをチェックしてみてください。"
 
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:12
 msgid "View Chat Logs"
-msgstr ""
+msgstr "チャットログを見る"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:39
 msgid "Where did this happen?"
-msgstr ""
+msgstr "これはどこで起こりましたか？"
 
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:85
 msgid "You can resubscribe by clicking the button below, and your subscription will be renewed until you cancel it."
-msgstr ""
+msgstr "以下のボタンをクリックして再サブスクライブすることができます。あなたがキャンセルするまでサブスクライブは更新されます。"
 
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:23
 msgid "You cannot subscribe to this user."
-msgstr ""
+msgstr "このユーザーをサブスクライブすることはできません。"
 
 #: lib/glimesh/chat/policy.ex:58
 msgid "You must confirm your email address before chatting."
-msgstr ""
+msgstr "チャットをする前に、メールアドレスを確認する必要があります。"
 
 #: lib/glimesh/chat/policy.ex:65
 msgid "You must wait %{time_left} more minutes to chat."
-msgstr ""
+msgstr "チャットをするには、あと%{time_left}分待つ必要があります。"
 
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:84
 msgid "Your subscription is currently set to automatically cancel at the end of your billing cycle."
-msgstr ""
+msgstr "現在、あなたのサブスクリプションは、請求サイクルの終わりに自動的にキャンセルされるように設定されています。"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:56
 msgid "Your subscription is set to be canceled automatically at the end of the billing cycle."
-msgstr ""
+msgstr "あなたのサブスクリプションは、請求サイクルの終了時に自動的にキャンセルされるように設定されています。"
 
