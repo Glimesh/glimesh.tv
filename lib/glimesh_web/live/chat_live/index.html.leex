@@ -1,4 +1,4 @@
-<div id="chat-messages" class="chat-messages <%= if @show_timestamps, do: "show-timestamps" %>" phx-update="<%= @update_action %>" style="<%= background_style(@channel) %>">
+<div id="chat-messages" class="chat-messages order-2 <%= if @show_timestamps, do: "show-timestamps" %>" phx-update="<%= @update_action %>" style="<%= background_style(@channel) %>">
     <div id="channel-header" class="channel-header">
         <span><%= gettext("Welcome to chat! Follow the rules.") %></span>
     </div>
@@ -34,7 +34,7 @@
     </div>
     <% end %>
 </div>
-<div class="chat-form">
+<div class="chat-form order-lg-2">
     <%= live_component @socket, GlimeshWeb.ChatLive.MessageForm,
             id: :new,
             action: :new,
