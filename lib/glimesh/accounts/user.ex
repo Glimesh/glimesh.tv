@@ -56,6 +56,8 @@ defmodule Glimesh.Accounts.User do
     has_one :user_preference, Glimesh.Accounts.UserPreference
 
     has_many :socials, Glimesh.Accounts.UserSocial
+    has_many :followers, Glimesh.AccountFollows.Follower, foreign_key: :streamer_id
+    has_many :following, Glimesh.AccountFollows.Follower, foreign_key: :user_id
 
     timestamps()
   end
