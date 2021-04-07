@@ -41,7 +41,7 @@ defmodule Glimesh.Schema.AccountTypes do
       config(fn args, _ ->
         case Map.get(args, :streamer_id) do
           nil ->
-            {:ok, topic: [get_subscribe_topic(:follows)]}
+            {:ok, topic: [AccountFollows.get_subscribe_topic(:follows)]}
 
           streamer_id ->
             {:ok, topic: [get_subscribe_topic(:follows, streamer_id)]}
@@ -82,14 +82,14 @@ defmodule Glimesh.Schema.AccountTypes do
 
     field :count_followers, :integer do
       resolve(fn user, _, _ ->
-        followers = count_followers(user)
+        followers = AccountFollows.count_followers(user)
         {:ok, followers}
       end)
     end
 
     field :count_following, :integer do
       resolve(fn user, _, _ ->
-        following = count_following(user)
+        following = AccountFollows.count_following(user)
         {:ok, following}
       end)
     end
