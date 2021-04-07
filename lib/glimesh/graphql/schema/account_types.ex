@@ -4,6 +4,7 @@ defmodule Glimesh.Schema.AccountTypes do
 
   import Absinthe.Resolution.Helpers
 
+  alias Glimesh.AccountFollows
   alias Glimesh.Avatar
   alias Glimesh.Repo
   alias Glimesh.Resolvers.AccountResolver
@@ -40,10 +41,10 @@ defmodule Glimesh.Schema.AccountTypes do
       config(fn args, _ ->
         case Map.get(args, :streamer_id) do
           nil ->
-            {:ok, topic: [Glimesh.AccountFollows.get_subscribe_topic(:follows)]}
+            {:ok, topic: [get_subscribe_topic(:follows)]}
 
           streamer_id ->
-            {:ok, topic: [Glimesh.AccountFollows.get_subscribe_topic(:follows, streamer_id)]}
+            {:ok, topic: [get_subscribe_topic(:follows, streamer_id)]}
         end
       end)
     end
@@ -81,14 +82,14 @@ defmodule Glimesh.Schema.AccountTypes do
 
     field :count_followers, :integer do
       resolve(fn user, _, _ ->
-        followers = AccountFollows.count_followers(user)
+        followers = count_followers(user)
         {:ok, followers}
       end)
     end
 
     field :count_following, :integer do
       resolve(fn user, _, _ ->
-        following = AccountFollows.count_following(user)
+        following = count_following(user)
         {:ok, following}
       end)
     end
