@@ -5,7 +5,7 @@
                 <div class="card-body">
                     <h2 class="<%= Glimesh.Chat.Effects.get_username_color(@streamer, "text-color-link") %>">
                         <%= @streamer.displayname %></h2>
-                    <img src="<%= Glimesh.Avatar.url({@streamer.avatar, @streamer}, :original) %>" alt="Your Profile Picture" class="img-fluid mb-2 img-avatar <%= if Glimesh.Accounts.can_receive_payments?(@streamer), do: "img-verified-streamer", else: "" %>">
+                    <img src="<%= Glimesh.Avatar.url({@streamer.avatar, @streamer}, :original) %>" alt="Your Profile Picture" class="img-fluid mb-2 img-profile-avatar <%= if Glimesh.Accounts.can_receive_payments?(@streamer), do: "img-verified-streamer", else: "" %>">
 
                     <%= if Glimesh.Accounts.can_receive_payments?(@streamer) do %>
                     <div class="mb-4"><span class="badge badge-secondary"><%= gettext("Sub-ready Streamer") %></span>
