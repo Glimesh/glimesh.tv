@@ -44,7 +44,7 @@ defmodule Glimesh.Schema.AccountTypes do
             {:ok, topic: [AccountFollows.get_subscribe_topic(:follows)]}
 
           streamer_id ->
-            {:ok, topic: [get_subscribe_topic(:follows, streamer_id)]}
+            {:ok, topic: [AccountFollows.get_subscribe_topic(:follows, streamer_id)]}
         end
       end)
     end
