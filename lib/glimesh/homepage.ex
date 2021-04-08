@@ -5,15 +5,20 @@ defmodule Glimesh.Homepage do
 
   import Ecto.Query, warn: false
 
+  alias Ecto.Changeset
+  alias Glimesh.Repo
   alias Glimesh.Streams.Channel
   alias Glimesh.Streams.HomepageChannel
 
+  @doc """
+  Gets the homepage channels.
+  """
   @spec get_homepage :: [%Channel{}, ...]
-  def get_homepage() do
+  def get_homepage do
     now = NaiveDateTime.utc_now()
 
     channel_ids =
-      Glimesh.Repo.all(
+      Repo.all(
         from f in HomepageChannel,
           select: f.channel_id,
           where:
@@ -25,13 +30,13 @@ defmodule Glimesh.Homepage do
     Glimesh.ChannelLookups.search_live_channels(%{"ids" => channel_ids})
   end
 
-  @spec update_homepage :: :first_run | :late | :not_time | :on_time
   @doc """
   Update the homepage with new streams.
 
   Since our servers can be restarted at any time, this function needs to check for 15 minutes left on the current batch of streams, and prepare the next batch of streams. This function does not handle actually displaying the batch, which is where the homepage takes over.
   """
-  def update_homepage() do
+  @spec update_homepage :: :first_run | :late | :not_time | :on_time
+  def update_homepage do
     # Check for the current max slot_ended_at time
     # If within 15 minutes of current time generate next batch of homepage channels
     slot_max_time = get_max_slot_time()
@@ -53,10 +58,6 @@ defmodule Glimesh.Homepage do
         :on_time
 
       true ->
-        IO.inspect(NaiveDateTime.diff(slot_max_time, now) / 60,
-          label: "Time left to new homepage"
-        )
-
         :not_time
     end
   end
@@ -71,7 +72,7 @@ defmodule Glimesh.Homepage do
     end)
   end
 
-  defp find_eligible_channels() do
+  defp find_eligible_channels do
     fifteen_minutes_ago = NaiveDateTime.add(NaiveDateTime.utc_now(), -(15 * 60), :second)
 
     ten_hour_query =
@@ -80,7 +81,7 @@ defmodule Glimesh.Homepage do
         group_by: s.channel_id,
         having: sum(s.ended_at - s.started_at) >= fragment("INTERVAL '10 hours'")
 
-    Glimesh.Repo.all(
+    Repo.all(
       from c in Channel,
         as: :channel,
         join: s in assoc(c, :streams),
@@ -98,17 +99,17 @@ defmodule Glimesh.Homepage do
     )
   end
 
-  defp get_max_slot_time() do
-    Glimesh.Repo.one!(from f in HomepageChannel, select: max(f.slot_ended_at))
+  defp get_max_slot_time do
+    Repo.one!(from f in HomepageChannel, select: max(f.slot_ended_at))
   end
 
   defp create_homepage_channel!(%Channel{} = channel, slot_start, slot_end) do
     %HomepageChannel{}
-    |> Ecto.Changeset.change(%{
+    |> Changeset.change(%{
       slot_started_at: NaiveDateTime.truncate(slot_start, :second),
       slot_ended_at: NaiveDateTime.truncate(slot_end, :second)
     })
-    |> Ecto.Changeset.put_assoc(:channel, channel)
-    |> Glimesh.Repo.insert!()
+    |> Changeset.put_assoc(:channel, channel)
+    |> Repo.insert!()
   end
 end

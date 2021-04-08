@@ -25,6 +25,7 @@
 
 </div>
 
+<%= if length(@channels) > 0 do %>
 <div class="container container-stream-list">
     <div class="px-4 px-lg-0">
         <h2 class="text-white"><%= gettext("Explore Live Streams") %></h2>
@@ -65,6 +66,7 @@
         <% end %>
     </div>
 </div>
+<% end %>
 <%#
 <div class="container">
     <h2 class="text-white"><span class="text-color-alpha">Upcoming</span> Events</h2>
