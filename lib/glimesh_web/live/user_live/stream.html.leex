@@ -3,30 +3,6 @@
 
         <div id="video-column" class="col-lg-9 layout-spacing">
             <div class="card">
-                <div class="card-header p-1">
-                    <div class="row">
-                        <div class="col align-self-center d-block text-truncate">
-                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
-                        </div>
-                        <div class="col-auto">
-                            <div class="float-right">
-                                <div class="stream-info btn-toolbar">
-                                    <div class="btn-group mr-1" role="group" aria-label="First group">
-                                        <%= if @can_receive_payments do %>
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                                        <% end %>
-                                    </div>
-                                    <div class="btn-group mr-1" role="group" aria-label="Second group">
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                                    </div>
-                                    <div class="btn-group" role="group" aria-label="Third group">
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="card-body p-0 p-md-1">
                     <%= if @prompt_mature do %>
                     <div class="jumbotron jumbotron-fluid jumbotron-mature-content mb-0">
@@ -69,7 +45,6 @@
                     </a>
                 </div>
 
-
                     <div class="row">
                         <div class="col-8 d-inline-flex align-items-center">
                             <a title="<%= gettext("View Profile") %>" class="<%= Glimesh.Chat.Effects.get_username_color(@channel.user) %>" href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
@@ -93,6 +68,30 @@
                                 </div>
                             </div>
                         </div>
+                <div class="card-header p-1">
+                    <div class="row">
+                        <div class="col align-self-center d-block text-truncate">
+                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
+                        </div>
+                        <div class="col-auto">
+                            <div class="float-right">
+                                <div class="stream-info btn-toolbar">
+                                    <div class="btn-group mr-1" role="group" aria-label="First group">
+                                        <%= if @can_receive_payments do %>
+                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                                        <% end %>
+                                    </div>
+                                    <div class="btn-group mr-1" role="group" aria-label="Second group">
+                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                                    </div>
+                                    <div class="btn-group" role="group" aria-label="Third group">
+                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                     </div>
                     <%= if @show_debug do %>
                     <div id="debugModal" class="live-modal" phx-capture-click="toggle_debug" phx-window-keydown="toggle_debug" phx-key="escape" phx-target="#debugModal" phx-page-loading>

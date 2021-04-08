@@ -85,17 +85,18 @@
     #chat {
         min-height: 400px;
         max-height: 400px;
-        height: auto;
-        margin-bottom: 165px;
     }
+}
+
+div#chat-column {
+    height: auto;
+    margin-bottom: 165px;
 }
 
 @media (min-width: 992px) {
     #chat-column {
         #chat {
             max-height: calc(100vh - 90px);
-            height: auto;
-            margin-bottom: 165px;
         }
     }
 
