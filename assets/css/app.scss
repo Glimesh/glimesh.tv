@@ -61,17 +61,20 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "glimesh/components/button.scss";
 @import "glimesh/components/card-general.scss";
 @import "glimesh/components/list.scss";
-
+@import "glimesh/components/video";
 
 @import "glimesh/pages/dmca";
+
+@include media-breakpoint-up(lg) {
+    .layout-spacing {
+        padding-bottom: 40px;
+    }
+}
 
 .nowrap {
     white-space: nowrap;
 }
 
-.layout-spacing {
-    padding-bottom: 40px;
-}
 
 .text-color-link {
     color: var(--body-color);

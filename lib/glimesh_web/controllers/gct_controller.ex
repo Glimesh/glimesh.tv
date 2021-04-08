@@ -54,7 +54,6 @@ defmodule GlimeshWeb.GctController do
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_user, gct_user, user) do
       view_billing = Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, gct_user, user)
-      view_chat_log = Bodyguard.permit?(Glimesh.CommunityTeam, :view_chat_log, gct_user, user)
 
       if user do
         CommunityTeam.create_lookup_audit_entry(gct_user, user)

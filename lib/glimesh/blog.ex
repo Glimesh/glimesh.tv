@@ -21,8 +21,17 @@ defmodule Glimesh.Blog do
     Repo.all(from a in Article, where: a.published == true, order_by: [desc: :id])
   end
 
+  @spec list_some_articles(number) :: {:error, any} | {:ok, any}
   def list_some_articles(limit) do
-    Repo.all(from a in Article, where: a.published == true, order_by: [desc: :id], limit: ^limit)
+    Glimesh.QueryCache.get_and_store!(
+      "Glimesh.Blog.limit_some_articles(#{limit})",
+      fn ->
+        {:ok,
+         Repo.all(
+           from a in Article, where: a.published == true, order_by: [desc: :id], limit: ^limit
+         )}
+      end
+    )
   end
 
   @doc """

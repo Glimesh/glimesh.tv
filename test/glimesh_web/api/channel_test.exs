@@ -20,6 +20,10 @@ defmodule GlimeshWeb.Api.ChannelTest do
       title
       streamer { username }
 
+      subcategory {
+        name
+      }
+
       tags {
         name
       }
@@ -60,9 +64,12 @@ defmodule GlimeshWeb.Api.ChannelTest do
                  "channel" => %{
                    "title" => "Live Stream!",
                    "streamer" => %{"username" => user.username},
+                   "subcategory" => %{
+                     "name" => "World of Warcraft"
+                   },
                    "tags" => [
                      %{
-                       "name" => "World of Warcraft"
+                       "name" => "Chill Stream"
                      }
                    ]
                  }
@@ -86,6 +93,11 @@ defmodule GlimeshWeb.Api.ChannelTest do
       name
       slug
 
+      subcategories {
+        name
+        backgroundImageUrl
+      }
+
       tags {
         name
       }
@@ -94,7 +106,7 @@ defmodule GlimeshWeb.Api.ChannelTest do
   """
 
   describe "categories api" do
-    setup [:register_and_set_user_token, :create_tag]
+    setup [:register_and_set_user_token, :create_tag, :create_subcategory]
 
     test "returns all categories", %{conn: conn} do
       conn =
@@ -120,9 +132,15 @@ defmodule GlimeshWeb.Api.ChannelTest do
                  "category" => %{
                    "name" => "Gaming",
                    "slug" => "gaming",
+                   "subcategories" => [
+                     %{
+                       "name" => "World of Warcraft",
+                       "backgroundImageUrl" => nil
+                     }
+                   ],
                    "tags" => [
                      %{
-                       "name" => "World of Warcraft"
+                       "name" => "Chill Stream"
                      }
                    ]
                  }
@@ -135,15 +153,21 @@ defmodule GlimeshWeb.Api.ChannelTest do
     {:ok, channel} = Streams.create_channel(user)
 
     %{tag: tag} = create_tag(%{})
+    %{subcategory: subcategory} = create_subcategory(%{})
 
     {:ok, _} =
       channel
-      |> Glimesh.Repo.preload(:tags)
+      |> Glimesh.Repo.preload([:tags, :subcategory])
       |> Ecto.Changeset.change()
       |> Ecto.Changeset.put_assoc(:tags, [tag])
+      |> Ecto.Changeset.put_assoc(:subcategory, subcategory)
       |> Glimesh.Repo.update()
 
     %{channel: channel}
+  end
+
+  def create_subcategory(_) do
+    %{subcategory: subcategory_fixture()}
   end
 
   def create_tag(_) do

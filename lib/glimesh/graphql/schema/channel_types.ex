@@ -82,7 +82,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     end
 
     @desc "Update a stream's metadata"
-    field :log_stream_metadata, type: :stream do
+    field :log_stream_metadata, type: :stream_metadata do
       arg(:stream_id, non_null(:id))
       arg(:metadata, non_null(:stream_metadata_input))
 
@@ -122,6 +122,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :name, :string, description: "Name of the category"
 
     field :tags, list_of(:tag), resolve: dataloader(Repo)
+    field :subcategories, list_of(:subcategory), resolve: dataloader(Repo)
 
     field :tag_name, :string do
       deprecate("Tag name is now just name")
@@ -140,6 +141,29 @@ defmodule Glimesh.Schema.ChannelTypes do
         {:ok, nil}
       end)
     end
+  end
+
+  @desc "Subcategories are specific games, topics, or genre's that exist under a Category."
+  object :subcategory do
+    field :id, :id
+    field :name, :string, description: "Name of the subcategory"
+    field :slug, :string, description: "URL friendly name of the subcategory"
+
+    field :user_created, :boolean
+    field :source, :string
+    field :source_id, :string
+
+    field :background_image_url, :string do
+      # Resolve URL to our actual public route
+      resolve(fn subcategory, _, _ ->
+        {:ok, subcategory.background_image}
+      end)
+    end
+
+    field :category, :category, resolve: dataloader(Repo)
+
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
   end
 
   @desc "Tags are user created labels that are either global or category specific."
@@ -162,6 +186,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :status, :channel_status
     field :title, :string, description: "The title of the current stream, live or offline."
     field :category, :category, resolve: dataloader(Repo)
+    field :subcategory, :subcategory, resolve: dataloader(Repo)
     field :language, :string, description: "The language a user can expect in the stream."
     field :thumbnail, :string
 
@@ -221,6 +246,7 @@ defmodule Glimesh.Schema.ChannelTypes do
 
     field :title, :string, description: "The title of the stream."
     field :category, non_null(:category), resolve: dataloader(Repo)
+    field :subcategory, :subcategory, resolve: dataloader(Repo)
     field :metadata, list_of(:stream_metadata), resolve: dataloader(Repo)
 
     field :started_at, non_null(:naive_datetime)

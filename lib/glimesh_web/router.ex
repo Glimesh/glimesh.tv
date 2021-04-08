@@ -142,7 +142,7 @@ defmodule GlimeshWeb.Router do
 
     import Phoenix.LiveDashboard.Router
 
-    live_dashboard "/phoenix/dashboard", metrics: GlimeshWeb.Telemetry
+    live_dashboard "/phoenix/dashboard", metrics: GlimeshWeb.Telemetry, ecto_repos: [Glimesh.Repo]
 
     get "/blog/new", ArticleController, :new
     get "/blog/:slug/edit", ArticleController, :edit
@@ -216,6 +216,8 @@ defmodule GlimeshWeb.Router do
     get "/blog/:slug", ArticleController, :show
 
     live "/", HomepageLive, :index
+    live "/streams", StreamsLive.Index, :index
+    live "/streams/following", StreamsLive.Following, :index
     live "/streams/:category", StreamsLive.List, :index
 
     live "/users", UserLive.Index, :index
@@ -230,7 +232,8 @@ defmodule GlimeshWeb.Router do
     # This must be the last route
     live "/:username", UserLive.Stream, :index
     live "/:username/profile", UserLive.Profile, :index
-    live "/:username/profile/followers", UserLive.Followers, :index
+    live "/:username/profile/followers", UserLive.Followers, :followers
+    live "/:username/profile/following", UserLive.Followers, :following
     live "/:username/chat", ChatLive.PopOut, :index
   end
 

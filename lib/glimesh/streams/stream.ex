@@ -9,6 +9,7 @@ defmodule Glimesh.Streams.Stream do
 
     field :title, :string
     belongs_to :category, Glimesh.Streams.Category
+    belongs_to :subcategory, Glimesh.Streams.Subcategory
 
     field :started_at, :naive_datetime
     field :ended_at, :naive_datetime
@@ -38,6 +39,7 @@ defmodule Glimesh.Streams.Stream do
     |> cast(attrs, [
       :title,
       :category_id,
+      :subcategory_id,
       :started_at,
       :ended_at,
       :count_viewers,

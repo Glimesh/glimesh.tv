@@ -1,9 +1,33 @@
-<div class="container-fluid">
-    <div class="row mt-3">
+<div class="container-fluid container-stream">
+    <div class="row mt-lg-3">
 
         <div id="video-column" class="col-lg-9 layout-spacing">
             <div class="card">
-                <div class="card-body p-1">
+                <div class="card-header p-1">
+                    <div class="row">
+                        <div class="col align-self-center d-block text-truncate">
+                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
+                        </div>
+                        <div class="col-auto">
+                            <div class="float-right">
+                                <div class="stream-info btn-toolbar">
+                                    <div class="btn-group mr-1" role="group" aria-label="First group">
+                                        <%= if @can_receive_payments do %>
+                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                                        <% end %>
+                                    </div>
+                                    <div class="btn-group mr-1" role="group" aria-label="Second group">
+                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                                    </div>
+                                    <div class="btn-group" role="group" aria-label="Third group">
+                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0 p-md-1">
                     <%= if @prompt_mature do %>
                     <div class="jumbotron jumbotron-fluid jumbotron-mature-content mb-0">
                         <div class="container p-5">
@@ -25,19 +49,17 @@
                     </div>
 
                     <% else %>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <%= if @backend == "ftl" do %>
-                        <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo" poster="<%= Glimesh.ChannelPoster.url({@channel.poster, @channel}, :original) %>" controls playsinline></video>
-                        <% else %>
-                        No video player backend specified.
-                        <% end %>
+                    <div id="video-container" class="embed-responsive embed-responsive-16by9">
+                        <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo" controls playsinline poster="<%= @channel_poster %>"></video>
+                        <div id="video-loading-container" class="">
+                            <div class="lds-ring">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
                     </div>
-
-                    <%= if @player_error do %>
-                    <div class="alert alert-danger mt-2" role="alert">
-                        <%= @player_error %>
-                    </div>
-                    <% end %>
                     <% end %>
                 </div>
                 <div class="card-footer p-1 d-none d-sm-block">
@@ -54,45 +76,78 @@
                                 <h3 class="mb-0"><%= @channel.user.displayname %></h3>
                             </a>
 
-                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.SocialButtons, id: "social-buttons", container: {:ul, class: "list-inline ml-2 mb-0"}, session: %{"user_id" => @streamer.id}) %>
+                            <span class="badge badge-pill badge-info ml-2"><%= Glimesh.Streams.get_channel_language(@channel) %></span>
 
-                            <!--
-                            Video Edge Information
-                            Edge Hostname: <%= @janus_hostname %>
-                            Edge URL: <%= @janus_url %>
-                            -->
-                            <%# live_render(@socket, GlimeshWeb.UserLive.ViewerHeads, id: "viewer-heads", session: %{"user" => @user, "streamer" => @streamer.username, "fake_multiplier" => 12}) %>
+                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.SocialButtons, id: "social-buttons", container: {:ul, class: "list-inline ml-2 mb-0"}, session: %{"user_id" => @streamer.id}) %>
                         </div>
                         <div class="col-4 align-self-center">
                             <div class="float-right mr-sm-2">
-                                <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-header p-1">
-                    <div class="row">
-                        <div class="col align-self-center">
-                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
-                        </div>
-                        <div class="col-auto">
-                            <div class="float-right">
-                                <div class="stream-info btn-toolbar">
-                                    <div class="btn-group mr-sm-2" role="group" aria-label="First group">
-                                        <%= if @can_receive_payments do %>
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                                        <% end %>
-                                    </div>
-                                    <div class="btn-group mr-1" role="group" aria-label="Second group">
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                                    </div>
-                                    <div class="btn-group" role="group" aria-label="Third group">
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
-                                    </div>
+                                <div class="d-inline-block mr-sm-2">
+                                    <a href="#" phx-click="toggle_debug" class="text-color-link <%= if @player_error, do: "text-warning", else: "" %>">
+                                        <i class="fas fa-signal"></i>
+                                        <span class="sr-only">Debug</span>
+                                    </a>
+                                </div>
+                                <div class="d-inline-block">
+                                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <%= if @show_debug do %>
+                    <div id="debugModal" class="live-modal" phx-capture-click="toggle_debug" phx-window-keydown="toggle_debug" phx-key="escape" phx-target="#debugModal" phx-page-loading>
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title"><%= gettext("Debug Information") %></h5>
+                                    <button type="button" class="close" phx-click="toggle_debug" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <%= if @player_error do %>
+                                    <div class="alert alert-warning" role="alert">
+                                        <%= @player_error %>
+                                    </div>
+                                    <% end %>
+                                    <pre class="px-2">
+== Janus Edge Information ==
+Edge Hostname: <%= @janus_hostname %>
+Edge URL: <%= @janus_url %>
+Reported Lost Packets: <%= @lost_packets %>
+<br>
+== Stream Metadata ==
+# Stream Metadata no longer auto reloads,
+# close & reopen modal to see newest data.
+ingest_server: <%= @stream_metadata.ingest_server %>
+ingest_viewers: <%= @stream_metadata.ingest_viewers %> // unused
+stream_time_seconds: <%= @stream_metadata.stream_time_seconds %>
+
+source_bitrate: <%= @stream_metadata.source_bitrate %>
+source_ping: <%= @stream_metadata.source_ping %> // unused
+
+recv_packets: <%= @stream_metadata.recv_packets %>
+lost_packets: <%= @stream_metadata.lost_packets %> // unused
+nack_packets: <%= @stream_metadata.nack_packets %> // unused
+
+vendor_name: <%= @stream_metadata.vendor_name %>
+vendor_version: <%= @stream_metadata.vendor_version %>
+
+audio_codec: <%= @stream_metadata.audio_codec %>
+video_codec: <%= @stream_metadata.video_codec %>
+video_height: <%= @stream_metadata.video_height %> // unused
+video_width: <%= @stream_metadata.video_width %> // unused
+
+inserted_at: <%= @stream_metadata.inserted_at %>
+updated_at: <%= @stream_metadata.updated_at %>
+</pre>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <% end %>
                 </div>
             </div>
         </div>
@@ -107,7 +162,6 @@
 
     </div>
 
-    <%= if @show_bottom do %>
     <div class="row">
         <div class="col-lg-9 layout-spacing">
             <div class="card">
@@ -158,6 +212,5 @@
             </div>
         </div>
     </div>
-    <% end %>
 
 </div>

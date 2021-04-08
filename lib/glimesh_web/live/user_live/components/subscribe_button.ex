@@ -7,23 +7,23 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
   @impl true
   def render(assigns) do
     ~L"""
-    <div id="subscription-magic">
+    <span id="subscription-magic">
         <%= if @user do %>
             <%= if @can_subscribe do %>
                 <%= if @subscribed do %>
                     <%= if @canceling do %>
-                    <button class="btn btn-secondary btn-responsive" phx-click="show_resub_modal" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Resubscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
+                    <button class="btn btn-secondary btn-responsive" phx-click="show_resub_modal" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Resubscribe") %></span><span class="d-lg-none"><i class="fas fa-star fa-fw"></i></span></button>
                     <% else %>
-                    <button class="btn btn-secondary btn-responsive" phx-click="unsubscribe" phx-throttle="5000" data-confirm="<%= gettext("Are you sure you want to unsubscribe?") %>"><span class="d-none d-lg-block"><%= gettext("Unsubscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
+                    <button class="btn btn-secondary btn-responsive" phx-click="unsubscribe" phx-throttle="5000" data-confirm="<%= gettext("Are you sure you want to unsubscribe?") %>"><span class="d-none d-lg-block"><%= gettext("Unsubscribe") %></span><span class="d-lg-none"><i class="fas fa-star fa-fw"></i></span></button>
                     <% end %>
                 <% else %>
-                    <button class="btn btn-secondary btn-responsive" phx-click="show_modal" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Subscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
+                    <button class="btn btn-secondary btn-responsive" phx-click="show_modal" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Subscribe") %></span><span class="d-lg-none"><i class="fas fa-star fa-fw"></i></span></button>
                 <% end %>
             <% else %>
-                <button class="btn btn-secondary btn-responsive disabled" data-toggle="tooltip" data-placement="bottom" title="<%= gettext("You cannot subscribe to this user.")%>"><span class="d-none d-lg-block"><%= gettext("Subscribe") %></span><span class="d-lg-none"><i class="fas fa-star"></i></span></button>
+                <button class="btn btn-secondary btn-responsive disabled" data-toggle="tooltip" data-placement="bottom" title="<%= gettext("You cannot subscribe to this user.")%>"><span class="d-none d-lg-block"><%= gettext("Subscribe") %></span><span class="d-lg-none"><i class="fas fa-star fa-fw"></i></span></button>
             <% end %>
         <% else %>
-          <span class="d-none d-lg-block"><%= link gettext("Subscribe"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary btn-responsive" %></span><span class="d-lg-none"><i class="fas fa-star"></i></span>
+          <span class="d-none d-lg-block"><%= link gettext("Subscribe"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary btn-responsive" %></span>
         <% end %>
 
         <%= if @show_subscription do %>
@@ -94,7 +94,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
             </div>
         </div>
         <% end %>
-    </div>
+    </span>
     """
   end
 

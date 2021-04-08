@@ -1,3 +1,85 @@
+// Stream Lists
+.container-stream-filters {
+    max-width: 2200px;
+}
+
+.container-stream-list {
+    max-width: 2200px;
+
+    padding-left: 0;
+    padding-right: 0;
+    // Needed for container padding we're removing
+    overflow: hidden
+}
+
+.container-stream {
+    padding-left: 0;
+    padding-right: 0;
+    // Needed for container padding we're removing
+    overflow-x: hidden;
+}
+
+.block-container {
+    .channel-block {
+        position: relative;
+
+        margin-bottom: 4rem;
+
+        &.has-bg-image::before {
+            content: "";
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            position: absolute;
+            z-index: -1;
+
+            background-image: var(--background-image);
+            background-size: cover;
+            background-position: center center;
+            opacity: 0.30;
+            border-radius: calc(0.25rem - 1px);
+        }
+
+        .channel-list-title {
+            font-size: 2.3rem;
+        }
+    }
+
+    .channel-block:only-child {
+
+        .channel-list-title {
+            @extend .display-3;
+
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            text-align: center;
+        }
+
+        .channel-list {
+            padding-bottom: 5rem;
+        }
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    .container-stream {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .container-stream-list {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .block-container .channel-block:only-child .channel-list-title {
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+}
+
+
 // Initial sizing for mobile, quickly overwritten any time we have columns
 #chat-column {
     #chat {
@@ -39,16 +121,7 @@
     }
 }
 
+
 input#channel_title {
     height: 45px;
-}
-
-video#video-player {
-    border-radius: 25px;
-}
-
-#streamer-avatar > a > img {
-    width: 142px !important;
-    height: 142px !important;
-    border-radius: 25px !important;
 }

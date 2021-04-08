@@ -9,6 +9,7 @@ config :glimesh,
       svg: "/emotes/svg/glimbanhammer.svg",
       png: "/emotes/png/glimbanhammer.png"
     },
+    ":glimburrito:" => %{svg: "/emotes/svg/glimburrito.svg", png: "/emotes/png/glimburrito.png"},
     ":glimcrazy:" => %{svg: "/emotes/svg/glimcrazy.svg", png: "/emotes/png/glimcrazy.png"},
     ":glimcry:" => %{svg: "/emotes/svg/glimcry.svg", png: "/emotes/png/glimcry.png"},
     ":glimdropbear:" => %{

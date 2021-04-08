@@ -43,18 +43,19 @@ defmodule Glimesh.MixProject do
       {:excoveralls, "~> 0.13.1", only: :test},
       # Core
       {:bcrypt_elixir, "~> 2.0"},
-      {:phoenix, "~> 1.5.6"},
+      {:phoenix, "~> 1.5.8"},
       {:phoenix_ecto, "~> 4.2.1"},
-      {:ecto_sql, "~> 3.4"},
+      {:ecto_sql, "~> 3.5"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_live_view, "~> 0.14.8"},
+      {:phoenix_live_view, "~> 0.15.4"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_dashboard, "~> 0.2.7"},
+      {:phoenix_live_dashboard, "~> 0.4.0"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      {:ecto_psql_extras, "~> 0.2"},
       # Authentication & Authorization
       {:comeonin, "~> 5.3"},
       {:bodyguard, "~> 2.4"},
@@ -89,7 +90,8 @@ defmodule Glimesh.MixProject do
       {:scrivener_ecto, "~> 2.0"},
       {:libcluster, "~> 3.2"},
       {:appsignal_phoenix, "~> 2.0.0"},
-      {:httpoison, "~> 1.8"}
+      {:httpoison, "~> 1.8"},
+      {:con_cache, "~> 1.0"}
     ]
   end
 

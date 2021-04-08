@@ -6,8 +6,7 @@
     <div id="<%= chat_message.id %>" data-user-id="<%= chat_message.user.id %>" class="<%=if Glimesh.Chat.Effects.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>
         <%= if chat_message.is_subscription_message, do: "bg-secondary" %>
         <%= if chat_message.is_followed_message, do: "border border-info" %>">
-        <div class="user-message-header">
-            <%= unless chat_message.is_followed_message or chat_message.is_subscription_message do %>
+        <div class="user-message-header d-inline d-md-block">
             <%= if Map.get(@permissions, :can_short_timeout, false) do %>
             <i class="short-timeout fas fa-stopwatch fa-fw" phx-click="short_timeout_user" phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip" title="<%= gettext("Timeout user for 5 minutes.") %>"></i>
             <% end %>
@@ -17,18 +16,18 @@
             <%= if Map.get(@permissions, :can_ban, false)  do %>
             <i class="ban fas fa-gavel fa-fw" phx-click="ban_user" phx-value-user="<%= chat_message.user.username %>" data-confirm="<%= gettext("Are you sure you wish to permanently ban %{username}?", username: chat_message.user.displayname) %>" data-toggle="tooltip" title="<%= gettext("Ban user from channel.") %>"></i>
             <% end %>
+            <%= unless chat_message.is_followed_message or chat_message.is_subscription_message do %>
+                <%= Glimesh.Chat.Effects.render_global_badge(chat_message.user) %>
+                <%= Glimesh.Chat.Effects.render_channel_badge(@channel, chat_message.user) %>
 
-            <%= Glimesh.Chat.Effects.render_global_badge(chat_message.user) %>
-            <%= Glimesh.Chat.Effects.render_channel_badge(@channel, chat_message.user) %>
-
-            <%= Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %>
+                <%= Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %><span class="d-inline d-md-none">:</span>
             <% end %>
             <small id="small-<%= chat_message.id %>" class="text-muted chat-timestamp">
                 <local-time id="timestamp-<%= chat_message.id %>" phx-update="ignore" datetime="<%= "#{chat_message.inserted_at}" <> "Z" %>" format="micro" hour="numeric" minute="2-digit" second="2-digit"><%= NaiveDateTime.to_time(chat_message.inserted_at) %>
                 </local-time>
             </small>
         </div>
-        <div class="user-message">
+        <div class="user-message d-inline d-md-block">
             <%= if chat_message.is_followed_message or chat_message.is_subscription_message, do: Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %>
             <%= raw(Glimesh.Chat.Renderer.render(chat_message.tokens)) %>
         </div>

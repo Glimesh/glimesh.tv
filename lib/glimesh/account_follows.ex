@@ -88,6 +88,10 @@ defmodule Glimesh.AccountFollows do
     Repo.one!(from f in Follower, select: count(f.id), where: f.user_id == ^user.id)
   end
 
+  def count_all_following(%User{} = user) do
+    Repo.all(from f in Follower, select: count(f.id))
+  end
+
   def list_all_follows do
     Repo.all(from(f in Follower))
   end
@@ -97,7 +101,23 @@ defmodule Glimesh.AccountFollows do
   end
 
   def list_following(user) do
-    Repo.all(from f in Follower, where: f.user_id == ^user.id)
+    Repo.all(from f in Follower, where: f.user_id == ^user.id) |> Repo.preload(:streamer)
+  end
+
+  def search_following(user, query, current_page, per_page) do
+    like = "%#{query}%"
+
+    Repo.all(
+      from u in User,
+        inner_join: f in Follower,
+        on: f.user_id == ^user.id,
+        where: u.id == f.streamer_id,
+        where: ilike(u.username, ^like),
+        where: u.is_banned == false,
+        order_by: [asc: u.id],
+        offset: ^((current_page - 1) * per_page),
+        limit: ^per_page
+    )
   end
 
   defp sent_follow_message_recently?(channel, user) do

@@ -1,3 +1,4 @@
+$enable-responsive-font-sizes: true;
 
 $color-secondary: #5c1ac3;
 
@@ -73,9 +74,11 @@ $color-teal: #48D1BD;
     --text-muted-color: #000;
 }
 
-$font-family-base: 'Roboto', sans-serif;
+$font-family-base: 'Roboto',
+sans-serif;
 $font-weight-normal: 300;
-$headings-font-family: 'Noto Sans', sans-serif;
+$headings-font-family: 'Noto Sans',
+sans-serif;
 $headings-font-weight: 700;
 
 $body-bg: var(--body-bg-color);
@@ -103,15 +106,15 @@ $list-group-action-active-bg: var(--secondary-hover-bg-color);
 $card-bg: var(--secondary-bg-color);
 
 // Inputs
-$input-bg:                              var(--input-bg-color);
-$input-disabled-bg:                     var(--input-bg-color);
+$input-bg: var(--input-bg-color);
+$input-disabled-bg: var(--input-bg-color);
 $input-color: var(--input-color);
 $input-border-color: var(--input-border-color);
 
-$input-group-addon-color:               var(--input-group-addon-color);
-$input-group-addon-bg:                  var(--input-group-addon-bg-color);
-$input-group-addon-border-color:        var(--input-group-addon-border-color);
-$input-focus-border-color:              var(--input-focus-border-color);
+$input-group-addon-color: var(--input-group-addon-color);
+$input-group-addon-bg: var(--input-group-addon-bg-color);
+$input-group-addon-border-color: var(--input-group-addon-border-color);
+$input-focus-border-color: var(--input-focus-border-color);
 
 $custom-select-bg: var(--input-bg-color);
 $custom-select-color: var(--input-color);
@@ -119,8 +122,8 @@ $custom-select-border-color: var(--input-border-color);
 $custom-select-focus-border-color: var(--input-border-color);
 
 // Tables
-$table-color:                 var(--body-color);
-$table-border-color:          var(--secondary-hover-bg-color);
+$table-color: var(--body-color);
+$table-border-color: var(--secondary-hover-bg-color);
 
 // Modals
 $modal-content-bg: var(--secondary-bg-color);
@@ -145,26 +148,4 @@ $close-color: var(--secondary-color);
     .navbar-toggler {
         color: var(--body-color);
     }
-}
-
-// Font family
-*,
-html,
-body {
-  font-family: "Quicksand";
-}
-
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Quicksand" !important;
 }

@@ -10,6 +10,7 @@ defmodule Glimesh.Streams.Category do
     field :slug, :string
 
     has_many :tags, Glimesh.Streams.Tag
+    has_many :subcategories, Glimesh.Streams.Subcategory
 
     timestamps()
   end
@@ -17,7 +18,10 @@ defmodule Glimesh.Streams.Category do
   @doc false
   def changeset(category, attrs) do
     category
-    |> cast(attrs, [:name, :slug])
+    |> cast(attrs, [
+      :name,
+      :slug
+    ])
     |> validate_required([:name])
     |> validate_length(:name, min: 2)
     |> set_slug_attribute()

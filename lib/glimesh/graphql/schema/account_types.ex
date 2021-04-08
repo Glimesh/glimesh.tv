@@ -4,6 +4,7 @@ defmodule Glimesh.Schema.AccountTypes do
 
   import Absinthe.Resolution.Helpers
 
+  alias Glimesh.AccountFollows
   alias Glimesh.Avatar
   alias Glimesh.Repo
   alias Glimesh.Resolvers.AccountResolver
@@ -25,7 +26,6 @@ defmodule Glimesh.Schema.AccountTypes do
       arg(:username, :string)
       resolve(&AccountResolver.find_user/2)
     end
-
     @desc "List all follows or followers"
     field :followers, list_of(:follower) do
       arg(:streamer_username, :string)
@@ -41,10 +41,10 @@ defmodule Glimesh.Schema.AccountTypes do
       config(fn args, _ ->
         case Map.get(args, :streamer_id) do
           nil ->
-            {:ok, topic: [Glimesh.AccountFollows.get_subscribe_topic(:follows)]}
+            {:ok, topic: [AccountFollows.get_subscribe_topic(:follows)]}
 
           streamer_id ->
-            {:ok, topic: [Glimesh.AccountFollows.get_subscribe_topic(:follows, streamer_id)]}
+            {:ok, topic: [AccountFollows.get_subscribe_topic(:follows, streamer_id)]}
         end
       end)
     end
@@ -80,6 +80,20 @@ defmodule Glimesh.Schema.AccountTypes do
       end)
     end
 
+    field :count_followers, :integer do
+      resolve(fn user, _, _ ->
+        followers = AccountFollows.count_followers(user)
+        {:ok, followers}
+      end)
+    end
+
+    field :count_following, :integer do
+      resolve(fn user, _, _ ->
+        following = AccountFollows.count_following(user)
+        {:ok, following}
+      end)
+    end
+
     field :avatar_url, :string do
       resolve(fn user, _, _ ->
         avatar_url =
@@ -101,6 +115,14 @@ defmodule Glimesh.Schema.AccountTypes do
     field :socials, list_of(:user_social),
       resolve: dataloader(Repo),
       description: "A list of linked social accounts for the user"
+
+    field :followers, list_of(:follower),
+      resolve: dataloader(Repo),
+      description: "A list of users who are following you"
+
+    field :following, list_of(:follower),
+      resolve: dataloader(Repo),
+      description: "A list of users who you are following"
 
     field :social_twitter, :string,
       description: "Qualified URL for the user's Twitter account",

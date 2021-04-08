@@ -11,6 +11,15 @@
 
     border-radius: 6px;
 
+    &.phx-error {
+        opacity: .25;
+        cursor: not-allowed;
+
+        * {
+            pointer-events: none;
+        }
+    }
+
     .chat-messages {
         flex: 1 1 90%;
         display: flex;

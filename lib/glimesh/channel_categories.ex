@@ -8,6 +8,7 @@ defmodule Glimesh.ChannelCategories do
   alias Glimesh.Repo
   alias Glimesh.Streams.Category
   alias Glimesh.Streams.Channel
+  alias Glimesh.Streams.Subcategory
   alias Glimesh.Streams.Tag
 
   ## Categories
@@ -144,6 +145,16 @@ defmodule Glimesh.ChannelCategories do
     )
   end
 
+  def list_live_subcategories(category_id) do
+    Repo.all(
+      from sc in Subcategory,
+        join: c in Channel,
+        on: sc.id == c.subcategory_id,
+        where: c.status == "live" and sc.category_id == ^category_id,
+        group_by: sc.id
+    )
+  end
+
   def list_live_tags(category_id) do
     Repo.all(
       from t in Tag,
@@ -154,6 +165,18 @@ defmodule Glimesh.ChannelCategories do
         order_by: [desc: :count_usage],
         group_by: t.id
     )
+  end
+
+  def tagify_search_for_tags(%Category{} = category, search_value)
+      when is_binary(search_value) do
+    search_param = "%#{search_value}%"
+
+    Repo.all(
+      from t in Tag,
+        where: t.category_id == ^category.id and ilike(t.name, ^search_param),
+        limit: 15
+    )
+    |> convert_tags_for_tagify()
   end
 
   def list_tags_for_tagify(category_id) do
@@ -175,7 +198,6 @@ defmodule Glimesh.ChannelCategories do
         class: ""
       }
     end)
-    |> Jason.encode!()
   end
 
   @doc """
@@ -290,5 +312,159 @@ defmodule Glimesh.ChannelCategories do
   """
   def change_tag(%Tag{} = tag, attrs \\ %{}) do
     Tag.changeset(tag, attrs)
+  end
+
+  # Subcategories
+  import GlimeshWeb.Gettext
+
+  def tagify_search_for_subcategories(%Category{} = category, search_value)
+      when is_binary(search_value) do
+    search_param = "%#{search_value}%"
+
+    Repo.all(
+      from c in Subcategory,
+        where: c.category_id == ^category.id and ilike(c.name, ^search_param),
+        limit: 10
+    )
+    |> convert_subcategories_for_tagify()
+  end
+
+  def get_subcategory_label(%Category{slug: slug}) do
+    case slug do
+      "gaming" -> gettext("Game")
+      "art" -> gettext("Style")
+      "education" -> gettext("Topic")
+      "irl" -> gettext("Topic")
+      "music" -> gettext("Genre")
+      "tech" -> gettext("Topic")
+    end
+  end
+
+  def get_subcategory_select_label_description(%Category{slug: slug}) do
+    case slug do
+      "gaming" -> gettext("What game are you playing?")
+      "art" -> gettext("What type of art are you doing?")
+      "education" -> gettext("What topic are you teaching?")
+      "irl" -> gettext("What topic are you discussing?")
+      "music" -> gettext("What genre of music?")
+      "tech" -> gettext("What topic are you discussing?")
+    end
+  end
+
+  def get_subcategory_search_label_description(%Category{slug: slug}) do
+    case slug do
+      "gaming" -> gettext("Search by Game")
+      "art" -> gettext("Search by Style")
+      "education" -> gettext("Search by Topic")
+      "irl" -> gettext("Search by Topic")
+      "music" -> gettext("Search by Genre")
+      "tech" -> gettext("Search by Topic")
+    end
+  end
+
+  def get_subcategory_attribution(%Category{slug: slug}) do
+    case slug do
+      "gaming" ->
+        gettext("Game Database powered by %{link}",
+          link: "<a href=\"https://rawg.io\">RAWG</a>"
+        )
+
+      _ ->
+        ""
+    end
+    |> Phoenix.HTML.raw()
+  end
+
+  def get_subcategory_by_category_id_and_slug(category_id, slug) do
+    Repo.one(from c in Subcategory, where: c.category_id == ^category_id and c.slug == ^slug)
+    |> Repo.preload(:category)
+  end
+
+  def list_subcategories(%Category{id: id}) do
+    list_subcategories(id)
+  end
+
+  def list_subcategories(category_id) do
+    Repo.all(
+      from c in Subcategory,
+        where: c.category_id == ^category_id
+    )
+  end
+
+  @spec list_subcategories_for_tagify(integer) :: list
+  def list_subcategories_for_tagify(category_id) do
+    list_subcategories(category_id)
+    |> convert_subcategories_for_tagify()
+  end
+
+  def convert_subcategories_for_tagify(subcategories) do
+    Enum.map(subcategories, fn category ->
+      %{
+        value: category.name,
+        slug: category.slug,
+        label: category.name,
+        # placeholder for global tags
+        class: ""
+      }
+    end)
+  end
+
+  @doc """
+  Creates a subcategory.
+
+  ## Examples
+
+      iex> create_subcategory(%{field: value})
+      {:ok, %Category{}}
+
+      iex> create_subcategory(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_subcategory(attrs \\ %{}) do
+    %Subcategory{}
+    |> Subcategory.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a subcategory.
+
+  ## Examples
+
+      iex> update_subcategory(category, %{field: new_value})
+      {:ok, %Category{}}
+
+      iex> update_subcategory(category, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_subcategory(%Subcategory{} = category, attrs) do
+    category
+    |> Subcategory.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Creates or updates a subcategory based on source+source_id existance
+  """
+  @spec upsert_subcategory_from_source(binary(), binary(), map) ::
+          {:ok, %Category{}} | {:error, any()}
+  def upsert_subcategory_from_source(source, source_id, attrs) do
+    if subcategory = subcategory_source_exists?(source, source_id) do
+      update_subcategory(subcategory, attrs)
+    else
+      insert_map =
+        Map.merge(attrs, %{
+          source: source,
+          source_id: source_id
+        })
+
+      create_subcategory(insert_map)
+    end
+  end
+
+  defp subcategory_source_exists?(source, source_id) do
+    Repo.one(from s in Subcategory, where: s.source == ^source and s.source_id == ^source_id)
   end
 end
