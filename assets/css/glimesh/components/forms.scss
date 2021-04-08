@@ -5,3 +5,43 @@
     font-size: 100%;
     color: #dc3545;
 }
+
+input {
+    border-radius: 25px !important;
+    margin: 0 10px !important;
+}
+
+.input-group {
+    width: 91%;
+    border-radius: 25px !important;
+    height: 38px;
+    margin: auto;
+}
+
+.input-group-text {
+    border: none !important;
+    border-radius: 25px !important;
+}
+
+input#customFile {
+    border-radius: 0 !important;
+}
+
+.form-control {
+    border: none !important;
+    background-color: var(--input-group-addon-bg-color);
+}
+
+.form-control:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: var(--input-group-addon-bg-color);
+}
+
+.form-control:disabled {
+    background-color: var(--input-group-addon-bg-color) !important;
+}
+
+.form-control:read-only {
+    background-color: var(--input-group-addon-bg-color) !important;
+}

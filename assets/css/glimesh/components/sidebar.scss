@@ -30,6 +30,12 @@ div.content {
     height: 100%;
 }
 
+@media screen and (max-width: 880px) {
+    .navbar {
+      padding: 0 !important;
+    }
+}
+
 /* On screens that are less than 700px wide, make the sidebar into a topbar */
 @media screen and (max-width: 700px) {
   .sidebar {
@@ -38,6 +44,35 @@ div.content {
     position: relative;
   }
   div.content {margin-left: 0;}
+}
+
+@media screen and (max-width: 600px) {
+    .display-2 {
+      font-size: 4rem;
+      text-align: center;
+    }
+
+    .display-4 {
+      margin-top: 25px;
+    }
+
+    .text {
+      text-align: center !important;
+    }
+
+    .text-white {
+      text-align: center !important;
+      color: var(--body-color) !important;
+    }
+
+    .ml-3,
+    .mx-3 {
+      margin: auto;
+    }
+
+    .navbar-toggler:focus {
+      outline: none;
+    }
 }
 
 /* On screens that are less than 400px, display the bar vertically, instead of horizontally */

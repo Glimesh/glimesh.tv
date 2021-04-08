@@ -1,9 +1,20 @@
+.list-group-item {
+    background-color: transparent !important;
+    border: none;
+}
+
 .list-group-item.active {
     border-radius: 100px !important;
-  }
+    background-color: var(--secondary-hover-bg-color) !important;
+}
 
 .list-group-item-action:active,
 .list-group-item-action:focus,
 .list-group-item-action:hover {
     border-radius: 100px !important;
+    background-color: var(--secondary-hover-bg-color) !important;
+}
+
+.list-group-flush > .list-group-item {
+    border-width: 0 !important;
 }
