@@ -206,6 +206,11 @@ if show_staging_warning = System.get_env("GLIMESH_SHOW_STAGING_WARNING") do
     show_staging_warning: show_staging_warning
 end
 
+if start_workers = System.get_env("GLIMESH_START_WORKERS") do
+  config :glimesh,
+    start_workers: start_workers
+end
+
 # Default App Config
 config :glimesh, :stripe_config,
   platform_sub_supporter_product_id: "prod_I60rR8YatfJpEV",

@@ -7,10 +7,12 @@ defmodule Glimesh.Application do
 
   def start(_type, _args) do
     topologies = Application.get_env(:libcluster, :topologies)
+    start_workers = Application.get_env(:glimesh, :start_workers)
 
     server_children = [
       Glimesh.Workers.StreamMetrics,
-      Glimesh.Workers.StreamPruner
+      Glimesh.Workers.StreamPruner,
+      Glimesh.Workers.HomepageGenerator
     ]
 
     children = [
@@ -37,7 +39,7 @@ defmodule Glimesh.Application do
     GlimeshWeb.ApiLogger.start_logger()
 
     children =
-      if Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:server] do
+      if start_workers or !is_nil(Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:server]) do
         children ++ server_children
       else
         children

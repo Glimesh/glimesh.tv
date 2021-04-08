@@ -2,239 +2,188 @@
 
     <div class="container">
 
-        <div class="position-relative overflow-hidden p-3 p-md-5 text-center">
+        <div class="position-relative overflow-hidden p-3 p-md-5">
             <div class="col-md-12 p-lg-4 mx-auto">
-                <h1 class="display-2 font-weight-bold text-white">The <span class="text-color-alpha">Alpha</span> Is Here!</h1>
-                <p class="lead text-white"><%= gettext("Thanks for joining us! We're still getting our homepage settled, but please check out our categories!") %></p>
-
-                <%= live_redirect gettext("Gaming"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "gaming") %>
-                <%= live_redirect gettext("Art"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "art") %>
-                <%= live_redirect gettext("Music"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "music") %>
-                <%= live_redirect gettext("Tech"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "tech") %>
-                <%= live_redirect gettext("IRL"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "irl") %>
-                <%= live_redirect gettext("Education"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "education") %>
-
-                <br><br><br>
+                <h1 class="display-3 font-weight-bold text-white"><span class="text-color-alpha">Next-Gen</span> Live Streaming!</h1>
+                <p class="lead text-white" style="max-width: 500px;"><%= gettext("The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving.") %></p>
 
                 <%= if @current_user do %>
-                <%= link gettext("Customize Your Profile"), to: Routes.user_settings_path(@socket, :profile), class: "btn btn-info mt-3 mx-3" %>
-                <%= link gettext("Create Your Channel"), to: Routes.user_settings_path(@socket, :stream), class: "btn btn-info mt-3 mx-3" %>
-                <%# link gettext("Setup Payouts"), to: "/users/settings/profile", class: "btn btn-primary btn-lg mt-3 mx-3" %>
+                <%= link gettext("Customize Your Profile"), to: Routes.user_settings_path(@socket, :profile), class: "btn btn-info mt-3" %>
+                <%= link gettext("Create Your Channel"), to: Routes.user_settings_path(@socket, :stream), class: "btn btn-info mt-3" %>
+                <%= link gettext("Setup Payouts"), to: "/users/settings/profile", class: "btn btn-info mt-3" %>
+
                 <% else %>
+
+                <p class="lead text-white">Join <%= @user_count %> others!</p>
                 <%= link gettext("Register Your Account"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-lg mt-3" %>
+
                 <% end %>
             </div>
         </div>
 
     </div>
 
-    <div class="container">
-        <h2 class="text-white"><span class="text-color-alpha">Upcoming</span> Events</h2>
+</div>
 
-        <div class="row mt-2 mb-4">
-            <div class="col-12 col-sm-6 col-lg-3 mb-2">
-                <div class="card h-100">
-                    <img src="/images/events/2021-03-29-glimesh-university.jpg" class="card-img-top" alt="Glimesh University">
-                    <div class="card-body">
-                        <h5 class="card-title">Glimesh University</h5>
-                        <p class="card-text">Join the Glimesh team in our first of several Glimesh University courses, meant to teach streamers how to get the most out of Glimesh & streaming.</p>
-                        <p class="text-center">
-                            Live <relative-time phx-update="ignore" datetime="2021-03-29T17:00:00-04:00">March 29th 5:00pm EDT</relative-time> on <a href="https://glimesh.tv/Glimesh">glimesh.tv/Glimesh</a>
-                        </p>
-                    </div>
-                    <div class="card-footer text-center lead">
-                        <local-time phx-update="ignore" datetime="2021-03-29T17:00:00-04:00">
-                            March 29th 5:00pm EDT
-                        </local-time>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-3 mb-2">
-                <div class="card h-100">
-                    <img src="/images/events/2021-03-30-meet-the-gct.jpg" class="card-img-top" alt="Meet the GCT">
-                    <div class="card-body">
-                        <h5 class="card-title">Meet the GCT</h5>
-                        <p class="card-text">The Glimesh Community Team is responsible for building the culture of Glimesh, come learn who they are and more about what they do for the community.</p>
-                        <p class="text-center">
-                            Live <relative-time phx-update="ignore" datetime="2021-03-30T18:00:00-04:00">March 30th 6:00pm EDT</relative-time> on <a href="https://glimesh.tv/Glimesh">glimesh.tv/Glimesh</a>
-                        </p>
-                    </div>
-                    <div class="card-footer text-center lead">
-                        <local-time phx-update="ignore" datetime="2021-03-30T18:00:00-04:00">
-                            March 30th 6:00pm EDT
-                        </local-time>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-3 mb-2">
-                <div class="card h-100">
-                    <img src="/images/events/2021-04-01-national-burrito.jpg" class="card-img-top" alt="National Burrito Day">
-                    <div class="card-body">
-                        <h5 class="card-title">National Burrito Day</h5>
-                        <p class="card-text">In celebration of National Burrito Day, theBRIX is hosting a special burrito cooking stream! Come celebrate with the new GlimBurrito emote.</p>
-                        <p class="text-center">
-                            Live <relative-time phx-update="ignore" datetime="2021-04-01T18:00:00-04:00">April 1st 6:00pm EDT</relative-time> on <a href="https://glimesh.tv/theBRIX">glimesh.tv/theBRIX</a>
-                        </p>
-                    </div>
-                    <div class="card-footer text-center lead">
-                        <local-time phx-update="ignore" datetime="2021-04-01T18:00:00-04:00">
-                            April 1st 6:00pm EDT
-                        </local-time>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-3 mb-2">
-                <div class="card h-100">
-                    <img src="/images/events/2021-04-02-roundtable-recap.jpg" class="card-img-top" alt="Glimesh Roundtable">
-                    <div class="card-body">
-                        <h5 class="card-title">Glimesh Roundtable</h5>
-                        <p class="card-text">Join 6 members of our community in an open discussion about the first month of Glimesh, the good and the bad.</p>
-                        <p class="text-center">
-                            Live <relative-time phx-update="ignore" datetime="2021-04-02T17:00:00-04:00">April 2nd 5:00pm EDT</relative-time> on <a href="https://glimesh.tv/Glimesh">glimesh.tv/Glimesh</a>
-                        </p>
-                    </div>
-                    <div class="card-footer text-center lead">
-                        <local-time phx-update="ignore" datetime="2021-04-02T17:00:00-04:00">
-                            April 2nd 5:00pm EDT
-                        </local-time>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+<div class="container container-stream-list">
+    <div class="px-4 px-lg-0">
+        <h2 class="text-white"><%= gettext("Explore Live Streams") %></h2>
+        <p class="lead"><%= gettext("Experience real time interaction by visiting some of these selected streams!") %></p>
     </div>
 
+    <div class="row">
+        <%= for channel <- @channels do %>
+        <div class="col-sm-12 col-md-6 col-xl-4 mt-2 mt-md-4">
+            <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
+            <div class="card card-stream">
+                <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>" alt="<%= channel.title %>" class="card-img" height="468" width="832">
+                <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
 
-    <div class="container">
-
-        <h2 class="text-white"><span class="text-color-alpha">Alpha</span> Features</h2>
-
-        <div class="row mt-2 mb-4">
-            <div class="col mb-2">
-                <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px">Profiles</h5>
-                    <div class="d-flex align-items-center card-body p-3">
-                        <p class="card-text text-center">Start right away with securing your profile and then make it yours! With loads of customizable features, you can really edit and bring your profiles to life to help show people who you are and what you are about!</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-2">
-                <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px">Streaming</h5>
-                    <div class="d-flex align-items-center card-body p-3">
-                        <p class="card-text text-center">You'll be able to create your stream, go live, and begin growing your communities. Interacting with them will be a whole lot easier with the FTL streaming technology – they will be able to view your stream in real-time!</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-2">
-                <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px">Subscriptions</h5>
-                    <div class="d-flex align-items-center card-body p-3">
-                        <p class="card-text text-center">Subscription buttons will be available, with payouts, and you will not need to meet any viewership requirements for them. During early phases, this will only be available to limited countries. </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-2">
-                <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px">Live Events</h5>
-                    <div class="d-flex align-items-center card-body p-3">
-                        <p class="card-text text-center">Our Glimesh Community Team will be hosting live events filled with content from all of our various categories. Keep an eye out on our Twitter, for now, to stay up to date with these.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-2">
-                <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px">More!</h5>
-                    <div class="d-flex align-items-center card-body p-3">
-                        <p class="card-text text-center">Remember, this is just the Alpha! We are excited to continue to develop features you expect while still continuing to innovate on brand new ideas. You can check out our <a href="https://glimesh.tv/blog/2020-08-13-glimesh-alpha-roadmap">Alpha Roadmap</a> for planned features.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <h2 class="text-white"><span class="text-color-alpha">Alpha</span> Support</h2>
-
-        <div class="card mt-2">
-            <h3 class="card-header bg-primary text-center rounded-lg py-4 text-white">What to Expect</h3>
-            <div class="card-body">
-                <p class="card-text text-center">We are very excited to be launching the Alpha version of Glimesh and we're proud to say that all of our alpha features will be available to everyone! During this very early phase, we want to set expectations correctly. You can expect that we'll have issues, bugs, and even downtime early on but we will continue to improve and strive for excellence. We invite everyone in early to help us find these issues, to help us create new products, and to continue growing Glimesh into the best platform it can be. We encourage everyone to try new things on the platform and to report issues when you see them! If you need any support or help along the way, we'll be there for you.
-                </p>
-            </div>
-        </div>
-
-        <div class="card mt-4">
-            <h3 class="card-header bg-primary text-center rounded-lg py-4 text-white">Help Us Improve</h3>
-            <div class="card-body card-glimfamily">
-                <div class="row justify-content-md-center">
-                    <div class="col-md-7">
-                        <p>As explained, we know there are going to be bugs and issues that users may experience within this Alpha version of our platform, but we are prepared! We have an amazing team that is ready to triage, fix, and help resolve any issues you may face. Our Discord is the main source of most of our questions, suggestions, and bug reports and you can find details on how to navigate it below!</p>
-
-                        <h4>What if I have a question?</h4>
-                        <p>Really easy! You simply need to join our Discord and locate the channel named <strong class="text-info">#questions</strong>. After you've fully written out your question, send it and we'll help you out as soon as possible.</p>
-
-                        <h4>How can I make a suggestion?</h4>
-                        <p>We are always looking to improve and our platform is built on your ideas! Our <strong class="text-success">#suggestions</strong> channel gives you an easy place to post any ideas you have or suggestions on how we could do things differently.</p>
-
-                        <h4>How do I report a bug?</h4>
-                        <p>The <strong class="text-warning">#bugs</strong> channel is the first place bugs should be reported. Our team will triage them, and file them to their appropriate places. When you are submitting a bug, it helps to provide any screenshots or clips you have, but please be sure not to leak your private information. If you have a issue with something sensitive, email <a href="mailto:support@glimesh.tv">support@glimesh.tv</a> We'll try to reach back out to you when the bug is resolved.</p>
-                    </div>
-                    <div class="col-md-3 text-center">
-                        <img src="/images/homepage/discord.webp" alt="Screenshot of our Discord for reference" class="rounded img-fluid">
-                    </div>
-                </div>
-                <div class="text-center mt-4 mb-4">
-                    <%= link "Join Our Discord", to: "https://discord.gg/Glimesh", class: "btn btn-primary" %>
-                </div>
-            </div>
-        </div>
-
-
-
-        <div class="row mt-4 mb-4">
-            <div class="col-md-6">
-                <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white">Useful Documents</h5>
-                    <div class="card-body">
-                        <h4>Get up to speed with our Terms of Service!</h4>
-                        <p>Before you use the platform, you must review our Terms of Service to ensure your streams and content do not violate any of our conditions. The Terms of Service also includes information about your rights and usage of the website.</p>
-
-                        <div class="text-center mt-4 mb-4">
-                            <%= link "Terms of Service", to: Routes.about_path(@socket, :terms), class: "btn btn-primary" %>
+                    <div>
+                        <div class="card-stream-category">
+                            <span class="badge badge-primary"><%= channel.category.name %></span>
                         </div>
 
-                        <h4>Review our Rules of Conduct!</h4>
-                        <p>Our Rules of Conduct is another required reading, especially for streamers! It includes rules and guidelines on the type of content that is appropriate for Glimesh, and violating its guidelines could lead to repercussions.</p>
-
-                        <div class="text-center mt-4 mb-4">
-                            <%= link "Rules of Conduct", to: Routes.about_path(@socket, :conduct), class: "btn btn-primary" %>
+                        <div class="card-stream-tags">
+                            <%= if channel.subcategory do %>
+                            <span class="badge badge-info"><%= channel.subcategory.name %></span>
+                            <% end %>
                         </div>
+                    </div>
 
+                    <div class="media card-stream-streamer">
+                        <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>" alt="<%= channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(channel.user), do: "img-verified-streamer", else: "" %>">
+                        <div class="media-body">
+                            <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
+                            <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span></p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card h-100">
-                    <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white">Additional Support</h5>
-                    <div class="card-body">
-                        <h4>Streaming on Glimesh Guide!</h4>
-                        <p>We have created a useful guide to help get you underway with streaming on Glimesh, regardless of your streaming experience! Remember if you run into any issues, give us a shout and we will always do our best to help!</p>
-
-                        <div class="text-center mt-4 mb-4">
-                            <%= link "Day One Streamer Guide", to: "https://glimesh-static-assets.nyc3.digitaloceanspaces.com/2021-glimesh-streaming-guide.pdf", class: "btn btn-primary", target: "_blank" %>
-                        </div>
-
-                        <h4>Glimesh Support</h4>
-                        <p>We also have a support page that can provide you with further information such as FAQs, Account Support, Subscriptions & Payments, and a whole lot more!</p>
-
-                        <div class="text-center mt-4 mb-4">
-                            <%= link "Glimesh Support Portal", to: "https://support.glimesh.tv", class: "btn btn-primary", target: "_blank" %>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+            <% end %>
         </div>
-
+        <% end %>
     </div>
+</div>
+<%#
+<div class="container">
+    <h2 class="text-white"><span class="text-color-alpha">Upcoming</span> Events</h2>
+
+    <div class="row mt-2 mb-4">
+        <div class="col-12 col-sm-6 col-lg-3 mb-2">
+            <div class="card h-100">
+                <img src="/images/events/2021-03-29-glimesh-university.jpg" class="card-img-top" alt="Glimesh University">
+                <div class="card-body">
+                    <h5 class="card-title">Glimesh University</h5>
+                    <p class="card-text">Join the Glimesh team in our first of several Glimesh University courses, meant to teach streamers how to get the most out of Glimesh & streaming.</p>
+                    <p class="text-center">
+                        Live <relative-time phx-update="ignore" datetime="2021-03-29T17:00:00-04:00">March 29th 5:00pm EDT</relative-time> on <a href="https://glimesh.tv/Glimesh">glimesh.tv/Glimesh</a>
+                    </p>
+                </div>
+                <div class="card-footer text-center lead">
+                    <local-time phx-update="ignore" datetime="2021-03-29T17:00:00-04:00">
+                        March 29th 5:00pm EDT
+                    </local-time>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 mb-2">
+            <div class="card h-100">
+                <img src="/images/events/2021-03-30-meet-the-gct.jpg" class="card-img-top" alt="Meet the GCT">
+                <div class="card-body">
+                    <h5 class="card-title">Meet the GCT</h5>
+                    <p class="card-text">The Glimesh Community Team is responsible for building the culture of Glimesh, come learn who they are and more about what they do for the community.</p>
+                    <p class="text-center">
+                        Live <relative-time phx-update="ignore" datetime="2021-03-30T18:00:00-04:00">March 30th 6:00pm EDT</relative-time> on <a href="https://glimesh.tv/Glimesh">glimesh.tv/Glimesh</a>
+                    </p>
+                </div>
+                <div class="card-footer text-center lead">
+                    <local-time phx-update="ignore" datetime="2021-03-30T18:00:00-04:00">
+                        March 30th 6:00pm EDT
+                    </local-time>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 mb-2">
+            <div class="card h-100">
+                <img src="/images/events/2021-04-01-national-burrito.jpg" class="card-img-top" alt="National Burrito Day">
+                <div class="card-body">
+                    <h5 class="card-title">National Burrito Day</h5>
+                    <p class="card-text">In celebration of National Burrito Day, theBRIX is hosting a special burrito cooking stream! Come celebrate with the new GlimBurrito emote.</p>
+                    <p class="text-center">
+                        Live <relative-time phx-update="ignore" datetime="2021-04-01T18:00:00-04:00">April 1st 6:00pm EDT</relative-time> on <a href="https://glimesh.tv/theBRIX">glimesh.tv/theBRIX</a>
+                    </p>
+                </div>
+                <div class="card-footer text-center lead">
+                    <local-time phx-update="ignore" datetime="2021-04-01T18:00:00-04:00">
+                        April 1st 6:00pm EDT
+                    </local-time>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 mb-2">
+            <div class="card h-100">
+                <img src="/images/events/2021-04-02-roundtable-recap.jpg" class="card-img-top" alt="Glimesh Roundtable">
+                <div class="card-body">
+                    <h5 class="card-title">Glimesh Roundtable</h5>
+                    <p class="card-text">Join 6 members of our community in an open discussion about the first month of Glimesh, the good and the bad.</p>
+                    <p class="text-center">
+                        Live <relative-time phx-update="ignore" datetime="2021-04-02T17:00:00-04:00">April 2nd 5:00pm EDT</relative-time> on <a href="https://glimesh.tv/Glimesh">glimesh.tv/Glimesh</a>
+                    </p>
+                </div>
+                <div class="card-footer text-center lead">
+                    <local-time phx-update="ignore" datetime="2021-04-02T17:00:00-04:00">
+                        April 2nd 5:00pm EDT
+                    </local-time>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+%>
+
+<div class="container">
+    <h2 class="text-white"><%= gettext("Categories Made Simpler") %></h2>
+    <p class="lead"><%= gettext("Explore our categories and find your new home!") %></p>
+
+    <div class="row mt-2 mb-4">
+        <div class="col">
+            <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "gaming") do %>
+            <i class="fas fa-gamepad fa-2x fa-fw"></i><br>
+            <small class="text-white"><%= gettext("Gaming") %></small>
+            <% end %>
+        </div>
+        <div class="col">
+            <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "art") do %>
+            <i class="fas fa-palette fa-2x fa-fw"></i><br>
+            <small class="text-white"><%= gettext("Art") %></small>
+            <% end %>
+        </div>
+        <div class="col">
+            <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "music") do %>
+            <i class="fas fa-headphones fa-2x fa-fw"></i><br>
+            <small class="text-white"><%= gettext("Music") %></small>
+            <% end %>
+        </div>
+        <div class="col">
+            <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "tech") do %>
+            <i class="fas fa-microchip fa-2x fa-fw"></i><br>
+            <small class="text-white"><%= gettext("Tech") %></small>
+            <% end %>
+        </div>
+        <div class="col">
+            <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "irl") do %>
+            <i class="fas fa-camera-retro fa-2x fa-fw"></i><br>
+            <small class="text-white"><%= gettext("IRL") %></small>
+            <% end %>
+        </div>
+        <div class="col">
+            <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "education") do %>
+            <i class="fas fa-graduation-cap fa-2x fa-fw"></i><br>
+            <small class="text-white"><%= gettext("Education") %></small>
+            <% end %>
+        </div>
+    </div>
+
 </div>
