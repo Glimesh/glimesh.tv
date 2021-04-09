@@ -7,7 +7,7 @@
                 <h1 class="display-2 font-weight-bold text-white">The <span class="text-color-alpha">Alpha</span> Is Here!</h1>
                 <p class="lead text-white"><%= gettext("Thanks for joining us! We're still getting our homepage settled, but please check out our categories!") %></p>
 
-                <%= live_redirect gettext("Gaming"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "gaming") %>
+                <%= live_redirect gettext("Gaming"), class: "btn btn-primary mx-2 my-2", to: Routes.streams_list_path(@socket, :index, "gaming") %>
                 <%= live_redirect gettext("Art"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "art") %>
                 <%= live_redirect gettext("Music"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "music") %>
                 <%= live_redirect gettext("Tech"), class: "btn btn-primary mx-2", to: Routes.streams_list_path(@socket, :index, "tech") %>

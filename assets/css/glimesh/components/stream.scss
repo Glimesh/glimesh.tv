@@ -90,7 +90,13 @@
 
 div#chat-column {
     height: auto;
-    margin-bottom: 165px;
+    @media (min-width: 992px) {
+        margin-bottom: 165px;
+    }
+
+    @media (max-width: 576px) {
+        margin-top: 1.5rem;
+    }
 }
 
 @media (min-width: 992px) {
@@ -128,8 +134,19 @@ input#channel_title {
 }
 
 .mobile-margin >.row {
-    @media (min-width: 576px) {
+    @media (min-width: 768px) {
         margin-right: 5% !important;
         margin-left: 5% !important;
+    }
+
+    #chat-column {
+        @media (max-width: 768px) {
+            margin-left: 0.5%;
+            margin-right: 0.5%;
+            margin-top: 1rem;
+            #chat-messages {
+                border-radius: 0px;
+            }
+        }
     }
 }

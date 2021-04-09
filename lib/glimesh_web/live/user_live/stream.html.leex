@@ -38,7 +38,7 @@
                     </div>
                     <% end %>
                 </div>
-                <div class="card-footer p-1 d-none d-sm-block">
+                <div class="card-footer p-1 d-none d-sm-block" id="streamInfo">
                 <div id="streamer-avatar">
                     <a href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
                     <img src="<%= Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)%>" alt="<%= @channel.user.displayname %>" width="142" height="142" class="img-avatar mr-2 float-left <%= if Glimesh.Accounts.can_receive_payments?(@channel.user), do: "img-verified-streamer", else: "" %>">

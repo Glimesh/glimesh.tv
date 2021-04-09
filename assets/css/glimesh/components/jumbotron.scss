@@ -2,8 +2,6 @@
     background-color: transparent;
     background-image: url("/images/banner.png");
     background-size: cover;
-    background: transparent !important;
-    height: 62.5vh !important;
     border-radius: 25px !important;
     color: var(--white);
 }
@@ -12,7 +10,7 @@
     background-color: transparent;
     background-image: url("/images/banner.png");
     background-size: cover;
-    height: 62.5vh !important;
+    //height: 62.5vh !important;
     border-radius: 25px !important;
     color: var(--white);
 }

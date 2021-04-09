@@ -9,3 +9,9 @@
         border-bottom: 1px solid var(--primary);
     }
 }
+
+.nav-link {
+    &.active {
+        border-radius: 25px;
+    }
+}
