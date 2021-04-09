@@ -1,3 +1,9 @@
 .btn {
     border-radius: 45px !important;
 }
+
+.social-tweet {
+    @media (max-width: 576px) {
+        margin-bottom: 2rem !important;
+    }
+}

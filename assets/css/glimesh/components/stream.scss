@@ -126,3 +126,10 @@ div#chat-column {
 input#channel_title {
     height: 45px;
 }
+
+.mobile-margin >.row {
+    @media (min-width: 576px) {
+        margin-right: 5% !important;
+        margin-left: 5% !important;
+    }
+}
