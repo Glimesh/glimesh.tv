@@ -24,6 +24,8 @@
 </div>
 <% end %>
 
+<h2 class="mt-4"><%= gettext("Channel Customization") %></h2>
+<p><%= gettext("Create and design a channel custom to you by uploading unique images and identifying what type of content viewers can expect from your channel. You can customize the content that appears under your stream on your Profile page.") %></p>
 <div class="row">
     <div class="col-sm-6">
         <div class="form-group">
@@ -41,17 +43,8 @@
             </div>
             <%= error_tag f, :mature_content %>
         </div>
-        <div class="form-group">
-            <%= label f, :show_on_homepage, gettext("Show on Homepage") %>
-            <div class="custom-control custom-switch">
-                <%= checkbox f, :show_on_homepage, class: "custom-control-input" %>
-                <label class="custom-control-label" for="<%= input_id(f, :show_on_homepage) %>"><%= gettext("Show channel on homepage randomly") %></label>
-            </div>
-            <%= error_tag f, :show_on_homepage %>
-        </div>
     </div>
 </div>
-
 <div class="row">
     <div class="col-sm-6">
         <div class="form-group">
@@ -90,6 +83,9 @@
         </div>
     </div>
 </div>
+
+<h2 class="mt-4"><%= gettext("Stream Information") %></h2>
+<p><%= gettext("Customize the information you want to show viewers based on the content you are doing right now. You can also access these options by clicking the edit button in the title of your channel page.") %></p>
 <div class="row mt-4">
     <div class="col-sm-6">
         <div class="form-group">
@@ -97,10 +93,24 @@
             <%= text_input f, :title, [class: "form-control"] %>
             <%= error_tag f, :title %>
         </div>
+
         <div class="form-group">
-            <%= label f, gettext("Chat Rules (Markdown Supported)") %>
-            <%= textarea f, :chat_rules_md, [class: "form-control mb-4", rows: 20] %>
-            <%= error_tag f, :chat_rules_md %>
+            <%= label f, :tags, gettext("Tags") %>
+            <%= live_component(
+                @socket,
+                GlimeshWeb.TagifyComponent,
+                id: "tag-selector",
+                form: f, field: :tags,
+                value: @existing_tags,
+                placeholder: gettext("Search for tags to describe your stream"),
+                max_options: 10,
+                create_regex: "^[A-Za-z0-9: -]{2,18}$",
+                allow_edit: "true",
+                category: @category,
+                search_func: &search_tags/2
+            )
+            %>
+            <%= error_tag f, :tags %>
         </div>
     </div>
     <div class="col-sm-6">
@@ -128,25 +138,19 @@
             <p><%= @subcategory_attribution %></p>
             <%= error_tag f, :subcategory %>
         </div>
+    </div>
+</div>
+
+<h2 class="mt-4"><%= gettext("Chat Customization") %></h2>
+<div class="row">
+    <div class="col-sm-6">
         <div class="form-group">
-            <%= label f, :tags, gettext("Tags") %>
-            <%= live_component(
-                @socket,
-                GlimeshWeb.TagifyComponent,
-                id: "tag-selector",
-                form: f, field: :tags,
-                value: @existing_tags,
-                placeholder: gettext("Search for tags to describe your stream"),
-                max_options: 10,
-                create_regex: "^[A-Za-z0-9: -]{2,18}$",
-                allow_edit: "true",
-                category: @category,
-                search_func: &search_tags/2
-            )
-            %>
-            <%= error_tag f, :tags %>
+            <%= label f, gettext("Chat Rules (Markdown Supported)") %>
+            <%= textarea f, :chat_rules_md, [class: "form-control mb-4", rows: 20] %>
+            <%= error_tag f, :chat_rules_md %>
         </div>
-        <h3 class="mt-4"><%= gettext("Chat Safety") %></h3>
+    </div>
+    <div class="col-sm-6">
         <div class="form-group">
             <%= label f, :disable_hyperlinks, gettext("Should links automatically be clickable?") %>
             <%= select f, :disable_hyperlinks, [Yes: false, No: true], [class: "form-control", disabled: @channel.block_links] %>
@@ -175,6 +179,31 @@
         </div>
     </div>
 </div>
+
+<h2 class="mt-4"><%= gettext("Homepage") %></h2>
+<p><%= gettext("Glimesh is now showing your channels on the homepage! It's a completely random process, however you must opt-in and you must have completed the following qualifications first.") %></p>
+<div class="row mb-4">
+    <div class="col-sm-6">
+        <strong><%= gettext("Homepage Qualifications") %></strong>
+        <ul>
+            <li><%= gettext("Show on Homepage must be checked") %></li>
+            <li><%= gettext("Must have streamed for at least 10 hours") %></li>
+            <li><%= gettext("No previous disciplinary actions") %></li>
+            <li><%= gettext("Current stream must be live for at least 15 minutes") %></li>
+        </ul>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <%= label f, :show_on_homepage, gettext("Show on Homepage") %>
+            <div class="custom-control custom-switch">
+                <%= checkbox f, :show_on_homepage, class: "custom-control-input" %>
+                <label class="custom-control-label" for="<%= input_id(f, :show_on_homepage) %>"><%= gettext("Show channel on homepage randomly") %></label>
+            </div>
+            <%= error_tag f, :show_on_homepage %>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-sm-6">
         <%= submit gettext("Update Channel"), class: "btn btn-primary" %>
