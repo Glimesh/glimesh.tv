@@ -115,6 +115,10 @@ export default {
             let offendingChatMessage = chatMessages.querySelectorAll(`[data-user-id=${CSS.escape(offendingUserID)}]`);
             // Have to hide them otherwise the tooltip gets stuck on removing the element
             offendingChatMessage.forEach(e => e.hidden = true);
+        });
+
+        this.handleEvent("remove_deleted_message", (e) => {
+            document.getElementById(e["message_id"]).hidden = true;
         })
 
     }

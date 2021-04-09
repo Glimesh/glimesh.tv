@@ -7,6 +7,9 @@
         <%= if chat_message.is_subscription_message, do: "bg-secondary" %>
         <%= if chat_message.is_followed_message, do: "border border-info" %>">
         <div class="user-message-header d-inline d-md-block">
+            <%= if Map.get(@permissions, :can_delete, false)  do %>
+            <i class="delete-message fas fa-trash fa-fw" phx-click="delete_message" phx-value-user="<%= chat_message.user.username %>" phx-value-message="<%= chat_message.id %>" data-toggle="tooltip" title="<%= gettext("Delete message.") %>"></i>
+            <% end %>
             <%= if Map.get(@permissions, :can_short_timeout, false) do %>
             <i class="short-timeout fas fa-stopwatch fa-fw" phx-click="short_timeout_user" phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip" title="<%= gettext("Timeout user for 5 minutes.") %>"></i>
             <% end %>

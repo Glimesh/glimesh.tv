@@ -209,7 +209,8 @@ defmodule Glimesh.ChatTest do
         StreamModeration.create_channel_moderator(streamer, streamer.channel, moderator, %{
           can_short_timeout: true,
           can_long_timeout: true,
-          can_ban: true
+          can_ban: true,
+          can_delete: true
         })
 
       %{
@@ -249,6 +250,15 @@ defmodule Glimesh.ChatTest do
       assert length(Chat.list_chat_messages(channel)) == 2
 
       {:ok, _} = Chat.short_timeout_user(moderator, channel, user)
+      assert length(Chat.list_chat_messages(channel)) == 1
+    end
+
+    test "delete_message/4 deletes message", %{channel: channel, moderator: moderator, user: user} do
+      {:ok, bad_message} = Chat.create_chat_message(user, channel, %{message: "bad message"})
+      {:ok, _} = Chat.create_chat_message(moderator, channel, %{message: "good message"})
+      assert length(Chat.list_chat_messages(channel)) == 2
+
+      {:ok, _} = Chat.delete_message(moderator, channel, user, bad_message)
       assert length(Chat.list_chat_messages(channel)) == 1
     end
 

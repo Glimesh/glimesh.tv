@@ -21,6 +21,7 @@
             <th><%= gettext("Ban") %></th>
             <th><%= gettext("Remove Timeout") %></th>
             <th><%= gettext("Remove Ban") %></th>
+            <th><%= gettext("Delete Message") %></th>
             <th></th>
           </tr>
         </thead>
@@ -33,6 +34,7 @@
             <td><%= yes_or_no(channel_moderator.can_ban) %></td>
             <td><%= yes_or_no(channel_moderator.can_un_timeout) %></td>
             <td><%= yes_or_no(channel_moderator.can_unban) %></td>
+            <td><%= yes_or_no(channel_moderator.can_delete) %></td>
 
             <td>
               <%= link gettext("Show"), to: Routes.channel_moderator_path(@conn, :show, channel_moderator), class: "btn btn-info btn-sm" %>

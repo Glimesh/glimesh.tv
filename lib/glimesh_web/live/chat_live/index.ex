@@ -96,6 +96,20 @@ defmodule GlimeshWeb.ChatLive.Index do
   end
 
   @impl true
+  def handle_event("delete_message", %{"message" => message_id, "user" => message_author}, socket) do
+    chat_message = Chat.get_chat_message!(message_id)
+
+    Chat.delete_message(
+      socket.assigns.user,
+      socket.assigns.channel,
+      Accounts.get_by_username!(message_author, true),
+      chat_message
+    )
+
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_event("toggle_timestamps", params, socket) when map_size(params) == 0 do
     timestamp_state = Kernel.not(socket.assigns.show_timestamps)
 
@@ -142,6 +156,11 @@ defmodule GlimeshWeb.ChatLive.Index do
   @impl true
   def handle_info({:user_timedout, bad_user}, socket) do
     {:noreply, push_event(socket, "remove_timed_out_user_messages", %{bad_user_id: bad_user.id})}
+  end
+
+  @impl true
+  def handle_info({:message_deleted, message_id}, socket) do
+    {:noreply, push_event(socket, "remove_deleted_message", %{message_id: message_id})}
   end
 
   defp list_chat_messages(channel) do
