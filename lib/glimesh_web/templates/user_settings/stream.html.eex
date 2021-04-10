@@ -43,7 +43,7 @@
             <div class="card h-100">
                 <div class="card-body">
                     <h5><%= gettext("Other Streaming Software") %></h5>
-                    <p><%= gettext("Glimesh uses FTL technology for it's sub-second live streams so it's not compatible with all streaming software. Check with your software provider for FTL support!") %></p>
+                    <p><%= gettext("Glimesh uses FTL technology for its sub-second live streams so it's not compatible with all streaming software. Check with your software provider for FTL support!") %></p>
                 </div>
             </div>
         </div>
