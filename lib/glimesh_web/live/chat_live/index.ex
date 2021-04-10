@@ -24,7 +24,8 @@ defmodule GlimeshWeb.ChatLive.Index do
           Accounts.get_user_preference!(session["user"])
         else
           %{
-            show_timestamps: false
+            show_timestamps: false,
+            show_mod_icons: false
           }
         end
 
@@ -56,6 +57,7 @@ defmodule GlimeshWeb.ChatLive.Index do
         |> assign(:chat_messages, list_chat_messages(channel))
         |> assign(:chat_message, %ChatMessage{})
         |> assign(:show_timestamps, user_preferences.show_timestamps)
+        |> assign(:show_mod_icons, user_preferences.show_mod_icons)
         |> assign(:user_preferences, user_preferences)
 
       {:ok, new_socket, temporary_assigns: [chat_messages: []]}
@@ -137,6 +139,24 @@ defmodule GlimeshWeb.ChatLive.Index do
      |> assign(:user_preferences, user_preferences)
      |> push_event("toggle_timestamps", %{
        show_timestamps: timestamp_state
+     })}
+  end
+
+  @impl true
+  def handle_event("toggle_mod_icons", %{"user" => _username}, socket) do
+    mod_icon_state = Kernel.not(socket.assigns.show_mod_icons)
+
+    {:ok, user_preferences} =
+      Accounts.update_user_preference(socket.assigns.user_preferences, %{
+        show_mod_icons: mod_icon_state
+      })
+
+    {:noreply,
+     socket
+     |> assign(:show_mod_icons, mod_icon_state)
+     |> assign(:user_preferences, user_preferences)
+     |> push_event("toggle_mod_icons", %{
+       show_mod_icons: mod_icon_state
      })}
   end
 
