@@ -279,6 +279,27 @@ defmodule Glimesh.Streams do
 
   def get_stream_key(%Channel{id: id, hmac_key: hmac_key}), do: "#{id}-#{hmac_key}"
 
+  def get_channel_hours(%Channel{id: id}) do
+    hours =
+      Repo.one(
+        from s in Glimesh.Streams.Stream,
+          select:
+            fragment(
+              "sum(EXTRACT(EPOCH FROM ?) - EXTRACT(EPOCH FROM ?)) / 3600",
+              s.ended_at,
+              s.started_at
+            ),
+          where: s.channel_id == ^id,
+          group_by: s.channel_id
+      )
+
+    if hours do
+      hours |> trunc()
+    else
+      0
+    end
+  end
+
   def change_channel(%Channel{} = channel, attrs \\ %{}) do
     Channel.changeset(channel, attrs)
   end

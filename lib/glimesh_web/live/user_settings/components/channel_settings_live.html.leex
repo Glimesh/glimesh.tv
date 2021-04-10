@@ -193,6 +193,7 @@
         </ul>
     </div>
     <div class="col-sm-6">
+        <p><%= gettext("Total Channel Hours: %{channel_hours} hours", channel_hours: @channel_hours) %></p>
         <div class="form-group">
             <%= label f, :show_on_homepage, gettext("Show on Homepage") %>
             <div class="custom-control custom-switch">
