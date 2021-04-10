@@ -64,7 +64,7 @@ defmodule Glimesh.Homepage do
 
   defp push_new_homepage_batch(max_last_slot_time) do
     start_time = max_last_slot_time
-    end_time = NaiveDateTime.add(NaiveDateTime.utc_now(), 60 * 60, :second)
+    end_time = NaiveDateTime.add(start_time, 60 * 60, :second)
 
     find_eligible_channels()
     |> Enum.each(fn channel ->
