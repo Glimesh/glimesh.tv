@@ -26,6 +26,7 @@ defmodule Glimesh.Schema.AccountTypes do
       arg(:username, :string)
       resolve(&AccountResolver.find_user/2)
     end
+
     @desc "List all follows or followers"
     field :followers, list_of(:follower) do
       arg(:streamer_username, :string)

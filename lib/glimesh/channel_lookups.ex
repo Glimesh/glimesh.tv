@@ -15,6 +15,7 @@ defmodule Glimesh.ChannelLookups do
   def search_live_channels(params) do
     Channel
     |> where([c], c.status == "live")
+    |> apply_filter(:ids, params)
     |> apply_filter(:category, params)
     |> apply_filter(:subcategory, params)
     |> apply_filter(:tags, params)
@@ -23,6 +24,10 @@ defmodule Glimesh.ChannelLookups do
     |> group_by([c], c.id)
     |> preload([:category, :subcategory, :user, :stream, :tags])
     |> Repo.all()
+  end
+
+  defp apply_filter(query, :category, %{"ids" => ids}) when is_list(ids) do
+    where(query, [c], c.id in ^ids)
   end
 
   defp apply_filter(query, :category, %{"category" => category_slug})

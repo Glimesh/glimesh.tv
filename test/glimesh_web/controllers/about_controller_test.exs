@@ -23,6 +23,13 @@ defmodule GlimeshWeb.AboutControllerTest do
       assert html_response(conn, 200) =~
                "Our mission at Glimesh is to create a platform of sustainability, where every content creator has a fair oppourtunity to grow and create an income, while being given simple and powerful tools they can rely on."
     end
+
+    test "shows the alpha page", %{conn: conn} do
+      conn = get(conn, Routes.about_path(conn, :alpha))
+
+      assert html_response(conn, 200) =~
+               "We are very excited to be launching the Alpha version of Glimesh and we&#39;re proud to say that all of our alpha features will be available to everyone!"
+    end
   end
 
   describe "streaming page for logged in user" do
