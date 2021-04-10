@@ -77,6 +77,16 @@
             display: none;
         }
 
+        .chat-mod-icon {
+            display: none;
+        }
+
+        &.show-mod-icons {
+            .chat-mod-icon {
+                display: inline-block;
+            }
+        }
+
         &.show-timestamps {
             .chat-timestamp {
                 display: inline-block;

@@ -354,6 +354,17 @@ defmodule Glimesh.ChatTest do
 
       assert user_preferences.show_timestamps == true
     end
+
+    test "toggle mod icons button toggles mod icons" do
+      user = user_fixture()
+      user_preferences = Accounts.get_user_preference!(user)
+      assert user_preferences.show_mod_icons == true
+
+      {:ok, user_preferences} =
+        Accounts.update_user_preference(user_preferences, %{show_mod_icons: false})
+
+      assert user_preferences.show_mod_icons == false
+    end
   end
 
   describe "chat safety & security" do
