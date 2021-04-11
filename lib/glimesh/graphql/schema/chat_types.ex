@@ -162,6 +162,7 @@ defmodule Glimesh.Schema.ChatTypes do
     field :can_un_timeout, :boolean
     field :can_ban, :boolean
     field :can_unban, :boolean
+    field :can_delete, :boolean
 
     field :inserted_at, non_null(:naive_datetime)
     field :updated_at, non_null(:naive_datetime)
