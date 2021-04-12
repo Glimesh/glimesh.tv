@@ -1,12 +1,12 @@
-<div class="fancy-bg">
+<div class="fancy-bg mt-2">
 
     <div class="container">
 
-        <div class="position-relative overflow-hidden p-3 p-md-5">
+        <div class="position-relative overflow-hidden p-3 p-md-5" style="background-color: transparent; box-shadow: none !important;">
             <div class="col-md-12 p-lg-4 mx-auto">
 
                 <h1 class="display-3 font-weight-bold text-white"><span class="text-color-alpha"><%= gettext("Next-Gen") %></span> <%= gettext("Live Streaming!") %></h1>
-                <p class="lead text-white" style="max-width: 500px;"><%= gettext("The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving.") %></p>
+                <p class="lead text-white text-center"><%= gettext("The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving.") %></p>
 
                 <%= if @current_user do %>
                 <%= link gettext("Customize Your Profile"), to: Routes.user_settings_path(@socket, :profile), class: "btn btn-info mt-3" %>

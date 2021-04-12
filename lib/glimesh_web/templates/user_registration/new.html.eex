@@ -58,7 +58,7 @@
                         </div>
                     </div>
 
-                    <div class="text-center">
+                    <div class="text-center mt-5">
                         <%= raw Hcaptcha.Template.display(theme: GlimeshWeb.LayoutView.site_theme(@conn)) %>
 
                         <%= submit "Register", class: "btn btn-primary btn-lg mt-2" %>
