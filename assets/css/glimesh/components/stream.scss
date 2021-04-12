@@ -134,10 +134,11 @@ input#channel_title {
 }
 
 .mobile-margin >.row {
+    /* Removed too much blank space, saving for possible uses later.
     @media (min-width: 768px) {
         margin-right: 5% !important;
         margin-left: 5% !important;
-    }
+    }*/
 
     #chat-column {
         @media (max-width: 768px) {
