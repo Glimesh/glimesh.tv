@@ -52,6 +52,14 @@ defmodule Glimesh.Schema.ChatTypes do
 
       resolve(&ChatResolver.unban_user/3)
     end
+
+    @desc "Deletes a specfic chat message from channel."
+    field :delete_message, type: :channel_moderation_log do
+      arg(:channel_id, non_null(:id))
+      arg(:message_id, non_null(:id))
+
+      resolve(&ChatResolver.delete_chat_message/3)
+    end
   end
 
   object :chat_subscriptions do
@@ -154,6 +162,7 @@ defmodule Glimesh.Schema.ChatTypes do
     field :can_un_timeout, :boolean
     field :can_ban, :boolean
     field :can_unban, :boolean
+    field :can_delete, :boolean
 
     field :inserted_at, non_null(:naive_datetime)
     field :updated_at, non_null(:naive_datetime)

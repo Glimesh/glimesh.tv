@@ -17,14 +17,16 @@
                 <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>" alt="<%= channel.title %>" class="card-img" height="468" width="832">
                 <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
 
-                    <div class="card-stream-tags">
+                    <div>
+                        <div class="card-stream-tags">
 
-                        <%= if channel.subcategory do %>
-                        <span class="badge badge-info"><%= channel.subcategory.name %></span>
-                        <% end %>
-                        <%= for tag <- channel.tags do %>
-                        <span class="badge badge-primary"><%= tag.name %></span>
-                        <% end %>
+                            <%= if channel.subcategory do %>
+                            <span class="badge badge-info"><%= channel.subcategory.name %></span>
+                            <% end %>
+                            <%= for tag <- channel.tags do %>
+                            <span class="badge badge-primary"><%= tag.name %></span>
+                            <% end %>
+                        </div>
                     </div>
 
                     <div class="media card-stream-streamer">
@@ -56,7 +58,7 @@
         <div class="card-body">
             <form phx-change="search">
                 <div class="form-group mb-0">
-                    <input type="text" name="q" value="<%= @query %>" placeholder="<%= gettext("Search for usernames") %>" list="results" autocomplete="off" autofocus class="form-control form-control-lg" />
+                    <input type="text" name="q" value="<%= @query %>" placeholder="<%= gettext("Search for usernames") %>" list="results" autocomplete="off" class="form-control form-control-lg" />
                 </div>
             </form>
         </div>

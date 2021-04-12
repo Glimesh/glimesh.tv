@@ -179,6 +179,27 @@ defmodule GlimeshWeb.ChatLiveTest do
 
       assert render(view) =~ "hidden"
     end
+
+    test "delete message button deletes message", %{conn: conn} do
+      streamer = streamer_fixture()
+      channel = ChannelLookups.get_channel_for_user(streamer)
+
+      {:ok, chat_message} =
+        generate_message_for_removal_test(user_fixture(), streamer, channel, @valid_chat_message)
+
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => streamer, "channel_id" => channel.id}
+        )
+
+      target = "##{chat_message.id} > div.user-message-header > i.delete-message"
+
+      view
+      |> element(target)
+      |> render_click()
+
+      assert render(view) =~ "hidden"
+    end
   end
 
   describe "chat preferences" do
@@ -191,13 +212,31 @@ defmodule GlimeshWeb.ChatLiveTest do
           session: %{"user" => user, "channel_id" => channel.id}
         )
 
-      assert render(view) =~ "Enable Timestamps"
+      assert render(view) =~ "Show Timestamps"
 
       view
       |> element("#toggle-timestamps")
       |> render_click()
 
-      assert render(view) =~ "Disable Timestamps"
+      assert render(view) =~ "Hide Timestamps"
+    end
+
+    test "toggle mod icons button toggles mod icons", %{conn: conn} do
+      user = streamer_fixture()
+      channel = ChannelLookups.get_channel_for_user(user)
+
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => user, "channel_id" => channel.id}
+        )
+
+      assert render(view) =~ "Hide Mod Icons"
+
+      view
+      |> element("#toggle-mod-icons")
+      |> render_click()
+
+      assert render(view) =~ "Show Mod Icons"
     end
   end
 end

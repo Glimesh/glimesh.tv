@@ -109,12 +109,24 @@ export default {
             }
             this.maybeScrollToBottom(chatMessages);
         });
+        this.handleEvent("toggle_mod_icons", (e) => {
+            if (e["show_mod_icons"]) {
+                chatMessages.classList.add("show-mod-icons");
+            } else {
+                chatMessages.classList.remove("show-mod-icons");
+            }
+            this.maybeScrollToBottom(chatMessages);
+        });
 
         this.handleEvent("remove_timed_out_user_messages", (e) => {
             let offendingUserID = e["bad_user_id"];
             let offendingChatMessage = chatMessages.querySelectorAll(`[data-user-id=${CSS.escape(offendingUserID)}]`);
             // Have to hide them otherwise the tooltip gets stuck on removing the element
             offendingChatMessage.forEach(e => e.hidden = true);
+        });
+
+        this.handleEvent("remove_deleted_message", (e) => {
+            document.getElementById(e["message_id"]).hidden = true;
         })
 
     }

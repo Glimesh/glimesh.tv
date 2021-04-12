@@ -1,0 +1,138 @@
+<div class="jumbotron jumbotron-fluid jumbotron-glimesh d-flex align-items-center">
+    <div class="container">
+        <h1 class="display-4 text-center"><%= gettext("Alpha") %></h1>
+    </div>
+</div>
+
+<div class="container">
+
+    <h2 class="text-white"><span class="text-color-alpha">Alpha</span> Features</h2>
+
+    <div class="row mt-2 mb-4">
+        <div class="col mb-2">
+            <div class="card h-100">
+                <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px"><%= gettext("Profiles") %></h5>
+                <div class="d-flex align-items-center card-body p-3">
+                    <p class="card-text text-center"><%= gettext("Start right away with securing your profile and then make it yours! With loads of customizable features, you can really edit and bring your profiles to life to help show people who you are and what you are about!") %></p>
+                </div>
+            </div>
+        </div>
+        <div class="col mb-2">
+            <div class="card h-100">
+                <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px"><%= gettext("Streaming") %></h5>
+                <div class="d-flex align-items-center card-body p-3">
+                    <p class="card-text text-center"><%= gettext("You'll be able to create your stream, go live, and begin growing your communities. Interacting with them will be a whole lot easier with the FTL streaming technology – they will be able to view your stream in real-time!") %></p>
+                </div>
+            </div>
+        </div>
+        <div class="col mb-2">
+            <div class="card h-100">
+                <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px"><%= gettext("Subscriptions") %></h5>
+                <div class="d-flex align-items-center card-body p-3">
+                    <p class="card-text text-center"><%= gettext("Subscription buttons will be available, with payouts, and you will not need to meet any viewership requirements for them. During early phases, this will only be available to limited countries.") %></p>
+                </div>
+            </div>
+        </div>
+        <div class="col mb-2">
+            <div class="card h-100">
+                <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px"><%= gettext("Live Events") %></h5>
+                <div class="d-flex align-items-center card-body p-3">
+                    <p class="card-text text-center"><%= gettext("Our Glimesh Community Team will be hosting live events filled with content from all of our various categories. Keep an eye out on our Twitter, for now, to stay up to date with these.") %></p>
+                </div>
+            </div>
+        </div>
+        <div class="col mb-2">
+            <div class="card h-100">
+                <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white" style="margin:-1px"><%= gettext("More!") %></h5>
+                <div class="d-flex align-items-center card-body p-3">
+                    <p class="card-text text-center"><%= gettext("Remember, this is just the Alpha! We are excited to continue to develop features you expect while still continuing to innovate on brand new ideas. You can check out our Alpha Roadmap for planned features.") %><br>
+                        <a href="https://glimesh.tv/blog/2020-08-13-glimesh-alpha-roadmap"><%= gettext("Alpha Roadmap") %></a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <h2 class="text-white"><span class="text-color-alpha">Alpha</span> Support</h2>
+
+    <div class="card mt-2">
+        <h3 class="card-header bg-primary text-center rounded-lg py-4 text-white"><%= gettext("What to Expect") %></h3>
+        <div class="card-body">
+            <p class="card-text text-center"><%= gettext("We are very excited to be launching the Alpha version of Glimesh and we're proud to say that all of our alpha features will be available to everyone! During this very early phase, we want to set expectations correctly. You can expect that we'll have issues, bugs, and even downtime early on but we will continue to improve and strive for excellence. We invite everyone in early to help us find these issues, to help us create new products, and to continue growing Glimesh into the best platform it can be. We encourage everyone to try new things on the platform and to report issues when you see them! If you need any support or help along the way, we'll be there for you.") %></p>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <h3 class="card-header bg-primary text-center rounded-lg py-4 text-white"><%= gettext("Help Us Improve") %></h3>
+        <div class="card-body card-glimfamily">
+            <div class="row justify-content-md-center">
+                <div class="col-md-7">
+                    <p><%= gettext("As explained, we know there are going to be bugs and issues that users may experience within this Alpha version of our platform, but we are prepared! We have an amazing team that is ready to triage, fix, and help resolve any issues you may face. Our Discord is the main source of most of our questions, suggestions, and bug reports and you can find details on how to navigate it below!") %></p>
+
+                    <h4><%= gettext("What if I have a question?") %></h4>
+                    <p><%= gettext("Really easy! You simply need to join our Discord and locate the channel named #questions. After you've fully written out your question, send it and we'll help you out as soon as possible.") %></p>
+
+                    <h4><%= gettext("How can I make a suggestion?") %></h4>
+                    <p><%= gettext("We are always looking to improve and our platform is built on your ideas! Our #suggestions channel gives you an easy place to post any ideas you have or suggestions on how we could do things differently.") %></p>
+
+                    <h4><%= gettext("How do I report a bug?") %></h4>
+                    <p><%= gettext("The #bugs channel is the first place bugs should be reported. Our team will triage them, and file them to their appropriate places. When you are submitting a bug, it helps to provide any screenshots or clips you have, but please be sure not to leak your private information. If you have a issue with something sensitive, email support@glimesh and we'll try to reach back out to you when the bug is resolved.") %></p>
+                </div>
+                <div class="col-md-3 text-center">
+                    <img src="/images/homepage/discord.webp" alt="Screenshot of our Discord for reference" class="rounded img-fluid">
+                </div>
+            </div>
+            <div class="text-center mt-4 mb-4">
+                <%= link gettext("Join Our Discord"), to: "https://discord.gg/Glimesh", class: "btn btn-primary" %>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row mt-4 mb-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white"><%= gettext("Useful Documents") %></h5>
+                <div class="card-body">
+                    <h4><%= gettext("Get up to speed with our Terms of Service!") %></h4>
+                    <p><%= gettext("Before you use the platform, you must review our Terms of Service to ensure your streams and content do not violate any of our conditions. The Terms of Service also includes information about your rights and usage of the website.") %></p>
+
+                    <div class="text-center mt-4 mb-4">
+                        <%= link gettext("Terms of Service"), to: Routes.about_path(@conn, :terms), class: "btn btn-primary" %>
+                    </div>
+
+                    <h4><%= gettext("Review our Rules of Conduct!") %></h4>
+                    <p><%= gettext("Our Rules of Conduct is another required reading, especially for streamers! It includes rules and guidelines on the type of content that is appropriate for Glimesh, and violating its guidelines could lead to repercussions.") %></p>
+
+                    <div class="text-center mt-4 mb-4">
+                        <%= link gettext("Rules of Conduct"), to: Routes.about_path(@conn, :conduct), class: "btn btn-primary" %>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <h5 class="card-header bg-primary text-center rounded-lg py-4 text-white"><%= gettext("Additional Support") %></h5>
+                <div class="card-body">
+                    <h4><%= gettext("Streaming on Glimesh Guide!") %></h4>
+                    <p><%= gettext("We have created a useful guide to help get you underway with streaming on Glimesh, regardless of your streaming experience! Remember if you run into any issues, give us a shout and we will always do our best to help!") %></p>
+
+                    <div class="text-center mt-4 mb-4">
+                        <%= link gettext("Day One Streamer Guide"), to: "https://glimesh-static-assets.nyc3.digitaloceanspaces.com/2021-glimesh-streaming-guide.pdf", class: "btn btn-primary", target: "_blank" %>
+                    </div>
+
+                    <h4><%= gettext("Glimesh Support") %></h4>
+                    <p><%= gettext("We also have a support page that can provide you with further information such as FAQs, Account Support, Subscriptions & Payments, and a whole lot more!") %></p>
+
+                    <div class="text-center mt-4 mb-4">
+                        <%= link gettext("Glimesh Support Portal"), to: "https://support.glimesh.tv", class: "btn btn-primary", target: "_blank" %>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

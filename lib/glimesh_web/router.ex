@@ -201,6 +201,7 @@ defmodule GlimeshWeb.Router do
     get "/about/streaming", AboutController, :streaming
     get "/about/team", AboutController, :team
     get "/about/mission", AboutController, :mission
+    get "/about/alpha", AboutController, :alpha
     get "/about/faq", AboutController, :faq
     get "/about/privacy", AboutController, :privacy
     get "/about/terms", AboutController, :terms

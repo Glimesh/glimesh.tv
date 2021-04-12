@@ -1,5 +1,5 @@
 <div class="container">
-    <h2 class="mt-4"><%= gettext("Channel Settings") %></h2>
+    <h2 class="mt-4"><%= gettext("Streaming on Glimesh") %></h2>
 
     <%= if is_nil(@current_user.confirmed_at) do %>
     <div class="alert alert-warning" role="alert">
@@ -43,12 +43,13 @@
             <div class="card h-100">
                 <div class="card-body">
                     <h5><%= gettext("Other Streaming Software") %></h5>
-                    <p><%= gettext("Glimesh uses FTL technology for it's sub-second live streams so it's not compatible with all streaming software. Check with your software provider for FTL support!") %></p>
+                    <p><%= gettext("Glimesh uses FTL technology for its sub-second live streams so it's not compatible with all streaming software. Check with your software provider for FTL support!") %></p>
                 </div>
             </div>
         </div>
     </div>
 
+    <h2 class="mt-4"><%= gettext("Channel Settings") %></h2>
     <div class="card">
         <div class="card-body">
             <%= if not @launched do %>
