@@ -213,8 +213,8 @@ defmodule GlimeshWeb.Router do
     live "/about/open-data/subscriptions", About.OpenDataLive, :subscriptions
     live "/about/open-data/streams", About.OpenDataLive, :streams
 
-    get "/blog", ArticleController, :index
-    get "/blog/:slug", ArticleController, :show
+    get "/blog", BlogMigrationController, :redirect_blog
+    get "/blog/:slug", BlogMigrationController, :redirect_post
 
     live "/", HomepageLive, :index
     live "/streams", StreamsLive.Index, :index
