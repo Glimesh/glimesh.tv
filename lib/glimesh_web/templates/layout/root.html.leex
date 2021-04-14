@@ -100,7 +100,7 @@
                     </div>
 
                     <div class="col-8">
-                        <h6><%= gettext("BLOG") %></h6>
+                        <h6><a href="https://blog.glimesh.tv" class="text-link-color"<%= gettext("BLOG") %></a></h6>
                         <ul class="list-unstyled text-small">
                             <%= for article <- Glimesh.Blog.list_some_articles(4) do %>
                             <li><%= link article.title, to: Routes.article_path(@conn, :show, article.slug) %>
