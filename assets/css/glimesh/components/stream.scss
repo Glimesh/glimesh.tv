@@ -151,3 +151,9 @@ input#channel_title {
         }
     }
 }
+
+.mobile-margin >.user-content-body {
+    @media (max-width: 768px) {
+        margin-top: 1.5rem;
+    }
+}

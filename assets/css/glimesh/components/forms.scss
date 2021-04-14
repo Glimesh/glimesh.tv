@@ -45,3 +45,7 @@ input#customFile {
 .form-control:read-only {
     background-color: var(--input-group-addon-bg-color) !important;
 }
+
+.form-check-input {
+    position: relative;
+}
