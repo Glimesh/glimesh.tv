@@ -3,8 +3,6 @@ defmodule Glimesh.Streams.HomepageChannel do
   use Ecto.Schema
   use Waffle.Ecto.Schema
 
-  import Ecto.Changeset
-
   schema "homepage_channels" do
     belongs_to :channel, Glimesh.Streams.Channel
 

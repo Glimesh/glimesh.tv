@@ -88,10 +88,6 @@ defmodule Glimesh.AccountFollows do
     Repo.one!(from f in Follower, select: count(f.id), where: f.user_id == ^user.id)
   end
 
-  def count_all_following(%User{} = user) do
-    Repo.all(from f in Follower, select: count(f.id))
-  end
-
   def list_all_follows do
     Repo.all(from(f in Follower))
   end
