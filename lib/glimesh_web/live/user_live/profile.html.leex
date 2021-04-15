@@ -5,7 +5,7 @@
                 <div class="card-body">
                     <h2 class="<%= Glimesh.Chat.Effects.get_username_color(@streamer, "text-color-link") %>">
                         <%= @streamer.displayname %></h2>
-                    <img src="<%= Glimesh.Avatar.url({@streamer.avatar, @streamer}, :original) %>" alt="Your Profile Picture" class="img-fluid mb-2 img-avatar <%= if Glimesh.Accounts.can_receive_payments?(@streamer), do: "img-verified-streamer", else: "" %>">
+                    <img src="<%= Glimesh.Avatar.url({@streamer.avatar, @streamer}, :original) %>" alt="Your Profile Picture" class="img-fluid mb-2 img-profile-avatar <%= if Glimesh.Accounts.can_receive_payments?(@streamer), do: "img-verified-streamer", else: "" %>">
 
                     <%= if Glimesh.Accounts.can_receive_payments?(@streamer) do %>
                     <div class="mb-4"><span class="badge badge-secondary"><%= gettext("Sub-ready Streamer") %></span>
@@ -59,11 +59,7 @@
                 </div>
                 <% end %>
             </div>
-
-            <div class="mt-4">
-                <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-            </div>
-
+            
             <div class="card text-center mt-4">
                 <div class="card-header">
                     <h5><%= gettext("Follow Streamer") %></h5>
@@ -71,6 +67,10 @@
                 <div class="card-body">
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                 </div>
+            </div>
+
+            <div class="mt-4">
+                <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user" => @user, "streamer" => @streamer}) %>
             </div>
 
             <!-- Be back soon!
