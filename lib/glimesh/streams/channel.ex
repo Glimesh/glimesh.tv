@@ -53,14 +53,14 @@ defmodule Glimesh.Streams.Channel do
   def start_changeset(channel, attrs \\ %{}) do
     channel
     |> changeset(attrs)
-    |> put_change(:status, "live")
+    |> force_change(:status, "live")
   end
 
   def stop_changeset(channel, attrs \\ %{}) do
     channel
     |> changeset(attrs)
-    |> put_change(:stream_id, nil)
-    |> put_change(:status, "offline")
+    |> force_change(:stream_id, nil)
+    |> force_change(:status, "offline")
   end
 
   def hmac_key_changeset(channel) do

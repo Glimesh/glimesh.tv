@@ -2,6 +2,7 @@ defmodule Glimesh.Streams do
   @moduledoc """
   The Streams context. Contains Channels, Streams
   """
+  require Logger
 
   import Ecto.Query, warn: false
   alias Glimesh.Accounts.User
@@ -201,20 +202,22 @@ defmodule Glimesh.Streams do
   end
 
   def end_stream(%Glimesh.Streams.Stream{} = stream) do
-    {:ok, stream} =
-      update_stream(stream, %{
-        ended_at: DateTime.utc_now() |> DateTime.to_naive()
-      })
+    channel = ChannelLookups.get_channel!(stream.channel_id)
 
-    {:ok, channel} =
-      ChannelLookups.get_channel!(stream.channel_id)
-      |> Channel.stop_changeset(%{})
-      |> Repo.update()
+    case Ecto.Multi.new()
+         |> Ecto.Multi.update(:stream, Glimesh.Streams.Stream.stop_changeset(stream))
+         |> Ecto.Multi.update(:channel, Channel.stop_changeset(channel))
+         |> Repo.transaction() do
+      {:ok, %{stream: stream, channel: channel}} ->
+        broadcast_message = Repo.preload(channel, :category, force: true)
+        broadcast({:ok, broadcast_message}, :channel)
 
-    broadcast_message = Repo.preload(channel, :category, force: true)
-    broadcast({:ok, broadcast_message}, :channel)
+        {:ok, stream}
 
-    {:ok, stream}
+      {:error, _, _, _} ->
+        Logger.error("Unable to end stream id=#{stream.id}.")
+        {:error, "Failed to end the stream"}
+    end
   end
 
   def stop_active_streams(%Channel{} = channel) do
@@ -224,9 +227,9 @@ defmodule Glimesh.Streams do
     )
     |> Repo.all()
     |> Enum.map(fn stream ->
-      update_stream(stream, %{
-        ended_at: DateTime.utc_now() |> DateTime.to_naive()
-      })
+      stream
+      |> Glimesh.Streams.Stream.stop_changeset()
+      |> Repo.update()
     end)
   end
 

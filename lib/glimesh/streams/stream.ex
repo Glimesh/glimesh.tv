@@ -55,4 +55,10 @@ defmodule Glimesh.Streams.Stream do
     ])
     |> cast_attachments(attrs, [:thumbnail])
   end
+
+  def stop_changeset(stream, ended_at \\ NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)) do
+    stream
+    |> change()
+    |> force_change(:ended_at, ended_at)
+  end
 end
