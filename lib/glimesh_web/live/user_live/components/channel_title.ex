@@ -97,7 +97,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
                           </div>
 
                           <button type="submit" class="btn btn-primary btn-block btn-lg"><%= gettext("Save") %></button>
-
+                          <a class="float-right mt-2" href="<%= Routes.user_settings_path(@socket, :stream) %>" target="_blank"><%= gettext("View more settings ") %> <i class="fas fa-external-link-alt"></i></a>
                       </form>
                     </div>
                 </div>
