@@ -4,7 +4,7 @@
 
       <div class="card">
         <div class="card-body">
-        <h3><%= gettext("Reset password") %></h1>
+        <h3><%= gettext("Reset password") %></h3>
 
         <%= form_for @changeset, Routes.user_reset_password_path(@conn, :update, @token), fn f -> %>
           <%= if @changeset.action do %>
