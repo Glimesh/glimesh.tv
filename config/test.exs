@@ -49,4 +49,5 @@ config :appsignal, :config, active: false
 
 config :glimesh, GlimeshWeb.Gettext,
   default_locale: "glim-en",
-  locales: ~w(glim-en)
+  locales: ~w(glim-en),
+  allowed_locales: ["en"]

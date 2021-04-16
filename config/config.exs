@@ -74,7 +74,8 @@ config :glimesh, GlimeshWeb.Emails.Mailer,
 
 config :glimesh, GlimeshWeb.Gettext,
   default_locale: "en",
-  locales: Enum.map(locales, fn {_, x} -> x end)
+  locales: Enum.map(locales, fn {_, x} -> x end),
+  one_module_per_locale: true
 
 config :ex_oauth2_provider, namespace: Glimesh
 
