@@ -17,7 +17,7 @@
           <%= password_input f, :password, required: true, class: "form-control" %>
           <%= error_tag f, :password %>
 
-          <%= label f, :password_confirmation, gettext("Confirm new password") %>
+          <%= label f, :password_confirmation, gettext("Confirm new password"), class: "mt-2" %>
           <%= password_input f, :password_confirmation, required: true, class: "form-control" %>
           <%= error_tag f, :password_confirmation %>
 
