@@ -1,26 +1,32 @@
-<h1><%= gettext("Reset password") %></h1>
+<div class="container mt-4">
+  <div class="row align-items-center justify-content-md-center">
+    <div class="col-md-7 col-lg-5">
 
-<%= form_for @changeset, Routes.user_reset_password_path(@conn, :update, @token), fn f -> %>
-  <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p><%= gettext("Oops, something went wrong! Please check the errors below.") %></p>
+      <div class="card">
+        <div class="card-body">
+        <h3><%= gettext("Reset password") %></h1>
+
+        <%= form_for @changeset, Routes.user_reset_password_path(@conn, :update, @token), fn f -> %>
+          <%= if @changeset.action do %>
+            <div class="alert alert-danger">
+              <p><%= gettext("Oops, something went wrong! Please check the errors below.") %></p>
+            </div>
+          <% end %>
+
+          <%= label f, :password, gettext("New password") %>
+          <%= password_input f, :password, required: true, class: "form-control" %>
+          <%= error_tag f, :password %>
+
+          <%= label f, :password_confirmation, gettext("Confirm new password") %>
+          <%= password_input f, :password_confirmation, required: true, class: "form-control" %>
+          <%= error_tag f, :password_confirmation %>
+
+          <div>
+            <%= submit gettext("Reset password"), class: "btn btn-primary btn-block mt-2" %>
+          </div>
+        <% end %>
+        </div>
+      </div>
     </div>
-  <% end %>
-
-  <%= label f, :password, gettext("New password") %>
-  <%= password_input f, :password, required: true %>
-  <%= error_tag f, :password %>
-
-  <%= label f, :password_confirmation, gettext("Confirm new password") %>
-  <%= password_input f, :password_confirmation, required: true %>
-  <%= error_tag f, :password_confirmation %>
-
-  <div>
-    <%= submit gettext("Reset password") %>
   </div>
-<% end %>
-
-<p>
-  <%= link gettext("Register"), to: Routes.user_registration_path(@conn, :new) %> |
-  <%= link gettext("Sign in"), to: Routes.user_session_path(@conn, :new) %>
-</p>
+</div>
