@@ -88,6 +88,11 @@
 
             <div class="card">
                 <div class="card-body user-content-body">
+                    <%= if @streamer == @user do %>
+                    <div class="float-right">
+                        <a href="<%= Routes.user_settings_path(@socket, :profile) %>"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" data-original-title="<%= gettext("Edit Profile") %>"></i></a>
+                    </div>
+                    <% end %>
                     <%= if @youtube_id do %>
                     <div class="embed-responsive embed-responsive-16by9 mb-4">
                         <iframe class="embed-responsive-item" src="https://www.youtube-nocookie.com/embed/<%= @youtube_id %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
