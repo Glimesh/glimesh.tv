@@ -23,6 +23,10 @@
                     <div>
                         <%= live_redirect gettext("View Channel"), class: "btn btn-primary", to: Routes.user_stream_path(@socket, :index, @streamer.username) %>
                     </div>
+                    <%= else %> 
+                        <%= if @streamer == @user do %>
+                            <a class="btn btn-primary btn-sm mt-4" href="<%= Routes.user_settings_path(@socket, :stream) %>"><%= gettext("Create your channel") %></a>
+                        <% end %>
                     <% end %>
 
                     <div class="row mt-4">
