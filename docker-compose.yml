@@ -1,32 +1,26 @@
 version: '3.4'
 
 services:
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
   app:
-    env_file:
-      - .env
     build:
       context: .
-      dockerfile: Dockerfile
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
-      - LIVE_VIEW_SIGNING_SALT=${LIVE_VIEW_SIGNING_SALT}
-      - URL_HOST=${URL_HOST}
-      - URL_PORT=${URL_PORT}
-      - HTTP_PORT=${HTTP_PORT}
-      - HTTPS_PORT=${HTTPS_PORT}
-      - HTTPS_KEY_FILE=${HTTPS_KEY_FILE}
-      - HTTPS_CERT_FILE=${HTTPS_CERT_FILE}
-      - MAILGUN_DOMAIN=${MAILGUN_DOMAIN}
-      - MAILGUN_API_KEY=${MAILGUN_API_KEY}
-      - STRIPE_PUBLIC_API_KEY=${STRIPE_PUBLIC_API_KEY}
-      - STRIPE_API_KEY=${STRIPE_API_KEY}
-      - STRIPE_CONNECT_CLIENT_ID=${STRIPE_CONNECT_CLIENT_ID}
-      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      dockerfile: Dockerfile.dev
+    command: ./run.sh
     ports:
-      - 80:8080
-      - 443:8443
-      - 4000:4000
+      - "4001:4001"
+    environment:
+      - DATABASE_URL=db
+    depends_on:
+      - db
     volumes:
-      - ./certs:/certs
-      - ./uploads:/app/uploads
+      - type: bind
+        source: .
+        target: /app
