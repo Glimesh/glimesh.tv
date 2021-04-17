@@ -53,7 +53,7 @@ defmodule GlimeshWeb.Api.ChannelTest do
       }
     end
 
-    test "returns a channel", %{conn: conn, user: user, channel: channel} do
+    test "returns a channel", %{conn: conn, user: user} do
       conn = post(conn, "/api", %{
         "query" => @channel_query,
         "variables" => %{username: user.username}
