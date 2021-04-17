@@ -76,34 +76,6 @@ defmodule GlimeshWeb.Api.ChannelTest do
           }
         }
       }
-
-      {:ok, channel} = Streams.update_channel(user, channel, %{
-        mature_content: true
-      })
-
-      conn = post(conn, "/api", %{
-        "query" => @channel_query,
-        "variables" => %{username: user.username}
-      })
-
-      assert json_response(conn, 200) == %{
-        "data" => %{
-          "channel" => %{
-            "title" => "Live Stream!",
-            "streamer" => %{"username" => user.username},
-            "mature_content" => true,
-            "subcategory" => %{
-              "name" => "World of Warcraft"
-            },
-            "tags" => [
-              %{
-                "name" => "Chill Stream"
-              }
-            ]
-          }
-        }
-      }
-
     end
   end
 
