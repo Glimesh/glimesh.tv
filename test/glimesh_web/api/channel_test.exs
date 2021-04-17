@@ -81,6 +81,11 @@ defmodule GlimeshWeb.Api.ChannelTest do
         mature_content: true
       })
 
+      conn = post(conn, "/api", %{
+        "query" => @channel_query,
+        "variables" => %{username: user.username}
+      })
+
       assert json_response(conn, 200) == %{
         "data" => %{
           "channel" => %{
