@@ -11,6 +11,7 @@ defmodule GlimeshWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
+    plug GlimeshWeb.Plugs.Floc
     plug GlimeshWeb.Plugs.Locale
     plug GlimeshWeb.Plugs.CfCountryPlug
     plug GlimeshWeb.Plugs.Ban
