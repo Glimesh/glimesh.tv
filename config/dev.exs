@@ -85,6 +85,9 @@ config :phoenix, :stacktrace_depth, 20
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
 
+# Loads only the English and Spanish locales for development, which speeds up compilation time
+config :glimesh, GlimeshWeb.Gettext, allowed_locales: ["en", "es"]
+
 if File.exists?("config/local.exs") do
   import_config "local.exs"
 end
