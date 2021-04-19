@@ -6,6 +6,8 @@ defmodule GlimeshWeb.UserSettingsController do
   alias Glimesh.ChannelLookups
   alias Glimesh.Streams
   alias GlimeshWeb.UserAuth
+  alias Glimesh.ChannelStatistics
+
 
   plug :put_layout, "user-sidebar.html"
 
@@ -31,6 +33,10 @@ defmodule GlimeshWeb.UserSettingsController do
 
   def notifications(conn, _params) do
     render(conn, "notifications.html", page_title: format_page_title(gettext("Notifications")))
+  end
+
+  def channel_statistics(conn, _params) do
+    render(conn, "channel_statistics.html", page_title: format_page_title(gettext("Channel Statistics")))
   end
 
   def update_preference(conn, %{"user_preference" => params}) do
