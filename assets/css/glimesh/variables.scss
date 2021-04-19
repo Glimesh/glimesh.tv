@@ -128,22 +128,3 @@ $table-border-color: var(--secondary-hover-bg-color);
 // Modals
 $modal-content-bg: var(--secondary-bg-color);
 $close-color: var(--secondary-color);
-
-// Navbar
-.navbar {
-    background-color: var(--navbar-bg-color);
-    border-color: var(--navbar-border-color);
-    color: var(--navbar-color);
-    background: none !important;
-    margin-top: 20px !important;
-
-
-
-    a {
-        color: var(--navbar-color);
-    }
-
-    .navbar-toggler {
-        color: var(--body-color);
-    }
-}

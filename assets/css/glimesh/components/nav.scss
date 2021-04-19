@@ -15,3 +15,25 @@
         border-radius: 25px;
     }
 }
+
+// Navbar
+.navbar {
+    background-color: var(--navbar-bg-color);
+    border-color: var(--navbar-border-color);
+    color: var(--navbar-color);
+    background: none !important;
+    margin-top: 20px !important;
+    margin-right: 5% !important;
+
+    @media screen and (max-width: 880px) {
+        padding: 0 !important;
+    }
+
+    a {
+        color: var(--navbar-color);
+    }
+
+    .navbar-toggler {
+        color: var(--body-color);
+    }
+}

@@ -159,7 +159,7 @@ input#channel_title {
 
 #streamInfo {
     overflow: auto;
-    @media (max-width: 992px) {
+    @media (max-width: 991px) {
         order: 1;
     }
 }
@@ -171,7 +171,7 @@ input#channel_title {
 }
 
 #video-card {
-    @media (max-width: 992px) {
+    @media (max-width: 991px) {
         order: 2;
     }
 }
