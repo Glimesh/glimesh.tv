@@ -134,17 +134,17 @@ input#channel_title {
 }
 
 .mobile-margin >.row {
-    /* too much blank space?
+    /* too much blank space?*/
     @media (min-width: 992px) {
         margin-right: 5% !important;
         margin-left: 5% !important;
-    }*/
+    }
 
     #chat-column {
         @media (max-width: 768px) {
             margin-left: 0.5%;
             margin-right: 0.5%;
-            margin-top: 1rem;
+            margin-top: 0.7rem;
             #chat-messages {
                 border-radius: 0px;
             }
@@ -152,8 +152,21 @@ input#channel_title {
     }
 }
 
-.mobile-margin >.user-content-body {
+#streamInfo {
+    overflow: auto;
+    @media (max-width: 992px) {
+        order: 1;
+    }
+}
+
+#streamInfoBasics {
     @media (max-width: 768px) {
-        margin-top: 1.5rem;
+        display: initial !important;
+    }
+}
+
+#video-card {
+    @media (max-width: 992px) {
+        order: 2;
     }
 }

@@ -1,9 +1,9 @@
 <div class="container-fluid container-stream mobile-margin">
     <div class="row mt-lg-3">
 
-        <div id="video-column" class="col-lg-9 layout-spacing">
+        <div id="video-column" class="col-lg-9 layout-spacing" style="display:flex;flex-direction:column-reverse;">
             <div class="card">
-                <div class="card-body p-0 p-md-1">
+                <div class="card-body p-0 p-md-1" id="video-card">
                     <%= if @prompt_mature do %>
                     <div class="jumbotron jumbotron-fluid jumbotron-mature-content mb-0">
                         <div class="container p-5">
@@ -38,15 +38,15 @@
                     </div>
                     <% end %>
                 </div>
-                <div class="card-footer p-1 d-none d-sm-block" id="streamInfo">
+                <div class="card-footer p-1 d-sm-block" id="streamInfo">
                 <div id="streamer-avatar">
                     <a href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
-                    <img src="<%= Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)%>" alt="<%= @channel.user.displayname %>" width="142" height="142" class="img-avatar mr-2 float-left <%= if Glimesh.Accounts.can_receive_payments?(@channel.user), do: "img-verified-streamer", else: "" %>">
+                    <img src="<%= Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)%>" alt="<%= @channel.user.displayname %>" width="142" height="142" id="channelAvatar" class="img-avatar mr-2 float-left <%= if Glimesh.Accounts.can_receive_payments?(@channel.user), do: "img-verified-streamer", else: "" %>">
                     </a>
                 </div>
 
                     <div class="row">
-                        <div class="col-8 d-inline-flex align-items-center">
+                        <div class="col-8 d-inline-flex align-items-center" id="streamInfoBasics">
                             <a title="<%= gettext("View Profile") %>" class="<%= Glimesh.Chat.Effects.get_username_color(@channel.user) %>" href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
                                 <h3 class="mb-0"><%= @channel.user.displayname %></h3>
                             </a>
@@ -70,7 +70,7 @@
                         </div>
                 <div class="card-header p-1">
                     <div class="row">
-                        <div class="col align-self-center d-block text-truncate">
+                        <div class="col align-self-center d-block text-truncate" style="overflow:auto">
                             <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
                         </div>
                         <div class="col-auto">
@@ -153,7 +153,7 @@ updated_at: <%= @stream_metadata.updated_at %>
 
         <div id="chat-column" class="col-lg-3 d-flex flex-column position-relative layout-spacing">
             <div class="chat-flex">
-                <div class="chat-absolute">
+                <div class="chat-absolute" style="display:flex;flex-direction:column-reverse;">
                     <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id} %>
                 </div>
             </div>
