@@ -120,6 +120,11 @@ div#chat-column {
     }
 }
 
+.chat-absolute::-webkit-scrollbar {
+        display: none !important;
+}
+
+
 @media (max-width: 768px) {
     .btn-responsive {
         padding: 2px 4px;

@@ -37,6 +37,10 @@
         --chat-bg-image: url('/images/bg.png');
         background-image: var(--chat-bg-image);
 
+        ::-webkit-scrollbar {
+            display: none !important;
+        }
+
         .channel-header {
             align-self: center;
             margin-top: 15px;
