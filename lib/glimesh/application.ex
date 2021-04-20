@@ -37,6 +37,7 @@ defmodule Glimesh.Application do
     ]
 
     GlimeshWeb.ApiLogger.start_logger()
+    Application.ensure_all_started(:appsignal)
 
     children =
       if start_workers or !is_nil(Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:server]) do
