@@ -59,6 +59,7 @@ defmodule GlimeshWeb.ChatLive.Index do
         |> assign(:show_timestamps, user_preferences.show_timestamps)
         |> assign(:show_mod_icons, user_preferences.show_mod_icons)
         |> assign(:user_preferences, user_preferences)
+        |> assign(:popped_out, session["popped_out"])
 
       {:ok, new_socket, temporary_assigns: [chat_messages: []]}
     end)

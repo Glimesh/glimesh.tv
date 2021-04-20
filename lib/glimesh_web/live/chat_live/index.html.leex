@@ -6,7 +6,7 @@
     <div id="<%= chat_message.id %>" data-user-id="<%= chat_message.user.id %>" class="<%=if Glimesh.Chat.Effects.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>
         <%= if chat_message.is_subscription_message, do: "bg-secondary" %>
         <%= if chat_message.is_followed_message, do: "border border-info" %>">
-        <div class="user-message-header d-inline d-md-block">
+        <div class="user-message-header <%= unless @popped_out, do: 'd-inline d-md-block'%>">
             <%= if Map.get(@permissions, :can_delete, false)  do %>
             <i class="delete-message fas fa-trash fa-fw chat-mod-icon" phx-click="delete_message" phx-value-user="<%= chat_message.user.username %>" phx-value-message="<%= chat_message.id %>" data-toggle="tooltip" title="<%= gettext("Delete message.") %>"></i>
             <% end %>
@@ -23,14 +23,14 @@
             <%= Glimesh.Chat.Effects.render_global_badge(chat_message.user) %>
             <%= Glimesh.Chat.Effects.render_channel_badge(@channel, chat_message.user) %>
 
-            <%= Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %><span class="d-inline d-md-none">:</span>
+            <%= Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %><%= unless @popped_out do%><span class="d-inline d-md-none">:</span><% end %>
             <% end %>
             <small id="small-<%= chat_message.id %>" class="text-muted chat-timestamp">
                 <local-time id="timestamp-<%= chat_message.id %>" phx-update="ignore" datetime="<%= "#{chat_message.inserted_at}" <> "Z" %>" format="micro" hour="numeric" minute="2-digit" second="2-digit"><%= NaiveDateTime.to_time(chat_message.inserted_at) %>
                 </local-time>
             </small>
         </div>
-        <div class="user-message d-inline d-md-block">
+        <div class="user-message <%= unless @popped_out, do: 'd-inline d-md-block'%>">
             <%= if chat_message.is_followed_message or chat_message.is_subscription_message, do: Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %>
             <%= raw(Glimesh.Chat.Renderer.render(chat_message.tokens)) %>
         </div>
