@@ -75,6 +75,9 @@
                             </a>
 
                             <span class="badge badge-pill badge-info ml-2"><%= Glimesh.Streams.get_channel_language(@channel) %></span>
+                            <%= if @channel.mature_content do %>
+                                <span class="badge badge-pill badge-warning ml-2"><%= gettext("Mature") %></span>
+                            <%= end %>
 
                             <%= live_render(@socket, GlimeshWeb.UserLive.Components.SocialButtons, id: "social-buttons", container: {:ul, class: "list-inline ml-2 mb-0"}, session: %{"user_id" => @streamer.id}) %>
                         </div>
