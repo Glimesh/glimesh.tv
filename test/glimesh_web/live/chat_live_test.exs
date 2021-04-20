@@ -50,7 +50,7 @@ defmodule GlimeshWeb.ChatLiveTest do
     test "can post a chat message", %{conn: conn, channel: channel, user: user} do
       {:ok, view, _html} =
         live_isolated(conn, GlimeshWeb.ChatLive.Index,
-          session: %{"user" => user, "channel_id" => channel.id}
+          session: %{"user" => user, "channel_id" => channel.id, "popped_out" => false}
         )
 
       view
@@ -80,7 +80,7 @@ defmodule GlimeshWeb.ChatLiveTest do
     } do
       {:ok, view, _html} =
         live_isolated(conn, GlimeshWeb.ChatLive.Index,
-          session: %{"user" => user, "channel_id" => channel.id}
+          session: %{"user" => user, "channel_id" => channel.id, "popped_out" => false}
         )
 
       # We want to test an async platform ban where the user's session is not rejected
@@ -101,7 +101,7 @@ defmodule GlimeshWeb.ChatLiveTest do
     } do
       {:ok, view, _html} =
         live_isolated(conn, GlimeshWeb.ChatLive.Index,
-          session: %{"user" => user, "channel_id" => channel.id}
+          session: %{"user" => user, "channel_id" => channel.id, "popped_out" => false}
         )
 
       # We want to test an async platform ban where the user's session is not rejected
@@ -126,7 +126,7 @@ defmodule GlimeshWeb.ChatLiveTest do
 
       {:ok, view, _html} =
         live_isolated(conn, GlimeshWeb.ChatLive.Index,
-          session: %{"user" => streamer, "channel_id" => channel.id}
+          session: %{"user" => streamer, "channel_id" => channel.id, "popped_out" => false}
         )
 
       target = "##{chat_message.id} > div.user-message-header > i.short-timeout"
@@ -147,7 +147,7 @@ defmodule GlimeshWeb.ChatLiveTest do
 
       {:ok, view, _html} =
         live_isolated(conn, GlimeshWeb.ChatLive.Index,
-          session: %{"user" => streamer, "channel_id" => channel.id}
+          session: %{"user" => streamer, "channel_id" => channel.id, "popped_out" => false}
         )
 
       target = "##{chat_message.id} > div.user-message-header > i.long-timeout"
@@ -168,7 +168,7 @@ defmodule GlimeshWeb.ChatLiveTest do
 
       {:ok, view, _html} =
         live_isolated(conn, GlimeshWeb.ChatLive.Index,
-          session: %{"user" => streamer, "channel_id" => channel.id}
+          session: %{"user" => streamer, "channel_id" => channel.id, "popped_out" => false}
         )
 
       target = "##{chat_message.id} > div.user-message-header > i.ban"
@@ -189,7 +189,7 @@ defmodule GlimeshWeb.ChatLiveTest do
 
       {:ok, view, _html} =
         live_isolated(conn, GlimeshWeb.ChatLive.Index,
-          session: %{"user" => streamer, "channel_id" => channel.id}
+          session: %{"user" => streamer, "channel_id" => channel.id, "popped_out" => false}
         )
 
       target = "##{chat_message.id} > div.user-message-header > i.delete-message"
@@ -209,7 +209,7 @@ defmodule GlimeshWeb.ChatLiveTest do
 
       {:ok, view, _html} =
         live_isolated(conn, GlimeshWeb.ChatLive.Index,
-          session: %{"user" => user, "channel_id" => channel.id}
+          session: %{"user" => user, "channel_id" => channel.id, "popped_out" => false}
         )
 
       assert render(view) =~ "Show Timestamps"
@@ -227,7 +227,7 @@ defmodule GlimeshWeb.ChatLiveTest do
 
       {:ok, view, _html} =
         live_isolated(conn, GlimeshWeb.ChatLive.Index,
-          session: %{"user" => user, "channel_id" => channel.id}
+          session: %{"user" => user, "channel_id" => channel.id, "popped_out" => false}
         )
 
       assert render(view) =~ "Hide Mod Icons"
