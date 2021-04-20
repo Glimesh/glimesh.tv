@@ -15,11 +15,11 @@
                 <div class="card-body mx-2">
                     <%= form_for @conn, Routes.gct_path(@conn, :username_lookup), [multipart: true, class: "form", method: :get], fn f -> %>
                         <div class="row">
-                            <%= label f, gettext("Lookup User") %>
+                            <%= label f, gettext("Lookup User"), class: "ml-3" %>
                             <%= search_input f, :query, [class: "form-control", placeholder: gettext("Email/Username/User ID")] %>
                         </div>
                         <div class="row">
-                            <%= submit gettext("Search"), class: "btn btn-primary mt-1" %>
+                            <%= submit gettext("Search"), class: "btn btn-primary mt-2 ml-2" %>
                         </div>
                     <% end %>
                 </div>
@@ -30,11 +30,11 @@
                 <div class="card-body mx-2">
                     <%= form_for @conn, Routes.gct_path(@conn, :channel_lookup), [multipart: true, class: "form", method: :get], fn f -> %>
                         <div class="row">
-                            <%= label f, gettext("Lookup Channel") %>
+                            <%= label f, gettext("Lookup Channel"), class: "ml-3" %>
                             <%= search_input f, :query, [class: "form-control", placeholder: gettext("Username/Channel ID")] %>
                         </div>
                         <div class="row">
-                            <%= submit gettext("Search"), class: "btn btn-primary mt-1" %>
+                            <%= submit gettext("Search"), class: "btn btn-primary mt-2 ml-2" %>
                         </div>
                     <% end %>
                 </div>
