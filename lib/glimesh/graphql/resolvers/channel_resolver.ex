@@ -1,8 +1,6 @@
 defmodule Glimesh.Resolvers.ChannelResolver do
   @moduledoc false
 
-  use Appsignal.Instrumentation.Decorators
-
   alias Glimesh.Accounts
   alias Glimesh.Accounts.User
   alias Glimesh.ChannelCategories
@@ -62,31 +60,33 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   def find_channel(_, _), do: {:error, @error_not_found}
 
   # Streams
-  @decorate transaction_event()
   def start_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
-    with %Glimesh.Streams.Channel{} = channel <- ChannelLookups.get_channel(channel_id),
-         {:ok, channel} <- Streams.start_stream(channel) do
-      {:ok, channel}
-    else
-      nil ->
-        {:error, @error_not_found}
+    Appsignal.instrument("start_stream", fn ->
+      with %Glimesh.Streams.Channel{} = channel <- ChannelLookups.get_channel(channel_id),
+           {:ok, channel} <- Streams.start_stream(channel) do
+        {:ok, channel}
+      else
+        nil ->
+          {:error, @error_not_found}
 
-      {:error, _} ->
-        {:error, "User is unauthorized to start a stream."}
-    end
+        {:error, _} ->
+          {:error, "User is unauthorized to start a stream."}
+      end
+    end)
   end
 
   def start_stream(_parent, _args, _resolution) do
     {:error, @error_access_denied}
   end
 
-  @decorate transaction_event()
   def end_stream(_parent, %{stream_id: stream_id}, %{context: %{is_admin: true}}) do
-    if stream = Streams.get_stream(stream_id) do
-      Streams.end_stream(stream)
-    else
-      {:error, @error_not_found}
-    end
+    Appsignal.instrument("end_stream", fn ->
+      if stream = Streams.get_stream(stream_id) do
+        Streams.end_stream(stream)
+      else
+        {:error, @error_not_found}
+      end
+    end)
   end
 
   def end_stream(_parent, _args, %{context: %{is_admin: true}}) do
@@ -97,40 +97,42 @@ defmodule Glimesh.Resolvers.ChannelResolver do
     {:error, @error_access_denied}
   end
 
-  @decorate transaction_event()
   def log_stream_metadata(_parent, %{stream_id: stream_id, metadata: metadata}, %{
         context: %{is_admin: true}
       }) do
-    if stream = Streams.get_stream(stream_id) do
-      if is_nil(stream.ended_at) do
-        Streams.log_stream_metadata(stream, metadata)
+    Appsignal.instrument("log_stream_metadata", fn ->
+      if stream = Streams.get_stream(stream_id) do
+        if is_nil(stream.ended_at) do
+          Streams.log_stream_metadata(stream, metadata)
+        else
+          {:error, "Stream has ended"}
+        end
       else
-        {:error, "Stream has ended"}
+        {:error, @error_not_found}
       end
-    else
-      {:error, @error_not_found}
-    end
+    end)
   end
 
   def log_stream_metadata(_parent, _args, _resolution) do
     {:error, @error_access_denied}
   end
 
-  @decorate transaction_event()
   def upload_stream_thumbnail(_parent, %{stream_id: stream_id, thumbnail: thumbnail}, %{
         context: %{is_admin: true}
       }) do
-    with %Streams.Stream{} = stream <- Streams.get_stream(stream_id),
-         {:ok, stream} <- Streams.update_stream(stream, %{thumbnail: thumbnail}) do
-      {:ok, stream}
-    else
-      nil ->
-        {:error, @error_not_found}
+    Appsignal.instrument("upload_stream_thumbnail", fn ->
+      with %Streams.Stream{} = stream <- Streams.get_stream(stream_id),
+           {:ok, stream} <- Streams.update_stream(stream, %{thumbnail: thumbnail}) do
+        {:ok, stream}
+      else
+        nil ->
+          {:error, @error_not_found}
 
-      {:upload_exit, _} ->
-        # Whenever a DO Spaces error occurs, it throws back an error absinthe can't natively process
-        {:error, "Error uploading thumbnail"}
-    end
+        {:upload_exit, _} ->
+          # Whenever a DO Spaces error occurs, it throws back an error absinthe can't natively process
+          {:error, "Error uploading thumbnail"}
+      end
+    end)
   end
 
   def upload_stream_thumbnail(_parent, _args, _resolution) do
