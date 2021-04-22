@@ -90,7 +90,7 @@
                                     <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
                                         <%= if channel.mature_content do %>
                                             <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
-                                        <%= end %>
+                                        <% end %>
                                     </p>
                                 </div>
                             </div>
