@@ -60,7 +60,7 @@ defmodule GlimeshWeb.UserResetPasswordControllerTest do
 
     test "renders reset password", %{conn: conn, token: token} do
       conn = get(conn, Routes.user_reset_password_path(conn, :edit, token))
-      assert html_response(conn, 200) =~ "<h1>Reset password</h1>"
+      assert html_response(conn, 200) =~ "<h3>Reset password</h3>"
     end
 
     test "does not render reset password with invalid token", %{conn: conn} do
@@ -105,7 +105,7 @@ defmodule GlimeshWeb.UserResetPasswordControllerTest do
         })
 
       response = html_response(conn, 200)
-      assert response =~ "<h1>Reset password</h1>"
+      assert response =~ "<h3>Reset password</h3>"
       assert response =~ "should be at least 8 character(s)"
       assert response =~ "Password does not match"
     end
