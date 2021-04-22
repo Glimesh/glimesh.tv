@@ -10,7 +10,12 @@ defmodule Glimesh.Repo.Migrations.AddChatTokens do
 
     flush()
 
-    channels = Glimesh.Repo.all(Glimesh.ChannelLookups.list_channels())
+    channels =
+      Glimesh.Repo.all(
+        from(u in "channels",
+          select: %Glimesh.Streams.Channel{id: u.id, disable_hyperlinks: u.disable_hyperlinks}
+        )
+      )
 
     Enum.each(channels, fn channel ->
       chat_messages =

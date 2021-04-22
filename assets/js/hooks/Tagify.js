@@ -2,30 +2,54 @@ import Tagify from '@yaireo/tagify';
 
 export default {
     updated() {
-        console.log("Updated");
-        let tagify = this.tagify();
-        tagify.removeAllTags();
+        // Whenever the parent DOM changes, it's likely because a category ID 
+        // change happened, which means we want to start over.
+        this.mounted();
     },
     mounted() {
-        this.tagify();
+        let parent = this;
+        let tagify = this.tagify();
+
+        parent.handleEvent(this.el.dataset.suggestionsEvent, ({value, results}) => {
+            tagify.settings.whitelist.splice(0, results.length, ...results);
+
+            tagify.loading(false).dropdown.show.call(tagify, value);
+        });
+
+        tagify.on('input', function(e) {
+            var value = e.detail.value;
+
+            tagify.settings.whitelist.length = 0; // reset the whitelist
+            tagify.loading(true).dropdown.hide.call(tagify);
+
+            // Target the DOM selector ID to get to the child component
+            parent.pushEventTo(`#${parent.el.id}`, "suggest", { value: value });
+        });
     },
     tagify() {
-        let tags = JSON.parse(this.el.dataset.tags);
         let categoryId = this.el.dataset.category;
-        let allowedRegex = /^[A-Za-z0-9: -]{2,18}$/;
+        let allowedCreateRegex = new RegExp(this.el.dataset.createRegex);
+        let allowEdit = (this.el.dataset.allowEdit == "true" ? true : false);
+        let whitelist = [];
+        if (this.el.value) {
+            whitelist.push({value: this.el.value});
+        }
 
         return new Tagify(this.el, {
-            whitelist: tags,
+            whitelist: whitelist,
             trim: true,
-            maxTags: 10,
+            enforceWhitelist: !allowEdit,
+            editTags: allowEdit,
+            maxTags: parseInt(this.el.dataset.maxOptions),
             originalInputValueFormat: (valuesArr) => {
                 return JSON.stringify(
                     valuesArr.map(item => {
                         return {
-                        category_id: categoryId,
-                        value: item.value
-                    }
-                }));
+                            category_id: categoryId,
+                            value: item.value
+                        }
+                    })
+                );
             },
             templates: {
                 tag: function(tagData) {
@@ -51,9 +75,14 @@ export default {
                     }
                 }
             },
-            validate: function({value: input}) {
-                if ( ! allowedRegex.test(input)) {
-                    return "Tags must be alphanumerical and may contain colon's, spaces, and dashes. Min length 2, Max length 18";
+            validate: function( {value: input}) {
+                let parsedWhitelist = this.whitelist.map(({value: v}) => v);
+                if (parsedWhitelist.includes(input)) {
+                    return true;
+                }
+
+                if (allowEdit && allowedCreateRegex.test(input) === false) {
+                    return "Must be alphanumerical and may contain colon's, spaces, and dashes.";
                 }
 
                 return true;

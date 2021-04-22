@@ -65,6 +65,16 @@ defmodule GlimeshWeb.Router do
       socket_url: {__MODULE__, :graphiql_socket_url}
   end
 
+  scope "/apinext" do
+    pipe_through :graphql
+
+    forward "/", Glimesh.Plug.GraphiQL,
+      schema: Glimesh.SchemaNext,
+      socket: GlimeshWeb.ApiSocket,
+      default_url: {__MODULE__, :graphiql_default_url},
+      socket_url: {__MODULE__, :graphiql_socket_url}
+  end
+
   ## Authentication routes
 
   scope "/", GlimeshWeb do
@@ -174,6 +184,7 @@ defmodule GlimeshWeb.Router do
     get "/lookup/user", GctController, :username_lookup
     get "/lookup/channel", GctController, :channel_lookup
     get "/lookup/channel/:channel_id/chat", GctController, :channel_chat_log
+    get "/lookup/user/:user_id/chat", GctController, :user_chat_log
 
     # Editing profile scopes
     get "/edit/profile/:username", GctController, :edit_user_profile
@@ -215,6 +226,8 @@ defmodule GlimeshWeb.Router do
     get "/blog/:slug", ArticleController, :show
 
     live "/", HomepageLive, :index
+    live "/streams", StreamsLive.Index, :index
+    live "/streams/following", StreamsLive.Following, :index
     live "/streams/:category", StreamsLive.List, :index
 
     live "/users", UserLive.Index, :index

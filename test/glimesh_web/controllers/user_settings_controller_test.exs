@@ -114,6 +114,70 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
       assert response =~ "Digital Media"
       assert response =~ "some name"
     end
+
+    test "handles no subcategory", %{conn: conn} do
+      channel_conn =
+        put(conn, Routes.user_settings_path(conn, :update_channel), %{
+          "channel" => %{
+            "subcategory" => ""
+          }
+        })
+
+      assert redirected_to(channel_conn) == Routes.user_settings_path(conn, :stream)
+      assert get_flash(channel_conn, :info) =~ "Stream settings updated successfully"
+
+      response = html_response(get(conn, Routes.user_settings_path(conn, :stream)), 200)
+      refute response =~ "Some Subcategory"
+    end
+
+    test "puts subcategories", %{conn: conn, channel: channel} do
+      input =
+        Jason.encode!([
+          %{category_id: channel.category_id, value: "Some Subcategory"}
+        ])
+
+      channel_conn =
+        put(conn, Routes.user_settings_path(conn, :update_channel), %{
+          "channel" => %{
+            "subcategory" => input
+          }
+        })
+
+      assert redirected_to(channel_conn) == Routes.user_settings_path(conn, :stream)
+      assert get_flash(channel_conn, :info) =~ "Stream settings updated successfully"
+
+      response = html_response(get(conn, Routes.user_settings_path(conn, :stream)), 200)
+      assert response =~ "Some Subcategory"
+    end
+
+    test "using an existing subcategory doesn't recreate it", %{conn: conn, channel: channel} do
+      {:ok, existing_sub} =
+        Glimesh.ChannelCategories.create_subcategory(%{
+          category_id: channel.category_id,
+          name: "Some Subcategory"
+        })
+
+      input =
+        Jason.encode!([
+          %{category_id: channel.category_id, value: "Some Subcategory"}
+        ])
+
+      channel_conn =
+        put(conn, Routes.user_settings_path(conn, :update_channel), %{
+          "channel" => %{
+            "subcategory" => input
+          }
+        })
+
+      assert redirected_to(channel_conn) == Routes.user_settings_path(conn, :stream)
+      assert get_flash(channel_conn, :info) =~ "Stream settings updated successfully"
+
+      response = html_response(get(conn, Routes.user_settings_path(conn, :stream)), 200)
+      assert response =~ "Some Subcategory"
+
+      new_channel = Glimesh.ChannelLookups.get_channel(channel.id)
+      assert new_channel.subcategory.id == existing_sub.id
+    end
   end
 
   describe "PUT /users/settings/update_profile" do

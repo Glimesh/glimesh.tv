@@ -15,6 +15,11 @@ $tags-focus-border-color : var(--input-border-color);
 }
 
 .tagify__input {
+    &:empty:before {
+        white-space: break-spaces;
+        overflow: hidden;
+    }
+
     &:focus {
         &:empty {
             &::before {

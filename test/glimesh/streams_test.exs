@@ -6,6 +6,7 @@ defmodule Glimesh.StreamsTest do
   alias Glimesh.AccountFollows
   alias Glimesh.ChannelLookups
   alias Glimesh.Streams
+  alias Glimesh.Repo
 
   describe "followers" do
     def followers_fixture do
@@ -52,6 +53,45 @@ defmodule Glimesh.StreamsTest do
 
       AccountFollows.follow(streamer, user)
       assert {:error, %Ecto.Changeset{}} = AccountFollows.follow(streamer, user)
+    end
+
+    test "list_all_follows/0 successfully returns data" do
+      streamer = streamer_fixture()
+      user = user_fixture()
+      AccountFollows.follow(streamer, user)
+
+      follows =
+        AccountFollows.list_all_follows()
+        |> Repo.all()
+        |> Repo.preload(:user)
+
+      assert Enum.map(follows, fn x -> x.user.username end) == [user.username]
+    end
+
+    test "list_followers/1 successfully returns data" do
+      streamer = streamer_fixture()
+      user = user_fixture()
+      AccountFollows.follow(streamer, user)
+
+      follows =
+        AccountFollows.list_followers(streamer)
+        |> Repo.all()
+        |> Repo.preload(:user)
+
+      assert Enum.map(follows, fn x -> x.user.username end) == [user.username]
+    end
+
+    test "list_following/1 successfully returns data" do
+      streamer = streamer_fixture()
+      user = user_fixture()
+      AccountFollows.follow(streamer, user)
+
+      follows =
+        AccountFollows.list_following(user)
+        |> Repo.all()
+        |> Repo.preload(:user)
+
+      assert Enum.map(follows, fn x -> x.user.username end) == [user.username]
     end
   end
 
@@ -132,6 +172,21 @@ defmodule Glimesh.StreamsTest do
       assert stream.id == new_channel.stream_id
       assert stream.category_id == new_channel.category_id
       assert new_channel.status == "live"
+    end
+
+    test "start_stream/1 stores subcategory", %{channel: channel} do
+      subcategory = subcategory_fixture()
+
+      {:ok, channel} =
+        channel
+        |> Glimesh.Repo.preload(:subcategory)
+        |> Ecto.Changeset.change()
+        |> Ecto.Changeset.put_assoc(:subcategory, subcategory)
+        |> Glimesh.Repo.update()
+
+      {:ok, stream} = Streams.start_stream(channel)
+
+      assert stream.subcategory_id == subcategory.id
     end
 
     test "start_stream/1 stores historical tags", %{channel: channel} do

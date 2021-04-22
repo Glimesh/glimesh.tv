@@ -102,19 +102,68 @@
             <%= error_tag f, :category_id %>
         </div>
         <div class="form-group">
-            <%= label f, gettext("Tags") %>
-            <%= live_component(@socket, GlimeshWeb.UserLive.Components.TagSelector, form: f, field: :tags, category_id: @current_category_id) %>
-            <%= error_tag f, :tags %>
+            <%= label f, :subcategory, @subcategory_label %>
+            <%= live_component(
+                @socket,
+                GlimeshWeb.TagifyComponent,
+                id: "category-selector",
+                form: f, field: :subcategory,
+                max_options: 1,
+                allow_edit: "true",
+                create_regex: "^[A-Za-z0-9: -]{2,40}$",
+                value: @existing_subcategory,
+                placeholder: @subcategory_placeholder,
+                category: @category,
+                search_func: &search_categories/2
+            )
+            %>
+            <p><%= @subcategory_attribution %></p>
+            <%= error_tag f, :subcategory %>
         </div>
         <div class="form-group">
-            <%= label f, gettext("Should links automatically be clickable?") %>
+            <%= label f, :tags, gettext("Tags") %>
+            <%= live_component(
+                @socket,
+                GlimeshWeb.TagifyComponent,
+                id: "tag-selector",
+                form: f, field: :tags,
+                value: @existing_tags,
+                placeholder: gettext("Search for tags to describe your stream"),
+                max_options: 10,
+                create_regex: "^[A-Za-z0-9: -]{2,18}$",
+                allow_edit: "true",
+                category: @category,
+                search_func: &search_tags/2
+            )
+            %>
+            <%= error_tag f, :tags %>
+        </div>
+        <h3 class="mt-4"><%= gettext("Chat Safety") %></h3>
+        <div class="form-group">
+            <%= label f, :disable_hyperlinks, gettext("Should links automatically be clickable?") %>
             <%= select f, :disable_hyperlinks, [Yes: false, No: true], [class: "form-control", disabled: @channel.block_links] %>
             <%= error_tag f, :disable_hyperlinks %>
         </div>
         <div class="form-group">
-            <%= label f, gettext("Block viewers from posting links?") %>
+            <%= label f, :block_links, gettext("Block viewers from posting links?") %>
             <%= select f, :block_links, [Yes: true, No: false],[class: "form-control"] %>
             <%= error_tag f, :block_links %>
+        </div>
+        <div class="form-group">
+            <%= label f, :require_confirmed_email, gettext("Require confirmed email before chatting?") %>
+            <%= select f, :require_confirmed_email, [Yes: true, No: false], [class: "form-control"] %>
+            <%= error_tag f, :require_confirmed_email %>
+        </div>
+        <div class="form-group">
+            <%= label f, :minimum_account_age, gettext("Require minimum account length before chatting?") %>
+            <div class="input-group mb-3">
+                <%= number_input f, :minimum_account_age, [class: "form-control", min: "0", max: "720"] %>
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2"><%= gettext("Hours") %></span>
+                </div>
+            </div>
+            <small class="form-text text-muted"><%= gettext("How many hours should the account exist before they can chat? Set to zero to disable.") %></small>
+            <%= error_tag f, :minimum_account_age %>
         </div>
     </div>
 </div>

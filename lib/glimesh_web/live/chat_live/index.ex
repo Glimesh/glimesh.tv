@@ -51,7 +51,7 @@ defmodule GlimeshWeb.ChatLive.Index do
         |> assign(:update_action, "replace")
         |> assign(:channel, channel)
         |> assign(:user, session["user"])
-        |> assign(:theme, session["site_theme"])
+        |> assign(:theme, Map.get(session, "site_theme", "dark"))
         |> assign(:permissions, Chat.get_moderator_permissions(channel, session["user"]))
         |> assign(:chat_messages, list_chat_messages(channel))
         |> assign(:chat_message, %ChatMessage{})
@@ -67,7 +67,7 @@ defmodule GlimeshWeb.ChatLive.Index do
     Chat.short_timeout_user(
       socket.assigns.user,
       socket.assigns.channel,
-      Accounts.get_by_username!(to_ban_user)
+      Accounts.get_by_username!(to_ban_user, true)
     )
 
     {:noreply, socket}
@@ -78,7 +78,7 @@ defmodule GlimeshWeb.ChatLive.Index do
     Chat.long_timeout_user(
       socket.assigns.user,
       socket.assigns.channel,
-      Accounts.get_by_username!(to_ban_user)
+      Accounts.get_by_username!(to_ban_user, true)
     )
 
     {:noreply, socket}
@@ -89,7 +89,7 @@ defmodule GlimeshWeb.ChatLive.Index do
     Chat.ban_user(
       socket.assigns.user,
       socket.assigns.channel,
-      Accounts.get_by_username!(to_ban_user)
+      Accounts.get_by_username!(to_ban_user, true)
     )
 
     {:noreply, assign(socket, :chat_messages, list_chat_messages(socket.assigns.channel))}

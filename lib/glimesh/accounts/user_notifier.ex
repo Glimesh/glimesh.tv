@@ -99,11 +99,12 @@ defmodule Glimesh.Accounts.UserNotifier do
   @doc """
   Send a user report alert to an admin
   """
-  def deliver_user_report_alert(reporting_user, reported_user, reason, notes) do
+  def deliver_user_report_alert(reporting_user, reported_user, reason, location, notes) do
     admins = Glimesh.Accounts.list_admins()
 
     for admin <- admins do
-      email = Email.user_report_alert(admin, reporting_user, reported_user, reason, notes)
+      email =
+        Email.user_report_alert(admin, reporting_user, reported_user, reason, location, notes)
 
       Mailer.deliver_later(email)
       |> log_bamboo_delivery(

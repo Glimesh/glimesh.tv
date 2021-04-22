@@ -3,6 +3,7 @@ defmodule Glimesh.Resolvers.ChatResolver do
 
   use Appsignal.Instrumentation.Decorators
 
+  alias Glimesh.Accounts
   alias Glimesh.Chat
 
   @decorate transaction_event()
@@ -13,8 +14,10 @@ defmodule Glimesh.Resolvers.ChatResolver do
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Resolvers.Scopes, :chat, ua) do
       channel = Glimesh.ChannelLookups.get_channel!(channel_id)
+      # Force a refresh of the user just in case they are platform banned
+      user = Accounts.get_user!(ua.user.id)
 
-      Chat.create_chat_message(ua.user, channel, message_obj)
+      Chat.create_chat_message(user, channel, message_obj)
     end
   end
 
@@ -49,8 +52,8 @@ defmodule Glimesh.Resolvers.ChatResolver do
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Resolvers.Scopes, :chat, ua) do
       channel = Glimesh.ChannelLookups.get_channel!(channel_id)
-      moderator = ua.user
-      user = Glimesh.Accounts.get_user!(user_id)
+      moderator = Accounts.get_user!(ua.user.id)
+      user = Accounts.get_user!(user_id)
 
       case action do
         :short_timeout -> Chat.short_timeout_user(moderator, channel, user)

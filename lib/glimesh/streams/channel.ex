@@ -8,6 +8,7 @@ defmodule Glimesh.Streams.Channel do
   schema "channels" do
     belongs_to :user, Glimesh.Accounts.User
     belongs_to :category, Glimesh.Streams.Category
+    belongs_to :subcategory, Glimesh.Streams.Subcategory, on_replace: :nilify
     belongs_to :streamer, Glimesh.Accounts.User, source: :user_id
     belongs_to :stream, Glimesh.Streams.Stream
     has_many :streams, Glimesh.Streams.Stream
@@ -22,6 +23,8 @@ defmodule Glimesh.Streams.Channel do
     field :backend, :string
     field :disable_hyperlinks, :boolean, default: false
     field :block_links, :boolean, default: false
+    field :require_confirmed_email, :boolean, default: false
+    field :minimum_account_age, :integer, default: 0
 
     field :chat_rules_md, :string
     field :chat_rules_html, :string
@@ -69,6 +72,7 @@ defmodule Glimesh.Streams.Channel do
     |> cast(attrs, [
       :title,
       :category_id,
+      :subcategory_id,
       :stream_id,
       :language,
       :mature_content,
@@ -78,16 +82,24 @@ defmodule Glimesh.Streams.Channel do
       :inaccessible,
       :status,
       :disable_hyperlinks,
-      :block_links
+      :block_links,
+      :require_confirmed_email,
+      :minimum_account_age
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)
+    |> validate_number(:minimum_account_age,
+      greater_than_or_equal_to: 0,
+      less_than_or_equal_to: 720
+    )
     |> set_chat_rules_content_html()
     |> cast_attachments(attrs, [:poster, :chat_bg])
     |> maybe_put_tags(:tags, attrs)
+    |> maybe_put_subcategory(:subcategory, attrs)
     |> unique_constraint([:user_id])
   end
 
+  alias Glimesh.ChannelCategories
   alias Glimesh.Streams.Tag
 
   def tags_changeset(channel, tags) do
@@ -96,13 +108,50 @@ defmodule Glimesh.Streams.Channel do
     |> put_assoc(:tags, tags)
   end
 
-  def maybe_put_tags(changeset, key, attrs) do
+  def maybe_put_tags(changeset, key, %{"tags" => _tags} = attrs) do
     # Make sure we're not accidentally unsetting tags
-    if Map.has_key?(attrs, "tags") do
-      changeset |> put_assoc(key, parse_tags(attrs))
-    else
-      changeset
+    changeset |> put_assoc(key, parse_tags(attrs))
+  end
+
+  def maybe_put_tags(changeset, _key, _attrs) do
+    changeset
+  end
+
+  def maybe_put_subcategory(changeset, key, %{"subcategory" => subcategory_json})
+      when subcategory_json == "" do
+    changeset |> put_assoc(key, nil)
+  end
+
+  def maybe_put_subcategory(changeset, key, %{"subcategory" => subcategory_json})
+      when is_binary(subcategory_json) do
+    case Jason.decode(subcategory_json) do
+      {:ok, [%{"value" => value, "category_id" => category_id}]} ->
+        slug = Slug.slugify(value)
+
+        subcategory =
+          if existing =
+               ChannelCategories.get_subcategory_by_category_id_and_slug(category_id, slug) do
+            existing
+          else
+            {:ok, category} =
+              ChannelCategories.create_subcategory(%{
+                name: value,
+                user_created: true,
+                category_id: category_id
+              })
+
+            category
+          end
+
+        changeset |> put_assoc(key, subcategory)
+
+      _ ->
+        changeset
     end
+  end
+
+  def maybe_put_subcategory(changeset, _, _) do
+    changeset
   end
 
   def parse_tags(attrs) do

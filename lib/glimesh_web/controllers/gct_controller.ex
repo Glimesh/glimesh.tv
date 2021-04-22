@@ -20,7 +20,8 @@ defmodule GlimeshWeb.GctController do
     render(
       conn,
       "index.html",
-      can_view_audit_log: view_audit_log
+      can_view_audit_log: view_audit_log,
+      page_title: format_page_title("GCT Dashboard")
     )
   end
 
@@ -28,7 +29,7 @@ defmodule GlimeshWeb.GctController do
     current_user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_audit_log, current_user) do
-      render(conn, "audit_log.html")
+      render(conn, "audit_log.html", page_title: format_page_title("Audit Log"))
     end
   end
 
@@ -53,6 +54,7 @@ defmodule GlimeshWeb.GctController do
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :view_user, gct_user, user) do
       view_billing = Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, gct_user, user)
+      view_chat_log = Bodyguard.permit?(Glimesh.CommunityTeam, :view_chat_log, gct_user, user)
 
       if user do
         CommunityTeam.create_lookup_audit_entry(gct_user, user)
@@ -63,10 +65,32 @@ defmodule GlimeshWeb.GctController do
           user: user,
           payout_history: [],
           payment_history: Payments.list_payment_history(user),
-          view_billing?: view_billing
+          view_billing?: view_billing,
+          page_title: format_page_title("#{user.displayname}")
         )
       else
         render(conn, "invalid_user.html")
+      end
+    end
+  end
+
+  def user_chat_log(conn, %{"user_id" => user_id}) do
+    current_user = conn.assigns.current_user
+    user = Accounts.get_user!(user_id)
+
+    if user do
+      with :ok <-
+             Bodyguard.permit(Glimesh.CommunityTeam, :view_chat_logs, current_user, user) do
+        CommunityTeam.create_audit_entry(current_user, %{
+          action: "view user chat log",
+          target: user.username,
+          verbose_required: true
+        })
+
+        render(conn, "user_chat_log.html",
+          user: user,
+          page_title: format_page_title("Chat Log - #{user.displayname}")
+        )
       end
     end
   end
@@ -91,7 +115,8 @@ defmodule GlimeshWeb.GctController do
           "edit_user_profile.html",
           user: user,
           user_changeset: user_changeset,
-          twitter_auth_url: twitter_auth_url
+          twitter_auth_url: twitter_auth_url,
+          page_title: format_page_title("Editing Profile - #{user.displayname}")
         )
       else
         render(conn, "invalid_user.html")
@@ -154,7 +179,8 @@ defmodule GlimeshWeb.GctController do
           "edit_user.html",
           user: user,
           user_changeset: user_changeset,
-          view_billing?: view_billing
+          view_billing?: view_billing,
+          page_title: format_page_title("Editing Profile - #{user.displayname}")
         )
       else
         render(conn, "invalid_user.html")
@@ -225,7 +251,8 @@ defmodule GlimeshWeb.GctController do
           conn,
           "lookup_channel.html",
           channel: channel,
-          categories: ChannelCategories.list_categories_for_select()
+          categories: ChannelCategories.list_categories_for_select(),
+          page_title: format_page_title("Channel Info - #{channel.user.displayname}")
         )
       else
         render(conn, "invalid_user.html")
@@ -246,7 +273,10 @@ defmodule GlimeshWeb.GctController do
           verbose_required: true
         })
 
-        render(conn, "channel_chat_log.html", channel: channel)
+        render(conn, "channel_chat_log.html",
+          channel: channel,
+          page_title: format_page_title("Chat Log - #{channel.user.displayname}")
+        )
       end
     end
   end
@@ -282,7 +312,8 @@ defmodule GlimeshWeb.GctController do
           channel: channel,
           channel_changeset: channel_changeset,
           categories: ChannelCategories.list_categories_for_select(),
-          channel_delete_disabled: disable_delete_button
+          channel_delete_disabled: disable_delete_button,
+          page_title: format_page_title("Edit Channel - #{channel.user.displayname}")
         )
       end
     else

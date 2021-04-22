@@ -1,7 +1,6 @@
 defmodule Glimesh.Schema.ChannelTypes do
   @moduledoc false
   use Absinthe.Schema.Notation
-  use Absinthe.Relay.Schema.Notation, :modern
 
   import Absinthe.Resolution.Helpers
   import_types(Absinthe.Plug.Types)
@@ -33,7 +32,7 @@ defmodule Glimesh.Schema.ChannelTypes do
 
   object :streams_queries do
     @desc "List all channels"
-    connection field :channels, node_type: :channel, paginate: :forward do
+    field :channels, list_of(:channel) do
       arg(:status, :channel_status)
       arg(:category_slug, :string)
 
@@ -43,8 +42,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     @desc "Query individual channel"
     field :channel, :channel do
       arg(:id, :id)
-      arg(:username, :string, deprecate: "Use ids for future as these will be removed later")
-      arg(:user_id, :integer)
+      arg(:username, :string)
       arg(:hmac_key, :string)
       resolve(&ChannelResolver.find_channel/2)
     end
@@ -62,13 +60,8 @@ defmodule Glimesh.Schema.ChannelTypes do
 
     @desc "List all subscribers or subscribees"
     field :subscriptions, list_of(:sub) do
-      arg(:streamer_username, :string,
-        deprecate: "Use ids for future as these will be removed later"
-      )
-
-      arg(:user_username, :string, deprecate: "Use ids for future as these will be removed later")
-      arg(:streamer_id, :integer)
-      arg(:user_id, :integer)
+      arg(:streamer_username, :string)
+      arg(:user_username, :string)
       resolve(&ChannelResolver.all_subscriptions/2)
     end
   end
@@ -89,7 +82,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     end
 
     @desc "Update a stream's metadata"
-    field :log_stream_metadata, type: :stream do
+    field :log_stream_metadata, type: :stream_metadata do
       arg(:stream_id, non_null(:id))
       arg(:metadata, non_null(:stream_metadata_input))
 
@@ -129,6 +122,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :name, :string, description: "Name of the category"
 
     field :tags, list_of(:tag), resolve: dataloader(Repo)
+    field :subcategories, list_of(:subcategory), resolve: dataloader(Repo)
 
     field :tag_name, :string do
       deprecate("Tag name is now just name")
@@ -147,6 +141,29 @@ defmodule Glimesh.Schema.ChannelTypes do
         {:ok, nil}
       end)
     end
+  end
+
+  @desc "Subcategories are specific games, topics, or genre's that exist under a Category."
+  object :subcategory do
+    field :id, :id
+    field :name, :string, description: "Name of the subcategory"
+    field :slug, :string, description: "URL friendly name of the subcategory"
+
+    field :user_created, :boolean
+    field :source, :string
+    field :source_id, :string
+
+    field :background_image_url, :string do
+      # Resolve URL to our actual public route
+      resolve(fn subcategory, _, _ ->
+        {:ok, subcategory.background_image}
+      end)
+    end
+
+    field :category, :category, resolve: dataloader(Repo)
+
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
   end
 
   @desc "Tags are user created labels that are either global or category specific."
@@ -169,6 +186,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :status, :channel_status
     field :title, :string, description: "The title of the current stream, live or offline."
     field :category, :category, resolve: dataloader(Repo)
+    field :subcategory, :subcategory, resolve: dataloader(Repo)
     field :language, :string, description: "The language a user can expect in the stream."
     field :thumbnail, :string
 
@@ -197,25 +215,18 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :chat_rules_md, :string
     field :chat_rules_html, :string
 
+    field :disable_hyperlinks, :boolean
+    field :block_links, :boolean
+    field :require_confirmed_email, :boolean
+    field :minimum_account_age, :integer
+
     field :stream, :stream, resolve: dataloader(Repo)
 
     field :streamer, non_null(:user), resolve: dataloader(Repo)
-
-    connection field :chat_messages, node_type: :chat_message, paginate: :forward do
-      resolve(&ChannelResolver.get_messages/2)
-    end
-
-    connection field :bans, node_type: :channel_ban, paginate: :forward do
-      resolve(&ChannelResolver.get_bans/2)
-    end
-
-    connection field :moderators, node_type: :channel_moderator, paginate: :forward do
-      resolve(&ChannelResolver.get_moderators/2)
-    end
-
-    connection field :moderation_logs, node_type: :channel_moderation_log, paginate: :forward do
-      resolve(&ChannelResolver.get_moderation_logs/2)
-    end
+    field :chat_messages, list_of(:chat_message), resolve: dataloader(Repo)
+    field :bans, list_of(:channel_ban), resolve: dataloader(Repo)
+    field :moderators, list_of(:channel_moderator), resolve: dataloader(Repo)
+    field :moderation_logs, list_of(:channel_moderation_log), resolve: dataloader(Repo)
 
     field :user, non_null(:user),
       resolve: dataloader(Repo),
@@ -227,23 +238,6 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :updated_at, non_null(:naive_datetime)
   end
 
-  connection node_type: :channel do
-    field :count, :integer do
-      resolve(fn
-        _, %{source: conn} ->
-          {:ok, length(conn.edges)}
-      end)
-    end
-
-    edge do
-      field :node, :channel do
-        resolve(fn %{node: message}, _args, _info ->
-          {:ok, message}
-        end)
-      end
-    end
-  end
-
   @desc "A stream is a single live stream in, either current or historical."
   object :stream do
     field :id, :id
@@ -252,6 +246,7 @@ defmodule Glimesh.Schema.ChannelTypes do
 
     field :title, :string, description: "The title of the stream."
     field :category, non_null(:category), resolve: dataloader(Repo)
+    field :subcategory, :subcategory, resolve: dataloader(Repo)
     field :metadata, list_of(:stream_metadata), resolve: dataloader(Repo)
 
     field :started_at, non_null(:naive_datetime)

@@ -105,7 +105,7 @@ msgid "must be equal to %{number}"
 msgstr "Must be equal to %{number}"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:4
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:28 lib/glimesh_web/templates/channel_moderator/form.html.eex:4
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:27 lib/glimesh_web/templates/channel_moderator/form.html.eex:4
 #: lib/glimesh_web/templates/oauth2_provider/authorization/error.html.eex:2 lib/glimesh_web/templates/user_applications/form.html.eex:4
 #: lib/glimesh_web/templates/user_payments/index.html.eex:39 lib/glimesh_web/templates/user_reset_password/edit.html.eex:6
 #: lib/glimesh_web/templates/user_security/edit.html.eex:13 lib/glimesh_web/templates/user_security/edit.html.eex:45
@@ -124,23 +124,23 @@ msgstr "Email change link is invalid or it has expired."
 msgid "Reset password link is invalid or it has expired."
 msgstr "Reset password link is invalid or it has expired."
 
-#: lib/glimesh/accounts/user.ex:176
+#: lib/glimesh/accounts/user.ex:196
 msgid "Display name must match Username"
 msgstr "Display name must match username"
 
-#: lib/glimesh/accounts/user.ex:194
+#: lib/glimesh/accounts/user.ex:214
 msgid "Email is the same"
 msgstr "Email is the same"
 
-#: lib/glimesh/accounts/user.ex:310
+#: lib/glimesh/accounts/user.ex:348
 msgid "Incorrect YouTube URL format"
 msgstr "Incorrect YouTube URL format"
 
-#: lib/glimesh/accounts/user.ex:301
+#: lib/glimesh/accounts/user.ex:339
 msgid "Invalid Password"
 msgstr "Invalid Password"
 
-#: lib/glimesh/accounts/user.ex:204
+#: lib/glimesh/accounts/user.ex:224
 msgid "Password does not match"
 msgstr "Password does not match"
 
@@ -158,25 +158,21 @@ msgstr "Current Password"
 msgid "Change e-mail"
 msgstr "Change Email"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:97
-msgid "Discord Server URL"
-msgstr "Discord Server URL"
-
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:30
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:54 lib/glimesh_web/templates/user_reset_password/new.html.eex:11
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:55 lib/glimesh_web/templates/user_reset_password/new.html.eex:11
 #: lib/glimesh_web/templates/user_security/edit.html.eex:20
 msgid "Email"
 msgstr "Email"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:75
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:72
 msgid "Instagram Username"
 msgstr "Instagram Username"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:46
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:45
 msgid "Social"
 msgstr "Social"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:86
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:83
 msgid "YouTube Username"
 msgstr "YouTube Username"
 
@@ -198,7 +194,7 @@ msgstr "Change Password"
 msgid "New password"
 msgstr "New Password"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:13
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:12
 msgid "Click Update Settings down below when you've chosen the file."
 msgstr "Click Update Settings below when you've chosen the file."
 
@@ -206,20 +202,20 @@ msgstr "Click Update Settings below when you've chosen the file."
 msgid "Confirm New Password"
 msgstr "Confirm New Password"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:35 lib/glimesh_web/templates/gct/edit_user.html.eex:17
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:47
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:34 lib/glimesh_web/templates/gct/edit_user.html.eex:17
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:48
 msgid "Display Name"
 msgstr "Display Name"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:41 lib/glimesh_web/templates/user_settings/preference.html.eex:17
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:40
 msgid "Language"
 msgstr "Language"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:177 lib/glimesh_web/templates/user_settings/preference.html.eex:49
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:161 lib/glimesh_web/templates/user_settings/preference.html.eex:66
 msgid "Update Settings"
 msgstr "Update Settings"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:117
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:112
 msgid "YouTube Teaser URL"
 msgstr "YouTube Teaser URL"
 
@@ -259,7 +255,7 @@ msgstr "If your email is in our system, you will receive instructions to reset y
 msgid "Password reset successfully."
 msgstr "Password reset successfully."
 
-#: lib/glimesh_web/controllers/user_registration_controller.ex:30
+#: lib/glimesh_web/controllers/user_registration_controller.ex:33
 msgid "User created successfully."
 msgstr "User created successfully."
 
@@ -276,33 +272,28 @@ msgstr "Reset Password"
 msgid "Confirm new password"
 msgstr "Confirm New Password"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:29
+#: lib/glimesh_web/live/user_live/profile.html.leex:32
 msgid "Followers"
 msgstr "Followers"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:34
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:44
+#: lib/glimesh_web/live/user_live/profile.html.leex:37
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:54
 msgid "Following"
 msgstr "Following"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:68
-msgid "Pre-Follow Streamer"
-msgstr "Pre-Follow Streamer"
-
-#: lib/glimesh_web/live/user_live/profile.html.leex:41
+#: lib/glimesh_web/live/user_live/profile.html.leex:42
 msgid "Share my profile on Twitter"
 msgstr "Share my profile on Twitter"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:45
+#: lib/glimesh_web/live/user_live/profile.html.leex:44
 msgid "Share on Twitter"
 msgstr "Share on Twitter"
 
-#: lib/glimesh_web/live/user_live/followers.html.leex:19
+#: lib/glimesh_web/live/user_live/followers.html.leex:16
 msgid "Sub Ready!"
 msgstr "Sub Ready!"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:13
-#: lib/glimesh_web/templates/user_payments/index.html.eex:65
+#: lib/glimesh_web/live/user_live/profile.html.leex:11
 msgid "Sub-ready Streamer"
 msgstr "Sub-ready Streamer"
 
@@ -323,7 +314,7 @@ msgstr "User unfollowed successfully"
 msgid "Unfollow"
 msgstr "Unfollow"
 
-#: lib/glimesh_web/controllers/user_session_controller.ex:37
+#: lib/glimesh_web/controllers/user_session_controller.ex:38
 msgid "Logged out successfully."
 msgstr "Logged out successfully."
 
@@ -335,127 +326,73 @@ msgstr "Glimesh Blog"
 msgid "Read More"
 msgstr "Read More"
 
-#: lib/glimesh_web/live/homepage_live.html.leex:54
-msgid "Built by the community, for the community."
-msgstr "Built by the community, for the community."
-
-#: lib/glimesh_web/live/homepage_live.html.leex:53
-msgid "Community Driven."
-msgstr "Community Driven."
-
-#: lib/glimesh_web/live/homepage_live.html.leex:76
-msgid "For launch, subscriptions will be only be enabled in the US."
-msgstr "For launch, subscriptions will only be enabled in the US."
-
-#: lib/glimesh_web/live/homepage_live.html.leex:35
-msgid "It's even faster than light."
-msgstr "It's even faster than light."
-
-#: lib/glimesh_web/live/homepage_live.html.leex:73
-msgid "Level the playing field."
-msgstr "Level the playing field."
-
-#: lib/glimesh_web/live/homepage_live.html.leex:6
-msgid "Next-Gen Live Streaming"
-msgstr "Next-Gen Live Streaming"
-
-#: lib/glimesh_web/live/homepage_live.html.leex:37
-msgid "Our fastest streaming technology is built on open standards and gives your streams unimaginable levels of interactivity. We're constantly pushing the boundaries of live video and of course, it's open source."
-msgstr "Our fastest streaming technology is built on open standards and gives your streams unimaginable levels of interactivity. We're constantly pushing the boundaries of live video and of course, it's open source."
-
-#: lib/glimesh_web/live/homepage_live.html.leex:13
+#: lib/glimesh_web/live/homepage_live.html.leex:24
 #: lib/glimesh_web/templates/about/streaming.html.eex:113
 msgid "Register Your Account"
 msgstr "Register Your Account"
 
-#: lib/glimesh_web/live/homepage_live.html.leex:75
-msgid "Subscription buttons shouldn't be restricted for a particular group of streamers. Everyone who can verify their identity and bank information will receive a subscription button for their stream."
-msgstr "Subscription buttons shouldn't be restricted for a particular group of streamers. Everyone who can verify their identity and bank information will receive a subscription button for their stream."
-
-#: lib/glimesh_web/live/homepage_live.html.leex:72
-msgid "Subscriptions for Everyone."
-msgstr "Subscriptions for Everyone."
-
-#: lib/glimesh_web/live/homepage_live.html.leex:8
-msgid "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving. We're launching soon, but you can get your account setup early and learn more about us below!"
-msgstr "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving. We're launching soon, but you can get your account setup early and learn more about us below!"
-
-#: lib/glimesh_web/live/homepage_live.html.leex:34
-msgid "Warp Speed Streaming."
-msgstr "Warp Speed Streaming"
-
-#: lib/glimesh_web/live/homepage_live.html.leex:56
-msgid "Community is one of our main focuse at Glimesh and we make sure to include you every step of the way. We host staff meetings live on our platform every Tuesday that are open to everyone and if there's a feature you wish we had, you can collaborate on our %{a_start}open source codebase%{a_end} to create it!"
-msgstr "Community is one of our main focuses at Glimesh and we make sure to include you in every step of the way. We host staff meetings live on our platform every Tuesday that are open to everyone and if there's a feature you wish we had, you can collaborate on our %{a_start}open source codebase%{a_end} to create it!"
-
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:16
+#: lib/glimesh_web/live/homepage_live.html.leex:11
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:15
 msgid "Art"
 msgstr "Art"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:28
+#: lib/glimesh_web/live/homepage_live.html.leex:15
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:27
 msgid "Education"
 msgstr "Education"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:13
+#: lib/glimesh_web/live/homepage_live.html.leex:10
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:12
 msgid "Gaming"
 msgstr "Gaming"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:25
+#: lib/glimesh_web/live/homepage_live.html.leex:14
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:24
 msgid "IRL"
 msgstr "IRL"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:33
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:31
 msgid "More"
 msgstr "More"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:19
+#: lib/glimesh_web/live/homepage_live.html.leex:12
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:18
 msgid "Music"
 msgstr "Music"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:125
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:136
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:24
 msgid "Register"
 msgstr "Register"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:120
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:131
 msgid "Sign Out"
 msgstr "Sign Out"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:126
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:137
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:25
 msgid "Sign in"
 msgstr "Sign In"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:22
+#: lib/glimesh_web/live/homepage_live.html.leex:13
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:21
 msgid "Tech"
 msgstr "Tech"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:108
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:119
 msgid "Upgrade!"
 msgstr "Upgrade!"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:38
-msgid "Users"
-msgstr "Users"
-
-#: lib/glimesh_web/controllers/user_payments_controller.ex:87
+#: lib/glimesh_web/controllers/user_payments_controller.ex:155
 msgid "Payment method deleted!"
 msgstr "Payment method deleted!"
 
-#: lib/glimesh_web/controllers/user_payments_controller.ex:51
-msgid "Stripe account linked successfully, welcome to the sub club!"
-msgstr "Stripe account linked successfully, welcome to the sub club!"
-
-#: lib/glimesh_web/templates/user_payments/index.html.eex:43
+#: lib/glimesh_web/templates/user_payments/index.html.eex:42
 msgid "Delete Saved Payment"
 msgstr "Delete Saved Payment"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:80
-msgid "Enable Subscriptions"
-msgstr "Enable Subscriptions"
-
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:148
-#: lib/glimesh_web/templates/user_payments/index.html.eex:132
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:149
+#: lib/glimesh_web/templates/user_payments/index.html.eex:150
 msgid "Payment History"
 msgstr "Payment History"
 
@@ -463,24 +400,16 @@ msgstr "Payment History"
 msgid "Saved Payment Method"
 msgstr "Saved Payment Method"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:48
+#: lib/glimesh_web/templates/user_payments/index.html.eex:47
 msgid "Setup Payment Method"
 msgstr "Setup Payment Method"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:74
-msgid "Streamer"
-msgstr "Streamer"
-
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:14
-#: lib/glimesh_web/templates/user_payments/index.html.eex:98
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:17
+#: lib/glimesh_web/templates/user_payments/index.html.eex:112
 msgid "Unsubscribe"
 msgstr "Unsubscribe"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:69
-msgid "Welcome to the sub club!"
-msgstr "Welcome to the sub club!"
-
-#: lib/glimesh_web/templates/user_payments/index.html.eex:52
+#: lib/glimesh_web/templates/user_payments/index.html.eex:51
 msgid "You can link a payment method by creating a subscription to a channel, or the platform."
 msgstr "You can link a payment method by creating a subscription to a channel, or the platform."
 
@@ -488,17 +417,17 @@ msgstr "You can link a payment method by creating a subscription to a channel, o
 msgid "You have an existing saved payment method. You can delete it by clicking the button below."
 msgstr "You have an existing saved payment method. You can delete it by clicking the button below."
 
-#: lib/glimesh_web/controllers/user_payments_controller.ex:28
+#: lib/glimesh_web/controllers/user_payments_controller.ex:25
 #: lib/glimesh_web/templates/user_payments/index.html.eex:2
 msgid "Your Payment Portal"
 msgstr "Your Payment Portal"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:88
+#: lib/glimesh_web/templates/user_payments/index.html.eex:99
 msgid "Your Subscriptions"
 msgstr "Your Subscriptions"
 
 #: lib/glimesh_web/live/subscription_component.ex:25
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:35
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:39
 msgid "Payment Details"
 msgstr "Payment Details"
 
@@ -507,8 +436,8 @@ msgid "Payment method already attached!"
 msgstr "Payment method already attached!"
 
 #: lib/glimesh_web/live/subscription_component.ex:45
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:16 lib/glimesh_web/live/user_live/components/subscribe_button.ex:19
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:22
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:20 lib/glimesh_web/live/user_live/components/subscribe_button.ex:23
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:26
 msgid "Subscribe"
 msgstr "Subscribe"
 
@@ -521,46 +450,41 @@ msgid "Your Name"
 msgstr "Your Name"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:13
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:34 lib/glimesh_web/live/platform_subscription_live/index.html.leex:61
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:33 lib/glimesh_web/live/platform_subscription_live/index.html.leex:64
 #: lib/glimesh_web/live/subscription_component.ex:34
 msgid "monthly"
 msgstr "monthly"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:69
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:67
 msgid "Cancel Subscription"
 msgstr "Cancel Subscription"
-
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:16
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:37
-msgid "Cosmetic Features"
-msgstr "Cosmetic Features"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:11
 msgid "Help us fund the platform & grow!"
 msgstr "Help us fund the platform & grow!"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:23
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:46
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:22
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:43
 msgid "Select"
 msgstr "Select"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:32
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:31
 msgid "Support Glimesh's future with your wallet! Get special perks to show off."
 msgstr "Support Glimesh's future with your wallet! Get special perks to show off."
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:55
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:52
 msgid "You're subscribed!"
 msgstr "You're subscribed!"
 
-#: lib/glimesh_web/live/streams_live/list.ex:19
+#: lib/glimesh_web/live/streams_live/list.ex:17
 msgid "Followed Streams"
 msgstr "Followed Streams"
 
-#: lib/glimesh_web/live/streams_live/list.html.leex:11
+#: lib/glimesh_web/live/streams_live/list.html.leex:15
 msgid "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!"
 msgstr "We occasionally stream special events or other unique streams, but once we go live these pages will be filled with our streamers!"
 
-#: lib/glimesh_web/live/streams_live/list.html.leex:9
+#: lib/glimesh_web/live/streams_live/list.html.leex:13
 msgid "%{category} Streams Coming Soon"
 msgstr "%{category} Streams Coming Soon"
 
@@ -569,51 +493,45 @@ msgstr "%{category} Streams Coming Soon"
 msgid "Our Users"
 msgstr "Our Users"
 
-#: lib/glimesh_web/live/user_live/components/channel_title.ex:24
-msgid "Save Info"
-msgstr "Save Info"
-
-#: lib/glimesh_web/live/user_live/profile.html.leex:71
-msgid "Glimesh isn't launched yet, but you can follow %{streamer} now and get automatically notified when they go live!"
-msgstr "Glimesh isn't launched yet, but you can follow %{streamer} now and get automatically notified when they go live!"
-
 #: lib/glimesh_web/live/user_live/components/report_button.ex:10
 msgid "Report User"
 msgstr "Report User"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:54
+#: lib/glimesh_web/live/user_live/components/report_button.ex:68
 msgid "Copyright Infringement / Law Violation"
 msgstr "Copyright Infringement / Law Violation"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:42
+#: lib/glimesh_web/live/user_live/components/report_button.ex:56
 msgid "Hate Speech"
 msgstr "Hate Speech"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:48
+#: lib/glimesh_web/live/user_live/components/report_button.ex:62
 msgid "Inappropriate Content"
 msgstr "Inappropriate Content"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:65
+#: lib/glimesh_web/live/user_live/components/report_button.ex:81
 msgid "Notes"
 msgstr "Notes"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:60
+#: lib/glimesh_web/live/user_live/components/report_button.ex:74
 msgid "Other"
 msgstr "Other"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:69
+#: lib/glimesh_web/live/user_live/components/report_button.ex:85
 msgid "Submit Report"
 msgstr "Submit Report"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:36
+#: lib/glimesh_web/live/user_live/components/report_button.ex:52
 msgid "What has this user done wrong?"
 msgstr "What has this user done wrong?"
 
-#: lib/glimesh_web/live/streams_live/list.html.leex:23
+#: lib/glimesh_web/live/streams_live/list.html.leex:2
+#: lib/glimesh_web/live/streams_live/list.html.leex:27
 msgid "%{category} Streams"
 msgstr "%{category} Streams"
 
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:30
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:12
 msgid "Are you sure?"
 msgstr "Are you sure?"
 
@@ -632,7 +550,7 @@ msgstr "Category updated successfully"
 
 #: lib/glimesh_web/live/admin/category_live/show.html.leex:26
 #: lib/glimesh_web/live/user_live/components/channel_title.ex:14
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:129
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:123
 msgid "Edit"
 msgstr "Edit"
 
@@ -691,11 +609,11 @@ msgstr "Don't have access anymore?"
 msgid "Enter your 2FA code!"
 msgstr "Enter your 2FA code!"
 
-#: lib/glimesh_web/controllers/user_session_controller.ex:27
+#: lib/glimesh_web/controllers/user_session_controller.ex:28
 msgid "Invalid 2FA code, if you need help please email %{email}"
 msgstr "Invalid 2FA code, if you need help please email %{email}"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:112
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:123
 #: lib/glimesh_web/templates/layout/user-sidebar.html.eex:9
 msgid "Payments"
 msgstr "Payments"
@@ -704,8 +622,8 @@ msgstr "Payments"
 msgid "Please contact %{email}"
 msgstr "Please contact %{email}"
 
-#: lib/glimesh_web/live/user_live/index.html.leex:55
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:103 lib/glimesh_web/templates/layout/user-sidebar.html.eex:6
+#: lib/glimesh_web/live/user_live/index.html.leex:49
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:114 lib/glimesh_web/templates/layout/user-sidebar.html.eex:6
 msgid "Profile"
 msgstr "Profile"
 
@@ -715,11 +633,11 @@ msgid "Security"
 msgstr "Security"
 
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:8
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:23 lib/glimesh_web/templates/layout/_navbar.html.leex:116
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:22 lib/glimesh_web/templates/layout/_navbar.html.leex:127
 msgid "Settings"
 msgstr "Settings"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:75
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:93
 msgid "Chat Rules (Markdown Supported)"
 msgstr "Chat Rules (Markdown Supported)"
 
@@ -728,11 +646,7 @@ msgstr "Chat Rules (Markdown Supported)"
 msgid "Create Channel"
 msgstr "Create Channel"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:106
-msgid "Delete Channel"
-msgstr "Delete Channel"
-
-#: lib/glimesh_web/controllers/user_settings_controller.ex:104
+#: lib/glimesh_web/controllers/user_settings_controller.ex:115
 msgid "Stream settings updated successfully"
 msgstr "Stream settings updated successfully"
 
@@ -771,7 +685,7 @@ msgid "Authorizations"
 msgstr "Authorizations"
 
 #: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:35
-#: lib/glimesh_web/templates/user_applications/show.html.eex:97
+#: lib/glimesh_web/templates/user_applications/show.html.eex:80
 msgid "Authorize"
 msgstr "Authorize"
 
@@ -788,28 +702,24 @@ msgstr "Authorized Applications"
 msgid "Browse for Images"
 msgstr "Browse for Images"
 
-#: lib/glimesh_web/templates/user_applications/show.html.eex:88
+#: lib/glimesh_web/templates/user_applications/show.html.eex:71
 msgid "Callbacks"
 msgstr "Callbacks"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:39
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:57 lib/glimesh_web/templates/user_applications/form.html.eex:31
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:57
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:75 lib/glimesh_web/templates/user_applications/form.html.eex:31
 msgid "Choose file"
 msgstr "Choose file"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:20 lib/glimesh_web/templates/user_applications/show.html.eex:43
-#: lib/glimesh_web/templates/user_applications/show.html.eex:56 lib/glimesh_web/templates/user_applications/show.html.eex:69
-#: lib/glimesh_web/templates/user_applications/show.html.eex:82
+#: lib/glimesh_web/live/components/click_to_copy.ex:14
 msgid "Click to Copy"
 msgstr "Click to Copy"
 
-#: lib/glimesh_web/templates/user_applications/show.html.eex:35
+#: lib/glimesh_web/templates/user_applications/show.html.eex:34
 msgid "Client ID"
 msgstr "Client ID"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:20 lib/glimesh_web/templates/user_applications/show.html.eex:43
-#: lib/glimesh_web/templates/user_applications/show.html.eex:56 lib/glimesh_web/templates/user_applications/show.html.eex:69
-#: lib/glimesh_web/templates/user_applications/show.html.eex:82
+#: lib/glimesh_web/live/components/click_to_copy.ex:14
 msgid "Copied to Clipboard"
 msgstr "Copied to Clipboard"
 
@@ -819,7 +729,7 @@ msgstr "Copied to Clipboard"
 msgid "Create Application"
 msgstr "Create Application"
 
-#: lib/glimesh_web/templates/user_applications/show.html.eex:33
+#: lib/glimesh_web/templates/user_applications/show.html.eex:32
 msgid "Credentials"
 msgstr "Credentials"
 
@@ -828,18 +738,16 @@ msgid "Deny"
 msgstr "Deny"
 
 #: lib/glimesh_web/templates/user_applications/form.html.eex:21
-#: lib/glimesh_web/templates/user_payments/index.html.eex:142
+#: lib/glimesh_web/templates/user_payments/index.html.eex:160
 msgid "Description"
 msgstr "Description"
 
 #: lib/glimesh_web/templates/user_applications/edit.html.eex:2
-#: lib/glimesh_web/templates/user_applications/show.html.eex:105
+#: lib/glimesh_web/templates/user_applications/show.html.eex:88
 msgid "Edit Application"
 msgstr "Edit Application"
 
-#: lib/glimesh_web/templates/user_applications/show.html.eex:42
-#: lib/glimesh_web/templates/user_applications/show.html.eex:55 lib/glimesh_web/templates/user_applications/show.html.eex:68
-#: lib/glimesh_web/templates/user_applications/show.html.eex:81
+#: lib/glimesh_web/live/components/click_to_copy.ex:13
 msgid "Error"
 msgstr "Error"
 
@@ -847,7 +755,7 @@ msgstr "Error"
 msgid "Homepage"
 msgstr "Homepage"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:154 lib/glimesh_web/templates/user_applications/form.html.eex:27
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:140 lib/glimesh_web/templates/user_applications/form.html.eex:27
 msgid "Image"
 msgstr "Image"
 
@@ -855,11 +763,11 @@ msgstr "Image"
 msgid "Installed at"
 msgstr "Installed at"
 
-#: lib/glimesh_web/templates/user_applications/show.html.eex:74
+#: lib/glimesh_web/templates/user_applications/show.html.eex:61
 msgid "OAuth Authorization URL"
 msgstr "OAuth Authorization URL"
 
-#: lib/glimesh_web/templates/user_applications/show.html.eex:61
+#: lib/glimesh_web/templates/user_applications/show.html.eex:52
 msgid "OAuth Token URL"
 msgstr "OAuth Token URL"
 
@@ -867,7 +775,7 @@ msgstr "OAuth Token URL"
 msgid "Save Application"
 msgstr "Save Application"
 
-#: lib/glimesh_web/templates/user_applications/show.html.eex:48
+#: lib/glimesh_web/templates/user_applications/show.html.eex:43
 msgid "Secret Key"
 msgstr "Secret Key"
 
@@ -907,56 +815,56 @@ msgstr "API Documentation"
 msgid "Black & White 2FA Image"
 msgstr "Black & White 2FA Image"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:140
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:132
 msgid "Bold"
 msgstr "Bold"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:150
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:138
 msgid "Code"
 msgstr "Code"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:170
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:154
 msgid "Coming soon!"
 msgstr "Coming soon!"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:144
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:134
 msgid "Heading"
 msgstr "Heading"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:142
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:133
 msgid "Italic"
 msgstr "Italic"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:152
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:139
 msgid "Link"
 msgstr "Link"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:161
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:145
 msgid "Ordered List"
 msgstr "Ordered List"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:131
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:124
 msgid "Preview"
 msgstr "Preview"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:148
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:137
 msgid "Quote"
 msgstr "Quote"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:158
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:143
 msgid "Unordered List"
 msgstr "Unordered List"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:104
-#: lib/glimesh_web/live/user_live/stream.html.leex:92
+#: lib/glimesh_web/live/user_live/profile.html.leex:98
+#: lib/glimesh_web/live/user_live/stream.html.leex:120
 msgid "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the right hand corner!"
 msgstr "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the right hand corner!"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:97
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:116
 msgid "Block viewers from posting links?"
 msgstr "Block viewers from posting links?"
 
-#: lib/glimesh_web/controllers/user_registration_controller.ex:41
+#: lib/glimesh_web/controllers/user_registration_controller.ex:44
 msgid "Captcha validation failed, please try again."
 msgstr "Captcha validation failed, please try again."
 
@@ -964,15 +872,11 @@ msgstr "Captcha validation failed, please try again."
 msgid "Current active channel subscriptions totals, including net-new each week and totals."
 msgstr "Current active channel subscription totals, including net-new each week and total per week."
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:31
-msgid "Founder"
-msgstr "Founder"
-
 #: lib/glimesh_web/templates/user_payments/index.html.eex:21
 msgid "Giving Monthly"
 msgstr "Giving Monthly"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.ex:35
+#: lib/glimesh_web/live/platform_subscription_live/index.ex:38
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:2
 msgid "Glimesh Platform Subscriptions"
 msgstr "Glimesh Platform Subscriptions"
@@ -999,12 +903,12 @@ msgid "Number of users on the platform over time, and net-new each week."
 msgstr "Number of users on the platform over time, as well as net-new each week."
 
 #: lib/glimesh_web/live/about/open_data_live.html.leex:2
-#: lib/glimesh_web/templates/layout/root.html.leex:96
+#: lib/glimesh_web/templates/layout/root.html.leex:97
 msgid "Open Data"
 msgstr "Open Data"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:125
-#: lib/glimesh_web/templates/user_payments/index.html.eex:119
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:126
+#: lib/glimesh_web/templates/user_payments/index.html.eex:138
 msgid "Payout History"
 msgstr "Payout History"
 
@@ -1022,13 +926,9 @@ msgstr "Receiving Monthly"
 msgid "Recurring Subscriptions"
 msgstr "Recurring Subscriptions"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:92
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:111
 msgid "Should links automatically be clickable?"
 msgstr "Should links automatically be clickable?"
-
-#: lib/glimesh_web/templates/user_payments/index.html.eex:96
-msgid "Subscribed since %{date}."
-msgstr "Subscribed since %{date}."
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:3
 msgid "Support the platform directly and get a couple of extra perks to really stand out!"
@@ -1038,11 +938,11 @@ msgstr "Support the platform directly and get a couple of extra perks to really 
 msgid "Supporter"
 msgstr "Supporter"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:56
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:60
 msgid "Thanks for supporting Glimesh. Your genuine support is appreciated."
 msgstr "Thanks for supporting Glimesh. Your genuine support is appreciated."
 
-#: lib/glimesh_web/controllers/user_session_controller.ex:56
+#: lib/glimesh_web/controllers/user_session_controller.ex:58
 msgid "User account is banned. Please contact support at %{email} for more information."
 msgstr "User account is banned. Please contact support at %{email} for more information."
 
@@ -1050,21 +950,23 @@ msgstr "User account is banned. Please contact support at %{email} for more info
 msgid "Want to build a chat bot, an online tool, or other service that integrates with Glimesh? You're in the right place! Create an Application to get started and check out our API documentation if you need some guidance."
 msgstr "Want to build a chat bot, an online tool, or other service that integrates with Glimesh? You're in the right place! Create an Application to get started and check out our API documentation if you need some guidance."
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:91
-#: lib/glimesh_web/templates/user_payments/index.html.eex:164
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:89
+#: lib/glimesh_web/templates/user_payments/index.html.eex:182 lib/glimesh_web/templates/user_payments/setup.html.eex:51
+#: lib/glimesh_web/templates/user_payments/taxes.html.eex:42
 msgid "We're not quite ready to accept payments yet. Once we launch the platform, you'll be able to access this page!"
 msgstr "We're not quite ready to accept payments yet. Once we launch the platform, you'll be able to access this page!"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:109
+#: lib/glimesh_web/templates/user_payments/index.html.eex:107
+#: lib/glimesh_web/templates/user_payments/index.html.eex:124
 msgid "Subscribed since %{date}"
 msgstr "Subscribed since %{date}"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:52
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:70
 msgid "A repeatable background for your chat. Make sure it's not too noisy, and it's an image that can repeat nicely right and down. Max Size: 100Kb"
 msgstr "A repeatable background for your chat. Make sure it's not too noisy, and it's an image that can repeat nicely right and down. Max Size: 100KB"
 
 #: lib/glimesh_web/templates/layout/about.html.eex:5
-#: lib/glimesh_web/templates/layout/root.html.leex:92
+#: lib/glimesh_web/templates/layout/root.html.leex:93
 msgid "About Us"
 msgstr "About Us"
 
@@ -1079,15 +981,15 @@ msgstr "Action"
 msgid "Add Moderator"
 msgstr "Add Moderator"
 
-#: lib/glimesh_web/templates/layout/root.html.leex:128
+#: lib/glimesh_web/templates/layout/root.html.leex:130
 msgid "All rights reserved."
 msgstr "All rights reserved."
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:143
+#: lib/glimesh_web/templates/user_payments/index.html.eex:161
 msgid "Amount"
 msgstr "Amount"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:34
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:52
 msgid "An image for your channel that will be shown whenever you are offline. Will be resized or cropped to 1920x1080."
 msgstr "An image for your channel that will be shown whenever you are offline. Will be resized or cropped to 1920x1080."
 
@@ -1099,7 +1001,7 @@ msgstr "Application created successfully."
 msgid "Application updated successfully."
 msgstr "Application updated successfully."
 
-#: lib/glimesh_web/live/chat_live/index.html.leex:22
+#: lib/glimesh_web/live/chat_live/index.html.leex:18
 msgid "Are you sure you wish to permanently ban %{username}?"
 msgstr "Are you sure you with to permanently ban %{username}?"
 
@@ -1113,7 +1015,7 @@ msgstr "Back to Moderator List"
 msgid "Ban"
 msgstr "Ban"
 
-#: lib/glimesh_web/live/chat_live/index.html.leex:23
+#: lib/glimesh_web/live/chat_live/index.html.leex:18
 msgid "Ban user from channel."
 msgstr "Ban user from channel."
 
@@ -1125,7 +1027,7 @@ msgstr "Banned At"
 msgid "Beautiful people who choose to support the platform."
 msgstr "Beautiful people who choose to support the platform."
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:98
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:109
 #: lib/glimesh_web/templates/layout/user-sidebar.html.eex:26
 msgid "Channel"
 msgstr "Channel"
@@ -1134,7 +1036,7 @@ msgstr "Channel"
 msgid "Channel Bans"
 msgstr "Channel Bans"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:82
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:100
 msgid "Channel Category"
 msgstr "Channel Category"
 
@@ -1147,7 +1049,7 @@ msgstr "Channel Moderation Log"
 msgid "Channel Moderators"
 msgstr "Channel Moderators"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:32
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:50
 msgid "Channel Poster"
 msgstr "Channel Poster"
 
@@ -1156,24 +1058,24 @@ msgstr "Channel Poster"
 msgid "Channel Settings"
 msgstr "Channel Settings"
 
-#: lib/glimesh/chat/effects.ex:116
+#: lib/glimesh/chat/effects.ex:116 lib/glimesh/chat/effects.ex:127
 msgid "Channel Subscriber"
 msgstr "Channel Subscriber"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:70
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:88
 msgid "Channel Title"
 msgstr "Channel Title"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:50
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:68
 msgid "Chat Background"
 msgstr "Chat Background"
 
-#: lib/glimesh_web/controllers/about_controller.ex:68
-#: lib/glimesh_web/templates/layout/root.html.leex:93
+#: lib/glimesh_web/controllers/about_controller.ex:74
+#: lib/glimesh_web/templates/layout/root.html.leex:94
 msgid "Credits"
 msgstr "Credits"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:141
+#: lib/glimesh_web/templates/user_payments/index.html.eex:159
 msgid "Date / Time"
 msgstr "Date / Time"
 
@@ -1185,7 +1087,7 @@ msgstr "Disabled channel notifications"
 msgid "Edit %{username}"
 msgstr "Edit %{username}"
 
-#: lib/glimesh_web/templates/about/credits.html.eex:67
+#: lib/glimesh_web/templates/about/credits.html.eex:66
 msgid "Elixir Libraries"
 msgstr "Elixir"
 
@@ -1193,21 +1095,13 @@ msgstr "Elixir"
 msgid "Enabled channel notifications"
 msgstr "Enabled channel notifications"
 
-#: lib/glimesh_web/templates/about/credits.html.eex:47
+#: lib/glimesh_web/templates/about/credits.html.eex:46
 msgid "FTL Libraries"
 msgstr "FTL Libraries"
 
-#: lib/glimesh_web/templates/about/credits.html.eex:6
-msgid "Founders"
-msgstr "Founders"
-
-#: lib/glimesh/chat/effects.ex:55
+#: lib/glimesh/chat/effects.ex:43
 msgid "Glimesh Community Team"
 msgstr "Glimesh Community Team"
-
-#: lib/glimesh/chat/effects.ex:43
-msgid "Glimesh Founder Subscriber"
-msgstr "Glimesh Founder Subscriber"
 
 #: lib/glimesh_web/templates/about/credits.html.eex:3
 msgid "Glimesh Platform Subscribers"
@@ -1217,15 +1111,15 @@ msgstr "Glimesh Platform Subscribers"
 msgid "Glimesh Staff"
 msgstr "Glimesh Staff"
 
-#: lib/glimesh/chat/effects.ex:49
+#: lib/glimesh/chat/effects.ex:55
 msgid "Glimesh Supporter Subscriber"
 msgstr "Glimesh Supporter Subscriber"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:109
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:104
 msgid "Guilded Server URL"
 msgstr "Guilded Server URL"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:16
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:15
 msgid "Invalid image. Must be either png or jpg."
 msgstr "Invalid image. Must be either png or jpg."
 
@@ -1250,11 +1144,11 @@ msgstr "Moderators"
 msgid "No"
 msgstr "No"
 
-#: lib/glimesh_web/templates/about/credits.html.eex:87
+#: lib/glimesh_web/templates/about/credits.html.eex:86
 msgid "NodeJS Libraries"
 msgstr "NodeJS Libraries"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:126
+#: lib/glimesh_web/templates/user_payments/index.html.eex:144
 msgid "Not available"
 msgstr "Not available"
 
@@ -1262,7 +1156,7 @@ msgstr "Not available"
 msgid "OAuth Client ID & Client Secret rotated successfully."
 msgstr "OAuth Client ID & Client Secret rotated successfully."
 
-#: lib/glimesh_web/templates/about/credits.html.eex:36
+#: lib/glimesh_web/templates/about/credits.html.eex:35
 msgid "Open Source Libraries"
 msgstr "Open Source Libraries"
 
@@ -1270,7 +1164,7 @@ msgstr "Open Source Libraries"
 msgid "Permissions"
 msgstr "Permissions"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:124
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:119
 msgid "Profile Content (%{a_start}Markdown%{a_end} supported)"
 msgstr "Profile Content (%{a_start}Markdown%{a_end} supported)"
 
@@ -1284,15 +1178,16 @@ msgstr "Remove Ban"
 msgid "Remove Timeout"
 msgstr "Remove Timeout"
 
-#: lib/glimesh_web/templates/user_applications/show.html.eex:107
+#: lib/glimesh_web/templates/user_applications/show.html.eex:90
 msgid "Rotate Keys"
 msgstr "Rotate Keys"
 
+#: lib/glimesh_web/live/user_live/components/channel_title.ex:56
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:48
 msgid "Save"
 msgstr "Save"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:135
+#: lib/glimesh_web/templates/user_payments/index.html.eex:153
 msgid "See something you don't expect? Need a refund? Please email us at %{email} and we'll be happy to help!"
 msgstr "See something you don't expect? Need a refund? Please email us at %{email} and we'll be happy to help!"
 
@@ -1305,19 +1200,19 @@ msgstr "Short Timeout"
 msgid "Show"
 msgstr "Show"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:144
+#: lib/glimesh_web/templates/user_payments/index.html.eex:162
 msgid "Status"
 msgstr "Status"
 
-#: lib/glimesh_web/templates/about/credits.html.eex:24
+#: lib/glimesh_web/templates/about/credits.html.eex:23
 msgid "Supporters"
 msgstr "Supporters"
 
-#: lib/glimesh_web/live/chat_live/index.html.leex:18
+#: lib/glimesh_web/live/chat_live/index.html.leex:15
 msgid "Timeout user for 15 minutes."
 msgstr "Timeout user for 15 minutes."
 
-#: lib/glimesh_web/live/chat_live/index.html.leex:13
+#: lib/glimesh_web/live/chat_live/index.html.leex:12
 msgid "Timeout user for 5 minutes."
 msgstr "Timeout user for 5 minutes."
 
@@ -1340,15 +1235,15 @@ msgstr "User"
 msgid "User Moderation Log"
 msgstr "User Moderation Log"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:124
+#: lib/glimesh_web/templates/user_payments/index.html.eex:142
 msgid "View on Stripe"
 msgstr "View on Stripe"
 
-#: lib/glimesh_web/templates/about/credits.html.eex:37
+#: lib/glimesh_web/templates/about/credits.html.eex:36
 msgid "We use numerous open source projects to power Glimesh, and without them this project would never have been possible. This is not a comprehensive list, unfortunately. You can find a full list by browsing our core repositories:"
 msgstr "We user numerous open source projects to power Glimesh, and without them this project would never have been possible. This is not a comprehensive list, unfortunately. You can find a full list by browsing out core respositories:"
 
-#: lib/glimesh_web/live/chat_live/index.html.leex:4
+#: lib/glimesh_web/live/chat_live/index.html.leex:3
 msgid "Welcome to chat! Follow the rules."
 msgstr "Welcome to chat! Follow the rules."
 
@@ -1356,15 +1251,15 @@ msgstr "Welcome to chat! Follow the rules."
 msgid "Yes"
 msgstr "Yes"
 
-#: lib/glimesh/chat/policy.ex:45
+#: lib/glimesh/chat/policy.ex:29 lib/glimesh/chat/policy.ex:54
 msgid "You are banned from Glimesh."
 msgstr "You are banned from Glimesh."
 
-#: lib/glimesh/chat/policy.ex:38
+#: lib/glimesh/chat/policy.ex:47
 msgid "You are banned from this channel for %{minutes} more minutes."
 msgstr "You are banned from this channel for %{minutes} more minutes."
 
-#: lib/glimesh/chat/policy.ex:33
+#: lib/glimesh/chat/policy.ex:42
 msgid "You are permanently banned from this channel."
 msgstr "You are permanently banned from this channel."
 
@@ -1376,17 +1271,13 @@ msgstr "You do not have permissions to rotate this apps keys."
 msgid "You do not have permission to update this app."
 msgstr "You do not have permissions to update this app."
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:12
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:11
 msgid "%{user}'s Avatar"
 msgstr "%{user}'s Avatar"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:54
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:42
 msgid "2FA Token"
 msgstr "2FA Token"
-
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:41
-msgid "5 Custom Emotes"
-msgstr "5 Custom Emote"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:12
 msgid "A key used to uniquely identify and connect to your stream. Treat your Stream Key as a password."
@@ -1397,7 +1288,7 @@ msgstr "A key used to uniquely identify and connect to your stream. Treat your S
 msgid "About Glimesh"
 msgstr "About Glimesh"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:22
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:20
 msgid "Access Level: %{value}"
 msgstr "Access Level: %{value}"
 
@@ -1405,7 +1296,7 @@ msgstr "Access Level: %{value}"
 msgid "Accessibility"
 msgstr "Accessibility"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:42
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:105
 msgid "Admin"
 msgstr "Admin"
 
@@ -1418,15 +1309,11 @@ msgstr "Allow Glimesh Newsletter Emails"
 msgid "Allow Live Channel Emails"
 msgstr "Allow Live Channel Emails"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:40
-msgid "Animated Avatar Ring"
-msgstr "Animated Avatar Ring"
-
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:18
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:17
 msgid "Animated Emotes"
 msgstr "Animated Emotes"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:52
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:51
 msgid "Are you sure you want to disconnect your Twitter account?"
 msgstr "Are you sure you want to disconnect your Twitter account?"
 
@@ -1435,54 +1322,54 @@ msgstr "Are you sure you want to disconnect your Twitter account?"
 msgid "Audit Log"
 msgstr "Audit Log"
 
-#: lib/glimesh_web/templates/layout/root.html.leex:101
+#: lib/glimesh_web/templates/layout/root.html.leex:103
 msgid "BLOG"
 msgstr "BLOG"
 
-#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:19
+#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:25
 msgid "Backend: %{value}"
 msgstr "Backend: %{value}"
 
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:37
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:117 lib/glimesh_web/templates/gct/lookup_user.html.eex:112
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:48
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:139 lib/glimesh_web/templates/gct/lookup_user.html.eex:113
 msgid "Ban Reason"
 msgstr "Ban Reason"
 
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:13
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:28 lib/glimesh_web/live/gct_live/components/button_array.ex:41
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:14
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:39 lib/glimesh_web/live/gct_live/components/button_array.ex:52
 msgid "Ban User"
 msgstr "Ban User"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:112
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:134
 msgid "Banned"
 msgstr "Banned"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:19
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:17
 msgid "Banned: %{value}"
 msgstr "Banned: %{value}"
 
-#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:16
+#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:22
 msgid "Belongs to: %{value}"
 msgstr "Belongs to: %{value}"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:67
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:57
 msgid "Billing Settings"
 msgstr "Billing Settings"
 
-#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:21
+#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:27
 msgid "Blocked links: %{value}"
 msgstr "Blocked links: %{value}"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:47
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:110
 msgid "Can stream"
 msgstr "Can stream"
 
 #: lib/glimesh_web/live/admin/tag_live/form_component.html.leex:10
-#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:36
+#: lib/glimesh_web/live/user_live/components/channel_title.ex:46 lib/glimesh_web/templates/gct/lookup_channel.html.eex:42
 msgid "Category"
 msgstr "Category"
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:37
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:53
 msgid "Change your Glimesh experience to feel a little lighter, or a little darker."
 msgstr "Change your Glimesh experience to feel a little lighter or a little darker."
 
@@ -1490,40 +1377,36 @@ msgstr "Change your Glimesh experience to feel a little lighter or a little dark
 msgid "Changing a username will break the user's avatar."
 msgstr "Changing a username will break the user's avatar."
 
-#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:15
+#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:21
 msgid "Channel ID: %{value}"
 msgstr "Channel ID: %{value}"
 
-#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:11
+#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:12
 msgid "Channel thumbnail"
 msgstr "Channel thumbnail"
 
-#: lib/glimesh_web/controllers/gct_controller.ex:291
+#: lib/glimesh_web/controllers/gct_controller.ex:340
 msgid "Channel updated successfully"
 msgstr "Channel updated successfully"
 
-#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:48
+#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:54
 msgid "Chat Rules"
 msgstr "Chat Rules"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:17
-msgid "Colored Avatar Ring"
-msgstr "Colored Avatar Ring"
-
-#: lib/glimesh_web/templates/layout/root.html.leex:128
+#: lib/glimesh_web/templates/layout/root.html.leex:130
 msgid "Copyright © 2021 Glimesh, Inc."
 msgstr "Copyright © 2021 Glimesh, Inc."
 
-#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:17
+#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:23
 msgid "Created At: %{value} UTC"
 msgstr "Created At: %{value} UTC"
 
-#: lib/glimesh_web/live/homepage_live.html.leex:11
+#: lib/glimesh_web/live/homepage_live.html.leex:20
 msgid "Customize Your Profile"
 msgstr "Customize Your Profile"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:65
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:27
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:79
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:43
 msgid "Dark"
 msgstr "Dark"
 
@@ -1539,15 +1422,15 @@ msgstr "Details for Audit Log #%{log_number}"
 msgid "Disable Live Notifications"
 msgstr "Disable Live Notifications"
 
-#: lib/glimesh_web/live/chat_live/message_form.html.leex:37
+#: lib/glimesh_web/live/chat_live/message_form.html.leex:38
 msgid "Disable Timestamps"
 msgstr "Disable Timestamps"
 
-#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:20
+#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:26
 msgid "Disabled hyperlinks: %{value}"
 msgstr "Disabled hyperlinks: %{value}"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.ex:42
+#: lib/glimesh_web/live/user_settings/notifications_live.ex:41
 msgid "Disabled live channel notifications for %{streamer}"
 msgstr "Disabled live channel notifications for %{streamer}"
 
@@ -1557,7 +1440,7 @@ msgid "Disallowing Live Subscriptions will disable them across the board, even i
 "                    channels."
 msgstr "Disallowing Live Subscriptions will disable them across the board, even if you have channels listed below. If you allow the notifications you'll start getting going live emails for the listed channels."
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:78
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:79
 msgid "Discord"
 msgstr "Discord"
 
@@ -1581,40 +1464,32 @@ msgstr "Edit User"
 msgid "Email Confirmed At"
 msgstr "Email Confirmed At"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:17
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:15
 msgid "Email Confirmed At: %{value}"
 msgstr "Email Confirmed At: %{value}"
 
-#: lib/glimesh_web/live/chat_live/message_form.html.leex:37
+#: lib/glimesh_web/live/chat_live/message_form.html.leex:38
 msgid "Enable Timestamps"
 msgstr "Enable Timestamps"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:19
-msgid "Error copying Stream Key"
-msgstr "Error copying Stream Key"
-
-#: lib/glimesh_web/live/user_live/index.html.leex:35
+#: lib/glimesh_web/live/user_live/index.html.leex:30
 msgid "Followers:"
 msgstr "Followers:"
 
-#: lib/glimesh_web/live/user_live/index.html.leex:39
+#: lib/glimesh_web/live/user_live/index.html.leex:34
 msgid "Following:"
 msgstr "Following:"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:39
-msgid "Founder Badge"
-msgstr "Founder Badge"
-
 #: lib/glimesh_web/controllers/about_controller.ex:32
-#: lib/glimesh_web/templates/layout/root.html.leex:95
+#: lib/glimesh_web/templates/layout/root.html.leex:96
 msgid "Frequently Asked Questions"
 msgstr "Frequently Asked Questions"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:103
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:124
 msgid "GCT Access Level"
 msgstr "GCT Access Level"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:91
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:102
 msgid "GCT Dash"
 msgstr "GCT Dash"
 
@@ -1622,15 +1497,15 @@ msgstr "GCT Dash"
 msgid "GCT Member"
 msgstr "GCT Member"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:95
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:116
 msgid "GCT Settings"
 msgstr "GCT Settings"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:21
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:19
 msgid "GCT: %{value}"
 msgstr "GCT: %{value}"
 
-#: lib/glimesh_web/templates/layout/root.html.leex:90
+#: lib/glimesh_web/templates/layout/root.html.leex:91
 msgid "GLIMESH.TV"
 msgstr "GLIMESH.TV"
 
@@ -1652,11 +1527,11 @@ msgstr "Glimesh is not yet launched, so this page is still missing some critical
 msgid "Go Back"
 msgstr "Go Back"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:89
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:90
 msgid "Guilded"
 msgstr "Guilded"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:18
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:16
 msgid "Has Channel: %{value}"
 msgstr "Has Channel: %{value}"
 
@@ -1680,25 +1555,25 @@ msgstr "Information for %{user}"
 msgid "Information for %{user}'s channel"
 msgstr "Information for %{user}'s channel"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:82
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:83
 msgid "Instagram"
 msgstr "Instagram"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:98
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:119
 msgid "Is GCT"
 msgstr "Is GCT"
 
-#: lib/glimesh_web/live/user_live/index.html.leex:31
+#: lib/glimesh_web/live/user_live/index.html.leex:26
 msgid "Joined:"
 msgstr "Joined:"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:69
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:32
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:83
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:48
 msgid "Light"
 msgstr "Light"
 
 #: lib/glimesh_web/live/user_live/components/social_buttons.ex:9
-#: lib/glimesh_web/live/user_live/index.html.leex:45
+#: lib/glimesh_web/live/user_live/index.html.leex:39
 msgid "Linked Twitter Account @%{username}"
 msgstr "Linked Twitter Account @%{username}"
 
@@ -1706,7 +1581,7 @@ msgstr "Linked Twitter Account @%{username}"
 msgid "Live Channel Notifications"
 msgstr "Live Channel Notifications"
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:14
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:35
 msgid "Look & Feel"
 msgstr "Look & Feel"
 
@@ -1740,7 +1615,7 @@ msgstr "Notifications"
 msgid "Options"
 msgstr "Options"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:87
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:77
 msgid "Payments Enabled"
 msgstr "Payments Enabled"
 
@@ -1755,10 +1630,11 @@ msgid "Preferences updated successfully."
 msgstr "Preferences updated successfully."
 
 #: lib/glimesh_web/controllers/about_controller.ex:38
+#: lib/glimesh_web/templates/layout/root.html.leex:133
 msgid "Privacy & Cookie Policy"
 msgstr "Privacy & Cookie Policy"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:104
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:105
 msgid "Profile Content"
 msgstr "Profile Content"
 
@@ -1766,7 +1642,7 @@ msgstr "Profile Content"
 msgid "Resend"
 msgstr "Resend"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.ex:64
+#: lib/glimesh_web/live/user_settings/notifications_live.ex:63
 msgid "Saved notification preferences."
 msgstr "Saved notification preferences."
 
@@ -1775,7 +1651,7 @@ msgstr "Saved notification preferences."
 msgid "Search"
 msgstr "Search"
 
-#: lib/glimesh_web/live/user_live/index.html.leex:9
+#: lib/glimesh_web/live/user_live/index.html.leex:8
 msgid "Search for usernames"
 msgstr "Search for usernames"
 
@@ -1787,19 +1663,15 @@ msgstr "Send Reset Email"
 msgid "Sent At"
 msgstr "Sent At"
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:43
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:60
 msgid "Show Chat Timestamps"
 msgstr "Show Chat Timestamps"
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:46
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:63
 msgid "Show the time a message was posted in chat."
 msgstr "Show the time a message was posted in chat."
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:23
-msgid "Site Theme: "
-msgstr "Site Theme: "
-
-#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:18
+#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:24
 msgid "Status: %{value}"
 msgstr "Status: %{value}"
 
@@ -1807,31 +1679,31 @@ msgstr "Status: %{value}"
 msgid "Stream Key"
 msgstr "Stream Key"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:75
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:65
 msgid "Stripe Customer ID"
 msgstr "Stripe Customer ID"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:30
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:31
 msgid "Stripe Customer ID: %{value}"
 msgstr "Stripe Customer ID: %{value}"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:82
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:72
 msgid "Stripe Payment Method"
 msgstr "Stripe Payment Method"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:34
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:35
 msgid "Stripe Payment Method: %{value}"
 msgstr "Stripe Payment Method: %{value}"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:70
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:60
 msgid "Stripe User ID"
 msgstr "Stripe User ID"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:33
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:34
 msgid "Stripe User ID: %{value}"
 msgstr "Stripe User ID: %{value}"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:24
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:28
 msgid "Sub Ready: %{value}"
 msgstr "Sub Ready: %{value}"
 
@@ -1843,16 +1715,13 @@ msgstr "Subject"
 msgid "Successfully disconnected your social account."
 msgstr "Successfully disconnected your social account."
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:38
-msgid "Supporter Perks"
-msgstr "Supporter Perks"
-
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:17
 #: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:75
 msgid "Target"
 msgstr "Target"
 
 #: lib/glimesh_web/controllers/about_controller.ex:44
+#: lib/glimesh_web/templates/layout/root.html.leex:131
 msgid "Terms of Service"
 msgstr "Terms of Service"
 
@@ -1877,15 +1746,16 @@ msgstr "This is a list of all the emails we have sent you and what triggered the
 msgid "This social account has already been linked to another user."
 msgstr "This social account has already been linked to another user."
 
-#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:28
+#: lib/glimesh_web/live/user_live/components/channel_title.ex:41
+#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:34
 msgid "Title"
 msgstr "Title"
 
-#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:40
+#: lib/glimesh_web/templates/gct/lookup_channel.html.eex:46
 msgid "To be added"
 msgstr "To be added"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:63
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:64
 msgid "Twitter"
 msgstr "Twitter"
 
@@ -1893,11 +1763,11 @@ msgstr "Twitter"
 msgid "Type of Email"
 msgstr "Type of Email"
 
-#: lib/glimesh_web/controllers/gct_controller.ex:311
+#: lib/glimesh_web/controllers/gct_controller.ex:369
 msgid "Unauthorized. This attempt has been logged."
 msgstr "Unauthorized. This attempt has been logged."
 
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:15
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:16
 msgid "Unban User"
 msgstr "Unban User"
 
@@ -1909,23 +1779,24 @@ msgstr "Unverified Account"
 msgid "Update Application"
 msgstr "Update Application"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:105
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:140
 msgid "Update Channel"
 msgstr "Update Channel"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:123
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:145
 msgid "Update User"
 msgstr "Update User"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:16
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:14
 msgid "User ID: %{value}"
 msgstr "User ID: %{value}"
 
-#: lib/glimesh_web/controllers/gct_controller.ex:117
-#: lib/glimesh_web/controllers/gct_controller.ex:180
+#: lib/glimesh_web/controllers/gct_controller.ex:142
+#: lib/glimesh_web/controllers/gct_controller.ex:206
 msgid "User updated successfully"
 msgstr "User updated successfully"
 
+#: lib/glimesh_web/live/user_live/components/report_button.ex:45
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:22
 msgid "Username"
 msgstr "Username"
@@ -1934,7 +1805,7 @@ msgstr "Username"
 msgid "Verify Email"
 msgstr "Verify Email"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:50
+#: lib/glimesh_web/live/user_live/profile.html.leex:49
 msgid "View on GCT"
 msgstr "View on GCT"
 
@@ -1950,7 +1821,7 @@ msgstr "WARNING YOU'RE CURRENTLY EDITING %{user}'s CHANNEL"
 msgid "WARNING YOU'RE CURRENTLY EDITING %{user}'s PROFILE SETTINGS"
 msgstr "WARNING YOU'RE CURRENTLY EDITING %{user}'s PROFILE SETTINGS"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:82
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:80
 msgid "We use Stripe as our payment provider."
 msgstr "We use Stripe as our payment provider."
 
@@ -1966,15 +1837,15 @@ msgstr "Your account's email is already confirmed."
 msgid "Your email has not be verified, in order to stream on Glimesh you need to verify your email."
 msgstr "Your email has not been verified, in order to stream on Glimesh, you need to verify your email."
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:71
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:72
 msgid "Youtube"
 msgstr "YouTube"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:95
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:96
 msgid "Youtube Teaser URL"
 msgstr "YouTube"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:43
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:44
 msgid "username"
 msgstr "username"
 
@@ -2002,13 +1873,9 @@ msgstr "At Glimesh we want to make sure that everyone's creative work is safe wh
 msgid "At Glimesh, we value an excellent experience while streaming. So we've taken a great deal of consideration into how and why we are designing features to make you and your viewers experience an excellent one. Let's take a brief look at what makes us stand out in the crowd."
 msgstr "At Glimesh, we value an excellent experience while streaming. So we've taken a great deal of consideration into how and why we are designing features to make you and your viewer's experience an excellent one. Let's take a brief look at what makes us stand out in the crowd."
 
-#: lib/glimesh_web/controllers/user_registration_controller.ex:51
+#: lib/glimesh_web/controllers/user_registration_controller.ex:54
 msgid "Captcha validation failed, please make sure you have JavaScript enabled."
 msgstr "Captcha validation failed, please make sure you have JavaScript enabled."
-
-#: lib/glimesh_web/live/streams_live/list.html.leex:42
-msgid "Clear Filter"
-msgstr "Clear Filter"
 
 #: lib/glimesh_web/templates/about/streaming.html.eex:71
 msgid "Community"
@@ -2026,11 +1893,11 @@ msgstr "Counter-Notice"
 msgid "Customize Your Channel"
 msgstr "Customize Your Channel"
 
-#: lib/glimesh_web/controllers/about_controller.ex:51
+#: lib/glimesh_web/controllers/about_controller.ex:57
 msgid "DMCA"
 msgstr "DMCA"
 
-#: lib/glimesh_web/templates/layout/root.html.leex:94
+#: lib/glimesh_web/templates/layout/root.html.leex:95
 msgid "DMCA Policy"
 msgstr "DMCA Policy"
 
@@ -2122,11 +1989,11 @@ msgstr "Interface"
 msgid "Invalid e-mail / username or password"
 msgstr "Invalid e-mail / username or password"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:61
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:79
 msgid "Invalid image. Max size is 100KB."
 msgstr "Invalid image. Max size is 100KB."
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:43
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:61
 msgid "Invalid image. Must be either a PNG or JPG."
 msgstr "Invalid image. Must be either a PNG or JPG."
 
@@ -2138,7 +2005,7 @@ msgstr "Join Us!"
 msgid "Join our Discord"
 msgstr "Join our Discord"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:42
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:41
 msgid "Language settings moved to your Preferences, or the top nav."
 msgstr "Language settings moved to your Preferences, or the top nav."
 
@@ -2248,19 +2115,16 @@ msgstr "Streaming on Glimesh"
 msgid "Subscriptions"
 msgstr "Subscriptions"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:87
+#: lib/glimesh_web/live/user_live/components/channel_title.ex:51
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:105
 msgid "Tags"
 msgstr "Tags"
 
-#: lib/glimesh_web/live/streams_live/list.html.leex:34
-msgid "Tags:"
-msgstr "Tags:"
-
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:59
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:48
 msgid "Team Role"
 msgstr "Team Role"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:27
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:23
 msgid "Team Role: %{value}"
 msgstr "Team Role: %{value}"
 
@@ -2293,11 +2157,11 @@ msgstr "To start with Glimesh's policies on the DMCA we have to begin with a bas
 msgid "Username/Channel ID"
 msgstr "Username/Channel ID"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:21
+#: lib/glimesh_web/live/user_live/profile.html.leex:24
 msgid "View Channel"
 msgstr "View Channel"
 
-#: lib/glimesh_web/live/user_live/stream.html.leex:50
+#: lib/glimesh_web/live/user_live/stream.html.leex:75
 msgid "View Profile"
 msgstr "View Profile"
 
@@ -2380,4 +2244,493 @@ msgstr "your name, address, telephone number, and email address, a statement tha
 #: lib/glimesh_web/templates/about/dmca.html.eex:155
 msgid "your physical or electronic signature;"
 msgstr "your physical or electronic signature;"
+
+#: lib/glimesh_web/templates/gct/channel_chat_log.html.eex:2
+msgid "%{channel_name}'s Chat Logs"
+msgstr "%{channel_name}'s Chat Logs"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:8
+msgid "1. Tax Information"
+msgstr "1. Tax Information"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:15
+msgid "2. Setup"
+msgstr "2. Setup"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:31
+msgid "3. Payouts"
+msgstr "3. Payouts"
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:39
+msgid "Additional Love & Thanks!"
+msgstr "Additional Love & Thanks!"
+
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:102
+msgid "Admin Settings"
+msgstr "Admin Settings"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:34
+msgid "After subscribing, funds can take time to settle in our account"
+msgstr "After subscribing, funds can take time to settle in our account"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:10
+msgid "After you finish your Stripe Connection Process, you will be redirected to a tax form submission page which will allow you to submit an United States Internal Revenue Service form, called the W-8, that we require before we can enable your sub button. Submitted W-8 forms can take up to 14 days for review."
+msgstr "After you finish your Stripe Connection Process, you will be redirected to a tax form submission page which will allow you to submit a United States Internal Revenue Service form, called the W-8, that we require before we can enable your sub button. Submitted W-8 forms can take up to 14 days for review."
+
+#: lib/glimesh_web/live/user_live/stream.html.leex:44
+msgid "Agree & View Channel"
+msgstr "Agree & View Channel"
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:36
+msgid "All Supporter Perks"
+msgstr "All Supporter Perks"
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:37
+msgid "Animated Gold Avatar Ring"
+msgstr "Animated Gold Avatar Ring"
+
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:31
+msgid "Automatically bypass our Mature Content warning by enabling this preference."
+msgstr "Automatically bypass our Mature Content warning by enabling this preference."
+
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:131
+msgid "Ban Settings"
+msgstr "Ban Settings"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:40
+msgid "Blog"
+msgstr "Blog"
+
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:26
+msgid "Bypass Mature Content Warning"
+msgstr "Bypass Mature Content Warning"
+
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:30
+msgid "Channel Primary Language"
+msgstr "Channel Primary Language"
+
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:40
+msgid "Channel contains mature content"
+msgstr "Channel contains mature content"
+
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:57
+msgid "Chat Timestamp Visibility:"
+msgstr "Chat Timestamp Visibility:"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:18
+msgid "Complete your setup process on Stripe"
+msgstr "Complete your setup process on Stripe"
+
+#: lib/glimesh_web/live/homepage_live.html.leex:21
+msgid "Create Your Channel"
+msgstr "Create Your Channel"
+
+#: lib/glimesh_web/live/user_live/stream.html.leex:39
+msgid "Do you wish to continue?"
+msgstr "Do you wish to continue?"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:9
+msgid "During your Stripe Connection Process you will provide the information required to fill out an electronic W-9 that will be submitted to Stripe. Once you have completed your Stripe Connection Process your sub button will be available immediately."
+msgstr "During your Stripe Connection Process, you will provide the information required to fill out an electronic W-9 that will be submitted to Stripe. Once you have completed your Stripe Connection Process your sub button will be available immediately."
+
+#: lib/glimesh_web/live/user_live/profile.html.leex:67
+msgid "Follow Streamer"
+msgstr "Follow Streamer"
+
+#: lib/glimesh_web/templates/user_payments/taxes.html.eex:28
+msgid "For use by business or legal entities"
+msgstr "For use by business or legal entities"
+
+#: lib/glimesh_web/templates/user_payments/taxes.html.eex:15
+msgid "For use by individuals"
+msgstr "For use by individuals"
+
+#: lib/glimesh_web/templates/gct/audit_log.html.eex:2
+msgid "GCT Audit Log"
+msgstr "GCT Audit Log"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:25
+msgid "Get subscribers!"
+msgstr "Get subscribers!"
+
+#: lib/glimesh/chat/effects.ex:49
+msgid "Glimesh Gold Supporter Subscriber"
+msgstr "Glimesh Gold Supporter Subscriber"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:63
+msgid "Glimesh Payouts"
+msgstr "Glimesh Payouts"
+
+#: lib/glimesh_web/templates/user_payments/taxes.html.eex:18
+msgid "Glimesh has partnered with a tax service called Tax ID Pro to provide electronic versions of the W-8BEN form. This will help to ensure your information is accurate and complete, and requires less manual intervention. Clicking the link below will take you to our partner's website."
+msgstr "Glimesh has partnered with a tax service called Tax ID Pro to provide electronic versions of the W-8BEN form. This will help to ensure your information is accurate and complete and requires less manual intervention. Clicking the link below will take you to our partner's website."
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:32
+msgid "Glimesh payouts happen weekly, but there is some delay in getting a new subscriber and seeing their money in your bank account. All subscriptions and payouts happen in USD, and will be converted."
+msgstr "Glimesh payouts happen weekly, but there is some delay in getting a new subscriber and seeing their money in your bank account. All subscriptions and payouts happen in USD and will be converted."
+
+#: lib/glimesh_web/templates/user_payments/taxes.html.eex:8
+msgid "Glimesh will be paying you royalties based on the Copyright License you provided for us to use your content, per our Terms of Service. If you need help filling out your tax forms, please contact a local tax professional. Glimesh is not equipped, nor able to help you with support issues related to tax forms."
+msgstr "Glimesh will be paying you royalties based on the Copyright License you provided for us to use your content, per our Terms of Service. If you need help filling out your tax forms, please contact a local tax professional. Glimesh is not equipped, nor able to help you with support issues related to tax forms."
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:16
+msgid "Gold Colored Avatar Ring"
+msgstr "Gold Colored Avatar Ring"
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:30
+msgid "Gold Supporter"
+msgstr "Gold Supporter"
+
+#: lib/glimesh_web/templates/about/credits.html.eex:6
+msgid "Gold Supporters"
+msgstr "Gold Supporters"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:19
+msgid "If non-US country:"
+msgstr "If non-US country:"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:79
+msgid "If you want to deactivate your account or need help with something, please email support@glimesh.tv"
+msgstr "If you want to deactivate your account or need help with something, please email support@glimesh.tv"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:37
+msgid "In your bank on Friday"
+msgstr "In your bank on Friday"
+
+#: lib/glimesh_web/live/gct_live/components/channel_chat_log_table.html.leex:10
+#: lib/glimesh_web/live/gct_live/components/user_chat_log_table.html.leex:10
+msgid "Inserted At"
+msgstr "Inserted At"
+
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:84
+msgid "Is Stripe Setup"
+msgstr "Is Stripe Setup"
+
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:89
+msgid "Is Tax Verified"
+msgstr "Is Tax Verified"
+
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:16
+msgid "Language:"
+msgstr "Language:"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:77
+msgid "Manage Stripe Account"
+msgstr "Manage Stripe Account"
+
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:37
+msgid "Mature Content"
+msgstr "Mature Content"
+
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:22
+msgid "Mature Content Visibility:"
+msgstr "Mature Content Visibility:"
+
+#: lib/glimesh_web/live/user_live/stream.html.leex:36
+msgid "Mature Content Warning"
+msgstr "Mature Content Warning"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:44
+msgid "Merch"
+msgstr "Merch"
+
+#: lib/glimesh_web/live/gct_live/components/channel_chat_log_table.html.leex:9
+#: lib/glimesh_web/live/gct_live/components/user_chat_log_table.html.leex:9
+msgid "Message"
+msgstr "Message"
+
+#: lib/glimesh_web/live/gct_live/components/channel_chat_log_table.html.leex:8
+msgid "Message Author"
+msgstr "Message Author"
+
+#: lib/glimesh_web/templates/user_payments/taxes.html.eex:20
+msgid "Once you have completed the form, it will be automatically submitted to us. Our team will review, and we'll send you an email if we have any questions! After we review, and your account is approved, your subscriptions button will be enabled!"
+msgstr "Once you have completed the form, it will be automatically submitted to us. Our team will review, and we'll send you an email if we have any questions! After we review, and your account is approved, your subscriptions button will be enabled!"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:10
+msgid "Other Countries:"
+msgstr "Other Countries:"
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:18
+msgid "Our Thanks!"
+msgstr "Our Thanks!"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:35
+msgid "Payouts happen Wednesday"
+msgstr "Payouts happen Wednesday"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:41
+msgid "Proceed with Stripe Setup"
+msgstr "Proceed with Stripe Setup"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:17
+msgid "Read this page carefully"
+msgstr "Read this page carefully"
+
+#: lib/glimesh_web/controllers/about_controller.ex:50
+#: lib/glimesh_web/templates/layout/root.html.leex:132
+msgid "Rules of Conduct"
+msgstr "Rules of Conduct"
+
+#: lib/glimesh_web/live/streams_live/list.html.leex:51
+msgid "Search for a stream by tags"
+msgstr "Search for a stream by tags"
+
+#: lib/glimesh_web/controllers/user_payments_controller.ex:55
+#: lib/glimesh_web/templates/user_payments/index.html.eex:81 lib/glimesh_web/templates/user_payments/setup.html.eex:2
+msgid "Setup Glimesh Payouts"
+msgstr "Setup Glimesh Payouts"
+
+#: lib/glimesh_web/live/streams_live/list.html.leex:64
+msgid "Showing %{count_channels} of %{total_channels} Live Channels"
+msgstr "Showing %{count_channels} of %{total_channels} Live Channels"
+
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:13
+msgid "Site Content"
+msgstr "Site Content"
+
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:38
+msgid "Site Theme:"
+msgstr "Site Theme:"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:90
+msgid "Start Process"
+msgstr "Start Process"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:36
+msgid "Stripe Deposit can take 24-48 hours, and can take additional time"
+msgstr "Stripe Deposit can take 24-48 hours, and can take additional time"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:68
+msgid "Stripe Setup:"
+msgstr "Stripe Setup:"
+
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:25
+msgid "Stripe Setup: %{value}"
+msgstr "Stripe Setup: %{value}"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:70
+msgid "Sub Button:"
+msgstr "Sub Button:"
+
+#: lib/glimesh_web/controllers/user_payments_controller.ex:91
+#: lib/glimesh_web/templates/user_payments/index.html.eex:73 lib/glimesh_web/templates/user_payments/taxes.html.eex:2
+msgid "Submit Tax Forms"
+msgstr "Submit Tax Forms"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:21
+msgid "Submit your W-8 form"
+msgstr "Submit your W-8 form"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:48
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:60 lib/glimesh_web/templates/layout/root.html.leex:98
+msgid "Support"
+msgstr "Support"
+
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:26
+msgid "Tax Verified: %{value}"
+msgstr "Tax Verified: %{value}"
+
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:94
+msgid "Tax Withholding Percent"
+msgstr "Tax Withholding Percent"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:69
+msgid "Taxes Verified:"
+msgstr "Taxes Verified:"
+
+#: lib/glimesh_web/templates/user_payments/taxes.html.eex:5
+msgid "Thank you for setting up your account with our payments partner Stripe! Next up is to verify your tax withholding amount by uploading a W-8 form. This form is provided by the Internal Revenue Service of the United States, and is required to collect so we can properly withhold tax on your payouts."
+msgstr "Thank you for setting up your account with our payments partner Stripe! Next up is to verify your tax withholding amount by uploading a W-8 form. This form is provided by the Internal Revenue Service of the United States and is required to collect so we can properly withhold tax on your payouts."
+
+#: lib/glimesh_web/live/user_live/stream.html.leex:38
+msgid "The streamer has flagged this channel as only appropriate for Mature Audiences."
+msgstr "The streamer has flagged this channel as only appropriate for Mature Audiences."
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:46
+msgid "This page is not legal or tax advice. Before accepting Glimesh Payouts, please consult with your own legal & tax representatives."
+msgstr "This page is not legal or tax advice. Before accepting Glimesh Payouts, please consult with your own legal & tax representatives."
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:9
+msgid "United States:"
+msgstr "United States:"
+
+#: lib/glimesh_web/templates/layout/_navbar.html.leex:36
+msgid "User List"
+msgstr "User List"
+
+#: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:8
+msgid "View Chat Log"
+msgstr "View Chat Log"
+
+#: lib/glimesh_web/templates/user_payments/setup.html.eex:22
+msgid "Wait for internal review process"
+msgstr "Wait for internal review process"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:86
+msgid "We only support payouts in the countries listed above, if you don't see your country then unfortunately we do not yet support payouts for you."
+msgstr "We only support payouts in the countries listed above, if you don't see your country then unfortunately we do not yet support payouts for you."
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:84
+msgid "Your Country"
+msgstr "Your Country"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:65
+msgid "Your account setup is still pending."
+msgstr "Your account setup is still pending."
+
+#: lib/glimesh_web/templates/gct/user_chat_log.html.eex:2
+msgid "%{user}'s Chat Logs"
+msgstr "%{user}'s Chat Logs"
+
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:17
+msgid "Are you sure you want to unsubscribe?"
+msgstr "Are you sure you want to unsubscribe?"
+
+#: lib/glimesh_web/templates/user_payments/index.html.eex:110
+#: lib/glimesh_web/templates/user_payments/index.html.eex:126
+msgid "Canceling on %{date}"
+msgstr "Canceling on %{date}"
+
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:109
+msgid "Chat Safety"
+msgstr "Chat Safety"
+
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:141
+msgid "Deactivate Channel"
+msgstr "Deactivate Channel"
+
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:24
+msgid "Delete Stripe Account"
+msgstr "Delete Stripe Account"
+
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:93
+msgid "Discord Invite Code"
+msgstr "Discord Invite Code"
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:38
+msgid "Gold Username"
+msgstr "Gold Username"
+
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:130
+msgid "Hours"
+msgstr "Hours"
+
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:133
+msgid "How many hours should the account exist before they can chat? Set to zero to disable."
+msgstr "how many hours should the account exist before they can chat? Set to zero to disable."
+
+#: lib/glimesh/accounts/user.ex:390
+msgid "Invalid Discord invite URL"
+msgstr "Invalid Discord Invite URL"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:46
+msgid "Not on Glimesh"
+msgstr "Not on Glimesh"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:82
+msgid "Other details you'd like to share"
+msgstr "Other details you'd like to share"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:48
+msgid "Please include relevant links in the notes section."
+msgstr "Please include relevant links in the notes section."
+
+#: lib/glimesh_web/live/chat_live/message_form.html.leex:36
+msgid "Pop-out Chat"
+msgstr "Pop-out Chat"
+
+#: lib/glimesh_web/controllers/user_settings_controller.ex:67
+msgid "Problem uploading avatar, please try again later."
+msgstr "Problem uploading avatar, please try again later."
+
+#: lib/glimesh_web/controllers/user_settings_controller.ex:128
+msgid "Problem uploading stream images, please try again later."
+msgstr "Problem uploading stream images, please try again later."
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:44
+msgid "Profile Text or Avatar"
+msgstr "Profile Text or Avatar"
+
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:121
+msgid "Require confirmed email before chatting?"
+msgstr "Require confirmed email before chatting?"
+
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:126
+msgid "Require minimum account length before chatting?"
+msgstr "Require minimum account length before chatting?"
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:58
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:15 lib/glimesh_web/live/user_live/components/subscribe_button.ex:71
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:87
+msgid "Resubscribe"
+msgstr "Resubscribe"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:41
+msgid "Select One"
+msgstr "Select One"
+
+#: lib/glimesh_web/live/chat_live/message_form.html.leex:29
+msgid "Send a message"
+msgstr "Send a message"
+
+#: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:10
+msgid "Shutdown Broadcast"
+msgstr "Shutdown Broadcast"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:43
+msgid "Stream Chat"
+msgstr "Stream Chat"
+
+#: lib/glimesh_web/live/user_live/components/channel_title.ex:32
+msgid "Stream Info"
+msgstr "Stream Info"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:42
+msgid "Stream Video Content"
+msgstr "Stream Video Content"
+
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:21
+msgid "Stripe Actions"
+msgstr "Stripe Actions"
+
+#: lib/glimesh_web/live/gct_live/components/user_chat_log_table.html.leex:8
+msgid "Target Channel"
+msgstr "Target Channel"
+
+#: lib/glimesh_web/live/homepage_live.html.leex:8
+msgid "Thanks for joining us! We're still getting our homepage settled, but please check out our categories!"
+msgstr "Thanks for joining us! We're still getting our homepage settled, but please check out our categories."
+
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:12
+msgid "View Chat Logs"
+msgstr "View Chat Logs"
+
+#: lib/glimesh_web/live/user_live/components/report_button.ex:39
+msgid "Where did this happen?"
+msgstr "Where did this happen?"
+
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:85
+msgid "You can resubscribe by clicking the button below, and your subscription will be renewed until you cancel it."
+msgstr "You can resubscribe by clicking the button below, and your subscription will be renewed until you cancel it."
+
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:23
+msgid "You cannot subscribe to this user."
+msgstr "You cannot subscribe to this user."
+
+#: lib/glimesh/chat/policy.ex:58
+msgid "You must confirm your email address before chatting."
+msgstr "You must confirm your email address before chatting."
+
+#: lib/glimesh/chat/policy.ex:65
+msgid "You must wait %{time_left} more minutes to chat."
+msgstr "You must wait %{time_left} more minutes to chat."
+
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:84
+msgid "Your subscription is currently set to automatically cancel at the end of your billing cycle."
+msgstr "Your subscription is currently set to automatically cancel at the end of your billing cycle."
+
+#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:56
+msgid "Your subscription is set to be canceled automatically at the end of the billing cycle."
+msgstr "Your subscription is set to be canceled automatically at the end of the billing cycle."
 

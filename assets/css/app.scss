@@ -55,17 +55,22 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "glimesh/components/nav";
 @import "glimesh/components/tagify";
 @import "glimesh/components/scrollbar";
-@import "glimesh/components/follow-button.scss";
+@import "glimesh/components/follow-button";
+@import "glimesh/components/apex-charts";
+@import "glimesh/components/video";
 
 @import "glimesh/pages/dmca";
+
+@include media-breakpoint-up(lg) {
+    .layout-spacing {
+        padding-bottom: 40px;
+    }
+}
 
 .nowrap {
     white-space: nowrap;
 }
 
-.layout-spacing {
-    padding-bottom: 40px;
-}
 
 .text-color-link {
     color: var(--body-color);
@@ -164,41 +169,4 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     // It's worth using WebP only for this image, saves almost 1MB in size, no harm if users don't see it.
     background: url("/images/homepage/background-resized.webp") no-repeat center top;
     background-size: contain;
-}
-
-.container-stream-list {
-    max-width: 2200px;
-}
-
-// .bg-category {
-//     background: no-repeat center center;
-//     background-size: cover;
-//     // background-size: auto 500px;
-//     margin-top: -15px;
-// }
-
-.hero {
-    position: relative;
-    margin: 0 auto;
-
-
-    &.has-background {
-        margin-top: -15px;
-        // position: relative;
-        // overflow: hidden;
-    }
-
-    .hero-background {
-        // max-width: 100%;
-        position: absolute;
-        object-fit: cover;
-        // object-position: center 70%;
-        width: 100%;
-        height: 1000px;
-        // height: 100%;
-    }
-
-    .hero-body {
-        position: relative;
-    }
 }

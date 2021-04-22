@@ -1,3 +1,4 @@
+$enable-responsive-font-sizes: true;
 
 $color-secondary: #5c1ac3;
 
@@ -8,17 +9,17 @@ $color-bone-white: #f1f2f3;
 $color-navy-blue: #1b2e4b;
 $color-cosmic-blue: #0e1726;
 $color-teal: #48D1BD;
- 
+
 :root {
     --body-bg-color: #060818;
-    --body-color: #fff; 
+    --body-color: #fff;
 
     --navbar-bg-color: #0e1726;
     --navbar-border-color: #3b3f5c;
     --navbar-color: #fff;
 
-    --secondary-color: #48D1BD; 
-    --secondary-bg-color: #0e1726; 
+    --secondary-color: #48D1BD;
+    --secondary-bg-color: #0e1726;
     --secondary-hover-bg-color: #1b2e4b;
 
     --footer-bg-color: #000000;
@@ -49,8 +50,8 @@ $color-teal: #48D1BD;
     --navbar-border-color: #fff;
     --navbar-color: #000;
 
-    --secondary-color: #0e1726; 
-    --secondary-bg-color: #fff;  
+    --secondary-color: #0e1726;
+    --secondary-bg-color: #fff;
     --secondary-hover-bg-color: #e9ecef;
 
     --footer-bg-color: #e9ecef;
@@ -73,11 +74,13 @@ $color-teal: #48D1BD;
     --text-muted-color: #000;
 }
 
-$font-family-base: 'Roboto', sans-serif; 
+$font-family-base: 'Roboto',
+sans-serif;
 $font-weight-normal: 300;
-$headings-font-family: 'Noto Sans', sans-serif;
+$headings-font-family: 'Noto Sans',
+sans-serif;
 $headings-font-weight: 700;
- 
+
 $body-bg: var(--body-bg-color);
 $body-color: var(--body-color);
 $pre-color: var(--body-color);
@@ -103,24 +106,24 @@ $list-group-action-active-bg: var(--secondary-hover-bg-color);
 $card-bg: var(--secondary-bg-color);
 
 // Inputs
-$input-bg:                              var(--input-bg-color);
-$input-disabled-bg:                     var(--input-bg-color);
+$input-bg: var(--input-bg-color);
+$input-disabled-bg: var(--input-bg-color);
 $input-color: var(--input-color);
 $input-border-color: var(--input-border-color);
 
-$input-group-addon-color:               var(--input-group-addon-color);
-$input-group-addon-bg:                  var(--input-group-addon-bg-color);
-$input-group-addon-border-color:        var(--input-group-addon-border-color);
-$input-focus-border-color:              var(--input-focus-border-color);
+$input-group-addon-color: var(--input-group-addon-color);
+$input-group-addon-bg: var(--input-group-addon-bg-color);
+$input-group-addon-border-color: var(--input-group-addon-border-color);
+$input-focus-border-color: var(--input-focus-border-color);
 
-$custom-select-bg: var(--input-bg-color); 
-$custom-select-color: var(--input-color); 
-$custom-select-border-color: var(--input-border-color); 
-$custom-select-focus-border-color: var(--input-border-color); 
+$custom-select-bg: var(--input-bg-color);
+$custom-select-color: var(--input-color);
+$custom-select-border-color: var(--input-border-color);
+$custom-select-focus-border-color: var(--input-border-color);
 
 // Tables
-$table-color:                 var(--body-color);
-$table-border-color:          var(--secondary-hover-bg-color);
+$table-color: var(--body-color);
+$table-border-color: var(--secondary-hover-bg-color);
 
 // Modals
 $modal-content-bg: var(--secondary-bg-color);

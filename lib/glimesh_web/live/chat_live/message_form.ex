@@ -26,7 +26,10 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   @impl true
   def handle_event("send", %{"chat_message" => chat_message_params}, socket) do
     instrument(__MODULE__, "send", socket, fn ->
-      save_chat_message(socket, socket.assigns.channel, socket.assigns.user, chat_message_params)
+      # Pull a fresh user and channel from the database in case something has changed
+      user = Glimesh.Accounts.get_user!(socket.assigns.user.id)
+      channel = Glimesh.ChannelLookups.get_channel!(socket.assigns.channel.id)
+      save_chat_message(socket, channel, user, chat_message_params)
     end)
   end
 

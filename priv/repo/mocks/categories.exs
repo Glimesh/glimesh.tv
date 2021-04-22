@@ -1,5 +1,5 @@
 
-tags = %{
+categories = %{
   "Art" => [
     "Digital",
     "Physical"

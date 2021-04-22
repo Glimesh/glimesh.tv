@@ -190,6 +190,11 @@ if taxidpro_api_key = System.get_env("TAXIDPRO_API_KEY") do
     api_key: taxidpro_api_key
 end
 
+# Rawg Config
+if rawg_api_key = System.get_env("RAWG_API_KEY") do
+  config :glimesh, Glimesh.Subcategories.RawgSource, api_key: rawg_api_key
+end
+
 # Glimesh Configuration
 if email_physical_address = System.get_env("GLIMESH_EMAIL_PHYSICAL_ADDRESS") do
   config :glimesh,

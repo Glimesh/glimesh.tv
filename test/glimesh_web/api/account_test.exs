@@ -11,7 +11,7 @@ defmodule GlimeshWeb.Api.AccountTest do
 
   @users_query """
   query getUsers {
-    users(first: 200) {
+    users {
       username
     }
   }

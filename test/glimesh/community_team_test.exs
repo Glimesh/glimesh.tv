@@ -45,7 +45,7 @@ defmodule Glimesh.CommunityTeamTest do
     end
 
     test "can't view billing info if no permission" do
-      user = gct_fixture(%{gct_level: 3, tfa_token: "Fake 2fa token"})
+      user = gct_fixture(%{gct_level: 2, tfa_token: "Fake 2fa token"})
 
       assert Bodyguard.permit?(Glimesh.CommunityTeam, :view_billing_info, user, user_fixture()) ==
                false

@@ -14,10 +14,14 @@ export default {
         el.scrollTop = el.scrollHeight;
     },
     isUserNearBottom(el) {
-        const threshold = el.offsetHeight / 2;
+        // 5 chat messages with padding
+        const threshold = 404;
         const position = el.scrollTop + el.offsetHeight;
         const height = el.scrollHeight;
-        return position > height - threshold;
+        const isNearBottom = position > height - threshold;
+        // For when you need to debug chat scrolling
+        // console.log(`scrollTop=${el.scrollTop} offsetHeight=${el.offsetHeight} threshold=${threshold} position=${position} height=${height} isNearBottom=${isNearBottom}`);
+        return isNearBottom;
     },
 
     theme() {
@@ -25,6 +29,13 @@ export default {
     },
     emotes() {
         return JSON.parse(this.el.dataset.emotes);
+    },
+
+    updated() {
+        this.scrollToBottom(document.getElementById('chat-messages'));
+    },
+    reconnected() {
+        this.scrollToBottom(document.getElementById('chat-messages'));
     },
     mounted() {
         const glimeshEmojis = this.emotes();
@@ -61,6 +72,9 @@ export default {
 
         const chat = document.getElementById('chat_message-form_message');
         const chatMessages = document.getElementById('chat-messages');
+
+        // Whenever the user changes their browser size, re-scroll them to the bottom
+        window.addEventListener('resize', () => this.scrollToBottom(chatMessages));
 
         picker.on('emoji', selection => {
             let value = '';

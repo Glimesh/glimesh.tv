@@ -7,7 +7,8 @@ defmodule Glimesh.Repo.Migrations.FixDiscordInviteLinks do
     users =
       Glimesh.Repo.all(
         from(u in "users",
-        select: %Glimesh.Accounts.User{id: u.id, social_discord: u.social_discord})
+          select: %Glimesh.Accounts.User{id: u.id, social_discord: u.social_discord}
+        )
       )
 
     Enum.each(users, fn user ->
@@ -20,9 +21,9 @@ defmodule Glimesh.Repo.Migrations.FixDiscordInviteLinks do
               |> Ecto.Changeset.put_change(:social_discord, new_social_discord)
 
             Glimesh.Repo.update!(changeset)
+
           _ ->
             nil
-
         end
       end
     end)

@@ -202,6 +202,8 @@ defmodule Glimesh.ChatTest do
     setup do
       streamer = streamer_fixture()
       moderator = user_fixture()
+      # Banned user fixtures
+      banned_streamer = streamer_fixture(%{is_banned: true})
 
       {:ok, _} =
         StreamModeration.create_channel_moderator(streamer, streamer.channel, moderator, %{
@@ -213,6 +215,8 @@ defmodule Glimesh.ChatTest do
       %{
         channel: streamer.channel,
         streamer: streamer,
+        banned_streamer: banned_streamer,
+        banned_channel: banned_streamer.channel,
         moderator: moderator,
         user: user_fixture()
       }
@@ -223,6 +227,16 @@ defmodule Glimesh.ChatTest do
 
       assert {:error, "You are banned from Glimesh."} =
                Chat.create_chat_message(user, channel, %{message: "not allowed?"})
+    end
+
+    test "global account ban prohibits streamer from chat", %{
+      banned_channel: banned_channel,
+      banned_streamer: banned_streamer
+    } do
+      assert {:error, "You are banned from Glimesh."} =
+               Chat.create_chat_message(banned_streamer, banned_channel, %{
+                 message: "not allowed?"
+               })
     end
 
     test "times out a user and removes messages successfully", %{
@@ -329,6 +343,35 @@ defmodule Glimesh.ChatTest do
         Accounts.update_user_preference(user_preferences, %{show_timestamps: true})
 
       assert user_preferences.show_timestamps == true
+    end
+  end
+
+  describe "chat safety & security" do
+    alias Glimesh.Chat.ChatMessage
+
+    setup do
+      streamer = streamer_fixture()
+
+      %{
+        channel: streamer.channel,
+        streamer: streamer
+      }
+    end
+
+    test "create_chat_message/3 with an account under 3 hours old fails when configured",
+         %{channel: channel, streamer: streamer} do
+      {:ok, channel} = Streams.update_channel(streamer, channel, %{minimum_account_age: 3})
+
+      assert {:error, "You must wait 180 more minutes to chat."} =
+               Chat.create_chat_message(user_fixture(), channel, "Hello world")
+    end
+
+    test "create_chat_message/3 with an unverified account fails when configured ",
+         %{channel: channel, streamer: streamer} do
+      {:ok, channel} = Streams.update_channel(streamer, channel, %{require_confirmed_email: true})
+
+      assert {:error, "You must confirm your email address before chatting."} =
+               Chat.create_chat_message(user_fixture(), channel, "Hello world")
     end
   end
 end

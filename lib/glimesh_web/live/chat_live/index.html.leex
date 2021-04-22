@@ -6,7 +6,7 @@
     <div id="<%= chat_message.id %>" data-user-id="<%= chat_message.user.id %>" class="<%=if Glimesh.Chat.Effects.user_in_message(@user, chat_message), do: "bubble mention", else: "bubble you"%>
         <%= if chat_message.is_subscription_message, do: "bg-secondary" %>
         <%= if chat_message.is_followed_message, do: "border border-info" %>">
-        <div class="user-message-header">
+        <div class="user-message-header d-inline d-md-block">
             <%= unless chat_message.is_followed_message or chat_message.is_subscription_message do %>
             <%= if Map.get(@permissions, :can_short_timeout, false) do %>
             <i class="short-timeout fas fa-stopwatch fa-fw" phx-click="short_timeout_user" phx-value-user="<%= chat_message.user.username %>" data-toggle="tooltip" title="<%= gettext("Timeout user for 5 minutes.") %>"></i>
@@ -28,7 +28,7 @@
                 </local-time>
             </small>
         </div>
-        <div class="user-message">
+        <div class="user-message d-inline d-md-block">
             <%= if chat_message.is_followed_message or chat_message.is_subscription_message, do: Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %>
             <%= raw(Glimesh.Chat.Renderer.render(chat_message.tokens)) %>
         </div>

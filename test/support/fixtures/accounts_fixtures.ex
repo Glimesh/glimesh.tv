@@ -8,6 +8,23 @@ defmodule Glimesh.AccountsFixtures do
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
 
+  def subcategory_fixture(attrs \\ %{}) do
+    %Glimesh.Streams.Category{id: cat_id} = Glimesh.ChannelCategories.get_category("gaming")
+
+    {:ok, subcat} =
+      Glimesh.ChannelCategories.create_subcategory(
+        Map.merge(
+          %{
+            category_id: cat_id,
+            name: "World of Warcraft"
+          },
+          attrs
+        )
+      )
+
+    subcat
+  end
+
   def tag_fixture(tag_attrs \\ %{}) do
     %Glimesh.Streams.Category{id: cat_id} = Glimesh.ChannelCategories.get_category("gaming")
 
@@ -16,7 +33,7 @@ defmodule Glimesh.AccountsFixtures do
         Map.merge(
           %{
             category_id: cat_id,
-            name: "World of Warcraft"
+            name: "Chill Stream"
           },
           tag_attrs
         )
@@ -45,7 +62,7 @@ defmodule Glimesh.AccountsFixtures do
       )
 
     Glimesh.Accounts.get_user!(streamer.id)
-    |> Glimesh.Repo.preload(channel: [:category, :tags])
+    |> Glimesh.Repo.preload(channel: [:category, :subcategory, :tags])
   end
 
   def user_fixture(attrs \\ %{}) do

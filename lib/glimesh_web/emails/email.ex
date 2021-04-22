@@ -59,9 +59,10 @@ defmodule GlimeshWeb.Emails.Email do
     |> render(:user_update_email)
   end
 
-  def user_report_alert(admin, reporting_user, reported_user, reason, notes) do
+  def user_report_alert(admin, reporting_user, reported_user, reason, location, notes) do
     user_base_email()
     |> to(admin.email)
+    |> put_header("Reply-To", reporting_user.email)
     |> subject("User Alert Report for #{reported_user.displayname}!")
     |> text_body("""
      ==============================
@@ -73,6 +74,7 @@ defmodule GlimeshWeb.Emails.Email do
      Reported User:
       Username: #{reported_user.username}
       Reason: #{reason}
+      Location: #{location}
       Notes: #{notes}
 
      Reported By:

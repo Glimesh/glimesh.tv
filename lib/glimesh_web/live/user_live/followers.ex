@@ -12,6 +12,7 @@ defmodule GlimeshWeb.UserLive.Followers do
         followers =
           Glimesh.AccountFollows.list_followers(streamer)
           |> Repo.all()
+          |> Repo.preload(:user)
 
         {:ok,
          socket

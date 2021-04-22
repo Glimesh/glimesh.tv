@@ -93,7 +93,7 @@ defmodule Glimesh.AccountFollows do
   end
 
   def list_followers(user) do
-    from(f in Follower, where: f.streamer_id == ^user.id) |> Repo.preload(:user)
+    from(f in Follower, where: f.streamer_id == ^user.id)
   end
 
   def list_following(user) do

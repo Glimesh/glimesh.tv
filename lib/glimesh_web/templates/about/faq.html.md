@@ -64,10 +64,6 @@ We’re going to launch in Alpha state to everyone! You can get ahead of this an
 We do want to test out load balancing and multiple streamers at one time with all of their different settings however, we won’t have anyone streaming in any official capacity before launch.
 
 
-##### When is the projected launch date?
-We’re aiming for sometime early 2021 for our alpha launch. We’ll let you know 2 weeks in advance of launch to give you time to prepare.
-
-
 ##### Will Glimesh be a publicly traded company?
 Way too early to think about this. There is a lot of discussion to be had about this, but the current thought is we’ll probably be more aligned with a cooperative or employee owned company.
 

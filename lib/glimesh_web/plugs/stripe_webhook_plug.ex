@@ -12,9 +12,14 @@ defmodule GlimeshWeb.StripeWebhookPlug do
            Stripe.Webhook.construct_event(body, stripe_signature, webhook_secret) do
       assign(conn, :stripe_event, stripe_event)
     else
-      {:error, error} ->
+      {:error, error} when is_binary(error) ->
         conn
-        |> send_resp(:bad_request, error.message)
+        |> send_resp(:bad_request, error)
+        |> halt()
+
+      {:error, _} ->
+        conn
+        |> send_resp(:bad_request, "Unexpected error with request")
         |> halt()
     end
   end
