@@ -12,7 +12,7 @@ config :glimesh, Glimesh.Repo,
   username: "postgres",
   password: "postgres",
   database: "glimesh_test#{System.get_env("MIX_TEST_PARTITION")}",
-  hostname: "localhost",
+  hostname: System.get_env("DATABASE_URL", "localhost"),
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,
@@ -26,9 +26,9 @@ config :glimesh, GlimeshWeb.Emails.Mailer, adapter: Bamboo.TestAdapter
 # Print only warnings and errors during test
 config :logger, level: :warn
 
-# Use a mock server for Stripe
-# https://github.com/stripe/stripe-mock
-config :stripity_stripe, :api_base_url, "http://localhost:12111/v1/"
+config :stripity_stripe,
+  api_key: "sk_test_thisisaboguskey",
+  api_base_url: System.get_env("STRIPE_MOCK_URL", "http://localhost:12111/v1/")
 
 config :hcaptcha,
   http_client: Hcaptcha.Http.MockClient,
