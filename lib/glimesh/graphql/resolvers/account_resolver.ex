@@ -61,7 +61,7 @@ defmodule Glimesh.Resolvers.AccountResolver do
 
   def all_followers(%{user_username: user_username}, _) do
     if user = Accounts.get_by_username(user_username) do
-      {:ok, AccountFollows.list_following(user)}
+      {:ok, AccountFollows.list_following(user) |> Repo.all()}
     else
       {:error, @error_not_found}
     end
