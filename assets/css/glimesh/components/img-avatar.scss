@@ -1,9 +1,15 @@
 
 .img-avatar {
-  border-radius: 50%;
-  border: 2px solid #3b3f5c;
-  max-width: 200px;
-  max-height: 200px;
+    border-radius: 50%;
+    border: 2px solid #3b3f5c;
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.img-profile-avatar {
+    @extend .img-avatar;
+    width: 100%;
+    height: auto;
 }
 
 .img-verified-streamer {

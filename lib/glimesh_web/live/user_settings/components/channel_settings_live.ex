@@ -13,6 +13,7 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
      |> put_flash(:info, nil)
      |> put_flash(:error, nil)
      |> assign(:stream_key, Streams.get_stream_key(channel))
+     |> assign(:channel_hours, Streams.get_channel_hours(channel))
      |> assign(:channel_changeset, session["channel_changeset"])
      |> assign(:categories, session["categories"])
      |> assign(:channel, channel)

@@ -296,7 +296,7 @@ msgstr "Partager sur Twitter"
 
 #: lib/glimesh_web/live/user_live/followers.html.leex:16
 msgid "Sub Ready!"
-msgstr "Prêt pour abonnements!"
+msgstr "Prêt pour les abonnements!"
 
 #: lib/glimesh_web/live/user_live/profile.html.leex:11
 #, fuzzy
@@ -314,11 +314,11 @@ msgstr "L'utilisateur a suivi avec succès"
 
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:72
 msgid "User unfollowed successfully"
-msgstr "L'utilisateur s'est désabonné avec succès"
+msgstr "L'utilisateur a arrêté de suivre avec succès"
 
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:12
 msgid "Unfollow"
-msgstr "Se désabonner"
+msgstr "Ne plus suivre"
 
 #: lib/glimesh_web/controllers/user_session_controller.ex:38
 msgid "Logged out successfully."
@@ -1026,7 +1026,7 @@ msgstr "Bannir"
 
 #: lib/glimesh_web/live/chat_live/index.html.leex:18
 msgid "Ban user from channel."
-msgstr "Bannir l'utilisateur du chaîne."
+msgstr "Bannir l'utilisateur de la chaîne."
 
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:55
 msgid "Banned At"
@@ -1261,7 +1261,7 @@ msgstr "Nous utilisons de nombreux projets open source pour alimenter Glimesh, e
 
 #: lib/glimesh_web/live/chat_live/index.html.leex:3
 msgid "Welcome to chat! Follow the rules."
-msgstr "Bienvenue sur le chat! Suis les règles."
+msgstr "Bienvenue sur le chat ! Suis les règles."
 
 #: lib/glimesh_web/views/channel_moderator_view.ex:5
 msgid "Yes"
@@ -1494,7 +1494,7 @@ msgstr "Suiveurs:"
 
 #: lib/glimesh_web/live/user_live/index.html.leex:34
 msgid "Following:"
-msgstr "Suivant:"
+msgstr "Suivis:"
 
 #: lib/glimesh_web/controllers/about_controller.ex:32
 #: lib/glimesh_web/templates/layout/root.html.leex:96
@@ -2351,7 +2351,7 @@ msgstr "Créez votre chaîne"
 
 #: lib/glimesh_web/live/user_live/stream.html.leex:39
 msgid "Do you wish to continue?"
-msgstr "Souhaitez-vous continuer?"
+msgstr "Souhaitez-vous continuer ?"
 
 #: lib/glimesh_web/templates/user_payments/setup.html.eex:9
 msgid "During your Stripe Connection Process you will provide the information required to fill out an electronic W-9 that will be submitted to Stripe. Once you have completed your Stripe Connection Process your sub button will be available immediately."
@@ -2359,7 +2359,7 @@ msgstr "Au cours de votre processus de connexion de bande, vous fournirez les re
 
 #: lib/glimesh_web/live/user_live/profile.html.leex:67
 msgid "Follow Streamer"
-msgstr "Suivre Streamer"
+msgstr "Suivre le streamer"
 
 #: lib/glimesh_web/templates/user_payments/taxes.html.eex:28
 msgid "For use by business or legal entities"
@@ -2375,7 +2375,7 @@ msgstr "Journal d'audit GCT"
 
 #: lib/glimesh_web/templates/user_payments/setup.html.eex:25
 msgid "Get subscribers!"
-msgstr "Obtenez des abonnés!"
+msgstr "Obtenez des abonnés !"
 
 #: lib/glimesh/chat/effects.ex:49
 msgid "Glimesh Gold Supporter Subscriber"
@@ -2411,7 +2411,7 @@ msgstr "Souteneurs D'or"
 
 #: lib/glimesh_web/templates/user_payments/setup.html.eex:19
 msgid "If non-US country:"
-msgstr "S’il s’agit d’un pays non américain:"
+msgstr "S’il s’agit d’un pays non américain :"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:79
 msgid "If you want to deactivate your account or need help with something, please email support@glimesh.tv"
@@ -2436,7 +2436,7 @@ msgstr "Vérification fiscale"
 
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:16
 msgid "Language:"
-msgstr "Langue:"
+msgstr "Langue :"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:77
 msgid "Manage Stripe Account"
@@ -2475,7 +2475,7 @@ msgstr "Une fois que vous aurez rempli le formulaire, il nous sera automatiqueme
 
 #: lib/glimesh_web/templates/user_payments/setup.html.eex:10
 msgid "Other Countries:"
-msgstr "Autres pays:"
+msgstr "Autres pays :"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:18
 msgid "Our Thanks!"
@@ -2517,7 +2517,7 @@ msgstr "Contenu du site"
 
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:38
 msgid "Site Theme:"
-msgstr "Thème du site:"
+msgstr "Thème du site :"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:90
 msgid "Start Process"
@@ -2529,7 +2529,7 @@ msgstr "Le dépôt de rayures peut prendre de 24 à 48 heures, et peut prendre p
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:68
 msgid "Stripe Setup:"
-msgstr "Configuration Stripe:"
+msgstr "Configuration Stripe :"
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:25
 msgid "Stripe Setup: %{value}"
@@ -2537,7 +2537,7 @@ msgstr "Configuration Stripe: %{value}"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:70
 msgid "Sub Button:"
-msgstr "Bouton d’abonnement:"
+msgstr "Bouton d’abonnement :"
 
 #: lib/glimesh_web/controllers/user_payments_controller.ex:91
 #: lib/glimesh_web/templates/user_payments/index.html.eex:73 lib/glimesh_web/templates/user_payments/taxes.html.eex:2
@@ -2563,7 +2563,7 @@ msgstr "Pourcentage de retenue d’impôt"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:69
 msgid "Taxes Verified:"
-msgstr "Taxes vérifiées:"
+msgstr "Taxes vérifiées :"
 
 #: lib/glimesh_web/templates/user_payments/taxes.html.eex:5
 msgid "Thank you for setting up your account with our payments partner Stripe! Next up is to verify your tax withholding amount by uploading a W-8 form. This form is provided by the Internal Revenue Service of the United States, and is required to collect so we can properly withhold tax on your payouts."
@@ -2612,7 +2612,7 @@ msgstr ""
 
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:17
 msgid "Are you sure you want to unsubscribe?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir vous désabonner ?"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:110
 #: lib/glimesh_web/templates/user_payments/index.html.eex:126
@@ -2625,7 +2625,7 @@ msgstr ""
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:141
 msgid "Deactivate Channel"
-msgstr ""
+msgstr "Désactiver la chaîne"
 
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:24
 msgid "Delete Stripe Account"
@@ -2641,7 +2641,7 @@ msgstr ""
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:130
 msgid "Hours"
-msgstr ""
+msgstr "Heures"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:133
 msgid "How many hours should the account exist before they can chat? Set to zero to disable."
@@ -2665,7 +2665,7 @@ msgstr ""
 
 #: lib/glimesh_web/live/chat_live/message_form.html.leex:36
 msgid "Pop-out Chat"
-msgstr ""
+msgstr "Chat fenêtré"
 
 #: lib/glimesh_web/controllers/user_settings_controller.ex:67
 msgid "Problem uploading avatar, please try again later."
@@ -2691,7 +2691,7 @@ msgstr ""
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:15 lib/glimesh_web/live/user_live/components/subscribe_button.ex:71
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:87
 msgid "Resubscribe"
-msgstr ""
+msgstr "Se réabonner"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:41
 msgid "Select One"
@@ -2699,7 +2699,7 @@ msgstr ""
 
 #: lib/glimesh_web/live/chat_live/message_form.html.leex:29
 msgid "Send a message"
-msgstr ""
+msgstr "Envoyer un message"
 
 #: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:10
 msgid "Shutdown Broadcast"

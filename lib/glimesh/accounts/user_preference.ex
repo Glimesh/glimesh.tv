@@ -11,6 +11,7 @@ defmodule Glimesh.Accounts.UserPreference do
     field :locale, :string, default: "en"
     field :site_theme, :string, default: "dark"
     field :show_timestamps, :boolean, default: false
+    field :show_mod_icons, :boolean, default: true
     field :show_mature_content, :boolean
 
     timestamps()
@@ -25,7 +26,8 @@ defmodule Glimesh.Accounts.UserPreference do
       :locale,
       :site_theme,
       :show_timestamps,
-      :show_mature_content
+      :show_mature_content,
+      :show_mod_icons
     ])
     |> unique_constraint(:user_id)
   end

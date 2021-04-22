@@ -209,7 +209,8 @@ defmodule Glimesh.ChatTest do
         StreamModeration.create_channel_moderator(streamer, streamer.channel, moderator, %{
           can_short_timeout: true,
           can_long_timeout: true,
-          can_ban: true
+          can_ban: true,
+          can_delete: true
         })
 
       %{
@@ -249,6 +250,15 @@ defmodule Glimesh.ChatTest do
       assert length(Chat.list_chat_messages(channel)) == 2
 
       {:ok, _} = Chat.short_timeout_user(moderator, channel, user)
+      assert length(Chat.list_chat_messages(channel)) == 1
+    end
+
+    test "delete_message/4 deletes message", %{channel: channel, moderator: moderator, user: user} do
+      {:ok, bad_message} = Chat.create_chat_message(user, channel, %{message: "bad message"})
+      {:ok, _} = Chat.create_chat_message(moderator, channel, %{message: "good message"})
+      assert length(Chat.list_chat_messages(channel)) == 2
+
+      {:ok, _} = Chat.delete_message(moderator, channel, user, bad_message)
       assert length(Chat.list_chat_messages(channel)) == 1
     end
 
@@ -343,6 +353,46 @@ defmodule Glimesh.ChatTest do
         Accounts.update_user_preference(user_preferences, %{show_timestamps: true})
 
       assert user_preferences.show_timestamps == true
+    end
+
+    test "toggle mod icons button toggles mod icons" do
+      user = user_fixture()
+      user_preferences = Accounts.get_user_preference!(user)
+      assert user_preferences.show_mod_icons == true
+
+      {:ok, user_preferences} =
+        Accounts.update_user_preference(user_preferences, %{show_mod_icons: false})
+
+      assert user_preferences.show_mod_icons == false
+    end
+  end
+
+  describe "chat safety & security" do
+    alias Glimesh.Chat.ChatMessage
+
+    setup do
+      streamer = streamer_fixture()
+
+      %{
+        channel: streamer.channel,
+        streamer: streamer
+      }
+    end
+
+    test "create_chat_message/3 with an account under 3 hours old fails when configured",
+         %{channel: channel, streamer: streamer} do
+      {:ok, channel} = Streams.update_channel(streamer, channel, %{minimum_account_age: 3})
+
+      assert {:error, "You must wait 180 more minutes to chat."} =
+               Chat.create_chat_message(user_fixture(), channel, "Hello world")
+    end
+
+    test "create_chat_message/3 with an unverified account fails when configured ",
+         %{channel: channel, streamer: streamer} do
+      {:ok, channel} = Streams.update_channel(streamer, channel, %{require_confirmed_email: true})
+
+      assert {:error, "You must confirm your email address before chatting."} =
+               Chat.create_chat_message(user_fixture(), channel, "Hello world")
     end
   end
 

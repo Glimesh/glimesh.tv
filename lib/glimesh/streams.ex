@@ -2,6 +2,7 @@ defmodule Glimesh.Streams do
   @moduledoc """
   The Streams context. Contains Channels, Streams
   """
+  require Logger
 
   import Ecto.Query, warn: false
   alias Glimesh.Accounts.User
@@ -150,34 +151,43 @@ defmodule Glimesh.Streams do
 
       tags = Glimesh.ChannelCategories.list_tags_for_channel(channel)
 
-      # 1. Create Stream
-      {:ok, stream} =
-        create_stream(channel, %{
-          title: channel.title,
-          category_id: channel.category_id,
-          subcategory_id: channel.subcategory_id,
-          category_tags: Enum.map(tags, & &1.id),
-          started_at: DateTime.utc_now() |> DateTime.to_naive()
-        })
+      {:ok, stream, channel} =
+        Appsignal.instrument("create_stream_and_start_channel", fn ->
+          # 1. Create Stream
+          {:ok, stream} =
+            create_stream(channel, %{
+              title: channel.title,
+              category_id: channel.category_id,
+              subcategory_id: channel.subcategory_id,
+              category_tags: Enum.map(tags, & &1.id),
+              started_at: DateTime.utc_now() |> DateTime.to_naive()
+            })
 
-      # 2. Change Channel to use Stream
-      # 3. Change Channel to Live
-      {:ok, channel} =
-        channel
-        |> Channel.start_changeset(%{
-          stream_id: stream.id
-        })
-        |> Repo.update()
+          # 2. Change Channel to use Stream
+          # 3. Change Channel to Live
+          {:ok, channel} =
+            channel
+            |> Channel.start_changeset(%{
+              stream_id: stream.id
+            })
+            |> Repo.update()
 
-      Glimesh.ChannelCategories.increment_tags_usage(tags)
+          {:ok, stream, channel}
+        end)
+
+      Appsignal.instrument("increment_tags_usage", fn ->
+        Glimesh.ChannelCategories.increment_tags_usage(tags)
+      end)
 
       # 4. Send Notifications
-      users = ChannelLookups.list_live_subscribed_followers(channel)
+      Appsignal.instrument("send_live_notifications", fn ->
+        users = ChannelLookups.list_live_subscribed_followers(channel)
 
-      Glimesh.Streams.ChannelNotifier.deliver_live_channel_notifications(
-        users,
-        Repo.preload(channel, [:user, :stream, :tags])
-      )
+        Glimesh.Streams.ChannelNotifier.deliver_live_channel_notifications(
+          users,
+          Repo.preload(channel, [:user, :stream, :tags])
+        )
+      end)
 
       # 5. Broadcast to anyone who's listening
       broadcast_message = Repo.preload(channel, [:category, :stream], force: true)
@@ -201,20 +211,22 @@ defmodule Glimesh.Streams do
   end
 
   def end_stream(%Glimesh.Streams.Stream{} = stream) do
-    {:ok, stream} =
-      update_stream(stream, %{
-        ended_at: DateTime.utc_now() |> DateTime.to_naive()
-      })
+    channel = ChannelLookups.get_channel!(stream.channel_id)
 
-    {:ok, channel} =
-      ChannelLookups.get_channel!(stream.channel_id)
-      |> Channel.stop_changeset(%{})
-      |> Repo.update()
+    case Ecto.Multi.new()
+         |> Ecto.Multi.update(:stream, Glimesh.Streams.Stream.stop_changeset(stream))
+         |> Ecto.Multi.update(:channel, Channel.stop_changeset(channel))
+         |> Repo.transaction() do
+      {:ok, %{stream: stream, channel: channel}} ->
+        broadcast_message = Repo.preload(channel, :category, force: true)
+        broadcast({:ok, broadcast_message}, :channel)
 
-    broadcast_message = Repo.preload(channel, :category, force: true)
-    broadcast({:ok, broadcast_message}, :channel)
+        {:ok, stream}
 
-    {:ok, stream}
+      {:error, _, _, _} ->
+        Logger.error("Unable to end stream id=#{stream.id}.")
+        {:error, "Failed to end the stream"}
+    end
   end
 
   def stop_active_streams(%Channel{} = channel) do
@@ -224,9 +236,9 @@ defmodule Glimesh.Streams do
     )
     |> Repo.all()
     |> Enum.map(fn stream ->
-      update_stream(stream, %{
-        ended_at: DateTime.utc_now() |> DateTime.to_naive()
-      })
+      stream
+      |> Glimesh.Streams.Stream.stop_changeset()
+      |> Repo.update()
     end)
   end
 
@@ -278,6 +290,27 @@ defmodule Glimesh.Streams do
   def prompt_mature_content(_, _), do: false
 
   def get_stream_key(%Channel{id: id, hmac_key: hmac_key}), do: "#{id}-#{hmac_key}"
+
+  def get_channel_hours(%Channel{id: id}) do
+    hours =
+      Repo.one(
+        from s in Glimesh.Streams.Stream,
+          select:
+            fragment(
+              "sum(EXTRACT(EPOCH FROM ?) - EXTRACT(EPOCH FROM ?)) / 3600",
+              s.ended_at,
+              s.started_at
+            ),
+          where: s.channel_id == ^id,
+          group_by: s.channel_id
+      )
+
+    if hours do
+      hours |> trunc()
+    else
+      0
+    end
+  end
 
   def change_channel(%Channel{} = channel, attrs \\ %{}) do
     Channel.changeset(channel, attrs)

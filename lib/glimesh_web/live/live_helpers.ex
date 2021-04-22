@@ -19,7 +19,7 @@ defmodule GlimeshWeb.LiveHelpers do
         post: @post,
         return_to: Routes.post_index_path(@socket, :index) %>
   """
-  def live_modal(socket, component, opts) do
+  def live_modal(_socket, component, opts) do
     path = Keyword.fetch!(opts, :return_to)
 
     modal_opts = [
@@ -30,6 +30,7 @@ defmodule GlimeshWeb.LiveHelpers do
       opts: opts
     ]
 
-    live_component(socket, GlimeshWeb.ModalComponent, modal_opts)
+    # Socket param is deprecated from lib author
+    live_component(_socket, GlimeshWeb.ModalComponent, modal_opts)
   end
 end

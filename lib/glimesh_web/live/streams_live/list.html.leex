@@ -59,7 +59,7 @@
     <%= for {row, i} <- Enum.with_index(@blocks) do %>
     <div class="channel-block has-bg-image" style="<%= if row.background_image_url, do: "--background-image: url('#{row.background_image_url}')", else: "" %>">
 
-        <div class="channel-list p-1 p-lg-0">
+        <div class="channel-list p-1 p-lg-2">
             <%= if row.title do %>
             <h3 class="channel-list-title display-5 mt-4 mb-2"><%= row.title %></h3>
             <% end %>
@@ -71,21 +71,27 @@
                         <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>" alt="<%= channel.title %>" class="card-img" height="468" width="832">
                         <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
 
-                            <div class="card-stream-tags">
+                            <div>
+                                <div class="card-stream-tags">
 
-                                <%= if channel.subcategory do %>
-                                <span class="badge badge-info"><%= channel.subcategory.name %></span>
-                                <% end %>
-                                <%= for tag <- channel.tags do %>
-                                <span class="badge badge-primary"><%= tag.name %></span>
-                                <% end %>
+                                    <%= if channel.subcategory do %>
+                                    <span class="badge badge-info"><%= channel.subcategory.name %></span>
+                                    <% end %>
+                                    <%= for tag <- channel.tags do %>
+                                    <span class="badge badge-primary"><%= tag.name %></span>
+                                    <% end %>
+                                </div>
                             </div>
 
                             <div class="media card-stream-streamer">
                                 <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>" alt="<%= channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(channel.user), do: "img-verified-streamer", else: "" %>">
                                 <div class="media-body">
                                     <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
-                                    <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span></p>
+                                    <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
+                                        <%= if channel.mature_content do %>
+                                            <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
+                                        <% end %>
+                                    </p>
                                 </div>
                             </div>
                         </div>

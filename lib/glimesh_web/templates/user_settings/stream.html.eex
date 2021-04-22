@@ -1,5 +1,5 @@
 <div class="container">
-    <h2 class="mt-4"><%= gettext("Channel Settings") %></h2>
+    <h2 class="mt-4"><%= gettext("Streaming on Glimesh") %></h2>
 
     <%= if is_nil(@current_user.confirmed_at) do %>
     <div class="alert alert-warning" role="alert">
@@ -20,6 +20,36 @@
     </div>
     <% else %>
 
+    <div class="row mb-4 d-none d-md-flex">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5><%= gettext("Using OBS Studio") %></h5>
+                    <p><%= gettext("OBS Studio is the recommended program for streaming to Glimesh, setting it up to stream is a simple as finding it in the services list and hitting Start Streaming.") %></p>
+                    <a href="https://support.glimesh.tv/en-us/7-stream-settings/26-obs-studio-setup-guide" class="btn btn-info btn-sm"><%= gettext("OBS Studio Setup Guide") %></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class=""><%= gettext("Using Streamlabs OBS") %></h5>
+                    <p><%= gettext("You can stream to Glimesh with Streamlabs OBS, however you will need to run a patcher provided by Glimesh to find it as a stream destination.") %></p>
+                    <a href="https://support.glimesh.tv/en-us/7-stream-settings/113-slobs-setup-guide" class="btn btn-info btn-sm"><%= gettext("Streamlabs OBS Setup Guide") %></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5><%= gettext("Other Streaming Software") %></h5>
+                    <p><%= gettext("Glimesh uses FTL technology for its sub-second live streams so it's not compatible with all streaming software. Check with your software provider for FTL support!") %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="mt-4"><%= gettext("Channel Settings") %></h2>
     <div class="card">
         <div class="card-body">
             <%= if not @launched do %>

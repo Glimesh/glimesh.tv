@@ -15,6 +15,10 @@ defmodule Glimesh.Accounts do
     |> where([u], u.is_banned == false)
   end
 
+  def count_users do
+    Repo.one!(from u in User, select: count(u.id), where: u.is_banned == false)
+  end
+
   def search_users(query, current_page, per_page) do
     like = "%#{query}%"
 

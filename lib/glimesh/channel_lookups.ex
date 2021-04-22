@@ -15,6 +15,7 @@ defmodule Glimesh.ChannelLookups do
   def search_live_channels(params) do
     Channel
     |> where([c], c.status == "live")
+    |> apply_filter(:ids, params)
     |> apply_filter(:category, params)
     |> apply_filter(:subcategory, params)
     |> apply_filter(:tags, params)
@@ -23,6 +24,10 @@ defmodule Glimesh.ChannelLookups do
     |> group_by([c], c.id)
     |> preload([:category, :subcategory, :user, :stream, :tags])
     |> Repo.all()
+  end
+
+  defp apply_filter(query, :category, %{"ids" => ids}) when is_list(ids) do
+    where(query, [c], c.id in ^ids)
   end
 
   defp apply_filter(query, :category, %{"category" => category_slug})
@@ -71,12 +76,24 @@ defmodule Glimesh.ChannelLookups do
     )
   end
 
-  def list_channels(wheres \\ []) do
-    Channel
-    |> join(:inner, [c], cat in Category, on: c.category_id == cat.id)
-    |> where(^wheres)
-    |> order_by(:id)
-    |> preload([:category, :user])
+  defp apply_filter(query, :category, %{"category" => category_slug})
+       when is_binary(category_slug) do
+    category = Glimesh.ChannelCategories.get_category(category_slug)
+
+    where(query, [c], c.category_id == ^category.id)
+  end
+
+  defp apply_filter(query, :subcategory, %{
+         "category" => category_slug,
+         "subcategory" => subcategories
+       })
+       when is_binary(category_slug) and is_list(subcategories) do
+    category = Glimesh.ChannelCategories.get_category(category_slug)
+
+    query
+    |> join(:inner, [c], assoc(c, :subcategory), as: :subcategory)
+    |> where([subcategory: sc], sc.category_id == ^category.id)
+    |> where([subcategory: sc], sc.slug in ^subcategories)
   end
 
   def list_live_channels do
@@ -150,24 +167,6 @@ defmodule Glimesh.ChannelLookups do
 
     Repo.one(query)
     |> Repo.preload([:category, :stream, :subcategory, :user, :tags])
-  end
-
-  def get_channel_for_user_id(user_id, ignore_banned \\ false) do
-    query =
-      Channel
-      |> join(:inner, [u], assoc(u, :user), as: :user)
-      |> where([user: u], u.id == ^user_id)
-      |> where([c], c.inaccessible == false)
-
-    query =
-      if ignore_banned do
-        query
-      else
-        where(query, [user: u], u.is_banned == false)
-      end
-
-    Repo.one(query)
-    |> Repo.preload([:category, :user, :tags])
   end
 
   def get_channel_by_hmac_key(hmac_key) do

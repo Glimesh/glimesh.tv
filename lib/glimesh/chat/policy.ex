@@ -74,6 +74,7 @@ defmodule Glimesh.Chat.Policy do
   def authorize(:unban, %User{is_admin: true}, _channel), do: true
   def authorize(:short_timeout, %User{is_admin: true}, _channel), do: true
   def authorize(:long_timeout, %User{is_admin: true}, _channel), do: true
+  def authorize(:delete, %User{is_admin: true}, _channel), do: true
 
   # Channel Owners
   def authorize(:ban, %User{id: user_id}, %Channel{user_id: channel_user_id})
@@ -92,6 +93,10 @@ defmodule Glimesh.Chat.Policy do
       when user_id == channel_user_id,
       do: true
 
+  def authorize(:delete, %User{id: user_id}, %Channel{user_id: channel_user_id})
+      when user_id == channel_user_id,
+      do: true
+
   # Moderators
   def authorize(:ban, %User{} = user, %Channel{} = channel),
     do: Chat.can_moderate?(:can_ban, channel, user)
@@ -104,6 +109,9 @@ defmodule Glimesh.Chat.Policy do
 
   def authorize(:long_timeout, %User{} = user, %Channel{} = channel),
     do: Chat.can_moderate?(:can_long_timeout, channel, user)
+
+  def authorize(:delete, %User{} = user, %Channel{} = channel),
+    do: Chat.can_moderate?(:can_delete, channel, user)
 
   def authorize(_, _, _), do: false
 end

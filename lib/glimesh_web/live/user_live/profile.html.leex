@@ -5,7 +5,7 @@
                 <div class="card-body">
                     <h2 class="<%= Glimesh.Chat.Effects.get_username_color(@streamer, "text-color-link") %>">
                         <%= @streamer.displayname %></h2>
-                    <img src="<%= Glimesh.Avatar.url({@streamer.avatar, @streamer}, :original) %>" alt="Your Profile Picture" class="img-fluid mb-2 img-avatar <%= if Glimesh.Accounts.can_receive_payments?(@streamer), do: "img-verified-streamer", else: "" %>">
+                    <img src="<%= Glimesh.Avatar.url({@streamer.avatar, @streamer}, :original) %>" alt="Your Profile Picture" class="img-fluid mb-2 img-profile-avatar <%= if Glimesh.Accounts.can_receive_payments?(@streamer), do: "img-verified-streamer", else: "" %>">
 
                     <%= if Glimesh.Accounts.can_receive_payments?(@streamer) do %>
                     <div class="mb-4"><span class="badge badge-secondary"><%= gettext("Sub-ready Streamer") %></span>
@@ -23,18 +23,24 @@
                     <div>
                         <%= live_redirect gettext("View Channel"), class: "btn btn-primary", to: Routes.user_stream_path(@socket, :index, @streamer.username) %>
                     </div>
+                    <% else %> 
+                        <%= if @streamer == @user do %>
+                            <a class="btn btn-primary btn-sm mt-4" href="<%= Routes.user_settings_path(@socket, :stream) %>"><%= gettext("Create your channel") %></a>
+                        <% end %>
                     <% end %>
 
                     <div class="row mt-4">
                         <div class="col-6">
-                            <%= live_redirect to: Routes.user_followers_path(@socket, :index, @streamer.username), class: "text-color-link" do %>
+                            <%= live_redirect to: Routes.user_followers_path(@socket, :followers, @streamer.username), class: "text-color-link" do %>
                             <h5><%= @followers_count %></h5>
                             <p><%= gettext("Followers") %></p>
                             <% end %>
                         </div>
                         <div class="col-6">
+                        <%= live_redirect to: Routes.user_followers_path(@socket, :following, @streamer.username), class: "text-color-link" do %>
                             <h5><%= @following_count %></h5>
                             <p><%= gettext("Following") %></p>
+                            <% end %>
                         </div>
                     </div>
 
@@ -57,11 +63,7 @@
                 </div>
                 <% end %>
             </div>
-
-            <div class="mt-4">
-                <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-            </div>
-
+            
             <div class="card text-center mt-4">
                 <div class="card-header">
                     <h5><%= gettext("Follow Streamer") %></h5>
@@ -69,6 +71,10 @@
                 <div class="card-body">
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                 </div>
+            </div>
+
+            <div class="mt-4">
+                <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user" => @user, "streamer" => @streamer}) %>
             </div>
 
             <!-- Be back soon!
@@ -86,6 +92,11 @@
 
             <div class="card">
                 <div class="card-body user-content-body">
+                    <%= if @streamer == @user do %>
+                    <div class="float-right">
+                        <a href="<%= Routes.user_settings_path(@socket, :profile) %>"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" data-original-title="<%= gettext("Edit Profile") %>"></i></a>
+                    </div>
+                    <% end %>
                     <%= if @youtube_id do %>
                     <div class="embed-responsive embed-responsive-16by9 mb-4">
                         <iframe class="embed-responsive-item" src="https://www.youtube-nocookie.com/embed/<%= @youtube_id %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

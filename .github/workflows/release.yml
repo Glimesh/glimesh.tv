@@ -1,0 +1,42 @@
+name: Packager
+
+env: 
+  MIX_ENV: prod
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  package:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Elixir
+        uses: erlef/setup-elixir@v1
+        with:
+          elixir-version: '1.11.4'
+          otp-version: '23'
+
+      - name: Install mix dependencies
+        run: mix deps.get --only prod, deps.compile
+
+      - name: Install npm assets
+        run: npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
+
+      - name: Build static assets
+        run: npm run --prefix ./assets deploy
+
+      - name: Digest static assets
+        run: mix phx.digest
+
+      - name: Build release
+        run: mix do compile, release
+
+      - name: Upload release
+        uses: actions/upload-artifact@v2
+        with:
+          name: glimesh-prod-release
+          path: _build/prod/rel/glimesh

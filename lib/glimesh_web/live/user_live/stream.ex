@@ -60,7 +60,7 @@ defmodule GlimeshWeb.UserLive.Stream do
           }
         )
 
-        Process.send(self(), :update_stream, [])
+        Process.send(self(), :remove_packet_warning, [])
 
         {:noreply,
          socket
@@ -79,14 +79,10 @@ defmodule GlimeshWeb.UserLive.Stream do
     end
   end
 
-  def handle_info(:update_stream, socket) do
-    Process.send_after(self(), :update_stream, 30_000)
+  def handle_info(:remove_packet_warning, socket) do
+    Process.send_after(self(), :remove_packet_warning, 15_000)
 
-    {:noreply,
-     socket
-     # Reset player error every 30 seconds to clear packet loss message
-     |> assign(:player_error, nil)
-     |> assign(:stream_metadata, get_last_stream_metadata(socket.assigns.stream))}
+    {:noreply, socket |> assign(:player_error, nil)}
   end
 
   def handle_info({:channel, channel}, socket) do
@@ -100,7 +96,15 @@ defmodule GlimeshWeb.UserLive.Stream do
   end
 
   def handle_event("toggle_debug", _value, socket) do
-    {:noreply, assign(socket, :show_debug, !socket.assigns.show_debug)}
+    if socket.assigns.show_debug === false do
+      # Opening the window
+      {:noreply,
+       socket
+       |> assign(:stream_metadata, get_last_stream_metadata(socket.assigns.stream))
+       |> assign(:show_debug, true)}
+    else
+      {:noreply, assign(socket, :show_debug, false)}
+    end
   end
 
   def handle_event("lost_packets", %{"uplink" => _uplink, "lostPackets" => lostPackets}, socket) do
@@ -131,7 +135,15 @@ defmodule GlimeshWeb.UserLive.Stream do
   defp get_last_stream_metadata(stream) do
     case stream do
       %Glimesh.Streams.Stream{} = stream ->
-        Glimesh.Streams.get_last_stream_metadata(stream)
+        # Sometimes the stream can be live without metadata, usually happens within the
+        # first couple of seconds of loading the page
+        case Glimesh.Streams.get_last_stream_metadata(stream) do
+          %Glimesh.Streams.StreamMetadata{} = metadata ->
+            metadata
+
+          _ ->
+            %Glimesh.Streams.StreamMetadata{}
+        end
 
       _ ->
         %Glimesh.Streams.StreamMetadata{}

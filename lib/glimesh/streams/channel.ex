@@ -17,6 +17,7 @@ defmodule Glimesh.Streams.Channel do
     field :status, :string
     field :language, :string
     field :mature_content, :boolean, default: false
+    field :show_on_homepage, :boolean, default: false
     field :thumbnail, :string
     field :hmac_key, :string
     field :inaccessible, :boolean, default: false
@@ -52,14 +53,14 @@ defmodule Glimesh.Streams.Channel do
   def start_changeset(channel, attrs \\ %{}) do
     channel
     |> changeset(attrs)
-    |> put_change(:status, "live")
+    |> force_change(:status, "live")
   end
 
   def stop_changeset(channel, attrs \\ %{}) do
     channel
     |> changeset(attrs)
-    |> put_change(:stream_id, nil)
-    |> put_change(:status, "offline")
+    |> force_change(:stream_id, nil)
+    |> force_change(:status, "offline")
   end
 
   def hmac_key_changeset(channel) do
@@ -76,6 +77,7 @@ defmodule Glimesh.Streams.Channel do
       :stream_id,
       :language,
       :mature_content,
+      :show_on_homepage,
       :thumbnail,
       :hmac_key,
       :chat_rules_md,

@@ -24,6 +24,10 @@ defmodule GlimeshWeb.AboutController do
     render(conn, "mission.html", page_title: format_page_title(gettext("Our Mission")))
   end
 
+  def alpha(conn, _param) do
+    render(conn, "alpha.html", page_title: format_page_title(gettext("Alpha")))
+  end
+
   # Other layouts
 
   def faq(conn, _param) do

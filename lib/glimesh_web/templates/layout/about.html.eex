@@ -8,6 +8,9 @@
                 <li class="nav-item <%= active_about_path(@conn, :index) %>">
                     <%= link gettext("About Glimesh"), to: Routes.about_path(@conn, :index), class: "nav-link" %>
                 </li>
+                <li class="nav-item <%= active_about_path(@conn, :alpha) %>">
+                    <%= link gettext("Alpha"), to: Routes.about_path(@conn, :alpha), class: "nav-link" %>
+                </li>
                 <li class="nav-item <%= active_about_path(@conn, :streaming) %>">
                     <%= link gettext("Streaming"), to: Routes.about_path(@conn, :streaming), class: "nav-link" %>
                 </li>

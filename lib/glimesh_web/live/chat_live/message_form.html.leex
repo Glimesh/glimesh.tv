@@ -32,8 +32,12 @@
             <button type="button" class="input-group-text dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></button>
             <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" href="#" onclick="window.open('<%= Routes.chat_pop_out_url(@socket, :index, @channel_username) %>', '_blank', 'width=400,height=600,location=no,menubar=no,toolbar=no')"><%= gettext("Pop-out Chat") %></a>
-                <a id="toggle-timestamps" class="dropdown-item" , href="#" phx-click="toggle_timestamps" <%= if @user, do: 'phx-value-user=#{@user.username}' %>><%= if @show_timestamps, do: gettext("Disable Timestamps"), else: gettext("Enable Timestamps") %>
+                <a id="toggle-timestamps" class="dropdown-item" , href="#" phx-click="toggle_timestamps" <%= if @user, do: 'phx-value-user=#{@user.username}' %>><%= if @show_timestamps, do: gettext("Hide Timestamps"), else: gettext("Show Timestamps") %>
                 </a>
+                <%= if @user do %>
+                <a id="toggle-mod-icons" class="dropdown-item" , href="#" phx-click="toggle_mod_icons" phx-value-user=#{@user.username}'><%= if @show_mod_icons, do: gettext("Hide Mod Icons"), else: gettext("Show Mod Icons") %>
+                </a>
+                <% end %>
             </div>
         </div>
 

@@ -209,7 +209,7 @@ msgstr "Nowe hasło"
 
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:12
 msgid "Click Update Settings down below when you've chosen the file."
-msgstr "Kliknij na poniższy przycisk Zaktualizuj Ustawienia po wybraniu pliku."
+msgstr "Po wybraniu pliku kliknij na przycisk Zmień Ustawienia poniżej."
 
 #: lib/glimesh_web/templates/user_security/edit.html.eex:66
 msgid "Confirm New Password"
@@ -325,7 +325,7 @@ msgstr "Pomyślnie odobserwowano użytkownika"
 
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:12
 msgid "Unfollow"
-msgstr "Odobserwuj"
+msgstr "Nie obserwuj"
 
 #: lib/glimesh_web/controllers/user_session_controller.ex:38
 msgid "Logged out successfully."
@@ -424,7 +424,7 @@ msgstr "Odsubskrybuj"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:51
 msgid "You can link a payment method by creating a subscription to a channel, or the platform."
-msgstr "Możesz połączyć swoje konto z metodami płatności poprzez dodanie opcji Subskrypcji na swoim kanale lub platformie."
+msgstr "Możesz połączyć swoje konto z metodami płatności poprzez subskrybowanie wybranego kanału lub platformy."
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:33
 msgid "You have an existing saved payment method. You can delete it by clicking the button below."
@@ -888,7 +888,7 @@ msgstr "Obecna łączna liczba subskrypcji, wliczając w to nowe subskrypcje co 
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:21
 msgid "Giving Monthly"
-msgstr "Daje Miesięcznie"
+msgstr "Dajesz Miesięcznie"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.ex:38
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:2
@@ -925,7 +925,7 @@ msgstr "Otwarte Dane"
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:126
 #: lib/glimesh_web/templates/user_payments/index.html.eex:138
 msgid "Payout History"
-msgstr "Historia Wypłat"
+msgstr "Historia wypłat"
 
 #: lib/glimesh_web/live/about/open_data_live.ex:21
 #: lib/glimesh_web/live/about/open_data_live.html.leex:10
@@ -1213,7 +1213,7 @@ msgstr "Zapisz"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:153
 msgid "See something you don't expect? Need a refund? Please email us at %{email} and we'll be happy to help!"
-msgstr "Zobaczyłeś coś, czego nie oczekiwałeś? Chcesz zwrotu pieniędzy? Napisz do nas na adres %{email} a chętnie pomożemy!"
+msgstr "Widzisz jakąś pozycję, której nie powinno tutaj być? Chcesz zwrotu pieniędzy? Napisz do nas na adres %{email} a chętnie pomożemy!"
 
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:20
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:19
@@ -1629,7 +1629,7 @@ msgstr "Subskrypcja Newslettera"
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:16
 msgid "Newsletter emails are our general marketing, product updates, and new feature announcements. We'll\n"
 "                    send emails about upcoming events or new product launches or availability."
-msgstr "Newsletter to emaile zawierające ogólne informacje marketingowe, aktualizacje projektu oraz ogłoszenia dotyczące nowych funkcji, jak również nadchodzących wydarzeniach czy nowych produktach."
+msgstr "Newsletter to emaile zawierające ogólne informacje marketingowe, aktualizacje projektu oraz ogłoszenia dotyczące nowych funkcji, jak również nadchodzących wydarzeń czy nowych produktów."
 
 #: lib/glimesh_web/controllers/user_settings_controller.ex:33
 #: lib/glimesh_web/live/user_settings/notifications_live.html.leex:2 lib/glimesh_web/templates/layout/user-sidebar.html.eex:15
@@ -1827,7 +1827,7 @@ msgstr "Pomyślnie uaktualniono użytkownika"
 #: lib/glimesh_web/live/user_live/components/report_button.ex:45
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:22
 msgid "Username"
-msgstr "Nazwa użytkownika"
+msgstr "Niewłaściwa ksywka"
 
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:9
 msgid "Verify Email"
@@ -2308,7 +2308,7 @@ msgstr "Po zakończeniu procesu połączenia Stripe zostaniesz przekierowany na 
 
 #: lib/glimesh_web/live/user_live/stream.html.leex:44
 msgid "Agree & View Channel"
-msgstr "Zgódź się i zobacz kanał"
+msgstr "Tak, przejdź na kanał"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:36
 msgid "All Supporter Perks"
@@ -2599,7 +2599,7 @@ msgstr "Poczekaj na proces przeglądu wewnętrznego"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:86
 msgid "We only support payouts in the countries listed above, if you don't see your country then unfortunately we do not yet support payouts for you."
-msgstr "Wspieramy tylko wypłaty do niżej podanych krajów, więc jeśli nie widzisz tam swojego kraju oznacza to, że jeszcze nie wspieramy wypłat dla twojego miejsca zamieszkania."
+msgstr "Wspieramy tylko wypłaty do wyżej podanych krajów, więc jeśli nie widzisz tam swojego kraju oznacza to, że jeszcze nie wspieramy wypłat dla twojego miejsca zamieszkania."
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:84
 msgid "Your Country"
@@ -2681,7 +2681,7 @@ msgstr "Wystąpił problem z wysłaniem obrazków. Spróbuj ponownie później."
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:44
 msgid "Profile Text or Avatar"
-msgstr "Tekst profilowy albo awatar"
+msgstr "Niewłaściwy tekst profilowy albo awatar"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:121
 msgid "Require confirmed email before chatting?"
@@ -2712,7 +2712,7 @@ msgstr "Wyłącz nadawanie"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:43
 msgid "Stream Chat"
-msgstr "Czat streama"
+msgstr "Łamanie zasad na czacie"
 
 #: lib/glimesh_web/live/user_live/components/channel_title.ex:32
 msgid "Stream Info"
@@ -2720,7 +2720,7 @@ msgstr "Informacje o Streamie"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:42
 msgid "Stream Video Content"
-msgstr "Streamuj zawartość z filmów"
+msgstr "Streamowane są materiały wideo"
 
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:21
 msgid "Stripe Actions"
@@ -2741,7 +2741,7 @@ msgstr "Zobacz Logi Czatu"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:39
 msgid "Where did this happen?"
-msgstr "Kiedy to nastąpiło?"
+msgstr "Co się wydarzyło?"
 
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:85
 msgid "You can resubscribe by clicking the button below, and your subscription will be renewed until you cancel it."

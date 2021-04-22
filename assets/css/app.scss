@@ -90,8 +90,23 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 }
 
 .fancy-bg {
+
+    position: relative;
+
+    &::before {
+        content: "";
+        // It's worth using WebP only for this image, saves almost 1MB in size, no harm if users don't see it.
+        background: url("/images/homepage/background-resized.webp") no-repeat center -180px;
+        background-size: cover;
+        opacity: 0.5;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+    }
+
     .position-relative {
-        background: rgba(0, 0, 0, 0.7);
         border-radius: 5px;
         margin-bottom: 40px;
     }
@@ -163,10 +178,4 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
             font-size: 130px;
         }
     }
-}
-
-.fancy-bg {
-    // It's worth using WebP only for this image, saves almost 1MB in size, no harm if users don't see it.
-    background: url("/images/homepage/background-resized.webp") no-repeat center top;
-    background-size: contain;
 }

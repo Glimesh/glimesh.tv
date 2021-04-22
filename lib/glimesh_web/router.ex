@@ -11,6 +11,7 @@ defmodule GlimeshWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
+    plug GlimeshWeb.Plugs.Floc
     plug GlimeshWeb.Plugs.Locale
     plug GlimeshWeb.Plugs.CfCountryPlug
     plug GlimeshWeb.Plugs.Ban
@@ -152,7 +153,7 @@ defmodule GlimeshWeb.Router do
 
     import Phoenix.LiveDashboard.Router
 
-    live_dashboard "/phoenix/dashboard", metrics: GlimeshWeb.Telemetry
+    live_dashboard "/phoenix/dashboard", metrics: GlimeshWeb.Telemetry, ecto_repos: [Glimesh.Repo]
 
     get "/blog/new", ArticleController, :new
     get "/blog/:slug/edit", ArticleController, :edit
@@ -211,6 +212,7 @@ defmodule GlimeshWeb.Router do
     get "/about/streaming", AboutController, :streaming
     get "/about/team", AboutController, :team
     get "/about/mission", AboutController, :mission
+    get "/about/alpha", AboutController, :alpha
     get "/about/faq", AboutController, :faq
     get "/about/privacy", AboutController, :privacy
     get "/about/terms", AboutController, :terms
@@ -222,8 +224,8 @@ defmodule GlimeshWeb.Router do
     live "/about/open-data/subscriptions", About.OpenDataLive, :subscriptions
     live "/about/open-data/streams", About.OpenDataLive, :streams
 
-    get "/blog", ArticleController, :index
-    get "/blog/:slug", ArticleController, :show
+    get "/blog", BlogMigrationController, :redirect_blog
+    get "/blog/:slug", BlogMigrationController, :redirect_post
 
     live "/", HomepageLive, :index
     live "/streams", StreamsLive.Index, :index
@@ -242,7 +244,8 @@ defmodule GlimeshWeb.Router do
     # This must be the last route
     live "/:username", UserLive.Stream, :index
     live "/:username/profile", UserLive.Profile, :index
-    live "/:username/profile/followers", UserLive.Followers, :index
+    live "/:username/profile/followers", UserLive.Followers, :followers
+    live "/:username/profile/following", UserLive.Followers, :following
     live "/:username/chat", ChatLive.PopOut, :index
   end
 

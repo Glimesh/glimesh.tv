@@ -153,13 +153,5 @@ defmodule Glimesh.ChannelLookupsTest do
       {:ok, _} = Glimesh.Streams.end_stream(channel)
       assert length(ChannelLookups.list_live_followed_channels(user)) == 0
     end
-
-    test "get_channel_for_user_id/2 ignore ban check", %{
-      streamer: streamer
-    } do
-      channel = ChannelLookups.get_channel_for_user_id(streamer.id, true)
-
-      assert channel.user.username == streamer.username
-    end
   end
 end
