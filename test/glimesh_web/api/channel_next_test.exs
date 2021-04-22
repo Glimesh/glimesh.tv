@@ -25,6 +25,12 @@ defmodule GlimeshWeb.ApiNext.ChannelTest do
       title
       streamer { username }
 
+      mature_content
+
+      subcategory {
+        name
+      }
+
       tags {
         name
       }
@@ -37,6 +43,12 @@ defmodule GlimeshWeb.ApiNext.ChannelTest do
     channel(userId: $user_id) {
       title
       streamer { username }
+
+      mature_content
+
+      subcategory {
+        name
+      }
 
       tags {
         name
@@ -83,9 +95,13 @@ defmodule GlimeshWeb.ApiNext.ChannelTest do
                  "channel" => %{
                    "title" => "Live Stream!",
                    "streamer" => %{"username" => user.username},
+                   "mature_content" => false,
+                   "subcategory" => %{
+                     "name" => "World of Warcraft"
+                   },
                    "tags" => [
                      %{
-                       "name" => "World of Warcraft"
+                       "name" => "Chill Stream"
                      }
                    ]
                  }
@@ -105,9 +121,13 @@ defmodule GlimeshWeb.ApiNext.ChannelTest do
                  "channel" => %{
                    "title" => "Live Stream!",
                    "streamer" => %{"username" => user.username},
+                   "mature_content" => false,
+                   "subcategory" => %{
+                     "name" => "World of Warcraft"
+                   },
                    "tags" => [
                      %{
-                       "name" => "World of Warcraft"
+                       "name" => "Chill Stream"
                      }
                    ]
                  }
@@ -131,6 +151,11 @@ defmodule GlimeshWeb.ApiNext.ChannelTest do
       name
       slug
 
+      subcategories {
+        name
+        backgroundImageUrl
+      }
+
       tags {
         name
       }
@@ -139,7 +164,7 @@ defmodule GlimeshWeb.ApiNext.ChannelTest do
   """
 
   describe "categories apinew" do
-    setup [:register_and_set_user_token, :create_tag]
+    setup [:register_and_set_user_token, :create_tag, :create_subcategory]
 
     test "returns all categories", %{conn: conn} do
       conn =
@@ -165,9 +190,15 @@ defmodule GlimeshWeb.ApiNext.ChannelTest do
                  "category" => %{
                    "name" => "Gaming",
                    "slug" => "gaming",
+                   "subcategories" => [
+                     %{
+                       "name" => "World of Warcraft",
+                       "backgroundImageUrl" => nil
+                     }
+                   ],
                    "tags" => [
                      %{
-                       "name" => "World of Warcraft"
+                       "name" => "Chill Stream"
                      }
                    ]
                  }
@@ -180,15 +211,21 @@ defmodule GlimeshWeb.ApiNext.ChannelTest do
     {:ok, channel} = Streams.create_channel(user)
 
     %{tag: tag} = create_tag(%{})
+    %{subcategory: subcategory} = create_subcategory(%{})
 
     {:ok, _} =
       channel
-      |> Glimesh.Repo.preload(:tags)
+      |> Glimesh.Repo.preload([:tags, :subcategory])
       |> Ecto.Changeset.change()
       |> Ecto.Changeset.put_assoc(:tags, [tag])
+      |> Ecto.Changeset.put_assoc(:subcategory, subcategory)
       |> Glimesh.Repo.update()
 
     %{channel: channel}
+  end
+
+  def create_subcategory(_) do
+    %{subcategory: subcategory_fixture()}
   end
 
   def create_tag(_) do
