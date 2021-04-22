@@ -76,26 +76,6 @@ defmodule Glimesh.ChannelLookups do
     )
   end
 
-  defp apply_filter(query, :category, %{"category" => category_slug})
-       when is_binary(category_slug) do
-    category = Glimesh.ChannelCategories.get_category(category_slug)
-
-    where(query, [c], c.category_id == ^category.id)
-  end
-
-  defp apply_filter(query, :subcategory, %{
-         "category" => category_slug,
-         "subcategory" => subcategories
-       })
-       when is_binary(category_slug) and is_list(subcategories) do
-    category = Glimesh.ChannelCategories.get_category(category_slug)
-
-    query
-    |> join(:inner, [c], assoc(c, :subcategory), as: :subcategory)
-    |> where([subcategory: sc], sc.category_id == ^category.id)
-    |> where([subcategory: sc], sc.slug in ^subcategories)
-  end
-
   def list_channels(wheres \\ []) do
     from c in Channel,
       join: cat in Category,

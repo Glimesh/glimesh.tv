@@ -187,7 +187,11 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :title, :string, description: "The title of the current stream, live or offline."
     field :category, :category, resolve: dataloader(Repo)
     field :subcategory, :subcategory, resolve: dataloader(Repo)
-    field :mature_content, :boolean, description: "If the streamer has flagged this channel as only appropriate for Mature Audiences."
+
+    field :mature_content, :boolean,
+      description:
+        "If the streamer has flagged this channel as only appropriate for Mature Audiences."
+
     field :language, :string, description: "The language a user can expect in the stream."
     field :thumbnail, :string
 
