@@ -216,6 +216,9 @@ defmodule GlimeshWeb.UserAuth do
     value = Application.get_env(:glimesh, :alpha_api_header, nil)
 
     cond do
+      Application.get_env(:glimesh, :alpha_api_enable, false) ->
+        conn
+
       conn.assigns[:current_user] && conn.assigns[:current_user].is_admin ->
         conn
 
