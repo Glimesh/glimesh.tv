@@ -561,14 +561,6 @@ defmodule Glimesh.Accounts do
     end
   end
 
-  @spec reset_user_password(
-          %{
-            :__struct__ => atom | %{:__changeset__ => map, optional(any) => any},
-            :id => any,
-            optional(atom) => any
-          },
-          :invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}
-        ) :: {:error, any} | {:ok, any}
   @doc """
   Resets the user password.
 
