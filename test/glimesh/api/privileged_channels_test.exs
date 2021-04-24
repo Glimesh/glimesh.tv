@@ -1,11 +1,11 @@
-defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
+defmodule Glimesh.Api.PrivilegedChannelsTest do
   use GlimeshWeb.ConnCase
 
   alias Glimesh.Streams
 
   @unauthorized_stream_key_query """
-  query getChannel($username: String!) {
-    channel(username: $username) {
+  query getChannel($streamerUsername: String!) {
+    channel(streamerUsername: $streamerUsername) {
       streamKey
     }
   }
@@ -16,17 +16,6 @@ defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
     channel(id: $id) {
       streamKey
       hmacKey
-    }
-  }
-  """
-
-  @channel_by_hmac_key_query """
-  query getChannel($hmacKey: String!) {
-    channel(hmacKey: $hmacKey) {
-      title
-      streamKey
-      hmacKey
-      streamer { username }
     }
   }
   """
@@ -63,12 +52,12 @@ defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
   mutation UploadStreamThumbnail($streamId: ID!, $thumbnail: Upload!) {
     uploadStreamThumbnail(streamId: $streamId, thumbnail: $thumbnail) {
       id
-      thumbnail
+      thumbnailUrl
     }
   }
   """
 
-  describe "channel update apis are unavailable unless admin apinew" do
+  describe "channel update apis are unavailable unless admin" do
     setup [:register_and_set_user_token, :create_channel]
 
     test "does not return a stream key value unless user is admin", %{
@@ -76,9 +65,9 @@ defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
       user: user
     } do
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @unauthorized_stream_key_query,
-          "variables" => %{username: user.username}
+          "variables" => %{streamerUsername: user.username}
         })
 
       assert [
@@ -90,31 +79,12 @@ defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
              ] = json_response(conn, 200)["errors"]
     end
 
-    test "cannot query a stream key value unless user is admin", %{
-      conn: conn,
-      channel: channel
-    } do
-      conn =
-        post(conn, "/apinext", %{
-          "query" => @channel_by_hmac_key_query,
-          "variables" => %{hmacKey: channel.hmac_key}
-        })
-
-      assert [
-               %{
-                 "locations" => _,
-                 "message" => "Unauthorized to access hmacKey query.",
-                 "path" => _
-               }
-             ] = json_response(conn, 200)["errors"]
-    end
-
     test "cannot access a mutation unless user is admin", %{
       conn: conn,
       channel: channel
     } do
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @start_stream_query,
           "variables" => %{channelId: "#{channel.id}"}
         })
@@ -134,7 +104,7 @@ defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
 
     test "returns a channel by id", %{conn: conn, channel: channel} do
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @channel_by_id_query,
           "variables" => %{id: channel.id}
         })
@@ -148,25 +118,6 @@ defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
                }
              }
     end
-
-    test "returns a channel by hmacKey", %{conn: conn, user: user, channel: channel} do
-      conn =
-        post(conn, "/apinext", %{
-          "query" => @channel_by_hmac_key_query,
-          "variables" => %{hmacKey: channel.hmac_key}
-        })
-
-      assert json_response(conn, 200) == %{
-               "data" => %{
-                 "channel" => %{
-                   "title" => "Live Stream!",
-                   "streamKey" => Glimesh.Streams.get_stream_key(channel),
-                   "hmacKey" => channel.hmac_key,
-                   "streamer" => %{"username" => user.username}
-                 }
-               }
-             }
-    end
   end
 
   describe "privileged start stop stream functions" do
@@ -174,7 +125,7 @@ defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
 
     test "can start stream", %{conn: conn, channel: channel} do
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @start_stream_query,
           "variables" => %{channelId: "#{channel.id}"}
         })
@@ -188,7 +139,7 @@ defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
       {:ok, stream} = Streams.start_stream(channel)
 
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @end_stream_by_stream_id_query,
           "variables" => %{streamId: "#{stream.id}"}
         })
@@ -207,7 +158,7 @@ defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
       |> Glimesh.Repo.update!()
 
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @start_stream_query,
           "variables" => %{channelId: "#{channel.id}"}
         })
@@ -215,7 +166,7 @@ defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
       assert [
                %{
                  "locations" => _,
-                 "message" => "User is unauthorized to start a stream.",
+                 "message" => "Access denied",
                  "path" => _
                }
              ] = json_response(conn, 200)["errors"]
@@ -225,7 +176,7 @@ defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
       {:ok, stream} = Streams.start_stream(channel)
 
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @log_stream_metadata_query,
           "variables" => %{
             streamId: "#{stream.id}",
@@ -262,7 +213,7 @@ defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
       }
 
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @upload_stream_thumbnail,
           "variables" => %{
             streamId: "#{stream.id}",
@@ -274,12 +225,12 @@ defmodule GlimeshWeb.ApiNext.PrivilegedChannelTest do
       resp = json_response(conn, 200)["data"]["uploadStreamThumbnail"]
 
       assert resp["id"] == "#{stream.id}"
-      assert resp["thumbnail"] =~ "#{stream.id}.jpg"
+      assert resp["thumbnailUrl"] =~ "#{stream.id}.jpg"
     end
 
     test "returns normal errors", %{conn: conn} do
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @start_stream_query,
           "variables" => %{channelId: "0"}
         })

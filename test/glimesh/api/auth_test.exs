@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.ApiNext.ApiAuthTest do
+defmodule Glimesh.Api.AuthTest do
   use GlimeshWeb.ConnCase
 
   import Glimesh.AccountsFixtures
@@ -19,9 +19,9 @@ defmodule GlimeshWeb.ApiNext.ApiAuthTest do
   }
   """
 
-  describe "unauthenticated apinew access" do
+  describe "unauthenticated api access" do
     test "gets rejected", %{conn: conn} do
-      conn = get(conn, "/apinext")
+      conn = get(conn, "/api/graph")
 
       assert json_response(conn, 401) == %{
                "errors" => [%{"message" => "You must be logged in to access the api"}]
@@ -30,7 +30,7 @@ defmodule GlimeshWeb.ApiNext.ApiAuthTest do
 
     test "gets rejected even with query", %{conn: conn} do
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @user_query,
           "variables" => %{"username" => "foobar"}
         })
@@ -41,7 +41,7 @@ defmodule GlimeshWeb.ApiNext.ApiAuthTest do
     end
   end
 
-  describe "read-only apinew access with client id" do
+  describe "read-only api access with client id" do
     setup %{conn: conn} do
       user = user_fixture()
 
@@ -65,7 +65,7 @@ defmodule GlimeshWeb.ApiNext.ApiAuthTest do
     end
 
     test "gets accepted", %{conn: conn} do
-      conn = get(conn, "/apinext")
+      conn = get(conn, "/api/graph")
 
       assert json_response(conn, 400) == %{
                "errors" => [%{"message" => "No query document supplied"}]
@@ -74,7 +74,7 @@ defmodule GlimeshWeb.ApiNext.ApiAuthTest do
 
     test "can get a user", %{conn: conn, user: user} do
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @user_query,
           "variables" => %{"username" => user.username}
         })
@@ -85,11 +85,11 @@ defmodule GlimeshWeb.ApiNext.ApiAuthTest do
     end
   end
 
-  describe "authenticated apinew access with login session" do
+  describe "authenticated api access with login session" do
     setup :register_and_log_in_admin_user
 
     test "gets accepted", %{conn: conn} do
-      conn = get(conn, "/apinext")
+      conn = get(conn, "/api/graph")
 
       assert json_response(conn, 400) == %{
                "errors" => [%{"message" => "No query document supplied"}]
@@ -98,7 +98,7 @@ defmodule GlimeshWeb.ApiNext.ApiAuthTest do
 
     test "returns myself", %{conn: conn, user: user} do
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @myself_query
         })
 
@@ -108,11 +108,11 @@ defmodule GlimeshWeb.ApiNext.ApiAuthTest do
     end
   end
 
-  describe "authenticated apinew access with authorization header" do
+  describe "authenticated api access with authorization header" do
     setup :register_and_set_user_token
 
     test "gets accepted", %{conn: conn} do
-      conn = get(conn, "/apinext")
+      conn = get(conn, "/api/graph")
 
       assert json_response(conn, 400) == %{
                "errors" => [%{"message" => "No query document supplied"}]
@@ -121,7 +121,7 @@ defmodule GlimeshWeb.ApiNext.ApiAuthTest do
 
     test "returns myself", %{conn: conn, user: user} do
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @myself_query
         })
 
@@ -131,7 +131,7 @@ defmodule GlimeshWeb.ApiNext.ApiAuthTest do
     end
   end
 
-  describe "weird other auth methods apinew" do
+  describe "weird other auth methods for the api" do
     setup :register_and_set_user_token
 
     test "authenticated api access with lowercased authorization header gets accepted", %{
@@ -149,7 +149,7 @@ defmodule GlimeshWeb.ApiNext.ApiAuthTest do
         )
 
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @myself_query
         })
 
@@ -166,7 +166,7 @@ defmodule GlimeshWeb.ApiNext.ApiAuthTest do
           "Bearer "
         )
 
-      conn = post(conn, "/apinext", %{"query" => @myself_query})
+      conn = post(conn, "/api/graph", %{"query" => @myself_query})
 
       assert json_response(conn, 401) == %{
                "errors" => [%{"message" => "You must be logged in to access the api"}]

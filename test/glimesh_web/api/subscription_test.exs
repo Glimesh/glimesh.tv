@@ -1,4 +1,4 @@
-defmodule Glimesh.Api.SubscriptionTest do
+defmodule GlimeshWeb.Api.SubscriptionTest do
   use GlimeshWeb.SubscriptionCase
 
   import Glimesh.AccountsFixtures

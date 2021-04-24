@@ -1,4 +1,4 @@
-defmodule Glimesh.SchemaNext do
+defmodule Glimesh.Api.Schema do
   @moduledoc """
   GraphQL Schema for the API
   """
@@ -10,13 +10,16 @@ defmodule Glimesh.SchemaNext do
 
   import_types(Absinthe.Type.Custom)
 
-  import_types(Glimesh.SchemaNext.AccountTypes)
-  import_types(Glimesh.SchemaNext.ChannelTypes)
-  import_types(Glimesh.SchemaNext.ChatTypes)
+  import_types(Glimesh.Api.AccountTypes)
+  import_types(Glimesh.Api.ChannelTypes)
+  import_types(Glimesh.Api.ChatTypes)
 
   query do
     import_fields(:accounts_queries)
+    import_fields(:accounts_connection_queries)
+
     import_fields(:streams_queries)
+    import_fields(:streams_connection_queries)
   end
 
   mutation do

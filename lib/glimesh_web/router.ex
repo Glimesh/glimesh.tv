@@ -59,18 +59,14 @@ defmodule GlimeshWeb.Router do
   scope "/api" do
     pipe_through :graphql
 
+    forward "/graph", Glimesh.Api.GraphiQLPlug,
+      schema: Glimesh.Api.Schema,
+      socket: GlimeshWeb.ApiSocket,
+      default_url: {__MODULE__, :graph_default_url},
+      socket_url: {__MODULE__, :graph_socket_url}
+
     forward "/", Absinthe.Plug.GraphiQL,
       schema: Glimesh.Schema,
-      socket: GlimeshWeb.ApiSocket,
-      default_url: {__MODULE__, :graphiql_default_url},
-      socket_url: {__MODULE__, :graphiql_socket_url}
-  end
-
-  scope "/apinext" do
-    pipe_through :graphql
-
-    forward "/", Glimesh.Plug.GraphiQL,
-      schema: Glimesh.SchemaNext,
       socket: GlimeshWeb.ApiSocket,
       default_url: {__MODULE__, :graphiql_default_url},
       socket_url: {__MODULE__, :graphiql_socket_url}
@@ -257,6 +253,16 @@ defmodule GlimeshWeb.Router do
 
   def graphiql_socket_url(conn) do
     (Routes.url(conn) <> "/api/socket")
+    |> String.replace("http", "ws")
+    |> String.replace("https", "wss")
+  end
+
+  def graph_default_url(conn) do
+    Routes.url(conn) <> "/api/graph"
+  end
+
+  def graph_socket_url(conn) do
+    (Routes.url(conn) <> "/api/graph/socket")
     |> String.replace("http", "ws")
     |> String.replace("https", "wss")
   end

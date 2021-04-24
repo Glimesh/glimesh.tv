@@ -5,8 +5,9 @@ defmodule Glimesh.Accounts do
 
   import Ecto.Query, warn: false
 
-  alias Glimesh.Repo
+  alias Glimesh.Avatar
   alias Glimesh.Accounts.{User, UserNotifier, UserPreference, UserToken}
+  alias Glimesh.Repo
 
   ## Database getters
 
@@ -560,6 +561,14 @@ defmodule Glimesh.Accounts do
     end
   end
 
+  @spec reset_user_password(
+          %{
+            :__struct__ => atom | %{:__changeset__ => map, optional(any) => any},
+            :id => any,
+            optional(atom) => any
+          },
+          :invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}
+        ) :: {:error, any} | {:ok, any}
   @doc """
   Resets the user password.
 
@@ -584,6 +593,21 @@ defmodule Glimesh.Accounts do
   end
 
   def can_stream?(user), do: user.can_stream
+
+  def avatar_url(%User{} = user) when is_binary(user.avatar) do
+    if String.starts_with?(user.avatar, ["http://", "https://"]) do
+      Avatar.url({user.avatar, user})
+    else
+      GlimeshWeb.Router.Helpers.static_url(
+        GlimeshWeb.Endpoint,
+        Avatar.url({user.avatar, user})
+      )
+    end
+  end
+
+  def avatar_url(%User{} = user) do
+    Avatar.url({user.avatar, user})
+  end
 
   def can_use_payments?(user) do
     user.can_payments
