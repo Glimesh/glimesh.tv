@@ -21,7 +21,6 @@ defmodule Glimesh.Api.ChatsTest do
           url
         }
       }
-      isMod
     }
   }
   """
@@ -146,8 +145,7 @@ defmodule Glimesh.Api.ChatsTest do
                },
                "tokens" => [
                  %{"type" => "text", "text" => "Hello world"}
-               ],
-               "isMod" => true
+               ]
              }
     end
 
@@ -175,8 +173,7 @@ defmodule Glimesh.Api.ChatsTest do
                },
                "tokens" => [
                  %{"type" => "text", "text" => "Hello world"}
-               ],
-               "isMod" => false
+               ]
              }
     end
 
@@ -206,8 +203,7 @@ defmodule Glimesh.Api.ChatsTest do
                    "url" => "http://localhost:4002/emotes/svg/glimwow.svg"
                  },
                  %{"type" => "text", "text" => " world!"}
-               ],
-               "isMod" => true
+               ]
              }
     end
 
@@ -331,8 +327,7 @@ defmodule Glimesh.Api.ChatsTest do
                },
                "tokens" => [
                  %{"type" => "text", "text" => "Hello world"}
-               ],
-               "isMod" => true
+               ]
              }
     end
   end
