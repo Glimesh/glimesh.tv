@@ -212,6 +212,23 @@ defmodule GlimeshWeb.UserAuth do
     end
   end
 
+  def require_alpha_api_header(conn, _opts) do
+    value = Application.get_env(:glimesh, :alpha_api_header, nil)
+
+    cond do
+      conn.assigns[:current_user] && conn.assigns[:current_user].is_admin ->
+        conn
+
+      !is_nil(value) and get_req_header(conn, "glimesh-alpha-api") == value ->
+        conn
+
+      true ->
+        conn
+        |> json(%{error: "Sorry, our new API is not available for testing yet!"})
+        |> halt()
+    end
+  end
+
   defp maybe_store_return_to(%{method: "GET", request_path: request_path} = conn) do
     maybe_query_string =
       case conn.query_string do
