@@ -46,7 +46,7 @@ defmodule Glimesh.Api.ChatTypes do
       resolve(&ChatResolver.ban_user/3)
     end
 
-    @desc "Deletes a specfic chat message from channel."
+    @desc "Deletes a specific chat message from channel."
     field :delete_chat_message, type: :channel_moderation_log do
       arg(:channel_id, non_null(:id))
       arg(:message_id, non_null(:id))
