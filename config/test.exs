@@ -51,3 +51,5 @@ config :glimesh, GlimeshWeb.Gettext,
   default_locale: "glim-en",
   locales: ~w(glim-en),
   allowed_locales: ["en"]
+
+config :glimesh, alpha_api_enable: true

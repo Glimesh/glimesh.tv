@@ -1,25 +1,48 @@
-defmodule Glimesh.ResolversNext.ChannelResolver do
+defmodule Glimesh.Api.ChannelResolver do
   @moduledoc false
   use Appsignal.Instrumentation.Decorators
   import Ecto.Query
 
   alias Absinthe.Relay.Connection
-  alias Glimesh.Accounts
-  alias Glimesh.Accounts.User
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
   alias Glimesh.Chat.ChatMessage
-  alias Glimesh.Payments
-  alias Glimesh.Payments.Subscription
   alias Glimesh.Repo
   alias Glimesh.Streams
 
   @error_not_found "Could not find resource"
   @error_access_denied "Access denied"
 
+  # Channel Resolvers
+  def resolve_stream_key(channel, _, %{context: %{current_user: current_user}}) do
+    if current_user.is_admin do
+      {:ok, Glimesh.Streams.get_stream_key(channel)}
+    else
+      {:error, "Unauthorized to access streamKey field."}
+    end
+  end
+
+  def resolve_hmac_key(channel, _, %{context: %{current_user: current_user}}) do
+    if current_user.is_admin do
+      {:ok, channel.hmac_key}
+    else
+      {:error, "Unauthorized to access hmacKey field."}
+    end
+  end
+
   # Channels
 
-  def all_channels(%{status: status, category_slug: category_slug}) do
+  def all_channels(args, _) do
+    case query_all_channels(args) do
+      {:ok, channels} ->
+        Connection.from_query(channels, &Repo.all/1, args)
+
+      _ ->
+        {:error, "Not found"}
+    end
+  end
+
+  defp query_all_channels(%{status: status, category_slug: category_slug}) do
     if category = ChannelCategories.get_category(category_slug) do
       {:ok, ChannelLookups.list_channels(status: status, category_id: category.id)}
     else
@@ -27,22 +50,12 @@ defmodule Glimesh.ResolversNext.ChannelResolver do
     end
   end
 
-  def all_channels(%{status: status}) do
+  defp query_all_channels(%{status: status}) do
     {:ok, ChannelLookups.list_channels(status: status)}
   end
 
-  def all_channels(_) do
+  defp query_all_channels(_) do
     {:ok, ChannelLookups.list_channels()}
-  end
-
-  def all_channels(args, _) do
-    case all_channels(args) do
-      {:ok, channels} ->
-        Connection.from_query(channels, &Repo.all/1, args)
-
-      _ ->
-        {:error, @error_not_found}
-    end
   end
 
   def find_channel(%{id: id}, _) do
@@ -53,7 +66,7 @@ defmodule Glimesh.ResolversNext.ChannelResolver do
     end
   end
 
-  def find_channel(%{username: username}, _) do
+  def find_channel(%{streamer_username: username}, _) do
     if channel = ChannelLookups.get_channel_for_username(username) do
       {:ok, channel}
     else
@@ -61,23 +74,12 @@ defmodule Glimesh.ResolversNext.ChannelResolver do
     end
   end
 
-  def find_channel(%{user_id: user_id}, _) do
+  def find_channel(%{streamer_id: user_id}, _) do
     if channel = ChannelLookups.get_channel_for_user_id(user_id) do
       {:ok, channel}
     else
       {:error, @error_not_found}
     end
-  end
-
-  def find_channel(%{hmac_key: hmac_key}, %{context: %{is_admin: true}}) do
-    case ChannelLookups.get_channel_by_hmac_key(hmac_key) do
-      %Glimesh.Streams.Channel{} = channel -> {:ok, channel}
-      _ -> {:error, "Channel not found with hmacKey."}
-    end
-  end
-
-  def find_channel(%{hmac_key: _}, _) do
-    {:error, "Unauthorized to access hmacKey query."}
   end
 
   def find_channel(_, _), do: {:error, @error_not_found}
@@ -93,7 +95,7 @@ defmodule Glimesh.ResolversNext.ChannelResolver do
         {:error, @error_not_found}
 
       {:error, _} ->
-        {:error, "User is unauthorized to start a stream."}
+        {:error, @error_access_denied}
     end
   end
 
@@ -134,7 +136,7 @@ defmodule Glimesh.ResolversNext.ChannelResolver do
   end
 
   def log_stream_metadata(_parent, _args, _resolution) do
-    {:error, @error_access_denied}
+    {:error, @error_not_found}
   end
 
   @decorate transaction_event()
@@ -172,78 +174,9 @@ defmodule Glimesh.ResolversNext.ChannelResolver do
     end
   end
 
-  # Subscriptions
-
-  def all_subscriptions(%{streamer_username: streamer_username}, _) do
-    if streamer = Accounts.get_by_username(streamer_username) do
-      {:ok, Payments.list_streamer_subscribers(streamer)}
-    else
-      {:error, @error_not_found}
-    end
-  end
-
-  def all_subscriptions(%{user_username: user_username}, _) do
-    if user = Accounts.get_by_username(user_username) do
-      {:ok, Payments.list_user_subscriptions(user)}
-    else
-      {:error, @error_not_found}
-    end
-  end
-
-  def all_subscriptions(%{streamer_username: streamer_username, user_username: user_username}, _) do
-    with %User{} = streamer <- Accounts.get_by_username(streamer_username),
-         %User{} = user <- Accounts.get_by_username(user_username),
-         %Subscription{} = sub <- Payments.get_channel_subscription(user, streamer) do
-      {:ok, sub}
-    else
-      nil ->
-        {:error, @error_not_found}
-
-      _ ->
-        {:error, "Unexpected error"}
-    end
-  end
-
-  def all_subscriptions(%{streamer_id: streamer_id}, _) do
-    if streamer = Accounts.get_user(streamer_id) do
-      {:ok, Payments.list_streamer_subscribers(streamer)}
-    else
-      {:error, @error_not_found}
-    end
-  end
-
-  def all_subscriptions(%{user_id: user_id}, _) do
-    if user = Accounts.get_user(user_id) do
-      {:ok, Payments.list_user_subscriptions(user)}
-    else
-      {:error, @error_not_found}
-    end
-  end
-
-  def all_subscriptions(%{streamer_id: streamer_id, user_id: user_id}, _) do
-    with %User{} = streamer <- Accounts.get_user(streamer_id),
-         %User{} = user <- Accounts.get_user(user_id),
-         %Subscription{} = sub <- Payments.get_channel_subscription(user, streamer) do
-      {:ok, sub}
-    else
-      nil ->
-        {:error, @error_not_found}
-
-      _ ->
-        {:error, "Unexpected error"}
-    end
-  end
-
-  def all_subscriptions(_, _) do
-    {:ok, Payments.list_all_subscriptions()}
-  end
-
-  # Chat
-
+  # Connection Resolvers
   def get_messages(args, %{source: channel}) do
-    # Set the chat message load count to be at 100 since it has to be
-    # hitting the repo 202 times for the the messages with isMod queried
-    args = Map.put(args, :first, min(Map.get(args, :first), 100))
+    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
 
     ChatMessage
     |> where(channel_id: ^channel.id)
@@ -252,6 +185,15 @@ defmodule Glimesh.ResolversNext.ChannelResolver do
   end
 
   # Moderations
+
+  def get_tags(args, %{source: category}) do
+    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
+
+    Streams.Tag
+    |> where(category_id: ^category.id)
+    |> order_by(:inserted_at)
+    |> Connection.from_query(&Repo.all/1, args)
+  end
 
   def get_bans(args, %{source: channel}) do
     args = Map.put(args, :first, min(Map.get(args, :first), 1000))
@@ -276,6 +218,15 @@ defmodule Glimesh.ResolversNext.ChannelResolver do
 
     Streams.ChannelModerationLog
     |> where(channel_id: ^channel.id)
+    |> order_by(:inserted_at)
+    |> Connection.from_query(&Repo.all/1, args)
+  end
+
+  def get_stream_metadata(args, %{source: stream}) do
+    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
+
+    Streams.StreamMetadata
+    |> where(stream_id: ^stream.id)
     |> order_by(:inserted_at)
     |> Connection.from_query(&Repo.all/1, args)
   end

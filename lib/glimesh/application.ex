@@ -15,11 +15,6 @@ defmodule Glimesh.Application do
       Glimesh.Workers.HomepageGenerator
     ]
 
-    server_children = [
-      Glimesh.Workers.StreamMetrics,
-      Glimesh.Workers.StreamPruner
-    ]
-
     children = [
       {Cluster.Supervisor, [topologies, [name: Glimesh.ClusterSupervisor]]},
       # Start the Ecto repository
@@ -46,13 +41,6 @@ defmodule Glimesh.Application do
 
     children =
       if start_workers or !is_nil(Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:server]) do
-        children ++ server_children
-      else
-        children
-      end
-
-    children =
-      if Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:server] do
         children ++ server_children
       else
         children

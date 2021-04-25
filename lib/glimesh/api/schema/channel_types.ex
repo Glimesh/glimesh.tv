@@ -1,4 +1,4 @@
-defmodule Glimesh.SchemaNext.ChannelTypes do
+defmodule Glimesh.Api.ChannelTypes do
   @moduledoc false
   use Absinthe.Schema.Notation
   use Absinthe.Relay.Schema.Notation, :modern
@@ -6,8 +6,8 @@ defmodule Glimesh.SchemaNext.ChannelTypes do
   import Absinthe.Resolution.Helpers
   import_types(Absinthe.Plug.Types)
 
+  alias Glimesh.Api.ChannelResolver
   alias Glimesh.Repo
-  alias Glimesh.ResolversNext.ChannelResolver
   alias Glimesh.Streams
 
   input_object :stream_metadata_input do
@@ -32,20 +32,11 @@ defmodule Glimesh.SchemaNext.ChannelTypes do
   end
 
   object :streams_queries do
-    @desc "List all channels"
-    connection field :channels, node_type: :channel, paginate: :forward do
-      arg(:status, :channel_status)
-      arg(:category_slug, :string)
-
-      resolve(&ChannelResolver.all_channels/2)
-    end
-
     @desc "Query individual channel"
     field :channel, :channel do
       arg(:id, :id)
-      arg(:username, :string, deprecate: "Use ids for future as these will be removed later")
-      arg(:user_id, :integer)
-      arg(:hmac_key, :string)
+      arg(:streamer_id, :integer)
+      arg(:streamer_username, :string)
       resolve(&ChannelResolver.find_channel/2)
     end
 
@@ -59,17 +50,15 @@ defmodule Glimesh.SchemaNext.ChannelTypes do
       arg(:slug, :string)
       resolve(&ChannelResolver.find_category/2)
     end
+  end
 
-    @desc "List all subscribers or subscribees"
-    field :subscriptions, list_of(:sub) do
-      arg(:streamer_username, :string,
-        deprecate: "Use ids for future as these will be removed later"
-      )
+  object :streams_connection_queries do
+    @desc "List all channels"
+    connection field :channels, node_type: :channel, paginate: :forward do
+      arg(:status, :channel_status)
+      arg(:category_slug, :string)
 
-      arg(:user_username, :string, deprecate: "Use ids for future as these will be removed later")
-      arg(:streamer_id, :integer)
-      arg(:user_id, :integer)
-      resolve(&ChannelResolver.all_subscriptions/2)
+      resolve(&ChannelResolver.all_channels/2)
     end
   end
 
@@ -128,26 +117,16 @@ defmodule Glimesh.SchemaNext.ChannelTypes do
     field :id, :id
     field :name, :string, description: "Name of the category"
 
-    field :tags, list_of(:tag), resolve: dataloader(Repo)
-    field :subcategories, list_of(:subcategory), resolve: dataloader(Repo)
-
-    field :tag_name, :string do
-      deprecate("Tag name is now just name")
-
-      resolve(fn category, _, _ ->
-        {:ok, category.name}
-      end)
+    connection field :tags, node_type: :tag, paginate: :forward do
+      resolve(&ChannelResolver.get_tags/2)
     end
+
+    field :subcategories, list_of(:subcategory), resolve: dataloader(Repo)
 
     field :slug, :string, description: "Slug of the category"
 
-    field :parent, :category do
-      deprecate("All categories are now parents and the children are tags.")
-
-      resolve(fn _, _, _ ->
-        {:ok, nil}
-      end)
-    end
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
   end
 
   @desc "Subcategories are specific games, topics, or genre's that exist under a Category."
@@ -161,7 +140,6 @@ defmodule Glimesh.SchemaNext.ChannelTypes do
     field :source_id, :string
 
     field :background_image_url, :string do
-      # Resolve URL to our actual public route
       resolve(fn subcategory, _, _ ->
         {:ok, subcategory.background_image}
       end)
@@ -186,53 +164,75 @@ defmodule Glimesh.SchemaNext.ChannelTypes do
     field :updated_at, non_null(:naive_datetime)
   end
 
+  connection node_type: :tag do
+    field :count, :integer do
+      resolve(fn
+        _, %{source: conn} ->
+          {:ok, length(conn.edges)}
+      end)
+    end
+
+    edge do
+      field :node, :tag do
+        resolve(fn %{node: tag}, _args, _info ->
+          {:ok, tag}
+        end)
+      end
+    end
+  end
+
   @desc "A channel is a user's actual container for live streaming."
   object :channel do
     field :id, :id
 
-    field :status, :channel_status
-    field :title, :string, description: "The title of the current stream, live or offline."
+    field :title, :string, description: "The title of the channel"
+    field :status, :channel_status, description: "The current status of the channnel"
     field :category, :category, resolve: dataloader(Repo)
     field :subcategory, :subcategory, resolve: dataloader(Repo)
+    field :tags, list_of(:tag), resolve: dataloader(Repo)
 
     field :mature_content, :boolean,
       description:
-        "If the streamer has flagged this channel as only appropriate for Mature Audiences."
+        "If the streamer has flagged this channel as only appropriate for Mature Audiences"
 
-    field :language, :string, description: "The language a user can expect in the stream."
-    field :thumbnail, :string
+    field :language, :string, description: "The language a user can expect in the stream"
 
-    field :stream_key, :string do
-      resolve(fn channel, _, %{context: %{current_user: current_user}} ->
-        if current_user.is_admin do
-          {:ok, Glimesh.Streams.get_stream_key(channel)}
-        else
-          {:error, "Unauthorized to access streamKey field."}
-        end
-      end)
-    end
-
-    field :hmac_key, :string do
-      resolve(fn channel, _, %{context: %{current_user: current_user}} ->
-        if current_user.is_admin do
-          {:ok, channel.hmac_key}
-        else
-          {:error, "Unauthorized to access hmacKey field."}
-        end
-      end)
-    end
+    field :stream_key, :string, resolve: &ChannelResolver.resolve_stream_key/3
+    field :hmac_key, :string, resolve: &ChannelResolver.resolve_hmac_key/3
 
     field :inaccessible, :boolean
 
     field :chat_rules_md, :string
     field :chat_rules_html, :string
 
-    field :disable_hyperlinks, :boolean
-    field :block_links, :boolean
-    field :require_confirmed_email, :boolean
-    field :minimum_account_age, :integer
+    field :show_on_homepage, :boolean, description: "Toggle for homepage visibility"
 
-    field :stream, :stream, resolve: dataloader(Repo)
+    field :disable_hyperlinks, :boolean,
+      description: "Toggle for links automatically being clickable"
+
+    field :block_links, :boolean, description: "Toggle for blocking anyone from posting links"
+
+    field :require_confirmed_email, :boolean,
+      description: "Toggle for requiring confirmed email before chatting"
+
+    field :minimum_account_age, :integer,
+      description: "Minimum account age length before chatting"
+
+    field :poster_url, :string do
+      resolve(fn channel, _, _ ->
+        {:ok, Glimesh.ChannelPoster.url({channel.poster, channel})}
+      end)
+    end
+
+    field :chat_bg_url, :string do
+      resolve(fn channel, _, _ ->
+        {:ok, Glimesh.ChatBackground.url({channel.chat_bg, channel})}
+      end)
+    end
+
+    field :stream, :stream,
+      resolve: dataloader(Repo),
+      description: "If the channel is live, this will be the current Stream"
 
     field :streamer, non_null(:user), resolve: dataloader(Repo)
 
@@ -251,12 +251,6 @@ defmodule Glimesh.SchemaNext.ChannelTypes do
     connection field :moderation_logs, node_type: :channel_moderation_log, paginate: :forward do
       resolve(&ChannelResolver.get_moderation_logs/2)
     end
-
-    field :user, non_null(:user),
-      resolve: dataloader(Repo),
-      deprecate: "Please use the streamer field"
-
-    field :tags, list_of(:tag), resolve: dataloader(Repo)
 
     field :inserted_at, non_null(:naive_datetime)
     field :updated_at, non_null(:naive_datetime)
@@ -285,27 +279,23 @@ defmodule Glimesh.SchemaNext.ChannelTypes do
 
     field :channel, non_null(:channel), resolve: dataloader(Repo)
 
-    field :title, :string, description: "The title of the stream."
+    field :title, :string, description: "The title of the channel when the stream was started"
     field :category, non_null(:category), resolve: dataloader(Repo)
-    field :metadata, list_of(:stream_metadata), resolve: dataloader(Repo)
 
-    field :started_at, non_null(:naive_datetime)
-    field :ended_at, :naive_datetime
+    connection field :metadata, node_type: :stream_metadata, paginate: :forward do
+      resolve(&ChannelResolver.get_stream_metadata/2)
+    end
 
-    # field :viewers, :viewers, resolve: dataloader(Repo)
-    # field :chatters, :chatters, resolve: dataloader(Repo)
+    field :started_at, non_null(:naive_datetime),
+      description: "Datetime of when the stream was started"
 
-    field :count_viewers, :integer
-    field :count_chatters, :integer
+    field :ended_at, :naive_datetime,
+      description: "Datetime of when the stream was ended, or null if still going"
 
-    field :peak_viewers, :integer
-    field :peak_chatters, :integer
-    field :avg_viewers, :integer
-    field :avg_chatters, :integer
-    field :new_subscribers, :integer
-    field :resub_subscribers, :integer
+    field :count_viewers, :integer, description: "Concurrent viewers during last snapshot"
+    field :peak_viewers, :integer, description: "Peak concurrent viewers"
 
-    field :thumbnail, :string do
+    field :thumbnail_url, :string do
       resolve(fn stream, _, _ ->
         {:ok, Glimesh.StreamThumbnail.url({stream.thumbnail, stream})}
       end)
@@ -344,19 +334,20 @@ defmodule Glimesh.SchemaNext.ChannelTypes do
     field :updated_at, non_null(:naive_datetime)
   end
 
-  @desc "A subscription is an exchange of money for support."
-  object :sub do
-    field :id, :id
-    field :is_active, :boolean
-    field :started_at, non_null(:datetime)
-    field :ended_at, :datetime
-    field :price, :integer
-    field :product_name, :string
+  connection node_type: :stream_metadata do
+    field :count, :integer do
+      resolve(fn
+        _, %{source: conn} ->
+          {:ok, length(conn.edges)}
+      end)
+    end
 
-    field :streamer, :user, resolve: dataloader(Repo)
-    field :user, non_null(:user), resolve: dataloader(Repo)
-
-    field :inserted_at, non_null(:naive_datetime)
-    field :updated_at, non_null(:naive_datetime)
+    edge do
+      field :node, :stream_metadata do
+        resolve(fn %{node: metadata}, _args, _info ->
+          {:ok, metadata}
+        end)
+      end
+    end
   end
 end

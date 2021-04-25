@@ -1,4 +1,4 @@
-defmodule Glimesh.Plug.GraphiQL do
+defmodule Glimesh.Api.GraphiQLPlug do
   @moduledoc false
   defdelegate init(opts), to: Absinthe.Plug.GraphiQL
   defdelegate call(conn, opts), to: Absinthe.Plug.GraphiQL

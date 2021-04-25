@@ -1,11 +1,12 @@
-defmodule GlimeshWeb.ApiNext.ChatTest do
+defmodule Glimesh.Api.ChatsTest do
   use GlimeshWeb.ConnCase
 
   import Glimesh.AccountsFixtures
+  import Glimesh.Support.GraphqlHelper
 
   alias Glimesh.Streams
 
-  @create_chat_message_query """
+  @create_chat_message_mutation """
   mutation CreateChatMessage($channelId: ID!, $message: ChatMessageInput!) {
     createChatMessage(channelId: $channelId, message: $message) {
       message
@@ -20,7 +21,34 @@ defmodule GlimeshWeb.ApiNext.ChatTest do
           url
         }
       }
-      isMod
+    }
+  }
+  """
+
+  @short_timeout_mutation """
+  mutation ShortTimeoutUser($channelId: ID!, $userId: ID!) {
+    shortTimeoutUser(channelId: $channelId, userId: $userId) {
+      moderator {
+        username
+      }
+      user {
+        username
+      }
+      action
+    }
+  }
+  """
+
+  @long_timeout_mutation """
+  mutation LongTimeoutUser($channelId: ID!, $userId: ID!) {
+    longTimeoutUser(channelId: $channelId, userId: $userId) {
+      moderator {
+        username
+      }
+      user {
+        username
+      }
+      action
     }
   }
   """
@@ -39,7 +67,35 @@ defmodule GlimeshWeb.ApiNext.ChatTest do
   }
   """
 
-  describe "chat apinew with user's access token without scope" do
+  @unban_user_mutation """
+  mutation UnbanUser($channelId: ID!, $userId: ID!) {
+    unbanUser(channelId: $channelId, userId: $userId) {
+      moderator {
+        username
+      }
+      user {
+        username
+      }
+      action
+    }
+  }
+  """
+
+  @delete_chat_message_mutation """
+  mutation DeleteChatmessage($channelId: ID!, $messageId: ID!) {
+    deleteChatMessage(channelId: $channelId, messageId: $messageId) {
+      moderator {
+        username
+      }
+      user {
+        username
+      }
+      action
+    }
+  }
+  """
+
+  describe "chat api without scope" do
     setup [:create_user, :create_channel]
 
     setup context do
@@ -47,18 +103,15 @@ defmodule GlimeshWeb.ApiNext.ChatTest do
     end
 
     test "cannot send a chat message", %{conn: conn, channel: channel} do
-      conn =
-        post(conn, "/apinext", %{
-          "query" => @create_chat_message_query,
-          "variables" => %{
-            channelId: "#{channel.id}",
-            message: %{
-              message: "Hello world"
-            }
+      resp =
+        run_query(conn, @create_chat_message_mutation, %{
+          channelId: "#{channel.id}",
+          message: %{
+            message: "Hello world"
           }
         })
 
-      assert is_nil(json_response(conn, 200)["data"]["createChatMessage"])
+      assert is_nil(resp["data"]["createChatMessage"])
 
       assert [
                %{
@@ -66,17 +119,17 @@ defmodule GlimeshWeb.ApiNext.ChatTest do
                  "message" => "unauthorized",
                  "path" => _
                }
-             ] = json_response(conn, 200)["errors"]
+             ] = resp["errors"]
     end
   end
 
-  describe "chat apinew with user's access token" do
+  describe "chat api with scope" do
     setup [:register_and_set_user_token, :create_channel]
 
     test "can send a chat message", %{conn: conn, user: user, channel: channel} do
       conn =
-        post(conn, "/apinext", %{
-          "query" => @create_chat_message_query,
+        post(conn, "/api/graph", %{
+          "query" => @create_chat_message_mutation,
           "variables" => %{
             channelId: "#{channel.id}",
             message: %{
@@ -92,8 +145,7 @@ defmodule GlimeshWeb.ApiNext.ChatTest do
                },
                "tokens" => [
                  %{"type" => "text", "text" => "Hello world"}
-               ],
-               "isMod" => true
+               ]
              }
     end
 
@@ -104,8 +156,8 @@ defmodule GlimeshWeb.ApiNext.ChatTest do
       streamer = streamer_fixture()
 
       conn =
-        post(conn, "/apinext", %{
-          "query" => @create_chat_message_query,
+        post(conn, "/api/graph", %{
+          "query" => @create_chat_message_mutation,
           "variables" => %{
             channelId: "#{streamer.channel.id}",
             message: %{
@@ -121,15 +173,14 @@ defmodule GlimeshWeb.ApiNext.ChatTest do
                },
                "tokens" => [
                  %{"type" => "text", "text" => "Hello world"}
-               ],
-               "isMod" => false
+               ]
              }
     end
 
     test "can send a emote based message", %{conn: conn, user: user, channel: channel} do
       conn =
-        post(conn, "/apinext", %{
-          "query" => @create_chat_message_query,
+        post(conn, "/api/graph", %{
+          "query" => @create_chat_message_mutation,
           "variables" => %{
             channelId: "#{channel.id}",
             message: %{
@@ -152,8 +203,7 @@ defmodule GlimeshWeb.ApiNext.ChatTest do
                    "url" => "http://localhost:4002/emotes/svg/glimwow.svg"
                  },
                  %{"type" => "text", "text" => " world!"}
-               ],
-               "isMod" => true
+               ]
              }
     end
 
@@ -161,7 +211,7 @@ defmodule GlimeshWeb.ApiNext.ChatTest do
       user_to_ban = user_fixture()
 
       conn =
-        post(conn, "/apinext", %{
+        post(conn, "/api/graph", %{
           "query" => @ban_user_mutation,
           "variables" => %{
             channelId: "#{channel.id}",
@@ -182,15 +232,86 @@ defmodule GlimeshWeb.ApiNext.ChatTest do
       assert {:error, "You are permanently banned from this channel."} =
                Glimesh.Chat.create_chat_message(user_to_ban, channel, %{message: "Hello world"})
     end
+
+    test "can short timeout users", %{conn: conn, channel: channel} do
+      user_to_ban = user_fixture()
+
+      resp =
+        run_query(conn, @short_timeout_mutation, %{
+          channelId: "#{channel.id}",
+          userId: "#{user_to_ban.id}"
+        })
+
+      assert resp["data"]["shortTimeoutUser"]["action"] == "short_timeout"
+
+      assert {:error, "You are banned from this channel for 5 more minutes."} =
+               Glimesh.Chat.create_chat_message(user_to_ban, channel, %{message: "Hello world"})
+    end
+
+    test "can long timeout users", %{conn: conn, channel: channel} do
+      user_to_ban = user_fixture()
+
+      resp =
+        run_query(conn, @long_timeout_mutation, %{
+          channelId: "#{channel.id}",
+          userId: "#{user_to_ban.id}"
+        })
+
+      assert resp["data"]["longTimeoutUser"]["action"] == "long_timeout"
+
+      assert {:error, "You are banned from this channel for 15 more minutes."} =
+               Glimesh.Chat.create_chat_message(user_to_ban, channel, %{message: "Hello world"})
+    end
+
+    test "can unban users", %{conn: conn, user: streamer, channel: channel} do
+      user_to_unban = user_fixture()
+      Glimesh.Chat.ban_user(streamer, channel, user_to_unban)
+
+      resp =
+        run_query(conn, @unban_user_mutation, %{
+          channelId: "#{channel.id}",
+          userId: "#{user_to_unban.id}"
+        })
+
+      assert resp["data"]["unbanUser"]["action"] == "unban"
+
+      assert {:ok, %{message: message}} =
+               Glimesh.Chat.create_chat_message(user_to_unban, channel, %{message: "Hello world"})
+
+      assert message == "Hello world"
+    end
+
+    test "can delete chat messages", %{conn: conn, channel: channel} do
+      bad_user = user_fixture()
+
+      assert {:ok, %{id: chat_message_id}} =
+               Glimesh.Chat.create_chat_message(bad_user, channel, %{
+                 message: "This is a bad message"
+               })
+
+      resp =
+        run_query(conn, @delete_chat_message_mutation, %{
+          channelId: "#{channel.id}",
+          messageId: "#{chat_message_id}"
+        })
+
+      assert resp["data"]["deleteChatMessage"]["action"] == "delete_message"
+
+      messages = Glimesh.Chat.list_chat_messages(channel)
+
+      Enum.each(messages, fn m ->
+        assert m.message !== "This is a bad message"
+      end)
+    end
   end
 
-  describe "chat apinew with app client credentials" do
+  describe "chat api with app client credentials" do
     setup [:register_and_set_user_token, :create_channel]
 
     test "can send a chat message", %{conn: conn, user: user, channel: channel} do
       conn =
-        post(conn, "/apinext", %{
-          "query" => @create_chat_message_query,
+        post(conn, "/api/graph", %{
+          "query" => @create_chat_message_mutation,
           "variables" => %{
             channelId: "#{channel.id}",
             message: %{
@@ -206,8 +327,7 @@ defmodule GlimeshWeb.ApiNext.ChatTest do
                },
                "tokens" => [
                  %{"type" => "text", "text" => "Hello world"}
-               ],
-               "isMod" => true
+               ]
              }
     end
   end
