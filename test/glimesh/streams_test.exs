@@ -60,12 +60,10 @@ defmodule Glimesh.StreamsTest do
       user = user_fixture()
       AccountFollows.follow(streamer, user)
 
-      follows =
-        AccountFollows.list_all_follows()
-        |> Repo.all()
-        |> Repo.preload(:user)
+      follows = AccountFollows.list_all_follows()
 
-      assert Enum.map(follows, fn x -> x.user.username end) == [user.username]
+      assert Enum.map(follows, fn x -> x.user_id end) == [user.id]
+      assert Enum.map(follows, fn x -> x.streamer_id end) == [streamer.id]
     end
 
     test "list_followers/1 successfully returns data" do
@@ -73,10 +71,7 @@ defmodule Glimesh.StreamsTest do
       user = user_fixture()
       AccountFollows.follow(streamer, user)
 
-      follows =
-        AccountFollows.list_followers(streamer)
-        |> Repo.all()
-        |> Repo.preload(:user)
+      follows = AccountFollows.list_followers(streamer)
 
       assert Enum.map(follows, fn x -> x.user.username end) == [user.username]
     end
@@ -86,12 +81,9 @@ defmodule Glimesh.StreamsTest do
       user = user_fixture()
       AccountFollows.follow(streamer, user)
 
-      follows =
-        AccountFollows.list_following(user)
-        |> Repo.all()
-        |> Repo.preload(:user)
+      follows = AccountFollows.list_following(user)
 
-      assert Enum.map(follows, fn x -> x.user.username end) == [user.username]
+      assert Enum.map(follows, fn x -> x.streamer.username end) == [streamer.username]
     end
   end
 

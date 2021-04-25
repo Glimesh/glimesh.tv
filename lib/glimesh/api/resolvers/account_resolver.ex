@@ -31,7 +31,7 @@ defmodule Glimesh.Api.AccountResolver do
   end
 
   def all_users(args, _) do
-    Accounts.list_users()
+    Accounts.query_users()
     |> Connection.from_query(&Repo.all/1, args)
   end
 
@@ -77,7 +77,7 @@ defmodule Glimesh.Api.AccountResolver do
 
   defp query_followers(%{streamer_id: streamer_id}) do
     if streamer = Accounts.get_user(streamer_id) do
-      {:ok, :query, AccountFollows.list_followers(streamer)}
+      {:ok, :query, AccountFollows.query_followers(streamer)}
     else
       {:error, @error_not_found}
     end
@@ -85,14 +85,14 @@ defmodule Glimesh.Api.AccountResolver do
 
   defp query_followers(%{user_id: user_id}) do
     if user = Accounts.get_user(user_id) do
-      {:ok, :query, AccountFollows.list_following(user)}
+      {:ok, :query, AccountFollows.query_following(user)}
     else
       {:error, @error_not_found}
     end
   end
 
   defp query_followers(_) do
-    {:ok, :query, AccountFollows.list_all_follows()}
+    {:ok, :query, AccountFollows.query_all_follows()}
   end
 
   def get_user_followers(args, %{source: user}) do

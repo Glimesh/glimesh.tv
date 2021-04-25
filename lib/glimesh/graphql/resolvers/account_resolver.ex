@@ -2,7 +2,6 @@ defmodule Glimesh.Resolvers.AccountResolver do
   @moduledoc false
   alias Glimesh.AccountFollows
   alias Glimesh.Accounts
-  alias Glimesh.Repo
 
   @error_not_found "Could not find resource"
 
@@ -17,7 +16,7 @@ defmodule Glimesh.Resolvers.AccountResolver do
   end
 
   def all_users(_, _) do
-    {:ok, Accounts.list_users() |> Repo.all()}
+    {:ok, Accounts.list_users()}
   end
 
   def find_user(%{id: id}, _) do
@@ -61,7 +60,7 @@ defmodule Glimesh.Resolvers.AccountResolver do
 
   def all_followers(%{user_username: user_username}, _) do
     if user = Accounts.get_by_username(user_username) do
-      {:ok, AccountFollows.list_following(user) |> Repo.all()}
+      {:ok, AccountFollows.list_following(user)}
     else
       {:error, @error_not_found}
     end

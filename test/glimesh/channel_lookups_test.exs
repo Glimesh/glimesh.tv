@@ -5,7 +5,6 @@ defmodule Glimesh.ChannelLookupsTest do
   import Glimesh.AccountsFixtures
   alias Glimesh.ChannelLookups
   alias Glimesh.ChannelCategories
-  alias Glimesh.Repo
 
   defp create_channel(_) do
     gaming_id = ChannelCategories.get_category("gaming").id
@@ -45,7 +44,7 @@ defmodule Glimesh.ChannelLookupsTest do
     setup :create_channel
 
     test "list_channels/0 lists all channels" do
-      assert length(Repo.all(ChannelLookups.list_channels())) == 1
+      assert length(ChannelLookups.list_channels()) == 1
     end
 
     test "channel_search/1 lists channels conditionally for category", %{channel: channel} do

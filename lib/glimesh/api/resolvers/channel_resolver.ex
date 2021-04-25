@@ -44,18 +44,18 @@ defmodule Glimesh.Api.ChannelResolver do
 
   defp query_all_channels(%{status: status, category_slug: category_slug}) do
     if category = ChannelCategories.get_category(category_slug) do
-      {:ok, ChannelLookups.list_channels(status: status, category_id: category.id)}
+      {:ok, ChannelLookups.query_channels(status: status, category_id: category.id)}
     else
       {:error, @error_not_found}
     end
   end
 
   defp query_all_channels(%{status: status}) do
-    {:ok, ChannelLookups.list_channels(status: status)}
+    {:ok, ChannelLookups.query_channels(status: status)}
   end
 
   defp query_all_channels(_) do
-    {:ok, ChannelLookups.list_channels()}
+    {:ok, ChannelLookups.query_channels()}
   end
 
   def find_channel(%{id: id}, _) do

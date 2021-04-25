@@ -88,15 +88,21 @@ defmodule Glimesh.AccountFollows do
     Repo.one!(from f in Follower, select: count(f.id), where: f.user_id == ^user.id)
   end
 
-  def list_all_follows do
+  def list_all_follows, do: Repo.all(query_all_follows())
+  def list_followers(%User{} = user), do: Repo.all(query_followers(user)) |> Repo.preload(:user)
+
+  def list_following(%User{} = user),
+    do: Repo.all(query_following(user)) |> Repo.preload(:streamer)
+
+  def query_all_follows do
     from(f in Follower)
   end
 
-  def list_followers(user) do
+  def query_followers(user) do
     from(f in Follower, where: f.streamer_id == ^user.id)
   end
 
-  def list_following(user) do
+  def query_following(user) do
     from(f in Follower, where: f.user_id == ^user.id, preload: [:streamer])
   end
 

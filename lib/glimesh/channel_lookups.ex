@@ -76,7 +76,9 @@ defmodule Glimesh.ChannelLookups do
     )
   end
 
-  def list_channels(wheres \\ []) do
+  def list_channels(wheres \\ []), do: Repo.all(query_channels(wheres))
+
+  def query_channels(wheres \\ []) do
     from c in Channel,
       join: cat in Category,
       on: cat.id == c.category_id,
