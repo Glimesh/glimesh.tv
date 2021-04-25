@@ -37,47 +37,45 @@ defmodule GlimeshWeb.Api.ChannelTest do
     setup [:register_and_set_user_token, :create_channel]
 
     test "returns all channels", %{conn: conn, user: user} do
-      conn =
-        post(conn, "/api", %{
-          "query" => @channels_query
-        })
+      conn = post(conn, "/api", %{
+        "query" => @channels_query
+      })
 
       assert json_response(conn, 200) == %{
-               "data" => %{
-                 "channels" => [
-                   %{
-                     "title" => "Live Stream!",
-                     "streamer" => %{"username" => user.username}
-                   }
-                 ]
-               }
-             }
+        "data" => %{
+          "channels" => [
+            %{
+              "title" => "Live Stream!",
+              "streamer" => %{"username" => user.username}
+            }
+          ]
+        }
+      }
     end
 
     test "returns a channel", %{conn: conn, user: user} do
-      conn =
-        post(conn, "/api", %{
-          "query" => @channel_query,
-          "variables" => %{username: user.username}
-        })
+      conn = post(conn, "/api", %{
+        "query" => @channel_query,
+        "variables" => %{username: user.username}
+      })
 
       assert json_response(conn, 200) == %{
-               "data" => %{
-                 "channel" => %{
-                   "title" => "Live Stream!",
-                   "streamer" => %{"username" => user.username},
-                   "mature_content" => false,
-                   "subcategory" => %{
-                     "name" => "World of Warcraft"
-                   },
-                   "tags" => [
-                     %{
-                       "name" => "Chill Stream"
-                     }
-                   ]
-                 }
-               }
-             }
+        "data" => %{
+          "channel" => %{
+            "title" => "Live Stream!",
+            "streamer" => %{"username" => user.username},
+            "mature_content" => false,
+            "subcategory" => %{
+              "name" => "World of Warcraft"
+            },
+            "tags" => [
+              %{
+                "name" => "Chill Stream"
+              }
+            ]
+          }
+        }
+      }
     end
   end
 
@@ -112,43 +110,41 @@ defmodule GlimeshWeb.Api.ChannelTest do
     setup [:register_and_set_user_token, :create_tag, :create_subcategory]
 
     test "returns all categories", %{conn: conn} do
-      conn =
-        post(conn, "/api", %{
-          "query" => @categories_query
-        })
+      conn = post(conn, "/api", %{
+        "query" => @categories_query
+      })
 
       assert Enum.member?(
-               Enum.map(json_response(conn, 200)["data"]["categories"], fn x -> x["slug"] end),
-               "gaming"
-             )
+        Enum.map(json_response(conn, 200)["data"]["categories"], fn x -> x["slug"] end),
+        "gaming"
+      )
     end
 
     test "returns a category", %{conn: conn} do
-      conn =
-        post(conn, "/api", %{
-          "query" => @category_query,
-          "variables" => %{slug: "gaming"}
-        })
+      conn = post(conn, "/api", %{
+        "query" => @category_query,
+        "variables" => %{slug: "gaming"}
+      })
 
       assert json_response(conn, 200) == %{
-               "data" => %{
-                 "category" => %{
-                   "name" => "Gaming",
-                   "slug" => "gaming",
-                   "subcategories" => [
-                     %{
-                       "name" => "World of Warcraft",
-                       "backgroundImageUrl" => nil
-                     }
-                   ],
-                   "tags" => [
-                     %{
-                       "name" => "Chill Stream"
-                     }
-                   ]
-                 }
-               }
-             }
+        "data" => %{
+          "category" => %{
+            "name" => "Gaming",
+            "slug" => "gaming",
+            "subcategories" => [
+              %{
+                "name" => "World of Warcraft",
+                "backgroundImageUrl" => nil
+              }
+            ],
+            "tags" => [
+              %{
+                "name" => "Chill Stream"
+              }
+            ]
+          }
+        }
+      }
     end
   end
 
