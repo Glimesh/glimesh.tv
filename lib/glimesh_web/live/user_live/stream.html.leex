@@ -156,7 +156,7 @@ updated_at: <%= @stream_metadata.updated_at %>
         <div id="chat-column" class="col-lg-3 d-flex flex-column position-relative layout-spacing">
             <div class="chat-flex">
                 <div class="chat-absolute">
-                    <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id} %>
+                    <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id, "popped_out" => false} %>
                 </div>
             </div>
         </div>
