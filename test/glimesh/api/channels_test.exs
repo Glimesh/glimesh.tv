@@ -255,9 +255,14 @@ defmodule Glimesh.Api.ChannelsTest do
       name
       slug
 
-      subcategories {
-        name
-        backgroundImageUrl
+      subcategories(first: 200) {
+        count
+        edges {
+          node {
+            name
+            backgroundImageUrl
+          }
+        }
       }
 
       tags(first: 200) {
@@ -290,12 +295,17 @@ defmodule Glimesh.Api.ChannelsTest do
                  "category" => %{
                    "name" => "Gaming",
                    "slug" => "gaming",
-                   "subcategories" => [
-                     %{
-                       "name" => "World of Warcraft",
-                       "backgroundImageUrl" => nil
-                     }
-                   ],
+                   "subcategories" => %{
+                     "count" => 1,
+                     "edges" => [
+                       %{
+                         "node" => %{
+                           "name" => "World of Warcraft",
+                           "backgroundImageUrl" => nil
+                         }
+                       }
+                     ]
+                   },
                    "tags" => %{
                      "count" => 1,
                      "edges" => [%{"node" => %{"name" => "Chill Stream"}}]

@@ -121,7 +121,9 @@ defmodule Glimesh.Api.ChannelTypes do
       resolve(&ChannelResolver.get_tags/2)
     end
 
-    field :subcategories, list_of(:subcategory), resolve: dataloader(Repo)
+    connection field :subcategories, node_type: :subcategory, paginate: :forward do
+      resolve(&ChannelResolver.get_subcategories/2)
+    end
 
     field :slug, :string, description: "Slug of the category"
 
@@ -149,6 +151,23 @@ defmodule Glimesh.Api.ChannelTypes do
 
     field :inserted_at, non_null(:naive_datetime)
     field :updated_at, non_null(:naive_datetime)
+  end
+
+  connection node_type: :subcategory do
+    field :count, :integer do
+      resolve(fn
+        _, %{source: conn} ->
+          {:ok, length(conn.edges)}
+      end)
+    end
+
+    edge do
+      field :node, :subcategory do
+        resolve(fn %{node: subcategory}, _args, _info ->
+          {:ok, subcategory}
+        end)
+      end
+    end
   end
 
   @desc "Tags are user created labels that are either global or category specific."

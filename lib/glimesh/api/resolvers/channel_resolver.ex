@@ -195,6 +195,15 @@ defmodule Glimesh.Api.ChannelResolver do
     |> Connection.from_query(&Repo.all/1, args)
   end
 
+  def get_subcategories(args, %{source: category}) do
+    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
+
+    Streams.Subcategory
+    |> where(category_id: ^category.id)
+    |> order_by(:inserted_at)
+    |> Connection.from_query(&Repo.all/1, args)
+  end
+
   def get_bans(args, %{source: channel}) do
     args = Map.put(args, :first, min(Map.get(args, :first), 1000))
 
