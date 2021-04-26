@@ -76,14 +76,14 @@ defmodule Glimesh.ChannelLookups do
     )
   end
 
-  def list_channels(wheres \\ []) do
-    Repo.all(
-      from c in Channel,
-        join: cat in Category,
-        on: cat.id == c.category_id,
-        where: ^wheres
-    )
-    |> Repo.preload([:category, :user])
+  def list_channels(wheres \\ []), do: Repo.all(query_channels(wheres))
+
+  def query_channels(wheres \\ []) do
+    from c in Channel,
+      join: cat in Category,
+      on: cat.id == c.category_id,
+      where: ^wheres,
+      preload: [:category, :user]
   end
 
   def list_live_channels do
@@ -146,6 +146,24 @@ defmodule Glimesh.ChannelLookups do
       Channel
       |> join(:inner, [u], assoc(u, :user), as: :user)
       |> where([user: u], u.username == ^username)
+      |> where([c], c.inaccessible == false)
+
+    query =
+      if ignore_banned do
+        query
+      else
+        where(query, [user: u], u.is_banned == false)
+      end
+
+    Repo.one(query)
+    |> Repo.preload([:category, :stream, :subcategory, :user, :tags])
+  end
+
+  def get_channel_for_user_id(user_id, ignore_banned \\ false) do
+    query =
+      Channel
+      |> join(:inner, [u], assoc(u, :user), as: :user)
+      |> where([user: u], u.id == ^user_id)
       |> where([c], c.inaccessible == false)
 
     query =

@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.Api.SubscriptionTest do
+defmodule Glimesh.Api.QuerySubscriptionsTest do
   use GlimeshWeb.SubscriptionCase
 
   import Glimesh.AccountsFixtures
@@ -160,7 +160,7 @@ defmodule GlimeshWeb.Api.SubscriptionTest do
     end
   end
 
-  describe "followers" do
+  describe "follower subscriptions" do
     setup :setup_socket
 
     test "following subcription works", %{socket: socket, user: user} do
