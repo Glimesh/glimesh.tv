@@ -4,7 +4,6 @@ defmodule Glimesh.Schema do
   """
 
   use Absinthe.Schema
-  use Absinthe.Relay.Schema, :modern
 
   alias Glimesh.Repo
 
