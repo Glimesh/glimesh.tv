@@ -23,14 +23,7 @@ defmodule Glimesh.Resolvers.ChatResolver do
           {:ok, message}
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          messages =
-            Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
-              Enum.reduce(opts, msg, fn {key, value}, acc ->
-                String.replace(acc, "%{#{key}}", to_string(value))
-              end)
-            end)
-
-          {:error, messages}
+          {:error, Glimesh.Api.parse_ecto_changeset_errors(changeset)}
       end
     end
   end
