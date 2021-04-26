@@ -44,18 +44,22 @@ defmodule Glimesh.Api.ChannelResolver do
 
   defp query_all_channels(%{status: status, category_slug: category_slug}) do
     if category = ChannelCategories.get_category(category_slug) do
-      {:ok, ChannelLookups.query_channels(status: status, category_id: category.id)}
+      channels =
+        ChannelLookups.query_channels(status: status, category_id: category.id)
+        |> order_by(:id)
+
+      {:ok, channels}
     else
       {:error, @error_not_found}
     end
   end
 
   defp query_all_channels(%{status: status}) do
-    {:ok, ChannelLookups.query_channels(status: status)}
+    {:ok, ChannelLookups.query_channels(status: status) |> order_by(:id)}
   end
 
   defp query_all_channels(_) do
-    {:ok, ChannelLookups.query_channels()}
+    {:ok, ChannelLookups.query_channels() |> order_by(:id)}
   end
 
   def find_channel(%{id: id}, _) do
@@ -180,7 +184,7 @@ defmodule Glimesh.Api.ChannelResolver do
 
     ChatMessage
     |> where(channel_id: ^channel.id)
-    |> order_by(:inserted_at)
+    |> order_by(:id)
     |> Connection.from_query(&Repo.all/1, args)
   end
 
@@ -191,7 +195,7 @@ defmodule Glimesh.Api.ChannelResolver do
 
     Streams.Tag
     |> where(category_id: ^category.id)
-    |> order_by(:inserted_at)
+    |> order_by(:id)
     |> Connection.from_query(&Repo.all/1, args)
   end
 
@@ -200,7 +204,7 @@ defmodule Glimesh.Api.ChannelResolver do
 
     Streams.Subcategory
     |> where(category_id: ^category.id)
-    |> order_by(:inserted_at)
+    |> order_by(:id)
     |> Connection.from_query(&Repo.all/1, args)
   end
 
@@ -209,7 +213,7 @@ defmodule Glimesh.Api.ChannelResolver do
 
     Streams.ChannelBan
     |> where(channel_id: ^channel.id)
-    |> order_by(:inserted_at)
+    |> order_by(:id)
     |> Connection.from_query(&Repo.all/1, args)
   end
 
@@ -218,7 +222,7 @@ defmodule Glimesh.Api.ChannelResolver do
 
     Streams.ChannelModerator
     |> where(channel_id: ^channel.id)
-    |> order_by(:inserted_at)
+    |> order_by(:id)
     |> Connection.from_query(&Repo.all/1, args)
   end
 
@@ -227,7 +231,7 @@ defmodule Glimesh.Api.ChannelResolver do
 
     Streams.ChannelModerationLog
     |> where(channel_id: ^channel.id)
-    |> order_by(:inserted_at)
+    |> order_by(:id)
     |> Connection.from_query(&Repo.all/1, args)
   end
 
@@ -236,7 +240,7 @@ defmodule Glimesh.Api.ChannelResolver do
 
     Streams.StreamMetadata
     |> where(stream_id: ^stream.id)
-    |> order_by(:inserted_at)
+    |> order_by(:id)
     |> Connection.from_query(&Repo.all/1, args)
   end
 end

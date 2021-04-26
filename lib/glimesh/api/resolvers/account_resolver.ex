@@ -32,6 +32,7 @@ defmodule Glimesh.Api.AccountResolver do
 
   def all_users(args, _) do
     Accounts.query_users()
+    |> order_by(:id)
     |> Connection.from_query(&Repo.all/1, args)
   end
 
@@ -77,7 +78,11 @@ defmodule Glimesh.Api.AccountResolver do
 
   defp query_followers(%{streamer_id: streamer_id}) do
     if streamer = Accounts.get_user(streamer_id) do
-      {:ok, :query, AccountFollows.query_followers(streamer)}
+      followers =
+        AccountFollows.query_followers(streamer)
+        |> order_by(:id)
+
+      {:ok, :query, followers}
     else
       {:error, @error_not_found}
     end
@@ -85,14 +90,22 @@ defmodule Glimesh.Api.AccountResolver do
 
   defp query_followers(%{user_id: user_id}) do
     if user = Accounts.get_user(user_id) do
-      {:ok, :query, AccountFollows.query_following(user)}
+      following =
+        AccountFollows.query_following(user)
+        |> order_by(:id)
+
+      {:ok, :query, following}
     else
       {:error, @error_not_found}
     end
   end
 
   defp query_followers(_) do
-    {:ok, :query, AccountFollows.query_all_follows()}
+    followers =
+      AccountFollows.query_all_follows()
+      |> order_by(:id)
+
+    {:ok, :query, followers}
   end
 
   def get_user_followers(args, %{source: user}) do
@@ -100,7 +113,7 @@ defmodule Glimesh.Api.AccountResolver do
 
     Glimesh.AccountFollows.Follower
     |> where(streamer_id: ^user.id)
-    |> order_by(:inserted_at)
+    |> order_by(:id)
     |> Connection.from_query(&Repo.all/1, args)
   end
 
@@ -109,7 +122,7 @@ defmodule Glimesh.Api.AccountResolver do
 
     Glimesh.AccountFollows.Follower
     |> where(user_id: ^user.id)
-    |> order_by(:inserted_at)
+    |> order_by(:id)
     |> Connection.from_query(&Repo.all/1, args)
   end
 end
