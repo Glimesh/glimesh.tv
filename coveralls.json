@@ -1,0 +1,6 @@
+{
+    "skip_files": [
+        "deps/",
+        "lib/glimesh/graphql/"
+      ]
+}

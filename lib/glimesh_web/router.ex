@@ -22,6 +22,14 @@ defmodule GlimeshWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :graphql_alpha_api do
+    plug :fetch_session
+    plug :fetch_current_user
+    plug :require_alpha_api_header
+    plug :accepts, ["json"]
+    plug GlimeshWeb.Plugs.ApiContextPlug
+  end
+
   pipeline :graphql do
     plug :fetch_session
     plug :fetch_current_user
@@ -56,6 +64,19 @@ defmodule GlimeshWeb.Router do
     post "/taxidpro", WebhookController, :taxidpro
   end
 
+  scope "/api/graph" do
+    pipe_through :graphql_alpha_api
+
+    forward "/", Glimesh.Api.GraphiQLPlug,
+      schema: Glimesh.Api.Schema,
+      socket: GlimeshWeb.ApiSocket,
+      default_url: {__MODULE__, :graph_default_url},
+      socket_url: {__MODULE__, :graph_socket_url},
+      interface: :playground,
+      analyze_complexity: true,
+      max_complexity: 500
+  end
+
   scope "/api" do
     pipe_through :graphql
 
@@ -67,7 +88,6 @@ defmodule GlimeshWeb.Router do
   end
 
   ## Authentication routes
-
   scope "/", GlimeshWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
@@ -247,6 +267,16 @@ defmodule GlimeshWeb.Router do
 
   def graphiql_socket_url(conn) do
     (Routes.url(conn) <> "/api/socket")
+    |> String.replace("http", "ws")
+    |> String.replace("https", "wss")
+  end
+
+  def graph_default_url(conn) do
+    Routes.url(conn) <> "/api/graph"
+  end
+
+  def graph_socket_url(conn) do
+    (Routes.url(conn) <> "/api/graph/socket")
     |> String.replace("http", "ws")
     |> String.replace("https", "wss")
   end
