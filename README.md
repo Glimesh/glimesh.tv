@@ -38,7 +38,7 @@ These instructions serve as a reference for getting Glimesh running whatever typ
 
 ### General Dependencies
 
-You will need the following tools to clone, build, and run Glimesh: 
+You will need the following tools to clone, build, and run Glimesh:
 
 - **git**: Source control
 - **erlang**: Runtime
@@ -107,7 +107,7 @@ Enter it again:
 
 ### macOS Installation
 
-Installation is simple with [Homebrew](https://brew.sh). 
+Installation is simple with [Homebrew](https://brew.sh).
 
 ```sh
 # Required dependencies
@@ -184,11 +184,19 @@ Glimesh.tv can also be set up for **development use only** using [docker-compose
 
 To do so, run the following commands from the GitHub repository:
 
-1. `touch .env`
-2. `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
+`docker-compose up`
+
+Then you can visit the site at: `http://localhost:4000`
+
+To run tests you can start a docker instance and run tests on them by doing the following
+
+```bash
+docker-compose run app bash
+app> mix test
+```
 
 ### Customizing your local environment
-You can create a `config/local.exs` config file to change any local settings to make development 
+You can create a `config/local.exs` config file to change any local settings to make development
 easier. This file is ignored from git, so you don't have to worry about committing any secrets.
 
 ```elixir
@@ -214,11 +222,11 @@ Most of the core code behind the project is located is clear directories, groupe
 | config                              |          |  ✅      | Configuration for local, testing, and production releases                                                                              |
 
 ### Modifying Code
-All code inside any known directory is automatically watched for changes and triggers the appropriate build. Some frontend code and live views will automatically refresh your browser, but for more complex domain logic you may be required to refresh your browser. 
+All code inside any known directory is automatically watched for changes and triggers the appropriate build. Some frontend code and live views will automatically refresh your browser, but for more complex domain logic you may be required to refresh your browser.
 
 ### Running Static Code Analysis
 Before submitting a pull request, be sure to run [Credo](https://github.com/rrrene/credo) which will run a static code analysis over the entire project.
-```sh 
+```sh
 mix code_quality
 ```
 
@@ -231,7 +239,7 @@ mix code_quality
 
 
 ## Testing
-Glimesh includes a comprehensive and very fast test suite, so you should be encouraged to run tests as frequently as possible. 
+Glimesh includes a comprehensive and very fast test suite, so you should be encouraged to run tests as frequently as possible.
 
 ```sh
 mix test

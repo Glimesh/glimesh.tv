@@ -21,7 +21,7 @@ defmodule Glimesh.MixProject do
   def application do
     [
       mod: {Glimesh.Application, []},
-      extra_applications: [:logger, :runtime_tools, :os_mon]
+      extra_applications: [:logger, :runtime_tools, :os_mon, :appsignal]
     ]
   end
 
