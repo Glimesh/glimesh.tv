@@ -77,12 +77,42 @@ config :glimesh,
     ":glimxmastree:" => %{
       svg: "/emotes/svg/glimxmastree.svg",
       png: "/emotes/png/glimxmastree.png"
-    }
+    },
+    ":glimart:" => %{svg: "/emotes/svg/glimart.svg", png: "/emotes/png/glimart.png"},
+    ":glimbacon:" => %{svg: "/emotes/svg/glimbacon.svg", png: "/emotes/png/glimbacon.png"},
+    ":glimbday:" => %{svg: "/emotes/svg/glimbday.svg", png: "/emotes/png/glimbday.png"},
+    ":glimbeholder:" => %{
+      svg: "/emotes/svg/glimbeholder.svg",
+      png: "/emotes/png/glimbeholder.png"
+    },
+    ":glimcat:" => %{svg: "/emotes/svg/glimcat.svg", png: "/emotes/png/glimcat.png"},
+    ":glimchef:" => %{svg: "/emotes/svg/glimchef.svg", png: "/emotes/png/glimchef.png"},
+    ":glimchicken:" => %{svg: "/emotes/svg/glimchicken.svg", png: "/emotes/png/glimchicken.png"},
+    ":glimcontroller:" => %{
+      svg: "/emotes/svg/glimcontroller.svg",
+      png: "/emotes/png/glimcontroller.png"
+    },
+    ":glimd20:" => %{svg: "/emotes/svg/glimd20.svg", png: "/emotes/png/glimd20.png"},
+    ":glimdog:" => %{svg: "/emotes/svg/glimdog.svg", png: "/emotes/png/glimdog.png"},
+    ":glimfam:" => %{svg: "/emotes/svg/glimfam.svg", png: "/emotes/png/glimfam.png"},
+    ":glimfrog:" => %{svg: "/emotes/svg/glimfrog.svg", png: "/emotes/png/glimfrog.png"},
+    ":glimking:" => %{svg: "/emotes/svg/glimking.svg", png: "/emotes/png/glimking.png"},
+    ":glimlighter:" => %{svg: "/emotes/svg/glimlighter.svg", png: "/emotes/png/glimlighter.png"},
+    ":glimllama:" => %{svg: "/emotes/svg/glimllama.svg", png: "/emotes/png/glimllama.png"},
+    ":glimocto:" => %{svg: "/emotes/svg/glimocto.svg", png: "/emotes/png/glimocto.png"},
+    ":glimpizza:" => %{svg: "/emotes/svg/glimpizza.svg", png: "/emotes/png/glimpizza.png"},
+    ":glimspace:" => %{svg: "/emotes/svg/glimspace.svg", png: "/emotes/png/glimspace.png"},
+    ":glimzombie:" => %{svg: "/emotes/svg/glimzombie.svg", png: "/emotes/png/glimzombie.png"}
   },
   animated_emotes: %{
     ":glimfury:" => %{gif: "/emotes/gif/glimfury.gif"},
     ":glimdance:" => %{gif: "/emotes/gif/glimdance.gif"},
     ":glimcash:" => %{gif: "/emotes/gif/glimcash.gif"},
     ":2021:" => %{gif: "/emotes/gif/2021.gif"},
-    ":glimhello:" => %{gif: "/emotes/gif/glimhello.gif"}
+    ":glimhello:" => %{gif: "/emotes/gif/glimhello.gif"},
+    ":glimbigeyes:" => %{gif: "/emotes/gif/glimbigeyes.gif"},
+    ":glimdead:" => %{gif: "/emotes/gif/glimdead.gif"},
+    ":glimhearteyes:" => %{gif: "/emotes/gif/glimhearteyes.gif"},
+    ":glimrainbow:" => %{gif: "/emotes/gif/glimrainbow.gif"},
+    ":glimsurprise:" => %{gif: "/emotes/gif/glimsurprise.gif"}
   }
