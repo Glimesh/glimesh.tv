@@ -1,5 +1,5 @@
 defmodule GlimeshWeb.GctControllerTest do
-  use GlimeshWeb.ConnCase
+  use GlimeshWeb.ConnCase, async: true
 
   import Glimesh.AccountsFixtures
 
@@ -330,6 +330,50 @@ defmodule GlimeshWeb.GctControllerTest do
       channel_conn = put(conn, Routes.gct_path(conn, :delete_channel, channel.id))
       assert redirected_to(channel_conn) == Routes.gct_path(conn, :index)
       assert get_flash(channel_conn, :info) =~ "Channel deleted successfully"
+    end
+  end
+
+  describe "#394 hide receipt links on failed" do
+    test "does not show Receipt link when payment is failed", %{conn: conn} do
+      user = user_fixture()
+
+      res =
+        conn
+        |> Phoenix.Controller.put_view(GlimeshWeb.UserPaymentsView)
+        |> Phoenix.Controller.render(
+          "index.html",
+          page_title: "Your Payment Portal",
+          user: user,
+          can_payments: true,
+          can_receive_payments: true,
+          incoming: 0,
+          outgoing: 0,
+          stripe_countries: [],
+          platform_subscription: nil,
+          subscriptions: [],
+          default_payment_changeset: nil,
+          has_payment_method: nil,
+          stripe_dashboard_url: nil,
+          payment_history: [
+            %{
+              created: DateTime.utc_now(),
+              description: "Success",
+              amount: 10_000,
+              receipt_url: "http://doesntmatter",
+              status: "succeeded"
+            },
+            %{
+              created: DateTime.utc_now(),
+              description: "Failed",
+              amount: 10_000,
+              receipt_url: "http://doesntmatter",
+              status: "failed"
+            }
+          ]
+        )
+
+      body = res.resp_body
+      assert Regex.run(~r/Receipt/, body) |> Enum.count() == 1
     end
   end
 end

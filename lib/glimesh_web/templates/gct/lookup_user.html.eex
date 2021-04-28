@@ -165,7 +165,11 @@
                         <td><%= payment.description %></td>
                         <td>$<%= format_price(payment.amount) %></td>
                         <td><%= payment.status %></td>
-                        <td><a href="<%= payment.receipt_url %>" target="_blank">Receipt</a></td>
+                        <td>
+                            <%= unless payment.status == "failed" do %>
+                                <a href="<%= payment.receipt_url %>" target="_blank">Receipt</a>
+                            <% end %>
+                        </td>
                     </tr>
                     <% end %>
                 </tbody>
