@@ -6,6 +6,7 @@ defmodule Glimesh.Chat.ChatMessage do
 
   alias Glimesh.Accounts.User
   alias Glimesh.Streams.Channel
+  alias Glimesh.Chat.ChatMessage.Metadata
 
   schema "chat_messages" do
     field :message, :string
@@ -13,6 +14,7 @@ defmodule Glimesh.Chat.ChatMessage do
     field :is_followed_message, :boolean, default: false
     field :is_subscription_message, :boolean, default: false
 
+    embeds_one :metadata, Metadata, on_replace: :update
     embeds_many :tokens, Glimesh.Chat.Token, on_replace: :delete
 
     belongs_to :channel, Channel
