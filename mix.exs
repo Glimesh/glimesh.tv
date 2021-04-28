@@ -37,10 +37,11 @@ defmodule Glimesh.MixProject do
       # Dev & Test Libs
       {:phx_gen_auth, "~> 0.4.0", only: :dev, runtime: false},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:faker, "~> 0.14", only: :dev},
+      {:faker, "~> 0.14", only: [:dev, :test]},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:floki, ">= 0.0.0", only: :test},
       {:excoveralls, "~> 0.13.1", only: :test},
+      {:ex_machina, "~> 2.7.0", only: :test},
       # Core
       {:bcrypt_elixir, "~> 2.0"},
       {:phoenix, "~> 1.5.8"},
