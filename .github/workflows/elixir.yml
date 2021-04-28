@@ -55,3 +55,6 @@ jobs:
 
     - name: Code Coverage
       run: mix coveralls.github
+      # Sometimes Coveralls throws a 500 error, preventing us from being able to push code.
+      # Coverage is important, but not important enough to hold back a merge :)
+      continue-on-error: true

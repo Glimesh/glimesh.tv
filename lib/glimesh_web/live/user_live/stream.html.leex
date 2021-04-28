@@ -75,6 +75,9 @@
                             </a>
 
                             <span class="badge badge-pill badge-info ml-2"><%= Glimesh.Streams.get_channel_language(@channel) %></span>
+                            <%= if @channel.mature_content do %>
+                                <span class="badge badge-pill badge-warning ml-2"><%= gettext("Mature") %></span>
+                            <% end %>
 
                             <%= live_render(@socket, GlimeshWeb.UserLive.Components.SocialButtons, id: "social-buttons", container: {:ul, class: "list-inline ml-2 mb-0"}, session: %{"user_id" => @streamer.id}) %>
                         </div>
@@ -153,7 +156,7 @@ updated_at: <%= @stream_metadata.updated_at %>
         <div id="chat-column" class="col-lg-3 d-flex flex-column position-relative layout-spacing">
             <div class="chat-flex">
                 <div class="chat-absolute">
-                    <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id} %>
+                    <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id, "popped_out" => false} %>
                 </div>
             </div>
         </div>
@@ -187,9 +190,8 @@ updated_at: <%= @stream_metadata.updated_at %>
                     <p>1. <strong>Hate Speech</strong> - Hate Speech is not tolerated by Glimesh under any circumstances. Any
                         message that promotes, encourages, or facilitates discrimination, denigration, objectification, harassment,
                         or violence based on race, age, sexuality, physical characteristics, gender identity, disability, military
-                        service, religion and/or nationality will be considered hate speech is prohibited. We also don't allow for
-                        the hateful use of racial or misogynistic slurs. If you have to question whether your message violates this
-                        rule, don't send it.</p>
+                        service, religion and/or nationality will be considered hate speech is prohibited. We don't allow the use of 
+                        hateful slurs of any kind. If you have to question whether your message violates this rule, don't send it.</p>
                     <p>2. <strong>Harassment</strong> - We want you, as a member of our community, to feel safe and respected so
                         you can engage and connect with others. Harassment or bullying of other community members or the streamer
                         will not be tolerated. Harassment is considered any message or activity with the intention to intimidate,

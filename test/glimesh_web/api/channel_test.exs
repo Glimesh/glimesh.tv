@@ -20,6 +20,8 @@ defmodule GlimeshWeb.Api.ChannelTest do
       title
       streamer { username }
 
+      mature_content
+
       subcategory {
         name
       }
@@ -64,6 +66,7 @@ defmodule GlimeshWeb.Api.ChannelTest do
                  "channel" => %{
                    "title" => "Live Stream!",
                    "streamer" => %{"username" => user.username},
+                   "mature_content" => false,
                    "subcategory" => %{
                      "name" => "World of Warcraft"
                    },

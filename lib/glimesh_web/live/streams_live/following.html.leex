@@ -33,7 +33,11 @@
                         <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>" alt="<%= channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(channel.user), do: "img-verified-streamer", else: "" %>">
                         <div class="media-body">
                             <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
-                            <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span></p>
+                            <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
+                                <%= if channel.mature_content do %>
+                                    <span class="badge badge-warning"><%= gettext("Mature") %> </span>
+                                <% end %>
+                            </p>
                         </div>
                     </div>
                 </div>

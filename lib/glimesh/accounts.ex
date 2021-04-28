@@ -5,13 +5,17 @@ defmodule Glimesh.Accounts do
 
   import Ecto.Query, warn: false
 
-  alias Glimesh.Repo
+  alias Glimesh.Avatar
   alias Glimesh.Accounts.{User, UserNotifier, UserPreference, UserToken}
+  alias Glimesh.Repo
 
   ## Database getters
 
-  def list_users do
-    Repo.all(from u in User, where: u.is_banned == false)
+  def list_users, do: Repo.all(query_users())
+
+  def query_users do
+    User
+    |> where([u], u.is_banned == false)
   end
 
   def count_users do
@@ -583,6 +587,21 @@ defmodule Glimesh.Accounts do
   end
 
   def can_stream?(user), do: user.can_stream
+
+  def avatar_url(%User{} = user) when is_binary(user.avatar) do
+    if String.starts_with?(user.avatar, ["http://", "https://"]) do
+      Avatar.url({user.avatar, user})
+    else
+      GlimeshWeb.Router.Helpers.static_url(
+        GlimeshWeb.Endpoint,
+        Avatar.url({user.avatar, user})
+      )
+    end
+  end
+
+  def avatar_url(%User{} = user) do
+    Avatar.url({user.avatar, user})
+  end
 
   def can_use_payments?(user) do
     user.can_payments
