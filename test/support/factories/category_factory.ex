@@ -10,7 +10,7 @@ defmodule Glimesh.CategoryFactory do
       def category_factory do
         %Glimesh.Streams.Category{
           name: Faker.Pizza.cheese(),
-          slug: Faker.Internet.slug(),
+          slug: Faker.Internet.slug()
         }
       end
     end

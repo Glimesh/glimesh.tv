@@ -1,6 +1,6 @@
 defmodule Glimesh.Chat.Effects.Badges.ChannelSubscriberBadge do
   @moduledoc """
-  Badge for streamers
+  Badge for channel subscribers
   """
 
   alias Phoenix.HTML.Tag
@@ -14,4 +14,3 @@ defmodule Glimesh.Chat.Effects.Badges.ChannelSubscriberBadge do
     )
   end
 end
-

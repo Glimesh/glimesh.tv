@@ -32,7 +32,11 @@
             <% end %>
             <%= unless chat_message.is_followed_message or chat_message.is_subscription_message do %>
             <%= Glimesh.Chat.Effects.render_global_badge(chat_message.user) %>
-            <%= Glimesh.Chat.Effects.render_channel_badge(chat_message) || Glimesh.Chat.Effects.render_channel_badge(@channel, chat_message.user) %>
+            <%= if is_nil(chat_message.metadata) do %>
+                <%= Glimesh.Chat.Effects.render_channel_badge(@channel, chat_message.user) %>
+            <% else %>
+                <%= Glimesh.Chat.Effects.render_channel_badge(chat_message) %>
+            <% end %>
 
             <%= Glimesh.Chat.Effects.render_username_and_avatar(chat_message.user) %>
             <% end %>

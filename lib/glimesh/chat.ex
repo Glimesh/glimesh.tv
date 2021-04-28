@@ -34,15 +34,23 @@ defmodule Glimesh.Chat do
   def create_chat_message(%User{} = user, %Channel{} = channel, attrs \\ %{}) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_chat_message, user, channel) do
       if allow_link_in_message(channel, attrs) do
+        platform_subscriber = Glimesh.Payments.is_platform_subscriber?(user)
+
         config =
           Glimesh.Chat.get_chat_parser_config(
             channel,
-            Glimesh.Payments.is_platform_subscriber?(user)
+            platform_subscriber
           )
 
         %ChatMessage{
           channel: channel,
-          user: user
+          user: user,
+          metadata: %ChatMessage.Metadata{
+            subscriber: platform_subscriber,
+            streamer: channel.streamer_id == user.id,
+            moderator: Glimesh.Chat.is_moderator?(channel, user),
+            admin: user.is_admin
+          }
         }
         |> ChatMessage.changeset(attrs)
         |> ChatMessage.put_tokens(config)

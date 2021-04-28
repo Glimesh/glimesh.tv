@@ -15,7 +15,7 @@ defmodule Glimesh.ChatMessageFactory do
           metadata: %{
             streamer: false,
             subscriber: false,
-            mod: false,
+            moderator: false,
             admin: false
           }
         }

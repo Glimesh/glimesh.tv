@@ -8,12 +8,15 @@ defmodule Glimesh.Chat.Effects do
   alias Glimesh.Payments
   alias GlimeshWeb.Router.Helpers, as: Routes
   alias Phoenix.HTML.Tag
+
   alias Glimesh.Chat.Effects.Badges.{
-    StreamerBadge,
+    ChannelSubscriberBadge,
     ModeratorBadge,
-    ChannelSubscriberBadge
+    StreamerBadge
   }
+
   alias Glimesh.Chat.ChatMessage, as: Message
+  alias Glimesh.Chat.ChatMessage.Metadata
 
   def render_global_badge(_user) do
     # if user.is_admin do
@@ -107,27 +110,45 @@ defmodule Glimesh.Chat.Effects do
     [render_avatar(user), " ", render_username(user)]
   end
 
-  def render_channel_badge(%Message{metadata: %{streamer: true}}), do: StreamerBadge.render
-  def render_channel_badge(%Message{metadata: %{subscriber: true, moderator: true}}) do
-    [ModeratorBadge.render, " ", ChannelSubscriberBadge.render]
+  @doc """
+  Renders channel badges based on message metadata
+  """
+  def render_channel_badge(%Message{metadata: %Metadata{streamer: true}}) do
+    StreamerBadge.render()
   end
-  def render_channel_badge(%Message{metadata: %{moderator: true}}), do: ModeratorBadge.render
-  def render_channel_badge(%Message{metadata: %{subscriber: true}}), do: ChannelSubscriberBadge.render
-  def render_channel_badge(%Message{metadata: %{admin: true}}), do: ""
+
+  def render_channel_badge(%Message{metadata: %Metadata{subscriber: true, moderator: true}}) do
+    [ModeratorBadge.render(), " ", ChannelSubscriberBadge.render()]
+  end
+
+  def render_channel_badge(%Message{metadata: %Metadata{moderator: true}}) do
+    ModeratorBadge.render()
+  end
+
+  def render_channel_badge(%Message{metadata: %Metadata{subscriber: true}}) do
+    ChannelSubscriberBadge.render()
+  end
+
+  def render_channel_badge(%Message{metadata: %Metadata{admin: true}}), do: ""
   def render_channel_badge(%Message{metadata: nil}), do: nil
+  def render_channel_badge(%Message{metadata: %Metadata{} = _metadata}), do: nil
 
   def render_channel_badge(channel, user) do
     cond do
-      channel.user_id == user.id -> StreamerBadge.render()
+      channel.user_id == user.id ->
+        StreamerBadge.render()
 
       Glimesh.Chat.is_moderator?(channel, user) and Payments.is_subscribed?(channel, user) ->
-        [ModeratorBadge.render, " ", ChannelSubscriberBadge.render]
+        [ModeratorBadge.render(), " ", ChannelSubscriberBadge.render()]
 
-      Glimesh.Chat.is_moderator?(channel, user) -> ModeratorBadge.render
+      Glimesh.Chat.is_moderator?(channel, user) ->
+        ModeratorBadge.render()
 
-      Payments.is_subscribed?(channel, user) -> ChannelSubscriberBadge.render
+      Payments.is_subscribed?(channel, user) ->
+        ChannelSubscriberBadge.render()
 
-      true -> ""
+      true ->
+        ""
     end
   end
 
