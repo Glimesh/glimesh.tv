@@ -21,6 +21,16 @@ defmodule Glimesh.SocialsTest do
       assert found_social.identifier == "1234"
     end
 
+    test "get_social/2 gets a single sanitized social" do
+      user = user_fixture()
+
+      Socials.connect_user_social(user, "twitter", "1234", "@@@@@clone1018")
+
+      found_social = Socials.get_social(user, "twitter")
+      assert %UserSocial{} = found_social
+      assert found_social.identifier == "1234"
+    end
+
     test "get_social/2 returns nil on nothing" do
       user = user_fixture()
 

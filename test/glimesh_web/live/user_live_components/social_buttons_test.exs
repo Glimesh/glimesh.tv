@@ -4,6 +4,8 @@ defmodule GlimeshWeb.UserLive.Components.SocialButtonsTest do
   import Phoenix.LiveViewTest
   import Glimesh.AccountsFixtures
 
+  alias Glimesh.Accounts
+
   @component GlimeshWeb.UserLive.Components.SocialButtons
 
   defp create_channel(_) do
@@ -20,7 +22,7 @@ defmodule GlimeshWeb.UserLive.Components.SocialButtonsTest do
 
     test "render correctly", %{conn: conn, streamer: streamer} do
       {:ok, _} =
-        Glimesh.Accounts.update_user_profile(streamer, %{
+        Accounts.update_user_profile(streamer, %{
           "social_discord" => "glimesh"
         })
 
@@ -28,6 +30,50 @@ defmodule GlimeshWeb.UserLive.Components.SocialButtonsTest do
 
       assert html =~ "https://discord.gg/glimesh"
       assert String.contains?(html, "Twitter") == false
+    end
+
+    test "correctly strips @ symbols", %{conn: conn, streamer: streamer} do
+      {:ok, _} =
+        Accounts.update_user_profile(streamer, %{
+          "social_discord" => "@glimesh"
+        })
+
+      {:ok, _, html} = live_isolated(conn, @component, session: %{"user_id" => streamer.id})
+
+      assert html =~ "https://discord.gg/glimesh"
+    end
+
+    test "correctly strips multiple @ symbols", %{conn: conn, streamer: streamer} do
+      {:ok, _} =
+        Accounts.update_user_profile(streamer, %{
+          "social_discord" => "@@@@@glimesh"
+        })
+
+      {:ok, _, html} = live_isolated(conn, @component, session: %{"user_id" => streamer.id})
+
+      assert html =~ "https://discord.gg/glimesh"
+    end
+
+    test "correctly strips slashes", %{conn: conn, streamer: streamer} do
+      {:ok, _} =
+        Accounts.update_user_profile(streamer, %{
+          "social_discord" => "/////glimesh/////"
+        })
+
+      {:ok, _, html} = live_isolated(conn, @component, session: %{"user_id" => streamer.id})
+
+      assert html =~ "https://discord.gg/glimesh"
+    end
+
+    test "correctly trims spaces", %{conn: conn, streamer: streamer} do
+      {:ok, _} =
+        Accounts.update_user_profile(streamer, %{
+          "social_discord" => "        glimesh      "
+        })
+
+      {:ok, _, html} = live_isolated(conn, @component, session: %{"user_id" => streamer.id})
+
+      assert html =~ "https://discord.gg/glimesh"
     end
   end
 end

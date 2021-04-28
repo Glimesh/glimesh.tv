@@ -9,6 +9,8 @@ defmodule Glimesh.Socials do
   alias Glimesh.Accounts.User
   alias Glimesh.Accounts.UserSocial
 
+  alias Glimesh.Socials.Sanitizer
+
   # User API Calls
   def get_social(%User{} = user, platform) do
     Repo.one(
@@ -25,10 +27,12 @@ defmodule Glimesh.Socials do
   end
 
   def connect_user_social(%User{} = user, platform, identifier, username) do
+    sanitized_username = Sanitizer.sanitize(username)
+
     create_user_social(user, %{
       platform: platform,
       identifier: identifier,
-      username: username
+      username: sanitized_username
     })
   end
 
