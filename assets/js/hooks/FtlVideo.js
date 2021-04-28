@@ -27,12 +27,12 @@ export default {
         }); 
 
         let lastVolume = localStorage.getItem("player-volume");
-        if (lastVolume >= 0) {
+        if (lastVolume && lastVolume >= 0) {
             container.volume = parseFloat(lastVolume);
         }
 
         container.addEventListener("volumechange", (event) => {
-            if (container.volume >=0 ) {
+            if (container.volume >=0) {
                 localStorage.setItem("player-volume", container.volume);
             }
         });
@@ -43,6 +43,7 @@ export default {
                 playPromise.then(_ => {
                   // Autoplay started!
                 }).catch(error => {
+                    console.error(error);
                     container.muted = true;
                     container.play();
                 });
