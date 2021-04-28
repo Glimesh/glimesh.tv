@@ -114,6 +114,7 @@ defmodule Glimesh.Chat.Effects do
   def render_channel_badge(%Message{metadata: %{moderator: true}}), do: ModeratorBadge.render
   def render_channel_badge(%Message{metadata: %{subscriber: true}}), do: ChannelSubscriberBadge.render
   def render_channel_badge(%Message{metadata: %{admin: true}}), do: ""
+  def render_channel_badge(%Message{metadata: nil}), do: nil
 
   def render_channel_badge(channel, user) do
     cond do

@@ -36,6 +36,11 @@ defmodule Glimesh.ChatEffectsTest do
       message = insert(:chat_message, metadata: %{subscriber: true})
       assert message |> Effects.render_channel_badge |> inspect =~ "Channel Subscriber"
     end
+
+    test "rendering channel badge for nil metadata returns nil" do
+      message = insert(:chat_message, metadata: nil)
+      assert message |> Effects.render_channel_badge == nil
+    end
   end
 
   describe "chat rendering" do
