@@ -8,6 +8,12 @@ defmodule Glimesh.Chat.Effects do
   alias Glimesh.Payments
   alias GlimeshWeb.Router.Helpers, as: Routes
   alias Phoenix.HTML.Tag
+  alias Glimesh.Chat.Effects.Badges.{
+    StreamerBadge,
+    ModeratorBadge,
+    ChannelSubscriberBadge
+  }
+  alias Glimesh.Chat.ChatMessage, as: Message
 
   def render_global_badge(_user) do
     # if user.is_admin do
@@ -101,34 +107,26 @@ defmodule Glimesh.Chat.Effects do
     [render_avatar(user), " ", render_username(user)]
   end
 
+  def render_channel_badge(%Message{metadata: %{streamer: true}}), do: StreamerBadge.render
+  def render_channel_badge(%Message{metadata: %{subscriber: true, moderator: true}}) do
+    [ModeratorBadge.render, " ", ChannelSubscriberBadge.render]
+  end
+  def render_channel_badge(%Message{metadata: %{moderator: true}}), do: ModeratorBadge.render
+  def render_channel_badge(%Message{metadata: %{subscriber: true}}), do: ChannelSubscriberBadge.render
+  def render_channel_badge(%Message{metadata: %{admin: true}}), do: ""
+
   def render_channel_badge(channel, user) do
     cond do
-      channel.user_id == user.id ->
-        Tag.content_tag(:span, "Streamer", class: "badge badge-primary")
+      channel.user_id == user.id -> StreamerBadge.render()
 
       Glimesh.Chat.is_moderator?(channel, user) and Payments.is_subscribed?(channel, user) ->
-        [
-          Tag.content_tag(:span, "Mod", class: "badge badge-primary"),
-          " ",
-          Tag.content_tag(:span, Tag.content_tag(:i, "", class: "fas fa-trophy"),
-            class: "badge badge-secondary",
-            "data-toggle": "tooltip",
-            title: gettext("Channel Subscriber")
-          )
-        ]
+        [ModeratorBadge.render, " ", ChannelSubscriberBadge.render]
 
-      Glimesh.Chat.is_moderator?(channel, user) ->
-        Tag.content_tag(:span, "Mod", class: "badge badge-primary")
+      Glimesh.Chat.is_moderator?(channel, user) -> ModeratorBadge.render
 
-      Payments.is_subscribed?(channel, user) ->
-        Tag.content_tag(:span, Tag.content_tag(:i, "", class: "fas fa-trophy"),
-          class: "badge badge-secondary",
-          "data-toggle": "tooltip",
-          title: gettext("Channel Subscriber")
-        )
+      Payments.is_subscribed?(channel, user) -> ChannelSubscriberBadge.render
 
-      true ->
-        ""
+      true -> ""
     end
   end
 

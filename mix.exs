@@ -80,7 +80,7 @@ defmodule Glimesh.MixProject do
       {:extwitter, "~> 0.12.2"},
       # Uploads
       {:waffle, "~> 1.1"},
-      {:waffle_ecto, "~> 0.0.9"},
+      {:waffle_ecto, "~> 0.0.10"},
       {:ex_aws, "~> 2.1.2"},
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.17"},

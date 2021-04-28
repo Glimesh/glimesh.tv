@@ -11,13 +11,13 @@ defmodule Glimesh.Chat.MetadataTest do
   test "chat messages have metadata when assigned" do
     message = insert(:chat_message, metadata: Metadata.defaults())
     assert message.metadata.streamer == false
-    assert message.metadata.mod == false
+    assert message.metadata.moderator == false
   end
 
   test "chat messages have metadata when values are changed" do
     metadata = Metadata.defaults() |> Map.put(:streamer, true)
     message = insert(:chat_message, metadata: metadata)
     assert message.metadata.streamer == true
-    assert message.metadata.mod == false
+    assert message.metadata.moderator == false
   end
 end
