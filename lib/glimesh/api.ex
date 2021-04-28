@@ -37,4 +37,15 @@ defmodule Glimesh.Api do
 
     Connection.from_query(query, &Repo.all/1, args, options)
   end
+
+  @doc """
+  Parse a list of changeset errors into actionable API errors
+  """
+  def parse_ecto_changeset_errors(%Ecto.Changeset{} = changeset) do
+    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
+      Enum.reduce(opts, msg, fn {key, value}, acc ->
+        String.replace(acc, "%{#{key}}", to_string(value))
+      end)
+    end)
+  end
 end
