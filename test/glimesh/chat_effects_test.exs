@@ -4,10 +4,39 @@ defmodule Glimesh.ChatEffectsTest do
   import Glimesh.AccountsFixtures
   import Glimesh.PaymentsFixtures
   import Phoenix.HTML, only: [safe_to_string: 1]
+  import Glimesh.Factory
 
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Chat.Effects
   alias Glimesh.StreamModeration
+
+  describe "chat rendering with metadata" do
+    test "rendering channel badge for admin" do
+      message = insert(:chat_message, metadata: %{admin: true})
+      assert message |> Effects.render_channel_badge == ""
+    end
+
+    test "rendering channel badge for streamer" do
+      message = insert(:chat_message, metadata: %{streamer: true})
+      assert message |> Effects.render_channel_badge |> safe_to_string =~ "Streamer"
+    end
+
+    test "rendering channel badge for moderator" do
+      message = insert(:chat_message, metadata: %{moderator: true})
+      assert message |> Effects.render_channel_badge |> safe_to_string =~ "Mod"
+    end
+
+    test "rendering channel badge for moderator with subscription" do
+      message = insert(:chat_message, metadata: %{moderator: true, subscriber: true})
+      assert message |> Effects.render_channel_badge |> inspect =~ "Mod"
+      assert message |> Effects.render_channel_badge |> inspect =~ "Channel Subscriber"
+    end
+
+    test "rendering channel badge for user with subscription" do
+      message = insert(:chat_message, metadata: %{subscriber: true})
+      assert message |> Effects.render_channel_badge |> inspect =~ "Channel Subscriber"
+    end
+  end
 
   describe "chat rendering" do
     setup do

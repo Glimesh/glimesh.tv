@@ -12,7 +12,7 @@ defmodule Glimesh.Chat.ChatMessage.Metadata do
     %{
       streamer: false,
       subscriber: false,
-      mod: false,
+      moderator: false,
       admin: false
     }
   end
