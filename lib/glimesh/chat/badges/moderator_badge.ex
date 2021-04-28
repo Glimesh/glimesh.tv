@@ -1,6 +1,6 @@
 defmodule Glimesh.Chat.Effects.Badges.ModeratorBadge do
   @moduledoc """
-  Badge for streamers
+  Badge for moderators
   """
 
   alias Phoenix.HTML.Tag

@@ -7,12 +7,13 @@ defmodule Glimesh.FactoryTest do
   end
 
   test "user factory works with following and follower" do
-    user = insert(:user)
-           |> user_with_follow
-           |> user_with_follower
+    user =
+      insert(:user)
+      |> user_with_follow
+      |> user_with_follower
 
-    refute user |> Glimesh.Repo.preload(:followers) |> Map.get(:followers) |> Enum.empty?
-    refute user |> Glimesh.Repo.preload(:following) |> Map.get(:following) |> Enum.empty?
+    refute user |> Glimesh.Repo.preload(:followers) |> Map.get(:followers) |> Enum.empty?()
+    refute user |> Glimesh.Repo.preload(:following) |> Map.get(:following) |> Enum.empty?()
   end
 
   test "channel factory works" do
