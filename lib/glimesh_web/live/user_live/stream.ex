@@ -39,7 +39,7 @@ defmodule GlimeshWeb.UserLive.Stream do
          |> assign(:janus_url, "Pending...")
          |> assign(:janus_hostname, "Pending...")
          |> assign(:lost_packets, 0)
-         |> assign(:stream_metadata, get_last_stream_metadata(channel))
+         |> assign(:stream_metadata, get_last_stream_metadata(channel.stream))
          |> assign(:player_error, nil)
          |> assign(:user, maybe_user)}
 
@@ -132,21 +132,14 @@ defmodule GlimeshWeb.UserLive.Stream do
     end
   end
 
-  defp get_last_stream_metadata(stream) do
-    case stream do
-      %Glimesh.Streams.Stream{} = stream ->
-        # Sometimes the stream can be live without metadata, usually happens within the
-        # first couple of seconds of loading the page
-        case Glimesh.Streams.get_last_stream_metadata(stream) do
-          %Glimesh.Streams.StreamMetadata{} = metadata ->
-            metadata
-
-          _ ->
-            %Glimesh.Streams.StreamMetadata{}
-        end
-
-      _ ->
-        %Glimesh.Streams.StreamMetadata{}
+  defp get_last_stream_metadata(%Glimesh.Streams.Stream{} = stream) do
+    case Glimesh.Streams.get_last_stream_metadata(stream) do
+      %Glimesh.Streams.StreamMetadata{} = metadata -> metadata
+      _ -> %Glimesh.Streams.StreamMetadata{stream: stream}
     end
+  end
+
+  defp get_last_stream_metadata(_) do
+    %Glimesh.Streams.StreamMetadata{}
   end
 end
