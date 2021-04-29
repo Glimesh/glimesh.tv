@@ -53,7 +53,7 @@ defmodule GlimeshWeb.UserLive.Components.SocialButtons do
     <% end %>
     <%= if @streamer.social_guilded do %>
     <li class="list-inline-item">
-        <a rel="ugc" href="https://guilded.gg/<%= Sanitizer.sanitize(@streamer.social_guilded) %>" target="_blank"
+        <a rel="ugc" href="https://guilded.gg/<%= Sanitizer.sanitize(@streamer.social_guilded, :guilded) %>" target="_blank"
             class="social-icon">
             <i class="fab fa-guilded"></i>
         </a>

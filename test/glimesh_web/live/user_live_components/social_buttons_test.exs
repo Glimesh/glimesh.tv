@@ -75,5 +75,38 @@ defmodule GlimeshWeb.UserLive.Components.SocialButtonsTest do
 
       assert html =~ "https://discord.gg/glimesh"
     end
+
+    test "correctly trims guilded urls", %{conn: conn, streamer: streamer} do
+      {:ok, _} =
+        Accounts.update_user_profile(streamer, %{
+          "social_guilded" => "https://guilded.gg/glimesh"
+        })
+
+      {:ok, _, html} = live_isolated(conn, @component, session: %{"user_id" => streamer.id})
+
+      assert html =~ "https://guilded.gg/glimesh"
+    end
+
+    test "correctly shows guilded urls using username", %{conn: conn, streamer: streamer} do
+      {:ok, _} =
+        Accounts.update_user_profile(streamer, %{
+          "social_guilded" => "glimesh"
+        })
+
+      {:ok, _, html} = live_isolated(conn, @component, session: %{"user_id" => streamer.id})
+
+      assert html =~ "https://guilded.gg/glimesh"
+    end
+
+    test "correctly handles nil values", %{conn: conn, streamer: streamer} do
+      {:ok, _} =
+        Accounts.update_user_profile(streamer, %{
+          "social_guilded" => nil
+        })
+
+      {:ok, _, html} = live_isolated(conn, @component, session: %{"user_id" => streamer.id})
+
+      refute html =~ "guilded"
+    end
   end
 end
