@@ -17,7 +17,7 @@ defmodule Glimesh.Api.AccountResolver do
   end
 
   def resolve_avatar_url(user, _, _) do
-    {:ok, Glimesh.Accounts.avatar_url(user)}
+    {:ok, Glimesh.Api.resolve_full_url(Glimesh.Avatar.url({user.avatar, user}))}
   end
 
   # Users
