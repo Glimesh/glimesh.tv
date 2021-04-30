@@ -213,6 +213,8 @@ defmodule GlimeshWeb.Router do
 
     # Audit log
     get "/audit-log", GctController, :audit_log
+
+    live "/emotes", GctLive.ManageEmotes, :index
   end
 
   scope "/", GlimeshWeb do

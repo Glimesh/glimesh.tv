@@ -13,6 +13,7 @@ defmodule Glimesh.CommunityTeam.Policy do
   def authorize(:edit_channel, %User{is_admin: true}, _user), do: true
   def authorize(:view_audit_log, %User{is_admin: true}, _user), do: true
   def authorize(:soft_delete_channel, %User{is_admin: true}, _user), do: true
+  def authorize(:manage_emotes, %User{is_admin: true}, _user), do: true
 
   # Global GCT perms
   def authorize(:view_user, %User{is_gct: true}, _user), do: true

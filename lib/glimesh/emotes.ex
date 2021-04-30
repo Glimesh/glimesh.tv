@@ -1,7 +1,15 @@
-defmodule Glimesh.Emote do
+defmodule Glimesh.Emotes do
   @moduledoc """
   Glimesh Custom Emote Handler
   """
+
+  import Ecto.Query, warn: false
+  alias Glimesh.Accounts.User
+  alias Glimesh.Streams.Channel
+  alias Glimesh.Emotes.Emote
+  alias Glimesh.Repo
+
+  defdelegate authorize(action, user, params), to: Glimesh.Emotes.Policy
 
   def list_emotes do
     Application.get_env(:glimesh, :emotes)
@@ -43,5 +51,23 @@ defmodule Glimesh.Emote do
   def get_svg_by_identifier(id) do
     list_emotes()
     |> get_in([id, :svg])
+  end
+
+  def create_global_emote(%User{} = user, attrs \\ %{}) do
+    with :ok <- Bodyguard.permit(__MODULE__, :create_global_emote, user) do
+      %Emote{}
+      |> Emote.changeset(attrs)
+      |> Repo.insert()
+    end
+  end
+
+  def create_channel_emote(%User{} = user, %Channel{} = channel, attrs \\ %{}) do
+    with :ok <- Bodyguard.permit(__MODULE__, :create_channel_emote, user, channel) do
+      %Emote{
+        channel: channel
+      }
+      |> Emote.changeset(attrs)
+      |> Repo.insert()
+    end
   end
 end

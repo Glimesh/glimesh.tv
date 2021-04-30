@@ -1,0 +1,60 @@
+<div class="container">
+    <h2>Manage Emotes</h2>
+
+    <form id="upload-form" phx-submit="save" phx-change="validate">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Upload New Emotes</h5>
+            </div>
+            <div class="card-body" phx-drop-target="<%= @uploads.emote.ref %>" style="background-color: red; min-height: 200px">
+                <%= live_file_input @uploads.emote %>
+
+                <p>Drag and Drop into this section</p>
+
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Review Emotes</h5>
+            </div>
+
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th>Emote Preview</th>
+                        <th>Emote Name</th>
+                        <th>Progress</th>
+                        <th>Actions</th>
+                    </tr>
+                    <%= for entry <- @uploads.emote.entries do %>
+                    <tr>
+                        <td>
+                            <%= live_img_preview entry, height: "128px", width: "128px" %>
+                            <figcaption><%= entry.client_name %></figcaption>
+                        </td>
+                        <td>
+                            <input type="text">
+                        </td>
+                        <td>
+                            <progress value="<%= entry.progress %>" max="100"> <%= entry.progress %>% </progress>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-danger" phx-click="cancel-upload" phx-value-ref="<%= entry.ref %>" aria-label="cancel">Cancel</button>
+                            <%= for err <- upload_errors(@uploads.emote, entry) do %>
+                            <p class="alert alert-danger"><%= error_to_string(err) %></p>
+                            <% end %>
+                        </td>
+                    </tr>
+                    <% end %>
+                </table>
+            </div>
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+        </div>
+
+    </form>
+</div>

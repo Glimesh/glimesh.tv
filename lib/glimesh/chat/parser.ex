@@ -32,7 +32,7 @@ defmodule Glimesh.Chat.Parser do
   end
 
   def parse(chat_message, %Config{} = config) do
-    emotes = Glimesh.Emote.list_emotes_by_key_and_image(config.allow_animated_emotes)
+    emotes = Glimesh.Emotes.list_emotes_by_key_and_image(config.allow_animated_emotes)
     config = Map.put(config, :emotes, emotes)
 
     parsed =
