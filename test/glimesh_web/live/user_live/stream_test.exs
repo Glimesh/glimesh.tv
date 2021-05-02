@@ -20,6 +20,19 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       assert html =~ "<video"
       assert html =~ streamer.displayname
     end
+
+    test "has metadata about the offline stream", %{conn: conn, streamer: streamer} do
+      {:ok, _, html} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+
+      assert html =~ "#{streamer.displayname}&#39;s Glimesh Channel"
+    end
+
+    test "has metadata about the live stream", %{conn: conn, channel: channel, streamer: streamer} do
+      {:ok, _} = Glimesh.Streams.start_stream(channel)
+      {:ok, _, html} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+
+      assert html =~ "#{streamer.displayname} is streaming live on Glimesh.tv!"
+    end
   end
 
   describe "Mature Content Stream Page" do
