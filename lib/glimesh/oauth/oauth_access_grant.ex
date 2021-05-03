@@ -1,7 +1,6 @@
 defmodule Glimesh.OauthAccessGrants.OauthAccessGrant do
   @moduledoc false
   use Ecto.Schema
-  use ExOauth2Provider.AccessGrants.AccessGrant, otp_app: :glimesh
 
   schema "oauth_access_grants" do
     field :token, :string, null: false

@@ -22,11 +22,16 @@ defmodule GlimeshWeb.UserApplicationsController do
   def show(conn, %{"id" => id}) do
     applications = Apps.list_apps(conn.assigns.user)
 
+    scopes =
+      Boruta.Ecto.Admin.list_scopes()
+      |> Enum.filter(fn s -> s.public == true end)
+
     with {:ok, application} <- Apps.get_app(conn.assigns.user, id) do
       render(conn, "show.html",
         page_title: format_page_title(application.name),
         application: application,
-        applications: applications
+        applications: applications,
+        scopes: scopes
       )
     end
   end

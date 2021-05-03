@@ -33,51 +33,71 @@
                     <div class="form-group">
                         <label for="clientId"><%= gettext("Client ID") %></label>
                         <div class="input-group">
-                            <input id="clientId" type="text" class="form-control" readonly value="<%= @application.oauth_application.uid %>">
+                            <input id="clientId" type="text" class="form-control" readonly value="<%= @application.client.id %>">
                             <div class="input-group-append">
-                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_uid", session: %{"value" => @application.oauth_application.uid}) %>
+                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_uid", session: %{"value" => @application.client.id}) %>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="secretKey"><%= gettext("Secret Key") %></label>
                         <div class="input-group">
-                            <input id="secretKey" type="text" class="form-control" readonly value="<%= @application.oauth_application.secret %>">
+                            <input id="secretKey" type="text" class="form-control" readonly value="<%= @application.client.secret %>">
                             <div class="input-group-append">
-                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_secret", session: %{"value" => @application.oauth_application.secret}) %>
+                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_secret", session: %{"value" => @application.client.secret}) %>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="tokenRoute"><%= gettext("OAuth Token URL") %></label>
                         <div class="input-group">
-                            <input id="tokenRoute" type="text" class="form-control" readonly value="<%= Routes.token_url(@conn, :create) %>">
+                            <input id="tokenRoute" type="text" class="form-control" readonly value="<%= Routes.oauth_path(@conn, :token) %>">
                             <div class="input-group-append">
-                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_token_url", session: %{"value" => Routes.token_url(@conn, :create)}) %>
+                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_token_url", session: %{"value" => Routes.oauth_path(@conn, :token)}) %>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="authorizationRoute"><%= gettext("OAuth Authorization URL") %></label>
                         <div class="input-group">
-                            <input id="authorizationRoute" type="text" class="form-control" readonly value="<%= Routes.authorization_url(@conn, :new) %>">
+                            <input id="authorizationRoute" type="text" class="form-control" readonly value="<%= Routes.oauth_path(@conn, :authorize) %>">
                             <div class="input-group-append">
-                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_authorization_url", session: %{"value" => Routes.authorization_url(@conn, :new)}) %>
+                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_authorization_url", session: %{"value" => Routes.oauth_path(@conn, :authorize)}) %>
                             </div>
                         </div>
                     </div>
 
+                    <h3><%= gettext("Scopes") %></h3>
+                    <table class="table" id="scope_list">
+                        <tbody>
+                            <%= for scope <- @scopes do %>
+                            <tr>
+                                <td class="col-8">
+                                    <span><%= Glimesh.Oauth.Scopes.scope_gettext(scope.name) %></span>
+                                <td class="col-3">
+                                    <code><%= scope.name %></code>
+                                </td>
+                                <td class="col-1">
+                                    <input type="checkbox" id="scope<%= scope.name %>" name="<%= scope.name %>" value="<%= scope.name %>" label="<%= scope.name %>">
+                                </td>
+                            </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
 
                     <h3><%= gettext("Callbacks") %></h3>
                     <table class="table">
                         <tbody>
-                            <%= for redirect_uri <- String.split(@application.oauth_application.redirect_uri) do %>
-                            <tr>
-                                <td>
+                            <%= for redirect_uri <- @application.client.redirect_uris do %>
+                            <tr class="d-flex">
+                                <td class="flex-fill">
                                     <code><%= redirect_uri %></code>
                                 </td>
                                 <td>
-                                    <%= link gettext("Authorize"), to: Routes.authorization_path(@conn, :new, client_id: @application.oauth_application.uid, redirect_uri: redirect_uri, response_type: "code", scope: @application.oauth_application.scopes), target: '_blank' %>
+                                    <%= link gettext("Authorize"), class: "authorize_link btn btn-info", to: Routes.oauth_path(@conn, :authorize, client_id: @application.client.id, redirect_uri: redirect_uri, response_type: "code", scope: ""), target: '_blank' %>
+                                </td>
+                                <td>
+                                    <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "#{redirect_uri}_redirect_copy", session: %{"value" => Routes.oauth_url(@conn, :authorize, client_id: @application.client.id, redirect_uri: redirect_uri, response_type: "code", scope: ""), "class" => "authorize_link"}) %>
                                 </td>
                             </tr>
                             <% end %>
@@ -94,3 +114,30 @@
     </div>
 
 </div>
+<script>
+    let links = document.querySelectorAll(".authorize_link");
+    let scope = "";
+    document.getElementById("scope_list").addEventListener("click", (event) => {
+        var elem = event.target;
+        if(elem.nodeName == "INPUT")
+        {
+            if(elem.checked){
+                scope += " " + elem.value;
+            }
+            else{
+                scope = scope.replace(elem.value, "").trim();
+            }
+            scope = scope.trim();
+            links.forEach(t => {
+                if(t.href)
+                {
+                    t.href = t.href.slice(0, t.href.indexOf("scope=")) + "scope=" + encodeURI(scope);
+                }
+                else
+                {
+                    t.dataset.copyValue = t.dataset.copyValue.slice(0, t.dataset.copyValue.indexOf("scope=")) + "scope=" + encodeURI(scope);
+                }
+            });
+        }
+    });
+</script>

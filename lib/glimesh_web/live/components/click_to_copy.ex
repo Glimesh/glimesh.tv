@@ -7,7 +7,7 @@ defmodule GlimeshWeb.Components.ClickToCopy do
   @impl true
   def render(assigns) do
     ~L"""
-        <button id="<%= @id %>" class="btn btn-info" type="button"
+        <button id="<%= @id %>_button" class="btn btn-info <%= assigns.class %>" type="button"
           phx-hook="ClickToCopy"
           data-copy-value="<%= assigns.value %>"
           data-copied-error-text="<%= gettext("Error") %>"
@@ -16,7 +16,11 @@ defmodule GlimeshWeb.Components.ClickToCopy do
   end
 
   @impl true
-  def mount(:not_mounted_at_router, %{"value" => value}, socket) do
-    {:ok, socket |> assign(:id, socket.id) |> assign(:value, value), layout: false}
+  def mount(:not_mounted_at_router, %{"value" => value} = state, socket) do
+    {:ok,
+     socket
+     |> assign(:id, socket.id)
+     |> assign(:value, value)
+     |> assign(:class, Map.get(state, "class", "")), layout: false}
   end
 end

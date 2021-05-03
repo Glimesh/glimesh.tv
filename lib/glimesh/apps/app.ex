@@ -12,7 +12,8 @@ defmodule Glimesh.Apps.App do
     field :logo, Glimesh.AppLogo.Type
 
     belongs_to :user, Glimesh.Accounts.User
-    belongs_to :oauth_application, Glimesh.OauthApplications.OauthApplication
+    # belongs_to :oauth_application, Glimesh.OauthApplications.OauthApplication
+    belongs_to :client, Boruta.Ecto.Client, type: :binary_id
 
     timestamps()
   end
@@ -27,28 +28,33 @@ defmodule Glimesh.Apps.App do
     |> validate_length(:name, min: 3, max: 50)
     |> validate_length(:description, max: 255)
     |> cast_attachments(attrs, [:logo])
-    |> cast_assoc(:oauth_application,
+    |> cast_assoc(:client,
       required: true,
       with: &oauth_changset/2
     )
   end
 
-  def oauth_changset(application, %{owner: %Glimesh.Accounts.User{}} = params) do
-    # Manually set the owner
-    %{application | owner: params.owner}
-    |> ExOauth2Provider.Applications.Application.changeset(params, otp_app: :glimesh)
-    |> validate_localhost_http_redirect_urls(:redirect_uri)
+  def oauth_changset(application, %{access_token_ttl: _} = params) do
+    Boruta.Ecto.Client.create_changeset(application, params)
+    |> validate_localhost_http_redirect_urls(:redirect_uris)
   end
 
   def oauth_changset(application, params) do
-    ExOauth2Provider.Applications.Application.changeset(application, params, otp_app: :glimesh)
+    Boruta.Ecto.Client.create_changeset(
+      application,
+      Map.merge(
+        %{
+          access_token_ttl: 60 * 60 * 24,
+          authorization_code_ttl: 60
+        },
+        params
+      )
+    )
   end
 
   def validate_localhost_http_redirect_urls(changeset, field) when is_atom(field) do
     changeset
     |> Ecto.Changeset.get_field(field)
-    |> Kernel.||("")
-    |> String.split()
     |> Enum.reduce(changeset, fn url, changeset ->
       url
       |> validate_localhost_http_url()

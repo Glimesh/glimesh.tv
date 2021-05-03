@@ -33,11 +33,11 @@
   <%= error_tag f, :logo %>
 </div>
 
-<%= inputs_for f, :oauth_application, fn oa -> %>
+<%= inputs_for f, :client, fn c -> %>
 <div class="form-group">
-  <%= label oa, gettext("Allowed Redirect URI's") %>
-  <%= textarea oa, :redirect_uri, class: "form-control" %>
-  <%= error_tag oa, :redirect_uri %>
+  <%= label c, gettext("Allowed Redirect URI's") %>
+  <%= textarea c, :redirect_uris, class: "form-control" %>
+  <%= error_tag c, :redirect_uris %>
   <span class="help-block"><%= gettext("Use one line per URI") %></span>
 </div>
 <% end %>

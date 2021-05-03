@@ -1,7 +1,6 @@
 defmodule Glimesh.OauthApplications.OauthApplication do
   @moduledoc false
   use Ecto.Schema
-  use ExOauth2Provider.Applications.Application, otp_app: :glimesh
 
   schema "oauth_applications" do
     field :name, :string, null: false
