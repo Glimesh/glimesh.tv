@@ -86,4 +86,60 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       assert html =~ "https://some-de-server/janus"
     end
   end
+
+  describe "lost packets event" do
+    setup do
+      streamer = streamer_fixture()
+
+      %{
+        channel: streamer.channel,
+        streamer: streamer
+      }
+    end
+
+    test "lost_packets doesnt crash", %{conn: conn, streamer: streamer} do
+      {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+
+      params = %{
+        "uplink" => "doesnt matter",
+        "lostPackets" => 1
+      }
+
+      render_click(view, "toggle_debug")
+      render_click(view, "lost_packets", params)
+
+      # event = GlimeshWeb.UserLive.Stream.handle_event("lost_packets", params, socket)
+      assert render(view) =~ "lost_packets"
+    end
+
+    test "lost_packets safely recovers from nil", %{conn: conn, streamer: streamer} do
+      {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+
+      params = %{
+        "uplink" => "doesnt matter",
+        "lostPackets" => nil
+      }
+
+      render_click(view, "toggle_debug")
+      render_click(view, "lost_packets", params)
+
+      # event = GlimeshWeb.UserLive.Stream.handle_event("lost_packets", params, socket)
+      assert render(view) =~ "lost_packets"
+    end
+
+    test "lost_packets safely recovers from garbage", %{conn: conn, streamer: streamer} do
+      {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+
+      params = %{
+        "uplink" => "doesnt matter",
+        "lostPackets" => <<123, 123, 123, 123, 123, 123>>
+      }
+
+      render_click(view, "toggle_debug")
+      render_click(view, "lost_packets", params)
+
+      # event = GlimeshWeb.UserLive.Stream.handle_event("lost_packets", params, socket)
+      assert render(view) =~ "lost_packets"
+    end
+  end
 end
