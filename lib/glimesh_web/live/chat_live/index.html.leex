@@ -37,6 +37,9 @@
     </div>
     <% end %>
 </div>
+<div id="more-chat-messages" class="channel-overlay-footer d-none" phx-click="scroll_to_bottom">
+    <span><%= gettext("New chat messages below!") %></span>
+</div>
 <div class="chat-form">
     <%= live_component @socket, GlimeshWeb.ChatLive.MessageForm,
             id: :new,
