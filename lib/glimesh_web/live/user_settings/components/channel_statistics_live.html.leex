@@ -1,5 +1,23 @@
 <div class="card">
 
-	<p> Statistics here :) </p>
+	<table class="table">
+		<thead>
+			<tr>
+				<td>Stream started</td>
+				<td>Stream title</td>
+			</tr>
+		</thead>
+
+		<%= for stream <- Glimesh.Streams.list_streams(@channel) do %>
+
+			<tr>
+
+				<td><%= stream.started_at %></td>
+				<td><%= stream.title %></td>
+
+			</tr>
+
+		<% end %>
+	</table>
 
 </div>
