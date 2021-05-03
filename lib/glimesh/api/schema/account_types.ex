@@ -24,12 +24,12 @@ defmodule Glimesh.Api.AccountTypes do
 
   object :accounts_connection_queries do
     @desc "List all users"
-    connection field :users, node_type: :user, paginate: :forward do
+    connection field :users, node_type: :user do
       resolve(&AccountResolver.all_users/2)
     end
 
     @desc "List all follows or followers"
-    connection field :followers, node_type: :follower, paginate: :forward do
+    connection field :followers, node_type: :follower do
       arg(:streamer_id, :integer)
       arg(:user_id, :integer)
       resolve(&AccountResolver.all_followers/2)
@@ -114,11 +114,11 @@ defmodule Glimesh.Api.AccountTypes do
     #   resolve: dataloader(Repo),
     #   description: "A list of users who you are following"
 
-    connection field :followers, node_type: :follower, paginate: :forward do
+    connection field :followers, node_type: :follower do
       resolve(&AccountResolver.get_user_followers/2)
     end
 
-    connection field :following, node_type: :follower, paginate: :forward do
+    connection field :following, node_type: :follower do
       resolve(&AccountResolver.get_user_following/2)
     end
 

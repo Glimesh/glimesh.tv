@@ -3,11 +3,10 @@ defmodule Glimesh.Api.ChannelResolver do
   use Appsignal.Instrumentation.Decorators
   import Ecto.Query
 
-  alias Absinthe.Relay.Connection
+  alias Glimesh.Api
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
   alias Glimesh.Chat.ChatMessage
-  alias Glimesh.Repo
   alias Glimesh.Streams
 
   @error_not_found "Could not find resource"
@@ -35,10 +34,10 @@ defmodule Glimesh.Api.ChannelResolver do
   def all_channels(args, _) do
     case query_all_channels(args) do
       {:ok, channels} ->
-        Connection.from_query(channels, &Repo.all/1, args)
+        Api.connection_from_query_with_count(channels, args)
 
-      _ ->
-        {:error, "Not found"}
+      {:error, message} ->
+        {:error, message}
     end
   end
 
@@ -50,7 +49,7 @@ defmodule Glimesh.Api.ChannelResolver do
 
       {:ok, channels}
     else
-      {:error, @error_not_found}
+      {:error, "Category not found"}
     end
   end
 
@@ -180,67 +179,53 @@ defmodule Glimesh.Api.ChannelResolver do
 
   # Connection Resolvers
   def get_messages(args, %{source: channel}) do
-    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
-
     ChatMessage
     |> where(channel_id: ^channel.id)
     |> order_by(:id)
-    |> Connection.from_query(&Repo.all/1, args)
+    |> Api.connection_from_query_with_count(args)
   end
 
   # Moderations
 
   def get_tags(args, %{source: category}) do
-    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
-
     Streams.Tag
     |> where(category_id: ^category.id)
     |> order_by(:id)
-    |> Connection.from_query(&Repo.all/1, args)
+    |> Api.connection_from_query_with_count(args)
   end
 
   def get_subcategories(args, %{source: category}) do
-    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
-
     Streams.Subcategory
     |> where(category_id: ^category.id)
     |> order_by(:id)
-    |> Connection.from_query(&Repo.all/1, args)
+    |> Api.connection_from_query_with_count(args)
   end
 
   def get_bans(args, %{source: channel}) do
-    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
-
     Streams.ChannelBan
     |> where(channel_id: ^channel.id)
     |> order_by(:id)
-    |> Connection.from_query(&Repo.all/1, args)
+    |> Api.connection_from_query_with_count(args)
   end
 
   def get_moderators(args, %{source: channel}) do
-    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
-
     Streams.ChannelModerator
     |> where(channel_id: ^channel.id)
     |> order_by(:id)
-    |> Connection.from_query(&Repo.all/1, args)
+    |> Api.connection_from_query_with_count(args)
   end
 
   def get_moderation_logs(args, %{source: channel}) do
-    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
-
     Streams.ChannelModerationLog
     |> where(channel_id: ^channel.id)
     |> order_by(:id)
-    |> Connection.from_query(&Repo.all/1, args)
+    |> Api.connection_from_query_with_count(args)
   end
 
   def get_stream_metadata(args, %{source: stream}) do
-    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
-
     Streams.StreamMetadata
     |> where(stream_id: ^stream.id)
     |> order_by(:id)
-    |> Connection.from_query(&Repo.all/1, args)
+    |> Api.connection_from_query_with_count(args)
   end
 end

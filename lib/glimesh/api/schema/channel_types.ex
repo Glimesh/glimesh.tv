@@ -54,7 +54,7 @@ defmodule Glimesh.Api.ChannelTypes do
 
   object :streams_connection_queries do
     @desc "List all channels"
-    connection field :channels, node_type: :channel, paginate: :forward do
+    connection field :channels, node_type: :channel do
       arg(:status, :channel_status)
       arg(:category_slug, :string)
 
@@ -117,11 +117,11 @@ defmodule Glimesh.Api.ChannelTypes do
     field :id, :id
     field :name, :string, description: "Name of the category"
 
-    connection field :tags, node_type: :tag, paginate: :forward do
+    connection field :tags, node_type: :tag do
       resolve(&ChannelResolver.get_tags/2)
     end
 
-    connection field :subcategories, node_type: :subcategory, paginate: :forward do
+    connection field :subcategories, node_type: :subcategory do
       resolve(&ChannelResolver.get_subcategories/2)
     end
 
@@ -255,19 +255,19 @@ defmodule Glimesh.Api.ChannelTypes do
 
     field :streamer, non_null(:user), resolve: dataloader(Repo)
 
-    connection field :chat_messages, node_type: :chat_message, paginate: :forward do
+    connection field :chat_messages, node_type: :chat_message do
       resolve(&ChannelResolver.get_messages/2)
     end
 
-    connection field :bans, node_type: :channel_ban, paginate: :forward do
+    connection field :bans, node_type: :channel_ban do
       resolve(&ChannelResolver.get_bans/2)
     end
 
-    connection field :moderators, node_type: :channel_moderator, paginate: :forward do
+    connection field :moderators, node_type: :channel_moderator do
       resolve(&ChannelResolver.get_moderators/2)
     end
 
-    connection field :moderation_logs, node_type: :channel_moderation_log, paginate: :forward do
+    connection field :moderation_logs, node_type: :channel_moderation_log do
       resolve(&ChannelResolver.get_moderation_logs/2)
     end
 
@@ -301,7 +301,7 @@ defmodule Glimesh.Api.ChannelTypes do
     field :title, :string, description: "The title of the channel when the stream was started"
     field :category, non_null(:category), resolve: dataloader(Repo)
 
-    connection field :metadata, node_type: :stream_metadata, paginate: :forward do
+    connection field :metadata, node_type: :stream_metadata do
       resolve(&ChannelResolver.get_stream_metadata/2)
     end
 

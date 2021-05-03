@@ -39,7 +39,7 @@ defmodule GlimeshWeb.UserLive.Stream do
          |> assign(:janus_url, "Pending...")
          |> assign(:janus_hostname, "Pending...")
          |> assign(:lost_packets, 0)
-         |> assign(:stream_metadata, get_last_stream_metadata(channel))
+         |> assign(:stream_metadata, get_last_stream_metadata(channel.stream))
          |> assign(:player_error, nil)
          |> assign(:user, maybe_user)}
 
@@ -107,9 +107,10 @@ defmodule GlimeshWeb.UserLive.Stream do
     end
   end
 
-  def handle_event("lost_packets", %{"uplink" => _uplink, "lostPackets" => lostPackets}, socket) do
+  def handle_event("lost_packets", %{"uplink" => _uplink, "lostPackets" => lost_packets}, socket)
+      when is_integer(lost_packets) do
     message =
-      if lostPackets > 6,
+      if lost_packets > 6,
         do:
           gettext(
             "We're detecting some networking problems between you and the streamer. You may experience video drops, jitter, or other issues!"
@@ -118,8 +119,12 @@ defmodule GlimeshWeb.UserLive.Stream do
 
     {:noreply,
      socket
-     |> update(:lost_packets, &(&1 + lostPackets))
+     |> update(:lost_packets, &(&1 + lost_packets))
      |> assign(:player_error, message)}
+  end
+
+  def handle_event("lost_packets", _, socket) do
+    {:noreply, socket}
   end
 
   defp get_stream_thumbnail(channel) do
@@ -132,21 +137,14 @@ defmodule GlimeshWeb.UserLive.Stream do
     end
   end
 
-  defp get_last_stream_metadata(stream) do
-    case stream do
-      %Glimesh.Streams.Stream{} = stream ->
-        # Sometimes the stream can be live without metadata, usually happens within the
-        # first couple of seconds of loading the page
-        case Glimesh.Streams.get_last_stream_metadata(stream) do
-          %Glimesh.Streams.StreamMetadata{} = metadata ->
-            metadata
-
-          _ ->
-            %Glimesh.Streams.StreamMetadata{}
-        end
-
-      _ ->
-        %Glimesh.Streams.StreamMetadata{}
+  defp get_last_stream_metadata(%Glimesh.Streams.Stream{} = stream) do
+    case Glimesh.Streams.get_last_stream_metadata(stream) do
+      %Glimesh.Streams.StreamMetadata{} = metadata -> metadata
+      _ -> %Glimesh.Streams.StreamMetadata{stream: stream}
     end
+  end
+
+  defp get_last_stream_metadata(_) do
+    %Glimesh.Streams.StreamMetadata{}
   end
 end
