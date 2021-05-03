@@ -29,22 +29,16 @@
                 </div>
                 <div class="card-body p-0 p-md-1">
                     <%= if @prompt_mature do %>
-                    <div class="jumbotron jumbotron-fluid jumbotron-mature-content mb-0">
-                        <div class="container p-5">
-                            <div class="row justify-content-center">
-                                <div class="col-sm-6">
-                                    <h3 class="display-5 text-center"><%= gettext("Mature Content Warning") %></h3>
-                                    <p class="lead text-center">
-                                        <%= gettext("The streamer has flagged this channel as only appropriate for Mature Audiences.") %><br>
-                                        <%= gettext("Do you wish to continue?") %>
-                                    </p>
-                                </div>
-                                <div class="w-100"></div>
-                                <div class="col-8 col-lg-3">
-                                    <button type="button" phx-click="show_mature" class="btn btn-primary btn-block"><%= gettext("Agree & View Channel") %></button>
-                                </div>
+                    <div class="jumbotron jumbotron-fluid jumbotron-mature-content mb-0 embed-responsive embed-responsive-16by9">
+                        <div class="embed-responsive-item d-flex justify-content-center">
+                            <div class="align-self-center" style="max-width: 400px;">
+                                <h3 class="display-5 text-center"><%= gettext("Mature Content Warning") %></h3>
+                                <p class="lead text-center">
+                                    <%= gettext("The streamer has flagged this channel as only appropriate for Mature Audiences.") %><br>
+                                    <%= gettext("Do you wish to continue?") %>
+                                </p>
+                                <button type="button" phx-click="show_mature" class="btn btn-primary btn-block"><%= gettext("Agree & View Channel") %></button>
                             </div>
-
                         </div>
                     </div>
 
@@ -76,7 +70,7 @@
 
                             <span class="badge badge-pill badge-info ml-2"><%= Glimesh.Streams.get_channel_language(@channel) %></span>
                             <%= if @channel.mature_content do %>
-                                <span class="badge badge-pill badge-warning ml-2"><%= gettext("Mature") %></span>
+                            <span class="badge badge-pill badge-warning ml-2"><%= gettext("Mature") %></span>
                             <% end %>
 
                             <%= live_render(@socket, GlimeshWeb.UserLive.Components.SocialButtons, id: "social-buttons", container: {:ul, class: "list-inline ml-2 mb-0"}, session: %{"user_id" => @streamer.id}) %>
@@ -190,7 +184,7 @@ updated_at: <%= @stream_metadata.updated_at %>
                     <p>1. <strong>Hate Speech</strong> - Hate Speech is not tolerated by Glimesh under any circumstances. Any
                         message that promotes, encourages, or facilitates discrimination, denigration, objectification, harassment,
                         or violence based on race, age, sexuality, physical characteristics, gender identity, disability, military
-                        service, religion and/or nationality will be considered hate speech is prohibited. We don't allow the use of 
+                        service, religion and/or nationality will be considered hate speech is prohibited. We don't allow the use of
                         hateful slurs of any kind. If you have to question whether your message violates this rule, don't send it.</p>
                     <p>2. <strong>Harassment</strong> - We want you, as a member of our community, to feel safe and respected so
                         you can engage and connect with others. Harassment or bullying of other community members or the streamer
