@@ -8,6 +8,9 @@ export default {
     maybeScrollToBottom(el) {
         if (this.isUserNearBottom(el)) {
             this.scrollToBottom(el);
+            this.removeScrollNotice();
+        } else {
+            this.addScrollNotice();
         }
     },
     scrollToBottom(el) {
@@ -24,6 +27,13 @@ export default {
         return isNearBottom;
     },
 
+    addScrollNotice() {
+        document.getElementById("more-chat-messages").classList.remove("d-none");
+    },
+    removeScrollNotice() {
+        document.getElementById("more-chat-messages").classList.add("d-none");
+    },
+
     theme() {
         return this.el.dataset.theme;
     },
@@ -38,6 +48,7 @@ export default {
         this.scrollToBottom(document.getElementById('chat-messages'));
     },
     mounted() {
+        const parent = this;
         const glimeshEmojis = this.emotes();
 
         const picker = new EmojiButton({
@@ -97,10 +108,6 @@ export default {
             // Apply a BS init to just the new chat message
             BSN.initCallback(thisMessage);
         });
-
-        /* 
-        For populating the initial X messages with the current timestamp state.
-        */
         this.handleEvent("toggle_timestamps", (e) => {
             if (e["show_timestamps"]) {
                 chatMessages.classList.add("show-timestamps");
@@ -127,7 +134,17 @@ export default {
 
         this.handleEvent("remove_deleted_message", (e) => {
             document.getElementById(e["message_id"]).hidden = true;
-        })
+        });
+
+        // Scrolling voo-doo
+        this.handleEvent("scroll_to_bottom", (e) => {
+            parent.scrollToBottom(chatMessages);
+        });
+        chatMessages.onscroll = function () {
+            if (chatMessages.scrollHeight - chatMessages.scrollTop === chatMessages.clientHeight) {
+                parent.removeScrollNotice();
+            }
+        }
 
     }
 };
