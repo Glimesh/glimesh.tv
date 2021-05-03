@@ -33,7 +33,7 @@
     <meta property="og:title" content="<%= assigns.custom_meta.title %>" />
     <meta property="og:description" content="<%= assigns.custom_meta.description %>" />
     <meta property="og:image" content="<%= assigns.custom_meta.image_url %>" />
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="<%= Map.get(assigns.custom_meta, :card_type, "summary") %>">
     <meta name="twitter:site" content="@Glimesh">
     <meta name="twitter:title" content="<%= assigns.custom_meta.title %>">
     <meta name="twitter:description" content="<%= assigns.custom_meta.description %>">

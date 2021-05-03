@@ -2,7 +2,6 @@ defmodule GlimeshWeb.UserLive.Stream do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Accounts
-  alias Glimesh.Accounts.Profile
   alias Glimesh.ChannelLookups
   alias Glimesh.Presence
   alias Glimesh.Streams
@@ -30,12 +29,12 @@ defmodule GlimeshWeb.UserLive.Stream do
          |> assign(:unique_user, Map.get(session, "unique_user"))
          |> assign(:country, Map.get(session, "country"))
          |> assign(:prompt_mature, Streams.prompt_mature_content(channel, maybe_user))
-         |> assign(:custom_meta, Profile.meta_tags(streamer, avatar_url))
          |> assign(:streamer, channel.user)
          |> assign(:can_receive_payments, Accounts.can_receive_payments?(channel.user))
          |> assign(:channel, channel)
          |> assign(:stream, channel.stream)
          |> assign(:channel_poster, get_stream_thumbnail(channel))
+         |> assign(:custom_meta, meta_tags(channel, avatar_url))
          |> assign(:janus_url, "Pending...")
          |> assign(:janus_hostname, "Pending...")
          |> assign(:lost_packets, 0)
@@ -146,5 +145,23 @@ defmodule GlimeshWeb.UserLive.Stream do
 
   defp get_last_stream_metadata(_) do
     %Glimesh.Streams.StreamMetadata{}
+  end
+
+  defp meta_tags(%Streams.Channel{status: "live"} = channel, _) do
+    %{
+      title: channel.title,
+      description: "#{channel.user.displayname} is streaming live on Glimesh.tv!",
+      card_type: "summary_large_image",
+      image_url: get_stream_thumbnail(channel)
+    }
+  end
+
+  defp meta_tags(%Streams.Channel{} = channel, avatar_url) do
+    %{
+      title: "#{channel.user.displayname}'s Glimesh Channel",
+      description:
+        "#{channel.user.displayname}'s channel on Glimesh, the next-gen live streaming platform.",
+      image_url: avatar_url
+    }
   end
 end
