@@ -24,6 +24,12 @@ defmodule Glimesh.Api.ChatResolver do
 
         {:error, %Ecto.Changeset{} = changeset} ->
           {:error, Glimesh.Api.parse_ecto_changeset_errors(changeset)}
+
+        {:error, message} when is_binary(message) ->
+          {:error, message}
+
+        _ ->
+          {:error, "Unknown error."}
       end
     end
   end
