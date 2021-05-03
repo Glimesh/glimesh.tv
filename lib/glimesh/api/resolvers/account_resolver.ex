@@ -6,7 +6,6 @@ defmodule Glimesh.Api.AccountResolver do
   alias Glimesh.AccountFollows
   alias Glimesh.Accounts
   alias Glimesh.Api
-  alias Glimesh.Repo
 
   @error_not_found "Could not find resource"
 
@@ -33,7 +32,7 @@ defmodule Glimesh.Api.AccountResolver do
   def all_users(args, _) do
     Accounts.query_users()
     |> order_by(:id)
-    |> Connection.from_query(&Repo.all/1, args)
+    |> Api.connection_from_query_with_count(args)
   end
 
   def find_user(%{id: id}, _) do
@@ -59,7 +58,7 @@ defmodule Glimesh.Api.AccountResolver do
     args = Map.put(args, :first, min(Map.get(args, :first), 1000))
 
     case query_followers(args) do
-      {:ok, :query, resp} -> Connection.from_query(resp, &Repo.all/1, args)
+      {:ok, :query, resp} -> Api.connection_from_query_with_count(resp, args)
       {:ok, :single, resp} -> Connection.from_list([resp], args)
       {:error, err} -> {:error, err}
     end
@@ -114,7 +113,7 @@ defmodule Glimesh.Api.AccountResolver do
     Glimesh.AccountFollows.Follower
     |> where(streamer_id: ^user.id)
     |> order_by(:id)
-    |> Connection.from_query(&Repo.all/1, args)
+    |> Api.connection_from_query_with_count(args)
   end
 
   def get_user_following(args, %{source: user}) do
@@ -123,6 +122,6 @@ defmodule Glimesh.Api.AccountResolver do
     Glimesh.AccountFollows.Follower
     |> where(user_id: ^user.id)
     |> order_by(:id)
-    |> Connection.from_query(&Repo.all/1, args)
+    |> Api.connection_from_query_with_count(args)
   end
 end

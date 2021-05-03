@@ -18,7 +18,13 @@ defmodule Glimesh.Resolvers.ChatResolver do
       # Force a refresh of the user just in case they are platform banned
       user = Accounts.get_user!(ua.user.id)
 
-      Chat.create_chat_message(user, channel, message_obj)
+      case Chat.create_chat_message(user, channel, message_obj) do
+        {:ok, message} ->
+          {:ok, message}
+
+        {:error, %Ecto.Changeset{} = changeset} ->
+          {:error, Glimesh.Api.parse_ecto_changeset_errors(changeset)}
+      end
     end
   end
 

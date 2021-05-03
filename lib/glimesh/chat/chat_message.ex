@@ -26,6 +26,7 @@ defmodule Glimesh.Chat.ChatMessage do
     chat_message
     |> cast(attrs, [:message, :is_visible, :is_followed_message, :is_subscription_message])
     |> validate_required([:channel, :user, :message])
+    |> validate_length(:message, min: 1, max: 255)
   end
 
   @doc false
