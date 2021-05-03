@@ -270,6 +270,10 @@ defmodule Glimesh.Streams do
     )
   end
 
+  def get_last_stream_metadata(_fallback) do
+    %Glimesh.Streams.StreamMetadata{}
+  end
+
   def log_stream_metadata(%Glimesh.Streams.Stream{} = stream, attrs \\ %{}) do
     %StreamMetadata{
       stream: stream
