@@ -62,7 +62,8 @@ categories = %{
 
 
 Enum.each(categories, fn name ->
-  category = case Glimesh.ChannelCategories.get_category(Slug.slugify(name)) do
+  category_name = name |> Kernel.elem(0)
+  category = case Glimesh.ChannelCategories.get_category(Slug.slugify(category_name)) do
     %Glimesh.Streams.Category{} = category ->
       category
     _ ->
@@ -70,7 +71,7 @@ Enum.each(categories, fn name ->
       category
   end
 
-  Enum.each(Map.get(tags, name), fn tag_name ->
+  Enum.each(name |> Kernel.elem(1), fn tag_name ->
     Glimesh.ChannelCategories.create_tag(%{name: tag_name, category_id: category.id})
   end)
 
