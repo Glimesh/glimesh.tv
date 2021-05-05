@@ -3,17 +3,16 @@ defmodule GlimeshWeb.GctLive.ManageEmotes do
 
   @impl true
   def mount(_, session, socket) do
-    # If the viewer is logged in set their locale, otherwise it defaults to English
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
     {:ok,
      socket
      |> assign(:uploaded_files, [])
-     |> allow_upload(:emote, accept: ~w(.png .jpg .jpeg), max_entries: 100)}
+     |> allow_upload(:emote, accept: ~w(.svg .gif), max_entries: 100)}
   end
 
   @impl Phoenix.LiveView
-  def handle_event("validate", params, socket) do
+  def handle_event("validate", _params, socket) do
     {:noreply, socket}
   end
 
@@ -23,9 +22,17 @@ defmodule GlimeshWeb.GctLive.ManageEmotes do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("save", _params, socket) do
+  def handle_event("save", %{"emotes" => emote_names}, socket) do
     uploaded_files =
-      consume_uploaded_entries(socket, :emote, fn %{path: path}, _entry ->
+      consume_uploaded_entries(socket, :emote, fn %{path: path}, entry ->
+        emote_name = Map.get(emote_names, entry.ref)
+
+        IO.inspect(emote_name)
+
+        if emote_name == "glimbday" do
+          raise "Some test"
+        end
+
         dest = Path.join([:code.priv_dir(:glimesh), "static", "uploads", Path.basename(path)])
         File.cp!(path, dest)
         Routes.static_path(socket, "/uploads/#{Path.basename(dest)}")
@@ -37,4 +44,13 @@ defmodule GlimeshWeb.GctLive.ManageEmotes do
   def error_to_string(:too_large), do: "Too large"
   def error_to_string(:too_many_files), do: "You have selected too many files"
   def error_to_string(:not_accepted), do: "You have selected an unacceptable file type"
+
+  def prune_file_type(input) when is_binary(input) do
+    input
+    |> Path.rootname()
+  end
+
+  def prune_file_type(input) do
+    input
+  end
 end
