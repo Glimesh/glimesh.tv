@@ -2,7 +2,6 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
   @behaviour Plug
 
   alias Glimesh.Accounts.User
-  alias Glimesh.OauthApplications.OauthApplication
 
   import Plug.Conn
   import Phoenix.Controller, only: [json: 2]
@@ -11,28 +10,28 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
 
   def call(conn, opts) do
     case authorized(conn, opts) do
-      {:ok, %Glimesh.Accounts.UserAccess{} = user_access} ->
-        Absinthe.Plug.put_options(conn,
-          context: %{
-            # Allows us to pattern match admin APIs
-            is_admin: user_access.user.is_admin,
-            current_user: user_access.user,
-            access_type: "user",
-            access_identifier: user_access.user.username,
-            user_access: user_access
-          }
-        )
+      # Allows us to extend to better token support
+      {:ok, %Boruta.Oauth.Token{} = token} ->
+        check_token(conn, token)
 
-      {:ok, %OauthApplication{uid: uid}} ->
-        Absinthe.Plug.put_options(conn,
-          context: %{
-            is_admin: false,
-            current_user: nil,
-            access_type: "app",
-            access_identifier: uid,
-            user_access: %Glimesh.Accounts.UserAccess{}
-          }
-        )
+      {:ok, %Glimesh.Accounts.UserAccess{} = user_access} ->
+        put_plug(conn, user: user_access.user, access: user_access)
+
+      {:ok, %Boruta.Oauth.Client{id: id}} ->
+        put_plug(conn, id: id)
+
+      {:error, %Boruta.Oauth.Error{} = reason} ->
+        conn
+        |> put_status(:unauthorized)
+        |> json(%{
+          errors: [
+            %{
+              message: reason.error_description,
+              header_error: reason.error
+            }
+          ]
+        })
+        |> halt()
 
       {:error, _reason} ->
         conn
@@ -44,9 +43,17 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
 
   def authorized(conn, opts) do
     case fetch_token(conn, opts) do
-      false -> try_conn(conn, opts)
-      {:bearer, token} -> Glimesh.Oauth.TokenResolver.resolve_user(token)
-      {:client, token} -> Glimesh.Oauth.TokenResolver.resolve_app(token)
+      false ->
+        try_conn(conn, opts)
+
+      {_, nil} ->
+        try_conn(conn, opts)
+
+      {:bearer, token} ->
+        Boruta.Oauth.Authorization.AccessToken.authorize(value: token)
+
+      {:client, token} ->
+        Boruta.Config.clients().get_by(id: token)
     end
   end
 
@@ -73,5 +80,51 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
       ["client-id " <> token] -> {:client, token}
       _ -> false
     end
+  end
+
+  defp check_token(conn, token) do
+    case token.resource_owner do
+      %Boruta.Oauth.ResourceOwner{} = resource_owner ->
+        case Glimesh.Oauth.ResourceOwners.get_from(resource_owner) do
+          %User{} = user ->
+            put_plug(conn,
+              user: user,
+              access: Glimesh.Oauth.Scopes.get_user_access(token.scope, user)
+            )
+
+          _ ->
+            conn
+            |> put_status(:unauthorized)
+            |> json(%{errors: [%{message: "You must be logged in to access the api"}]})
+            |> halt()
+        end
+
+      _ ->
+        put_plug(conn, id: token.id)
+    end
+  end
+
+  defp put_plug(conn, user: user, access: access) do
+    Absinthe.Plug.put_options(conn,
+      context: %{
+        is_admin: user.is_admin,
+        current_user: user,
+        access_type: "app",
+        access_identifier: user.username,
+        user_access: access
+      }
+    )
+  end
+
+  defp put_plug(conn, id: id) do
+    Absinthe.Plug.put_options(conn,
+      context: %{
+        is_admin: false,
+        current_user: nil,
+        access_type: "app",
+        access_identifier: id,
+        user_access: %Glimesh.Accounts.UserAccess{}
+      }
+    )
   end
 end

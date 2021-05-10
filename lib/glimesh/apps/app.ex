@@ -34,22 +34,18 @@ defmodule Glimesh.Apps.App do
     )
   end
 
-  def oauth_changset(application, %{access_token_ttl: _} = params) do
-    Boruta.Ecto.Client.create_changeset(application, params)
+  def oauth_changset(client, %{access_token_ttl: _} = params) do
+    Boruta.Ecto.Client.create_changeset(client, params)
+    |> validate_required([:redirect_uris])
+    |> validate_length(:redirect_uris, min: 1)
     |> validate_localhost_http_redirect_urls(:redirect_uris)
   end
 
-  def oauth_changset(application, params) do
-    Boruta.Ecto.Client.create_changeset(
-      application,
-      Map.merge(
-        %{
-          access_token_ttl: 60 * 60 * 24,
-          authorization_code_ttl: 60
-        },
-        params
-      )
-    )
+  def oauth_changset(client, params) do
+    Boruta.Ecto.Client.update_changeset(client, params)
+    |> validate_required([:redirect_uris])
+    |> validate_length(:redirect_uris, min: 1)
+    |> validate_localhost_http_redirect_urls(:redirect_uris)
   end
 
   def validate_localhost_http_redirect_urls(changeset, field) when is_atom(field) do

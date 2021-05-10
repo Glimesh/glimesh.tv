@@ -80,6 +80,7 @@ config :glimesh, GlimeshWeb.Gettext,
 config :boruta, Boruta.Oauth,
   repo: Glimesh.Repo,
   contexts: [
+    clients: Glimesh.Oauth.Clients,
     resource_owners: Glimesh.Oauth.ResourceOwners
   ]
 

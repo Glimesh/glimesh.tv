@@ -50,16 +50,16 @@ defmodule GlimeshWeb.Api.ApiAuthTest do
           name: "some name",
           description: "some description",
           homepage_url: "https://glimesh.tv/",
-          oauth_application: %{
-            redirect_uri: "http://localhost:8080/redirect"
+          client: %{
+            redirect_uris: "http://localhost:8080/redirect"
           }
         })
 
       %{
         conn:
           conn
-          |> Plug.Conn.put_req_header("authorization", "Client-ID #{app.oauth_application.uid}"),
-        client_id: app.oauth_application.uid,
+          |> Plug.Conn.put_req_header("authorization", "Client-ID #{app.client.id}"),
+        client_id: app.client.id,
         user: user
       }
     end

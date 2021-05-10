@@ -19,9 +19,20 @@ defmodule GlimeshWeb.SubscriptionCase do
   def setup_socket(_) do
     user = user_fixture()
 
-    {:ok, %{token: token}} =
-      ExOauth2Provider.AccessTokens.create_token(user, %{scopes: "public email chat streamkey"},
-        otp_app: :glimesh
+    {:ok, client} =
+      Boruta.Ecto.Admin.create_client(%{
+        authorization_code_ttl: 60,
+        access_token_ttl: 60 * 60 * 24,
+        name: "Test client"
+      })
+
+    {:ok, %{value: token}} =
+      Boruta.Ecto.AccessTokens.create(
+        %{
+          client: struct(Boruta.Oauth.Client, Map.from_struct(client)),
+          scope: "email chat streamkey"
+        },
+        refresh_token: false
       )
 
     {:ok, socket} =

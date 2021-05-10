@@ -50,16 +50,16 @@ defmodule Glimesh.Api.AuthTest do
           name: "some name",
           description: "some description",
           homepage_url: "https://glimesh.tv/",
-          oauth_application: %{
-            redirect_uri: "http://localhost:8080/redirect"
+          client: %{
+            redirect_uris: "http://localhost:8080/redirect"
           }
         })
 
       %{
         conn:
           conn
-          |> Plug.Conn.put_req_header("authorization", "Client-ID #{app.oauth_application.uid}"),
-        client_id: app.oauth_application.uid,
+          |> Plug.Conn.put_req_header("authorization", "Client-ID #{app.client.id}"),
+        client_id: app.client.id,
         user: user
       }
     end
@@ -138,14 +138,15 @@ defmodule Glimesh.Api.AuthTest do
       conn: conn,
       user: user
     } do
+      ["Bearer " <> token] =
+        conn
+        |> Plug.Conn.get_req_header("authorization")
+
       conn =
         conn
         |> Plug.Conn.put_req_header(
           "authorization",
-          conn
-          |> Plug.Conn.get_req_header("authorization")
-          |> hd()
-          |> String.downcase()
+          "bearer " <> token
         )
 
       conn =
@@ -169,7 +170,12 @@ defmodule Glimesh.Api.AuthTest do
       conn = post(conn, "/api/graph", %{"query" => @myself_query})
 
       assert json_response(conn, 401) == %{
-               "errors" => [%{"message" => "You must be logged in to access the api"}]
+               "errors" => [
+                 %{
+                   "message" => "Provided access token is invalid.",
+                   "header_error" => "invalid_access_token"
+                 }
+               ]
              }
     end
   end

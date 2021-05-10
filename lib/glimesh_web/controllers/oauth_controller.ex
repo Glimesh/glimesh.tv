@@ -4,11 +4,15 @@ defmodule GlimeshWeb.OauthController do
   use GlimeshWeb, :controller
 
   alias Boruta.Oauth
-  alias Boruta.Oauth.Error
-  alias Boruta.Oauth.TokenResponse
-  alias Boruta.Oauth.ResourceOwner
-  alias Boruta.Oauth.AuthorizeResponse
-  alias Boruta.Oauth.IntrospectResponse
+
+  alias Boruta.Oauth.{
+    AuthorizeResponse,
+    Error,
+    IntrospectResponse,
+    ResourceOwner,
+    TokenResponse
+  }
+
   alias GlimeshWeb.OauthView
 
   def token(%{body_params: %{"client_id" => _}} = conn, _params) do

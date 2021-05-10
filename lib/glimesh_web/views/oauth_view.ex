@@ -1,8 +1,8 @@
 defmodule GlimeshWeb.OauthView do
   use GlimeshWeb, :view
 
-  alias Boruta.Oauth.TokenResponse
   alias Boruta.Oauth.IntrospectResponse
+  alias Boruta.Oauth.TokenResponse
 
   def render("introspect.json", %{response: %IntrospectResponse{active: false}}) do
     %{"active" => false}

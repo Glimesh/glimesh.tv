@@ -61,24 +61,36 @@ defmodule Glimesh.Apps do
   """
   def create_app(%User{} = user, attrs \\ %{}) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_app, user) do
-      attrs =
-        key_to_atom(attrs)
-        |> put_in([:client, :name], Map.get(attrs, "name"))
-        |> put_in([:client, :access_token_ttl], 60 * 60 * 24)
-        |> put_in([:client, :authorization_code_ttl], 60)
-        |> put_in(
-          [:client, :redirect_uris],
-          String.split(
-            String.replace(Map.get(Map.get(attrs, "client"), "redirect_uris"), "\r", ""),
-            "\n"
-          )
-        )
+      attrs = key_to_atom(attrs)
 
-      %App{
-        user: user
-      }
-      |> App.changeset(attrs)
-      |> Repo.insert()
+      case Map.get(Map.get(attrs, :client), :redirect_uris) do
+        nil ->
+          %App{
+            user: user
+          }
+          |> App.changeset(attrs)
+          |> Repo.insert()
+
+        _ ->
+          attrs =
+            attrs
+            |> put_in([:client, :name], Map.get(attrs, :name))
+            |> put_in([:client, :access_token_ttl], 60 * 60 * 24)
+            |> put_in([:client, :authorization_code_ttl], 60)
+            |> put_in(
+              [:client, :redirect_uris],
+              String.split(
+                String.replace(Map.get(Map.get(attrs, :client), :redirect_uris), "\r", ""),
+                "\n"
+              )
+            )
+
+          %App{
+            user: user
+          }
+          |> App.changeset(attrs)
+          |> Repo.insert()
+      end
     end
   end
 
@@ -98,10 +110,21 @@ defmodule Glimesh.Apps do
     with :ok <- Bodyguard.permit(__MODULE__, :update_app, user, app) do
       attrs = key_to_atom(attrs)
 
+      redirect_uris =
+        if Map.get(Map.get(attrs, :client), :redirect_uris) do
+          String.split(
+            String.replace(Map.get(Map.get(attrs, :client), :redirect_uris), "\r", ""),
+            "\n"
+          )
+        else
+          app.client.redirect_uris
+        end
+
       attrs =
         attrs
         |> put_in([:client, :id], app.client_id)
         |> put_in([:client, :name], Map.get(attrs, :name))
+        |> put_in([:client, :redirect_uris], redirect_uris)
 
       app
       |> App.changeset(attrs)
