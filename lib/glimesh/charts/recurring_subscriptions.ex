@@ -3,20 +3,28 @@ defmodule Glimesh.Charts.RecurringSubscriptions do
 
   defmodule WeekData do
     @moduledoc false
-    defstruct [:week_date, :cents_new, :cents_total]
+    defstruct [:week_date, :platform_new, :withholding_new, :streamer_new, :platform_sub]
   end
 
   defp query do
     """
     with timeframe as
-    (
-      select generate_series('2020-06-22', current_date, '1 week'::interval) week_date
-    )
+         (
+             select generate_series('2021-03-01', current_date, '1 month'::interval) week_date
+         )
     select week_date,
-      coalesce(sum(subscriptions.price), 0)                                as cents_new,
-      sum(coalesce(sum(subscriptions.price), 0)) over (order by week_date) as cents_total
+       coalesce(sum(cs.total_amount - (cs.payout_amount + cs.withholding_amount)), 0) as platform_cut,
+       coalesce(sum(cs.withholding_amount), 0)                                        as withholding,
+       coalesce(sum(cs.payout_amount), 0)                                             as streamer_cut,
+       coalesce((select sum(ps.total_amount)
+                 from subscription_invoices ps
+                 where date_trunc('month', ps.inserted_at) = date_trunc('month', week_date)
+                   and ps.user_paid = true
+                   and ps.streamer_id is null), 0)                                    as platform_sub
     from timeframe
-      left join subscriptions on date_trunc('week', inserted_at) = date_trunc('week', week_date)
+         join subscription_invoices cs on date_trunc('month', cs.inserted_at) = date_trunc('month', week_date)
+    where cs.user_paid = true
+    and cs.streamer_id is not null
     group by week_date
     order by week_date;
     """
@@ -33,12 +41,20 @@ defmodule Glimesh.Charts.RecurringSubscriptions do
       title: "Recurring Subscriptions",
       series: [
         %{
-          name: "New Subscription Dollars",
-          data: Enum.map(data, fn x -> format_price(x.cents_new) end)
+          name: "Platform Cut",
+          data: Enum.map(data, fn x -> format_price(x.platform_new) end)
         },
         %{
-          name: "Active Subscription Total Dollars",
-          data: Enum.map(data, fn x -> format_price(x.cents_total) end)
+          name: "Streamer Cut",
+          data: Enum.map(data, fn x -> format_price(x.streamer_new) end)
+        },
+        %{
+          name: "Tax Withholding",
+          data: Enum.map(data, fn x -> format_price(x.withholding_new) end)
+        },
+        %{
+          name: "Platform Subs",
+          data: Enum.map(data, fn x -> format_price(x.platform_sub) end)
         }
       ],
       label: %{
