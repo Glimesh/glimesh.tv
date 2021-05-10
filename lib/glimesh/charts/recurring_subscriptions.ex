@@ -3,7 +3,7 @@ defmodule Glimesh.Charts.RecurringSubscriptions do
 
   defmodule WeekData do
     @moduledoc false
-    defstruct [:week_date, :platform_new, :withholding_new, :streamer_new, :platform_sub]
+    defstruct [:week_date, :platform_cut, :withholding, :streamer_cut, :platform_sub]
   end
 
   defp query do
@@ -42,15 +42,15 @@ defmodule Glimesh.Charts.RecurringSubscriptions do
       series: [
         %{
           name: "Platform Cut",
-          data: Enum.map(data, fn x -> format_price(x.platform_new) end)
+          data: Enum.map(data, fn x -> format_price(x.platform_cut) end)
         },
         %{
           name: "Streamer Cut",
-          data: Enum.map(data, fn x -> format_price(x.streamer_new) end)
+          data: Enum.map(data, fn x -> format_price(x.streamer_cut) end)
         },
         %{
           name: "Tax Withholding",
-          data: Enum.map(data, fn x -> format_price(x.withholding_new) end)
+          data: Enum.map(data, fn x -> format_price(x.withholding) end)
         },
         %{
           name: "Platform Subs",

@@ -10,7 +10,7 @@ defmodule Glimesh.Charts.LiveStreams do
     """
     with timeframe as
          (
-             select generate_series('2021-03-01', current_date, '1 week'::interval) week_date
+             select generate_series('2021-03-08', current_date, '1 week'::interval) week_date
          )
     select week_date,
        count(distinct streams.channel_id) as unique_streamers,
