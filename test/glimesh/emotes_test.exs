@@ -9,8 +9,16 @@ defmodule Glimesh.EmotesTest do
   @valid_attrs %{
     emote: "someemote",
     animated: false,
-    png_file: "somefile.png",
-    svg_file: "somefile.svg"
+    static_file: %Plug.Upload{
+      content_type: "image/svg+xml",
+      path: "test/assets/glimchef.svg",
+      filename: "glimchef.svg"
+    },
+    animated_file: %Plug.Upload{
+      content_type: "image/gif",
+      path: "test/assets/glimdance.gif",
+      filename: "glimdance.gif"
+    }
   }
 
   describe "emotes context" do
@@ -58,6 +66,16 @@ defmodule Glimesh.EmotesTest do
 
     test "create_global_emote/2 as a regular user errors", %{streamer: streamer} do
       assert {:error, :unauthorized} = Emotes.create_global_emote(streamer, @valid_attrs)
+    end
+
+    test "create_global_emote/2 with with static image works", %{admin: admin} do
+      assert {:ok, %Emote{} = emote} = Emotes.create_global_emote(admin, @valid_attrs)
+      assert emote.emote == "someemote"
+    end
+
+    test "create_global_emote/2 with with animated image works", %{admin: admin} do
+      assert {:ok, %Emote{} = emote} = Emotes.create_global_emote(admin, @valid_attrs)
+      assert emote.emote == "someemote"
     end
   end
 end

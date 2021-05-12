@@ -2,6 +2,8 @@ defmodule Glimesh.Emotes.Emote do
   @moduledoc false
 
   use Ecto.Schema
+  use Waffle.Ecto.Schema
+
   import Ecto.Changeset
 
   schema "emotes" do
@@ -12,9 +14,8 @@ defmodule Glimesh.Emotes.Emote do
     field :approved_at, :naive_datetime
     belongs_to :approved_by, Glimesh.Accounts.User
 
-    field :png_file, :string
-    field :svg_file, :string
-    field :gif_file, :string
+    field :static_file, Glimesh.Uploaders.Emote.Type
+    field :animated_file, Glimesh.Uploaders.AnimatedEmote.Type
 
     timestamps()
   end
@@ -22,7 +23,8 @@ defmodule Glimesh.Emotes.Emote do
   @doc false
   def changeset(tag, attrs) do
     tag
-    |> cast(attrs, [:emote, :animated, :approved_at, :png_file, :svg_file, :gif_file])
+    |> cast(attrs, [:emote, :animated, :approved_at, :static_file, :animated_file])
+    |> cast_attachments(attrs, [:static_file, :animated_file])
     |> validate_required([:emote, :animated])
     |> validate_length(:emote, min: 2, max: 10)
     |> validate_conditional_file()
@@ -30,12 +32,10 @@ defmodule Glimesh.Emotes.Emote do
   end
 
   def validate_conditional_file(changeset) do
-    IO.inspect(get_field(changeset, :animated))
-    # This may not be a boolean
     if get_field(changeset, :animated) do
-      changeset |> validate_required(:gif_file)
+      changeset |> validate_required(:animated_file)
     else
-      changeset |> validate_required([:png_file, :svg_file])
+      changeset |> validate_required(:static_file)
     end
   end
 end

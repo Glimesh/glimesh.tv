@@ -25,6 +25,10 @@ defmodule Glimesh.FileValidation do
     end
   end
 
+  def validate_extension(%Waffle.File{file_name: file_name}, allowed \\ []) do
+    Enum.member?(allowed, file_name |> Path.extname() |> String.downcase())
+  end
+
   @doc """
   Matches a file against known magic bytes.
   """
