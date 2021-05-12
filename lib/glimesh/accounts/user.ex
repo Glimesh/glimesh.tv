@@ -5,6 +5,7 @@ defmodule Glimesh.Accounts.User do
   use Waffle.Ecto.Schema
   import GlimeshWeb.Gettext
   import Ecto.Changeset
+  alias Glimesh.Socials.Sanitizer
 
   @derive {Inspect, except: [:password, :hashed_password, :tfa_token]}
   schema "users" do
@@ -247,6 +248,9 @@ defmodule Glimesh.Accounts.User do
     |> validate_youtube_url(:youtube_intro_url)
     |> validate_displayname()
     |> strip_discord_invite()
+    |> strip_youtube()
+    |> strip_guilded()
+    |> strip_instagram()
     |> set_profile_content_html()
     |> cast_attachments(attrs, [:avatar])
   end
@@ -378,6 +382,36 @@ defmodule Glimesh.Accounts.User do
       changeset
     else
       add_error(changeset, :tfa, "Invalid 2FA code")
+    end
+  end
+
+  def strip_youtube(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{social_youtube: social}} ->
+        put_change(changeset, :social_youtube, Sanitizer.sanitize(social))
+
+      _ ->
+        changeset
+    end
+  end
+
+  def strip_guilded(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{social_guilded: social}} ->
+        put_change(changeset, :social_guilded, Sanitizer.sanitize(social, :guilded))
+
+      _ ->
+        changeset
+    end
+  end
+
+  def strip_instagram(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{social_instagram: social}} ->
+        put_change(changeset, :social_instagram, Sanitizer.sanitize(social))
+
+      _ ->
+        changeset
     end
   end
 

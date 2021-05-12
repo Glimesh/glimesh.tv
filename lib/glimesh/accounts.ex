@@ -342,14 +342,14 @@ defmodule Glimesh.Accounts do
   end
 
   @doc """
-  Updates the user password.
+  Updates the user profile.
 
   ## Examples
 
-      iex> update_user_password(user, "valid password", %{password: ...})
+      iex> update_user_profile(user, %{display_name: "bacon123"})
       {:ok, %User{}}
 
-      iex> update_user_password(user, "invalid password", %{password: ...})
+      iex> update_user_profile(user, %{display_name: nil})
       {:error, %Ecto.Changeset{}}
 
   """

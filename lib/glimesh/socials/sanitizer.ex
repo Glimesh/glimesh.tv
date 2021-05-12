@@ -28,7 +28,6 @@ defmodule Glimesh.Socials.Sanitizer do
     case Regex.run(~r/[https?:\/\/]guilded.gg\/(.*)/, username, capture: :all_but_first) do
       nil -> username
       [match] -> match
-      _ -> username
     end
   end
 end
