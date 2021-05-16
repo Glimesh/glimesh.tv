@@ -50,15 +50,15 @@ jobs:
         key: ${{ runner.os }}-build-${{ hashFiles('**/mix.lock') }}
         restore-keys: ${{ runner.os }}-build-
 
-    - name: Compile Dependencies
-      if: steps.build-cache.outputs.cache-hit != 'true'
-      run: MIX_ENV=test mix compile
-
     - name: Install dependencies
       run: |
         mix local.rebar --force
         mix local.hex --force
         mix deps.get
+
+    - name: Compile Dependencies
+      if: steps.build-cache.outputs.cache-hit != 'true'
+      run: MIX_ENV=test mix compile
 
     - name: Start stripe-mock
       run: docker run -d -p 12111-12112:12111-12112 stripemock/stripe-mock && sleep 5
