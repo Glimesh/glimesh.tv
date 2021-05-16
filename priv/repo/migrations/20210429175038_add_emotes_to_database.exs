@@ -10,9 +10,8 @@ defmodule Glimesh.Repo.Migrations.AddEmotesToDatabase do
       add :approved_at, :naive_datetime, default: nil
       add :approved_by, references(:users), default: nil
 
-      add :png_file, :string
-      add :svg_file, :string
-      add :gif_file, :string
+      add :static_file, :string
+      add :animated_file, :string
 
       timestamps()
     end

@@ -5,8 +5,14 @@ defmodule GlimeshWeb.GctLive.ManageEmotes do
   def mount(_, session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
+    user = Glimesh.Accounts.get_user_by_session_token(session["user_token"])
+
+    emotes = Glimesh.Emotes.list_all_emotes()
+
     {:ok,
      socket
+     |> assign(:user, user)
+     |> assign(:emotes, emotes)
      |> assign(:uploaded_files, [])
      |> allow_upload(:emote, accept: ~w(.svg .gif), max_entries: 100)}
   end
@@ -25,17 +31,46 @@ defmodule GlimeshWeb.GctLive.ManageEmotes do
   def handle_event("save", %{"emotes" => emote_names}, socket) do
     uploaded_files =
       consume_uploaded_entries(socket, :emote, fn %{path: path}, entry ->
+        IO.inspect(entry)
+
         emote_name = Map.get(emote_names, entry.ref)
 
-        IO.inspect(emote_name)
+        emote_data =
+          if String.ends_with?(entry.client_name, ".gif") or entry.client_type == "image/gif" do
+            %{
+              animated: true,
+              animated_file: path
+            }
+          else
+            %{
+              animated: false,
+              static_file: path
+            }
+          end
 
-        if emote_name == "glimbday" do
-          raise "Some test"
-        end
+        {:ok, emote} =
+          Glimesh.Emotes.create_global_emote(
+            socket.assigns.user,
+            Map.merge(
+              %{
+                emote: emote_name,
+                approved_at: NaiveDateTime.utc_now()
+              },
+              emote_data
+            )
+          )
 
-        dest = Path.join([:code.priv_dir(:glimesh), "static", "uploads", Path.basename(path)])
-        File.cp!(path, dest)
-        Routes.static_path(socket, "/uploads/#{Path.basename(dest)}")
+        # IO.inspect(emote_name)
+
+        # if emote_name == "glimbday" do
+        #   raise "Some test"
+        # end
+
+        # dest = Path.join([:code.priv_dir(:glimesh), "static", "uploads", Path.basename(path)])
+        # File.cp!(path, dest)
+        # Routes.static_path(socket, "/uploads/#{Path.basename(dest)}")
+
+        emote
       end)
 
     {:noreply, update(socket, :uploaded_files, &(&1 ++ uploaded_files))}

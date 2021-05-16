@@ -1,4 +1,4 @@
-defmodule Glimesh.Uploaders.Emote do
+defmodule Glimesh.Uploaders.StaticEmote do
   @moduledoc false
 
   use Waffle.Definition
@@ -11,22 +11,22 @@ defmodule Glimesh.Uploaders.Emote do
 
   # Whitelist file extensions:
   def validate({file, _}) do
-    Glimesh.FileValidation.validate_extension(file, ~w(.svg))
+    Glimesh.FileValidation.validate_svg(file)
   end
 
   def transform(:svg, _) do
     # svgo -f input.svg -o output.svg
     {"svgo",
      fn input, output ->
-       " -f #{input} -o #{output}"
-     end}
+       " #{input} -o #{output}"
+     end, "svg"}
   end
 
   def transform(:png, _) do
     # rsvg-convert -w 256 -h 256 input.svg > output.png
     {"rsvg-convert",
      fn input, output ->
-       " -w 256 -h 256 #{input} > #{output}"
+       " -w 256 -h 256 #{input} -o #{output}"
      end, "png"}
   end
 
