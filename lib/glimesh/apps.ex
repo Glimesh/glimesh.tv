@@ -68,7 +68,7 @@ defmodule Glimesh.Apps do
           %App{
             user: user
           }
-          |> App.changeset(attrs)
+          |> App.changeset(attrs, true)
           |> Repo.insert()
 
         _ ->
@@ -88,7 +88,7 @@ defmodule Glimesh.Apps do
           %App{
             user: user
           }
-          |> App.changeset(attrs)
+          |> App.changeset(attrs, true)
           |> Repo.insert()
       end
     end
@@ -127,7 +127,7 @@ defmodule Glimesh.Apps do
         |> put_in([:client, :redirect_uris], redirect_uris)
 
       app
-      |> App.changeset(attrs)
+      |> App.changeset(attrs, true)
       |> Repo.update()
     end
   end

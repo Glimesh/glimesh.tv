@@ -20,18 +20,31 @@ defmodule Glimesh.Apps.App do
 
   @doc """
   Changeset for our own application
+
+  iex> changeset(%App{}, %{}, true)
+  (Protocol.UndefinedError) protocol Enumerable not implemented for nil of type Atom
+
+  iex> changeset(%App{}, %{})
+  %Ecto.Changeset{}
   """
-  def changeset(app, attrs) do
-    app
-    |> cast(attrs, [:name, :homepage_url, :description, :logo])
-    |> validate_required([:name, :description])
-    |> validate_length(:name, min: 3, max: 50)
-    |> validate_length(:description, max: 255)
-    |> cast_attachments(attrs, [:logo])
-    |> cast_assoc(:client,
-      required: true,
-      with: &oauth_changset/2
-    )
+  def changeset(app, attrs, assoc_cast \\ false) do
+    changeset =
+      app
+      |> cast(attrs, [:name, :homepage_url, :description, :logo])
+      |> validate_required([:name, :description])
+      |> validate_length(:name, min: 3, max: 50)
+      |> validate_length(:description, max: 255)
+      |> cast_attachments(attrs, [:logo])
+
+    if assoc_cast do
+      changeset
+      |> cast_assoc(:client,
+        required: true,
+        with: &oauth_changset/2
+      )
+    else
+      changeset
+    end
   end
 
   def oauth_changset(client, %{access_token_ttl: _} = params) do
@@ -43,8 +56,6 @@ defmodule Glimesh.Apps.App do
 
   def oauth_changset(client, params) do
     Boruta.Ecto.Client.update_changeset(client, params)
-    |> validate_required([:redirect_uris])
-    |> validate_length(:redirect_uris, min: 1)
     |> validate_localhost_http_redirect_urls(:redirect_uris)
   end
 
