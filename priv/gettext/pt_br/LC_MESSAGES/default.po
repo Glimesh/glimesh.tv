@@ -2304,7 +2304,7 @@ msgstr "Blog"
 
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:26
 msgid "Bypass Mature Content Warning"
-msgstr "Ignora Aviso de Conteúdo Adulto"
+msgstr "Ignorar Aviso de Conteúdo Adulto"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:30
 msgid "Channel Primary Language"
@@ -2425,7 +2425,7 @@ msgstr "Conteúdo Adulto"
 
 #: lib/glimesh_web/templates/user_settings/preference.html.eex:22
 msgid "Mature Content Visibility:"
-msgstr "Visibilidade de Conteúdo Adulto"
+msgstr "Visibilidade de Conteúdo Adulto:"
 
 #: lib/glimesh_web/live/user_live/stream.html.leex:36
 msgid "Mature Content Warning"
