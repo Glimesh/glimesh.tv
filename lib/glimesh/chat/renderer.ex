@@ -64,7 +64,7 @@ defmodule Glimesh.Chat.Renderer do
     )
   end
 
-  defp append_local_path("/" <> src) do
+  defp append_local_path("/" <> _ = src) do
     GlimeshWeb.Router.Helpers.static_path(GlimeshWeb.Endpoint, src)
   end
 

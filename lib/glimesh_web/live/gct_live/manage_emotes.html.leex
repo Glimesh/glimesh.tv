@@ -75,7 +75,7 @@
                 <%= for emote <- @emotes do %>
                 <div class="col-md-3 mb-4">
                     <div class="text-center">
-                        <img src="<%= Glimesh.Uploaders.StaticEmote.url({emote.static_file, emote}, :svg) %>" height="128px" width="128px" />
+                        <img src="<%= Glimesh.Emotes.full_url(emote) %>" height="128px" width="128px" />
                         <figcaption><code>:<%= emote.emote %>:</code></figcaption>
                     </div>
                 </div>

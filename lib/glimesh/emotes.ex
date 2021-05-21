@@ -5,9 +5,9 @@ defmodule Glimesh.Emotes do
 
   import Ecto.Query, warn: false
   alias Glimesh.Accounts.User
-  alias Glimesh.Streams.Channel
   alias Glimesh.Emotes.Emote
   alias Glimesh.Repo
+  alias Glimesh.Streams.Channel
 
   defdelegate authorize(action, user, params), to: Glimesh.Emotes.Policy
 
@@ -19,12 +19,7 @@ defmodule Glimesh.Emotes do
   def list_emotes(include_animated \\ false) do
     list_emotes_by_key_and_image(include_animated)
     |> Enum.map(fn emote ->
-      url =
-        if emote.animated do
-          Glimesh.Uploaders.AnimatedEmote.url({emote.static_file, emote}, :gif)
-        else
-          Glimesh.Uploaders.StaticEmote.url({emote.static_file, emote}, :svg)
-        end
+      url = Glimesh.Emotes.full_url(emote)
 
       %{
         name: ":#{emote.emote}:",
@@ -69,5 +64,13 @@ defmodule Glimesh.Emotes do
       |> Emote.changeset(attrs)
       |> Repo.insert()
     end
+  end
+
+  def full_url(%Emote{animated: true} = emote) do
+    Glimesh.Uploaders.AnimatedEmote.url({emote.animated_file, emote}, :gif)
+  end
+
+  def full_url(%Emote{} = emote) do
+    Glimesh.Uploaders.StaticEmote.url({emote.static_file, emote}, :svg)
   end
 end

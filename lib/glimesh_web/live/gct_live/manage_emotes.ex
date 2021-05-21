@@ -31,8 +31,6 @@ defmodule GlimeshWeb.GctLive.ManageEmotes do
   def handle_event("save", %{"emotes" => emote_names}, socket) do
     uploaded_files =
       consume_uploaded_entries(socket, :emote, fn %{path: path}, entry ->
-        IO.inspect(entry)
-
         emote_name = Map.get(emote_names, entry.ref)
 
         emote_data =
