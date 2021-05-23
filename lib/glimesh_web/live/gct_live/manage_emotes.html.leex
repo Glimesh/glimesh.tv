@@ -2,7 +2,7 @@
     <h2>Manage Emotes</h2>
 
 
-    <%= f = form_for :emotes, "#", [phx_change: :validate, phx_submit: :save] %>
+    <%= f = form_for :emotes, "#", [id: "emote_upload", phx_change: :validate, phx_submit: :save] %>
     <div class="card mt-4 mb-4">
         <div class="card-header">
             <h5 class="card-title">Upload New Emotes</h5>

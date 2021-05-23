@@ -29,7 +29,7 @@ defmodule GlimeshWeb.GctLive.ManageEmotes do
 
   @impl Phoenix.LiveView
   def handle_event("save", %{"emotes" => emote_names}, socket) do
-    uploaded_files =
+    uploaded_emotes =
       consume_uploaded_entries(socket, :emote, fn %{path: path}, entry ->
         emote_name = Map.get(emote_names, entry.ref)
 
@@ -58,20 +58,13 @@ defmodule GlimeshWeb.GctLive.ManageEmotes do
             )
           )
 
-        # IO.inspect(emote_name)
-
-        # if emote_name == "glimbday" do
-        #   raise "Some test"
-        # end
-
-        # dest = Path.join([:code.priv_dir(:glimesh), "static", "uploads", Path.basename(path)])
-        # File.cp!(path, dest)
-        # Routes.static_path(socket, "/uploads/#{Path.basename(dest)}")
-
         emote
       end)
 
-    {:noreply, update(socket, :uploaded_files, &(&1 ++ uploaded_files))}
+    {:noreply,
+     socket
+     |> put_flash(:info, "Successfully uploaded emotes")
+     |> update(:emotes, &(&1 ++ uploaded_emotes))}
   end
 
   def error_to_string(:too_large), do: "Too large"
