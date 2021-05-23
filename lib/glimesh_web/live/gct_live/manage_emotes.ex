@@ -29,6 +29,8 @@ defmodule GlimeshWeb.GctLive.ManageEmotes do
 
   @impl Phoenix.LiveView
   def handle_event("save", %{"emotes" => emote_names}, socket) do
+    errored_emotes = %{}
+
     uploaded_emotes =
       consume_uploaded_entries(socket, :emote, fn %{path: path}, entry ->
         emote_name = Map.get(emote_names, entry.ref)
@@ -46,25 +48,32 @@ defmodule GlimeshWeb.GctLive.ManageEmotes do
             }
           end
 
-        {:ok, emote} =
-          Glimesh.Emotes.create_global_emote(
-            socket.assigns.user,
-            Map.merge(
-              %{
-                emote: emote_name,
-                approved_at: NaiveDateTime.utc_now()
-              },
-              emote_data
-            )
-          )
+        case Glimesh.Emotes.create_global_emote(
+               socket.assigns.user,
+               Map.merge(
+                 %{
+                   emote: emote_name,
+                   approved_at: NaiveDateTime.utc_now()
+                 },
+                 emote_data
+               )
+             ) do
+          {:ok, emote} ->
+            emote
 
-        emote
+          {:error, %Ecto.Changeset{} = changeset} ->
+            errors = Glimesh.Api.parse_ecto_changeset_errors(changeset)
+            errored_emotes = Map.put(errored_emotes, emote_name, errors)
+            nil
+        end
       end)
+
+    successful_uploads = Enum.filter(uploaded_emotes, fn x -> x end)
 
     {:noreply,
      socket
      |> put_flash(:info, "Successfully uploaded emotes")
-     |> update(:emotes, &(&1 ++ uploaded_emotes))}
+     |> update(:emotes, &(&1 ++ successful_uploads))}
   end
 
   def error_to_string(:too_large), do: "Too large"
