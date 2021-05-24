@@ -15,15 +15,14 @@ defmodule GlimeshWeb.GctLive.ManageEmotesTest do
   describe "Emotes Management" do
     setup [:register_and_log_in_gct_user]
 
-    test "can upload emotes", %{conn: conn} do
-      {:ok, view, _} = live(conn, Routes.gct_manage_emotes_path(conn, :index))
+    test "can upload emotes", %{conn: conn, user: user} do
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.GctLive.ManageEmotes, session: %{"user" => user})
 
       avatar =
         file_input(view, "#emote_upload", :emote, [
           @glimchef
         ])
-
-      IO.inspect(avatar)
 
       assert render_upload(avatar, "glimchef.svg") =~ "glimchef"
 
@@ -32,7 +31,7 @@ defmodule GlimeshWeb.GctLive.ManageEmotesTest do
       assert render_submit(form, %{"0" => "glimchef"}) =~ "Successfully uploaded emotes"
     end
 
-    test "cannot upload duplicate emotes", %{conn: conn} do
+    test "cannot upload duplicate emotes", %{conn: conn, user: user} do
       {:ok, _} =
         Glimesh.Emotes.create_global_emote(admin_fixture(), %{
           emote: "glimchef",
@@ -44,7 +43,8 @@ defmodule GlimeshWeb.GctLive.ManageEmotesTest do
           }
         })
 
-      {:ok, view, _} = live(conn, Routes.gct_manage_emotes_path(conn, :index))
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.GctLive.ManageEmotes, session: %{"user" => user})
 
       avatar =
         file_input(view, "#emote_upload", :emote, [
@@ -54,10 +54,7 @@ defmodule GlimeshWeb.GctLive.ManageEmotesTest do
       assert render_upload(avatar, "glimchef.svg") =~ "glimchef"
       form = view |> element("form")
 
-      assert render_submit(form, %{"0" => "glimchef"}) =~ "Successfully uploaded emotes"
-
-      # assert view |> form("#emote_upload", )
-      # assert render_submit(view, %{"0" => "glimchef"}) =~ "Successfully uploaded emotes"
+      assert render_submit(form, %{"0" => "glimchef"}) =~ "emote has already been taken"
     end
   end
 end

@@ -8,7 +8,7 @@
     <% end %>
     <% end %>
     <%= if Bodyguard.permit?(Glimesh.CommunityTeam, :manage_emotes, @current_user) do %>
-    <%= link class: "list-group-item list-group-item-action " <> active_gct_audit_log_path(@conn), to: Routes.manage_emotes_path(@conn, :index) do %>
+    <%= link class: "list-group-item list-group-item-action " <> active_gct_manage_emotes_path(@conn), to: Routes.gct_path(@conn, :emotes) do %>
     <i class="fas fa-smile fa-fw"></i> <%= gettext("Emotes") %>
     <% end %>
     <% end %>

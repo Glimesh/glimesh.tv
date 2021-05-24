@@ -104,7 +104,7 @@ defmodule GlimeshWeb.LayoutView do
   end
 
   def active_gct_manage_emotes_path(conn) do
-    truthy_active(controller_action(conn) == [GlimeshWeb.GctController, :manage_emotes])
+    truthy_active(controller_action(conn) == [GlimeshWeb.GctController, :emotes])
   end
 
   defp controller_action(conn) do

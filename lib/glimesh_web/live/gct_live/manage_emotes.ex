@@ -29,9 +29,7 @@ defmodule GlimeshWeb.GctLive.ManageEmotes do
 
   @impl Phoenix.LiveView
   def handle_event("save", %{"emotes" => emote_names}, socket) do
-    errored_emotes = %{}
-
-    uploaded_emotes =
+    attempted_uploads =
       consume_uploaded_entries(socket, :emote, fn %{path: path}, entry ->
         emote_name = Map.get(emote_names, entry.ref)
 
@@ -48,32 +46,37 @@ defmodule GlimeshWeb.GctLive.ManageEmotes do
             }
           end
 
-        case Glimesh.Emotes.create_global_emote(
-               socket.assigns.user,
-               Map.merge(
-                 %{
-                   emote: emote_name,
-                   approved_at: NaiveDateTime.utc_now()
-                 },
-                 emote_data
-               )
-             ) do
-          {:ok, emote} ->
-            emote
-
-          {:error, %Ecto.Changeset{} = changeset} ->
-            errors = Glimesh.Api.parse_ecto_changeset_errors(changeset)
-            errored_emotes = Map.put(errored_emotes, emote_name, errors)
-            nil
-        end
+        Glimesh.Emotes.create_global_emote(
+          socket.assigns.user,
+          Map.merge(
+            %{
+              emote: emote_name,
+              approved_at: NaiveDateTime.utc_now()
+            },
+            emote_data
+          )
+        )
       end)
 
-    successful_uploads = Enum.filter(uploaded_emotes, fn x -> x end)
+    {successful, errored} =
+      Enum.split_with(attempted_uploads, fn {status, _} -> status == :ok end)
+
+    successful_emotes = Enum.map(successful, fn {:ok, emote} -> emote end)
+
+    errors =
+      Enum.map(errored, fn {:error, changeset} ->
+        Ecto.Changeset.traverse_errors(changeset, fn _, field, {msg, _opts} ->
+          "#{field} #{msg}"
+        end)
+      end)
+      |> Enum.flat_map(fn %{emote: errors} -> errors end)
+      |> Enum.join(". ")
 
     {:noreply,
      socket
      |> put_flash(:info, "Successfully uploaded emotes")
-     |> update(:emotes, &(&1 ++ successful_uploads))}
+     |> put_flash(:error, errors)
+     |> update(:emotes, &(&1 ++ successful_emotes))}
   end
 
   def error_to_string(:too_large), do: "Too large"
