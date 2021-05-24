@@ -33,62 +33,41 @@
     </div>
 
     <div class="row">
-        <div class="col-xl-10">
-            <div class="row">
-                <%= for channel <- @channels do %>
-                <div class="col-sm-12 col-md-6 col-xl-4 mt-2 mt-md-4">
-                    <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
-                    <div class="card card-stream">
-                        <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>" alt="<%= channel.title %>" class="card-img" height="468" width="832">
-                        <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
+        <%= for channel <- @channels do %>
+        <div class="col-sm-12 col-md-6 col-xl-4 mt-2 mt-md-4">
+            <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
+            <div class="card card-stream">
+                <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>" alt="<%= channel.title %>" class="card-img" height="468" width="832">
+                <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
 
-                            <div>
-                                <div class="card-stream-category">
-                                    <span class="badge badge-primary"><%= channel.category.name %></span>
-                                </div>
+                    <div>
+                        <div class="card-stream-category">
+                            <span class="badge badge-primary"><%= channel.category.name %></span>
+                        </div>
 
-                                <div class="card-stream-tags">
-                                    <%= if channel.subcategory do %>
-                                    <span class="badge badge-info"><%= channel.subcategory.name %></span>
-                                    <% end %>
-                                </div>
-                            </div>
-
-                            <div class="media card-stream-streamer">
-                                <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>" alt="<%= channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(channel.user), do: "img-verified-streamer", else: "" %>">
-                                <div class="media-body">
-                                    <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
-                                    <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
-                                        <%= if channel.mature_content do %>
-                                        <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
-                                        <% end %>
-                                    </p>
-                                </div>
-                            </div>
+                        <div class="card-stream-tags">
+                            <%= if channel.subcategory do %>
+                            <span class="badge badge-info"><%= channel.subcategory.name %></span>
+                            <% end %>
                         </div>
                     </div>
-                    <% end %>
-                </div>
-                <% end %>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-2">
-            <div class="card h-100">
-                <img src="/images/events/2021-05-20-kiz-charity-stream.png" class="card-img-top" alt="Kiz's Charity Stream">
-                <div class="card-body">
-                    <h5 class="card-title">Kiz's Charity Stream</h5>
-                    <p class="card-text">This Sunday join us as Kiz embarks on his first ever 12 hour charity stream! Donations go directly to <a href="https://www.savethechildren.org" target="_blank">Save the Children</a> through Tiltify.</p>
-                    <p class="text-center">
-                        Live <relative-time id="kiz-relative-time" phx-update="ignore" datetime="2021-05-23T08:00:00-04:00">May 23rd 8:00am EDT</relative-time> on <br> <a href="https://glimesh.tv/Kiz">glimesh.tv/Kiz</a>
-                    </p>
-                </div>
-                <div class="card-footer text-center lead">
-                    <local-time id="kiz-local-time" phx-update="ignore" datetime="2021-05-23T08:00:00-04:00">
-                        May 23rd 8:00am EDT
-                    </local-time>
+
+                    <div class="media card-stream-streamer">
+                        <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>" alt="<%= channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(channel.user), do: "img-verified-streamer", else: "" %>">
+                        <div class="media-body">
+                            <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
+                            <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
+                                <%= if channel.mature_content do %>
+                                <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
+                                <% end %>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <% end %>
         </div>
+        <% end %>
     </div>
 </div>
 <% end %>
