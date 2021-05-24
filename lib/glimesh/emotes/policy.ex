@@ -13,8 +13,11 @@ defmodule Glimesh.Emotes.Policy do
 
   def authorize(:create_global_emote, %User{is_admin: true}, _), do: true
   def authorize(:create_global_emote, %User{is_gct: true, gct_level: 5}, _), do: true
+  def authorize(:create_global_emote, %User{is_gct: true, gct_level: 4}, _), do: true
 
   def authorize(:create_channel_emote, %User{is_admin: true}, _channel), do: true
+  def authorize(:create_channel_emote, %User{is_gct: true, gct_level: 5}, _), do: true
+  def authorize(:create_channel_emote, %User{is_gct: true, gct_level: 4}, _), do: true
 
   def authorize(:create_channel_emote, %User{id: user_id}, %Channel{user_id: channel_user_id}),
     do: user_id == channel_user_id
