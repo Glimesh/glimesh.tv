@@ -77,7 +77,8 @@ Running Glimesh.tv natively on Windows is not yet understood. However you can ru
 On modern versions of Ubuntu, you can install these packages with the following command:
 
 ```sh
-sudo apt install git esl-erlang elixir postgresql npm inotify-tools
+sudo apt install git esl-erlang elixir postgresql npm inotify-tools librsvg2-bin
+sudo npm -g install svgo
 ```
 
 #### Configuring Postgres
@@ -116,6 +117,9 @@ Installation is simple with [Homebrew](https://brew.sh).
 ```sh
 # Required dependencies
 brew install elixir imagemagick node
+# Optional dependencies
+brew install librsvg 
+npm install -g svgo
 # Graphical Postgres, if you do not want a graphical Postgres, you are on your own!
 brew install --cask postgres
 ```
