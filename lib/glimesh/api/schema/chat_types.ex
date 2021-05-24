@@ -107,13 +107,8 @@ defmodule Glimesh.Api.ChatTypes do
     field :type, :string
     field :text, :string
 
-    field :url, :string do
-      # Resolve URL to our actual public route
-      resolve(fn token, _, _ ->
-        {:ok, GlimeshWeb.Router.Helpers.static_url(GlimeshWeb.Endpoint, token.src)}
-      end)
-    end
-
+    # URL is no longer necessary, src will return the full URL.
+    # field :url, :string
     field :src, :string
 
     interface(:chat_message_token)

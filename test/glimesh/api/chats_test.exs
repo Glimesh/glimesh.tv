@@ -19,7 +19,6 @@ defmodule Glimesh.Api.ChatsTest do
         text
         ... on EmoteToken {
           src
-          url
         }
       }
     }
@@ -195,13 +194,7 @@ defmodule Glimesh.Api.ChatsTest do
           }
         })
 
-      expected_path = Glimesh.Emotes.full_url(emote)
-
-      expected_url =
-        GlimeshWeb.Router.Helpers.static_url(
-          GlimeshWeb.Endpoint,
-          expected_path
-        )
+      expected_url = Glimesh.Emotes.full_url(emote)
 
       assert json_response(conn, 200)["data"]["createChatMessage"] == %{
                "message" => "Hello :glimchef: world!",
@@ -213,8 +206,7 @@ defmodule Glimesh.Api.ChatsTest do
                  %{
                    "type" => "emote",
                    "text" => ":glimchef:",
-                   "src" => expected_path,
-                   "url" => expected_url
+                   "src" => expected_url
                  },
                  %{"type" => "text", "text" => " world!"}
                ]

@@ -13,11 +13,6 @@ defmodule Glimesh.Emotes do
 
   def list_emotes_for_js(include_animated \\ false) do
     list_emotes(include_animated)
-    |> Jason.encode!()
-  end
-
-  def list_emotes(include_animated \\ false) do
-    list_emotes_by_key_and_image(include_animated)
     |> Enum.map(fn emote ->
       url = Glimesh.Emotes.full_url(emote)
 
@@ -26,13 +21,14 @@ defmodule Glimesh.Emotes do
         emoji: url
       }
     end)
+    |> Jason.encode!()
   end
 
-  def list_emotes_by_key_and_image(true) do
+  def list_emotes(true) do
     list_static_emotes() ++ list_animated_emotes()
   end
 
-  def list_emotes_by_key_and_image(false) do
+  def list_emotes(false) do
     list_static_emotes()
   end
 

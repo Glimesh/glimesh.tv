@@ -36,12 +36,14 @@ defmodule Glimesh.EmotesTest do
     test "create_global_emote/2 with valid data creates a regular emote", %{admin: admin} do
       assert {:ok, %Emote{} = emote} = Emotes.create_global_emote(admin, @static_attrs)
       assert emote.emote == "someemote"
+      assert emote.static_file.file_name == "glimchef.svg"
     end
 
     test "create_global_emote/2 with valid data creates an animated emote", %{admin: admin} do
       assert {:ok, %Emote{} = emote} = Emotes.create_global_emote(admin, @animated_attrs)
 
       assert emote.emote == "animated"
+      assert emote.animated_file.file_name == "glimdance.gif"
     end
 
     test "create_global_emote/2 with a path works", %{admin: admin} do
