@@ -32,16 +32,12 @@ defmodule Glimesh.Emotes do
     list_static_emotes()
   end
 
-  def list_all_emotes do
-    Repo.all(Emote)
-  end
-
   def list_static_emotes do
-    Repo.all(from e in Emote, where: e.animated == false)
+    Repo.all(from(e in Emote, where: e.animated == false, order_by: e.emote))
   end
 
   def list_animated_emotes do
-    Repo.all(from e in Emote, where: e.animated == true)
+    Repo.all(from(e in Emote, where: e.animated == true, order_by: e.emote))
   end
 
   def create_global_emote(%User{} = user, attrs \\ %{}) do
