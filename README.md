@@ -47,6 +47,10 @@ You will need the following tools to clone, build, and run Glimesh:
 - **nodejs / npm**: Front-end package management
 - **inotify-tools**: Filesystem monitoring dependencies for developer convenience (watching changes)
 
+You will need these optional dependencies for advanced functionality:
+- **rsvg-convert**: SVG to PNG conversion for emotes
+- **svgo** - SVG Optimization for emotes
+
 You may need to translate these exact dependencies into their appropriate names for your OS distribution.
 
 ### Cloning
