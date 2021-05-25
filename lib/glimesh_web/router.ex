@@ -165,13 +165,6 @@ defmodule GlimeshWeb.Router do
 
     live_dashboard "/phoenix/dashboard", metrics: GlimeshWeb.Telemetry, ecto_repos: [Glimesh.Repo]
 
-    get "/blog/new", ArticleController, :new
-    get "/blog/:slug/edit", ArticleController, :edit
-    post "/blog", ArticleController, :create
-    patch "/blog/:slug", ArticleController, :update
-    put "/blog/:slug", ArticleController, :update
-    delete "/blog/:slug", ArticleController, :delete
-
     live "/categories", Admin.CategoryLive.Index, :index
     live "/categories/new", Admin.CategoryLive.Index, :new
     live "/categories/:id/edit", Admin.CategoryLive.Index, :edit
