@@ -38,11 +38,8 @@ RUN mix do compile, release
 
 # prepare release image
 FROM alpine:3.12 AS app
-RUN apk add --no-cache openssl ncurses-libs imagemagick rsvg-convert
+RUN apk add --no-cache openssl ncurses-libs imagemagick librsvg npm
 
-# todo, make svgo a local npm install so we don't need to install all of node
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
-RUN apt-get install -y nodejs
 RUN npm install -g svgo
 
 WORKDIR /app
