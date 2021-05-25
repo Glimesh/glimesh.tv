@@ -246,6 +246,9 @@ defmodule GlimeshWeb.Router do
 
     post "/quick_preferences", QuickPreferenceController, :update_preference
 
+    # Short Links
+    get "/s/event-form", ShortLinkController, :event_form
+
     # This must be the last route
     live "/:username", UserLive.Stream, :index
     live "/:username/profile", UserLive.Profile, :index
