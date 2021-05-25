@@ -33,6 +33,13 @@ defmodule GlimeshWeb.GctController do
     end
   end
 
+  def emotes(conn, _params) do
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :manage_emotes, conn.assigns.current_user) do
+      conn
+      |> Phoenix.LiveView.Controller.live_render(GlimeshWeb.GctLive.ManageEmotes)
+    end
+  end
+
   def unauthorized(conn, _params) do
     current_user = conn.assigns.current_user
     CommunityTeam.log_unauthorized_access(current_user)

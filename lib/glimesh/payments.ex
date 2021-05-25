@@ -80,8 +80,8 @@ defmodule Glimesh.Payments do
   end
 
   def subscribe_to_platform(user, product_id, price_id) do
-    if has_platform_subscription?(user) do
-      raise ArgumentError, "You already have an active subscription to this streamer."
+    if is_platform_subscriber?(user) do
+      raise ArgumentError, "You already have an active subscription to Glimesh."
     end
 
     customer_id = Accounts.get_stripe_customer_id(user)
@@ -355,24 +355,10 @@ defmodule Glimesh.Payments do
     |> Repo.preload(:user)
   end
 
-  def has_platform_subscription?(user) do
-    Repo.exists?(
-      from s in Subscription,
-        where: s.user_id == ^user.id and s.is_active == true and is_nil(s.streamer_id)
-    )
-  end
-
   def is_platform_subscriber?(user) do
     Repo.exists?(
       from s in Subscription,
-        where:
-          s.user_id == ^user.id and
-            s.is_active == true and
-            is_nil(s.streamer_id) and
-            s.stripe_product_id in [
-              ^get_platform_sub_supporter_product_id(),
-              ^get_platform_sub_founder_product_id()
-            ]
+        where: s.user_id == ^user.id and s.is_active == true and is_nil(s.streamer_id)
     )
   end
 

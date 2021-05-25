@@ -2,7 +2,7 @@ FROM elixir:1.11.2
 
 # Install package dependencies
 RUN apt-get update
-RUN apt-get install -y build-essential postgresql-client inotify-tools imagemagick-6.q16
+RUN apt-get install -y build-essential postgresql-client inotify-tools imagemagick-6.q16 rsvg-convert
 
 # install hex + rebar
 RUN mix local.hex --force
@@ -11,6 +11,7 @@ RUN mix local.rebar --force
 # install node
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get install -y nodejs
+RUN npm install -g svgo
 
 # prepare build dir
 WORKDIR /app

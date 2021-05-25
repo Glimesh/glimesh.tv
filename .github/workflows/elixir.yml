@@ -28,6 +28,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Install rsvg-convert for emotes
+      run: sudo apt-get install librsvg2-bin
+    
+    - name: Install svgo for emotes
+      run: sudo npm -g install svgo
+
     - name: Set up Elixir
       uses: erlef/setup-elixir@v1
       with:

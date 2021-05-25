@@ -47,6 +47,10 @@ You will need the following tools to clone, build, and run Glimesh:
 - **nodejs / npm**: Front-end package management
 - **inotify-tools**: Filesystem monitoring dependencies for developer convenience (watching changes)
 
+You will need these optional dependencies for advanced functionality:
+- **rsvg-convert**: SVG to PNG conversion for emotes
+- **svgo** - SVG Optimization for emotes
+
 You may need to translate these exact dependencies into their appropriate names for your OS distribution.
 
 ### Cloning
@@ -73,7 +77,8 @@ Running Glimesh.tv natively on Windows is not yet understood. However you can ru
 On modern versions of Ubuntu, you can install these packages with the following command:
 
 ```sh
-sudo apt install git esl-erlang elixir postgresql npm inotify-tools
+sudo apt install git esl-erlang elixir postgresql npm inotify-tools librsvg2-bin
+sudo npm -g install svgo
 ```
 
 #### Configuring Postgres
@@ -112,6 +117,9 @@ Installation is simple with [Homebrew](https://brew.sh).
 ```sh
 # Required dependencies
 brew install elixir imagemagick node
+# Optional dependencies
+brew install librsvg 
+npm install -g svgo
 # Graphical Postgres, if you do not want a graphical Postgres, you are on your own!
 brew install --cask postgres
 ```

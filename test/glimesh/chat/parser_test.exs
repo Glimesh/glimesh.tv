@@ -1,6 +1,8 @@
 defmodule Glimesh.Chat.ParserTest do
   use Glimesh.DataCase
 
+  import Glimesh.EmotesFixtures
+
   alias Glimesh.Chat.Parser
   alias Glimesh.Chat.Token
 
@@ -17,12 +19,30 @@ defmodule Glimesh.Chat.ParserTest do
   #  IO.puts("Time to Parser: #{benchmark}μs") ~186μs on a Mac M1 16GB
 
   describe "chat parser" do
-    test "lexes a simple message" do
+    setup do
+      %{static: static_global_emote_fixture(), animated: animated_global_emote_fixture()}
+    end
+
+    test "lexes a simple message", %{static: static, animated: animated} do
       assert Parser.parse("") == [%Token{type: "text", text: ""}]
       assert Parser.parse("Hello world") == [%Token{type: "text", text: "Hello world"}]
 
-      assert Parser.parse(":glimwow:") == [
-               %Token{type: "emote", text: ":glimwow:", src: "/emotes/svg/glimwow.svg"}
+      assert Parser.parse(":glimchef:") == [
+               %Token{
+                 type: "emote",
+                 text: ":glimchef:",
+                 src: Glimesh.Emotes.full_url(static)
+               }
+             ]
+
+      allow_animated_emotes = %Parser.Config{allow_animated_emotes: true}
+
+      assert Parser.parse(":glimdance:", allow_animated_emotes) == [
+               %Token{
+                 type: "emote",
+                 text: ":glimdance:",
+                 src: Glimesh.Emotes.full_url(animated)
+               }
              ]
 
       assert Parser.parse("https://glimesh.tv") == [
@@ -41,7 +61,7 @@ defmodule Glimesh.Chat.ParserTest do
       assert Parser.parse("example.") == [%Token{type: "text", text: "example."}]
     end
 
-    test "respects the config" do
+    test "respects the config", %{static: static} do
       no_links = %Parser.Config{allow_links: false}
       no_emotes = %Parser.Config{allow_emotes: false}
       no_animated_emotes = %Parser.Config{allow_animated_emotes: false}
@@ -50,30 +70,37 @@ defmodule Glimesh.Chat.ParserTest do
                %Token{type: "text", text: "https://example.com/"}
              ]
 
-      assert Parser.parse(":glimwow:", no_emotes) == [
-               %Token{type: "text", text: ":glimwow:"}
+      assert Parser.parse(":glimchef:", no_emotes) == [
+               %Token{type: "text", text: ":glimchef:"}
              ]
 
-      assert Parser.parse(":glimfury: :glimwow:", no_animated_emotes) == [
-               %Token{type: "text", text: ":glimfury:"},
+      assert Parser.parse(":glimdance: :glimchef:", no_animated_emotes) == [
+               %Token{type: "text", text: ":glimdance:"},
                %Token{type: "text", text: " "},
-               %Token{type: "emote", text: ":glimwow:", src: "/emotes/svg/glimwow.svg"}
+               %Token{
+                 type: "emote",
+                 text: ":glimchef:",
+                 src: Glimesh.Emotes.full_url(static)
+               }
              ]
     end
 
-    test "lexes a complex message" do
+    test "lexes a complex message", %{static: static, animated: animated} do
+      allow_animated_emotes = %Parser.Config{allow_animated_emotes: true}
+
       parsed =
         Parser.parse(
-          "Hello https://glimesh.tv :glimwow: world! How:glimlove:are https://google.com you!"
+          "Hello https://glimesh.tv :glimchef: world! How:glimdance:are https://google.com you!",
+          allow_animated_emotes
         )
 
       assert parsed == [
                %Token{type: "text", text: "Hello "},
                %Token{type: "url", text: "https://glimesh.tv", url: "https://glimesh.tv"},
                %Token{type: "text", text: " "},
-               %Token{type: "emote", text: ":glimwow:", src: "/emotes/svg/glimwow.svg"},
+               %Token{type: "emote", text: ":glimchef:", src: Glimesh.Emotes.full_url(static)},
                %Token{type: "text", text: " world! How"},
-               %Token{type: "emote", text: ":glimlove:", src: "/emotes/svg/glimlove.svg"},
+               %Token{type: "emote", text: ":glimdance:", src: Glimesh.Emotes.full_url(animated)},
                %Token{type: "text", text: "are "},
                %Token{type: "url", text: "https://google.com", url: "https://google.com"},
                %Token{type: "text", text: " you!"}
