@@ -1,10 +1,4 @@
 <div id="chat-form" phx-hook="Chat" data-emotes="<%= @emotes %>" data-theme="<%= @theme %>">
-    <%= if @disabled do %>
-    <div id="channel-footer" class="channel-footer">
-        <span>You must be logged in to chat. <%= link "Register", to: Routes.user_registration_path(@socket, :new) %></span>
-    </div>
-    <% end %>
-
     <%= f = form_for @changeset, "#",
     id: "chat_message-form",
     class: ["chat-form"],
@@ -26,7 +20,13 @@
         </div>
         <% end %>
 
-        <%= text_input f, :message, class: "mail-write-box form-control", placeholder: gettext("Send a message"), autocomplete: "off", maxlength: "255", disabled: @disabled %>
+        <%= if @disabled do %>
+        <div class="input-group-prepend input-group-mock-parent flex-grow-1">
+            <span class="input-group-text input-group-mock-input d-inline-block flex-grow-1"><%= link "Register", to: Routes.user_registration_path(@socket, :new) %> or <%= link "Login", to: Routes.user_session_path(@socket, :new) %> to chat!</span>
+        </div>
+        <% else %>
+        <%= text_input f, :message, class: "form-control", placeholder: gettext("Send a message"), autocomplete: "off", maxlength: "255", disabled: @disabled %>
+        <% end %>
 
         <div id="chat-settings" class="input-group-append dropup">
             <button type="button" class="input-group-text dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></button>

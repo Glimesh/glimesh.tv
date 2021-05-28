@@ -110,6 +110,40 @@
         }
     }
 
+    .channel-overlay-footer {
+        cursor: pointer;
+
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        width: 240px;
+        bottom: 50px;
+
+        span {
+            color: $warning;
+            margin-bottom: 0;
+            background: $color-cosmic-blue;
+            padding: 7px 20px;
+            border-radius: 5px;
+            box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    .input-group-mock-input {
+        background-color: $input-bg;
+        color: $body-color;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .channel-overlay-footer:hover {
+        span {
+            text-decoration: underline;
+        }
+    }
+
     .chat-form {
         flex: 0 0;
     }

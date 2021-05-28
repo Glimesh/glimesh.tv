@@ -32,7 +32,15 @@ defmodule Glimesh.Chat.Parser do
   end
 
   def parse(chat_message, %Config{} = config) do
-    emotes = Glimesh.Emote.list_emotes_by_key_and_image(config.allow_animated_emotes)
+    # Emotes is just a map of emotes and images the user has access to post.
+    # Since this is loaded on every message sent, we should cache this.
+    emotes =
+      Glimesh.Emotes.list_emotes(config.allow_animated_emotes)
+      |> Enum.map(fn emote ->
+        {":#{emote.emote}:", Glimesh.Emotes.full_url(emote)}
+      end)
+      |> Enum.into(%{})
+
     config = Map.put(config, :emotes, emotes)
 
     parsed =
@@ -59,12 +67,9 @@ defmodule Glimesh.Chat.Parser do
             Regex.match?(@hyperlink_regex, item) ->
           url_token(item)
 
-        config.allow_emotes and String.starts_with?(item, ":") ->
-          # credo:disable-for-next-line
-          case Map.get(config.emotes, item) do
-            nil -> text_token(item)
-            src -> emote_token(item, src)
-          end
+        config.allow_emotes and String.starts_with?(item, ":") and
+            Map.has_key?(config.emotes, item) ->
+          emote_token(item, Map.get(config.emotes, item))
 
         true ->
           text_token(item)

@@ -486,7 +486,7 @@ msgstr "We streamen af ​​en toe speciale evenementen of andere unieke stream
 
 #: lib/glimesh_web/live/streams_live/list.html.leex:13
 msgid "%{category} Streams Coming Soon"
-msgstr "% {category} streams binnenkort beschikbaar"
+msgstr "%{category} streams binnenkort beschikbaar"
 
 #: lib/glimesh_web/live/user_live/index.ex:14
 #: lib/glimesh_web/live/user_live/index.html.leex:2
@@ -528,7 +528,7 @@ msgstr "Wat heeft deze gebruiker fout gedaan"
 #: lib/glimesh_web/live/streams_live/list.html.leex:2
 #: lib/glimesh_web/live/streams_live/list.html.leex:27
 msgid "%{category} Streams"
-msgstr "% {category} streams"
+msgstr "%{category} streams"
 
 #: lib/glimesh_web/live/admin/category_live/index.html.leex:30
 #: lib/glimesh_web/live/user_live/components/follow_button.ex:12
@@ -611,7 +611,7 @@ msgstr "Voer je 2FA code in!"
 
 #: lib/glimesh_web/controllers/user_session_controller.ex:28
 msgid "Invalid 2FA code, if you need help please email %{email}"
-msgstr "Ongeldige 2FA-code, stuur een e-mail naar% {email} als u hulp nodig heeft"
+msgstr "Ongeldige 2FA-code, stuur een e-mail naar %{email} als u hulp nodig heeft"
 
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:123
 #: lib/glimesh_web/templates/layout/user-sidebar.html.eex:9
@@ -678,7 +678,7 @@ msgstr "Applicaties"
 
 #: lib/glimesh_web/templates/oauth2_provider/authorization/new.html.eex:16
 msgid "Are you sure you wish to authorize %{name} to use your account? This application will be able to:"
-msgstr "Weet u zeker dat u% {name} toestemming wilt geven om uw account te gebruiken? Deze applicatie kan:"
+msgstr "Weet u zeker dat u %{name} toestemming wilt geven om uw account te gebruiken? Deze applicatie kan:"
 
 #: lib/glimesh_web/templates/layout/user-sidebar.html.eex:21
 msgid "Authorizations"
@@ -944,7 +944,7 @@ msgstr "Bedankt voor het steunen van Glimesh. Je oprechte support wordt gewaarde
 
 #: lib/glimesh_web/controllers/user_session_controller.ex:58
 msgid "User account is banned. Please contact support at %{email} for more information."
-msgstr "Gebruikersaccount is verbannen. Neem contact op met support via % {email} voor meer informatie."
+msgstr "Gebruikersaccount is verbannen. Neem contact op met support via %{email} voor meer informatie."
 
 #: lib/glimesh_web/templates/user_applications/index.html.eex:24
 msgid "Want to build a chat bot, an online tool, or other service that integrates with Glimesh? You're in the right place! Create an Application to get started and check out our API documentation if you need some guidance."
@@ -1167,7 +1167,7 @@ msgstr "Rechten"
 
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:119
 msgid "Profile Content (%{a_start}Markdown%{a_end} supported)"
-msgstr "Profielinhoud (% {a_start} Markdown% {a_end} ondersteund)"
+msgstr "Profielinhoud (%{a_start} Markdown %{a_end} ondersteund)"
 
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:44
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:23

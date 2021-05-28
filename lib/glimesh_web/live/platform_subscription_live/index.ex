@@ -25,7 +25,7 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
      |> assign(:stripe_customer_id, Accounts.get_stripe_customer_id(user))
      |> assign(:subscription, subscription)
      |> assign(:canceling, if(subscription, do: subscription.is_canceling, else: false))
-     |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
+     |> assign(:is_platform_subscriber, Payments.is_platform_subscriber?(user))}
   end
 
   @impl true
@@ -75,7 +75,7 @@ defmodule GlimeshWeb.PlatformSubscriptionLive.Index do
        |> assign(:user, Accounts.get_user!(user.id))
        |> assign(:show_subscription, false)
        |> assign(:subscription, Payments.get_platform_subscription(user))
-       |> assign(:has_platform_subscription, Payments.has_platform_subscription?(user))}
+       |> assign(:is_platform_subscriber, Payments.is_platform_subscriber?(user))}
     else
       # {:pending_requires_action, error_msg} ->
       #   {:noreply, socket |> assign(:stripe_error, error_msg)}
