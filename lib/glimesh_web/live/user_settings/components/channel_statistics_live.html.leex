@@ -3,8 +3,20 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<td>Stream started</td>
-				<td>Stream title</td>
+				<th>Stream title</th>
+				<th>Stream started</th>
+				<th>Stream ended</th>
+				<th>Category</th>
+				<th>Sub-category</th>
+				<th>Count Viewers</th>
+				<th>Count Chatters</th>
+				<th>Average Viewers</th>
+				<th>Average Chatters</th>
+				<th>New Subscribers</th>
+				<th>Resubscribers</th>
+				<th>Category Tags</th>
+				<th>Global Tags</th>
+
 			</tr>
 		</thead>
 
@@ -12,8 +24,19 @@
 
 			<tr>
 
-				<td><%= stream.started_at %></td>
-				<td><%= stream.title %></td>
+				<td>Title: <%= stream.title %></td>
+				<td>Started: <%= stream.started_at %></td>
+				<td>Ended: <%= stream.ended_at %></td>
+				<td>ID: <%= stream.category_id %></td>
+				<td>ID: <%= stream.subcategory_id %></td>
+				<td>Count: <%= stream.count_viewers %></td>
+				<td>Count: <%= stream.count_chatters %></td>
+				<td>Avg: <%= stream.avg_viewers %></td>
+				<td>Avg: <%= stream.avg_chatters %></td>
+				<td>Subs: <%= stream.new_subscribers %></td>
+				<td>Resubs: <%= stream.resub_subscribers %></td>
+				<td>Tags: <%= stream.category_tags %></td>
+				<td>Tags: <%= stream.global_tags %></td>
 
 			</tr>
 
