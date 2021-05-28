@@ -107,8 +107,8 @@ defmodule Glimesh.Schema.ChatTypes do
     field :text, :string
 
     field :url, :string do
-      # Resolve URL to our actual public route
       resolve(fn token, _, _ ->
+        # This is important for our new emotes system which needs a full qualified URL.
         {:ok, GlimeshWeb.Router.Helpers.static_url(GlimeshWeb.Endpoint, token.src)}
       end)
     end

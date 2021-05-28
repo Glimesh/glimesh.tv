@@ -66,6 +66,11 @@ defmodule GlimeshWeb.ChatLive.Index do
   end
 
   @impl true
+  def handle_event("scroll_to_bottom", _, socket) do
+    {:noreply, push_event(socket, "scroll_to_bottom", %{})}
+  end
+
+  @impl true
   def handle_event("short_timeout_user", %{"user" => to_ban_user}, socket) do
     Chat.short_timeout_user(
       socket.assigns.user,

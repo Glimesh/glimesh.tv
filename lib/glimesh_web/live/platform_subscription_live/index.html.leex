@@ -18,7 +18,7 @@
                         <li><%= gettext("Our Thanks!") %></li>
                     </ul>
 
-                    <%= if @has_platform_subscription == false do %>
+                    <%= if @is_platform_subscriber == false do %>
                     <button phx-click="select-platform-supporter" class="button btn btn-primary btn-block mt-2"><%= gettext("Select") %></button>
                     <% end %>
                 </div>
@@ -39,7 +39,7 @@
                         <li><%= gettext("Additional Love & Thanks!") %></li>
                     </ul>
 
-                    <%= if @has_platform_subscription == false do %>
+                    <%= if @is_platform_subscriber == false do %>
                     <button phx-click="select-platform-founder" class="button btn btn-primary btn-block mt-2"><%= gettext("Select") %></button>
                     <% end %>
                 </div>
@@ -48,7 +48,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <%= if @has_platform_subscription do %>
+                    <%= if @is_platform_subscriber do %>
                     <h4><%= gettext("You're subscribed!") %></h4>
 
 

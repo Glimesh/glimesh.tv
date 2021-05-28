@@ -47,16 +47,21 @@ defmodule Glimesh.Chat.RendererTest do
       assert tokens == [%Token{type: "text", text: "<h2>Hello world</h2>"}]
       assert Renderer.render_html(tokens) == "&lt;h2&gt;Hello world&lt;/h2&gt;"
 
-      tokens = Parser.parse("<h2>Hello :glimwow: world</h2>")
+      emote = Glimesh.EmotesFixtures.static_global_emote_fixture()
+      emote_url = Glimesh.Emotes.full_url(emote)
+
+      tokens = Parser.parse("<h2>Hello :glimchef: world</h2>")
 
       assert tokens == [
                %Token{type: "text", text: "<h2>Hello "},
-               %Token{type: "emote", src: "/emotes/svg/glimwow.svg", text: ":glimwow:"},
+               %Token{type: "emote", src: emote_url, text: ":glimchef:"},
                %Token{type: "text", text: " world</h2>"}
              ]
 
       assert Renderer.render_html(tokens) ==
-               "&lt;h2&gt;Hello <img alt=\":glimwow:\" draggable=\"false\" height=\"32px\" src=\"/emotes/svg/glimwow.svg\" width=\"32px\"> world&lt;/h2&gt;"
+               "&lt;h2&gt;Hello <img alt=\":glimchef:\" draggable=\"false\" height=\"32px\" src=\"#{
+                 emote_url
+               }\" width=\"32px\"> world&lt;/h2&gt;"
     end
   end
 end

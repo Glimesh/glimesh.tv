@@ -2,6 +2,7 @@ defmodule GlimeshWeb.Api.ChatTest do
   use GlimeshWeb.ConnCase
 
   import Glimesh.AccountsFixtures
+  import Glimesh.EmotesFixtures
 
   alias Glimesh.Streams
 
@@ -70,7 +71,7 @@ defmodule GlimeshWeb.Api.ChatTest do
   end
 
   describe "chat api with user's access token" do
-    setup [:register_and_set_user_token, :create_channel]
+    setup [:register_and_set_user_token, :create_channel, :create_emote]
 
     test "can send a chat message", %{conn: conn, user: user, channel: channel} do
       conn =
@@ -95,20 +96,33 @@ defmodule GlimeshWeb.Api.ChatTest do
              }
     end
 
-    test "can send a emote based message", %{conn: conn, user: user, channel: channel} do
+    test "can send a emote based message", %{
+      conn: conn,
+      user: user,
+      channel: channel,
+      emote: emote
+    } do
       conn =
         post(conn, "/api", %{
           "query" => @create_chat_message_query,
           "variables" => %{
             channelId: "#{channel.id}",
             message: %{
-              message: "Hello :glimwow: world!"
+              message: "Hello :glimchef: world!"
             }
           }
         })
 
+      expected_path = Glimesh.Emotes.full_url(emote)
+
+      expected_url =
+        GlimeshWeb.Router.Helpers.static_url(
+          GlimeshWeb.Endpoint,
+          expected_path
+        )
+
       assert json_response(conn, 200)["data"]["createChatMessage"] == %{
-               "message" => "Hello :glimwow: world!",
+               "message" => "Hello :glimchef: world!",
                "user" => %{
                  "username" => user.username
                },
@@ -116,9 +130,9 @@ defmodule GlimeshWeb.Api.ChatTest do
                  %{"type" => "text", "text" => "Hello "},
                  %{
                    "type" => "emote",
-                   "text" => ":glimwow:",
-                   "src" => "/emotes/svg/glimwow.svg",
-                   "url" => "http://localhost:4002/emotes/svg/glimwow.svg"
+                   "text" => ":glimchef:",
+                   "src" => expected_path,
+                   "url" => expected_url
                  },
                  %{"type" => "text", "text" => " world!"}
                ]
@@ -186,5 +200,9 @@ defmodule GlimeshWeb.Api.ChatTest do
   def create_channel(%{user: user}) do
     {:ok, channel} = Streams.create_channel(user)
     %{channel: channel}
+  end
+
+  def create_emote(_) do
+    %{emote: static_global_emote_fixture()}
   end
 end

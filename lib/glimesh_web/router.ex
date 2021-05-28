@@ -165,13 +165,6 @@ defmodule GlimeshWeb.Router do
 
     live_dashboard "/phoenix/dashboard", metrics: GlimeshWeb.Telemetry, ecto_repos: [Glimesh.Repo]
 
-    get "/blog/new", ArticleController, :new
-    get "/blog/:slug/edit", ArticleController, :edit
-    post "/blog", ArticleController, :create
-    patch "/blog/:slug", ArticleController, :update
-    put "/blog/:slug", ArticleController, :update
-    delete "/blog/:slug", ArticleController, :delete
-
     live "/categories", Admin.CategoryLive.Index, :index
     live "/categories/new", Admin.CategoryLive.Index, :new
     live "/categories/:id/edit", Admin.CategoryLive.Index, :edit
@@ -213,6 +206,8 @@ defmodule GlimeshWeb.Router do
 
     # Audit log
     get "/audit-log", GctController, :audit_log
+
+    get "/emotes", GctController, :emotes
   end
 
   scope "/", GlimeshWeb do
@@ -250,6 +245,9 @@ defmodule GlimeshWeb.Router do
     get "/users/confirm/:token", UserConfirmationController, :confirm
 
     post "/quick_preferences", QuickPreferenceController, :update_preference
+
+    # Short Links
+    get "/s/event-form", ShortLinkController, :event_form
 
     # This must be the last route
     live "/:username", UserLive.Stream, :index
