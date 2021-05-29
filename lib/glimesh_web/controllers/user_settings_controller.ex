@@ -25,6 +25,16 @@ defmodule GlimeshWeb.UserSettingsController do
     )
   end
 
+  def emotes(conn, _params) do
+    conn
+    |> Phoenix.LiveView.Controller.live_render(GlimeshWeb.ChannelSettingsLive.ChannelEmotes)
+  end
+
+  def upload_emotes(conn, _params) do
+    conn
+    |> Phoenix.LiveView.Controller.live_render(GlimeshWeb.ChannelSettingsLive.UploadEmotes)
+  end
+
   def preference(conn, _params) do
     render(conn, "preference.html", page_title: format_page_title(gettext("Preferences")))
   end

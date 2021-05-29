@@ -64,6 +64,13 @@ defmodule GlimeshWeb.LayoutView do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :stream])
   end
 
+  def active_user_emotes_path(conn) do
+    truthy_active(
+      controller_action(conn) == [GlimeshWeb.UserSettingsController, :emotes] or
+        controller_action(conn) == [GlimeshWeb.UserSettingsController, :upload_emotes]
+    )
+  end
+
   def active_user_payments_path(conn) do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserPaymentsController, :index])
   end

@@ -1,0 +1,53 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-10">
+                <h4>Channel Emotes</h4>
+            </div>
+            <div class="col-2">
+                <%= link gettext("Upload Emotes"), class: "btn btn-primary btn-block", to: Routes.user_settings_path(@socket, :upload_emotes) %>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-info" role="alert">
+            <strong>Early Feature Alert!</strong> Hey there! Channel Emotes are still under heavy development, while we are working through how to make the best emote system we can, <strong>we're limiting all channels to a single emote</strong>. We're continually building this new feature, and we'd love your opinion on how we should do it. Thank you!
+        </div>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Debitis in officiis cum laboriosam veniam, iusto quo quia maxime. Minima ratione obcaecati blanditiis vitae ipsa magni earum totam ipsam facilis praesentium.</p>
+
+        <h5>Static Emotes</h5>
+        <div class="row">
+            <%= for emote <- @static_emotes do %>
+            <div class="col-md-3 mb-4">
+                <div class="text-center">
+                    <img src="<%= Glimesh.Emotes.full_url(emote) %>" height="128px" width="128px" />
+                    <figcaption><code>:<%= emote.emote %>:</code></figcaption>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1" checked>
+                    <label class="custom-control-label" for="customCheck1">Require Channel Sub</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1" checked>
+                    <label class="custom-control-label" for="customCheck1">Allow Global Usage</label>
+                </div>
+            </div>
+            <% end %>
+        </div>
+        <h5>Animated Emotes</h5>
+        <div class="row">
+            <%= for emote <- @animated_emotes do %>
+            <div class="col-md-3 mb-4 mt-4">
+                <div class="text-center">
+                    <img src="<%= Glimesh.Emotes.full_url(emote) %>" height="128px" width="128px" />
+                    <figcaption><code>:<%= emote.emote %>:</code></figcaption>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1" checked>
+                    <label class="custom-control-label" for="customCheck1">Allow Global Usage</label>
+                </div>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>

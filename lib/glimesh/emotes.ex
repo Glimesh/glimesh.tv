@@ -40,6 +40,24 @@ defmodule Glimesh.Emotes do
     Repo.all(from(e in Emote, where: e.animated == true, order_by: e.emote))
   end
 
+  def list_static_emotes_for_channel(%Channel{id: channel_id}) do
+    Repo.all(
+      from(e in Emote,
+        where: e.animated == false and e.channel_id == ^channel_id,
+        order_by: e.emote
+      )
+    )
+  end
+
+  def list_animated_emotes_for_channel(%Channel{id: channel_id}) do
+    Repo.all(
+      from(e in Emote,
+        where: e.animated == true and e.channel_id == ^channel_id,
+        order_by: e.emote
+      )
+    )
+  end
+
   def create_global_emote(%User{} = user, attrs \\ %{}) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_global_emote, user) do
       %Emote{}
@@ -53,7 +71,7 @@ defmodule Glimesh.Emotes do
       %Emote{
         channel: channel
       }
-      |> Emote.changeset(attrs)
+      |> Emote.channel_changeset(channel.emote_prefix, attrs)
       |> Repo.insert()
     end
   end
