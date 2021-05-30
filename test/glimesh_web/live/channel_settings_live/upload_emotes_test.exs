@@ -12,7 +12,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotesTest do
     type: "image/svg+xml"
   }
 
-  describe "Channel Emotes Management" do
+  describe "Channel Emotes Uploading" do
     setup [:register_and_log_in_streamer]
 
     test "can set channel prefix", %{conn: conn, user: user} do

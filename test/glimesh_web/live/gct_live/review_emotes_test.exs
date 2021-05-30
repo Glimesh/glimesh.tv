@@ -29,10 +29,6 @@ defmodule GlimeshWeb.GctLive.ReviewEmotesTest do
         live_isolated(conn, GlimeshWeb.GctLive.ReviewEmotes, session: %{"user" => user})
 
       assert render(view) =~ "testgglimchef"
-
-      assert view
-             |> element("button", "Approve")
-             |> render_click() =~ "Approved testgglimchef"
     end
 
     test "can see and reject pending emotes", %{

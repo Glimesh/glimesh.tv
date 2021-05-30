@@ -9,6 +9,7 @@ defmodule Glimesh.EmotesTest do
   @static_attrs %{
     emote: "someemote",
     animated: false,
+    approved_at: NaiveDateTime.utc_now(),
     static_file: %Plug.Upload{
       content_type: "image/svg+xml",
       path: "test/assets/glimchef.svg",
@@ -19,6 +20,7 @@ defmodule Glimesh.EmotesTest do
   @animated_attrs %{
     emote: "animated",
     animated: true,
+    approved_at: NaiveDateTime.utc_now(),
     animated_file: %Plug.Upload{
       content_type: "image/gif",
       path: "test/assets/glimdance.gif",
@@ -72,12 +74,25 @@ defmodule Glimesh.EmotesTest do
       assert emote.emote == "testgsomeemote"
     end
 
+    test "create_channel_emote/3 doesnt work if you dont have a prefix", %{} do
+      streamer = streamer_fixture()
+
+      assert {:error, changeset_error} =
+               Emotes.create_channel_emote(streamer, streamer.channel, @static_attrs)
+
+      assert changeset_error.errors == [emote: {"Emote prefix does not exist for channel", []}]
+    end
+
     test "create_channel_emote/3 as a streamer creates an emote", %{
       streamer: streamer,
       channel: channel
     } do
       assert {:ok, %Emote{} = emote} =
-               Emotes.create_channel_emote(streamer, channel, @static_attrs)
+               Emotes.create_channel_emote(
+                 streamer,
+                 channel,
+                 Map.merge(@static_attrs, %{approved_at: nil})
+               )
 
       assert emote.emote == "testgsomeemote"
       assert is_nil(emote.approved_at)
@@ -91,7 +106,11 @@ defmodule Glimesh.EmotesTest do
       channel: channel
     } do
       assert {:ok, %Emote{} = emote} =
-               Emotes.create_channel_emote(streamer, channel, @static_attrs)
+               Emotes.create_channel_emote(
+                 streamer,
+                 channel,
+                 Map.merge(@static_attrs, %{approved_at: nil})
+               )
 
       assert emote.emote == "testgsomeemote"
 
@@ -115,6 +134,12 @@ defmodule Glimesh.EmotesTest do
     test "create_global_emote/2 with with animated image works", %{admin: admin} do
       assert {:ok, %Emote{} = emote} = Emotes.create_global_emote(admin, @static_attrs)
       assert emote.emote == "someemote"
+    end
+
+    test "list_emotes_for_js/1 includes global emotes", %{admin: admin} do
+      assert {:ok, %Emote{} = emote} = Emotes.create_global_emote(admin, @static_attrs)
+
+      assert Emotes.list_emotes_for_js() =~ ":someemote:"
     end
   end
 end
