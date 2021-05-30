@@ -12,16 +12,11 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
     channel = Glimesh.ChannelLookups.get_channel_for_user(user)
     can_upload = !is_nil(channel.emote_prefix)
 
-    static_emotes = Emotes.list_static_emotes()
-    animated_emotes = Emotes.list_animated_emotes()
-
     {:ok,
      socket
      |> put_page_title(gettext("Upload Channel Emotes"))
      |> assign(:user, user)
      |> assign(:channel, channel)
-     |> assign(:static_emotes, static_emotes)
-     |> assign(:animated_emotes, animated_emotes)
      |> assign(:emote_settings, Streams.change_emote_settings(channel))
      |> assign(:can_upload, can_upload)
      |> assign(:uploaded_files, [])
@@ -108,7 +103,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
          socket
          |> assign(:channel, channel)
          |> assign(:can_upload, !is_nil(channel.emote_prefix))
-         |> put_flash(:info, "Updated emote settings.")}
+         |> put_flash(:info, "Updated channel emote settings.")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, emote_settings: changeset)}

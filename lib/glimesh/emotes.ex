@@ -128,6 +128,10 @@ defmodule Glimesh.Emotes do
     Repo.get_by(Emote, id: id)
   end
 
+  def get_emote_by_emote(emote) when is_binary(emote) do
+    Repo.get_by(Emote, emote: emote)
+  end
+
   def create_global_emote(%User{} = user, attrs \\ %{}) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_global_emote, user) do
       %Emote{}

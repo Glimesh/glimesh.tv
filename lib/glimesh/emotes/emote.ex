@@ -55,6 +55,11 @@ defmodule Glimesh.Emotes.Emote do
     |> put_change(:emote, prefix <> get_field(emote, :emote))
   end
 
+  defp prefix_emote(emote, _) do
+    emote
+    |> add_error(:emote, "Emote prefix does not exist for channel")
+  end
+
   defp validate_conditional_file(changeset, attrs) do
     if get_field(changeset, :animated) do
       changeset

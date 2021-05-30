@@ -80,6 +80,27 @@ defmodule Glimesh.EmotesTest do
                Emotes.create_channel_emote(streamer, channel, @static_attrs)
 
       assert emote.emote == "testgsomeemote"
+      assert is_nil(emote.approved_at)
+      assert emote.channel_id == channel.id
+
+      assert Glimesh.Emotes.list_emotes_for_channel(channel) == []
+    end
+
+    test "create_channel_emote/3 requires approval to be used", %{
+      streamer: streamer,
+      channel: channel
+    } do
+      assert {:ok, %Emote{} = emote} =
+               Emotes.create_channel_emote(streamer, channel, @static_attrs)
+
+      assert emote.emote == "testgsomeemote"
+
+      assert Glimesh.Emotes.list_emotes_for_channel(channel) == []
+
+      {:ok, emote} = Glimesh.Emotes.approve_emote(admin_fixture(), emote)
+      emotes = Glimesh.Emotes.list_emotes_for_channel(channel)
+      assert length(emotes) == 1
+      assert hd(emotes).id == emote.id
     end
 
     test "create_global_emote/2 as a regular user errors", %{streamer: streamer} do
