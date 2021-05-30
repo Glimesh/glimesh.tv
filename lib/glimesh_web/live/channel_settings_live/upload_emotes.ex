@@ -1,6 +1,9 @@
 defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
   use GlimeshWeb, :live_view
 
+  alias Glimesh.Emotes
+  alias Glimesh.Streams
+
   @impl true
   def mount(_, session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
@@ -9,8 +12,8 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
     channel = Glimesh.ChannelLookups.get_channel_for_user(user)
     can_upload = !is_nil(channel.emote_prefix)
 
-    static_emotes = Glimesh.Emotes.list_static_emotes()
-    animated_emotes = Glimesh.Emotes.list_animated_emotes()
+    static_emotes = Emotes.list_static_emotes()
+    animated_emotes = Emotes.list_animated_emotes()
 
     {:ok,
      socket
@@ -19,7 +22,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
      |> assign(:channel, channel)
      |> assign(:static_emotes, static_emotes)
      |> assign(:animated_emotes, animated_emotes)
-     |> assign(:emote_settings, Glimesh.Streams.change_emote_settings(channel))
+     |> assign(:emote_settings, Streams.change_emote_settings(channel))
      |> assign(:can_upload, can_upload)
      |> assign(:uploaded_files, [])
      |> allow_upload(:emote, accept: ~w(.svg .gif), max_entries: 10)}
@@ -54,7 +57,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
             }
           end
 
-        Glimesh.Emotes.create_channel_emote(
+        Emotes.create_channel_emote(
           socket.assigns.user,
           socket.assigns.channel,
           Map.merge(
@@ -66,10 +69,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
         )
       end)
 
-    {successful, errored} =
-      Enum.split_with(attempted_uploads, fn {status, _} -> status == :ok end)
-
-    successful_emotes = Enum.map(successful, fn {:ok, emote} -> emote end)
+    {_, errored} = Enum.split_with(attempted_uploads, fn {status, _} -> status == :ok end)
 
     errors =
       Enum.map(errored, fn {:error, changeset} ->
@@ -82,16 +82,19 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
 
     {:noreply,
      socket
-     |> put_flash(:info, "Successfully uploaded emotes")
+     |> put_flash(
+       :info,
+       "Successfully uploaded emotes, pending review by the Glimesh Community Team"
+     )
      |> put_flash(:error, errors)
-     |> update(:emotes, &(&1 ++ successful_emotes))}
+     |> redirect(to: Routes.user_settings_path(socket, :emotes))}
   end
 
   @impl Phoenix.LiveView
   def handle_event("validate_emote_settings", %{"channel" => attrs}, socket) do
     changeset =
       socket.assigns.channel
-      |> Glimesh.Streams.change_emote_settings(attrs)
+      |> Streams.change_emote_settings(attrs)
       |> Map.put(:action, :update)
 
     {:noreply, assign(socket, emote_settings: changeset)}
@@ -99,7 +102,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
 
   @impl Phoenix.LiveView
   def handle_event("save_emote_settings", %{"channel" => attrs}, socket) do
-    case Glimesh.Streams.update_emote_settings(socket.assigns.user, socket.assigns.channel, attrs) do
+    case Streams.update_emote_settings(socket.assigns.user, socket.assigns.channel, attrs) do
       {:ok, channel} ->
         {:noreply,
          socket

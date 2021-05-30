@@ -88,6 +88,14 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     color: #FF4343;
 }
 
+.close.close-delete {
+    color: #FF4343;
+
+    &:hover {
+        color: #FF4343;
+    }
+}
+
 .stream-key:not(:focus) {
     color: transparent;
     text-shadow: 0 0 10px var(--input-color);

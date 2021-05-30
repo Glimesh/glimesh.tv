@@ -19,10 +19,14 @@
         <div class="row">
             <%= for emote <- @static_emotes do %>
             <div class="col-md-3 mb-4">
+                <button phx-click="delete_emote" phx-value-id="<%= emote.id %>" data-confirm="Are you sure you wish to delete this emote? It is nonreversible." type="button" class="close close-delete" aria-label="Delete Emote">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <div class="text-center">
                     <img src="<%= Glimesh.Emotes.full_url(emote) %>" height="128px" width="128px" />
                     <figcaption><code>:<%= emote.emote %>:</code></figcaption>
                 </div>
+                <!--
                 <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" id="customCheck1" checked>
                     <label class="custom-control-label" for="customCheck1">Require Channel Sub</label>
@@ -31,6 +35,7 @@
                     <input type="checkbox" class="custom-control-input" id="customCheck1" checked>
                     <label class="custom-control-label" for="customCheck1">Allow Global Usage</label>
                 </div>
+                -->
             </div>
             <% end %>
         </div>
@@ -38,6 +43,9 @@
         <div class="row">
             <%= for emote <- @animated_emotes do %>
             <div class="col-md-3 mb-4 mt-4">
+                <button phx-click="delete_emote" phx-value-id="<%= emote.id %>" data-confirm="Are you sure you wish to delete this emote? It is nonreversible." type="button" class="close close-delete" aria-label="Delete Emote">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <div class="text-center">
                     <img src="<%= Glimesh.Emotes.full_url(emote) %>" height="128px" width="128px" />
                     <figcaption><code>:<%= emote.emote %>:</code></figcaption>
@@ -46,6 +54,38 @@
                     <input type="checkbox" class="custom-control-input" id="customCheck1" checked>
                     <label class="custom-control-label" for="customCheck1">Allow Global Usage</label>
                 </div>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h4>Submitted Emotes</h4>
+    </div>
+    <div class="card-body">
+        <h5></h5>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem asperiores quas ratione corporis aliquid nam ad fuga voluptas ut, libero unde voluptatum labore harum illo numquam iste aut cupiditate illum?</p>
+        <div class="row">
+            <%= for emote <- @submitted_emotes do %>
+            <div class="col-md-3 mb-4 mt-4">
+                <button phx-click="delete_emote" phx-value-id="<%= emote.id %>" data-confirm="Are you sure you wish to delete this emote? It is nonreversible." type="button" class="close close-delete" aria-label="Delete Emote">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="text-center">
+                    <img src="<%= Glimesh.Emotes.full_url(emote) %>" height="128px" width="128px" />
+                    <figcaption><code>:<%= emote.emote %>:</code></figcaption>
+
+                    <%= if emote.rejected_at do %>
+                    <span class="badge badge-danger">Rejected</span>
+                    <% else %>
+                    <span class="badge badge-info">Reviewing</span>
+                    <% end %>
+                </div>
+                <%= if emote.rejected_at do %>
+                <p>Rejected for: <%= emote.rejected_reason %></p>
+                <% end %>
             </div>
             <% end %>
         </div>

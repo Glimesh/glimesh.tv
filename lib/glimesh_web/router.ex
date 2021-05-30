@@ -209,7 +209,8 @@ defmodule GlimeshWeb.Router do
     # Audit log
     get "/audit-log", GctController, :audit_log
 
-    get "/emotes", GctController, :emotes
+    get "/global-emotes", GctController, :global_emotes
+    get "/review-emotes", GctController, :review_emotes
   end
 
   scope "/", GlimeshWeb do

@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.GctLive.ManageEmotes do
+defmodule GlimeshWeb.GctLive.GlobalEmotes do
   use GlimeshWeb, :live_view
 
   @impl true

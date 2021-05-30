@@ -30,7 +30,12 @@ defmodule Glimesh.EmotesTest do
     setup do
       streamer = streamer_fixture()
 
-      {:ok, streamer: streamer, channel: streamer.channel, admin: admin_fixture()}
+      {:ok, channel} =
+        Glimesh.Streams.update_emote_settings(streamer, streamer.channel, %{
+          emote_prefix: "testg"
+        })
+
+      {:ok, streamer: streamer, channel: channel, admin: admin_fixture()}
     end
 
     test "create_global_emote/2 with valid data creates a regular emote", %{admin: admin} do
@@ -64,7 +69,7 @@ defmodule Glimesh.EmotesTest do
       assert {:ok, %Emote{} = emote} =
                Emotes.create_channel_emote(streamer, channel, @static_attrs)
 
-      assert emote.emote == "someemote"
+      assert emote.emote == "testgsomeemote"
     end
 
     test "create_channel_emote/3 as a streamer creates an emote", %{
@@ -74,7 +79,7 @@ defmodule Glimesh.EmotesTest do
       assert {:ok, %Emote{} = emote} =
                Emotes.create_channel_emote(streamer, channel, @static_attrs)
 
-      assert emote.emote == "someemote"
+      assert emote.emote == "testgsomeemote"
     end
 
     test "create_global_emote/2 as a regular user errors", %{streamer: streamer} do

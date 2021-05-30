@@ -12,7 +12,8 @@ defmodule Glimesh.EmotesFixtures do
       Glimesh.Emotes.create_global_emote(admin_fixture(), %{
         emote: "glimchef",
         animated: false,
-        static_file: "test/assets/glimchef.svg"
+        static_file: "test/assets/glimchef.svg",
+        approved_at: NaiveDateTime.utc_now()
       })
 
     emote
@@ -23,7 +24,8 @@ defmodule Glimesh.EmotesFixtures do
       Glimesh.Emotes.create_global_emote(admin_fixture(), %{
         emote: "glimdance",
         animated: true,
-        animated_file: "test/assets/glimdance.gif"
+        animated_file: "test/assets/glimdance.gif",
+        approved_at: NaiveDateTime.utc_now()
       })
 
     emote

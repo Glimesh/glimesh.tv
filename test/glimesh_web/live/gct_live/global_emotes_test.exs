@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.GctLive.ManageEmotesTest do
+defmodule GlimeshWeb.GctLive.GlobalEmotesTest do
   use GlimeshWeb.ConnCase
 
   import Phoenix.LiveViewTest
@@ -17,7 +17,7 @@ defmodule GlimeshWeb.GctLive.ManageEmotesTest do
 
     test "can upload emotes", %{conn: conn, user: user} do
       {:ok, view, _html} =
-        live_isolated(conn, GlimeshWeb.GctLive.ManageEmotes, session: %{"user" => user})
+        live_isolated(conn, GlimeshWeb.GctLive.GlobalEmotes, session: %{"user" => user})
 
       avatar =
         file_input(view, "#emote_upload", :emote, [
@@ -44,7 +44,7 @@ defmodule GlimeshWeb.GctLive.ManageEmotesTest do
         })
 
       {:ok, view, _html} =
-        live_isolated(conn, GlimeshWeb.GctLive.ManageEmotes, session: %{"user" => user})
+        live_isolated(conn, GlimeshWeb.GctLive.GlobalEmotes, session: %{"user" => user})
 
       avatar =
         file_input(view, "#emote_upload", :emote, [
