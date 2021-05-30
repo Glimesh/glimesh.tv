@@ -33,15 +33,40 @@ defmodule Glimesh.Emotes.Emote do
   end
 
   @doc false
-  def channel_changeset(emote, emote_prefix, attrs) do
+  def channel_changeset(emote, %Glimesh.Streams.Channel{} = channel, attrs) do
     # This has to be its own changeset since we need to prefix before we cast_attachments so we can rename the emote.
     emote
     |> cast(attrs, [:emote, :animated, :approved_at])
     |> validate_required([:emote, :animated])
-    |> prefix_emote(emote_prefix)
+    |> prefix_emote(channel.emote_prefix)
     |> validate_length(:emote, min: 2, max: 15)
+    |> validate_channel_max_emotes(channel)
+    |> validate_channel_allow_animated()
     |> validate_conditional_file(attrs)
     |> unique_constraint(:emote)
+  end
+
+  defp validate_channel_max_emotes(emote, channel) do
+    config = Application.get_env(:glimesh, Glimesh.Emotes)
+    emotes = Glimesh.Emotes.list_emotes_for_channel(channel)
+    max = Keyword.get(config, :max_channel_emotes, 100)
+
+    if length(emotes) >= max do
+      emote |> add_error(:emote, "You can only have #{max} emotes at a time.")
+    else
+      emote
+    end
+  end
+
+  defp validate_channel_allow_animated(emote) do
+    config = Application.get_env(:glimesh, Glimesh.Emotes)
+    allow_animated = Keyword.get(config, :allow_channel_animated_emotes, true)
+
+    if get_field(emote, :animated) and allow_animated == false do
+      emote |> add_error(:emote, "You cannot upload animated emotes.")
+    else
+      emote
+    end
   end
 
   def review_changeset(emote, reviewer, attrs) do

@@ -145,7 +145,7 @@ defmodule Glimesh.Emotes do
       %Emote{
         channel: channel
       }
-      |> Emote.channel_changeset(channel.emote_prefix, attrs)
+      |> Emote.channel_changeset(channel, attrs)
       |> Repo.insert()
     end
   end

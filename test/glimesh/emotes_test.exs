@@ -122,6 +122,36 @@ defmodule Glimesh.EmotesTest do
       assert hd(emotes).id == emote.id
     end
 
+    test "create_channel_emote/3 respects config emote limit", %{
+      streamer: streamer,
+      channel: channel
+    } do
+      Application.put_env(:glimesh, Glimesh.Emotes, max_channel_emotes: 1)
+
+      assert {:ok, _} = Emotes.create_channel_emote(streamer, channel, @static_attrs)
+
+      assert {:error, changeset_error} =
+               Emotes.create_channel_emote(
+                 streamer,
+                 channel,
+                 Map.merge(@static_attrs, %{emote: "another"})
+               )
+
+      assert changeset_error.errors == [emote: {"You can only have 1 emotes at a time.", []}]
+    end
+
+    test "create_channel_emote/3 respects config animated emotes", %{
+      streamer: streamer,
+      channel: channel
+    } do
+      Application.put_env(:glimesh, Glimesh.Emotes, allow_channel_animated_emotes: false)
+
+      assert {:error, changeset_error} =
+               Emotes.create_channel_emote(streamer, channel, @animated_attrs)
+
+      assert changeset_error.errors == [emote: {"You cannot upload animated emotes.", []}]
+    end
+
     test "create_global_emote/2 as a regular user errors", %{streamer: streamer} do
       assert {:error, :unauthorized} = Emotes.create_global_emote(streamer, @static_attrs)
     end
@@ -137,7 +167,7 @@ defmodule Glimesh.EmotesTest do
     end
 
     test "list_emotes_for_js/1 includes global emotes", %{admin: admin} do
-      assert {:ok, %Emote{} = emote} = Emotes.create_global_emote(admin, @static_attrs)
+      assert {:ok, %Emote{}} = Emotes.create_global_emote(admin, @static_attrs)
 
       assert Emotes.list_emotes_for_js() =~ ":someemote:"
     end

@@ -2,7 +2,6 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotesTest do
   use GlimeshWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import Glimesh.AccountsFixtures
 
   @glimchef %{
     last_modified: 1_594_171_879_000,

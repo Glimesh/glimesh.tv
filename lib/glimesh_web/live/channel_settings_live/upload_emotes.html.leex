@@ -2,14 +2,17 @@
     <div class="col-md-8">
         <div class="card h-100">
             <div class="card-header">
-                <h4>Upload Emotes</h4>
+                <h4><%= gettext("Upload Emotes") %></h4>
             </div>
             <%= if @can_upload do %>
             <%= f = form_for :emotes, "#", [id: "emote_upload", phx_change: :validate_upload, phx_submit: :save_upload] %>
             <div class="card-body drag-dropzone" phx-drop-target="<%= @uploads.emote.ref %>" style="min-height: 300px">
                 <div class="<%= if length(@uploads.emote.entries) > 0, do: "d-none" %> text-center">
-                    <p>Normal emotes should be SVG vector graphics, animated emotes should be GIFs.</p>
-                    <p>You can also drag and drop into this section to upload emotes.</p>
+                    <div class="alert alert-warning" role="alert">
+                        <%= gettext("During early testing animated emotes are disabled and you may only upload one static channel emote.") %>
+                    </div>
+                    <p><%= gettext("Normal emotes should be SVG vector graphics, animated emotes should be GIFs.") %></p>
+                    <p><%= gettext("You can also drag and drop into this section to upload emotes.") %></p>
 
                     <br><br>
 
@@ -52,7 +55,7 @@
             </form>
             <% else %>
             <div class="card-body d-flex align-items-center justify-content-center">
-                <p>Setup your emote prefix on the right before you can upload emotes!</p>
+                <p><%= gettext("Setup your emote prefix on the right before you can upload emotes!") %></p>
             </div>
             <% end %>
         </div>
@@ -60,19 +63,19 @@
     <div class="col-md-4">
         <div class="card h-100">
             <div class="card-header">
-                <h4>Emote Settings</h4>
+                <h4><%= gettext("Emote Settings") %></h4>
             </div>
             <div class="card-body">
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat culpa sunt corporis ut non dicta.</p>
+                <p><%= gettext("Setup your channel emote prefix before you can upload emotes. This will be a unique prefix that allows users to use your emotes.") %></p>
 
                 <%= f = form_for @emote_settings, "#", [id: "emote_settings", phx_change: :validate_emote_settings, phx_submit: :save_emote_settings] %>
                 <div class="form-group">
                     <%= label f, :emote_prefix %>
                     <%= text_input f, :emote_prefix, class: "form-control", minlength: "5", maxlength: "5", "aria-describedby": "emoteHelp" %>
                     <%= error_tag f, :emote_prefix %>
-                    <small id="emoteHelp" class="form-text text-muted">Five character emote prefix, cannot be changed if you have active emotes.</small>
+                    <small id="emoteHelp" class="form-text text-muted"><%= gettext("Five character emote prefix, cannot be changed if you have active emotes.") %></small>
                 </div>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary"><%= gettext("Save") %></button>
                 </form>
             </div>
         </div>

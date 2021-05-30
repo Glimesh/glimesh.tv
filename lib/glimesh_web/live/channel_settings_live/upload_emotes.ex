@@ -12,6 +12,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
     channel = Glimesh.ChannelLookups.get_channel_for_user(user)
     can_upload = !is_nil(channel.emote_prefix)
 
+    # Temporarily not allowing gifs
     {:ok,
      socket
      |> put_page_title(gettext("Upload Channel Emotes"))
@@ -20,7 +21,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
      |> assign(:emote_settings, Streams.change_emote_settings(channel))
      |> assign(:can_upload, can_upload)
      |> assign(:uploaded_files, [])
-     |> allow_upload(:emote, accept: ~w(.svg .gif), max_entries: 10)}
+     |> allow_upload(:emote, accept: ~w(.svg), max_entries: 10)}
   end
 
   @impl Phoenix.LiveView
@@ -39,18 +40,23 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
       consume_uploaded_entries(socket, :emote, fn %{path: path}, entry ->
         emote_name = Map.get(emote_names, entry.ref)
 
-        emote_data =
-          if String.ends_with?(entry.client_name, ".gif") or entry.client_type == "image/gif" do
-            %{
-              animated: true,
-              animated_file: path
-            }
-          else
-            %{
-              animated: false,
-              static_file: path
-            }
-          end
+        # For now, limit channel emotes to static emotes only.
+        # emote_data =
+        #   if String.ends_with?(entry.client_name, ".gif") or entry.client_type == "image/gif" do
+        #     %{
+        #       animated: true,
+        #       animated_file: path
+        #     }
+        #   else
+        #     %{
+        #       animated: false,
+        #       static_file: path
+        #     }
+        #   end
+        emote_data = %{
+          animated: false,
+          static_file: path
+        }
 
         Emotes.create_channel_emote(
           socket.assigns.user,

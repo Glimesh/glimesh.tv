@@ -2,7 +2,6 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotesTest do
   use GlimeshWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import Glimesh.AccountsFixtures
 
   alias Glimesh.Emotes.Emote
 
@@ -49,7 +48,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotesTest do
           emote_prefix: "mycha"
         })
 
-      assert {:ok, %Emote{} = approved_emote} =
+      assert {:ok, %Emote{}} =
                Glimesh.Emotes.create_channel_emote(
                  user,
                  channel,
@@ -58,7 +57,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotesTest do
                  })
                )
 
-      {:ok, view, html} =
+      {:ok, view, _html} =
         live_isolated(conn, GlimeshWeb.ChannelSettingsLive.ChannelEmotes,
           session: %{"user" => user}
         )
