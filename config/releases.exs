@@ -206,6 +206,14 @@ if show_staging_warning = System.get_env("GLIMESH_SHOW_STAGING_WARNING") do
     show_staging_warning: show_staging_warning
 end
 
+if max_emotes = System.get_env("GLIMESH_MAX_CHANNEL_EMOTES") do
+  config :glimesh, max_channel_emotes: max_emotes
+end
+
+if allow_animated_emotes = System.get_env("GLIMESH_ALLOW_CHANNEL_ANIMATED_EMOTES") do
+  config :glimesh, Glimesh.Emotes, allow_channel_animated_emotes: true
+end
+
 if System.get_env("GLIMESH_START_WORKERS") do
   config :glimesh,
     start_workers: true
