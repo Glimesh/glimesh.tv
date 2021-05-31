@@ -119,6 +119,8 @@ defmodule GlimeshWeb.Router do
 
     get "/users/settings/profile", UserSettingsController, :profile
     get "/users/settings/stream", UserSettingsController, :stream
+    get "/users/settings/emotes", UserSettingsController, :emotes
+    get "/users/settings/upload_emotes", UserSettingsController, :upload_emotes
     put "/users/settings/create_channel", UserSettingsController, :create_channel
     put "/users/settings/delete_channel", UserSettingsController, :delete_channel
     get "/users/settings/preference", UserSettingsController, :preference
@@ -207,7 +209,8 @@ defmodule GlimeshWeb.Router do
     # Audit log
     get "/audit-log", GctController, :audit_log
 
-    get "/emotes", GctController, :emotes
+    get "/global-emotes", GctController, :global_emotes
+    get "/review-emotes", GctController, :review_emotes
   end
 
   scope "/", GlimeshWeb do

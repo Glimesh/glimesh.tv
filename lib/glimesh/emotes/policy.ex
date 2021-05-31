@@ -9,6 +9,7 @@ defmodule Glimesh.Emotes.Policy do
   @behaviour Bodyguard.Policy
 
   alias Glimesh.Accounts.User
+  alias Glimesh.Emotes.Emote
   alias Glimesh.Streams.Channel
 
   def authorize(:create_global_emote, %User{is_admin: true}, _), do: true
@@ -21,6 +22,12 @@ defmodule Glimesh.Emotes.Policy do
 
   def authorize(:create_channel_emote, %User{id: user_id}, %Channel{user_id: channel_user_id}),
     do: user_id == channel_user_id
+
+  def authorize(:delete_emote, %User{id: user_id}, %Emote{} = emote) do
+    emote = emote |> Glimesh.Repo.preload(:channel)
+
+    emote.channel.user_id == user_id
+  end
 
   def authorize(_, _, _), do: false
 end

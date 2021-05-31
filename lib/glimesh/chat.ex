@@ -271,7 +271,8 @@ defmodule Glimesh.Chat do
     %Glimesh.Chat.Parser.Config{
       allow_links: !channel.disable_hyperlinks,
       allow_emotes: true,
-      allow_animated_emotes: allow_animated_emotes
+      allow_animated_emotes: allow_animated_emotes,
+      channel_id: channel.id
     }
   end
 

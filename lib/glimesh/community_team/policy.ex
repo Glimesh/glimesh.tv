@@ -14,6 +14,7 @@ defmodule Glimesh.CommunityTeam.Policy do
   def authorize(:view_audit_log, %User{is_admin: true}, _user), do: true
   def authorize(:soft_delete_channel, %User{is_admin: true}, _user), do: true
   def authorize(:manage_emotes, %User{is_admin: true}, _user), do: true
+  def authorize(:upload_global_emotes, %User{is_admin: true}, _user), do: true
 
   # Global GCT perms
   def authorize(:view_user, %User{is_gct: true}, _user), do: true
@@ -28,6 +29,7 @@ defmodule Glimesh.CommunityTeam.Policy do
   def authorize(:edit_channel, %User{is_gct: true, gct_level: 5}, _user), do: true
   def authorize(:view_audit_log, %User{is_gct: true, gct_level: 5}, _user), do: true
   def authorize(:soft_delete_channel, %User{is_gct: true, gct_level: 5}, _user), do: true
+  def authorize(:upload_global_emotes, %User{is_gct: true, gct_level: 5}, _user), do: true
   def authorize(:manage_emotes, %User{is_gct: true, gct_level: 5}, _user), do: true
 
   # GCT Manager perms
@@ -38,6 +40,7 @@ defmodule Glimesh.CommunityTeam.Policy do
   def authorize(:edit_channel, %User{is_gct: true, gct_level: 4}, _user), do: true
   def authorize(:view_audit_log, %User{is_gct: true, gct_level: 4}, _user), do: true
   def authorize(:soft_delete_channel, %User{is_gct: true, gct_level: 4}, _user), do: true
+  def authorize(:upload_global_emotes, %User{is_gct: true, gct_level: 4}, _user), do: true
   def authorize(:manage_emotes, %User{is_gct: true, gct_level: 4}, _user), do: true
 
   # GCT Team Lead perms
@@ -78,6 +81,7 @@ defmodule Glimesh.CommunityTeam.Policy do
   end
 
   def authorize(:view_audit_log, %User{is_gct: true, gct_level: 3}, _user), do: true
+  def authorize(:manage_emotes, %User{is_gct: true, gct_level: 3}, _user), do: true
 
   # GCT Member perms
   def authorize(:edit_user_profile, %User{is_gct: true, gct_level: 2} = current_user, user) do
@@ -103,6 +107,8 @@ defmodule Glimesh.CommunityTeam.Policy do
       do: false,
       else: true
   end
+
+  def authorize(:manage_emotes, %User{is_gct: true, gct_level: 2}, _user), do: true
 
   def authorize(_, _, _), do: false
 

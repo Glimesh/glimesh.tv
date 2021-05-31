@@ -7,7 +7,11 @@ defmodule Glimesh.Chat.Parser do
     @moduledoc """
     Configuration for the parser
     """
-    defstruct allow_links: true, allow_emotes: true, allow_animated_emotes: false, emotes: []
+    defstruct allow_links: true,
+              allow_emotes: true,
+              allow_animated_emotes: false,
+              channel_id: nil,
+              emotes: []
   end
 
   alias Glimesh.Chat.Token
@@ -35,7 +39,7 @@ defmodule Glimesh.Chat.Parser do
     # Emotes is just a map of emotes and images the user has access to post.
     # Since this is loaded on every message sent, we should cache this.
     emotes =
-      Glimesh.Emotes.list_emotes(config.allow_animated_emotes)
+      Glimesh.Emotes.list_emotes_for_parser(config.allow_animated_emotes, config.channel_id)
       |> Enum.map(fn emote ->
         {":#{emote.emote}:", Glimesh.Emotes.full_url(emote)}
       end)

@@ -1,0 +1,21 @@
+<div class="card mt-4">
+    <div class="card-header">
+        <h5 class="card-title">Pending Emotes</h5>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+
+            <%= for emote <- @pending_emotes do %>
+            <div class="col-md-3 mb-4">
+                <div class="text-center">
+                    <img src="<%= Glimesh.Emotes.full_url(emote) %>" height="128px" width="128px" />
+                    <figcaption><code>:<%= emote.emote %>:</code></figcaption>
+                    <button phx-click="approve_emote" phx-value-id="<%= emote.id %>" class="btn btn-primary btn-sm">Approve</button>
+                    <button phx-click="reject_emote" phx-value-id="<%= emote.id %>" data-confirm="Are you sure you wish to reject this emote?" class="btn btn-danger btn-sm">Reject</button>
+                </div>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>
