@@ -118,4 +118,18 @@ defmodule GlimeshWeb.LayoutView do
       ""
     end
   end
+
+  def count_live_following_channels(%{assigns: %{current_user: user}}) do
+    count = length(Glimesh.ChannelLookups.list_live_followed_channels(user))
+
+    if count > 0 do
+      count
+    else
+      nil
+    end
+  end
+
+  def count_live_following_channels(_) do
+    nil
+  end
 end
