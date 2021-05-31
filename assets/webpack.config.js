@@ -32,7 +32,7 @@ module.exports = (env, options) => {
           use: [
             {
               loader: 'file-loader',
-              options: { name: '[name].[ext]', outputPath: '../fonts' }
+              options: { name: '[name].[ext]', outputPath: '../fonts', publicPath: '/fonts' }
             },
           ],
         },
@@ -50,7 +50,10 @@ module.exports = (env, options) => {
             {
               loader: 'css-loader',
               options: {
-                url: false
+                url: (url, resourcePath) => {
+                  if (/\.(png|jpg|jpeg|webp)?$/.test(url)) return false;
+                  return true;
+                }
               }
             },
             'sass-loader',
