@@ -79,16 +79,21 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
         end)
       end)
       |> Enum.flat_map(fn %{emote: errors} -> errors end)
-      |> Enum.join(". ")
 
-    {:noreply,
-     socket
-     |> put_flash(
-       :info,
-       "Successfully uploaded emotes, pending review by the Glimesh Community Team"
-     )
-     |> put_flash(:error, errors)
-     |> redirect(to: Routes.user_settings_path(socket, :emotes))}
+    if length(errors) > 0 do
+      {:noreply,
+       socket
+       |> put_flash(:emote_error, Enum.join(errors, ". "))
+       |> redirect(to: Routes.user_settings_path(socket, :emotes))}
+    else
+      {:noreply,
+       socket
+       |> put_flash(
+         :emote_info,
+         "Successfully uploaded emotes, pending review by the Glimesh Community Team"
+       )
+       |> redirect(to: Routes.user_settings_path(socket, :emotes))}
+    end
   end
 
   @impl Phoenix.LiveView
