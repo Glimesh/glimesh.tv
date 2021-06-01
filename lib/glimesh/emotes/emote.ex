@@ -51,10 +51,10 @@ defmodule Glimesh.Emotes.Emote do
 
   defp validate_channel_max_emotes(emote, channel) do
     config = Application.get_env(:glimesh, Glimesh.Emotes)
-    emotes = Glimesh.Emotes.list_emotes_for_channel(channel)
+    count = Glimesh.Emotes.count_all_emotes_for_channel(channel)
     max = Keyword.get(config, :max_channel_emotes, 100)
 
-    if length(emotes) >= max do
+    if count >= max do
       emote |> add_error(:emote, "You can only have #{max} emotes at a time.")
     else
       emote
