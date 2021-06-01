@@ -21,7 +21,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
      |> assign(:emote_settings, Streams.change_emote_settings(channel))
      |> assign(:can_upload, can_upload)
      |> assign(:uploaded_files, [])
-     |> allow_upload(:emote, accept: ~w(.svg), max_entries: 10)}
+     |> allow_upload(:emote, accept: ~w(.svg), max_entries: 1)}
   end
 
   @impl Phoenix.LiveView
