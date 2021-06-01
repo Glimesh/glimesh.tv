@@ -84,6 +84,7 @@ defmodule Glimesh.Emotes do
         order_by: e.inserted_at
       )
     )
+    |> Repo.preload(channel: [:user])
   end
 
   def list_emotes_for_channel(%Channel{id: channel_id}) do

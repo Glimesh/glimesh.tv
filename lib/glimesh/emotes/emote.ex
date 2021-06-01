@@ -40,6 +40,9 @@ defmodule Glimesh.Emotes.Emote do
     |> validate_required([:emote, :animated])
     |> prefix_emote(channel.emote_prefix)
     |> validate_length(:emote, min: 2, max: 15)
+    |> validate_format(:emote, ~r/^[a-zA-Z0-9]+$/i,
+      message: "Emote must be only contain alpha-numeric characters"
+    )
     |> validate_channel_max_emotes(channel)
     |> validate_channel_allow_animated()
     |> validate_conditional_file(attrs)
