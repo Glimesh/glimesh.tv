@@ -14,7 +14,7 @@
             <strong><%= gettext("Early Feature Alert!") %></strong> Hey there! Channel Emotes are still under heavy development, while we are working through how to make the best emote system we can, <strong>we're limiting all channels to a single static emote</strong>. We're continually building this new feature, and we'd love your opinion on how we should do it. Thank you!
         </div>
         <%= if live_flash(@flash, :emote_info) do %>
-        <p class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="emote_info"><%= live_flash(@flash, :emote_info) %></p>
+        <p class="alert alert-success" role="alert" phx-click="lv:clear-flash" phx-value-key="emote_info"><%= live_flash(@flash, :emote_info) %></p>
         <% end %>
         <%= if live_flash(@flash, :emote_error) do %>
         <p class="alert alert-danger" role="alert" phx-click="lv:clear-flash" phx-value-key="emote_error"><%= live_flash(@flash, :emote_error) %></p>
@@ -30,6 +30,7 @@
                 </button>
                 <div class="text-center">
                     <img src="<%= Glimesh.Emotes.full_url(emote) %>" height="128px" width="128px" />
+                    <img src="<%= Glimesh.Emotes.full_url(emote) %>" height="32px" width="32px" />
                     <figcaption><code>:<%= emote.emote %>:</code></figcaption>
                 </div>
                 <!--
@@ -85,6 +86,7 @@
                 </button>
                 <div class="text-center">
                     <img src="<%= Glimesh.Emotes.full_url(emote) %>" height="128px" width="128px" />
+                    <img src="<%= Glimesh.Emotes.full_url(emote) %>" height="32px" width="32px" />
                     <figcaption><code>:<%= emote.emote %>:</code></figcaption>
 
                     <%= if emote.rejected_at do %>

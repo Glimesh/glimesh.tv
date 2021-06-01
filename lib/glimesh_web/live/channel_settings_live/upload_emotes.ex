@@ -78,7 +78,14 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
           "#{field} #{msg}"
         end)
       end)
-      |> Enum.flat_map(fn %{emote: errors} -> errors end)
+      |> Enum.flat_map(fn input ->
+        case input do
+          %{emote: errors} -> errors
+          %{static_file: _errors} -> ["Static emote must be under 256kB."]
+          %{animated_file: errors} -> errors
+          _ -> ["Unexpected file input"]
+        end
+      end)
 
     if length(errors) > 0 do
       {:noreply,

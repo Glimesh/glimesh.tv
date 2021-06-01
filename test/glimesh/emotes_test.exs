@@ -171,5 +171,45 @@ defmodule Glimesh.EmotesTest do
 
       assert Emotes.list_emotes_for_js() =~ ":someemote:"
     end
+
+    test "create_channel_emote/3 errors on large file", %{
+      streamer: streamer,
+      channel: channel
+    } do
+      too_large = %{
+        emote: "toolarge",
+        animated: false,
+        static_file: %Plug.Upload{
+          content_type: "image/svg+xml",
+          path: "test/assets/too_large.svg",
+          filename: "too_large.svg"
+        }
+      }
+
+      assert {:error, changeset_error} = Emotes.create_channel_emote(streamer, channel, too_large)
+
+      assert changeset_error.errors == [
+               static_file:
+                 {"is invalid",
+                  [{:type, Glimesh.Uploaders.StaticEmote.Type}, {:validation, :cast}]}
+             ]
+    end
+
+    test "create_channel_emote/3 errors on a bad emote name", %{
+      streamer: streamer,
+      channel: channel
+    } do
+      assert {:error, changeset_error} =
+               Emotes.create_channel_emote(
+                 streamer,
+                 channel,
+                 Map.merge(@static_attrs, %{emote: "test.name"})
+               )
+
+      assert changeset_error.errors == [
+               emote:
+                 {"Emote must be only contain alpha-numeric characters", [validation: :format]}
+             ]
+    end
   end
 end

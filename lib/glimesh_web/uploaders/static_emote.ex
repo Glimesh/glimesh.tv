@@ -16,13 +16,15 @@ defmodule Glimesh.Uploaders.StaticEmote do
   use Waffle.Ecto.Definition
 
   @versions [:svg, :png]
+  @max_size 256_000
 
   def acl(:svg, _), do: :public_read
   def acl(:png, _), do: :public_read
 
   # Whitelist file extensions:
   def validate({file, _}) do
-    Glimesh.FileValidation.validate_svg(file)
+    Glimesh.FileValidation.validate_svg(file) and
+      Glimesh.FileValidation.validate_size(file, @max_size)
   end
 
   def transform(:svg, _) do

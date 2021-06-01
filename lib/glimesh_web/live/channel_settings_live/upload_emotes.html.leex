@@ -11,7 +11,7 @@
                     <div class="alert alert-warning" role="alert">
                         <%= gettext("During early testing animated emotes are disabled and you may only upload one static channel emote.") %>
                     </div>
-                    <p><%= gettext("Normal emotes should be SVG vector graphics, animated emotes should be GIFs.") %></p>
+                    <p><%= gettext("Static emotes should be SVG vector graphics, animated emotes should be GIFs. Max file size for static emotes is 256kB.") %></p>
                     <p><%= gettext("You can also drag and drop into this section to upload emotes.") %></p>
 
                     <br><br>
@@ -29,6 +29,7 @@
 
                         <div class="text-center">
                             <%= live_img_preview entry, height: "128px", width: "128px" %>
+                            <%= live_img_preview entry, height: "32px", width: "32px" %>
                             <figcaption><code><%= entry.client_name %></code></figcaption>
                         </div>
                         <div class="input-group">
