@@ -87,6 +87,15 @@ defmodule Glimesh.Emotes do
     |> Repo.preload(channel: [:user])
   end
 
+  def count_all_emotes_for_channel(%Channel{id: channel_id}) do
+    Repo.one!(
+      from(e in Emote,
+        select: count(e.id),
+        where: e.channel_id == ^channel_id
+      )
+    )
+  end
+
   def list_emotes_for_channel(%Channel{id: channel_id}) do
     Repo.all(
       from(e in Emote,

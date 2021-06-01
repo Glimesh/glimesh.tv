@@ -109,7 +109,13 @@ defmodule Glimesh.Schema.ChatTypes do
     field :url, :string do
       resolve(fn token, _, _ ->
         # This is important for our new emotes system which needs a full qualified URL.
-        {:ok, GlimeshWeb.Router.Helpers.static_url(GlimeshWeb.Endpoint, token.src)}
+        case token.src do
+          "/" <> _ ->
+            {:ok, GlimeshWeb.Router.Helpers.static_url(GlimeshWeb.Endpoint, token.src)}
+
+          _ ->
+            {:ok, token.src}
+        end
       end)
     end
 

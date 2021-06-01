@@ -128,13 +128,18 @@ defmodule Glimesh.EmotesTest do
     } do
       Application.put_env(:glimesh, Glimesh.Emotes, max_channel_emotes: 1)
 
-      assert {:ok, _} = Emotes.create_channel_emote(streamer, channel, @static_attrs)
+      unapproved_emote =
+        Map.merge(@static_attrs, %{
+          approved_at: nil
+        })
+
+      assert {:ok, _} = Emotes.create_channel_emote(streamer, channel, unapproved_emote)
 
       assert {:error, changeset_error} =
                Emotes.create_channel_emote(
                  streamer,
                  channel,
-                 Map.merge(@static_attrs, %{emote: "another"})
+                 Map.merge(unapproved_emote, %{emote: "another"})
                )
 
       assert changeset_error.errors == [emote: {"You can only have 1 emotes at a time.", []}]
