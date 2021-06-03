@@ -26,6 +26,7 @@ defmodule Glimesh.Streams.Stream do
 
     field :global_tags, {:array, :integer}
     field :category_tags, {:array, :integer}
+    field :viewer_counts, {:array, :integer}, default: []
 
     field :thumbnail, Glimesh.StreamThumbnail.Type
 
@@ -51,14 +52,18 @@ defmodule Glimesh.Streams.Stream do
       :new_subscribers,
       :resub_subscribers,
       :global_tags,
-      :category_tags
+      :category_tags,
+      :viewer_counts
     ])
     |> cast_attachments(attrs, [:thumbnail])
   end
 
   def stop_changeset(stream, ended_at \\ NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)) do
+    avg_viewers = trunc(Enum.sum(stream.viewer_counts) / length(stream.viewer_counts))
+
     stream
     |> change()
+    |> put_change(:avg_viewers, avg_viewers)
     |> force_change(:ended_at, ended_at)
   end
 end

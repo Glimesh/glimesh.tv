@@ -20,7 +20,10 @@ defmodule Glimesh.Workers.StreamMetrics do
   end
 
   def handle_info(:count_viewers, _state) do
-    count_current_viewers()
+    Appsignal.instrument("StreamMetrics.count_current_viewers", fn ->
+      count_current_viewers()
+    end)
+
     Process.send_after(self(), :count_viewers, @interval)
 
     {:noreply, %{last_run_at: :calendar.local_time()}}
@@ -38,7 +41,10 @@ defmodule Glimesh.Workers.StreamMetrics do
 
       Streams.update_stream(channel.stream, %{
         count_viewers: count_viewers,
-        peak_viewers: max(channel.stream.count_viewers, count_viewers)
+        peak_viewers: max(channel.stream.count_viewers, count_viewers),
+        # If we need to increase the performance of this, we can use:
+        # https://hexdocs.pm/ecto/Ecto.Query.html#update/3
+        viewer_counts: channel.stream.viewer_counts ++ [count_viewers]
       })
     end)
   end
