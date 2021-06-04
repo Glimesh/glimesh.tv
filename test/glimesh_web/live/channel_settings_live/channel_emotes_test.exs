@@ -66,7 +66,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotesTest do
 
       flash = assert_redirected(view, "/users/settings/emotes")
 
-      assert flash["info"] ==
+      assert flash["emote_info"] ==
                "Deleted mychamyemote"
     end
   end

@@ -4,13 +4,25 @@ defmodule Glimesh.Uploaders.AnimatedEmote do
   use Waffle.Definition
   use Waffle.Ecto.Definition
 
-  @versions [:gif]
+  alias Glimesh.FileValidation
 
+  @versions [:gif]
+  @max_size 1_000_000
+
+  @spec acl(any, any) :: :private | :public_read
   def acl(:gif, _), do: :public_read
 
   # Whitelist file extensions:
   def validate({file, _}) do
-    Glimesh.FileValidation.validate(file, [:gif])
+    FileValidation.validate_size(file, @max_size) and
+      FileValidation.validate(file, [:gif]) and
+      FileValidation.validate_image(file,
+        shape: :square,
+        min_width: 128,
+        min_height: 128,
+        max_width: 256,
+        max_height: 256
+      )
   end
 
   # Override the persisted filenames:
