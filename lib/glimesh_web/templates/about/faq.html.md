@@ -131,7 +131,7 @@ Yes, however we’re not targeting gift subscriptions until after the initial la
 
 
 ##### Will I be able to make custom animated emotes, once custom emotes are a thing?
-Yes, we like animated emotes, however this will be launched at a future date.
+Yes, custom animated emotes are now available for all channels!
 
 
 ## Community Questions

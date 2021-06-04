@@ -74,6 +74,54 @@ defmodule Glimesh.FileValidation do
   end
 
   @doc """
+  Validate image to a set of options. You can combine them in anyway.
+
+  Current options:
+    :shape -> :square
+    :min_width -> int
+    :max_width -> int
+    :min_height -> int
+    :max_height -> int
+  """
+  def validate_image(%Waffle.File{path: path}, options) do
+    case ExImageInfo.info(File.read!(path)) do
+      nil ->
+        false
+
+      info ->
+        Enum.map(options, fn {option, value} ->
+          perform_image_validation(info, option, value)
+        end)
+        |> Enum.reject(fn result -> result end)
+        |> Enum.empty?()
+    end
+  end
+
+  defp perform_image_validation({_, width, height, _}, :shape, :square) do
+    width == height
+  end
+
+  defp perform_image_validation(_, :shape, shape) do
+    raise "Shape validator not found for #{shape}."
+  end
+
+  defp perform_image_validation({_, width, _, _}, :min_width, value) do
+    width >= value
+  end
+
+  defp perform_image_validation({_, width, _, _}, :max_width, value) do
+    width <= value
+  end
+
+  defp perform_image_validation({_, _, height, _}, :min_height, value) do
+    height >= value
+  end
+
+  defp perform_image_validation({_, _, height, _}, :max_height, value) do
+    height <= value
+  end
+
+  @doc """
   Matches a file against known magic bytes.
   """
   def get_file_type(path) when is_binary(path) do
