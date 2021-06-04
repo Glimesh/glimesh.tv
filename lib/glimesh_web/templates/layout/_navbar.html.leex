@@ -62,7 +62,9 @@
             </li>
             <%= if assigns[:current_user] do %>
             <li class="nav-item">
-                <%= live_redirect gettext("Following"), class: "nav-link", to: Routes.streams_list_path(@conn, :index, "following") %>
+                <%= live_redirect class: "nav-link", to: Routes.streams_list_path(@conn, :index, "following") do %>
+                <%= gettext("Following") %> <%= if count_live = count_live_following_channels(@conn) do %><span class="badge badge-danger"><%= count_live %></span><% end %>
+                <% end %>
             </li>
             <% end %>
         </ul>

@@ -30,6 +30,8 @@ defmodule Glimesh.Streams.Channel do
     field :chat_rules_md, :string
     field :chat_rules_html, :string
 
+    field :emote_prefix, :string
+
     field :poster, Glimesh.ChannelPoster.Type
     field :chat_bg, Glimesh.ChatBackground.Type
 
@@ -99,6 +101,22 @@ defmodule Glimesh.Streams.Channel do
     |> maybe_put_tags(:tags, attrs)
     |> maybe_put_subcategory(:subcategory, attrs)
     |> unique_constraint([:user_id])
+  end
+
+  def emote_settings_changeset(channel, attrs \\ %{}) do
+    channel
+    |> cast(attrs, [:emote_prefix])
+    |> validate_required(:emote_prefix)
+    |> validate_format(:emote_prefix, ~r/^[a-zA-Z0-9]+$/i,
+      message: "Emote prefix must be only alpha-numeric characters"
+    )
+    |> validate_length(:emote_prefix, is: 5)
+    |> validate_no_active_emotes()
+    |> unique_constraint(:emote_prefix)
+  end
+
+  defp validate_no_active_emotes(changeset) do
+    changeset
   end
 
   alias Glimesh.ChannelCategories
