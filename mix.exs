@@ -76,6 +76,8 @@ defmodule Glimesh.MixProject do
       {:earmark, "~> 1.4"},
       {:oauther, "~> 1.1"},
       {:oauth2, "~> 2.0"},
+      {:ex_oauth2_provider, "~> 0.5.6"},
+      # ^ is to keep the old tokens still available but once the old api is fully phased out this should also be removed
       {:extwitter, "~> 0.12.2"},
       # Uploads
       {:waffle, "~> 1.1"},
