@@ -27,7 +27,24 @@ defmodule GlimeshWeb.ApiSocket do
          )}
 
       _ ->
-        :error
+        case Glimesh.Oauth.TokenResolver.resolve_app(client_id) do
+          {:ok, %Glimesh.OauthApplications.OauthApplication{}} ->
+            {:ok,
+             socket
+             |> assign(:user_id, nil)
+             |> Absinthe.Phoenix.Socket.put_options(
+               context: %{
+                 is_admin: false,
+                 current_user: nil,
+                 access_type: "app",
+                 access_identifier: client_id,
+                 user_access: %Glimesh.Accounts.UserAccess{}
+               }
+             )}
+
+          _ ->
+            :error
+        end
     end
   end
 
@@ -46,7 +63,7 @@ defmodule GlimeshWeb.ApiSocket do
                context: %{
                  is_admin: false,
                  current_user: nil,
-                 access_type: "app",
+                 access_type: "user",
                  access_identifier: token.id,
                  user_access: %Glimesh.Accounts.UserAccess{}
                }
@@ -54,7 +71,24 @@ defmodule GlimeshWeb.ApiSocket do
         end
 
       _ ->
-        :error
+        case Glimesh.Oauth.TokenResolver.resolve_user(access_token) do
+          {:ok, %Glimesh.Accounts.UserAccess{} = user_access} ->
+            {:ok,
+             socket
+             |> assign(:user_id, user_access.user.id)
+             |> Absinthe.Phoenix.Socket.put_options(
+               context: %{
+                 is_admin: user_access.user.is_admin,
+                 current_user: user_access.user,
+                 access_type: "user",
+                 access_identifier: user_access.user.username,
+                 user_access: user_access
+               }
+             )}
+
+          _ ->
+            :error
+        end
     end
   end
 

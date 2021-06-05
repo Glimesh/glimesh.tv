@@ -18,10 +18,10 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
         put_plug(conn, user: user_access.user, access: user_access)
 
       {:ok, %Boruta.Oauth.Client{id: id}} ->
-        put_plug(conn, id: id, type: "new_id")
+        put_plug(conn, id: id)
 
       {:ok, %Glimesh.OauthApplications.OauthApplication{id: id}} ->
-        put_plug(conn, id: id, type: "old_id")
+        put_plug(conn, id: id)
 
       {:error, %Boruta.Oauth.Error{} = reason} ->
         conn
@@ -128,19 +128,19 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
       context: %{
         is_admin: user.is_admin,
         current_user: user,
-        access_type: "app_token",
+        access_type: "user_token",
         access_identifier: user.username,
         user_access: access
       }
     )
   end
 
-  defp put_plug(conn, id: id, type: type) do
+  defp put_plug(conn, id: id) do
     Absinthe.Plug.put_options(conn,
       context: %{
         is_admin: false,
         current_user: nil,
-        access_type: "app_#{type}",
+        access_type: "app_id",
         access_identifier: id,
         user_access: %Glimesh.Accounts.UserAccess{}
       }
