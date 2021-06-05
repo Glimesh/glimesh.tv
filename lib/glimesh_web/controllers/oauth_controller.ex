@@ -37,6 +37,20 @@ defmodule GlimeshWeb.OauthController do
 
   @impl Boruta.Oauth.Application
   def token_error(conn, %Error{status: status, error: error, error_description: error_description}) do
+    if error == :invalid_request do
+      case GlimeshWeb.Oauth2Provider.TokenController.create(conn.body_params) do
+        {:ok, token} ->
+          json(conn, token)
+
+        _ ->
+          token_error(conn, status, error, error_description)
+      end
+    else
+      token_error(conn, status, error, error_description)
+    end
+  end
+
+  defp token_error(conn, status, error, error_description) do
     conn
     |> put_status(status)
     |> put_view(OauthView)
@@ -103,6 +117,27 @@ defmodule GlimeshWeb.OauthController do
           redirect_uri: redirect_uri
         }
       ) do
+    if error == :invalid_request do
+      case Glimesh.OauthHandler.authorize(
+             conn.assigns.current_user,
+             conn.query_params,
+             otp_app: :glimesh
+           ) do
+        {:redirect, redirect_uri} ->
+          redirect(conn, external: redirect_uri)
+
+        {:native_redirect, payload} ->
+          json(conn, payload)
+
+        _ ->
+          authorize_error(conn, status, error, error_description, format, redirect_uri)
+      end
+    else
+      authorize_error(conn, status, error, error_description, format, redirect_uri)
+    end
+  end
+
+  defp authorize_error(conn, status, error, error_description, format, redirect_uri) do
     query_string = URI.encode_query(%{error: error, error_description: error_description})
 
     case format do
@@ -160,6 +195,20 @@ defmodule GlimeshWeb.OauthController do
         error: error,
         error_description: error_description
       }) do
+    if error == :invalid_request do
+      case GlimeshWeb.Oauth2Provider.TokenController.revoke(conn.body_params) do
+        {:ok, response} ->
+          json(conn, response)
+
+        _ ->
+          revoke_error(conn, status, error, error_description)
+      end
+    else
+      revoke_error(conn, status, error, error_description)
+    end
+  end
+
+  defp revoke_error(conn, status, error, error_description) do
     conn
     |> put_status(status)
     |> put_view(OauthView)

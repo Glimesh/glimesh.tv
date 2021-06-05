@@ -18,7 +18,10 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
         put_plug(conn, user: user_access.user, access: user_access)
 
       {:ok, %Boruta.Oauth.Client{id: id}} ->
-        put_plug(conn, id: id)
+        put_plug(conn, id: id, type: "new_id")
+
+      {:ok, %Glimesh.OauthApplications.OauthApplication{id: id}} ->
+        put_plug(conn, id: id, type: "old_id")
 
       {:error, %Boruta.Oauth.Error{} = reason} ->
         conn
@@ -33,7 +36,7 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
         })
         |> halt()
 
-      {:error, _reason} ->
+      _ ->
         conn
         |> put_status(:unauthorized)
         |> json(%{errors: [%{message: "You must be logged in to access the api"}]})
@@ -50,10 +53,26 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
         try_conn(conn, opts)
 
       {:bearer, token} ->
-        Boruta.Oauth.Authorization.AccessToken.authorize(value: token)
+        res = Boruta.Oauth.Authorization.AccessToken.authorize(value: token)
+
+        case res do
+          {:error, _} ->
+            Glimesh.Oauth.TokenResolver.resolve_user(token)
+
+          _ ->
+            res
+        end
 
       {:client, token} ->
-        Boruta.Config.clients().get_by(id: token)
+        res = Boruta.Config.clients().get_by(id: token)
+
+        case res do
+          nil ->
+            Glimesh.Oauth.TokenResolver.resolve_app(token)
+
+          _ ->
+            res
+        end
     end
   end
 
@@ -109,19 +128,19 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
       context: %{
         is_admin: user.is_admin,
         current_user: user,
-        access_type: "app",
+        access_type: "app_token",
         access_identifier: user.username,
         user_access: access
       }
     )
   end
 
-  defp put_plug(conn, id: id) do
+  defp put_plug(conn, id: id, type: type) do
     Absinthe.Plug.put_options(conn,
       context: %{
         is_admin: false,
         current_user: nil,
-        access_type: "app",
+        access_type: "app_#{type}",
         access_identifier: id,
         user_access: %Glimesh.Accounts.UserAccess{}
       }

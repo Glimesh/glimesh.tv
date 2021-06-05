@@ -120,9 +120,16 @@ defmodule Glimesh.Apps do
           app.client.redirect_uris
         end
 
+      # ignore this mess with if statement it should be removed once old api is gone
       attrs =
-        attrs
-        |> put_in([:client, :id], app.client_id)
+        if app.client_id do
+          attrs
+          |> put_in([:client, :id], app.client_id)
+        else
+          attrs
+          |> put_in([:client, :access_token_ttl], 60 * 60 * 24)
+          |> put_in([:client, :authorization_code_ttl], 60)
+        end
         |> put_in([:client, :name], Map.get(attrs, :name))
         |> put_in([:client, :redirect_uris], redirect_uris)
 

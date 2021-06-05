@@ -12,8 +12,10 @@ defmodule Glimesh.Apps.App do
     field :logo, Glimesh.AppLogo.Type
 
     belongs_to :user, Glimesh.Accounts.User
-    # belongs_to :oauth_application, Glimesh.OauthApplications.OauthApplication
     belongs_to :client, Boruta.Ecto.Client, type: :binary_id
+
+    # this is no longer available for newer application and once the old api is phased out this should be removed
+    belongs_to :oauth_application, Glimesh.OauthApplications.OauthApplication
 
     timestamps()
   end
