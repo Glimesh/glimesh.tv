@@ -340,7 +340,7 @@ msgstr "Zaregistrovat účet"
 #: lib/glimesh_web/live/homepage_live.html.leex:11
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:15
 msgid "Art"
-msgstr "Umělecké"
+msgstr "Umění"
 
 #: lib/glimesh_web/live/homepage_live.html.leex:15
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:27
@@ -350,7 +350,7 @@ msgstr "Naučné"
 #: lib/glimesh_web/live/homepage_live.html.leex:10
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:12
 msgid "Gaming"
-msgstr "Herní"
+msgstr "Hry"
 
 #: lib/glimesh_web/live/homepage_live.html.leex:14
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:24
@@ -364,7 +364,7 @@ msgstr "Více"
 #: lib/glimesh_web/live/homepage_live.html.leex:12
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:18
 msgid "Music"
-msgstr "Hudební"
+msgstr "Hudba"
 
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:136
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:24
@@ -383,7 +383,7 @@ msgstr "Přihlásit se"
 #: lib/glimesh_web/live/homepage_live.html.leex:13
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:21
 msgid "Tech"
-msgstr "Technologické"
+msgstr "Technologie"
 
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:119
 msgid "Upgrade!"

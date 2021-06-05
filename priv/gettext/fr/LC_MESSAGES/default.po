@@ -172,7 +172,7 @@ msgstr "Nom d'utilisateur Instagram"
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:45
 #, fuzzy
 msgid "Social"
-msgstr "Social"
+msgstr "Sociaux"
 
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:83
 msgid "YouTube Username"
@@ -282,7 +282,6 @@ msgstr "Followers"
 #. Could use abonnements, but that means subscriptions...
 #: lib/glimesh_web/live/user_live/profile.html.leex:37
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:54
-#, fuzzy
 msgid "Following"
 msgstr "Suivis"
 
@@ -299,7 +298,6 @@ msgid "Sub Ready!"
 msgstr "Prêt pour les abonnements!"
 
 #: lib/glimesh_web/live/user_live/profile.html.leex:11
-#, fuzzy
 msgid "Sub-ready Streamer"
 msgstr "Le streamer est prêt pour les abonnements"
 
@@ -505,9 +503,8 @@ msgstr "Signaler Utilisateur"
 
 #. Interpreting as "Copyright violotion/ law violation"
 #: lib/glimesh_web/live/user_live/components/report_button.ex:68
-#, fuzzy
 msgid "Copyright Infringement / Law Violation"
-msgstr "Violation de copyright/loi"
+msgstr "Violation de copyright / Violation de la loi"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:56
 msgid "Hate Speech"
@@ -814,7 +811,7 @@ msgstr "Autorisez cette application à afficher votre clé de stream."
 
 #: lib/glimesh_web/live/user_live/followers.html.leex:3
 msgid "%{username}'s Followers"
-msgstr "%{username}'s Followers"
+msgstr "Followers de %{username}"
 
 #: lib/glimesh_web/templates/user_applications/index.html.eex:27
 msgid "API Documentation"
@@ -1261,7 +1258,7 @@ msgstr "Nous utilisons de nombreux projets open source pour alimenter Glimesh, e
 
 #: lib/glimesh_web/live/chat_live/index.html.leex:3
 msgid "Welcome to chat! Follow the rules."
-msgstr "Bienvenue sur le chat ! Suis les règles."
+msgstr "Bienvenue sur le chat! Suivez les règles."
 
 #: lib/glimesh_web/views/channel_moderator_view.ex:5
 msgid "Yes"
@@ -1490,7 +1487,7 @@ msgstr "Activer les horodatages"
 
 #: lib/glimesh_web/live/user_live/index.html.leex:30
 msgid "Followers:"
-msgstr "Suiveurs:"
+msgstr "Followers:"
 
 #: lib/glimesh_web/live/user_live/index.html.leex:34
 msgid "Following:"
@@ -2461,7 +2458,6 @@ msgstr "Merch"
 #. Assumed this was message used as a verb, not a noun
 #: lib/glimesh_web/live/gct_live/components/channel_chat_log_table.html.leex:9
 #: lib/glimesh_web/live/gct_live/components/user_chat_log_table.html.leex:9
-#, fuzzy
 msgid "Message"
 msgstr "Envoyer un message"
 
@@ -2614,14 +2610,16 @@ msgstr ""
 msgid "Are you sure you want to unsubscribe?"
 msgstr "Êtes-vous sûr de vouloir vous désabonner ?"
 
+#. Depends on how the date is formated
 #: lib/glimesh_web/templates/user_payments/index.html.eex:110
 #: lib/glimesh_web/templates/user_payments/index.html.eex:126
+#, fuzzy
 msgid "Canceling on %{date}"
-msgstr ""
+msgstr "Annulation le %{date}"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:109
 msgid "Chat Safety"
-msgstr ""
+msgstr "Sécurité du chat"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:141
 msgid "Deactivate Channel"
@@ -2629,15 +2627,15 @@ msgstr "Désactiver la chaîne"
 
 #: lib/glimesh_web/live/gct_live/components/button_array.ex:24
 msgid "Delete Stripe Account"
-msgstr ""
+msgstr "Supprimer le compte Stripe"
 
 #: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:93
 msgid "Discord Invite Code"
-msgstr ""
+msgstr "Code d'invitation Discord"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:38
 msgid "Gold Username"
-msgstr ""
+msgstr "Pseudonyme en or"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:130
 msgid "Hours"
@@ -2649,11 +2647,11 @@ msgstr ""
 
 #: lib/glimesh/accounts/user.ex:390
 msgid "Invalid Discord invite URL"
-msgstr ""
+msgstr "Code d'invitation Discord invalide"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:46
 msgid "Not on Glimesh"
-msgstr ""
+msgstr "Pas sur Glimesh"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:82
 msgid "Other details you'd like to share"
@@ -2669,23 +2667,23 @@ msgstr "Chat fenêtré"
 
 #: lib/glimesh_web/controllers/user_settings_controller.ex:67
 msgid "Problem uploading avatar, please try again later."
-msgstr ""
+msgstr "Un problème est survenu lors du téléchargement de l'avatar, veuillez réessayer plus tard."
 
 #: lib/glimesh_web/controllers/user_settings_controller.ex:128
 msgid "Problem uploading stream images, please try again later."
-msgstr ""
+msgstr "Un problème est survenu lors du téléchargement de l'image de stream, veuillez réessayer plus tard."
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:44
 msgid "Profile Text or Avatar"
-msgstr ""
+msgstr "Avatar ou texte de profil"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:121
 msgid "Require confirmed email before chatting?"
-msgstr ""
+msgstr "Demander un email confirmé avant de pouvoir discuter?"
 
 #: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:126
 msgid "Require minimum account length before chatting?"
-msgstr ""
+msgstr "Temps minimum de création de compte avant de pouvoir discuter?"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:58
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:15 lib/glimesh_web/live/user_live/components/subscribe_button.ex:71
@@ -2695,7 +2693,7 @@ msgstr "Se réabonner"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:41
 msgid "Select One"
-msgstr ""
+msgstr "Sélectionnez un"
 
 #: lib/glimesh_web/live/chat_live/message_form.html.leex:29
 msgid "Send a message"
@@ -2703,15 +2701,15 @@ msgstr "Envoyer un message"
 
 #: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:10
 msgid "Shutdown Broadcast"
-msgstr ""
+msgstr "Fermer le stream"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:43
 msgid "Stream Chat"
-msgstr ""
+msgstr "Chat du stream"
 
 #: lib/glimesh_web/live/user_live/components/channel_title.ex:32
 msgid "Stream Info"
-msgstr ""
+msgstr "Informations du stream"
 
 #: lib/glimesh_web/live/user_live/components/report_button.ex:42
 msgid "Stream Video Content"

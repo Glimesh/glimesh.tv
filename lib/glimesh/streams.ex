@@ -127,6 +127,26 @@ defmodule Glimesh.Streams do
     end
   end
 
+  # Channel Emote Settings
+  def update_emote_settings(%User{} = user, %Channel{} = channel, attrs) do
+    with :ok <- Bodyguard.permit(__MODULE__, :update_channel, user, channel) do
+      new_channel = Channel.emote_settings_changeset(channel, attrs) |> Repo.update()
+
+      case new_channel do
+        {:error, _changeset} ->
+          new_channel
+
+        {:ok, changeset} ->
+          broadcast_message = Repo.preload(changeset, :category, force: true)
+          broadcast({:ok, broadcast_message}, :channel)
+      end
+    end
+  end
+
+  def change_emote_settings(%Channel{} = channel, attrs \\ %{}) do
+    Channel.emote_settings_changeset(channel, attrs)
+  end
+
   # Streams
   def get_stream(id) do
     Repo.get_by(Glimesh.Streams.Stream, id: id)

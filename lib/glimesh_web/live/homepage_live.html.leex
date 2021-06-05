@@ -28,7 +28,7 @@
 <%= if length(@channels) > 0 do %>
 <div class="container container-stream-list">
     <div class="px-4 px-lg-0">
-        <h2 class="text-white"><%= gettext("Explore Live Streams") %></h2>
+        <h2><%= gettext("Explore Live Streams") %></h2>
         <p class="lead"><%= gettext("Experience real time interaction by visiting some of these selected streams!") %></p>
     </div>
 
@@ -58,7 +58,7 @@
                             <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
                             <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
                                 <%= if channel.mature_content do %>
-                                    <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
+                                <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
                                 <% end %>
                             </p>
                         </div>
@@ -159,37 +159,37 @@
         <div class="col">
             <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "gaming") do %>
             <i class="fas fa-gamepad fa-2x fa-fw"></i><br>
-            <small class="text-white"><%= gettext("Gaming") %></small>
+            <small class="text-color-link"><%= gettext("Gaming") %></small>
             <% end %>
         </div>
         <div class="col">
             <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "art") do %>
             <i class="fas fa-palette fa-2x fa-fw"></i><br>
-            <small class="text-white"><%= gettext("Art") %></small>
+            <small class="text-color-link"><%= gettext("Art") %></small>
             <% end %>
         </div>
         <div class="col">
             <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "music") do %>
             <i class="fas fa-headphones fa-2x fa-fw"></i><br>
-            <small class="text-white"><%= gettext("Music") %></small>
+            <small class="text-color-link"><%= gettext("Music") %></small>
             <% end %>
         </div>
         <div class="col">
             <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "tech") do %>
             <i class="fas fa-microchip fa-2x fa-fw"></i><br>
-            <small class="text-white"><%= gettext("Tech") %></small>
+            <small class="text-color-link"><%= gettext("Tech") %></small>
             <% end %>
         </div>
         <div class="col">
             <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "irl") do %>
             <i class="fas fa-camera-retro fa-2x fa-fw"></i><br>
-            <small class="text-white"><%= gettext("IRL") %></small>
+            <small class="text-color-link"><%= gettext("IRL") %></small>
             <% end %>
         </div>
         <div class="col">
             <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "education") do %>
             <i class="fas fa-graduation-cap fa-2x fa-fw"></i><br>
-            <small class="text-white"><%= gettext("Education") %></small>
+            <small class="text-color-link"><%= gettext("Education") %></small>
             <% end %>
         </div>
     </div>
