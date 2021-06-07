@@ -4,21 +4,22 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   import Appsignal.Phoenix.LiveView, only: [instrument: 4]
 
   alias Glimesh.Chat
+  alias Glimesh.Emotes
 
   @impl true
   def update(%{chat_message: chat_message, user: user, channel: channel} = assigns, socket) do
     changeset = Chat.change_chat_message(chat_message)
 
     include_animated = if user, do: Glimesh.Payments.is_platform_subscriber?(user), else: false
+    global_emotes = Emotes.list_emotes(include_animated)
+    channel_emotes = Emotes.list_emotes_for_channel(channel)
+    emotes = Emotes.convert_for_json(channel_emotes ++ global_emotes)
 
     {:ok,
      socket
      |> assign(assigns)
      |> assign(:changeset, changeset)
-     |> assign(
-       :emotes,
-       Glimesh.Emotes.list_emotes_for_js(include_animated)
-     )
+     |> assign(:emotes, emotes)
      |> assign(:channel_username, channel.user.username)
      |> assign(:disabled, is_nil(user))}
   end

@@ -33,10 +33,22 @@ defmodule GlimeshWeb.GctController do
     end
   end
 
-  def emotes(conn, _params) do
+  def global_emotes(conn, _params) do
+    with :ok <-
+           Bodyguard.permit(
+             Glimesh.CommunityTeam,
+             :upload_global_emotes,
+             conn.assigns.current_user
+           ) do
+      conn
+      |> Phoenix.LiveView.Controller.live_render(GlimeshWeb.GctLive.GlobalEmotes)
+    end
+  end
+
+  def review_emotes(conn, _params) do
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :manage_emotes, conn.assigns.current_user) do
       conn
-      |> Phoenix.LiveView.Controller.live_render(GlimeshWeb.GctLive.ManageEmotes)
+      |> Phoenix.LiveView.Controller.live_render(GlimeshWeb.GctLive.ReviewEmotes)
     end
   end
 

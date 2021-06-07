@@ -8,7 +8,6 @@ defmodule GlimeshWeb.UserSettingsController do
   alias GlimeshWeb.UserAuth
   alias Glimesh.ChannelStatistics
 
-
   plug :put_layout, "user-sidebar.html"
 
   plug :assign_profile_changesets
@@ -27,6 +26,16 @@ defmodule GlimeshWeb.UserSettingsController do
     )
   end
 
+  def emotes(conn, _params) do
+    conn
+    |> Phoenix.LiveView.Controller.live_render(GlimeshWeb.ChannelSettingsLive.ChannelEmotes)
+  end
+
+  def upload_emotes(conn, _params) do
+    conn
+    |> Phoenix.LiveView.Controller.live_render(GlimeshWeb.ChannelSettingsLive.UploadEmotes)
+  end
+
   def preference(conn, _params) do
     render(conn, "preference.html", page_title: format_page_title(gettext("Preferences")))
   end
@@ -36,7 +45,9 @@ defmodule GlimeshWeb.UserSettingsController do
   end
 
   def channel_statistics(conn, _params) do
-    render(conn, "channel_statistics.html", page_title: format_page_title(gettext("Channel Statistics")))
+    render(conn, "channel_statistics.html",
+      page_title: format_page_title(gettext("Channel Statistics"))
+    )
   end
 
   def update_preference(conn, %{"user_preference" => params}) do

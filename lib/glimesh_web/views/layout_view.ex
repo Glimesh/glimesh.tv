@@ -64,6 +64,13 @@ defmodule GlimeshWeb.LayoutView do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :stream])
   end
 
+  def active_user_emotes_path(conn) do
+    truthy_active(
+      controller_action(conn) == [GlimeshWeb.UserSettingsController, :emotes] or
+        controller_action(conn) == [GlimeshWeb.UserSettingsController, :upload_emotes]
+    )
+  end
+
   def active_user_payments_path(conn) do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserPaymentsController, :index])
   end
@@ -77,7 +84,9 @@ defmodule GlimeshWeb.LayoutView do
   end
 
   def active_channel_statistics_path(conn) do
-    truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :channel_statistics])
+    truthy_active(
+      controller_action(conn) == [GlimeshWeb.UserSettingsController, :channel_statistics]
+    )
   end
 
   def active_user_security_path(conn) do
@@ -107,8 +116,12 @@ defmodule GlimeshWeb.LayoutView do
     truthy_active(controller_action(conn) == [GlimeshWeb.GctController, :audit_log])
   end
 
-  def active_gct_manage_emotes_path(conn) do
-    truthy_active(controller_action(conn) == [GlimeshWeb.GctController, :emotes])
+  def active_gct_global_emotes_path(conn) do
+    truthy_active(controller_action(conn) == [GlimeshWeb.GctController, :global_emotes])
+  end
+
+  def active_gct_review_emotes_path(conn) do
+    truthy_active(controller_action(conn) == [GlimeshWeb.GctController, :review_emotes])
   end
 
   defp controller_action(conn) do
@@ -121,5 +134,19 @@ defmodule GlimeshWeb.LayoutView do
     else
       ""
     end
+  end
+
+  def count_live_following_channels(%{assigns: %{current_user: user}}) do
+    count = length(Glimesh.ChannelLookups.list_live_followed_channels(user))
+
+    if count > 0 do
+      count
+    else
+      nil
+    end
+  end
+
+  def count_live_following_channels(_) do
+    nil
   end
 end

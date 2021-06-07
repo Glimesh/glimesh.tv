@@ -61,6 +61,19 @@ defmodule Glimesh.FileValidation do
   end
 
   @doc """
+  Validate the size of the file before processing is smaller than specified.
+  """
+  def validate_size(%Waffle.File{path: path}, max_size_in_bytes) do
+    case File.stat(path) do
+      {:ok, %{size: size}} ->
+        size <= max_size_in_bytes
+
+      {:error, _reason} ->
+        false
+    end
+  end
+
+  @doc """
   Matches a file against known magic bytes.
   """
   def get_file_type(path) when is_binary(path) do

@@ -26,6 +26,7 @@
             <h4 class="text-center"><%= gettext("Channel") %></h4>
             <div class="list-group list-group-flush">
                 <%= if Glimesh.ChannelLookups.get_channel_for_user(@current_user) do %>
+<<<<<<< HEAD
                 <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: Routes.user_settings_path(@conn, :stream) do %>
                 <i class="fas fa-video fa-fw"></i> <%= gettext("Channel Settings") %>
                 <% end %>
@@ -35,10 +36,21 @@
                 <%= link class: "list-group-item list-group-item-action " <> active_channel_statistics_path(@conn), to: Routes.user_settings_path(@conn, :channel_statistics) do %>
                 <i class="fas fa-chart-bar fa-fw"></i> <%= gettext("Channel Statistics") %>
                 <% end %>
+=======
+                    <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: Routes.user_settings_path(@conn, :stream) do %>
+                        <i class="fas fa-video fa-fw"></i> <%= gettext("Channel Settings") %>
+                    <% end %>
+                    <%= link class: "list-group-item list-group-item-action " <> active_user_emotes_path(@conn), to: Routes.user_settings_path(@conn, :emotes) do %>
+                        <i class="fas fa-smile fa-fw"></i> <%= gettext("Emotes") %>
+                    <% end %>
+                    <%= link class: "list-group-item list-group-item-action " <> active_channel_moderator_path(@conn), to: Routes.channel_moderator_path(@conn, :index) do %>
+                        <i class="fas fa-hammer fa-fw"></i> <%= gettext("Moderators") %>
+                    <% end %>
+>>>>>>> dev
                 <% else %>
-                <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: Routes.user_settings_path(@conn, :stream) do %>
-                <i class="fas fa-video fa-fw"></i> <%= gettext("Create Channel") %>
-                <% end %>
+                    <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: Routes.user_settings_path(@conn, :stream) do %>
+                        <i class="fas fa-video fa-fw"></i> <%= gettext("Create Channel") %>
+                    <% end %>
                 <% end %>
             </div>
 
