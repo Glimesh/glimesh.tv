@@ -38,25 +38,31 @@ defmodule Glimesh.Emotes do
   end
 
   def list_emotes_for_parser(include_animated \\ false, channel_id \\ nil) do
-    query =
-      Emote
-      |> where([e], is_nil(e.approved_at) == false)
+    Emote
+    |> where([e], is_nil(e.approved_at) == false)
+    |> perform_emote_query(%{include_animated: include_animated, channel_id: channel_id})
+    |> Repo.all()
+  end
 
-    query =
-      if include_animated do
-        query
-      else
-        where(query, [e], e.animated == false)
-      end
+  defp perform_emote_query(query, %{include_animated: false, channel_id: nil}) do
+    query
+    |> where([e], e.animated == false)
+  end
 
-    query =
-      if is_nil(channel_id) do
-        where(query, [e], is_nil(e.channel_id))
-      else
-        where(query, [e], is_nil(e.channel_id) or e.channel_id == ^channel_id)
-      end
+  defp perform_emote_query(query, %{include_animated: true, channel_id: nil}) do
+    query
+  end
 
-    Repo.all(query)
+  defp perform_emote_query(query, %{include_animated: false, channel_id: channel_id}) do
+    # Non platform sub, but should still get channel animated emotes
+    query
+    |> where([e], (e.animated == false and is_nil(e.channel_id)) or e.channel_id == ^channel_id)
+  end
+
+  defp perform_emote_query(query, %{include_animated: true, channel_id: channel_id}) do
+    # Platform sub, should get all emotes
+    query
+    |> where([e], is_nil(e.channel_id) or e.channel_id == ^channel_id)
   end
 
   def list_static_emotes do
