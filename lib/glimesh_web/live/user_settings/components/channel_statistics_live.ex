@@ -1,5 +1,4 @@
 defmodule GlimeshWeb.UserSettings.Components.ChannelStatisticsLive do
-<<<<<<< HEAD
   use GlimeshWeb, :live_view
 
   alias Glimesh.ChannelStatistics
@@ -19,7 +18,7 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelStatisticsLive do
         {:ok, redirect(socket, to: "/")}
     end
   end
-=======
+
   	use GlimeshWeb, :live_view
 	
   	alias Glimesh.Accounts
@@ -40,5 +39,4 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelStatisticsLive do
 
   		end
   	end
->>>>>>> 907b96f996a6486d4fc80dfda45725a2b44b4643
 end
