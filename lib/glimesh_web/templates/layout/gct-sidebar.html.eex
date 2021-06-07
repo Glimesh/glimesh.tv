@@ -7,9 +7,14 @@
     <i class="fas fa-clipboard-list fa-fw"></i> <%= gettext("Audit Log") %>
     <% end %>
     <% end %>
+    <%= if Bodyguard.permit?(Glimesh.CommunityTeam, :upload_global_emotes, @current_user) do %>
+    <%= link class: "list-group-item list-group-item-action " <> active_gct_global_emotes_path(@conn), to: Routes.gct_path(@conn, :global_emotes) do %>
+    <i class="fas fa-smile fa-fw"></i> <%= gettext("Global Emotes") %>
+    <% end %>
+    <% end %>
     <%= if Bodyguard.permit?(Glimesh.CommunityTeam, :manage_emotes, @current_user) do %>
-    <%= link class: "list-group-item list-group-item-action " <> active_gct_manage_emotes_path(@conn), to: Routes.gct_path(@conn, :emotes) do %>
-    <i class="fas fa-smile fa-fw"></i> <%= gettext("Emotes") %>
+    <%= link class: "list-group-item list-group-item-action " <> active_gct_review_emotes_path(@conn), to: Routes.gct_path(@conn, :review_emotes) do %>
+    <i class="fas fa-smile fa-fw"></i> <%= gettext("Review Emotes") %>
     <% end %>
     <% end %>
 </div>

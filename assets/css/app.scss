@@ -76,12 +76,24 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     color: var(--body-color);
 }
 
+.text-color-input {
+    color: var(--input-color);
+}
+
 .text-muted {
     color: var(--text-muted-color) !important;
 }
 
 .text-color-alpha {
     color: #FF4343;
+}
+
+.close.close-delete {
+    color: #FF4343;
+
+    &:hover {
+        color: #FF4343;
+    }
 }
 
 .stream-key:not(:focus) {
@@ -177,5 +189,16 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
         .count {
             font-size: 130px;
         }
+    }
+}
+
+// Remove some of the bloat from the card titles
+.card-header {
+
+    h2,
+    h3,
+    h4,
+    h5 {
+        margin-bottom: 0;
     }
 }
