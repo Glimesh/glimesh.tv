@@ -85,6 +85,40 @@ defmodule Glimesh.Chat.ParserTest do
              ]
     end
 
+    test "allows animated emotes for channel, not for global" do
+      # Reset the config just in case it's been changed
+      Application.put_env(:glimesh, Glimesh.Emotes, allow_channel_animated_emotes: true)
+      streamer = Glimesh.AccountsFixtures.streamer_fixture()
+
+      {:ok, channel} =
+        Glimesh.Streams.update_emote_settings(streamer, streamer.channel, %{
+          emote_prefix: "testg"
+        })
+
+      {:ok, %Glimesh.Emotes.Emote{} = emote} =
+        Glimesh.Emotes.create_channel_emote(streamer, channel, %{
+          emote: "dance",
+          animated: true,
+          animated_file: "test/assets/glimdance.gif",
+          approved_at: NaiveDateTime.utc_now()
+        })
+
+      no_animated_emotes = %Parser.Config{
+        allow_animated_emotes: false,
+        channel_id: channel.id
+      }
+
+      assert Parser.parse(":glimdance: :testgdance:", no_animated_emotes) == [
+               %Token{type: "text", text: ":glimdance:"},
+               %Token{type: "text", text: " "},
+               %Token{
+                 type: "emote",
+                 text: ":testgdance:",
+                 src: Glimesh.Emotes.full_url(emote)
+               }
+             ]
+    end
+
     test "lexes a complex message", %{static: static, animated: animated} do
       allow_animated_emotes = %Parser.Config{allow_animated_emotes: true}
 
