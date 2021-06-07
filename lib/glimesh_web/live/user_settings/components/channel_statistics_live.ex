@@ -1,7 +1,6 @@
 defmodule GlimeshWeb.UserSettings.Components.ChannelStatisticsLive do
   use GlimeshWeb, :live_view
 
-  alias Glimesh.ChannelStatistics
   alias Glimesh.Accounts
   alias Glimesh.ChannelLookups
 

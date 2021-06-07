@@ -157,7 +157,7 @@ defmodule Glimesh.Streams do
   end
 
   def list_streams(channel) do
-    Repo.all(Glimesh.Streams.Stream, channel_id: channel.id)
+    Repo.all(from s in Glimesh.Streams.Stream, where: s.channel_id == ^channel.id)
   end
 
   @doc """

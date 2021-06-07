@@ -7,8 +7,6 @@ defmodule GlimeshWeb.UserSettingsController do
   alias Glimesh.ChannelStatistics
   alias Glimesh.Streams
   alias GlimeshWeb.UserAuth
-  alias Glimesh.ChannelStatistics
-
 
   plug :put_layout, "user-sidebar.html"
 

@@ -1,28 +1,22 @@
 <div class="card">
-
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Stream title</th>
-				<th>Stream started</th>
-				<th>Stream ended</th>
-				<th>Category</th>
-				<th>Viewers</th>
+				<th><%= gettext("Stream title") %></th>
+				<th><%= gettext("Stream started") %></th>
+				<th><%= gettext("Stream ended") %></th>
+				<th><%= gettext("Category") %></th>
+				<th><%= gettext("Viewers") %></th>
 			</tr>
 		</thead>
-
 		<%= for stream <- Glimesh.Streams.list_streams(@channel) do %>
-
 			<tr>
-
 				<td><%= stream.title %></td>
 				<td><%= stream.started_at %></td>
 				<td><%= stream.ended_at %></td>
 				<td>ID: <%= stream.category_id %></td>
 				<td><%= stream.count_viewers %></td>
 			</tr>
-
 		<% end %>
 	</table>
-
 </div>
