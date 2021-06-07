@@ -46,11 +46,12 @@ defmodule Glimesh.Emotes do
 
   defp perform_emote_query(query, %{include_animated: false, channel_id: nil}) do
     query
-    |> where([e], e.animated == false)
+    |> where([e], e.animated == false and is_nil(e.channel_id))
   end
 
   defp perform_emote_query(query, %{include_animated: true, channel_id: nil}) do
     query
+    |> where([e], is_nil(e.channel_id))
   end
 
   defp perform_emote_query(query, %{include_animated: false, channel_id: channel_id}) do
