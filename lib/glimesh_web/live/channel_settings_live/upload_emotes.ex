@@ -21,7 +21,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
      |> assign(:emote_settings, Streams.change_emote_settings(channel))
      |> assign(:can_upload, can_upload)
      |> assign(:uploaded_files, [])
-     |> allow_upload(:emote, accept: ~w(.svg), max_entries: 1)}
+     |> allow_upload(:emote, accept: ~w(.svg .gif), max_entries: 2)}
   end
 
   @impl Phoenix.LiveView
@@ -40,23 +40,18 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
       consume_uploaded_entries(socket, :emote, fn %{path: path}, entry ->
         emote_name = Map.get(emote_names, entry.ref)
 
-        # For now, limit channel emotes to static emotes only.
-        # emote_data =
-        #   if String.ends_with?(entry.client_name, ".gif") or entry.client_type == "image/gif" do
-        #     %{
-        #       animated: true,
-        #       animated_file: path
-        #     }
-        #   else
-        #     %{
-        #       animated: false,
-        #       static_file: path
-        #     }
-        #   end
-        emote_data = %{
-          animated: false,
-          static_file: path
-        }
+        emote_data =
+          if String.ends_with?(entry.client_name, ".gif") or entry.client_type == "image/gif" do
+            %{
+              animated: true,
+              animated_file: path
+            }
+          else
+            %{
+              animated: false,
+              static_file: path
+            }
+          end
 
         Emotes.create_channel_emote(
           socket.assigns.user,
@@ -81,8 +76,8 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
       |> Enum.flat_map(fn input ->
         case input do
           %{emote: errors} -> errors
-          %{static_file: _errors} -> ["Static emote must be under 256kB."]
-          %{animated_file: errors} -> errors
+          %{static_file: _errors} -> ["Please review the emote requirements before uploading."]
+          %{animated_file: _errors} -> ["Please review the emote requirements before uploading."]
           _ -> ["Unexpected file input"]
         end
       end)

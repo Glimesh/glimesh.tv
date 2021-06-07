@@ -119,12 +119,11 @@ defmodule GlimeshWeb.Router do
 
     get "/users/settings/profile", UserSettingsController, :profile
     get "/users/settings/stream", UserSettingsController, :stream
-<<<<<<< HEAD
+
     get "/users/settings/channel_statistics", UserSettingsController, :channel_statistics
-=======
     get "/users/settings/emotes", UserSettingsController, :emotes
     get "/users/settings/upload_emotes", UserSettingsController, :upload_emotes
->>>>>>> dev
+    
     put "/users/settings/create_channel", UserSettingsController, :create_channel
     put "/users/settings/delete_channel", UserSettingsController, :delete_channel
     get "/users/settings/preference", UserSettingsController, :preference

@@ -36,11 +36,11 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotes do
       {:ok, _emote} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Deleted #{emote.emote}")
+         |> put_flash(:emote_info, "Deleted #{emote.emote}")
          |> redirect(to: Routes.user_settings_path(socket, :emotes))}
 
       {:error, _} ->
-        {:noreply, socket |> put_flash(:error, "Error approving #{emote.emote}")}
+        {:noreply, socket |> put_flash(:emote_error, "Error deleting #{emote.emote}")}
     end
   end
 end
