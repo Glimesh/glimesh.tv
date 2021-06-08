@@ -9,12 +9,24 @@ defmodule GlimeshWeb.UserLive.Stream do
   def mount(%{"username" => streamer_username}, session, socket) do
     case ChannelLookups.get_channel_for_username(streamer_username) do
       %Glimesh.Streams.Channel{} = channel ->
+        maybe_hosted_channel = if channel.is_hosting do
+          ChannelLookups.get_channel_for_username(channel.hosted_channel.streamer.username)
+        else
+          nil
+        end
         if session["locale"], do: Gettext.put_locale(session["locale"])
 
         if connected?(socket) do
           # Wait until the socket connection is ready to load the stream
           Process.send(self(), :load_stream, [])
-          Streams.subscribe_to(:channel, channel.id)
+
+          # Subscribe to the hosted channel & main channel instead if applicable
+          if maybe_hosted_channel do
+            Streams.subscribe_to(:channel, maybe_hosted_channel.id)
+            Streams.subscribe_to(:channel, channel.id)
+          else
+            Streams.subscribe_to(:channel, channel.id)
+          end
         end
 
         maybe_user = Accounts.get_user_by_session_token(session["user_token"])
@@ -40,7 +52,9 @@ defmodule GlimeshWeb.UserLive.Stream do
          |> assign(:lost_packets, 0)
          |> assign(:stream_metadata, get_last_stream_metadata(channel.stream))
          |> assign(:player_error, nil)
-         |> assign(:user, maybe_user)}
+         |> assign(:user, maybe_user)
+         |> assign(:hosted_channel, maybe_hosted_channel)
+         |> assign(:is_hosting, channel.is_hosting)}
 
       nil ->
         {:ok, redirect(socket, to: "/#{streamer_username}/profile")}
@@ -48,11 +62,17 @@ defmodule GlimeshWeb.UserLive.Stream do
   end
 
   def handle_info(:load_stream, socket) do
+    channel_to_use = if socket.assigns.hosted_channel do
+      socket.assigns.hosted_channel
+    else
+      socket.assigns.channel
+    end
+
     case Glimesh.Janus.get_closest_edge_location(socket.assigns.country) do
       %Glimesh.Janus.EdgeRoute{id: janus_edge_id, url: janus_url, hostname: janus_hostname} ->
         Presence.track_presence(
           self(),
-          Streams.get_subscribe_topic(:viewers, socket.assigns.channel.id),
+          Streams.get_subscribe_topic(:viewers, channel_to_use.id),
           socket.assigns.unique_user,
           %{
             janus_edge_id: janus_edge_id
@@ -65,7 +85,7 @@ defmodule GlimeshWeb.UserLive.Stream do
          socket
          |> push_event("load_video", %{
            janus_url: janus_url,
-           channel_id: socket.assigns.channel.id
+           channel_id: channel_to_use.id
          })
          |> assign(:janus_url, janus_url)
          |> assign(:janus_hostname, janus_hostname)}
@@ -85,7 +105,21 @@ defmodule GlimeshWeb.UserLive.Stream do
   end
 
   def handle_info({:channel, channel}, socket) do
-    {:noreply, socket |> assign(:stream, channel.stream)}
+    maybe_hosted_channel = if channel.is_hosting do
+      ChannelLookups.get_channel!(channel.hosted_channel_id)
+    else
+      nil
+    end
+    if channel.is_hosting do
+      Streams.subscribe_to(:channel, maybe_hosted_channel.id)
+    end
+    IO.inspect(channel)
+    {:noreply,
+    socket
+    |> assign(:channel, channel)
+    |> assign(:is_hosting, channel.is_hosting)
+    |> assign(:hosted_chanel, maybe_hosted_channel)
+    |> assign(:stream, channel.stream)}
   end
 
   def handle_event("show_mature", _value, socket) do

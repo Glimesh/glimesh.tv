@@ -134,11 +134,11 @@ defmodule Glimesh.ChannelLookups do
   end
 
   def get_channel(id) do
-    Repo.get_by(Channel, id: id) |> Repo.preload([:category, :subcategory, :user, :tags])
+    Repo.get_by(Channel, id: id) |> Repo.preload([:category, :subcategory, :user, :tags, :streamer, hosted_channel: :streamer])
   end
 
   def get_channel!(id) do
-    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :subcategory, :user, :tags])
+    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :subcategory, :user, :tags, :streamer, hosted_channel: :streamer])
   end
 
   def get_channel_for_username(username, ignore_banned \\ false) do
@@ -156,7 +156,7 @@ defmodule Glimesh.ChannelLookups do
       end
 
     Repo.one(query)
-    |> Repo.preload([:category, :stream, :subcategory, :user, :tags])
+    |> Repo.preload([:category, :stream, :subcategory, :user, :tags, :streamer, hosted_channel: :streamer])
   end
 
   def get_channel_for_user_id(user_id, ignore_banned \\ false) do

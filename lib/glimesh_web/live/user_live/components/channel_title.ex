@@ -5,18 +5,24 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   alias Glimesh.ChannelLookups
   alias Glimesh.Streams
 
-  def render_badge(channel) do
-    if channel.status == "live" do
-      raw("""
-      <span class="badge badge-danger">Live!</span>
-      """)
+  def render_badge(channel, is_hosting \\ false) do
+    if is_hosting do
+        raw("""
+        <span class="badge badge-secondary">Hosting #{channel.streamer.displayname}</span>
+        """)
     else
-      raw("")
+      if channel.status == "live" do
+        raw("""
+        <span class="badge badge-danger">Live!</span>
+        """)
+      else
+        raw("")
+      end
     end
   end
 
   @impl true
-  def mount(_params, %{"channel_id" => channel_id, "user" => nil} = session, socket) do
+  def mount(_params, %{"channel_id" => channel_id, "user" => nil, "is_hosting" => is_hosting} = session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
     if connected?(socket), do: Streams.subscribe_to(:channel, channel_id)
     channel = ChannelLookups.get_channel!(channel_id)
@@ -27,11 +33,12 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
      |> assign(:user, nil)
      |> assign(:channel, channel)
      |> assign(:editing, false)
-     |> assign(:can_change, false)}
+     |> assign(:can_change, false)
+     |> assign(:is_hosting, is_hosting)}
   end
 
   @impl true
-  def mount(_params, %{"channel_id" => channel_id, "user" => user} = session, socket) do
+  def mount(_params, %{"channel_id" => channel_id, "user" => user, "is_hosting" => is_hosting} = session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
     if connected?(socket), do: Streams.subscribe_to(:channel, channel_id)
     channel = ChannelLookups.get_channel!(channel_id)
@@ -48,7 +55,8 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
      |> assign(:current_category_id, channel.category_id)
      |> assign(:category, channel.category)
      |> assign(:can_change, Bodyguard.permit?(Glimesh.Streams, :update_channel, user, channel))
-     |> assign(:editing, false)}
+     |> assign(:editing, false)
+     |> assign(:is_hosting, is_hosting)}
   end
 
   def search_categories(query, socket) do

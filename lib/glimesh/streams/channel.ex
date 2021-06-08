@@ -27,6 +27,9 @@ defmodule Glimesh.Streams.Channel do
     field :require_confirmed_email, :boolean, default: false
     field :minimum_account_age, :integer, default: 0
 
+    field :is_hosting, :boolean, default: false
+    belongs_to :hosted_channel, Glimesh.Streams.Channel
+
     field :chat_rules_md, :string
     field :chat_rules_html, :string
 
@@ -70,6 +73,7 @@ defmodule Glimesh.Streams.Channel do
     |> put_change(:hmac_key, generate_hmac_key())
   end
 
+
   def changeset(channel, attrs \\ %{}) do
     channel
     |> cast(attrs, [
@@ -88,7 +92,9 @@ defmodule Glimesh.Streams.Channel do
       :disable_hyperlinks,
       :block_links,
       :require_confirmed_email,
-      :minimum_account_age
+      :minimum_account_age,
+      :is_hosting,
+      :hosted_channel_id
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)

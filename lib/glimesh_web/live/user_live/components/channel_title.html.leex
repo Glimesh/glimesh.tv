@@ -7,7 +7,7 @@
     <!-- Anything else -->
     <div class="d-none d-sm-block">
     <h5 class="mb-0">
-      <%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.name %></span> <%= @channel.title %>
+      <%= render_badge(@channel, @is_hosting) %> <span class="badge badge-primary"><%= @channel.category.name %></span> <%= @channel.title %>
       <%= if @can_change do %>
       <a class="fas fa-edit" phx-click="toggle-edit" href="#" aria-label="<%= gettext("Edit") %>"></a>
       <% end %>

@@ -4,9 +4,10 @@
         <div id="video-column" class="col-lg-9 layout-spacing">
             <div class="card">
                 <div class="card-header p-1">
+                    <%= unless @is_hosting do %>
                     <div class="row">
                         <div class="col align-self-center d-block text-truncate">
-                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
+                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id, "is_hosting" => false}) %>
                         </div>
                         <div class="col-auto">
                             <div class="float-right">
@@ -22,10 +23,30 @@
                                     <div class="btn-group" role="group" aria-label="Third group">
                                         <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
                                     </div>
+                                    <div class="btn-group" role="group" aria-label="Fourth group">
+                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.HostButton, id: "host-button", session: %{"channel_id" => @channel.id, "user" => @user}) %>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <% else %>
+                    <div class="row">
+                        <div class="col align-self-center d-block text-truncate">
+                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @hosted_channel.id, "is_hosting" => true}) %>
+                        </div>
+                        <div class="col-auto">
+                            <div class="float-right">
+                                <div class="btn-group mr-1" role=group aria-label="First group">
+                                    <%= live_redirect gettext("View %{user}'s Channel", user: @hosted_channel.streamer.displayname), class: "btn btn-primary", to: Routes.user_stream_path(@socket, :index, @hosted_channel.streamer.username) %>
+                                </div>
+                                <div class="btn-group mr-1" role=group aria-label="Second group">
+                                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.UnhostButton, id: "unhost-button", session: %{"user" => @user, "channel_id" => @channel.id}) %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% end %>
                 </div>
                 <div class="card-body p-0 p-md-1">
                     <%= if @prompt_mature do %>
