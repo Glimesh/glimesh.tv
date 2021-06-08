@@ -157,7 +157,12 @@ defmodule Glimesh.Streams do
   end
 
   def list_streams(channel) do
-    Repo.all(from s in Glimesh.Streams.Stream, where: s.channel_id == ^channel.id)
+    Repo.all(
+      from s in Glimesh.Streams.Stream,
+        where: s.channel_id == ^channel.id,
+        order_by: [desc: s.started_at]
+    )
+    |> Repo.preload(:category)
   end
 
   @doc """

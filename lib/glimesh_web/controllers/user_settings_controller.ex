@@ -4,7 +4,6 @@ defmodule GlimeshWeb.UserSettingsController do
   alias Glimesh.Accounts
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
-  alias Glimesh.ChannelStatistics
   alias Glimesh.Streams
   alias GlimeshWeb.UserAuth
 
