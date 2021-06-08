@@ -83,6 +83,12 @@ defmodule GlimeshWeb.LayoutView do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :notifications])
   end
 
+  def active_channel_statistics_path(conn) do
+    truthy_active(
+      controller_action(conn) == [GlimeshWeb.UserSettingsController, :channel_statistics]
+    )
+  end
+
   def active_user_security_path(conn) do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserSecurityController, :index])
   end

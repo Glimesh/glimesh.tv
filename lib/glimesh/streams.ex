@@ -156,6 +156,10 @@ defmodule Glimesh.Streams do
     Repo.get_by!(Glimesh.Streams.Stream, id: id)
   end
 
+  def list_streams(channel) do
+    Repo.all(from s in Glimesh.Streams.Stream, where: s.channel_id == ^channel.id)
+  end
+
   @doc """
   Starts a stream for a specific channel
   Only called very intentionally by Janus after stream authentication
