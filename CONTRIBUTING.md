@@ -1,6 +1,6 @@
 # Contributing
 
-When contributing to this repository, please first discuss the change you wish to make via GitHub issues or our [Discord](https://discord.gg/glimesh) the team. 
+When contributing to this repository, please first discuss the change you wish to make via GitHub issues or our [Discord](https://discord.gg/glimesh) server.
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
