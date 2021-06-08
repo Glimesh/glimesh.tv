@@ -11,6 +11,7 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelStatisticsLive do
       %Glimesh.Streams.Channel{} = channel ->
         {:ok,
          socket
+         |> assign(:streams, Glimesh.Streams.list_streams(channel))
          |> assign(:channel, channel)}
 
       nil ->
