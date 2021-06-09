@@ -112,56 +112,42 @@ Enter it again:
 
 ### macOS Installation
 
-Installation is simple with [Homebrew](https://brew.sh).
+Installation is simple with [Homebrew](https://brew.sh). First, we need to install our pinned version of Elixir:
+
+```sh
+brew install asdf
+asdf plugin-add elixir
+# Adding elixir binary directory to ZSH shell. Change this if you use a different shell like bash, fish, etc.
+echo -e "\n. $(brew --prefix asdf)/asdf.sh" >> ${ZDOTDIR:-~}/.zshrc
+asdf install elixir `sed -n -e 's/ *elixir: "~> \(.*\)",/\1/p' mix.exs`
+source ${ZDOTDIR:-~}/.zshrc
+elixir --version
+```
+
+Now let's install our other dependencies:
 
 ```sh
 # Required dependencies
-brew install elixir imagemagick node
+brew install imagemagick node
 # Optional dependencies
 brew install librsvg 
 npm install -g svgo
 # Graphical Postgres, if you do not want a graphical Postgres, you are on your own!
-brew install --cask postgres
+brew install --cask postgres-unofficial
 ```
 
 After you've completed these install steps, launch the Postgres.app and Initialize the server. You are ready to run Glimesh.tv at this point.
 
-### Preparing to run
-
-`cd` into the directory where you cloned Glimesh.tv and run the following to pull Elixir
-dependencies:
-
-```sh
-mix deps.get
-```
-
-Then, run the following to set up the database:
-
-```sh
-mix ecto.setup
-```
-
-Then, pull the front-end dependencies from the assets directory.
-
-```sh
-npm ci --prefix=assets
-```
-
-Then, run the following to generate local SSL certificates (for HTTPS)
-
-```sh
-mix phx.gen.cert
-```
-
 ### Run!
 
 Finally, you can run the following command to start the Glimesh.tv service:
+`cd` into the directory where you cloned Glimesh.tv and run:
 
 ```sh
-mix phx.server
+./run.sh
 ```
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser. As a first task, dig into the `run.sh` script to see the script steps it runs to install dependencies and start up the server. You won't need to rebuild all of these steps for every type of change, so figuring out which steps you need to run for your changes will speed up your dev feedback loop.
 
 #### SSL/HTTPS
 
