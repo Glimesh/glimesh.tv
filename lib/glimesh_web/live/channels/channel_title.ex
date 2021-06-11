@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
+defmodule GlimeshWeb.Channels.ChannelTitle do
   use GlimeshWeb, :live_view
 
   alias Glimesh.ChannelCategories

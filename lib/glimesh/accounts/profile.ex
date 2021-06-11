@@ -3,6 +3,10 @@ defmodule Glimesh.Accounts.Profile do
 
   alias Glimesh.Accounts.User
 
+  def get_avatar_url(%User{} = user) do
+    Glimesh.Avatar.url({user.avatar, user}, :original)
+  end
+
   def user_role_color(%User{team_role: team_role}) do
     case team_role do
       "Core Team" ->

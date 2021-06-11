@@ -256,6 +256,7 @@ defmodule GlimeshWeb.Router do
     get "/s/event-form", ShortLinkController, :event_form
 
     # This must be the last route
+    live "/test-page", Channels.ChannelLive, :index
     live "/:username", UserLive.Stream, :index
     live "/:username/profile", UserLive.Profile, :index
     live "/:username/profile/followers", UserLive.Followers, :followers

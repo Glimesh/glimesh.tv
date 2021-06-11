@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
+defmodule GlimeshWeb.Channels.SubscribeButton do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Accounts

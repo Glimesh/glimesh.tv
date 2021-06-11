@@ -1,19 +1,21 @@
 defmodule GlimeshWeb.UserLive.Components.ReportButton do
   use GlimeshWeb, :live_view
 
+  alias Glimesh.Accounts
+
   @impl true
   def render(assigns) do
     ~L"""
-      <%= if @user do %>
+      <%= if @show_button do %>
       <div class="text-center">
         <a href="#" phx-click="show_modal" class="text-danger">
           <%= gettext("Report User") %> <i class="fas fa-flag"></i>
         </a>
       </div>
-      <%= if live_flash(@flash, :info) do %>
+      <%= if live_flash(@flash, :report_info) do %>
       <p class="alert alert-info" role="alert"
           phx-click="lv:clear-flash"
-          phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+          phx-value-key="report_info"><%= live_flash(@flash, :report_info) %></p>
       <% end %>
 
       <%= if @show_report do %>
@@ -95,23 +97,28 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
   end
 
   @impl true
-  def mount(_params, %{"streamer" => streamer, "user" => nil}, socket) do
+  def mount(_params, %{"user_id_to_report" => reported_id, "user_token" => user_token}, socket) do
+    maybe_user = Accounts.get_user_by_session_token(user_token)
+    reported_user = Accounts.get_user!(reported_id)
+
     {:ok,
-     socket
-     |> assign(:streamer, streamer)
-     |> assign(:user, nil)
-     |> assign(:show_report, false)}
+     assign(socket,
+       reported_user: reported_user,
+       user: maybe_user,
+       show_button: !is_nil(maybe_user),
+       show_report: false
+     )}
   end
 
   @impl true
-  def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
-    Gettext.put_locale(Glimesh.Accounts.get_user_locale(user))
-
+  def mount(_params, _session, socket) do
     {:ok,
-     socket
-     |> assign(:streamer, streamer)
-     |> assign(:user, user)
-     |> assign(:show_report, false)}
+     assign(socket,
+       reported_user: nil,
+       user: nil,
+       show_button: false,
+       show_report: false
+     )}
   end
 
   @impl true
@@ -130,7 +137,9 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
       )
 
     {:noreply,
-     socket |> assign(:show_report, false) |> put_flash(:info, "Report submitted, thank you!")}
+     socket
+     |> assign(:show_report, false)
+     |> put_flash(:report_info, "Report submitted, thank you!")}
   end
 
   @impl true

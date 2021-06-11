@@ -1,5 +1,5 @@
 defmodule GlimeshWeb.UserLive.Components.SocialButtons do
-  use GlimeshWeb, :live_view
+  use GlimeshWeb, :live_component
 
   @impl true
   def render(assigns) do
@@ -61,12 +61,13 @@ defmodule GlimeshWeb.UserLive.Components.SocialButtons do
   end
 
   @impl true
-  def mount(_params, %{"user_id" => user_id}, socket) do
-    user = Glimesh.Accounts.get_user!(user_id)
-
+  def update(assigns, socket) do
     {:ok,
-     socket
-     |> assign(:twitter_social, Glimesh.Socials.get_social(user, "twitter"))
-     |> assign(:streamer, user)}
+     assign(
+       socket,
+       Map.merge(assigns, %{
+         twitter_social: Glimesh.Socials.get_social(assigns.streamer, "twitter")
+       })
+     )}
   end
 end

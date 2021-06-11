@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.UserLive.Components.ViewerCount do
+defmodule GlimeshWeb.Channels.ViewerCount do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Presence

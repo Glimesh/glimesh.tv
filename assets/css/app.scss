@@ -202,3 +202,8 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
         margin-bottom: 0;
     }
 }
+
+.phx-error {
+    border: 5px solid red !important;
+    background: pink !important;
+}

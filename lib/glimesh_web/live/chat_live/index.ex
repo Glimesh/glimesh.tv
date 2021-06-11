@@ -18,10 +18,12 @@ defmodule GlimeshWeb.ChatLive.Index do
 
       channel = ChannelLookups.get_channel!(channel_id)
 
+      maybe_user = Accounts.get_user_by_session_token(session["user_token"])
+
       # Sets a default user_preferences map for the chat if the user is logged out
       user_preferences =
-        if session["user"] do
-          Accounts.get_user_preference!(session["user"])
+        if maybe_user do
+          Accounts.get_user_preference!(maybe_user)
         else
           %{
             show_timestamps: false,
@@ -29,9 +31,7 @@ defmodule GlimeshWeb.ChatLive.Index do
           }
         end
 
-      if session["user"] do
-        user = session["user"]
-
+      if user = maybe_user do
         Presence.track_presence(
           self(),
           Streams.get_subscribe_topic(:chatters, channel.id),
@@ -51,9 +51,9 @@ defmodule GlimeshWeb.ChatLive.Index do
         |> assign(:channel_chat_parser_config, Chat.get_chat_parser_config(channel))
         |> assign(:update_action, "replace")
         |> assign(:channel, channel)
-        |> assign(:user, session["user"])
+        |> assign(:user, maybe_user)
         |> assign(:theme, Map.get(session, "site_theme", "dark"))
-        |> assign(:permissions, Chat.get_moderator_permissions(channel, session["user"]))
+        |> assign(:permissions, Chat.get_moderator_permissions(channel, maybe_user))
         |> assign(:chat_messages, list_chat_messages(channel))
         |> assign(:chat_message, %ChatMessage{})
         |> assign(:show_timestamps, user_preferences.show_timestamps)
