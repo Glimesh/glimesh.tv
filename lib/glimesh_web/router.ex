@@ -27,6 +27,7 @@ defmodule GlimeshWeb.Router do
     plug :fetch_current_user
     plug :require_alpha_api_header
     plug :accepts, ["json"]
+    plug GlimeshWeb.Plugs.Cors
     plug GlimeshWeb.Plugs.ApiContextPlug
   end
 
@@ -38,6 +39,7 @@ defmodule GlimeshWeb.Router do
   end
 
   pipeline :oauth do
+    plug GlimeshWeb.Plugs.Cors
     plug Plug.Parsers, parsers: [:urlendoded]
   end
 

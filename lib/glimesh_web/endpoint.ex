@@ -30,7 +30,6 @@ defmodule GlimeshWeb.Endpoint do
     websocket: [check_origin: false],
     longpoll: false
 
-
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
@@ -41,6 +40,7 @@ defmodule GlimeshWeb.Endpoint do
     at: "/",
     from: :glimesh,
     gzip: false,
+    headers: %{"access-control-allow-origin" => "*"},
     only:
       ~w(css fonts images videos js cache_manifest.json favicons emotes browserconfig.xml favicon.ico robots.txt site.webmanifest)
 
