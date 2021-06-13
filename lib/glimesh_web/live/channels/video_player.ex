@@ -53,7 +53,17 @@ defmodule GlimeshWeb.Channels.VideoPlayer do
           }
         )
 
-        Process.send(socket.parent_pid, {:packet_loss, 1}, [])
+        Process.send(socket.parent_pid, {:debug, :packet_loss, 1}, [])
+
+        Process.send(
+          socket.parent_pid,
+          {:debug, :janus_info,
+           %{
+             janus_url: janus_url,
+             janus_hostname: janus_hostname
+           }},
+          []
+        )
 
         # Process.send(self(), :remove_packet_warning, [])
 

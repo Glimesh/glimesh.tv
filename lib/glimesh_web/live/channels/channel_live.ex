@@ -18,18 +18,19 @@ defmodule GlimeshWeb.Channels.ChannelLive do
      )}
   end
 
+  @impl Phoenix.LiveView
   def handle_info({:debug_pid, new_pid}, socket) do
     {:noreply, assign(socket, debug_pid: new_pid)}
   end
 
-  def handle_info({:packet_loss, amount}, socket) do
-    if socket.assigns.debug_pid do
-      # We may not always have a debug pid, so we can ignore it sometimes.
-      Process.send(socket.assigns.debug_pid, {:packet_loss, amount}, [])
-    end
+  # def handle_info({:debug, _event, _data} = event, socket) do
+  #   if socket.assigns.debug_pid do
+  #     # We may not always have a debug pid, so we can ignore it sometimes.
+  #     Process.send(socket.assigns.debug_pid, event, [])
+  #   end
 
-    {:noreply, socket}
-  end
+  #   {:noreply, socket}
+  # end
 
   defp footer_params(%Glimesh.Streams.Channel{user: streamer} = channel) do
     %{

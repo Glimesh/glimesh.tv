@@ -53,7 +53,7 @@
                         </div>
                         <div class="col-4 align-self-center">
                             <div class="float-right mr-sm-2">
-                                <%= live_render(@socket, GlimeshWeb.Channels.DebugModal, id: "debug-modal") %>
+                                <%= live_component(@socket, GlimeshWeb.Channels.DebugModalComponent, id: "debug-modal") %>
                                 <div class="d-inline-block">
                                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user_id_to_report" => @streamer.id}) %>
                                 </div>
