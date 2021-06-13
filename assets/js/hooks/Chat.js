@@ -146,5 +146,52 @@ export default {
             }
         }
 
+        let recentMessages = []; // Holds all user-sent messages
+        let currentMessage = ""; // The current message the user is typing. Reset when sent.
+        let currentIndex = -1; // The position the user is in of the array that holds the messages.
+
+        document.getElementById("chat-form").onsubmit = function (e) {
+            if (e.target[2].value !== "" && e.target[2].value.length <= 255) {
+                recentMessages.unshift(e.target[2].value); // Pushes the message to the array
+                currentIndex = -1; // Resets the position
+                // If the message sent is what the user was typing (NOT a previous message) reset currentMessage
+                if (e.target[2].value == currentMessage) {
+                    currentMessage = ""
+                }
+            }
+        }
+        // Chat doesn't exist if they are not logged it, we check that before adding the listener
+        if (chat) {
+            chat.onkeyup = function (e) {
+                if (e.code == "ArrowUp") {
+                    // If no message is being typed and currentMessage was not sent
+                    if (e.target.value == "" && currentMessage) {
+                        e.target.value = currentMessage;
+                        // Else we show the the previous message(s)
+                    } else if (recentMessages.length !== 0 && recentMessages[currentIndex + 1]) {
+                        e.target.value = recentMessages[currentIndex + 1];
+                        currentIndex = currentIndex + 1
+                    }
+                } else if (e.code == "ArrowDown") {
+                    // If there are more recent messages we show them
+                    if (recentMessages.length !== 0 && recentMessages[currentIndex - 1]) {
+                        e.target.value = recentMessages[currentIndex - 1];
+                        currentIndex = currentIndex - 1;
+                        // If we have no messages to show we set the value to current message
+                    } else if (currentIndex - 1 == -1) {
+                        e.target.value = currentMessage;
+                        currentIndex = -1;
+                    } else {
+                        e.target.value = "" // Resets the box back to default
+                    }
+                }
+            }
+        }
+        // On input we set the currentMessage to what is being typed. Not triggered when user puts previous messages in the input box
+        document.getElementById("chat-form").oninput = function (e) {
+            if (currentIndex == -1) {
+                currentMessage = e.target.value;
+            }
+        };
     }
 };
