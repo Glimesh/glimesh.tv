@@ -27,7 +27,7 @@
                         <% end %>
                     </p>
                 </div>
-                <%= live_patch gettext("Watch Live"), to: Routes.user_stream_path(@socket, :index, @random_channel.user.username), class: "btn btn-primary text-nowrap" %>
+                <%= live_patch gettext("Watch Live"), to: Routes.user_stream_path(@socket, :index, @random_channel.user.username), class: "btn btn-primary text-nowrap ml-auto" %>
             </div>
         </div>
     </div>
