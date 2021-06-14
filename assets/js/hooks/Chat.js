@@ -165,7 +165,7 @@ export default {
         if (chat) {
             chat.addEventListener("keyup", function(e) {
                 if (e.code == "ArrowUp") {
-                    e.preventDefault();
+                    e.stopPropagation();
                     // If no message is being typed and currentMessage was not sent
                     if (e.target.value == "" && currentMessage) {
                         e.target.value = currentMessage;
@@ -176,7 +176,7 @@ export default {
                     }
                     return false;
                 } else if (e.code == "ArrowDown") {
-                    e.preventDefault();
+                    e.stopPropagation();
                     // If there are more recent messages we show them
                     if (recentMessages.length !== 0 && recentMessages[currentIndex - 1]) {
                         e.target.value = recentMessages[currentIndex - 1];
