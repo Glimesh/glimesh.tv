@@ -83,6 +83,7 @@ export default {
 
         const chat = document.getElementById('chat_message-form_message');
         const chatMessages = document.getElementById('chat-messages');
+        const chatForm = document.getElementById("chat-form")
 
         // Whenever the user changes their browser size, re-scroll them to the bottom
         window.addEventListener('resize', () => this.scrollToBottom(chatMessages));
@@ -140,17 +141,17 @@ export default {
         this.handleEvent("scroll_to_bottom", (e) => {
             parent.scrollToBottom(chatMessages);
         });
-        chatMessages.onscroll = function () {
+        chatMessages.addEventListener("scroll", function () {
             if (chatMessages.scrollHeight - chatMessages.scrollTop === chatMessages.clientHeight) {
                 parent.removeScrollNotice();
             }
-        }
+        });
 
         let recentMessages = []; // Holds all user-sent messages
         let currentMessage = ""; // The current message the user is typing. Reset when sent.
         let currentIndex = -1; // The position the user is in of the array that holds the messages.
 
-        document.getElementById("chat-form").onsubmit = function (e) {
+        chatForm.addEventListener("submit", function (e) {
             if (e.target[2].value !== "" && e.target[2].value.length <= 255) {
                 recentMessages.unshift(e.target[2].value); // Pushes the message to the array
                 currentIndex = -1; // Resets the position
@@ -159,11 +160,12 @@ export default {
                     currentMessage = ""
                 }
             }
-        }
+        });
         // Chat doesn't exist if they are not logged it, we check that before adding the listener
         if (chat) {
-            chat.onkeyup = function (e) {
+            chat.addEventListener("keyup", function(e) {
                 if (e.code == "ArrowUp") {
+                    e.preventDefault();
                     // If no message is being typed and currentMessage was not sent
                     if (e.target.value == "" && currentMessage) {
                         e.target.value = currentMessage;
@@ -172,7 +174,9 @@ export default {
                         e.target.value = recentMessages[currentIndex + 1];
                         currentIndex = currentIndex + 1
                     }
+                    return false;
                 } else if (e.code == "ArrowDown") {
+                    e.preventDefault();
                     // If there are more recent messages we show them
                     if (recentMessages.length !== 0 && recentMessages[currentIndex - 1]) {
                         e.target.value = recentMessages[currentIndex - 1];
@@ -184,14 +188,15 @@ export default {
                     } else {
                         e.target.value = "" // Resets the box back to default
                     }
+                    return false;
                 }
-            }
+            });
         }
         // On input we set the currentMessage to what is being typed. Not triggered when user puts previous messages in the input box
-        document.getElementById("chat-form").oninput = function (e) {
+        chatForm.addEventListener("input", function (e) {
             if (currentIndex == -1) {
                 currentMessage = e.target.value;
             }
-        };
+        });
     }
 };
