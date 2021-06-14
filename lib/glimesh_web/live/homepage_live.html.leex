@@ -20,7 +20,7 @@
             <div class="d-flex align-items-start mt-2">
                 <img src="<%= Glimesh.Avatar.url({@random_channel.user.avatar, @random_channel.user}, :original) %>" alt="<%= @random_channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(@random_channel.user), do: "img-verified-streamer", else: "" %>">
                 <div class="pl-1 pr-1">
-                    <h6 class="mb-0 mt-1 text-wrap"><%= @random_channel.title %> asdf asfkldj asdfkl asflkjasfdlkj asfdkljasdf klajs dfsdjfk </h6>
+                    <h6 class="mb-0 mt-1 text-wrap"><%= @random_channel.title %></h6>
                     <p class="mb-0 card-stream-username"><%= @random_channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(@random_channel) %></span>
                         <%= if @random_channel.mature_content do %>
                         <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
