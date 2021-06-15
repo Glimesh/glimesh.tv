@@ -100,7 +100,7 @@
                     </div>
 
                     <div class="col-8">
-                        <h6><a href="https://blog.glimesh.tv" class="text-link-color"><%= gettext("BLOG") %></a></h6>
+                        <h6><a href="https://blog.glimesh.tv" class="text-color-link"><%= gettext("BLOG") %></a></h6>
                         <ul class="list-unstyled text-small">
                             <%= for {title, url} <- Glimesh.BlogMigration.list_recent_posts() do %>
                             <li><%= link title, to: url %></li>
