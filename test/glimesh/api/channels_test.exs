@@ -185,8 +185,8 @@ defmodule Glimesh.Api.ChannelsTest do
                  "title" => "Live Stream!",
                  "streamer" => %{"username" => user.username},
                  "mature_content" => false,
-                 "posterUrl" => "/images/stream-not-started.jpg",
-                 "chatBgUrl" => "/images/bg.png",
+                 "posterUrl" => "http://localhost:4002/images/stream-not-started.jpg",
+                 "chatBgUrl" => "http://localhost:4002/images/bg.png",
                  "subcategory" => %{
                    "name" => "World of Warcraft"
                  },

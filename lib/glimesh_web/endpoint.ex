@@ -40,7 +40,6 @@ defmodule GlimeshWeb.Endpoint do
     at: "/",
     from: :glimesh,
     gzip: false,
-    headers: %{"access-control-allow-origin" => "*"},
     only:
       ~w(css fonts images videos js cache_manifest.json favicons emotes browserconfig.xml favicon.ico robots.txt site.webmanifest)
 

@@ -47,6 +47,7 @@ config :glimesh,
   email_physical_address: "1234 Fake St.<br>Pittsburgh, PA 15217",
   run_stream_pruner: true,
   start_workers: true,
+  alpha_api_enable: true,
   locales: locales
 
 config :glimesh, Glimesh.Repo, prepare: :unnamed

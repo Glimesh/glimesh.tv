@@ -1,7 +1,6 @@
 defmodule GlimeshWeb.Plugs.ApiContextPlug do
   @behaviour Plug
 
-  alias Glimesh.Accounts.User
   alias Glimesh.OauthApplications.OauthApplication
 
   import Plug.Conn
@@ -44,25 +43,9 @@ defmodule GlimeshWeb.Plugs.ApiContextPlug do
 
   def authorized(conn, opts) do
     case fetch_token(conn, opts) do
-      false -> try_conn(conn, opts)
       {:bearer, token} -> Glimesh.Oauth.TokenResolver.resolve_user(token)
       {:client, token} -> Glimesh.Oauth.TokenResolver.resolve_app(token)
     end
-  end
-
-  def try_conn(%{assigns: %{current_user: %User{} = current_user}}, _opts) do
-    {:ok,
-     %Glimesh.Accounts.UserAccess{
-       user: current_user,
-       public: true,
-       email: true,
-       chat: true,
-       streamkey: true
-     }}
-  end
-
-  def try_conn(_, _opts) do
-    {:error, "You are not logged in."}
   end
 
   defp fetch_token(conn, _opts) do
