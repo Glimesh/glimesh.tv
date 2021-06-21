@@ -24,17 +24,17 @@ defmodule GlimeshWeb.Router do
 
   pipeline :graphql_alpha_api do
     plug :accepts, ["json"]
+    # This route does not use session / cookies, so CORS can be wide open
     plug GlimeshWeb.Plugs.Cors
     plug :require_alpha_api_header
     plug GlimeshWeb.Plugs.ApiContextPlug
-    # This route does not use session / cookies, so CORS can be wide open
   end
 
   pipeline :graphql do
     plug :fetch_session
     plug :fetch_current_user
     plug :accepts, ["json"]
-    plug GlimeshWeb.Plugs.ApiContextPlug
+    plug GlimeshWeb.Plugs.OldApiContextPlug
   end
 
   pipeline :oauth do
