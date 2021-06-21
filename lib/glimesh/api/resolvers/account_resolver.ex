@@ -118,11 +118,4 @@ defmodule Glimesh.Api.AccountResolver do
     |> order_by(:id)
     |> Api.connection_from_query_with_count(args)
   end
-
-  def get_user_following_channels(args, %{source: user}) do
-    Glimesh.AccountFollows.Follower
-    |> where(user_id: ^user.id)
-    |> order_by(:id)
-    |> Api.connection_from_query_with_count(args)
-  end
 end
