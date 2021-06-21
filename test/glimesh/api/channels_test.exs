@@ -97,6 +97,15 @@ defmodule Glimesh.Api.ChannelsTest do
           }
         }
       }
+
+      streams(first: 200) {
+        count
+        edges {
+          node {
+            title
+          }
+        }
+      }
     }
   }
   """
@@ -223,7 +232,11 @@ defmodule Glimesh.Api.ChannelsTest do
                  "bans" => %{"count" => 0, "edges" => []},
                  "chatMessages" => %{"count" => 0, "edges" => []},
                  "moderationLogs" => %{"count" => 0, "edges" => []},
-                 "moderators" => %{"count" => 0, "edges" => []}
+                 "moderators" => %{"count" => 0, "edges" => []},
+                 "streams" => %{
+                   "count" => 1,
+                   "edges" => [%{"node" => %{"title" => "Live Stream!"}}]
+                 }
                }
              }
     end
