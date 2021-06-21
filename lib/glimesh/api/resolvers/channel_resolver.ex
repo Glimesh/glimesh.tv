@@ -222,6 +222,13 @@ defmodule Glimesh.Api.ChannelResolver do
     |> Api.connection_from_query_with_count(args)
   end
 
+  def get_streams(args, %{source: channel}) do
+    Streams.Stream
+    |> where(channel_id: ^channel.id)
+    |> order_by(:id)
+    |> Api.connection_from_query_with_count(args)
+  end
+
   def get_stream_metadata(args, %{source: stream}) do
     Streams.StreamMetadata
     |> where(stream_id: ^stream.id)

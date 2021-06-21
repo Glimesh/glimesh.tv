@@ -254,6 +254,10 @@ defmodule Glimesh.Api.ChannelTypes do
       resolve: dataloader(Repo),
       description: "If the channel is live, this will be the current Stream"
 
+    connection field :streams, node_type: :stream do
+      resolve(&ChannelResolver.get_streams/2)
+    end
+
     field :streamer, non_null(:user), resolve: dataloader(Repo)
 
     connection field :chat_messages, node_type: :chat_message do
@@ -323,6 +327,23 @@ defmodule Glimesh.Api.ChannelTypes do
 
     field :inserted_at, non_null(:naive_datetime)
     field :updated_at, non_null(:naive_datetime)
+  end
+
+  connection node_type: :stream do
+    field :count, :integer do
+      resolve(fn
+        _, %{source: conn} ->
+          {:ok, length(conn.edges)}
+      end)
+    end
+
+    edge do
+      field :node, :stream do
+        resolve(fn %{node: stream}, _args, _info ->
+          {:ok, stream}
+        end)
+      end
+    end
   end
 
   @desc "A single instance of stream metadata."
