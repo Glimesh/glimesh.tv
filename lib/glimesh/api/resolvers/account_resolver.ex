@@ -17,7 +17,7 @@ defmodule Glimesh.Api.AccountResolver do
   end
 
   def resolve_avatar_url(user, _, _) do
-    {:ok, Glimesh.Accounts.avatar_url(user)}
+    {:ok, Glimesh.Api.resolve_full_url(Glimesh.Avatar.url({user.avatar, user}))}
   end
 
   # Users
@@ -55,8 +55,6 @@ defmodule Glimesh.Api.AccountResolver do
 
   # Followers
   def all_followers(args, _) do
-    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
-
     case query_followers(args) do
       {:ok, :query, resp} -> Api.connection_from_query_with_count(resp, args)
       {:ok, :single, resp} -> Connection.from_list([resp], args)
@@ -108,8 +106,6 @@ defmodule Glimesh.Api.AccountResolver do
   end
 
   def get_user_followers(args, %{source: user}) do
-    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
-
     Glimesh.AccountFollows.Follower
     |> where(streamer_id: ^user.id)
     |> order_by(:id)
@@ -117,8 +113,6 @@ defmodule Glimesh.Api.AccountResolver do
   end
 
   def get_user_following(args, %{source: user}) do
-    args = Map.put(args, :first, min(Map.get(args, :first), 1000))
-
     Glimesh.AccountFollows.Follower
     |> where(user_id: ^user.id)
     |> order_by(:id)

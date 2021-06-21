@@ -48,4 +48,22 @@ defmodule Glimesh.Api do
       end)
     end)
   end
+
+  @doc """
+  If a potentially_local_path is a locally uploaded Waffle file (for example a default chat background),
+  this function will create a full static URL for us to return to the API. If the potentially_local_path is
+  instead a full URL, we'll just return it.
+  """
+  def resolve_full_url(potentially_local_path) when is_binary(potentially_local_path) do
+    if String.starts_with?(potentially_local_path, ["http://", "https://"]) do
+      potentially_local_path
+    else
+      GlimeshWeb.Router.Helpers.static_url(
+        GlimeshWeb.Endpoint,
+        potentially_local_path
+      )
+    end
+  end
+
+  def resolve_full_url(_), do: nil
 end

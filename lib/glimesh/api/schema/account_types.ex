@@ -5,6 +5,7 @@ defmodule Glimesh.Api.AccountTypes do
 
   import Absinthe.Resolution.Helpers
 
+  alias Glimesh.AccountFollows
   alias Glimesh.Api.AccountResolver
   alias Glimesh.Repo
 
@@ -93,26 +94,17 @@ defmodule Glimesh.Api.AccountTypes do
     field :profile_content_html, :string,
       description: "HTML version of the user's profile, should be safe for rendering directly"
 
-    # Not yet implemented for some reason?
-    # field :count_followers, :integer do
-    #   resolve(fn user, _, _ ->
-    #     {:ok, AccountFollows.count_followers(user)}
-    #   end)
-    # end
+    field :count_followers, :integer do
+      resolve(fn user, _, _ ->
+        {:ok, AccountFollows.count_followers(user)}
+      end)
+    end
 
-    # field :count_following, :integer do
-    #   resolve(fn user, _, _ ->
-    #     {:ok, AccountFollows.count_following(user)}
-    #   end)
-    # end
-
-    # field :followers, list_of(:follower),
-    #   resolve: dataloader(Repo),
-    #   description: "A list of users who are following you"
-
-    # field :following, list_of(:follower),
-    #   resolve: dataloader(Repo),
-    #   description: "A list of users who you are following"
+    field :count_following, :integer do
+      resolve(fn user, _, _ ->
+        {:ok, AccountFollows.count_following(user)}
+      end)
+    end
 
     connection field :followers, node_type: :follower do
       resolve(&AccountResolver.get_user_followers/2)

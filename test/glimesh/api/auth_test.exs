@@ -85,25 +85,14 @@ defmodule Glimesh.Api.AuthTest do
     end
   end
 
-  describe "authenticated api access with login session" do
+  describe "authenticated does not allow api access" do
     setup :register_and_log_in_admin_user
 
-    test "gets accepted", %{conn: conn} do
+    test "gets rejected", %{conn: conn} do
       conn = get(conn, "/api/graph")
 
-      assert json_response(conn, 400) == %{
-               "errors" => [%{"message" => "No query document supplied"}]
-             }
-    end
-
-    test "returns myself", %{conn: conn, user: user} do
-      conn =
-        post(conn, "/api/graph", %{
-          "query" => @myself_query
-        })
-
-      assert json_response(conn, 200) == %{
-               "data" => %{"myself" => %{"username" => user.username}}
+      assert json_response(conn, 401) == %{
+               "errors" => [%{"message" => "You must be logged in to access the api"}]
              }
     end
   end

@@ -23,6 +23,13 @@ defmodule GlimeshWeb.Endpoint do
     websocket: [check_origin: false],
     longpoll: false
 
+  socket "/api/graph", GlimeshWeb.GraphApiSocket,
+    # We can check_origin: false here because the only method of using this connection
+    # is by having an existing API key you are authorized to use. This allows for devs
+    # to run third party apps on their own client websites.
+    websocket: [check_origin: false],
+    longpoll: false
+
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.

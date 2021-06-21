@@ -6,6 +6,7 @@ defmodule Glimesh.Api.ChannelTypes do
   import Absinthe.Resolution.Helpers
   import_types(Absinthe.Plug.Types)
 
+  alias Glimesh.Api
   alias Glimesh.Api.ChannelResolver
   alias Glimesh.Repo
   alias Glimesh.Streams
@@ -239,13 +240,13 @@ defmodule Glimesh.Api.ChannelTypes do
 
     field :poster_url, :string do
       resolve(fn channel, _, _ ->
-        {:ok, Glimesh.ChannelPoster.url({channel.poster, channel})}
+        {:ok, Api.resolve_full_url(Glimesh.ChannelPoster.url({channel.poster, channel}))}
       end)
     end
 
     field :chat_bg_url, :string do
       resolve(fn channel, _, _ ->
-        {:ok, Glimesh.ChatBackground.url({channel.chat_bg, channel})}
+        {:ok, Api.resolve_full_url(Glimesh.ChatBackground.url({channel.chat_bg, channel}))}
       end)
     end
 
@@ -316,7 +317,7 @@ defmodule Glimesh.Api.ChannelTypes do
 
     field :thumbnail_url, :string do
       resolve(fn stream, _, _ ->
-        {:ok, Glimesh.StreamThumbnail.url({stream.thumbnail, stream})}
+        {:ok, Api.resolve_full_url(Glimesh.StreamThumbnail.url({stream.thumbnail, stream}))}
       end)
     end
 
