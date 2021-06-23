@@ -1,4 +1,4 @@
-FROM elixir:1.11.2
+FROM elixir:1.12.1
 
 # Install package dependencies
 RUN apt-get update

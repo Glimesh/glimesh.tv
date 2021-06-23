@@ -31,6 +31,6 @@ defmodule GlimeshWeb.LiveHelpers do
     ]
 
     # Socket param is deprecated from lib author
-    live_component(_socket, GlimeshWeb.ModalComponent, modal_opts)
+    live_component(GlimeshWeb.ModalComponent, modal_opts)
   end
 end

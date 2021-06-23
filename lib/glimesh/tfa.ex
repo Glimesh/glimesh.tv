@@ -35,7 +35,8 @@ defmodule Glimesh.Tfa do
       |> Base.decode16!()
 
     secret_bytes = Base.decode32!(secret, padding: false)
-    :crypto.hmac(:sha, secret_bytes, moving_factor)
+
+    :crypto.mac(:hmac, :sha, secret_bytes, moving_factor)
   end
 
   defp hmac_dynamic_truncation(hmac) do
