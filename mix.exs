@@ -5,7 +5,7 @@ defmodule Glimesh.MixProject do
     [
       app: :glimesh,
       version: "0.1.0",
-      elixir: "~> 1.11.2",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -74,7 +74,7 @@ defmodule Glimesh.MixProject do
       {:phoenix_markdown, "~> 1.0"},
       {:html_sanitize_ex, "~> 1.4.1"},
       {:earmark, "~> 1.4"},
-      {:oauther, "~> 1.1"},
+      {:oauther, "~> 1.1", github: "Glimesh/oauther", override: true},
       {:oauth2, "~> 2.0"},
       {:extwitter, "~> 0.12.2"},
       # Uploads
