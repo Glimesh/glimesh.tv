@@ -100,17 +100,11 @@ defmodule Glimesh.CommunityTeam do
     Can stream changed from #{user.can_stream} to #{user_params["can_stream"]}
     Can use payments changed from #{user.can_payments} to #{user_params["can_payments"]}
     Stripe user id changed from #{user.stripe_user_id} to #{user_params["stripe_user_id"]}
-    Stripe customer id changed from #{user.stripe_customer_id} to #{
-      user_params["stripe_customer_id"]
-    }
-    Stripe payment method changed from #{user.stripe_payment_method} to #{
-      user_params["stripe_payment_method"]
-    }
+    Stripe customer id changed from #{user.stripe_customer_id} to #{user_params["stripe_customer_id"]}
+    Stripe payment method changed from #{user.stripe_payment_method} to #{user_params["stripe_payment_method"]}
     Is Stripe Setup changed from #{user.is_stripe_setup} to #{user_params["is_stripe_setup"]}
     Is Tax Verified changed from #{user.is_tax_verified} to #{user_params["is_tax_verified"]}
-    Tax Withholding Percent changed from #{user.tax_withholding_percent} to #{
-      user_params["tax_withholding_percent"]
-    }
+    Tax Withholding Percent changed from #{user.tax_withholding_percent} to #{user_params["tax_withholding_percent"]}
     2FA changed from #{user.tfa_token} to #{user_params["tfa_token"]}
     Payments enabled changed from #{user.can_payments} to #{user_params["can_payments"]}
     GCT changed from #{user.is_gct} to #{user_params["is_gct"]}
@@ -124,9 +118,7 @@ defmodule Glimesh.CommunityTeam do
     _fancy_string = """
     Title changed from #{channel.title} to #{channel_params["title"]}
     Category changed from #{channel.category_id} to #{channel_params["category_id"]}
-    Disable hyperlinks changed from #{channel.disable_hyperlinks} to #{
-      channel_params["disable_hyperlinks"]
-    }
+    Disable hyperlinks changed from #{channel.disable_hyperlinks} to #{channel_params["disable_hyperlinks"]}
     Block links changed from #{channel.block_links} to #{channel_params["block_links"]}
     """
   end

@@ -45,6 +45,17 @@ defmodule Glimesh.Api.AccountsTest do
   @user_query_nodes """
   query getUser($id: Number!) {
     user(id: $id) {
+      followingLiveChannels {
+        count
+        edges {
+          node {
+            streamer {
+              username
+            }
+          }
+        }
+      }
+
       following {
         count
         edges {
@@ -168,6 +179,10 @@ defmodule Glimesh.Api.AccountsTest do
                  "followers" => %{
                    "count" => 1,
                    "edges" => [%{"node" => %{"user" => %{"username" => random_user.username}}}]
+                 },
+                 "followingLiveChannels" => %{
+                   "count" => 1,
+                   "edges" => [%{"node" => %{"streamer" => %{"username" => streamer.username}}}]
                  },
                  "following" => %{
                    "count" => 1,

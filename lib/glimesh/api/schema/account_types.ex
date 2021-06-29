@@ -114,6 +114,11 @@ defmodule Glimesh.Api.AccountTypes do
       resolve(&AccountResolver.get_user_following/2)
     end
 
+    connection field :following_live_channels, node_type: :channel do
+      description("Shortcut to a user's followed channels")
+      resolve(&AccountResolver.get_live_user_following_channels/2)
+    end
+
     field :channel, :channel,
       resolve: dataloader(Repo),
       description: "A user's channel, if they have one"

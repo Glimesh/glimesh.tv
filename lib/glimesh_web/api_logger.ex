@@ -22,9 +22,7 @@ defmodule GlimeshWeb.ApiLogger do
       })
 
     Logger.info(
-      "[Absinthe Operation] Access Type: #{context.access_type} Access Identifier: #{
-        context.access_identifier
-      } Query: #{inspect(raw_query)} "
+      "[Absinthe Operation] Access Type: #{context.access_type} Access Identifier: #{context.access_identifier} Query: #{inspect(raw_query)} "
     )
   end
 end
