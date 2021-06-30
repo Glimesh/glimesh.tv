@@ -1,112 +1,127 @@
 <div class="container-fluid container-stream">
-    <div class="row mt-lg-3">
+    <div class="row mt-lg-3 mb-4">
 
-        <div id="video-column" class="col-lg-9 layout-spacing">
-            <div class="card">
-                <div class="card-header p-1">
-                    <div class="row">
-                        <div class="col align-self-center d-block text-truncate">
-                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
-                        </div>
-                        <div class="col-auto">
-                            <div class="float-right">
-                                <div class="stream-info btn-toolbar">
-                                    <div class="btn-group mr-1" role="group" aria-label="First group">
-                                        <%= if @can_receive_payments do %>
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                                        <% end %>
-                                    </div>
-                                    <div class="btn-group mr-1" role="group" aria-label="Second group">
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                                    </div>
-                                    <div class="btn-group" role="group" aria-label="Third group">
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div id="video-column" class="col-lg-9">
+            <%= if @prompt_mature do %>
+            <div class="jumbotron jumbotron-fluid jumbotron-mature-content mb-0 embed-responsive embed-responsive-16by9">
+                <div class="embed-responsive-item d-flex justify-content-center">
+                    <div class="align-self-center" style="max-width: 400px;">
+                        <h3 class="display-5 text-center"><%= gettext("Mature Content Warning") %></h3>
+                        <p class="lead text-center">
+                            <%= gettext("The streamer has flagged this channel as only appropriate for Mature Audiences.") %><br>
+                            <%= gettext("Do you wish to continue?") %>
+                        </p>
+                        <button type="button" phx-click="show_mature" class="btn btn-primary btn-block"><%= gettext("Agree & View Channel") %></button>
                     </div>
                 </div>
-                <div class="card-body p-0 p-md-1">
-                    <%= if @prompt_mature do %>
-                    <div class="jumbotron jumbotron-fluid jumbotron-mature-content mb-0 embed-responsive embed-responsive-16by9">
-                        <div class="embed-responsive-item d-flex justify-content-center">
-                            <div class="align-self-center" style="max-width: 400px;">
-                                <h3 class="display-5 text-center"><%= gettext("Mature Content Warning") %></h3>
-                                <p class="lead text-center">
-                                    <%= gettext("The streamer has flagged this channel as only appropriate for Mature Audiences.") %><br>
-                                    <%= gettext("Do you wish to continue?") %>
-                                </p>
-                                <button type="button" phx-click="show_mature" class="btn btn-primary btn-block"><%= gettext("Agree & View Channel") %></button>
-                            </div>
-                        </div>
-                    </div>
+            </div>
 
-                    <% else %>
-                    <div id="video-container" class="embed-responsive embed-responsive-16by9">
-                        <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo" controls playsinline poster="<%= @channel_poster %>"></video>
-                        <div id="video-loading-container" class="">
-                            <div class="lds-ring">
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                            </div>
-                        </div>
+            <% else %>
+            <div id="video-container" class="embed-responsive embed-responsive-16by9">
+                <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo" controls playsinline poster="<%= @channel_poster %>"></video>
+                <div id="video-loading-container" class="">
+                    <div class="lds-ring">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
                     </div>
-                    <% end %>
                 </div>
-                <div class="card-footer p-1 d-none d-sm-block">
-                    <div class="row">
-                        <div class="col-8 d-inline-flex align-items-center">
-                            <div id="streamer-avatar">
-                                <a href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
-                                    <img src="<%= Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)%>" alt="<%= @channel.user.displayname %>" width="48" height="48" class="img-avatar mr-2 float-left <%= if Glimesh.Accounts.can_receive_payments?(@channel.user), do: "img-verified-streamer", else: "" %>">
-                                </a>
-                            </div>
-                            <a title="<%= gettext("View Profile") %>" class="<%= Glimesh.Chat.Effects.get_username_color(@channel.user) %>" href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
-                                <h3 class="mb-0"><%= @channel.user.displayname %></h3>
-                            </a>
+            </div>
+            <% end %>
+        </div>
 
-                            <span class="badge badge-pill badge-info ml-2"><%= Glimesh.Streams.get_channel_language(@channel) %></span>
-                            <%= if @channel.mature_content do %>
-                            <span class="badge badge-pill badge-warning ml-2"><%= gettext("Mature") %></span>
+        <div id="chat-column" class="col-lg-3 d-flex flex-column position-relative">
+            <div class="chat-flex">
+                <div class="chat-absolute">
+                    <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat",  session: %{"user" => @user, "channel_id" => @channel.id, "popped_out" => false} %>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card mb-4">
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-1" class="text-center">
+                    <div id="streamer-avatar">
+                        <a href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
+                            <img src="<%= Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)%>" alt="<%= @channel.user.displayname %>" height="92" width="92" class="img-avatar  <%= if Glimesh.Accounts.can_receive_payments?(@channel.user), do: "img-verified-streamer", else: "" %>">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div>
+                        <a title="<%= gettext("View Profile") %>" class="<%= Glimesh.Chat.Effects.get_username_color(@channel.user) %>" href="<%= Routes.user_profile_path(@socket, :index, @channel.user.username) %>">
+                            <h4 class="mb-0 d-inline"><%= @channel.user.displayname %></h4>
+                        </a>
+
+                        <span class="badge badge-pill badge-light ml-2"><%= Glimesh.Streams.get_channel_language(@channel) %></span>
+                        <%= if @channel.mature_content do %>
+                        <span class="badge badge-pill badge-light"><%= gettext("Mature") %></span>
+                        <% end %>
+
+                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", container: {:div, class: "float-right"}, session: %{"user" => @user, "streamer" => @streamer}) %>
+                    </div>
+                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
+                </div>
+                <div class="col-3 align-items-end">
+                    <div class="stream-info btn-toolbar justify-content-end">
+                        <div class="btn-group mr-1" role="group" aria-label="First group">
+                            <%= if @can_receive_payments do %>
+                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
                             <% end %>
-
-                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.SocialButtons, id: "social-buttons", container: {:ul, class: "list-inline ml-2 mb-0"}, session: %{"user_id" => @streamer.id}) %>
                         </div>
-                        <div class="col-4 align-self-center">
-                            <div class="float-right mr-sm-2">
-                                <div class="d-inline-block mr-sm-2">
-                                    <a href="#" phx-click="toggle_debug" class="text-color-link <%= if @player_error, do: "text-warning", else: "" %>">
-                                        <i class="fas fa-signal"></i>
-                                        <span class="sr-only">Debug</span>
-                                    </a>
-                                </div>
-                                <div class="d-inline-block">
-                                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton, id: "report-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                                </div>
-                            </div>
+                        <div class="btn-group mr-1" role="group" aria-label="Second group">
+                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                        </div>
+                        <div class="btn-group" role="group" aria-label="Third group">
+                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
                         </div>
                     </div>
-                    <%= if @show_debug do %>
-                    <div id="debugModal" class="live-modal" phx-capture-click="toggle_debug" phx-window-keydown="toggle_debug" phx-key="escape" phx-target="#debugModal" phx-page-loading>
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title"><%= gettext("Debug Information") %></h5>
-                                    <button type="button" class="close" phx-click="toggle_debug" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
+                    <div class="d-flex mt-4 justify-content-end">
+                        <a href="#" phx-click="toggle_debug" class="ml-4 text-right d-inline text-color-link <%= if @player_error, do: "text-warning", else: "" %>">
+                            <i class="fas fa-signal"></i>
+                            <span class="sr-only">Debug</span>
+                        </a>
+                    </div>
+                </div>
 
-                                <div class="modal-body">
-                                    <%= if @player_error do %>
-                                    <div class="alert alert-warning" role="alert">
-                                        <%= @player_error %>
-                                    </div>
-                                    <% end %>
-                                    <pre class="px-2">
+            </div>
+
+            <div class="row">
+                <div class="col-8 d-inline-flex align-items-center">
+
+
+
+
+
+
+                </div>
+                <div class="col-4 align-self-center">
+
+                </div>
+            </div>
+            <%= if @show_debug do %>
+            <div id="debugModal" class="live-modal" phx-capture-click="toggle_debug" phx-window-keydown="toggle_debug" phx-key="escape" phx-target="#debugModal" phx-page-loading>
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><%= gettext("Debug Information") %></h5>
+                            <button type="button" class="close" phx-click="toggle_debug" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <%= if @player_error do %>
+                            <div class="alert alert-warning" role="alert">
+                                <%= @player_error %>
+                            </div>
+                            <% end %>
+                            <pre class="px-2">
 == Janus Edge Information ==
 Edge Hostname: <%= @janus_hostname %>
 Edge URL: <%= @janus_url %>
@@ -137,31 +152,34 @@ video_width: <%= @stream_metadata.video_width %> // unused
 inserted_at: <%= @stream_metadata.inserted_at %>
 updated_at: <%= @stream_metadata.updated_at %>
 </pre>
-                                </div>
-
-                            </div>
                         </div>
+
                     </div>
-                    <% end %>
+                </div>
+            </div>
+            <% end %>
+
+            <div class="row">
+                <div class="col align-self-center d-block text-truncate">
+
+                </div>
+                <div class="col-auto">
+                    <div class="float-right">
+
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div id="chat-column" class="col-lg-3 d-flex flex-column position-relative layout-spacing">
-            <div class="chat-flex">
-                <div class="chat-absolute">
-                    <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id, "popped_out" => false} %>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <div class="row">
         <div class="col-lg-9 layout-spacing">
             <div class="card">
-                <div class="card-header">
-                    <h3>About <%= @streamer.displayname %>'s Stream</h3>
+                <div class="card-header d-flex">
+                    <div class="flex-fill">
+                        <h3 class="d-inline">About <%= @streamer.displayname %>'s Channel</h3>
+                    </div>
+                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.SocialButtons, id: "social-buttons", container: {:ul, class: "flex-fill text-right list-inline ml-2 mb-0"}, session: %{"user_id" => @streamer.id}) %>
                 </div>
                 <div class="card-body user-content-body">
                     <%= if @streamer.profile_content_html do %>

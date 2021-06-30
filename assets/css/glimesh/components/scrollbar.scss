@@ -1,5 +1,5 @@
-$scrollbar-color: #0e1726;
-$scrollbar-bg: #060818;
+$scrollbar-color: var(--navbar-bg-color);
+$scrollbar-bg: var(--body-bg-color);
 
 html {
     scrollbar-face-color: $scrollbar-color;

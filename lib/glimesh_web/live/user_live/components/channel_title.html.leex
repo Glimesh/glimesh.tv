@@ -1,56 +1,51 @@
 <!-- Mobile -->
-    <div class="d-block d-sm-none">
-      <p class="mb-0">
+<div class="d-block d-sm-none">
+    <p class="mb-0">
         <span class="badge badge-primary"><%= @channel.category.name %></span> <%= @channel.title %>
-      </p>
-    </div>
-    <!-- Anything else -->
-    <div class="d-none d-sm-block">
+    </p>
+</div>
+<!-- Anything else -->
+<div class="d-none d-sm-block">
     <h5 class="mb-0">
-      <%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.name %></span> <%= @channel.title %>
-      <%= if @can_change do %>
-      <a class="fas fa-edit" phx-click="toggle-edit" href="#" aria-label="<%= gettext("Edit") %>"></a>
-      <% end %>
+        <%= render_badge(@channel) %> <span class="badge badge-primary"><%= @channel.category.name %></span> <%= @channel.title %>
+        <%= if @can_change do %>
+        <a class="fas fa-edit" phx-click="toggle-edit" href="#" aria-label="<%= gettext("Edit") %>"></a>
+        <% end %>
     </h5>
     <%= if @channel.subcategory do %>
     <%= live_patch @channel.subcategory.name, to: Routes.streams_list_path(@socket, :index, @channel.category.slug, subcategory: [@channel.subcategory.slug]), class: "badge badge-pill badge-info" %>
     <% end %>
     <%= for tag <- @channel.tags do %>
-      <%= live_patch tag.name, to: Routes.streams_list_path(@socket, :index, @channel.category.slug, tags: [tag.slug]), class: "badge badge-pill badge-primary" %>
+    <%= live_patch tag.name, to: Routes.streams_list_path(@socket, :index, @channel.category.slug, tags: [tag.slug]), class: "badge badge-pill badge-primary" %>
     <% end %>
-    </div>
+</div>
 
-    <%= if @editing do %>
-        <div id="channelEditor" class="live-modal"
-            phx-capture-click="toggle-edit"
-            phx-window-keydown="toggle-edit"
-            phx-key="escape"
-            phx-target="#channelEditor"
-            phx-page-loading>
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"><%= gettext("Stream Info") %></h5>
-                        <button type="button" class="close" phx-click="toggle-edit" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+<%= if @editing do %>
+<div id="channelEditor" class="live-modal" phx-capture-click="toggle-edit" phx-window-keydown="toggle-edit" phx-key="escape" phx-target="#channelEditor" phx-page-loading>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><%= gettext("Stream Info") %></h5>
+                <button type="button" class="close" phx-click="toggle-edit" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
-                    <div class="modal-body">
-                      <%= f = form_for @changeset, "#", [phx_submit: :save, phx_change: :change_channel] %>
-                          <div class="form-group">
-                              <%= label f, :title, gettext("Title") %>
-                              <%= text_input f, :title, [class: "form-control", phx_update: "ignore"] %>
-                              <%= error_tag f, :title %>
-                          </div>
-                          <div class="form-group">
-                              <%= label f, :category_id, gettext("Category") %>
-                              <%= select f, :category_id, @categories, [class: "form-control"] %>
-                              <%= error_tag f, :category_id %>
-                          </div>
-                          <div class="form-group">
-                            <%= label f, :subcategory, @subcategory_label %>
-                            <%= live_component(
+            <div class="modal-body">
+                <%= f = form_for @changeset, "#", [phx_submit: :save, phx_change: :change_channel] %>
+                <div class="form-group">
+                    <%= label f, :title, gettext("Title") %>
+                    <%= text_input f, :title, [class: "form-control", phx_update: "ignore"] %>
+                    <%= error_tag f, :title %>
+                </div>
+                <div class="form-group">
+                    <%= label f, :category_id, gettext("Category") %>
+                    <%= select f, :category_id, @categories, [class: "form-control"] %>
+                    <%= error_tag f, :category_id %>
+                </div>
+                <div class="form-group">
+                    <%= label f, :subcategory, @subcategory_label %>
+                    <%= live_component(
                                 @socket,
                                 GlimeshWeb.TagifyComponent,
                                 id: "category-selector",
@@ -64,12 +59,12 @@
                                 search_func: &search_categories/2
                             )
                             %>
-                            <p><%= @subcategory_attribution %></p>
-                            <%= error_tag f, :subcategory %>
-                          </div>
-                          <div class="form-group">
-                              <%= label f, :tags, gettext("Tags") %>
-                              <%= live_component(
+                    <p><%= @subcategory_attribution %></p>
+                    <%= error_tag f, :subcategory %>
+                </div>
+                <div class="form-group">
+                    <%= label f, :tags, gettext("Tags") %>
+                    <%= live_component(
                                   @socket,
                                   GlimeshWeb.TagifyComponent,
                                   id: "tag-selector",
@@ -83,14 +78,14 @@
                                   search_func: &search_tags/2
                               )
                               %>
-                              <%= error_tag f, :tags %>
-                          </div>
-
-                          <button type="submit" class="btn btn-primary btn-block btn-lg"><%= gettext("Save") %></button>
-                          <a class="float-right mt-2" href="<%= Routes.user_settings_path(@socket, :stream) %>" target="_blank"><%= gettext("View more settings ") %> <i class="fas fa-external-link-alt"></i></a>
-                      </form>
-                    </div>
+                    <%= error_tag f, :tags %>
                 </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg"><%= gettext("Save") %></button>
+                <a class="float-right mt-2" href="<%= Routes.user_settings_path(@socket, :stream) %>" target="_blank"><%= gettext("View more settings ") %> <i class="fas fa-external-link-alt"></i></a>
+                </form>
             </div>
         </div>
-    <% end %>
+    </div>
+</div>
+<% end %>
