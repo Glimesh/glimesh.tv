@@ -59,9 +59,7 @@ defmodule Glimesh.Chat.RendererTest do
              ]
 
       assert Renderer.render_html(tokens) ==
-               "&lt;h2&gt;Hello <img alt=\":glimchef:\" draggable=\"false\" height=\"32px\" src=\"#{
-                 emote_url
-               }\" width=\"32px\"> world&lt;/h2&gt;"
+               "&lt;h2&gt;Hello <img alt=\":glimchef:\" draggable=\"false\" height=\"32px\" src=\"#{emote_url}\" width=\"32px\"> world&lt;/h2&gt;"
     end
   end
 end

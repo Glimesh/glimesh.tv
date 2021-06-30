@@ -118,4 +118,14 @@ defmodule Glimesh.Api.AccountResolver do
     |> order_by(:id)
     |> Api.connection_from_query_with_count(args)
   end
+
+  def get_live_user_following_channels(args, %{source: user}) do
+    following_user_ids =
+      Enum.map(Glimesh.AccountFollows.list_following(user), fn x -> x.streamer_id end)
+
+    Glimesh.Streams.Channel
+    |> where([c], c.user_id in ^following_user_ids)
+    |> order_by(:id)
+    |> Api.connection_from_query_with_count(args)
+  end
 end
