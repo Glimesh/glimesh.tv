@@ -99,33 +99,33 @@
     <h4 class="mt-4"><%= gettext("Your Subscriptions") %></h4>
     <div class="row">
         <%= if @platform_subscription do %>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><%= @platform_subscription.product_name %></h5>
+                    <h5 class="card-title"><%= @platform_subscription.product_name %> - $<%= format_price(@platform_subscription.price) %>/mo</h5>
                     <p>
                         <%= gettext("Subscribed since %{date}", date: format_datetime(@platform_subscription.started_at)) %>
                     </p>
                     <%= if @platform_subscription.is_canceling do %>
                     <%= gettext("Canceling on %{date}", date: format_datetime(@platform_subscription.ended_at)) %>
                     <% else %>
-                    <%= link gettext("Unsubscribe"), to: Routes.platform_subscription_index_path(@conn, :index), class: "btn btn-danger btn-sm" %>
+                    <%= link gettext("Manage Subscription"), to: Routes.platform_subscription_index_path(@conn, :index), class: "" %>
                     <% end %>
                 </div>
             </div>
         </div>
         <% end %>
         <%= for sub <- @subscriptions do %>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><%= sub.streamer.displayname %></h5>
+                    <h5 class="card-title"><%= sub.streamer.displayname %> - $<%= format_price(sub.price) %>/mo</h5>
                     <p>
                         <%= gettext("Subscribed since %{date}", date: format_datetime(sub.started_at)) %></p>
                     <%= if sub.is_canceling do %>
                     <%= gettext("Canceling on %{date}", date: format_datetime(sub.ended_at)) %>
                     <% else %>
-                    <%= link "Unsubscribe", to: Routes.user_stream_path(@conn, :index, sub.streamer.displayname), class: "btn btn-danger btn-sm" %>
+                    <%= link "Manage Subscription", to: Routes.user_stream_path(@conn, :index, sub.streamer.displayname), class: "" %>
                     <% end %>
                 </div>
             </div>
@@ -171,7 +171,7 @@
                         <td><%= payment.status %></td>
                         <td>
                             <%= unless payment.status == "failed" do %>
-                                <a href="<%= payment.receipt_url %>" target="_blank">Receipt</a>
+                            <a href="<%= payment.receipt_url %>" target="_blank">Receipt</a>
                             <% end %>
                         </td>
                     </tr>

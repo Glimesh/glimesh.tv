@@ -8,7 +8,7 @@ Glimesh is a next generation streaming platform built by the community, for the 
 
 ##### Why make this project?
 
-The core inspiration of this project has been equality. There are two main problems with existing streaming websites: they take too much of a cut and the gap between streamers is great. Glimesh is our chance to make this right, and build a platform that puts the streamers & community first, not the advertisers.
+The core inspiration of this project has been equality. There are two main problems with existing streaming websites: their customers are their shareholders and the gap between streamers is great. Glimesh is our chance to make this right, and build a platform that puts the streamers & community first, not the advertisers.
 
 ##### What makes Glimesh unique?
 
