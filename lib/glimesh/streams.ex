@@ -180,43 +180,29 @@ defmodule Glimesh.Streams do
 
       tags = Glimesh.ChannelCategories.list_tags_for_channel(channel)
 
-      {:ok, stream, channel} =
-        Appsignal.instrument("create_stream_and_start_channel", fn ->
-          # 1. Create Stream
-          {:ok, stream} =
-            create_stream(channel, %{
-              title: channel.title,
-              category_id: channel.category_id,
-              subcategory_id: channel.subcategory_id,
-              category_tags: Enum.map(tags, & &1.id),
-              started_at: DateTime.utc_now() |> DateTime.to_naive()
-            })
+      # 1. Create Stream
+      {:ok, stream} =
+        create_stream(channel, %{
+          title: channel.title,
+          category_id: channel.category_id,
+          subcategory_id: channel.subcategory_id,
+          category_tags: Enum.map(tags, & &1.id),
+          started_at: DateTime.utc_now() |> DateTime.to_naive()
+        })
 
-          # 2. Change Channel to use Stream
-          # 3. Change Channel to Live
-          {:ok, channel} =
-            channel
-            |> Channel.start_changeset(%{
-              stream_id: stream.id
-            })
-            |> Repo.update()
+      # 2. Change Channel to use Stream
+      # 3. Change Channel to Live
+      {:ok, channel} =
+        channel
+        |> Channel.start_changeset(%{
+          stream_id: stream.id
+        })
+        |> Repo.update()
 
-          {:ok, stream, channel}
-        end)
-
-      Appsignal.instrument("increment_tags_usage", fn ->
-        Glimesh.ChannelCategories.increment_tags_usage(tags)
-      end)
+      Glimesh.ChannelCategories.increment_tags_usage(tags)
 
       # 4. Send Notifications
-      Appsignal.instrument("send_live_notifications", fn ->
-        users = ChannelLookups.list_live_subscribed_followers(channel)
-
-        Glimesh.Streams.ChannelNotifier.deliver_live_channel_notifications(
-          users,
-          Repo.preload(channel, [:user, :stream, :tags])
-        )
-      end)
+      Rihanna.schedule(Glimesh.Jobs.StartStreamNotifier, [channel.id], in: :timer.minutes(2))
 
       # 5. Broadcast to anyone who's listening
       broadcast_message = Repo.preload(channel, [:category, :stream], force: true)

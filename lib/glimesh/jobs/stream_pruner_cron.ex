@@ -1,10 +1,9 @@
-defmodule Glimesh.Workers.StreamPruner do
-  @moduledoc """
-  Periodic stream pruning just in case Janus crashed and didn't send us a stop message
-  """
-  use GenServer
+defmodule Glimesh.Jobs.StreamPrunerCron do
+  @moduledoc false
+  @behaviour Rihanna.Job
 
   require Logger
+
   alias Glimesh.ChannelLookups
   alias Glimesh.Streams
 
@@ -13,33 +12,13 @@ defmodule Glimesh.Workers.StreamPruner do
   # 5 Minutes in seconds
   @prune_diff 300
 
-  def start_link(_init_args) do
-    if Application.get_env(:glimesh, :run_stream_pruner) do
-      GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
-    else
-      :ignore
-    end
-  end
-
-  def init(:ok) do
-    Process.send_after(self(), :prune_streams, @interval)
-    {:ok, %{last_run_at: nil}}
-  end
-
-  def handle_info(:prune_streams, _state) do
-    prune_old_streams()
-    Process.send_after(self(), :prune_streams, @interval)
-
-    {:noreply, %{last_run_at: :calendar.local_time()}}
-  end
-
-  defp prune_old_streams do
+  def perform(_) do
     channels = ChannelLookups.list_live_channels()
     Logger.info("Checking for stale streams to prune")
 
     current_time = NaiveDateTime.local_now()
 
-    Enum.map(channels, fn channel ->
+    Enum.each(channels, fn channel ->
       last_time =
         case Streams.get_last_stream_metadata(channel.stream) do
           nil ->
@@ -55,5 +34,9 @@ defmodule Glimesh.Workers.StreamPruner do
         Streams.end_stream(channel.stream)
       end
     end)
+
+    Rihanna.schedule(Glimesh.Jobs.StreamPrunerCron, [], in: @interval)
+
+    :ok
   end
 end
