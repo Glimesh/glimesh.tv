@@ -195,6 +195,35 @@ if rawg_api_key = System.get_env("RAWG_API_KEY") do
   config :glimesh, Glimesh.Subcategories.RawgSource, api_key: rawg_api_key
 end
 
+# PromEx Config
+if System.get_env("ENABLE_PROMEX") do
+  promex_auth_token = System.fetch_env!("PROMEX_AUTH_TOKEN")
+  grafana_host = System.fetch_env!("GRAFANA_HOST")
+  grafana_auth_token = System.fetch_env!("GRAFANA_AUTH_TOKEN")
+
+  config :glimesh, Glimesh.PromEx,
+    disabled: false,
+    manual_metrics_start_delay: :no_delay,
+    drop_metrics_groups: [],
+    grafana: [
+      host: grafana_host,
+      auth_token: grafana_auth_token,
+      upload_dashboards_on_start: true,
+      annotate_app_lifecycle: true
+    ],
+    metrics_server: [
+      port: 4021,
+      path: "/metrics",
+      protocol: :http,
+      pool_size: 5,
+      cowboy_opts: [],
+      auth_strategy: :bearer,
+      auth_token: promex_auth_token
+    ]
+else
+  config :glimesh, Glimesh.PromEx, disabled: true
+end
+
 # Glimesh Configuration
 if email_physical_address = System.get_env("GLIMESH_EMAIL_PHYSICAL_ADDRESS") do
   config :glimesh,
