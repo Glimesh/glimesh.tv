@@ -86,6 +86,7 @@ defmodule Glimesh.MixProject do
       {:sweet_xml, "~> 0.6"},
       {:ex_image_info, "~> 0.2.4"},
       # Other
+      {:prom_ex, "~> 1.3"},
       {:hcaptcha, "~> 0.0.1"},
       {:stripity_stripe, "~> 2.9"},
       {:eqrcode, "~> 0.1.7"},

@@ -16,6 +16,7 @@ defmodule Glimesh.Application do
     ]
 
     children = [
+      Glimesh.PromEx,
       {Cluster.Supervisor, [topologies, [name: Glimesh.ClusterSupervisor]]},
       # Start the Ecto repository
       Glimesh.Repo,

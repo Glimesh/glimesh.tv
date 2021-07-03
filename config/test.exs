@@ -53,3 +53,5 @@ config :glimesh, GlimeshWeb.Gettext,
   allowed_locales: ["en"]
 
 config :glimesh, alpha_api_enable: true
+
+config :glimesh, Glimesh.PromEx, disabled: true
