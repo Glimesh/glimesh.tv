@@ -45,8 +45,6 @@ config :glimesh,
   ecto_repos: [Glimesh.Repo],
   environment: Mix.env(),
   email_physical_address: "1234 Fake St.<br>Pittsburgh, PA 15217",
-  run_stream_pruner: true,
-  start_workers: true,
   alpha_api_enable: true,
   locales: locales
 
@@ -186,6 +184,9 @@ config :glimesh, Glimesh.Emotes, max_channel_emotes: 10, allow_channel_animated_
 
 config :libcluster,
   topologies: []
+
+config :rihanna,
+  producer_postgres_connection: {Ecto, Glimesh.Repo}
 
 config :glimesh, Glimesh.PaymentProviders.TaxIDPro, webhook_secret: "", api_key: ""
 

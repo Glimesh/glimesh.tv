@@ -15,6 +15,13 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
 
       {:ok, stream} = Glimesh.Streams.start_stream(streamer.channel)
 
+      # Ensure job has been queued in Rihanna for the channel
+      queued = Glimesh.Jobs.enqueued()
+      assert hd(queued).term == {Glimesh.Jobs.StartStreamNotifier, [streamer.channel.id]}
+
+      # Force the job to happen now so we can test
+      Glimesh.Jobs.StartStreamNotifier.perform([streamer.channel.id])
+
       assert_delivered_email(
         GlimeshWeb.Emails.Email.channel_live(
           user1,
@@ -41,6 +48,9 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
 
       {:ok, stream} = Glimesh.Streams.start_stream(streamer.channel)
 
+      # Force the job through so we can test
+      Glimesh.Jobs.StartStreamNotifier.perform([streamer.channel.id])
+
       assert_delivered_email(
         GlimeshWeb.Emails.Email.channel_live(
           user,
@@ -63,6 +73,9 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
         Glimesh.AccountFollows.follow(streamer, user, true)
         {:ok, stream} = Glimesh.Streams.start_stream(streamer.channel)
 
+        # Force the job through so we can test
+        Glimesh.Jobs.StartStreamNotifier.perform([streamer.channel.id])
+
         assert_delivered_email(
           GlimeshWeb.Emails.Email.channel_live(
             user,
@@ -76,6 +89,9 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
       streamer = streamer_fixture()
       Glimesh.AccountFollows.follow(streamer, user, true)
       {:ok, _} = Glimesh.Streams.start_stream(streamer.channel)
+
+      # Force the job through so we can test
+      Glimesh.Jobs.StartStreamNotifier.perform([streamer.channel.id])
 
       assert_no_emails_delivered()
     end
