@@ -27,6 +27,8 @@ defmodule Glimesh.Streams.Channel do
     field :require_confirmed_email, :boolean, default: false
     field :minimum_account_age, :integer, default: 0
 
+    field :show_recent_chat_messages_only, :boolean, default: false
+
     field :chat_rules_md, :string
     field :chat_rules_html, :string
 
@@ -85,6 +87,7 @@ defmodule Glimesh.Streams.Channel do
       :chat_rules_md,
       :inaccessible,
       :status,
+      :show_recent_chat_messages_only,
       :disable_hyperlinks,
       :block_links,
       :require_confirmed_email,

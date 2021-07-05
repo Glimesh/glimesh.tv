@@ -25,6 +25,7 @@
                         <p><%= gettext("Backend: %{value}", value: @channel.backend ) %></p>
                         <p><%= gettext("Disabled hyperlinks: %{value}", value: @channel.disable_hyperlinks ) %></p>
                         <p><%= gettext("Blocked links: %{value}", value: @channel.block_links ) %></p>
+                        <p><%= gettext("Show on homepage: %{value}", value: @channel.show_on_homepage ) %></p>
                     </div>
                 </div>
                 <div class="col-md-8">

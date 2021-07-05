@@ -220,6 +220,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :chat_rules_md, :string
     field :chat_rules_html, :string
 
+    field :show_recent_chat_messages_only, :boolean
     field :disable_hyperlinks, :boolean
     field :block_links, :boolean
     field :require_confirmed_email, :boolean

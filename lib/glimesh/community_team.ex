@@ -118,6 +118,8 @@ defmodule Glimesh.CommunityTeam do
     _fancy_string = """
     Title changed from #{channel.title} to #{channel_params["title"]}
     Category changed from #{channel.category_id} to #{channel_params["category_id"]}
+    Show recent chat messages only changed from #{channel.show_recent_chat_messages_only} to #{channel_params["show_recent_chat_messages_only"]}
+    Show on homepage changed from #{channel.show_on_homepage} to #{channel_params["show_on_homepage"]}
     Disable hyperlinks changed from #{channel.disable_hyperlinks} to #{channel_params["disable_hyperlinks"]}
     Block links changed from #{channel.block_links} to #{channel_params["block_links"]}
     """
