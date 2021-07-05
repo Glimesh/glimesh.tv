@@ -111,15 +111,15 @@ defmodule GlimeshWeb.UserLive.Stream do
     message =
       if lost_packets > 6,
         do:
-          gettext(
-            "We're detecting some networking problems between you and the streamer. You may experience video drops, jitter, or other issues!"
-          ),
+        gettext(
+          "We're detecting some networking problems between you and the streamer. You may experience video drops, jitter, or other issues! If this continues, the streamer is recommended to submit a ticket in #streaming-help in our <a href=\"https://discord.gg/Glimesh\">Discord</a> server."
+        ),
         else: nil
 
     {:noreply,
      socket
      |> update(:lost_packets, &(&1 + lost_packets))
-     |> assign(:player_error, message)}
+     |> assign(:player_error, Phoenix.HTML.raw(message))}
   end
 
   def handle_event("lost_packets", _, socket) do
