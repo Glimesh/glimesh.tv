@@ -198,6 +198,31 @@ defmodule Glimesh.Chat do
   end
 
   @doc """
+  Returns only recent chat messages.
+
+  ## Examples
+
+      iex> list_recent_chat_messages()
+      [%ChatMessage{}, ...]
+
+  """
+  def list_recent_chat_messages(channel, limit \\ 5) do
+    timeframe = NaiveDateTime.add(NaiveDateTime.utc_now(), -(60 * 60), :second)
+
+    Repo.all(
+      from m in ChatMessage,
+        where:
+          m.is_visible == true and
+            m.channel_id == ^channel.id and
+            m.inserted_at >= ^timeframe,
+        order_by: [desc: :inserted_at],
+        limit: ^limit
+    )
+    |> Repo.preload([:user, :channel])
+    |> Enum.reverse()
+  end
+
+  @doc """
   Returns a list of all chat_messages in a channel
   """
   def list_all_chat_messages(channel) do

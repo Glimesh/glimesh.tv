@@ -59,6 +59,11 @@ defmodule Glimesh.ChatTest do
       assert length(Chat.list_chat_messages(chat_message.channel)) == 1
     end
 
+    test "list_recent_chat_messages/0 returns all recent chat_messages" do
+      chat_message = chat_message_fixture()
+      assert length(Chat.list_recent_chat_messages(chat_message.channel)) == 1
+    end
+
     test "list_chat_messages/2 returns all chat_messages within the specified limit" do
       chat_message = multiple_chat_message_fixture()
       assert length(Chat.list_chat_messages(chat_message.channel, 8)) == 8

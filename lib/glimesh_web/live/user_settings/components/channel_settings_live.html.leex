@@ -146,32 +146,38 @@
     <div class="col-sm-6">
         <div class="form-group">
             <%= label f, gettext("Chat Rules (Markdown Supported)") %>
-                <markdown-toolbar for="chatRules_edit" phx-update="ignore">
-                    <div class="d-inline-flex mb-2">
-                         <div class="pr-3">
-                            <md-bold class="fas fa-bold fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Bold") %>></md-bold>
-                            <md-italic class="fas fa-italic fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Italic") %>></md-italic>
-                            <md-header class="fas fa-heading fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Heading") %>></md-header>
-                        </div>
-                        <div class="pr-3 pl-3">
-                            <md-quote class="fas fa-quote-right fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Quote") %>></md-quote>
-                            <md-code class="fas fa-code fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Code") %>></md-code>
-                            <md-link class="fas fa-link fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Link") %>></md-link>
-                            <md-image class="fas fa-image fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Image") %>></md-image>
-                        </div>
-                        <div class="pr-3 pl-3">
-                            <md-unordered-list class="fas fa-list-ul fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Unordered List") %>>
-                                </md-unordered-list>
-                            <md-ordered-list class="fas fa-list-ol fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Ordered List") %>>
-                                </md-ordered-list>
-                        </div>
+            <markdown-toolbar for="chatRules_edit" phx-update="ignore">
+                <div class="d-inline-flex mb-2">
+                    <div class="pr-3">
+                        <md-bold class="fas fa-bold fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Bold") %>></md-bold>
+                        <md-italic class="fas fa-italic fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Italic") %>></md-italic>
+                        <md-header class="fas fa-heading fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Heading") %>></md-header>
                     </div>
-                </markdown-toolbar>
+                    <div class="pr-3 pl-3">
+                        <md-quote class="fas fa-quote-right fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Quote") %>></md-quote>
+                        <md-code class="fas fa-code fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Code") %>></md-code>
+                        <md-link class="fas fa-link fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Link") %>></md-link>
+                        <md-image class="fas fa-image fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Image") %>></md-image>
+                    </div>
+                    <div class="pr-3 pl-3">
+                        <md-unordered-list class="fas fa-list-ul fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Unordered List") %>>
+                        </md-unordered-list>
+                        <md-ordered-list class="fas fa-list-ol fa-2x" data-toggle="tooltip" data-placement="top" title=<%= gettext("Ordered List") %>>
+                        </md-ordered-list>
+                    </div>
+                </div>
+            </markdown-toolbar>
             <%= textarea f, :chat_rules_md, [class: "form-control mb-4", rows: 20, id: "chatRules_edit"] %>
             <%= error_tag f, :chat_rules_md %>
         </div>
     </div>
     <div class="col-sm-6">
+        <div class="form-group">
+            <%= label f, :show_recent_chat_messages_only, gettext("Show recent chat messages only?") %>
+            <%= select f, :show_recent_chat_messages_only, [Yes: true, No: false], [class: "form-control"] %>
+            <small class="form-text text-muted"><%= gettext("If yes, chat will only show 5 messages posted in the last 60 minutes when a new viewer joins.") %></small>
+            <%= error_tag f, :show_recent_chat_messages_only %>
+        </div>
         <div class="form-group">
             <%= label f, :disable_hyperlinks, gettext("Should links automatically be clickable?") %>
             <%= select f, :disable_hyperlinks, [Yes: false, No: true], [class: "form-control", disabled: @channel.block_links] %>

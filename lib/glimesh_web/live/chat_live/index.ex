@@ -9,6 +9,7 @@ defmodule GlimeshWeb.ChatLive.Index do
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Presence
   alias Glimesh.Streams
+  alias Glimesh.Streams.Channel
 
   @impl true
   def mount(_params, %{"channel_id" => channel_id} = session, socket) do
@@ -187,6 +188,10 @@ defmodule GlimeshWeb.ChatLive.Index do
   @impl true
   def handle_info({:message_deleted, message_id}, socket) do
     {:noreply, push_event(socket, "remove_deleted_message", %{message_id: message_id})}
+  end
+
+  defp list_chat_messages(%Channel{show_recent_chat_messages_only: true} = channel) do
+    Chat.list_recent_chat_messages(channel)
   end
 
   defp list_chat_messages(channel) do
