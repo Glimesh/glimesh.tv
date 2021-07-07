@@ -8,28 +8,49 @@ defmodule GlimeshWeb.SupportModal.SubForm do
   def render(assigns) do
     ~L"""
     <div>
-    <%= if @show_subscription do %>
-      <h5><%= gettext("Your Payment Information") %></h5>
+    <%= if @subscribed do %>
+      <%= if @canceling do %>
+      <h5><%= gettext("Resubscribe") %></h5>
       <%= if @stripe_error do %>
         <div class="alert alert-danger" role="alert">
           <%= @stripe_error %>
         </div>
       <% end %>
 
-      <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :channel, user: @user, streamer: @streamer, product_id: @product_id, price_id: @price_id, price: @price %>
-    <% end %>
-    <%= if @show_resub_modal do %>
-      <h5 class="modal-title"><%= gettext("Resubscribe") %></h5>
-      <%= if @stripe_error do %>
-        <div class="alert alert-danger" role="alert">
-          <%= @stripe_error %>
-        </div>
-      <% end %>
-
-      <p><%= gettext("Your subscription is currently set to automatically cancel at the end of your billing cycle.") %></p>
+      <p><%= gettext("Your subscription is currently set to automatically cancel on %{date}.", date: format_datetime(@subscription.ended_at)) %></p>
       <p><%= gettext("You can resubscribe by clicking the button below, and your subscription will be renewed until you cancel it.") %></p>
 
       <button class="btn btn-primary btn-block btn-lg" phx-click="resubscribe" phx-throttle="5000"><%= gettext("Resubscribe") %></button>
+      <% else %>
+      <h4><%= gettext("You're subscribed!") %></h4>
+      <p><%= gettext("Thanks for supporting %{streamer}. Your genuine support is appreciated.", streamer: @streamer.displayname) %></p>
+      <div class="text-center mt-4">
+          <h4>Channel Subscription<br>
+          <small><strong>$<%= format_price(@subscription.price) %></strong> /
+              <%= gettext("monthly") %></small></h4>
+      </div>
+
+      <button class="btn btn-danger btn-block mt-4" phx-click="unsubscribe" phx-throttle="1000"><%= gettext("Cancel Subscription") %></button>
+      <% end %>
+    <% else %>
+      <%= if @user do %>
+        <h5><%= gettext("Your Payment Information") %></h5>
+        <%= if @stripe_error do %>
+          <div class="alert alert-danger" role="alert">
+            <%= @stripe_error %>
+          </div>
+        <% end %>
+
+        <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :channel, user: @user, streamer: @streamer, product_id: @product_id, price_id: @price_id, price: @price %>
+        <% else %>
+        <h4 class="mt-4"><%= gettext("What is Glimesh?") %></h4>
+        <p class="">
+            <%= gettext("People first streaming, with discoverability as a primary feature. Let's build the next
+            generation of streaming.") %> <%= link gettext("Learn More"), to: Routes.about_path(@socket, :faq), target: "_blank" %>
+        </p>
+        <%= link gettext("Register"), class: "btn btn-primary btn-block mt-4", to: Routes.user_registration_path(@socket, :new), target: "_blank" %>
+        <p class="mt-2 text-center">or <%= link gettext("Log in"), class: "", to: Routes.user_session_path(@socket, :new), target: "_blank" %></p>
+      <% end %>
     <% end %>
     </div>
     """
@@ -45,9 +66,7 @@ defmodule GlimeshWeb.SupportModal.SubForm do
      |> assign(:can_subscribe, false)
      |> assign(:user, nil)
      |> assign(:subscribed, false)
-     |> assign(:canceling, false)
-     |> assign(:show_resub_modal, false)
-     |> assign(:show_subscription, false)}
+     |> assign(:canceling, false)}
   end
 
   @impl true
@@ -57,6 +76,7 @@ defmodule GlimeshWeb.SupportModal.SubForm do
 
     can_subscribe = if Accounts.can_use_payments?(user), do: user.id != streamer.id, else: false
     can_receive_payments = Accounts.can_receive_payments?(streamer)
+    subscribed = !is_nil(subscription)
 
     {:ok,
      socket
@@ -67,13 +87,12 @@ defmodule GlimeshWeb.SupportModal.SubForm do
      |> assign(:product_id, Payments.get_channel_sub_base_product_id())
      |> assign(:price_id, Payments.get_channel_sub_base_price_id())
      |> assign(:price, Payments.get_channel_sub_base_price())
-     |> assign(:show_subscription, true)
-     |> assign(:show_resub_modal, false)
      |> assign(:streamer, streamer)
      |> assign(:user, user)
      |> assign(:can_subscribe, can_subscribe && can_receive_payments && Glimesh.has_launched?())
      |> assign(:canceling, if(subscription, do: subscription.is_canceling, else: false))
-     |> assign(:subscribed, !is_nil(subscription))}
+     |> assign(:subscription, subscription)
+     |> assign(:subscribed, subscribed)}
   end
 
   @impl true

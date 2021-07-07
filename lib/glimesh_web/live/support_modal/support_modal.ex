@@ -1,28 +1,45 @@
 defmodule GlimeshWeb.SupportModal do
   use GlimeshWeb, :live_view
 
+  alias Glimesh.Accounts
+
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => nil} = session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
+    channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
+    can_receive_payments = Accounts.can_receive_payments?(streamer)
+
     {:ok,
      socket
      |> assign(:show_modal, false)
+     |> assign(:site_theme, session["site_theme"])
      |> assign(:streamer, streamer)
+     |> assign(:channel, channel)
+     |> assign(:can_receive_payments, can_receive_payments)
+     |> assign(:is_the_streamer, false)
+     # Easy fallback for now
+     |> assign(:tab, if(can_receive_payments, do: "subscription", else: "streamloots"))
      |> assign(:user, nil)}
   end
 
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => user} = session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
-    site_theme = session["site_theme"]
+
+    channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
+    can_receive_payments = Accounts.can_receive_payments?(streamer)
 
     {:ok,
      socket
      |> assign(:show_modal, false)
-     |> assign(:site_theme, site_theme)
-     |> assign(:tab, "subscription")
+     |> assign(:site_theme, session["site_theme"])
+     |> assign(:is_the_streamer, streamer.id == user.id)
+     |> assign(:can_receive_payments, can_receive_payments)
+     # Easy fallback for now
+     |> assign(:tab, if(can_receive_payments, do: "subscription", else: "streamloots"))
      |> assign(:streamer, streamer)
+     |> assign(:channel, channel)
      |> assign(:user, user)}
   end
 

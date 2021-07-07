@@ -1,0 +1,33 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Payment Addons</h4>
+    </div>
+    <div class="card-body">
+        <p class="mb-4">Payment addons will add additional options to support your stream under the new <button class="btn btn-secondary btn-sm"><i class="fas fa-hand-holding-usd fa-fw"></i> <%= gettext("Support") %></button> button available on your channel.</p>
+        <%= f = form_for @addons, "#", [id: "addons", phx_change: :validate, phx_submit: :save] %>
+        <div class="row">
+            <div class="col-1 text-center">
+                <%= if @site_theme == "light" do %>
+                <img src="/images/support-modal/streamloots-logo-black.svg" alt="Streamloots" height="60" width="60">
+                <% else %>
+                <img src="/images/support-modal/streamloots-logo.svg" alt="Streamloots" height="60" width="60">
+                <% end %>
+            </div>
+            <div class="col-7">
+                <h5 class="mt-0">Streamloots</h5>
+                <p>Streamloots is a marketplace to buy real-time interactions with live streamers via unique collectable cards, redeemable by your viewers during your stream.</p>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <%= label f, :streamloots_url %>
+                    <%= text_input f, :streamloots_url, class: "form-control", "aria-describedby": "streamlootsHelp" %>
+                    <%= error_tag f, :streamloots_url %>
+                    <small id="streamlootsHelp" class="form-text text-muted"><%= gettext("Your Streamloots URL. Format: https://www.streamloots.com/YOUR_USERNAME") %></small>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary"><%= gettext("Save") %></button>
+        </form>
+    </div>
+</div>

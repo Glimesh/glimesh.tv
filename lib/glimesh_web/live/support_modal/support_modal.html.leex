@@ -15,23 +15,27 @@
                 <div class="row">
                     <div class="col-2">
                         <div class="nav nav-pills flex-column text-center" role="tablist" aria-orientation="vertical">
+                            <%= if @can_receive_payments do %>
                             <a phx-click="change_tab" phx-value-tab="subscription" href="#" class="nav-link text-color <%= if @tab == "subscription", do: "active", else: "" %>">
                                 <i class="fas fa-star fa-fw fa-2x"></i><br>
-                                Subscribe
+                                <%= gettext("Subscribe") %>
                             </a>
                             <!--<a phx-click="change_tab" phx-value-tab="gift_subscription" href="#" class="mt-2 nav-link text-color <%= if @tab == "gift_subscription", do: "active", else: "" %>">
                                 <i class="fas fa-gift fa-fw fa-2x"></i><br>
                                 Gift a Sub
                             </a>
                             -->
+                            <% end %>
+                            <%= if @channel.streamloots_url do %>
                             <a phx-click="change_tab" phx-value-tab="streamloots" href="#" class="mt-2 nav-link text-color <%= if @tab == "streamloots", do: "active", else: "" %>">
-                                <%= if @site_theme == "dark" do %>
-                                <img src="/images/support-modal/streamloots-logo.svg" alt="" height="40" width="32">
-                                <% else %>
+                                <%= if @site_theme == "light" do %>
                                 <img src="/images/support-modal/streamloots-logo-black.svg" alt="" height="40" width="32">
+                                <% else %>
+                                <img src="/images/support-modal/streamloots-logo.svg" alt="" height="40" width="32">
                                 <% end %>
                                 Streamloots
                             </a>
+                            <% end %>
                             <!--
                             <a href="#" class="mt-2 nav-link text-color <%= if @tab == "donate", do: "active", else: "" %>">
                                 <i class="fas fa-money-bill-wave fa-fw fa-2x"></i><br>
@@ -49,19 +53,23 @@
                                 <%= if @tab == "subscription" do %>
                                 <div class="row">
                                     <div class="col">
-                                        <h5>Subscribe Monthly!</h5>
-                                        <p>Help support <%= @streamer.displayname %> monthly by subscribing to their content.</p>
+                                        <h5><%= gettext("Subscribe Monthly!") %></h5>
+                                        <p><%= gettext("Help support %{streamer} monthly by subscribing to their content.", streamer: @streamer.displayname) %></p>
 
                                         <ul>
-                                            <li>Support the Streamer</li>
-                                            <li>Channel sub badge</li>
-                                            <li>Site-wide emote usage</li>
+                                            <li><%= gettext("Support the streamer") %></li>
+                                            <li><%= gettext("Channel sub badge") %></li>
+                                            <li><%= gettext("Site-wide emote usage") %></li>
                                         </ul>
 
                                         <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider." class="img-fluid mt-4 mx-auto d-block">
                                     </div>
                                     <div class="col">
+                                        <%= if @is_the_streamer do %>
+                                        <p class="text-center mt-4"><%= gettext("You cannot subscribe to yourself, but others will see a payment dialog here :)!") %></p>
+                                        <% else %>
                                         <%= live_render(@socket, GlimeshWeb.SupportModal.SubForm, id: "sub-form", session: %{"user" => @user, "streamer" => @streamer}) %>
+                                        <% end %>
                                     </div>
                                 </div>
 
@@ -73,21 +81,17 @@
                                 <%= if @tab == "streamloots" do %>
                                 <div class="row justify-content-md-center mt-4 mb-4">
                                     <div class="col-8">
-                                        <h5>Collect & Redeem Cards!</h5>
-                                        <p>Show your support and participate in <%= @streamer.displayname %>'s stream with card packs. Get cards, play them and create unique moments live on stream!</p>
+                                        <h5><%= gettext("Collect & Redeem Cards!") %></h5>
+                                        <p><%= gettext("Show your support and participate in %{streamer}'s stream with card packs. Get cards, play them and create unique moments live on stream!", streamer: @streamer.displayname) %></p>
 
                                         <ul>
-                                            <li>Collect unique cards & earn achievements</li>
-                                            <li>Redeem on stream for real-time interaction</li>
-                                            <li>Support <%= @streamer.displayname %> directly</li>
+                                            <li><%= gettext("Collect unique cards & earn achievements") %></li>
+                                            <li><%= gettext("Redeem on stream for real-time interaction") %></li>
+                                            <li><%= gettext("Support %{streamer} directly", streamer: @streamer.displayname) %></li>
                                         </ul>
-                                        <a href="https://www.streamloots.com/blitzkriegmeph" class="btn btn-warning btn-lg float-right" target="_blank">Get your packs on <img src="/images/support-modal/streamloots-logo-black.svg" alt="" height="32" width="32"></a>
+                                        <a href="<%= @channel.streamloots_url %>" class="btn btn-warning btn-lg float-right" target="_blank">Get your packs on <img src="/images/support-modal/streamloots-logo-black.svg" alt="Streamloots" height="32" width="32"></a>
                                     </div>
                                 </div>
-                                <% end %>
-
-                                <%= if @tab == "donate" do %>
-                                <img src="https://cdn.discordapp.com/attachments/761278725353373716/832385669657002004/unknown.png" alt="" class="img-fluid">
                                 <% end %>
                             </div>
                         </div>
