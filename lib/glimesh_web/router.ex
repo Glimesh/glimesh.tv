@@ -123,6 +123,7 @@ defmodule GlimeshWeb.Router do
     get "/users/settings/stream", UserSettingsController, :stream
 
     get "/users/settings/channel_statistics", UserSettingsController, :channel_statistics
+    get "/users/settings/addons", UserSettingsController, :addons
     get "/users/settings/emotes", UserSettingsController, :emotes
     get "/users/settings/upload_emotes", UserSettingsController, :upload_emotes
 

@@ -71,6 +71,9 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     white-space: nowrap;
 }
 
+.text-color {
+    color: var(--body-color);
+}
 
 .text-color-link {
     color: var(--body-color);

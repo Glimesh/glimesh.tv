@@ -22,6 +22,9 @@ defmodule GlimeshWeb.UserLive.Stream do
 
         avatar_url = Glimesh.Avatar.url({streamer.avatar, streamer}, :original)
 
+        has_some_support_option =
+          Accounts.can_receive_payments?(channel.user) or channel.streamloots_url
+
         {:ok,
          socket
          |> put_page_title(channel.title)
@@ -31,6 +34,7 @@ defmodule GlimeshWeb.UserLive.Stream do
          |> assign(:prompt_mature, Streams.prompt_mature_content(channel, maybe_user))
          |> assign(:streamer, channel.user)
          |> assign(:can_receive_payments, Accounts.can_receive_payments?(channel.user))
+         |> assign(:has_some_support_option, has_some_support_option)
          |> assign(:channel, channel)
          |> assign(:stream, channel.stream)
          |> assign(:channel_poster, get_stream_thumbnail(channel))

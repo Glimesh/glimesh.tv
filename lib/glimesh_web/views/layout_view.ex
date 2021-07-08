@@ -71,6 +71,10 @@ defmodule GlimeshWeb.LayoutView do
     )
   end
 
+  def active_channel_addons_path(conn) do
+    truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :addons])
+  end
+
   def active_user_payments_path(conn) do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserPaymentsController, :index])
   end

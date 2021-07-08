@@ -12,8 +12,8 @@
                             <div class="float-right">
                                 <div class="stream-info btn-toolbar">
                                     <div class="btn-group mr-1" role="group" aria-label="First group">
-                                        <%= if @can_receive_payments do %>
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.SubscribeButton, id: "subscribe-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                                        <%= if @has_some_support_option do %>
+                                        <%= live_render(@socket, GlimeshWeb.SupportModal, id: "support-modal", session: %{"user" => @user, "streamer" => @streamer}) %>
                                         <% end %>
                                     </div>
                                     <div class="btn-group mr-1" role="group" aria-label="Second group">

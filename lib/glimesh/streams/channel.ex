@@ -34,6 +34,9 @@ defmodule Glimesh.Streams.Channel do
 
     field :emote_prefix, :string
 
+    # This is here temporarily as we add additional schema to handle it.
+    field :streamloots_url, :string, default: nil
+
     field :poster, Glimesh.ChannelPoster.Type
     field :chat_bg, Glimesh.ChatBackground.Type
 
@@ -120,6 +123,12 @@ defmodule Glimesh.Streams.Channel do
 
   defp validate_no_active_emotes(changeset) do
     changeset
+  end
+
+  def addons_changest(channel, attrs \\ %{}) do
+    channel
+    |> cast(attrs, [:streamloots_url])
+    |> validate_format(:streamloots_url, ~r/https:\/\/www\.streamloots\.com\/([a-zA-Z0-9._]+)/)
   end
 
   alias Glimesh.ChannelCategories
