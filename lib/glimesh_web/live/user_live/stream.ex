@@ -115,9 +115,9 @@ defmodule GlimeshWeb.UserLive.Stream do
     message =
       if lost_packets > 6,
         do:
-        gettext(
-          "We're detecting some networking problems between you and the streamer. You may experience video drops, jitter, or other issues! If this continues, the streamer is recommended to submit a ticket in #streaming-help in our Discord."
-        ),
+          gettext(
+            "We're detecting some networking problems between you and the streamer. You may experience video drops, jitter, or other issues! If this continues, the streamer is recommended to submit a ticket in #streaming-help in our Discord."
+          ),
         else: nil
 
     {:noreply,

@@ -90,6 +90,17 @@ config :glimesh, GlimeshWeb.Gettext, allowed_locales: ["en", "es"]
 
 config :rihanna, debug: true
 
+config :glimesh, :stripe_config,
+  platform_sub_supporter_product_id: "prod_platform_supporter",
+  platform_sub_supporter_price_id: "price_platform_supporter",
+  platform_sub_supporter_price: 500,
+  platform_sub_founder_product_id: "prod_platform_founder",
+  platform_sub_founder_price_id: "price_platform_founder",
+  platform_sub_founder_price: 2500,
+  channel_sub_base_product_id: "prod_channel_sub",
+  channel_sub_base_price_id: "price_channel_sub",
+  channel_sub_base_price: 500
+
 if File.exists?("config/local.exs") do
   import_config "local.exs"
 end

@@ -9,9 +9,9 @@
             <%= live_redirect "Following", to: Routes.user_followers_path(@socket, :following, @streamer.username), class: "nav-link " <> (if @live_action == :following, do: "active", else: "") %>
         </li>
     </ul>
-    <div class="row layout-top-spacing">
+    <div id="users" class="row layout-top-spacing" phx-update="<%= @update_mode %>" phx-hook="InfiniteScroll" data-page="<%= @page %>" >
         <%= for follower <- @users do %>
-        <div class="col-md-4 mb-4">
+        <div id="user-<%= follower.id %>" class="col-md-4 mb-4" phx-update="ignore">
             <%= live_component(@socket, GlimeshWeb.Components.UserCard, user: (if @live_action == :followers, do: follower.user, else: follower.streamer)) %>
         </div>
         <% end %>
