@@ -123,7 +123,6 @@ defmodule Glimesh.AccountFollows do
   end
 
   def list_following_with_scroll(streamer, _query, current_page, per_page) do
-
     Repo.all(
       from f in Follower,
         where: f.user_id == ^streamer.id,
@@ -134,7 +133,6 @@ defmodule Glimesh.AccountFollows do
   end
 
   def list_follower_with_scroll(streamer, _query, current_page, per_page) do
-
     Repo.all(
       from f in Follower,
         where: f.streamer_id == ^streamer.id,
