@@ -122,8 +122,7 @@ defmodule Glimesh.AccountFollows do
     )
   end
 
-  def list_following_with_scroll(streamer, query, current_page, per_page) do
-    like = "%#{query}%"
+  def list_following_with_scroll(streamer, _query, current_page, per_page) do
 
     Repo.all(
       from f in Follower,
@@ -134,8 +133,7 @@ defmodule Glimesh.AccountFollows do
     )
   end
 
-  def list_follower_with_scroll(streamer, query, current_page, per_page) do
-    like = "%#{query}%"
+  def list_follower_with_scroll(streamer, _query, current_page, per_page) do
 
     Repo.all(
       from f in Follower,
