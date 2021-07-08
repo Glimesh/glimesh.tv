@@ -19,7 +19,7 @@ defmodule GlimeshWeb.SupportModal do
      |> assign(:can_receive_payments, can_receive_payments)
      |> assign(:is_the_streamer, false)
      # Easy fallback for now
-     |> assign(:tab, if(can_receive_payments, do: "subscription", else: "streamloots"))
+     |> assign(:tab, default_tab(can_receive_payments, channel.streamloots_url))
      |> assign(:user, nil)}
   end
 
@@ -37,7 +37,7 @@ defmodule GlimeshWeb.SupportModal do
      |> assign(:is_the_streamer, streamer.id == user.id)
      |> assign(:can_receive_payments, can_receive_payments)
      # Easy fallback for now
-     |> assign(:tab, if(can_receive_payments, do: "subscription", else: "streamloots"))
+     |> assign(:tab, default_tab(can_receive_payments, channel.streamloots_url))
      |> assign(:streamer, streamer)
      |> assign(:channel, channel)
      |> assign(:user, user)}
@@ -56,5 +56,13 @@ defmodule GlimeshWeb.SupportModal do
   @impl true
   def handle_event("change_tab", %{"tab" => tab}, socket) do
     {:noreply, socket |> assign(:tab, tab)}
+  end
+
+  defp default_tab(can_receive_payments, streamloots_url) do
+    cond do
+      can_receive_payments -> "subscription"
+      !is_nil(streamloots_url) -> "streamloots"
+      true -> ""
+    end
   end
 end

@@ -22,7 +22,7 @@ defmodule GlimeshWeb.SupportModal.SubForm do
 
       <button class="btn btn-primary btn-block btn-lg" phx-click="resubscribe" phx-throttle="5000"><%= gettext("Resubscribe") %></button>
       <% else %>
-      <h4><%= gettext("You're subscribed!") %></h4>
+      <h4 class="mt-2"><%= gettext("You're subscribed!") %></h4>
       <p><%= gettext("Thanks for supporting %{streamer}. Your genuine support is appreciated.", streamer: @streamer.displayname) %></p>
       <div class="text-center mt-4">
           <h4>Channel Subscription<br>

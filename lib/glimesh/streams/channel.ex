@@ -33,7 +33,7 @@ defmodule Glimesh.Streams.Channel do
     field :emote_prefix, :string
 
     # This is here temporarily as we add additional schema to handle it.
-    field :streamloots_url, :string
+    field :streamloots_url, :string, default: nil
 
     field :poster, Glimesh.ChannelPoster.Type
     field :chat_bg, Glimesh.ChatBackground.Type

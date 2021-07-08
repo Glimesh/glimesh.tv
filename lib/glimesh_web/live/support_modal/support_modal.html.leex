@@ -13,8 +13,8 @@
 
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-2">
-                        <div class="nav nav-pills flex-column text-center" role="tablist" aria-orientation="vertical">
+                    <div class="col-lg-2">
+                        <div class="nav nav-pills flex-row flex-lg-column text-center" role="tablist" aria-orientation="vertical">
                             <%= if @can_receive_payments do %>
                             <a phx-click="change_tab" phx-value-tab="subscription" href="#" class="nav-link text-color <%= if @tab == "subscription", do: "active", else: "" %>">
                                 <i class="fas fa-star fa-fw fa-2x"></i><br>
@@ -27,12 +27,13 @@
                             -->
                             <% end %>
                             <%= if @channel.streamloots_url do %>
-                            <a phx-click="change_tab" phx-value-tab="streamloots" href="#" class="mt-2 nav-link text-color <%= if @tab == "streamloots", do: "active", else: "" %>">
+                            <a phx-click="change_tab" phx-value-tab="streamloots" href="#" class="mt-lg-2 nav-link text-color <%= if @tab == "streamloots", do: "active", else: "" %>">
                                 <%= if @site_theme == "light" do %>
                                 <img src="/images/support-modal/streamloots-logo-black.svg" alt="" height="40" width="32">
                                 <% else %>
                                 <img src="/images/support-modal/streamloots-logo.svg" alt="" height="40" width="32">
                                 <% end %>
+                                <br>
                                 Streamloots
                             </a>
                             <% end %>
@@ -47,12 +48,12 @@
                             -->
                         </div>
                     </div>
-                    <div class="col-10">
+                    <div class="col-lg-10">
                         <div class="tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active" role="tabpanel">
+                            <div class="tab-pane fade show active mt-4 mb-4" role="tabpanel">
                                 <%= if @tab == "subscription" do %>
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col-sm">
                                         <h5><%= gettext("Subscribe Monthly!") %></h5>
                                         <p><%= gettext("Help support %{streamer} monthly by subscribing to their content.", streamer: @streamer.displayname) %></p>
 
@@ -64,7 +65,7 @@
 
                                         <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider." class="img-fluid mt-4 mx-auto d-block">
                                     </div>
-                                    <div class="col">
+                                    <div class="col-sm">
                                         <%= if @is_the_streamer do %>
                                         <p class="text-center mt-4"><%= gettext("You cannot subscribe to yourself, but others will see a payment dialog here :)!") %></p>
                                         <% else %>
@@ -79,8 +80,8 @@
                                 <% end %>
 
                                 <%= if @tab == "streamloots" do %>
-                                <div class="row justify-content-md-center mt-4 mb-4">
-                                    <div class="col-8">
+                                <div class="row justify-content-md-center">
+                                    <div class="col-lg-8">
                                         <h5><%= gettext("Collect & Redeem Cards!") %></h5>
                                         <p><%= gettext("Show your support and participate in %{streamer}'s stream with card packs. Get cards, play them and create unique moments live on stream!", streamer: @streamer.displayname) %></p>
 
