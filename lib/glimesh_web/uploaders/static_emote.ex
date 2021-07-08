@@ -2,13 +2,13 @@ defmodule Glimesh.Uploaders.StaticEmote do
   @moduledoc """
   Security resources for SVG images:
   https://svg.digi.ninja/svg
-  
+
   Direct view - vulnerable - The file is linked to directly.
   Direct view with content-disposition: attachment - not vulnerable - Headers are sent to force the file to be downloaded.
   Direct view with CSP - not vulnerable - The Content Security Policy is set to disallow inline JavaScript.
   Image Tags - not vulnerable - The SVG is referenced through image tags which prevent scripts.
   Image Tags With CSP - not vulnerable - Image tags and the same CSP as above for double protection.
-  
+
   Since we cannot manually set CSP headers with most CDNs, we're utilizing both sanitizing the image with svgo, serving it through an img tag so js cannot run, and setting the content-disposition to attachment so the browser wont automatically run it.
   """
 

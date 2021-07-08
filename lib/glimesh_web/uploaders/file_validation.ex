@@ -8,15 +8,15 @@ defmodule Glimesh.FileValidation do
 
   @doc """
   Helper function to quickly match against known types.
-  
+
   ## Examples
-  
+
       iex> validate(png_file, [:png, :jpg])
       true
-  
+
       iex> validate(svg_file, [:png])
       false
-  
+
   """
   def validate(%Waffle.File{path: path}, allowed \\ []) do
     case get_file_type(path) do
@@ -30,7 +30,7 @@ defmodule Glimesh.FileValidation do
 
   @doc """
   Dumb check for file extensions.
-  
+
   Should not be used as files (especially temporary) may not contain extensions.
   """
   def validate_extension(%Waffle.File{file_name: file_name}, allowed \\ []) do
@@ -39,9 +39,9 @@ defmodule Glimesh.FileValidation do
 
   @doc """
   Validate that the file is an SVG as best as we can.
-  
+
   SVG's are XML files, and they should contain an svg element with a svg namespace.
-  
+
   https://www.w3.org/TR/SVG2/struct.html#Namespace states that only one svg
   namespace exists, so we check for that using an XML parser.
   """
@@ -75,7 +75,7 @@ defmodule Glimesh.FileValidation do
 
   @doc """
   Validate image to a set of options. You can combine them in anyway.
-  
+
   Current options:
     :shape -> :square
     :min_width -> int

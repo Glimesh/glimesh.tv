@@ -1,7 +1,7 @@
 defmodule Glimesh.Emotes.Policy do
   @moduledoc """
   Glimesh Emotes Policy
-  
+
   :create_global_emote -> Should allow admins or GCT to upload
   :create_emote -> Should allow admins, GCT, or the Channel Owner to upload
   """

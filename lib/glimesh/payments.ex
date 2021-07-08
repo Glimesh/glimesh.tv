@@ -317,7 +317,7 @@ defmodule Glimesh.Payments do
 
   @doc """
   Delete a Stripe Connect Account
-  
+
   Will error if the account still has a balance
   """
   def delete_stripe_account(%User{stripe_user_id: stripe_user_id} = user)
@@ -495,12 +495,12 @@ defmodule Glimesh.Payments do
 
   @doc """
   Returns the list of subscription.
-  
+
   ## Examples
-  
+
       iex> list_subscription()
       [%Subscription{}, ...]
-  
+
   """
   def list_subscriptions do
     Repo.all(Subscription)
@@ -508,15 +508,15 @@ defmodule Glimesh.Payments do
 
   @doc """
   Creates a subscription.
-  
+
   ## Examples
-  
+
       iex> create_subscription(%{field: value})
       {:ok, %Subscription{}}
-  
+
       iex> create_subscription(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
-  
+
   """
   def create_subscription(attrs \\ %{}) do
     %Subscription{}
@@ -526,15 +526,15 @@ defmodule Glimesh.Payments do
 
   @doc """
   Updates a subscription.
-  
+
   ## Examples
-  
+
       iex> update_subscription(subscription, %{field: new_value})
       {:ok, %Subscription{}}
-  
+
       iex> update_subscription(subscription, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
-  
+
   """
   def update_subscription(%Subscription{} = subscription, attrs) do
     subscription
@@ -544,15 +544,15 @@ defmodule Glimesh.Payments do
 
   @doc """
   Deletes a subscription.
-  
+
   ## Examples
-  
+
       iex> delete_subscription(subscription)
       {:ok, %Subscription{}}
-  
+
       iex> delete_subscription(subscription)
       {:error, %Ecto.Changeset{}}
-  
+
   """
   def delete_subscription(%Subscription{} = subscription) do
     Repo.delete(subscription)
@@ -560,12 +560,12 @@ defmodule Glimesh.Payments do
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking subscription changes.
-  
+
   ## Examples
-  
+
       iex> change_subscription(subscription)
       %Ecto.Changeset{data: %Subscription{}}
-  
+
   """
   def change_subscription(%Subscription{} = subscription, attrs \\ %{}) do
     Subscription.create_changeset(subscription, attrs)
@@ -590,12 +590,12 @@ defmodule Glimesh.Payments do
 
   @doc """
   Returns the list of subscription invoices.
-  
+
   ## Examples
-  
+
       iex> list_subscription_invoices()
       [%SubscriptionInvoice{}, ...]
-  
+
   """
   def list_subscription_invoices do
     Repo.all(SubscriptionInvoice)
@@ -603,15 +603,15 @@ defmodule Glimesh.Payments do
 
   @doc """
   Creates a subscription invoice.
-  
+
   ## Examples
-  
+
       iex> create_subscription_invoice(%{field: value})
       {:ok, %SubscriptionInvoice{}}
-  
+
       iex> create_subscription_invoice(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
-  
+
   """
   def create_subscription_invoice(attrs \\ %{}) do
     %SubscriptionInvoice{}
@@ -621,15 +621,15 @@ defmodule Glimesh.Payments do
 
   @doc """
   Updates a subscription invoice.
-  
+
   ## Examples
-  
+
       iex> update_subscription_invoice(invoice, %{field: new_value})
       {:ok, %SubscriptionInvoice{}}
-  
+
       iex> update_subscription_invoice(invoice, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
-  
+
   """
   def update_subscription_invoice(%SubscriptionInvoice{} = invoice, attrs) do
     invoice
@@ -639,15 +639,15 @@ defmodule Glimesh.Payments do
 
   @doc """
   Deletes a subscription invoice.
-  
+
   ## Examples
-  
+
       iex> delete_subscription_invoice(invoice)
       {:ok, %SubscriptionInvoice{}}
-  
+
       iex> delete_subscription_invoice(invoice)
       {:error, %Ecto.Changeset{}}
-  
+
   """
   def delete_subscription_invoice(%SubscriptionInvoice{} = invoice) do
     Repo.delete(invoice)
@@ -655,12 +655,12 @@ defmodule Glimesh.Payments do
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking subscription invoice changes.
-  
+
   ## Examples
-  
+
       iex> change_subscription_invoice(invoice)
       %Ecto.Changeset{data: %SubscriptionInvoice{}}
-  
+
   """
   def change_subscription_invoice(%SubscriptionInvoice{} = invoice, attrs \\ %{}) do
     SubscriptionInvoice.create_changeset(invoice, attrs)
