@@ -122,6 +122,26 @@ defmodule Glimesh.AccountFollows do
     )
   end
 
+  def list_following_with_scroll(streamer, _query, current_page, per_page) do
+    Repo.all(
+      from f in Follower,
+        where: f.user_id == ^streamer.id,
+        offset: ^((current_page - 1) * per_page),
+        limit: ^per_page,
+        preload: [:streamer]
+    )
+  end
+
+  def list_follower_with_scroll(streamer, _query, current_page, per_page) do
+    Repo.all(
+      from f in Follower,
+        where: f.streamer_id == ^streamer.id,
+        offset: ^((current_page - 1) * per_page),
+        limit: ^per_page,
+        preload: [:user]
+    )
+  end
+
   defp sent_follow_message_recently?(channel, user) do
     follow_message = Chat.get_follow_chat_message_for_user(channel, user)
 
