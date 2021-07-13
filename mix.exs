@@ -70,6 +70,7 @@ defmodule Glimesh.MixProject do
       {:dataloader, "~> 1.0.0"},
       # HTTP Helpers
       {:plug_canonical_host, "~> 2.0"},
+      {:boruta, "~> 1.0"},
       {:ex_oauth2_provider, "~> 0.5.6"},
       {:slugify, "~> 1.3"},
       {:phoenix_markdown, "~> 1.0"},

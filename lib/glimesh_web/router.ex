@@ -54,7 +54,8 @@ defmodule GlimeshWeb.Router do
   scope "/api/oauth", GlimeshWeb do
     pipe_through :oauth
 
-    post "/token", Oauth2Provider.TokenController, :create
+    post "/token", OauthController, :token
+    # post "/token", Oauth2Provider.TokenController, :create
     post "/revoke", Oauth2Provider.TokenController, :revoke
     post "/introspec", Oauth2Provider.TokenController, :introspec
   end

@@ -90,6 +90,24 @@ config :ex_oauth2_provider, ExOauth2Provider,
   grant_flows: ~w(authorization_code client_credentials implicit_grant),
   force_ssl_in_redirect_uri: false
 
+config :boruta, Boruta.Oauth,
+  # mandatory
+  repo: Glimesh.Repo,
+  cache_backend: Boruta.Cache,
+  contexts: [
+    access_tokens: Boruta.Ecto.AccessTokens,
+    clients: Boruta.Ecto.Clients,
+    codes: Boruta.Ecto.Codes,
+    # mandatory for user flows
+    resource_owners: Glimesh.ResourceOwners,
+    scopes: Boruta.Ecto.Scopes
+  ],
+  max_ttl: [
+    authorization_code: 60,
+    access_token: 60 * 60 * 24
+  ],
+  token_generator: Boruta.TokenGenerator
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
