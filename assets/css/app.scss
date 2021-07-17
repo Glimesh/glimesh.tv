@@ -205,3 +205,38 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
         margin-bottom: 0;
     }
 }
+
+//Experimental Sticky Chat
+@include media-breakpoint-up(lg) {
+    .sidebar-section {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+    }
+
+
+    .sidebar-chat {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+
+    .sticky-chat {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 82px;
+        padding: 0 0 0 15px;
+    }
+
+}
+
+//Semi-transparent "glass" effect, Element must have a defined background color in rgba or effect may not work.
+//TODO ensure this is compatible with all major browsers, implement fallback with @support query
+.acrylic {
+    backdrop-filter: blur(10px) saturate(125%);
+    -webkit-backdrop-filter: blur(10px) saturate(125%);
+    background-blend-mode: exclusion;
+}

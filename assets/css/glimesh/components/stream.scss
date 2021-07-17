@@ -15,8 +15,8 @@
 .container-stream {
     padding-left: 0;
     padding-right: 0;
-    // Needed for container padding we're removing
-    overflow-x: hidden;
+    // Needed for container padding we're removing (REMOVED DUE TO STICKY CHAT)
+    //overflow-x: hidden;
 }
 
 .block-container {
@@ -101,11 +101,8 @@
     }
 
     .chat-absolute {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        overflow-y: auto;
         width: 100%;
+        height: 90vh;
     }
 }
 
