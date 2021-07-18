@@ -66,6 +66,17 @@
                 <small class="form-text text-muted"><%= gettext("Shows the timeout / ban / etc icons on a chat message.") %></small>
             </div>
 
+            <h3 class="mt-4"><%= gettext("Experiments") %></h3>
+
+            <div class="form-group">
+                <%= label f, gettext("Channel Layout Preview:") %>
+                <div class="custom-control custom-switch">
+                    <%= checkbox f, :enable_new_channel_page, class: "custom-control-input" %>
+                    <%= label f, :enable_new_channel_page, gettext("Enable New Channel Layout"), class: "custom-control-label" %>
+                </div>
+                <small class="form-text text-muted"><%= gettext("Enables updated channel page and sticky chat.") %></small>
+            </div>
+
             <%= submit gettext("Update Settings"), class: "btn btn-primary mt-4" %>
 
             <% end %>
