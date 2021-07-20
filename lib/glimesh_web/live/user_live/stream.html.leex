@@ -1,6 +1,32 @@
 <div class="container-fluid container-stream">
     <div class="row mt-lg-3">
         <div id="video-column" class="col-lg-9">
+
+            <div class="p-1 p-lg-2">
+                <div class="row">
+                    <div class="col align-self-center d-block text-truncate">
+                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
+                    </div>
+                    <div class="col-auto">
+                        <div class="float-right">
+                            <div class="stream-info btn-toolbar">
+                                <div class="btn-group mr-1" role="group" aria-label="First group">
+                                    <%= if @has_some_support_option do %>
+                                    <%= live_render(@socket, GlimeshWeb.SupportModal, id: "support-modal", session: %{"user" => @user, "streamer" => @streamer}) %>
+                                    <% end %>
+                                </div>
+                                <div class="btn-group mr-1" role="group" aria-label="Second group">
+                                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
+                                </div>
+                                <div class="btn-group" role="group" aria-label="Third group">
+                                    <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="shadow-sm">
                     <%= if @prompt_mature do %>
                     <div class="jumbotron jumbotron-fluid jumbotron-mature-content mb-0 embed-responsive embed-responsive-16by9">
@@ -32,32 +58,9 @@
             </div>
 
             <div class="card mt-lg-3 shadow-sm">
-                <div class="card-body p-1 p-lg-3">
-                    <div class="row">
-                        <div class="col align-self-center d-block text-truncate">
-                            <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle, id: "channel-title", session: %{"user" => @user, "channel_id" => @channel.id}) %>
-                        </div>
-                        <div class="col-auto">
-                            <div class="float-right">
-                                <div class="stream-info btn-toolbar">
-                                    <div class="btn-group mr-1" role="group" aria-label="First group">
-                                        <%= if @has_some_support_option do %>
-                                        <%= live_render(@socket, GlimeshWeb.SupportModal, id: "support-modal", session: %{"user" => @user, "streamer" => @streamer}) %>
-                                        <% end %>
-                                    </div>
-                                    <div class="btn-group mr-1" role="group" aria-label="Second group">
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton, id: "follow-button", session: %{"user" => @user, "streamer" => @streamer}) %>
-                                    </div>
-                                    <div class="btn-group" role="group" aria-label="Third group">
-                                        <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount, id: "viewer-count", session: %{"channel_id" => @channel.id}) %>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="card-footer d-none d-sm-block">
+
+                <div class="card-body d-none d-sm-block">
                     <div class="row">
                         <div class="col-8 d-inline-flex align-items-center">
                             <div id="streamer-avatar">
