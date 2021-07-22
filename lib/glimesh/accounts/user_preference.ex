@@ -13,6 +13,7 @@ defmodule Glimesh.Accounts.UserPreference do
     field :show_timestamps, :boolean, default: false
     field :show_mod_icons, :boolean, default: true
     field :show_mature_content, :boolean
+    field :enable_new_channel_page, :boolean, default: false
 
     timestamps()
   end
@@ -27,7 +28,8 @@ defmodule Glimesh.Accounts.UserPreference do
       :site_theme,
       :show_timestamps,
       :show_mature_content,
-      :show_mod_icons
+      :show_mod_icons,
+      :enable_new_channel_page
     ])
     |> unique_constraint(:user_id)
   end

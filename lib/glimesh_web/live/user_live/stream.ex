@@ -18,6 +18,14 @@ defmodule GlimeshWeb.UserLive.Stream do
         end
 
         maybe_user = Accounts.get_user_by_session_token(session["user_token"])
+
+        user_preferences =
+          if maybe_user do
+            Accounts.get_user_preference!(maybe_user)
+          else
+            %{enable_new_channel_page: false}
+          end
+
         streamer = Accounts.get_user!(channel.streamer_id)
 
         avatar_url = Glimesh.Avatar.url({streamer.avatar, streamer}, :original)
@@ -28,6 +36,7 @@ defmodule GlimeshWeb.UserLive.Stream do
         {:ok,
          socket
          |> put_page_title(channel.title)
+         |> assign(:enable_new_channel_page, user_preferences.enable_new_channel_page)
          |> assign(:show_debug, false)
          |> assign(:unique_user, Map.get(session, "unique_user"))
          |> assign(:country, Map.get(session, "country"))
