@@ -79,10 +79,22 @@ defmodule Glimesh.OauthMigration do
   Migrates all currently valid tokens or access tokens to the Boruta tokens table so they can continue to work
   """
   def migrate_existing_tokens(oauth_application_id) do
-    Ecto.Query.from("oauth_access_tokens",
-      where: [application_id: ^oauth_application_id]
-    )
-    |> Glimesh.Repo.all()
+    # We need to migrate:
+    # * _all_ non-revoked refresh tokens
+    # * Any active access tokens
+
+    # select * from oauth_access_tokens where application_id = 5 and refresh_token is not null and revoked_at is not null;
+    # non_revoked_access_tokens =
+    #   Ecto.Query.from("oauth_access_tokens",
+    #     where: [
+    #       application_id: ^oauth_application_id,
+    #       refresh_token: not nil,
+    #       revoked_at: nil
+    #     ]
+    #   )
+    #   |> Glimesh.Repo.all()
+
+    # select * from oauth_access_tokens where application_id = 5 and inserted_at + expires_in * interval '1 second' > now() and revoked_at is not null;
   end
 
   def migrate_token(old_token) do
