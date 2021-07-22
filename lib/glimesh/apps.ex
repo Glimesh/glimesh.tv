@@ -22,7 +22,8 @@ defmodule Glimesh.Apps do
 
   """
   def list_apps(%User{} = user) do
-    Repo.all(from a in App, where: a.user_id == ^user.id) |> Repo.preload(:oauth_application)
+    Repo.all(from a in App, where: a.user_id == ^user.id)
+    |> Repo.preload([:oauth_application, :client])
   end
 
   @doc """
@@ -40,7 +41,7 @@ defmodule Glimesh.Apps do
 
   """
   def get_app(%User{} = user, id) do
-    app = Repo.get(App, id) |> Repo.preload(:oauth_application)
+    app = Repo.get(App, id) |> Repo.preload([:oauth_application, :client])
 
     with :ok <- Bodyguard.permit(__MODULE__, :show_app, user, app) do
       {:ok, app}
@@ -48,7 +49,7 @@ defmodule Glimesh.Apps do
   end
 
   @doc """
-  Creates a application for Glimesh, and creates an associated OAuthApplication.
+  Creates a application for Glimesh, and creates an associated Boruta Client.
 
   ## Examples
 
@@ -62,30 +63,27 @@ defmodule Glimesh.Apps do
   def create_app(%User{} = user, attrs \\ %{}) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_app, user) do
       attrs = key_to_atom(attrs)
-      config = Application.fetch_env!(:ex_oauth2_provider, ExOauth2Provider)
-
-      scopes =
-        List.flatten([
-          Keyword.get(config, :default_scopes, []),
-          Keyword.get(config, :optional_scopes, [])
-        ])
 
       attrs =
-        attrs
-        |> put_in([:oauth_application, :name], Map.get(attrs, :name))
-        |> put_in([:oauth_application, :owner], user)
-        |> put_in([:oauth_application, :scopes], Enum.join(scopes, " "))
+        Map.merge(attrs, %{
+          client: %{
+            name: attrs.name,
+            redirect_uris: String.split(attrs[:client][:redirect_uris] || ""),
+            access_token_ttl: 60 * 60 * 24,
+            authorization_code_ttl: 60
+          }
+        })
 
       %App{
         user: user
       }
-      |> App.changeset(attrs)
+      |> App.changeset(attrs, true)
       |> Repo.insert()
     end
   end
 
   @doc """
-  Updates a app.
+  Updates a app, including changes required for the Boruta app.
 
   ## Examples
 
@@ -102,17 +100,18 @@ defmodule Glimesh.Apps do
 
       attrs =
         attrs
-        |> put_in([:oauth_application, :id], app.oauth_application_id)
-        |> put_in([:oauth_application, :name], Map.get(attrs, :name))
+        |> put_in([:client, :id], app.client.id)
+        |> put_in([:client, :name], attrs.name)
+        |> put_in([:client, :redirect_uris], String.split(attrs[:client][:redirect_uris] || ""))
 
       app
-      |> App.changeset(attrs)
+      |> App.changeset(attrs, true)
       |> Repo.update()
     end
   end
 
   @doc """
-  Rotate public / secret keys for an oauth app.
+  Rotate secret keys for an oauth app.
 
     ## Examples
 
@@ -121,16 +120,27 @@ defmodule Glimesh.Apps do
   """
   def rotate_oauth_app(%User{} = user, %App{} = app) do
     with :ok <- Bodyguard.permit(__MODULE__, :update_app, user, app) do
-      app.oauth_application
+      app.client
       |> Ecto.Changeset.change(%{
-        uid: ExOauth2Provider.Utils.generate_token(),
-        secret: ExOauth2Provider.Utils.generate_token()
+        secret: Boruta.TokenGenerator.secret(app.client)
       })
       |> Repo.update()
     end
   end
 
   # System API Calls
+
+  def get_client_id(%App{} = app) do
+    app.client.id
+  end
+
+  def get_client_secret(%App{} = app) do
+    app.client.secret
+  end
+
+  def get_client_redirect_uris(%App{} = app) do
+    app.client.redirect_uris
+  end
 
   @doc """
   Returns the list of apps.
@@ -142,7 +152,7 @@ defmodule Glimesh.Apps do
 
   """
   def list_apps do
-    Repo.all(from(a in App)) |> Repo.preload(:oauth_application)
+    Repo.all(from(a in App)) |> Repo.preload(:client)
   end
 
   @doc """

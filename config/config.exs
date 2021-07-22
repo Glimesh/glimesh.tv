@@ -91,7 +91,6 @@ config :ex_oauth2_provider, ExOauth2Provider,
   force_ssl_in_redirect_uri: false
 
 config :boruta, Boruta.Oauth,
-  # mandatory
   repo: Glimesh.Repo,
   cache_backend: Boruta.Cache,
   contexts: [
@@ -99,7 +98,7 @@ config :boruta, Boruta.Oauth,
     clients: Boruta.Ecto.Clients,
     codes: Boruta.Ecto.Codes,
     # mandatory for user flows
-    resource_owners: Glimesh.ResourceOwners,
+    resource_owners: Glimesh.Oauth.ResourceOwners,
     scopes: Boruta.Ecto.Scopes
   ],
   max_ttl: [

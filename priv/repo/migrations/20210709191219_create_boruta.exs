@@ -15,6 +15,8 @@ defmodule Glimesh.Repo.Migrations.CreateBoruta do
       add(:pkce, :boolean, default: false, null: false)
       add(:public_key, :text, null: false)
       add(:private_key, :text, null: false)
+      # Private field added exclusively for us:
+      add(:old_uid, :string, default: nil)
 
       timestamps()
     end
@@ -57,5 +59,10 @@ defmodule Glimesh.Repo.Migrations.CreateBoruta do
     create unique_index("tokens", [:client_id, :value])
     create unique_index("tokens", [:client_id, :refresh_token])
     create unique_index("scopes", [:name])
+
+    # Glimesh Specific
+    alter table(:apps) do
+      add(:client_id, references(:clients, type: :uuid))
+    end
   end
 end
