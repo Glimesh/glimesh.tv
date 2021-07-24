@@ -3,7 +3,7 @@ defmodule GlimeshWeb.Channels.ChannelFooterComponent do
 
   def render(assigns) do
     ~L"""
-    <div class="row mt-4">
+    <div class="row mt-md-4">
         <div class="col-lg-8 layout-spacing">
             <div class="card shadow-sm">
                 <div class="card-header">

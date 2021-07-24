@@ -148,12 +148,27 @@ updated_at: <%= @stream_metadata.updated_at %>
                     </div>
                     <% end %>
                 </div>
-
+            
             </div>
 
-            <%= live_component(@socket, GlimeshWeb.Channels.ChannelFooterComponent, id: "channel-footer", streamer: @streamer, channel: @channel) %>
-
+<%= if @enable_new_channel_page do %>
+        <%= live_component(@socket, GlimeshWeb.Channels.ChannelFooterComponent, id: "channel-footer", streamer: @streamer, channel: @channel) %>
+    </div>
+<% else %>
         </div>
+
+        <div id="chat-column" class="col-lg-3 d-flex flex-column layout-spacing">
+            <div class="chat-flex">
+                <div class="chat-absolute">
+                    <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id, "popped_out" => false} %>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <%= live_component(@socket, GlimeshWeb.Channels.ChannelFooterComponent, id: "channel-footer", streamer: @streamer, channel: @channel) %>
+        </div>
+<% end %>
 
         <%= if @enable_new_channel_page do %>
             <div class="col-lg-3"><!--d-none d-lg-block-->
