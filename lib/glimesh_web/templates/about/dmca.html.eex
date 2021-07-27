@@ -78,7 +78,7 @@
             <div class="row justify-content-md-center mt-4">
                 <div class="col-md-10">
                     <p>
-                        <%= gettext("The DMCA is not just about copyrights though. The DMCA has some built-in protections for sites like Glimesh called <b><a href="https://www.law.cornell.edu/uscode/text/17/512" target="_blank">Safe Harbor</b></a>. Simply put, Safe Harbor provisions are rules in the DMCA that protect websites from being shut down or sued by copyright owners as long as the site remains compliant. As long as Glimesh remains compliant to the process these Safe Harbor provisions in the DMCA will keep us safe from lawsuits for copyright violations.") %>
+                        <%= gettext("The DMCA is not just about copyrights though. The DMCA has some built-in protections for sites like Glimesh called <b><a href="https://www.law.cornell.edu/uscode/text/17/512" target="_blank">Safe Harbor</a></b>. Simply put, Safe Harbor provisions are rules in the DMCA that protect websites from being shut down or sued by copyright owners as long as the site remains compliant. As long as Glimesh remains compliant to the process these Safe Harbor provisions in the DMCA will keep us safe from lawsuits for copyright violations.") %>
                     </p>
                 </div>
             </div>
