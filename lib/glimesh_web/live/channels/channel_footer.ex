@@ -3,8 +3,8 @@ defmodule GlimeshWeb.Channels.ChannelFooterComponent do
 
   def render(assigns) do
     ~L"""
-    <div class="row mt-md-4">
-        <div class="col-lg-8 layout-spacing">
+    <div class="row mt-md-3">
+        <div class="col-md-8 mb-2 layout-spacing">
             <div class="card shadow-sm">
                 <div class="card-header">
                     <h3>About <%= @streamer.displayname %>'s Stream</h3>
@@ -20,7 +20,7 @@ defmodule GlimeshWeb.Channels.ChannelFooterComponent do
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 layout-spacing">
+        <div class="col-md-4 layout-spacing">
             <div class="card shadow-sm">
                 <div class="card-body user-content-body">
                     <%= if @channel.chat_rules_html do %>

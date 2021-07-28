@@ -273,6 +273,19 @@ updated_at: <%= @stream_metadata.updated_at %>
         </div>
 <% end %>
 
+<!-- Unresolved Issue, only this chat component works because it is loaded first in code structure. Should show/hide appropriately. -->
+<%= if @enable_new_channel_page do %>
+    <div class="d-sm-block d-lg-none mb-2">
+            <div id="chat-column" class="sticky-chat">
+                <div class="chat-flex">
+                    <div class="chat-absolute shadow-sm">
+                        <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id, "popped_out" => false} %>
+                    </div>
+                </div>
+            </div>
+    </div>
+<% end %>
+
 <%= if @enable_new_channel_page do %>
         <%= live_component(@socket, GlimeshWeb.Channels.ChannelFooterComponent, id: "channel-footer", streamer: @streamer, channel: @channel) %>
     </div>
@@ -293,12 +306,12 @@ updated_at: <%= @stream_metadata.updated_at %>
 <% end %>
 
         <%= if @enable_new_channel_page do %>
-            <div class="col-lg-3"><!--d-none d-lg-block-->
+            <div class="col-lg-3 d-none d-lg-block">
                 <div class="sidebar-chat">
                     <div id="chat-column" class="sticky-chat">
                         <!-- Placement of code here breaks previous mobile view -->
                         <div class="chat-flex">
-                            <div class="chat-absolute shadow-sm"> <!--chat-absolute-->
+                            <div class="chat-absolute">
                                 <%= live_render @socket, GlimeshWeb.ChatLive.Index, id: "chat", session: %{"user" => @user, "channel_id" => @channel.id, "popped_out" => false} %>
                             </div>
                         </div>
