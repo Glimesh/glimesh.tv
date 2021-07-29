@@ -131,18 +131,18 @@ defmodule Glimesh.Apps do
     sub = Integer.to_string(user_id)
     now = DateTime.utc_now() |> DateTime.to_unix()
 
-    Glimesh.Repo.all(
+    Repo.all(
       from t in Boruta.Ecto.Token,
         where:
           t.sub == ^sub and
             is_nil(t.revoked_at) and
             t.expires_at > ^now
     )
-    |> Glimesh.Repo.preload(:client)
+    |> Repo.preload(:client)
   end
 
   def revoke_token_by_id(%Glimesh.Accounts.User{} = user, token_id) do
-    token = Glimesh.Repo.get_by(Boruta.Ecto.Token, id: token_id)
+    token = Repo.get_by(Boruta.Ecto.Token, id: token_id)
 
     with :ok <- Bodyguard.permit(__MODULE__, :revoke_token, user, token) do
       client = Boruta.Ecto.Admin.get_client!(token.client_id)
