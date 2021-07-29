@@ -60,9 +60,9 @@
                     <div class="form-group">
                         <label for="authorizationRoute"><%= gettext("OAuth Authorization URL") %></label>
                         <div class="input-group">
-                            <input id="authorizationRoute" type="text" class="form-control" readonly value="<%= Routes.authorization_url(@conn, :new) %>">
+                            <input id="authorizationRoute" type="text" class="form-control" readonly value="<%= Routes.oauth_url(@conn, :authorize) %>">
                             <div class="input-group-append">
-                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_authorization_url", session: %{"value" => Routes.authorization_url(@conn, :new)}) %>
+                                <%= live_render(@conn, GlimeshWeb.Components.ClickToCopy, id: "oauth_application_authorization_url", session: %{"value" => Routes.oauth_url(@conn, :authorize)}) %>
                             </div>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                                     <code><%= redirect_uri %></code>
                                 </td>
                                 <td>
-                                    <%= link gettext("Authorize"), to: Routes.authorization_path(@conn, :new, client_id: Glimesh.Apps.get_client_id(@application), redirect_uri: redirect_uri, response_type: "code"), target: "_blank" %>
+                                    <%= link gettext("Authorize"), to: Routes.oauth_path(@conn, :authorize, client_id: Glimesh.Apps.get_client_id(@application), redirect_uri: redirect_uri, response_type: "code"), target: "_blank" %>
                                 </td>
                             </tr>
                             <% end %>

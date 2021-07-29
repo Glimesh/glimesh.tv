@@ -5,6 +5,22 @@ defmodule Glimesh.Api do
   alias Absinthe.Relay.Connection
   alias Glimesh.Repo
 
+  defmodule Access do
+    @moduledoc """
+    Common struct for ensuring API access
+    """
+    defstruct is_admin: false,
+              user: nil,
+              access_type: nil,
+              access_identifier: nil,
+              scopes: %{
+                public: false,
+                email: false,
+                chat: false,
+                streamkey: false
+              }
+  end
+
   @error_not_found "Could not find resource"
   @error_access_denied "Access denied"
 

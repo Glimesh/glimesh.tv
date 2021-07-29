@@ -12,19 +12,20 @@ defmodule Glimesh.Api.ChannelResolver do
   @error_access_denied "Access denied"
 
   # Channel Resolvers
-  def resolve_stream_key(channel, _, %{context: %{current_user: current_user}}) do
-    if current_user.is_admin do
+  def resolve_stream_key(channel, _, %{context: %{access: access}}) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
       {:ok, Glimesh.Streams.get_stream_key(channel)}
     else
-      {:error, "Unauthorized to access streamKey field."}
+      _ -> {:error, "Unauthorized to access streamKey field."}
     end
   end
 
-  def resolve_hmac_key(channel, _, %{context: %{current_user: current_user}}) do
-    if current_user.is_admin do
+  def resolve_hmac_key(channel, _, %{context: %{access: access}}) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
       {:ok, channel.hmac_key}
     else
-      {:error, "Unauthorized to access hmacKey field."}
+      _ ->
+        {:error, "Unauthorized to access hmacKey field."}
     end
   end
 
@@ -87,16 +88,19 @@ defmodule Glimesh.Api.ChannelResolver do
   def find_channel(_, _), do: {:error, @error_not_found}
 
   # Streams
-  def start_stream(_parent, %{channel_id: channel_id}, %{context: %{is_admin: true}}) do
-    with %Glimesh.Streams.Channel{} = channel <- ChannelLookups.get_channel(channel_id),
-         {:ok, channel} <- Streams.start_stream(channel) do
-      {:ok, channel}
-    else
-      nil ->
-        {:error, @error_not_found}
+  @decorate transaction_event()
+  def start_stream(_parent, %{channel_id: channel_id}, %{context: %{access: access}}) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
+      with %Glimesh.Streams.Channel{} = channel <- ChannelLookups.get_channel(channel_id),
+           {:ok, channel} <- Streams.start_stream(channel) do
+        {:ok, channel}
+      else
+        nil ->
+          {:error, @error_not_found}
 
-      {:error, _} ->
-        {:error, @error_access_denied}
+        {:error, _} ->
+          {:error, @error_access_denied}
+      end
     end
   end
 
@@ -104,16 +108,15 @@ defmodule Glimesh.Api.ChannelResolver do
     {:error, @error_access_denied}
   end
 
-  def end_stream(_parent, %{stream_id: stream_id}, %{context: %{is_admin: true}}) do
-    if stream = Streams.get_stream(stream_id) do
-      Streams.end_stream(stream)
-    else
-      {:error, @error_not_found}
+  @decorate transaction_event()
+  def end_stream(_parent, %{stream_id: stream_id}, %{context: %{access: access}}) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
+      if stream = Streams.get_stream(stream_id) do
+        Streams.end_stream(stream)
+      else
+        {:error, @error_not_found}
+      end
     end
-  end
-
-  def end_stream(_parent, _args, %{context: %{is_admin: true}}) do
-    {:error, "Must specify streamId"}
   end
 
   def end_stream(_parent, _args, _resolution) do
@@ -121,16 +124,18 @@ defmodule Glimesh.Api.ChannelResolver do
   end
 
   def log_stream_metadata(_parent, %{stream_id: stream_id, metadata: metadata}, %{
-        context: %{is_admin: true}
+        context: %{access: access}
       }) do
-    if stream = Streams.get_stream(stream_id) do
-      if is_nil(stream.ended_at) do
-        Streams.log_stream_metadata(stream, metadata)
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
+      if stream = Streams.get_stream(stream_id) do
+        if is_nil(stream.ended_at) do
+          Streams.log_stream_metadata(stream, metadata)
+        else
+          {:error, "Stream has ended"}
+        end
       else
-        {:error, "Stream has ended"}
+        {:error, @error_not_found}
       end
-    else
-      {:error, @error_not_found}
     end
   end
 
@@ -139,18 +144,20 @@ defmodule Glimesh.Api.ChannelResolver do
   end
 
   def upload_stream_thumbnail(_parent, %{stream_id: stream_id, thumbnail: thumbnail}, %{
-        context: %{is_admin: true}
+        context: %{access: access}
       }) do
-    with %Streams.Stream{} = stream <- Streams.get_stream(stream_id),
-         {:ok, stream} <- Streams.update_stream(stream, %{thumbnail: thumbnail}) do
-      {:ok, stream}
-    else
-      nil ->
-        {:error, @error_not_found}
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
+      with %Streams.Stream{} = stream <- Streams.get_stream(stream_id),
+           {:ok, stream} <- Streams.update_stream(stream, %{thumbnail: thumbnail}) do
+        {:ok, stream}
+      else
+        nil ->
+          {:error, @error_not_found}
 
-      {:upload_exit, _} ->
-        # Whenever a DO Spaces error occurs, it throws back an error absinthe can't natively process
-        {:error, "Error uploading thumbnail"}
+        {:upload_exit, _} ->
+          # Whenever a DO Spaces error occurs, it throws back an error absinthe can't natively process
+          {:error, "Error uploading thumbnail"}
+      end
     end
   end
 

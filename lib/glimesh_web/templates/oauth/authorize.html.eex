@@ -3,33 +3,32 @@
     <div class="col-lg-5">
       <div class="card">
         <h5 class="card-header">
-          <%= gettext("Authorize %{name}?", name: @client.name) %>
+          <%= gettext("Authorize %{name}?", name: @app.name) %>
         </h5>
         <div class="card-body">
           <img class="img-avatar mx-auto d-block mb-4"
-            src="<%= Glimesh.AppLogo.url({@client.app.logo, @client.app}, :original) %>"
-            alt="Generic placeholder image">
-          <p><em><%= @client.app.description %></em></p>
+            src="<%= Glimesh.AppLogo.url({@app.logo, @app}, :original) %>"
+            alt="<%= @app.name %>">
+          <p><em><%= @app.description %></em></p>
 
           <p class="mt-4">
             <h6>
-              <%= gettext("Are you sure you wish to authorize %{name} to use your account? This application will be able to:", name: @client.name) %>
+              <%= gettext("Are you sure you wish to authorize %{name} to use your account? This application will be able to:", name: @app.name) %>
             </h6>
           </p>
           <ul class="list-group">
             <%= for scope <- @scopes do %>
-            <li class="list-group-item active"><%= scope_gettext(scope) %></li>
+            <li class="list-group-item active"><%= Glimesh.Oauth.Scopes.scope_gettext(scope) %></li>
             <% end %>
           </ul>
         </div>
         <div class="card-footer">
-          <%= form_tag Routes.authorization_path(@conn, :create), method: :post do %>
+          <%= form_tag Routes.oauth_path(@conn, :process_authorize), get: :post do %>
           <input type="hidden" name="client_id" value="<%= @params["client_id"] %>" />
           <input type="hidden" name="redirect_uri" value="<%= @params["redirect_uri"] %>" />
           <input type="hidden" name="state" value="<%= @params["state"] %>" />
           <input type="hidden" name="response_type" value="<%= @params["response_type"] %>" />
           <input type="hidden" name="scope" value="<%= @params["scope"] %>" />
-          <input type="hidden" name="client_secret" value="<%= @params["client_secret"] %>" />
           <div class="row">
             <div class="col-6">
               <%= submit gettext("Authorize"), name: "action", value: "authorize", class: "btn btn-primary btn-block" %>

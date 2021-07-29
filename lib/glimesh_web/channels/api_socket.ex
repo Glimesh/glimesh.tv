@@ -1,7 +1,6 @@
 defmodule GlimeshWeb.ApiSocket do
   @moduledoc """
   Allow for connections to the API socket with either an API token or a client id.
-
   Client ID is for read API access only.
   """
   use Phoenix.Socket
@@ -10,45 +9,41 @@ defmodule GlimeshWeb.ApiSocket do
     schema: Glimesh.Schema
 
   @impl true
-  def connect(%{"client_id" => client_id}, socket, _connect_info) do
-    case Glimesh.Oauth.TokenResolver.resolve_app(client_id) do
-      {:ok, %Glimesh.OauthApplications.OauthApplication{}} ->
-        {:ok,
-         socket
-         |> assign(:user_id, nil)
-         |> Absinthe.Phoenix.Socket.put_options(
-           context: %{
-             is_admin: false,
-             current_user: nil,
-             access_type: "app",
-             access_identifier: client_id,
-             user_access: %Glimesh.Accounts.UserAccess{}
-           }
-         )}
+  def connect(%{"client_id" => original_client_id}, socket, _connect_info) do
+    # Convert the Client ID if needed to the boruta ID
+    client_id = Glimesh.OauthMigration.convert_client_id(original_client_id)
 
-      _ ->
-        :error
+    with {:ok, %Boruta.Oauth.Client{} = client} <- Boruta.Config.clients().get_by(id: client_id),
+         {:ok, %Glimesh.Api.Access{} = access} <-
+           Glimesh.Oauth.get_unprivileged_api_access_from_client(client) do
+      {:ok,
+       socket
+       |> assign(:user_id, access.user.id)
+       |> Absinthe.Phoenix.Socket.put_options(
+         context: %{
+           access: access
+         }
+       )}
+    else
+      _ -> :error
     end
   end
 
-  def connect(%{"token" => token}, socket, _connect_info) do
-    case Glimesh.Oauth.TokenResolver.resolve_user(token) do
-      {:ok, %Glimesh.Accounts.UserAccess{} = user_access} ->
-        {:ok,
-         socket
-         |> assign(:user_id, user_access.user.id)
-         |> Absinthe.Phoenix.Socket.put_options(
-           context: %{
-             is_admin: user_access.user.is_admin,
-             current_user: user_access.user,
-             access_type: "user",
-             access_identifier: user_access.user.username,
-             user_access: user_access
-           }
-         )}
-
-      _ ->
-        :error
+  def connect(%{"token" => access_token}, socket, _connect_info) do
+    with {:ok, %Boruta.Oauth.Token{} = token} <-
+           Boruta.Oauth.Authorization.AccessToken.authorize(value: access_token),
+         {:ok, %Glimesh.Api.Access{} = access} <-
+           Glimesh.Oauth.get_api_access_from_token(token) do
+      {:ok,
+       socket
+       |> assign(:user_id, access.user.id)
+       |> Absinthe.Phoenix.Socket.put_options(
+         context: %{
+           access: access
+         }
+       )}
+    else
+      _ -> :error
     end
   end
 

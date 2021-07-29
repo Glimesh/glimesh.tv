@@ -8,23 +8,23 @@ defmodule GlimeshWeb.UserApplicationsTest do
     name: "some name",
     description: "some description",
     homepage_url: "https://glimesh.tv/",
-    oauth_application: %{
-      redirect_uri: "https://glimesh.tv/something"
+    client: %{
+      redirect_uris: "https://glimesh.tv/something"
     }
   }
   @update_attrs %{
     name: "some updated name",
     description: "some updated description",
     homepage_url: "https://dev.glimesh.tv/",
-    oauth_application: %{
-      redirect_uri: "https://glimesh.tv/something-new"
+    client: %{
+      redirect_uris: "https://glimesh.tv/something-new"
     }
   }
   @invalid_attrs %{
     name: nil,
     description: nil,
-    oauth_application: %{
-      redirect_uri: nil
+    client: %{
+      redirect_uris: nil
     }
   }
 
@@ -117,7 +117,7 @@ defmodule GlimeshWeb.UserApplicationsTest do
 
       conn = get(conn, Routes.user_applications_path(conn, :show, app))
       assert html_response(conn, 200) =~ "some updated name"
-      assert html_response(conn, 200) =~ app.oauth_application.secret
+      assert html_response(conn, 200) =~ app.client.secret
     end
 
     test "rotates the keys when user requests", %{conn: conn, user: user, app: app} do
@@ -126,8 +126,8 @@ defmodule GlimeshWeb.UserApplicationsTest do
 
       {:ok, new_app} = Glimesh.Apps.get_app(user, app.id)
       conn = get(conn, Routes.user_applications_path(conn, :show, app))
-      refute html_response(conn, 200) =~ app.oauth_application.secret
-      assert html_response(conn, 200) =~ new_app.oauth_application.secret
+      refute html_response(conn, 200) =~ app.client.secret
+      assert html_response(conn, 200) =~ new_app.client.secret
     end
 
     test "renders errors when data is invalid", %{conn: conn, app: app} do

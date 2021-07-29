@@ -1,31 +1,29 @@
 defmodule GlimeshWeb.Oauth2Provider.AuthorizedApplicationController do
   @moduledoc false
   use GlimeshWeb, :controller
-  alias ExOauth2Provider.Applications
 
   plug :put_layout, "user-sidebar.html"
 
   def index(conn, _params) do
-    applications =
-      Applications.get_authorized_applications_for(conn.assigns[:current_user], otp_app: :glimesh)
-      |> Glimesh.Repo.preload(:app)
+    tokens = Glimesh.Apps.list_valid_tokens_for_user(conn.assigns[:current_user])
 
     render(conn, "index.html",
       page_title: format_page_title(gettext("Authorized Applications")),
-      applications: applications
+      tokens: tokens
     )
   end
 
-  def delete(conn, %{"uid" => uid}) do
-    config = [otp_app: :glimesh]
+  def delete(conn, %{"id" => id}) do
+    case Glimesh.Apps.revoke_token_by_id(conn.assigns[:current_user], id) do
+      :ok ->
+        conn
+        |> put_flash(:info, gettext("Application revoked."))
+        |> redirect(to: Routes.authorized_application_path(conn, :index))
 
-    {:ok, _application} =
-      uid
-      |> Applications.get_application!(config)
-      |> Applications.revoke_all_access_tokens_for(conn.assigns[:current_user], config)
-
-    conn
-    |> put_flash(:info, gettext("Application revoked."))
-    |> redirect(to: Routes.authorized_application_path(conn, :index))
+      _ ->
+        conn
+        |> put_flash(:error, gettext("Failed to revoke token."))
+        |> redirect(to: Routes.authorized_application_path(conn, :index))
+    end
   end
 end

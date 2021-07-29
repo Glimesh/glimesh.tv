@@ -10,8 +10,8 @@ defmodule Glimesh.Api.AccountResolver do
   @error_not_found "Could not find resource"
 
   # Query Field Resolvers
-  def resolve_email(user, _, %{context: %{user_access: ua}}) do
-    with :ok <- Bodyguard.permit(Api.Scopes, :email, ua, user) do
+  def resolve_email(user, _, %{context: %{access: access}}) do
+    with :ok <- Bodyguard.permit(Api.Scopes, :email, access, user) do
       {:ok, user.email}
     end
   end
@@ -21,8 +21,8 @@ defmodule Glimesh.Api.AccountResolver do
   end
 
   # Users
-  def myself(_, _, %{context: %{user_access: ua}}) do
-    if user = Accounts.get_user(ua.user.id) do
+  def myself(_, _, %{context: %{access: access}}) do
+    if user = Accounts.get_user(access.user.id) do
       {:ok, user}
     else
       {:error, @error_not_found}

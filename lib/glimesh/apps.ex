@@ -23,7 +23,7 @@ defmodule Glimesh.Apps do
   """
   def list_apps(%User{} = user) do
     Repo.all(from a in App, where: a.user_id == ^user.id)
-    |> Repo.preload([:oauth_application, :client])
+    |> Repo.preload(:client)
   end
 
   @doc """
@@ -41,7 +41,7 @@ defmodule Glimesh.Apps do
 
   """
   def get_app(%User{} = user, id) do
-    app = Repo.get(App, id) |> Repo.preload([:oauth_application, :client])
+    app = Repo.get(App, id) |> Repo.preload(:client)
 
     with :ok <- Bodyguard.permit(__MODULE__, :show_app, user, app) do
       {:ok, app}
@@ -112,11 +112,6 @@ defmodule Glimesh.Apps do
 
   @doc """
   Rotate secret keys for an oauth app.
-
-    ## Examples
-
-      iex> rotate_oauth_app(app)
-      {:ok, %ExOauth2Provider.Applications.Application{}}
   """
   def rotate_oauth_app(%User{} = user, %App{} = app) do
     with :ok <- Bodyguard.permit(__MODULE__, :update_app, user, app) do
@@ -128,7 +123,58 @@ defmodule Glimesh.Apps do
     end
   end
 
+  @doc """
+  Get authorized tokens granted by a user.
+  Kinda hacky but boruta doesn't allow this access by default
+  """
+  def list_valid_tokens_for_user(%Glimesh.Accounts.User{id: user_id}) do
+    sub = Integer.to_string(user_id)
+    now = DateTime.utc_now() |> DateTime.to_unix()
+
+    Glimesh.Repo.all(
+      from t in Boruta.Ecto.Token,
+        where:
+          t.sub == ^sub and
+            is_nil(t.revoked_at) and
+            t.expires_at > ^now
+    )
+    |> Glimesh.Repo.preload(:client)
+  end
+
+  def revoke_token_by_id(%Glimesh.Accounts.User{} = user, token_id) do
+    token = Glimesh.Repo.get_by(Boruta.Ecto.Token, id: token_id)
+
+    with :ok <- Bodyguard.permit(__MODULE__, :revoke_token, user, token) do
+      client = Boruta.Ecto.Admin.get_client!(token.client_id)
+
+      Boruta.Oauth.Revoke.token(%Boruta.Oauth.RevokeRequest{
+        client_id: client.id,
+        client_secret: client.secret,
+        token: token.refresh_token
+      })
+    end
+  end
+
   # System API Calls
+
+  @doc """
+  Gets a single app by Client ID
+
+  ## Examples
+
+      iex> get_app_by_client_id!("1234")
+      %App{}
+
+  """
+  def get_app_by_client_id!(client_id) do
+    Repo.get_by!(App, client_id: client_id) |> Repo.preload(:client)
+  end
+
+  def get_app_owner_by_client_id!(client_id) do
+    app = Repo.get_by!(App, client_id: client_id) |> Repo.preload(:user)
+
+    app.user
+  end
 
   def get_client_id(%App{} = app) do
     app.client.id
