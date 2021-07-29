@@ -13,12 +13,13 @@ defmodule GlimeshWeb.OauthController do
     TokenResponse
   }
 
+  alias Glimesh.OauthMigration
   alias GlimeshWeb.OauthView
 
   def token(conn, %{"client_id" => _}) do
     conn
-    |> Glimesh.OauthMigration.token_request()
-    |> Glimesh.OauthMigration.patch_body_params()
+    |> OauthMigration.token_request()
+    |> OauthMigration.patch_body_params()
     |> Oauth.token(__MODULE__)
   end
 
@@ -37,6 +38,16 @@ defmodule GlimeshWeb.OauthController do
     |> render("error.json", error: error, error_description: error_description)
   end
 
+  @impl Boruta.Oauth.Application
+  def preauthorize_success(_conn, %Boruta.Oauth.AuthorizationSuccess{} = _authorization) do
+    raise "no idea when these are triggered"
+  end
+
+  @impl Boruta.Oauth.Application
+  def preauthorize_error(_conn, %Boruta.Oauth.Error{} = _oauth_error) do
+    raise "no idea when these are triggered"
+  end
+
   def authorize(
         %Plug.Conn{query_params: query_params} = conn,
         %{"client_id" => _}
@@ -45,8 +56,8 @@ defmodule GlimeshWeb.OauthController do
     # Store the query params, we'll need them for later
     conn =
       conn
-      |> Glimesh.OauthMigration.token_request()
-      |> Glimesh.OauthMigration.patch_body_params()
+      |> OauthMigration.token_request()
+      |> OauthMigration.patch_body_params()
 
     store_oauth_request(conn, conn.query_params)
 
@@ -153,8 +164,8 @@ defmodule GlimeshWeb.OauthController do
 
   def introspect(%Plug.Conn{} = conn, _params) do
     conn
-    |> Glimesh.OauthMigration.token_request()
-    |> Glimesh.OauthMigration.patch_body_params()
+    |> OauthMigration.token_request()
+    |> OauthMigration.patch_body_params()
     |> Oauth.introspect(__MODULE__)
   end
 
@@ -179,8 +190,8 @@ defmodule GlimeshWeb.OauthController do
 
   def revoke(%Plug.Conn{} = conn, _params) do
     conn
-    |> Glimesh.OauthMigration.token_request()
-    |> Glimesh.OauthMigration.patch_body_params()
+    |> OauthMigration.token_request()
+    |> OauthMigration.patch_body_params()
     |> Oauth.revoke(__MODULE__)
   end
 

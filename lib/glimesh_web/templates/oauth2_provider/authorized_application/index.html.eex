@@ -25,7 +25,7 @@
             <td><%= token.client.name %></td>
             <td><%= token.inserted_at %></td>
             <td>
-              <%= link gettext("Unauthorize"), to: Routes.authorized_application_path(@conn, :delete, token.id), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+              <%= link gettext("Unauthorize"), to: Routes.user_authorized_apps_path(@conn, :delete, token.id), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
             </td>
           </tr>
           <% end %>

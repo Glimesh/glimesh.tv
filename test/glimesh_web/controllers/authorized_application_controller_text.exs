@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.AuthorizedApplicationControllerTest do
+defmodule GlimeshWeb.UserAuthorizedAppsControllerTest do
   use GlimeshWeb.ConnCase
 
   import Glimesh.AccountsFixtures
@@ -7,7 +7,7 @@ defmodule GlimeshWeb.AuthorizedApplicationControllerTest do
 
   describe "GET /users/settings/applications" do
     test "returns a list of authorized applications", %{conn: conn} do
-      conn = get(conn, Routes.authorized_application_path(conn, :index))
+      conn = get(conn, Routes.user_authorized_apps_path(conn, :index))
       assert html_response(conn, 200) =~ "Authorized Applications"
     end
   end

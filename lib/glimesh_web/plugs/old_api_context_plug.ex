@@ -4,6 +4,8 @@ defmodule GlimeshWeb.Plugs.OldApiContextPlug do
   import Plug.Conn
   import Phoenix.Controller, only: [json: 2]
 
+  alias Glimesh.Oauth
+
   def init(opts), do: opts
 
   def call(conn, opts) do
@@ -40,7 +42,7 @@ defmodule GlimeshWeb.Plugs.OldApiContextPlug do
   defp authorize({:bearer, token}, _) do
     case Boruta.Oauth.Authorization.AccessToken.authorize(value: token) do
       {:ok, %Boruta.Oauth.Token{} = token} ->
-        Glimesh.Oauth.get_api_access_from_token(token)
+        Oauth.get_api_access_from_token(token)
 
       {:error, msg} ->
         {:error, msg}
@@ -52,7 +54,7 @@ defmodule GlimeshWeb.Plugs.OldApiContextPlug do
 
     case Boruta.Config.clients().get_by(id: client_id) do
       {:ok, %Boruta.Oauth.Client{} = client} ->
-        Glimesh.Oauth.get_unprivileged_api_access_from_client(client)
+        Oauth.get_unprivileged_api_access_from_client(client)
 
       {:error, msg} ->
         {:error, msg}
@@ -62,7 +64,7 @@ defmodule GlimeshWeb.Plugs.OldApiContextPlug do
   defp authorize(_, conn) do
     # Since this is the old API, try a session based auth
     if user = conn.assigns[:current_user] do
-      Glimesh.Oauth.access_for_user(user, "public email chat streamkey")
+      Oauth.access_for_user(user, "public email chat streamkey")
     else
       {:error, :unauthorized}
     end

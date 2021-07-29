@@ -4,6 +4,8 @@ defmodule Glimesh.OauthMigration do
   """
   import Ecto.Query
 
+  alias Glimesh.Repo
+
   @doc """
   Convert a token request with a sha256 client_id into Boruta's format using a lookup table
   """
@@ -33,6 +35,10 @@ defmodule Glimesh.OauthMigration do
     end)
   end
 
+  def token_request(conn) do
+    conn
+  end
+
   @doc """
   Boruta incorrectly uses body_params instead of params, so if we are testing, or they are query params it ends up munging them.
   """
@@ -42,10 +48,6 @@ defmodule Glimesh.OauthMigration do
     |> Map.update(:body_params, %{}, fn e ->
       Map.merge(conn.query_params, e)
     end)
-  end
-
-  def token_request(conn) do
-    conn
   end
 
   def convert_client_id(client_id) do
@@ -74,12 +76,12 @@ defmodule Glimesh.OauthMigration do
     end)
   end
 
-  def migrate_old_oauth_apps() do
+  def migrate_old_oauth_apps do
     Glimesh.Apps.list_apps()
     |> Enum.filter(& &1.oauth_application_id)
     |> Enum.each(fn app ->
       old_app =
-        Glimesh.Repo.one(
+        Repo.one(
           from a in "oauth_applications",
             select: %{
               id: a.id,
@@ -114,7 +116,7 @@ defmodule Glimesh.OauthMigration do
           set: [secret: ^old_app.secret, old_uid: ^old_app.uid]
         ]
       )
-      |> Glimesh.Repo.update_all([])
+      |> Repo.update_all([])
 
       # Update the apps table to point to the new values
       Ecto.Query.from("apps",
@@ -123,7 +125,7 @@ defmodule Glimesh.OauthMigration do
           set: [client_id: ^uuid]
         ]
       )
-      |> Glimesh.Repo.update_all([])
+      |> Repo.update_all([])
 
       # Migrate all tokens
       migrate_existing_tokens(old_app.id, client.id)
@@ -138,10 +140,12 @@ defmodule Glimesh.OauthMigration do
     # * _all_ non-revoked refresh tokens
     # * Any active access tokens
 
-    # select * from oauth_access_tokens where application_id = 5 and refresh_token is not null and revoked_at is not null;
-    # select * from oauth_access_tokens where application_id = 5 and inserted_at + expires_in * interval '1 second' > now() and revoked_at is not null;
+    # select * from oauth_access_tokens
+    # where application_id = 5 and refresh_token is not null and revoked_at is not null;
+    # select * from oauth_access_tokens
+    # where application_id = 5 and inserted_at + expires_in * interval '1 second' > now() and revoked_at is not null;
     all_non_revoked_refresh_tokens =
-      Glimesh.Repo.all(
+      Repo.all(
         from t in "oauth_access_tokens",
           select: %{
             token: t.token,
@@ -216,7 +220,7 @@ defmodule Glimesh.OauthMigration do
       updated_at: DateTime.utc_now()
     }
 
-    Glimesh.Repo.insert(new_token)
+    Repo.insert(new_token)
   end
 
   defp look_up_uuid(old_client_id) do
@@ -226,7 +230,7 @@ defmodule Glimesh.OauthMigration do
         where: [old_uid: ^old_client_id]
       )
 
-    case Glimesh.Repo.one(query) do
+    case Repo.one(query) do
       %{id: id} ->
         Ecto.UUID.load!(id)
 

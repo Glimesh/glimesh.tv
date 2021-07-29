@@ -13,17 +13,17 @@ defmodule Glimesh.Api.ChannelResolver do
 
   # Channel Resolvers
   def resolve_stream_key(channel, _, %{context: %{access: access}}) do
-    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
-      {:ok, Glimesh.Streams.get_stream_key(channel)}
-    else
+    case Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
+      :ok -> {:ok, Glimesh.Streams.get_stream_key(channel)}
       _ -> {:error, "Unauthorized to access streamKey field."}
     end
   end
 
   def resolve_hmac_key(channel, _, %{context: %{access: access}}) do
-    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
-      {:ok, channel.hmac_key}
-    else
+    case Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
+      :ok ->
+        {:ok, channel.hmac_key}
+
       _ ->
         {:error, "Unauthorized to access hmacKey field."}
     end

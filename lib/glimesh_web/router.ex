@@ -146,7 +146,7 @@ defmodule GlimeshWeb.Router do
     put "/users/settings/applications/:id/rotate", UserApplicationsController, :rotate
     resources "/users/settings/applications", UserApplicationsController
 
-    resources "/users/settings/authorizations", Oauth2Provider.AuthorizedApplicationController,
+    resources "/users/settings/authorizations", UserAuthorizedAppsController,
       only: [:index, :delete],
       param: "id"
 

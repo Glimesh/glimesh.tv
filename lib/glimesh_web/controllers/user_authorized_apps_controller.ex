@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.Oauth2Provider.AuthorizedApplicationController do
+defmodule GlimeshWeb.UserAuthorizedAppsController do
   @moduledoc false
   use GlimeshWeb, :controller
 
@@ -18,12 +18,12 @@ defmodule GlimeshWeb.Oauth2Provider.AuthorizedApplicationController do
       :ok ->
         conn
         |> put_flash(:info, gettext("Application revoked."))
-        |> redirect(to: Routes.authorized_application_path(conn, :index))
+        |> redirect(to: Routes.user_authorized_apps_path(conn, :index))
 
       _ ->
         conn
         |> put_flash(:error, gettext("Failed to revoke token."))
-        |> redirect(to: Routes.authorized_application_path(conn, :index))
+        |> redirect(to: Routes.user_authorized_apps_path(conn, :index))
     end
   end
 end
