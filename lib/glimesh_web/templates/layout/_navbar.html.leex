@@ -9,11 +9,13 @@
 
     <div class="d-lg-none">
         <ul class="navbar-nav d-inline-block">
+            <%= if assigns[:current_user] do %>
             <li class="nav-item d-inline mr-3">
                 <%= live_redirect to: Routes.streams_list_path(@conn, :index, "following") do %>
-                <i class="fas fa-heart fa-fw"></i><%= if count_live = count_live_following_channels(@conn) do %><span class="badge badge-danger"><%= count_live %></span><% end %>
+                <i class="fas fa-heart fa-fw"></i> <%= if count_live = count_live_following_channels(@conn) do %><span class="badge badge-danger"><%= count_live %></span><% end %>
                 <% end %>
             </li>
+            <% end %>
             <li class="nav-item d-inline pr-2">
                 <%= live_redirect to: Routes.streams_index_path(@conn, :index) do %>
                 <i class="fas fa-grip-horizontal fa-fw"></i>
@@ -48,7 +50,7 @@
             </li>
             <li class="nav-item dropdown user-profile-dropdown">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="moreDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <%= gettext("More") %>
+                    <i class="fa fa-ellipsis-v"></i><span class="d-sm-inline d-lg-none"> <%= gettext("More") %></span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="moreDropdown">
                     <%= link class: "dropdown-item", to: Routes.user_index_path(@conn, :index) do %>

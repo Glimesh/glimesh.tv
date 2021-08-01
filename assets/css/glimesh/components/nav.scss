@@ -20,3 +20,7 @@
     padding-bottom: .28em !important;
     min-height: 40px !important;
 }
+
+#moreDropdown.dropdown-toggle::after {
+    content: none;
+}
