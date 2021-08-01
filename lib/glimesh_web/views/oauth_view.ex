@@ -25,7 +25,7 @@ defmodule GlimeshWeb.OauthView do
       client_id: client_id,
       username: username,
       scope: scope,
-      sub: sub,
+      sub: sub_to_integer(sub),
       iss: iss,
       exp: exp,
       iat: iat
@@ -53,5 +53,17 @@ defmodule GlimeshWeb.OauthView do
       error: error,
       error_description: error_description
     }
+  end
+
+  defp sub_to_integer(sub) when is_binary(sub) do
+    String.to_integer(sub)
+  end
+
+  defp sub_to_integer(sub) when is_integer(sub) do
+    sub
+  end
+
+  defp sub_to_integer(_) do
+    nil
   end
 end

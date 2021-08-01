@@ -64,6 +64,7 @@ defmodule Glimesh.Repo.Migrations.CreateBoruta do
     alter table(:apps) do
       add(:client_id, references(:clients, type: :uuid))
     end
+
     create unique_index(:apps, [:client_id])
   end
 end
