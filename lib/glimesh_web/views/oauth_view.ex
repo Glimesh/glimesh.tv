@@ -25,7 +25,7 @@ defmodule GlimeshWeb.OauthView do
       client_id: client_id,
       username: username,
       scope: scope,
-      sub: String.to_integer(sub),
+      sub: sub,
       iss: iss,
       exp: exp,
       iat: iat
