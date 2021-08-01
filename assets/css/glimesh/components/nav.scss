@@ -9,3 +9,14 @@
         border-bottom: 1px solid var(--primary);
     }
 }
+
+.navbar-nav > li > a {
+    padding-top:5px!important;
+    padding-bottom:5px!important;
+}
+
+.navbar {
+    padding-top: .28em !important;
+    padding-bottom: .28em !important;
+    min-height: 40px !important;
+}
