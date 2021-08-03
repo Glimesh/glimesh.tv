@@ -207,7 +207,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 }
 
 //Semi-transparent "glass" effect, Element must have a defined background color in rgba or effect may not work.
-//TODO ensure this is compatible with all major browsers, implement fallback with @support query
+//Fallback for Firefox under variables.scss as these don't work out of box.
 .acrylic {
     backdrop-filter: blur(12px) saturate(160%);
     -webkit-backdrop-filter: blur(12px) saturate(160%);
