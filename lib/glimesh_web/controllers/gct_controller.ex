@@ -452,6 +452,7 @@ defmodule GlimeshWeb.GctController do
     end
   end
 
+
   defp create_audit_entry_channel(current_user, action, target, verbose, more_details \\ "N/A") do
     CommunityTeam.create_audit_entry(current_user, %{
       action: action,
