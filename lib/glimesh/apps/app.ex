@@ -50,8 +50,8 @@ defmodule Glimesh.Apps.App do
   end
 
   def oauth_changeset(client, params) do
+    # |> validate_localhost_http_redirect_urls(:redirect_uris)
     Boruta.Ecto.Client.update_changeset(client, params)
-    |> validate_localhost_http_redirect_urls(:redirect_uris)
   end
 
   def validate_localhost_http_redirect_urls(changeset, field) when is_atom(field) do

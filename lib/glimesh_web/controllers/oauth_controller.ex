@@ -58,11 +58,10 @@ defmodule GlimeshWeb.OauthController do
       conn
       |> OauthMigration.token_request()
       |> OauthMigration.patch_body_params()
+      |> store_oauth_request(conn.query_params)
 
-    store_oauth_request(conn, conn.query_params)
-
-    app = Glimesh.Apps.get_app_by_client_id!(conn.query_params["client_id"])
-    scopes = Map.get(query_params, "scope", "") |> String.split()
+    app = Glimesh.Apps.get_app_by_client_id!(conn.params["client_id"])
+    scopes = Map.get(conn.params, "scope", "") |> String.split()
 
     conn
     |> render("authorize.html", app: app, scopes: scopes, params: query_params)
@@ -76,6 +75,8 @@ defmodule GlimeshWeb.OauthController do
       Map.update(conn, :query_params, %{}, fn e ->
         Map.merge(e, get_session(conn, :oauth_request) || %{})
       end)
+
+    IO.inspect(conn)
 
     Oauth.authorize(
       conn,
