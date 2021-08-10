@@ -220,12 +220,6 @@ defmodule GlimeshWeb.Router do
     get "/review-emotes", GctController, :review_emotes
 
     # Categories and subcategories and tags and probably more
-    live "/categories", GctLive.CategoryLive.Index, :index
-    live "/categories/new", GctLive.CategoryLive.Index, :new
-    live "/categories/:id/edit", GctLive.CategoryLive.Index, :edit
-
-    live "/categories/:id", GctLive.CategoryLive.Show, :show
-    live "/categories/:id/show/edit", GctLive.CategoryLive.Show, :edit
   end
 
   scope "/", GlimeshWeb do
