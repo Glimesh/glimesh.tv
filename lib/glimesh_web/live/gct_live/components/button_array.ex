@@ -28,10 +28,12 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
         <%= if @user.tfa_token do %>
           <a href="#" class="dropdown-item" phx-click="remove_2fa"><%= gettext("Remove 2FA") %></a>
         <% end %>
+        <%= if @can_ban do %>
         <%= unless @user.is_banned do %>
-          <a href="#" class="dropdown-item" phx-click="show_ban_modal" <%= unless @can_ban, do: "disabled" %> ><%= gettext("Ban User")%></a>
+          <a href="#" class="dropdown-item" phx-click="show_ban_modal"><%= gettext("Ban User")%></a>
         <% else %>
-          <a href="#" class="dropdown-item" phx-click="unban_user" <%= unless @can_ban, do: "disabled" %> ><%= gettext("Unban User")%></a>
+          <a href="#" class="dropdown-item" phx-click="unban_user"><%= gettext("Unban User")%></a>
+        <% end %>
         <% end %>
       </div>
     </div>
