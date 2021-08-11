@@ -18,7 +18,7 @@
             <div class="row justify-content-md-center mt-4">
                 <div class="col-md-10">
                     <p>
-                        <%= gettext("To start with Glimesh's policies on the DMCA we have to begin with a basic understanding of what the DMCA is. <b><a href="https://www.copyright.gov/legislation/dmca.pdf" target="_blank">The Digital Millennium Copyright Act</a></b> is not an organization that policies digital copyrights but it was an act passed back in 1998 that helped establish rules around copyright materials and their use on the internet. For us, the DMCA defines how we as a service provider responsibly and fairly handle copyrighted material.") %>
+                       <%= raw(gettext("To start with Glimesh's policies on the DMCA we have to begin with a basic understanding of what the DMCA is. %{a_start}The Digital Millennium Copyright Act%{a_end} is not an organization that policies digital copyrights but it was an act passed back in 1998 that helped establish rules around copyright materials and their use on the internet. For us, the DMCA defines how we as a service provider responsibly and fairly handle copyrighted material.", a_start: "<a href=\"https://www.copyright.gov/legislation/dmca.pdf\" target=\"_blank\">", a_end: "</a>")) %>
                     </p>
                 </div>
             </div>
@@ -78,7 +78,7 @@
             <div class="row justify-content-md-center mt-4">
                 <div class="col-md-10">
                     <p>
-                        <%= gettext("The DMCA is not just about copyrights though. The DMCA has some built-in protections for sites like Glimesh called <b><a href="https://www.law.cornell.edu/uscode/text/17/512" target="_blank">Safe Harbor</a></b>. Simply put, Safe Harbor provisions are rules in the DMCA that protect websites from being shut down or sued by copyright owners as long as the site remains compliant. As long as Glimesh remains compliant to the process these Safe Harbor provisions in the DMCA will keep us safe from lawsuits for copyright violations.") %>
+                        <%= raw(gettext("The DMCA is not just about copyrights though. The DMCA has some built-in protections for sites like Glimesh called %{a_start}Safe Harbor%{a_end}. Simply put, Safe Harbor provisions are rules in the DMCA that protect websites from being shut down or sued by copyright owners as long as the site remains compliant. As long as Glimesh remains compliant to the process these Safe Harbor provisions in the DMCA will keep us safe from lawsuits for copyright violations.", a_start: "<a href=\"https://www.law.cornell.edu/uscode/text/17/512\" target=\"_blank\">", a_end: "</a>")) %>
                     </p>
                 </div>
             </div>
