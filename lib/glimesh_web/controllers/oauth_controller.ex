@@ -39,45 +39,46 @@ defmodule GlimeshWeb.OauthController do
   end
 
   @impl Boruta.Oauth.Application
-  def preauthorize_success(_conn, %Boruta.Oauth.AuthorizationSuccess{} = _authorization) do
-    raise "no idea when these are triggered"
+  def preauthorize_success(
+        conn,
+        %Boruta.Oauth.AuthorizationSuccess{} = authorization
+      ) do
+    app = Glimesh.Apps.get_app_by_client_id!(authorization.client.id)
+    scopes = authorization.scope |> String.split()
+
+    conn
+    |> store_oauth_request(conn.query_params)
+    |> render("authorize.html", app: app, scopes: scopes)
   end
 
   @impl Boruta.Oauth.Application
-  def preauthorize_error(_conn, %Boruta.Oauth.Error{} = _oauth_error) do
-    raise "no idea when these are triggered"
+  def preauthorize_error(conn, %Boruta.Oauth.Error{} = error) do
+    authorize_error(conn, error)
   end
 
-  def authorize(
-        %Plug.Conn{query_params: query_params} = conn,
-        %{"client_id" => _}
-      ) do
-    # Convert the client_id if we have an old one
-    # Store the query params, we'll need them for later
-    conn =
-      conn
-      |> OauthMigration.token_request()
-      |> OauthMigration.patch_body_params()
-      |> store_oauth_request(conn.query_params)
-
-    app = Glimesh.Apps.get_app_by_client_id!(conn.params["client_id"])
-    scopes = Map.get(conn.params, "scope", "") |> String.split()
+  def authorize(conn, %{"client_id" => _}) do
+    current_user = conn.assigns[:current_user]
 
     conn
-    |> render("authorize.html", app: app, scopes: scopes, params: query_params)
+    |> OauthMigration.token_request()
+    |> OauthMigration.patch_body_params()
+    |> Oauth.preauthorize(
+      %ResourceOwner{
+        sub: Integer.to_string(current_user.id),
+        username: current_user.username
+      },
+      __MODULE__
+    )
   end
 
   def process_authorize(conn, %{"action" => "authorize"}) do
     current_user = conn.assigns[:current_user]
 
-    # Put the query params back in from the original oauth request
-    conn =
-      Map.update(conn, :query_params, %{}, fn e ->
-        Map.merge(e, get_session(conn, :oauth_request) || %{})
-      end)
-
-    Oauth.authorize(
-      conn,
+    conn
+    |> Map.update(:query_params, %{}, fn e ->
+      Map.merge(e, get_session(conn, :oauth_request) || %{})
+    end)
+    |> Oauth.authorize(
       %ResourceOwner{
         sub: Integer.to_string(current_user.id),
         username: current_user.username
@@ -220,7 +221,9 @@ defmodule GlimeshWeb.OauthController do
         "redirect_uri",
         "response_type",
         "scope",
-        "state"
+        "state",
+        "code_challenge",
+        "code_challenge_method"
       ])
     )
   end
