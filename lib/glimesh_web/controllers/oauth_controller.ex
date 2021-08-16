@@ -76,8 +76,6 @@ defmodule GlimeshWeb.OauthController do
         Map.merge(e, get_session(conn, :oauth_request) || %{})
       end)
 
-    IO.inspect(conn)
-
     Oauth.authorize(
       conn,
       %ResourceOwner{
