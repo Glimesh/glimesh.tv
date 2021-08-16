@@ -14,7 +14,7 @@ $color-teal: #48D1BD;
     --body-bg-color: #060818;
     --body-color: #fff;
 
-    --navbar-bg-color: #0e1726;
+    --navbar-bg-color: rgba(14, 23, 38, 0.9);
     --navbar-border-color: #3b3f5c;
     --navbar-color: #fff;
 
@@ -46,7 +46,7 @@ $color-teal: #48D1BD;
     --body-bg-color: #ffffff;
     --body-color: #000;
 
-    --navbar-bg-color: #fff;
+    --navbar-bg-color: rgba(255,255,255,.9);
     --navbar-border-color: #fff;
     --navbar-color: #000;
 
@@ -141,5 +141,16 @@ $close-color: var(--secondary-color);
 
     .navbar-toggler {
         color: var(--body-color);
+    }
+}
+
+// Acrylic blur fallback for Mozilla Firefox (backdrop-filters not enabled so need to reduce transparency for legibility)
+@supports (-moz-appearance:meterbar) {
+    :root {
+        --navbar-bg-color: rgba(14, 23, 38, 0.98);
+    }
+
+    [data-theme="light"] {
+        --navbar-bg-color: rgba(255,255,255, 0.96);
     }
 }
