@@ -184,7 +184,8 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
     gct_user = socket.assigns.admin
     target_user = socket.assigns.user
 
-    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_user, gct_user, target_user), {:ok, user} <- Glimesh.CommunityTeam.remove_tfa(target_user) do
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_user, gct_user, target_user),
+         {:ok, user} <- Glimesh.CommunityTeam.remove_tfa(target_user) do
       CommunityTeam.create_audit_entry(gct_user, %{
         action: "delete_2fa",
         target: target_user.username,
@@ -204,7 +205,6 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
          socket
          |> redirect(to: Routes.gct_path(socket, :unauthorized))}
     end
-
   end
 
   @impl true
