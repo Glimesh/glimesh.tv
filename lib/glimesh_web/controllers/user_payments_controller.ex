@@ -14,10 +14,7 @@ defmodule GlimeshWeb.UserPaymentsController do
       ["Select Your Country": ""] ++
         StripeProvider.list_payout_countries()
 
-    stripe_dashboard_url =
-      Appsignal.instrument("get_stripe_dashboard_url", fn ->
-        Payments.get_stripe_dashboard_url(user)
-      end)
+    stripe_dashboard_url = Payments.get_stripe_dashboard_url(user)
 
     render(
       conn,
@@ -44,10 +41,7 @@ defmodule GlimeshWeb.UserPaymentsController do
     refresh_url = Routes.user_payments_url(conn, :index)
     return_url = Routes.user_payments_url(conn, :connect)
 
-    stripe_url =
-      Appsignal.instrument("start_connect", fn ->
-        StripeProvider.start_connect(user, country, return_url, refresh_url)
-      end)
+    stripe_url = StripeProvider.start_connect(user, country, return_url, refresh_url)
 
     case stripe_url do
       {:ok, stripe_oauth_url} ->
@@ -80,10 +74,7 @@ defmodule GlimeshWeb.UserPaymentsController do
     else
       return_url = Routes.user_payments_url(conn, :taxes_pending)
 
-      w8ben_url =
-        Appsignal.instrument("request_w8ben", fn ->
-          Glimesh.PaymentProviders.TaxIDPro.request_w8ben(user, return_url)
-        end)
+      w8ben_url = Glimesh.PaymentProviders.TaxIDPro.request_w8ben(user, return_url)
 
       case w8ben_url do
         {:ok, url} ->

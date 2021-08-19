@@ -45,8 +45,6 @@ config :glimesh, :stripe_config,
   channel_sub_base_price_id: "price_channel_sub",
   channel_sub_base_price: 500
 
-config :appsignal, :config, active: false
-
 config :glimesh, GlimeshWeb.Gettext,
   default_locale: "glim-en",
   locales: ~w(glim-en),

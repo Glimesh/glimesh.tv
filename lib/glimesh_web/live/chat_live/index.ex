@@ -1,8 +1,6 @@
 defmodule GlimeshWeb.ChatLive.Index do
   use GlimeshWeb, :live_view
 
-  import Appsignal.Phoenix.LiveView, only: [instrument: 4]
-
   alias Glimesh.Accounts
   alias Glimesh.ChannelLookups
   alias Glimesh.Chat
@@ -13,57 +11,55 @@ defmodule GlimeshWeb.ChatLive.Index do
 
   @impl true
   def mount(_params, %{"channel_id" => channel_id} = session, socket) do
-    instrument(__MODULE__, "mount", socket, fn ->
-      if session["locale"], do: Gettext.put_locale(session["locale"])
-      if connected?(socket), do: Streams.subscribe_to(:chat, channel_id)
+    if session["locale"], do: Gettext.put_locale(session["locale"])
+    if connected?(socket), do: Streams.subscribe_to(:chat, channel_id)
 
-      channel = ChannelLookups.get_channel!(channel_id)
+    channel = ChannelLookups.get_channel!(channel_id)
 
-      # Sets a default user_preferences map for the chat if the user is logged out
-      user_preferences =
-        if session["user"] do
-          Accounts.get_user_preference!(session["user"])
-        else
-          %{
-            show_timestamps: false,
-            show_mod_icons: false
-          }
-        end
-
+    # Sets a default user_preferences map for the chat if the user is logged out
+    user_preferences =
       if session["user"] do
-        user = session["user"]
-
-        Presence.track_presence(
-          self(),
-          Streams.get_subscribe_topic(:chatters, channel.id),
-          user.id,
-          %{
-            typing: false,
-            username: user.username,
-            avatar: Glimesh.Avatar.url({user.avatar, user}, :original),
-            user_id: user.id,
-            size: 48
-          }
-        )
+        Accounts.get_user_preference!(session["user"])
+      else
+        %{
+          show_timestamps: false,
+          show_mod_icons: false
+        }
       end
 
-      new_socket =
-        socket
-        |> assign(:channel_chat_parser_config, Chat.get_chat_parser_config(channel))
-        |> assign(:update_action, "replace")
-        |> assign(:channel, channel)
-        |> assign(:user, session["user"])
-        |> assign(:theme, Map.get(session, "site_theme", "dark"))
-        |> assign(:permissions, Chat.get_moderator_permissions(channel, session["user"]))
-        |> assign(:chat_messages, list_chat_messages(channel))
-        |> assign(:chat_message, %ChatMessage{})
-        |> assign(:show_timestamps, user_preferences.show_timestamps)
-        |> assign(:show_mod_icons, user_preferences.show_mod_icons)
-        |> assign(:user_preferences, user_preferences)
-        |> assign(:popped_out, Map.get(session, "popped_out", false))
+    if session["user"] do
+      user = session["user"]
 
-      {:ok, new_socket, temporary_assigns: [chat_messages: []]}
-    end)
+      Presence.track_presence(
+        self(),
+        Streams.get_subscribe_topic(:chatters, channel.id),
+        user.id,
+        %{
+          typing: false,
+          username: user.username,
+          avatar: Glimesh.Avatar.url({user.avatar, user}, :original),
+          user_id: user.id,
+          size: 48
+        }
+      )
+    end
+
+    new_socket =
+      socket
+      |> assign(:channel_chat_parser_config, Chat.get_chat_parser_config(channel))
+      |> assign(:update_action, "replace")
+      |> assign(:channel, channel)
+      |> assign(:user, session["user"])
+      |> assign(:theme, Map.get(session, "site_theme", "dark"))
+      |> assign(:permissions, Chat.get_moderator_permissions(channel, session["user"]))
+      |> assign(:chat_messages, list_chat_messages(channel))
+      |> assign(:chat_message, %ChatMessage{})
+      |> assign(:show_timestamps, user_preferences.show_timestamps)
+      |> assign(:show_mod_icons, user_preferences.show_mod_icons)
+      |> assign(:user_preferences, user_preferences)
+      |> assign(:popped_out, Map.get(session, "popped_out", false))
+
+    {:ok, new_socket, temporary_assigns: [chat_messages: []]}
   end
 
   @impl true
@@ -169,15 +165,13 @@ defmodule GlimeshWeb.ChatLive.Index do
 
   @impl true
   def handle_info({:chat_message, message}, socket) do
-    instrument(__MODULE__, "chat_message", socket, fn ->
-      {:noreply,
-       socket
-       |> assign(:update_action, "append")
-       |> push_event("new_chat_message", %{
-         message_id: message.id
-       })
-       |> update(:chat_messages, fn messages -> [message | messages] end)}
-    end)
+    {:noreply,
+     socket
+     |> assign(:update_action, "append")
+     |> push_event("new_chat_message", %{
+       message_id: message.id
+     })
+     |> update(:chat_messages, fn messages -> [message | messages] end)}
   end
 
   @impl true
