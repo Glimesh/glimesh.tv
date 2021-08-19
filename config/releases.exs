@@ -155,9 +155,9 @@ if twitter_consumer_key = System.get_env("TWITTER_CONSUMER_KEY") do
     access_token_secret: twitter_access_secret
 end
 
-if sentry_api_key = System.get_env("SENTRY_API_KEY") do
+if sentry_dsn = System.get_env("SENTRY_DSN") do
   config :sentry,
-    dsn: sentry_api_key,
+    dsn: sentry_dsn,
     environment_name: :prod,
     release: Glimesh.get_version(),
     server_name: Atom.to_string(node()),
