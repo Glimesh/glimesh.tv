@@ -1,13 +1,10 @@
 defmodule Glimesh.Api.ChatResolver do
   @moduledoc false
 
-  use Appsignal.Instrumentation.Decorators
-
   alias Glimesh.Accounts
   alias Glimesh.ChannelLookups
   alias Glimesh.Chat
 
-  @decorate transaction_event()
   def create_chat_message(
         _parent,
         %{channel_id: channel_id, message: message_obj},
@@ -34,22 +31,18 @@ defmodule Glimesh.Api.ChatResolver do
     end
   end
 
-  @decorate transaction_event()
   def short_timeout_user(parent, params, context) do
     perform_channel_action(parent, params, context, :short_timeout)
   end
 
-  @decorate transaction_event()
   def long_timeout_user(parent, params, context) do
     perform_channel_action(parent, params, context, :long_timeout)
   end
 
-  @decorate transaction_event()
   def ban_user(parent, params, context) do
     perform_channel_action(parent, params, context, :ban)
   end
 
-  @decorate transaction_event()
   def unban_user(parent, params, context) do
     perform_channel_action(parent, params, context, :unban)
   end
@@ -57,7 +50,6 @@ defmodule Glimesh.Api.ChatResolver do
   @doc """
   Sends a delete chat message call, but make sure user_access is allowed
   """
-  @decorate transaction_event()
   def delete_chat_message(_parent, %{channel_id: channel_id, message_id: message_id}, %{
         context: %{user_access: ua}
       }) do

@@ -32,7 +32,6 @@ defmodule Glimesh.Application do
     ]
 
     GlimeshWeb.ApiLogger.start_logger()
-    Application.ensure_all_started(:appsignal)
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

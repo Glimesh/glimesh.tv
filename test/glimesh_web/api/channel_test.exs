@@ -19,13 +19,13 @@ defmodule GlimeshWeb.Api.ChannelTest do
     channel(username: $username) {
       title
       streamer { username }
-  
+
       mature_content
-  
+
       subcategory {
         name
       }
-  
+
       tags {
         name
       }
@@ -95,12 +95,12 @@ defmodule GlimeshWeb.Api.ChannelTest do
     category(slug: $slug) {
       name
       slug
-  
+
       subcategories {
         name
         backgroundImageUrl
       }
-  
+
       tags {
         name
       }

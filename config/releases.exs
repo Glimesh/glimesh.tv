@@ -155,30 +155,22 @@ if twitter_consumer_key = System.get_env("TWITTER_CONSUMER_KEY") do
     access_token_secret: twitter_access_secret
 end
 
-if appsignal_api_key = System.get_env("APPSIGNAL_API_KEY") do
-  config :appsignal, :config,
-    active: true,
-    otp_app: :glimesh,
-    name: System.fetch_env!("APPSIGNAL_NAME"),
-    push_api_key: appsignal_api_key,
-    env: "prod",
-    skip_session_data: true,
-    filter_parameters: [
-      "password",
-      "hashed_password",
-      "email",
-      "user",
-      "streamKey",
-      "stream_key",
-      "hmac_key",
-      "hmacKey",
-      "token",
-      "api_token",
-      "client_secret",
-      "secret",
-      "tfa_token",
-      "refresh_token"
-    ]
+if sentry_api_key = System.get_env("SENTRY_API_KEY") do
+  config :sentry,
+    dsn: sentry_api_key,
+    environment_name: :prod,
+    release: Glimesh.get_version(),
+    server_name: Atom.to_string(node()),
+    enable_source_code_context: true,
+    root_source_code_path: File.cwd!(),
+    tags: %{
+      env: "prod"
+    },
+    included_environments: [:prod]
+
+  config :logger,
+    level: :info,
+    backends: [:console, Sentry.LoggerBackend]
 end
 
 # Twitter Config

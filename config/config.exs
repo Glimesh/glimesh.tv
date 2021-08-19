@@ -192,6 +192,11 @@ config :glimesh, Glimesh.PaymentProviders.TaxIDPro, webhook_secret: "", api_key:
 
 config :glimesh, Glimesh.PromEx, disabled: true
 
+config :sentry,
+  dsn: "",
+  environment_name: :dev,
+  included_environments: [:prod]
+
 import_config "badwords.exs"
 import_config "emotes.exs"
 # Import environment specific config. This must remain at the bottom

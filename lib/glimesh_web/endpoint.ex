@@ -1,7 +1,7 @@
 defmodule GlimeshWeb.Endpoint do
+  use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :glimesh
   use Absinthe.Phoenix.Endpoint
-  use Appsignal.Phoenix
 
   # The session will be stored in the cookie: signed & encrypted.
   # The value used for encryption is our `secret_key_base`
@@ -78,6 +78,8 @@ defmodule GlimeshWeb.Endpoint do
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
+
+  plug Sentry.PlugContext
 
   plug Plug.MethodOverride
   plug Plug.Head

@@ -42,8 +42,6 @@ defmodule GlimeshWeb do
         root: "lib/glimesh_web/templates",
         namespace: GlimeshWeb
 
-      use Appsignal.Phoenix.View
-
       # Import convenience functions from controllers
       import Phoenix.Controller,
         only: [
