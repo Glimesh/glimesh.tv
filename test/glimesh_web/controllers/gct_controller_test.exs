@@ -95,6 +95,24 @@ defmodule GlimeshWeb.GctControllerTest do
       conn = get(conn, Routes.gct_path(conn, :username_lookup, query: "invalid_user"))
       assert html_response(conn, 200) =~ "Does not exist"
     end
+
+    test "valid user returns page with ban button", %{conn: conn} do
+      lookup_user = user_fixture()
+      conn = get(conn, Routes.gct_path(conn, :username_lookup, query: lookup_user.username))
+      assert html_response(conn, 200) =~ "Ban User"
+    end
+
+    test "valid user returns page with unban button", %{conn: conn} do
+      lookup_user = user_fixture(%{is_banned: true})
+      conn = get(conn, Routes.gct_path(conn, :username_lookup, query: lookup_user.username))
+      assert html_response(conn, 200) =~ "Unban User"
+    end
+
+    test "valid user returns page with 2fa button", %{conn: conn} do
+      lookup_user = user_fixture(%{tfa_token: "Fake tfa token here"})
+      conn = get(conn, Routes.gct_path(conn, :username_lookup, query: lookup_user.username))
+      assert html_response(conn, 200) =~ "Remove 2FA"
+    end
   end
 
   describe "GET /gct/lookup/channel" do

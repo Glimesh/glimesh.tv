@@ -145,6 +145,12 @@ defmodule Glimesh.CommunityTeam do
     |> Repo.update()
   end
 
+  def remove_tfa(user, _attrs \\ %{}) do
+    user
+    |> User.gct_user_changeset(%{tfa_token: nil})
+    |> Repo.update()
+  end
+
   # End of editing user functions
 
   # Editing channel functions

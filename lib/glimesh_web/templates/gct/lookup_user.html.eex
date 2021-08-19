@@ -13,6 +13,7 @@
                         <div>
                             <p><%= gettext("User ID: %{value}", value: @user.id) %></p>
                             <p><%= gettext("Email Confirmed At: %{value}", value: @user.confirmed_at) %></p>
+                            <p><%= gettext("2FA Enabled: %{value}", value: (if @user.tfa_token, do: "✅", else: "❌")) %>
                             <p><%= gettext("Has Channel: %{value}", value: (if Glimesh.ChannelLookups.get_channel_for_user(@user), do: "✅", else: "❌")) %>
                                 <p><%= gettext("Banned: %{value}", value: (if @user.is_banned, do: "✅", else: "❌")) %>
                                 </p>

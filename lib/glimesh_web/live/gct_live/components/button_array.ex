@@ -9,12 +9,6 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
     ~L"""
     <%= live_redirect gettext("Edit Profile"), class: (if @can_edit_profile, do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_user_profile, @user.username) %>
     <%= live_redirect gettext("Edit User"), class: (if @can_edit_user, do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_user, @user.username) %>
-    <%= live_redirect gettext("View Chat Logs"), class: (if @view_chat_logs, do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :user_chat_log, @user.id) %>
-    <%= unless @user.is_banned do %>
-      <button class="btn btn-danger" phx-click="show_ban_modal" <%= unless @can_ban, do: "disabled" %> ><%= gettext("Ban User") %></button>
-    <% else %>
-      <button class="btn btn-danger" phx-click="unban_user" <%= unless @can_ban, do: "disabled" %> ><%= gettext("Unban User") %></button>
-    <% end %>
     <%= if @can_edit_payments do %>
     <div class="dropdown d-inline-block">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="paymentActionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -25,6 +19,24 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
       </div>
     </div>
     <% end %>
+    <div class="dropdown d-inline-block">
+      <button class="btn btn-success dropdown-toggle" type="button" id="userActionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <%= gettext("User Actions") %>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="userActionsDropdown">
+        <%= live_redirect gettext("View Chat Logs"), class: (if @view_chat_logs, do: "dropdown-item", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :user_chat_log, @user.id) %>
+        <%= if @user.tfa_token do %>
+          <a href="#" class="dropdown-item" phx-click="remove_2fa"><%= gettext("Remove 2FA") %></a>
+        <% end %>
+        <%= if @can_ban do %>
+        <%= unless @user.is_banned do %>
+          <a href="#" class="dropdown-item" phx-click="show_ban_modal"><%= gettext("Ban User")%></a>
+        <% else %>
+          <a href="#" class="dropdown-item" phx-click="unban_user"><%= gettext("Unban User")%></a>
+        <% end %>
+        <% end %>
+      </div>
+    </div>
 
     <%= if @show_ban do %>
       <div id="ban-modal" class="live-modal"
@@ -148,6 +160,34 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
          {:ok, user} <- Glimesh.Payments.delete_stripe_account(target_user) do
       CommunityTeam.create_audit_entry(gct_user, %{
         action: "delete_stripe_account",
+        target: target_user.username,
+        verbose_required: false
+      })
+
+      {:noreply,
+       socket
+       |> assign(user: user)
+       |> redirect(to: Routes.gct_path(socket, :username_lookup, query: target_user.username))}
+    else
+      {:error, message} ->
+        {:noreply, socket |> put_flash(:error, message)}
+
+      {:error, :unauthorized} ->
+        {:noreply,
+         socket
+         |> redirect(to: Routes.gct_path(socket, :unauthorized))}
+    end
+  end
+
+  @impl true
+  def handle_event("remove_2fa", _value, socket) do
+    gct_user = socket.assigns.admin
+    target_user = socket.assigns.user
+
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_user, gct_user, target_user),
+         {:ok, user} <- Glimesh.CommunityTeam.remove_tfa(target_user) do
+      CommunityTeam.create_audit_entry(gct_user, %{
+        action: "delete_2fa",
         target: target_user.username,
         verbose_required: false
       })
