@@ -10,29 +10,29 @@ defmodule Glimesh.AppsTest do
     name: "some name",
     description: "some description",
     homepage_url: "https://glimesh.tv/",
-    oauth_application: %{
-      redirect_uri: "https://glimesh.tv/something\nhttp://localhost:8080/redirect"
+    client: %{
+      redirect_uris: "https://glimesh.tv/something\nhttp://localhost:8080/redirect"
     }
   }
   @update_attrs %{
     name: "some updated name",
     description: "some updated description",
     homepage_url: "https://dev.glimesh.tv/",
-    oauth_application: %{
-      redirect_uri: "https://glimesh.tv/something-new"
+    client: %{
+      redirect_uris: "https://glimesh.tv/something-new"
     }
   }
   @invalid_attrs %{
     name: nil,
     description: nil,
-    oauth_application: %{
-      redirect_uri: nil
+    client: %{
+      redirect_uris: nil
     }
   }
 
   def app_fixture(user, attrs \\ %{}) do
     {:ok, app} = Apps.create_app(user, attrs |> Enum.into(@valid_attrs))
-    app
+    app |> Glimesh.Repo.preload(:client)
   end
 
   describe "apps user api" do
@@ -56,7 +56,7 @@ defmodule Glimesh.AppsTest do
       assert app.name == "some name"
       assert app.description == "some description"
       assert app.homepage_url == "https://glimesh.tv/"
-      assert app.oauth_application.owner_id == user.id
+      assert app.client_id
     end
 
     test "create_app/2 with string keys and atom keys creates an app", %{user: user} do
@@ -72,8 +72,8 @@ defmodule Glimesh.AppsTest do
                  "name" => "some name",
                  "description" => "some description",
                  "homepage_url" => "https://glimesh.tv/",
-                 "oauth_application" => %{
-                   "redirect_uri" => "https://glimesh.tv/something"
+                 "client" => %{
+                   "redirect_uris" => "https://glimesh.tv/something"
                  }
                })
 
@@ -82,11 +82,15 @@ defmodule Glimesh.AppsTest do
       assert app.homepage_url == "https://glimesh.tv/"
     end
 
-    test "create_app/2 creates an oauth application", %{user: user} do
+    test "create_app/2 creates an boruta client", %{user: user} do
       assert {:ok, %App{} = app} = Apps.create_app(user, @valid_attrs)
+      client = Boruta.Ecto.Admin.get_client!(app.client_id)
+      assert client.name == "some name"
 
-      assert app.oauth_application.name == "some name"
-      assert app.oauth_application.scopes == "public email chat streamkey"
+      assert client.redirect_uris == [
+               "https://glimesh.tv/something",
+               "http://localhost:8080/redirect"
+             ]
     end
 
     test "create_app/2 with invalid data returns error changeset", %{user: user} do
@@ -104,9 +108,12 @@ defmodule Glimesh.AppsTest do
     test "update_app/3 with valid data updates the oauth app", %{user: user} do
       app = app_fixture(user)
       assert {:ok, %App{} = app} = Apps.update_app(user, app, @update_attrs)
-      assert app.oauth_application.name == "some updated name"
-      assert app.oauth_application.redirect_uri == "https://glimesh.tv/something-new"
-      assert app.oauth_application.scopes == "public email chat streamkey"
+      client = Boruta.Ecto.Admin.get_client!(app.client_id)
+      assert client.name == "some updated name"
+
+      assert client.redirect_uris == [
+               "https://glimesh.tv/something-new"
+             ]
     end
 
     test "update_app/3 with invalid data returns error changeset with all errors", %{user: user} do
@@ -117,8 +124,9 @@ defmodule Glimesh.AppsTest do
       assert changeset.errors[:name] == {"can't be blank", [validation: :required]}
       assert changeset.errors[:description] == {"can't be blank", [validation: :required]}
 
-      assert changeset.changes[:oauth_application].errors[:redirect_uri] ==
-               {"can't be blank", [validation: :required]}
+      # Redirect URIs are no longer required because client credential apps may not need them
+      # assert changeset.changes[:client].errors[:redirect_uris] ==
+      #          {"can't be blank", [validation: :required]}
 
       {:ok, found_app} = Apps.get_app(user, app.id)
       assert app.name == found_app.name
@@ -127,8 +135,7 @@ defmodule Glimesh.AppsTest do
     test "rotate_app/2 rotates public / secret keys", %{user: user} do
       app = app_fixture(user)
       {:ok, new_oauth_app} = Apps.rotate_oauth_app(user, app)
-      assert app.oauth_application.uid != new_oauth_app.uid
-      assert app.oauth_application.secret != new_oauth_app.secret
+      assert app.client.secret != new_oauth_app.secret
     end
 
     test "create_app/2 with non-localhost non-ssl fails", %{user: user} do
@@ -137,14 +144,23 @@ defmodule Glimesh.AppsTest do
                  name: "some name",
                  description: "some description",
                  homepage_url: "https://glimesh.tv/",
-                 oauth_application: %{
-                   redirect_uri: "http://example.com/something"
+                 client: %{
+                   redirect_uris: "http://example.com/something"
                  }
                })
 
-      assert changeset.changes[:oauth_application].errors[:redirect_uri] ==
+      assert changeset.changes[:client].errors[:redirect_uris] ==
                {"If using unsecure http, you must be using a local loopback address like [localhost, 127.0.0.1, ::1]",
                 []}
+    end
+
+    test "create_app/2 with invalid data does not create any apps or bourta clients", %{
+      user: user
+    } do
+      assert {:error, %Ecto.Changeset{}} = Apps.create_app(user, @invalid_attrs)
+
+      assert Boruta.Ecto.Admin.list_clients() == []
+      assert Glimesh.Apps.list_apps() == []
     end
   end
 

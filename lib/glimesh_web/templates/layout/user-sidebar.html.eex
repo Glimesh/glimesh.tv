@@ -17,7 +17,7 @@
                 <%= link class: "list-group-item list-group-item-action " <> active_user_security_path(@conn), to: Routes.user_security_path(@conn, :index) do %>
                 <i class="fas fa-lock fa-fw"></i> <%= gettext("Security") %>
                 <% end %>
-                <%= link class: "list-group-item list-group-item-action " <> active_user_authorizations_path(@conn), to: Routes.authorized_application_path(@conn, :index) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_authorizations_path(@conn), to: Routes.user_authorized_apps_path(@conn, :index) do %>
                 <i class="fas fa-robot fa-fw"></i> <%= gettext("Authorizations") %>
                 <% end %>
             </div>

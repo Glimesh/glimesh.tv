@@ -8,12 +8,12 @@ defmodule Glimesh.Api.ChatResolver do
   def create_chat_message(
         _parent,
         %{channel_id: channel_id, message: message_obj},
-        %{context: %{user_access: ua}}
+        %{context: %{access: access}}
       ) do
-    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :chat, ua) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :chat, access) do
       channel = Glimesh.ChannelLookups.get_channel!(channel_id)
       # Force a refresh of the user just in case they are platform banned
-      user = Accounts.get_user!(ua.user.id)
+      user = Accounts.get_user!(access.user.id)
 
       case Chat.create_chat_message(user, channel, message_obj) do
         {:ok, message} ->
@@ -48,16 +48,16 @@ defmodule Glimesh.Api.ChatResolver do
   end
 
   @doc """
-  Sends a delete chat message call, but make sure user_access is allowed
+  Sends a delete chat message call, but make sure the api access is allowed
   """
   def delete_chat_message(_parent, %{channel_id: channel_id, message_id: message_id}, %{
-        context: %{user_access: ua}
+        context: %{access: access}
       }) do
     # Send an action to the Chat context to figure out permissions on, but first make sure
-    # the user_access is allowed access to the chat.
-    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :chat, ua) do
+    # the api access is allowed access to the chat.
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :chat, access) do
       channel = ChannelLookups.get_channel!(channel_id)
-      moderator = Accounts.get_user!(ua.user.id)
+      moderator = Accounts.get_user!(access.user.id)
       chat_message = Chat.get_chat_message!(message_id)
       user = Accounts.get_user!(chat_message.user_id)
 
@@ -68,12 +68,12 @@ defmodule Glimesh.Api.ChatResolver do
   defp perform_channel_action(
          _parent,
          %{channel_id: channel_id, user_id: user_id},
-         %{context: %{user_access: ua}},
+         %{context: %{access: access}},
          action
        ) do
-    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :chat, ua) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :chat, access) do
       channel = Glimesh.ChannelLookups.get_channel!(channel_id)
-      moderator = Accounts.get_user!(ua.user.id)
+      moderator = Accounts.get_user!(access.user.id)
       user = Accounts.get_user!(user_id)
 
       case action do

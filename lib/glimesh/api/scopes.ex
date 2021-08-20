@@ -6,16 +6,25 @@ defmodule Glimesh.Api.Scopes do
   @behaviour Bodyguard.Policy
 
   alias Glimesh.Accounts.User
-  alias Glimesh.Accounts.UserAccess
+  alias Glimesh.Api.Access
 
-  def authorize(:public, %UserAccess{} = ua, _params), do: ua.public
+  def authorize(:public, %Access{} = ua, _params), do: scope_check(ua, :public)
 
-  def authorize(:email, %UserAccess{} = ua, %User{} = accessing_user) do
-    ua.email && ua.user.id == accessing_user.id
+  def authorize(:email, %Access{} = ua, %User{} = accessing_user) do
+    scope_check(ua, :email) && ua.user.id == accessing_user.id
   end
 
-  def authorize(:chat, %UserAccess{} = ua, _params), do: ua.chat
-  def authorize(:streamkey, %UserAccess{} = ua, _params), do: ua.streamkey
+  def authorize(:chat, %Access{} = ua, _params), do: scope_check(ua, :chat)
+  def authorize(:streamkey, %Access{} = ua, _params), do: scope_check(ua, :streamkey)
+
+  def authorize(:stream_mutations, %Access{is_admin: true}, _params) do
+    true
+  end
 
   def authorize(_, _, _), do: false
+
+  defp scope_check(%Access{} = ua, scope) do
+    # Verifies the key exists AND is true
+    Map.get(ua.scopes, scope, false) == true
+  end
 end

@@ -92,7 +92,7 @@ defmodule Glimesh.Api.PrivilegedChannelsTest do
       assert [
                %{
                  "locations" => _,
-                 "message" => "Access denied",
+                 "message" => "unauthorized",
                  "path" => _
                }
              ] = json_response(conn, 200)["errors"]

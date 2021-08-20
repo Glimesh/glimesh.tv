@@ -1,40 +1,37 @@
 defmodule GlimeshWeb.Plugs.OldApiContextPlug do
   @behaviour Plug
 
-  alias Glimesh.Accounts.User
-  alias Glimesh.OauthApplications.OauthApplication
-
   import Plug.Conn
   import Phoenix.Controller, only: [json: 2]
+
+  alias Glimesh.Oauth
 
   def init(opts), do: opts
 
   def call(conn, opts) do
-    case authorized(conn, opts) do
-      {:ok, %Glimesh.Accounts.UserAccess{} = user_access} ->
-        Absinthe.Plug.put_options(conn,
+    case parse_token_from_header(conn, opts) |> authorize(conn) do
+      {:ok, %Glimesh.Api.Access{} = access} ->
+        conn
+        |> Absinthe.Plug.put_options(
           context: %{
-            # Allows us to pattern match admin APIs
-            is_admin: user_access.user.is_admin,
-            current_user: user_access.user,
-            access_type: "user",
-            access_identifier: user_access.user.username,
-            user_access: user_access
+            access: access
           }
         )
 
-      {:ok, %OauthApplication{uid: uid}} ->
-        Absinthe.Plug.put_options(conn,
-          context: %{
-            is_admin: false,
-            current_user: nil,
-            access_type: "app",
-            access_identifier: uid,
-            user_access: %Glimesh.Accounts.UserAccess{}
-          }
-        )
+      {:error, %Boruta.Oauth.Error{} = reason} ->
+        conn
+        |> put_status(:unauthorized)
+        |> json(%{
+          errors: [
+            %{
+              message: reason.error_description,
+              header_error: reason.error
+            }
+          ]
+        })
+        |> halt()
 
-      {:error, _reason} ->
+      _ ->
         conn
         |> put_status(:unauthorized)
         |> json(%{errors: [%{message: "You must be logged in to access the api"}]})
@@ -42,30 +39,38 @@ defmodule GlimeshWeb.Plugs.OldApiContextPlug do
     end
   end
 
-  def authorized(conn, opts) do
-    case fetch_token(conn, opts) do
-      false -> try_conn(conn, opts)
-      {:bearer, token} -> Glimesh.Oauth.TokenResolver.resolve_user(token)
-      {:client, token} -> Glimesh.Oauth.TokenResolver.resolve_app(token)
+  defp authorize({:bearer, token}, _) do
+    case Boruta.Oauth.Authorization.AccessToken.authorize(value: token) do
+      {:ok, %Boruta.Oauth.Token{} = token} ->
+        Oauth.get_api_access_from_token(token)
+
+      {:error, msg} ->
+        {:error, msg}
     end
   end
 
-  def try_conn(%{assigns: %{current_user: %User{} = current_user}}, _opts) do
-    {:ok,
-     %Glimesh.Accounts.UserAccess{
-       user: current_user,
-       public: true,
-       email: true,
-       chat: true,
-       streamkey: true
-     }}
+  defp authorize({:client, client_id}, _) do
+    client_id = Glimesh.OauthMigration.convert_client_id(client_id)
+
+    case Boruta.Config.clients().get_by(id: client_id) do
+      {:ok, %Boruta.Oauth.Client{} = client} ->
+        Oauth.get_unprivileged_api_access_from_client(client)
+
+      {:error, msg} ->
+        {:error, msg}
+    end
   end
 
-  def try_conn(_, _opts) do
-    {:error, "You are not logged in."}
+  defp authorize(_, conn) do
+    # Since this is the old API, try a session based auth
+    if user = conn.assigns[:current_user] do
+      Oauth.access_for_user(user, "public email chat streamkey")
+    else
+      {:error, :unauthorized}
+    end
   end
 
-  defp fetch_token(conn, _opts) do
+  defp parse_token_from_header(conn, _opts) do
     case get_req_header(conn, "authorization") do
       ["Bearer " <> token] -> {:bearer, token}
       ["bearer " <> token] -> {:bearer, token}

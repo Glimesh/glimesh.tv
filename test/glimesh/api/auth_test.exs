@@ -2,6 +2,7 @@ defmodule Glimesh.Api.AuthTest do
   use GlimeshWeb.ConnCase
 
   import Glimesh.AccountsFixtures
+  import Glimesh.ApiFixtures
 
   @myself_query """
   query getMyself {
@@ -44,22 +45,13 @@ defmodule Glimesh.Api.AuthTest do
   describe "read-only api access with client id" do
     setup %{conn: conn} do
       user = user_fixture()
-
-      {:ok, app} =
-        Glimesh.Apps.create_app(user, %{
-          name: "some name",
-          description: "some description",
-          homepage_url: "https://glimesh.tv/",
-          oauth_application: %{
-            redirect_uri: "http://localhost:8080/redirect"
-          }
-        })
+      {:ok, app} = app_fixture(user)
 
       %{
         conn:
           conn
-          |> Plug.Conn.put_req_header("authorization", "Client-ID #{app.oauth_application.uid}"),
-        client_id: app.oauth_application.uid,
+          |> Plug.Conn.put_req_header("authorization", "Client-ID #{app.client_id}"),
+        client_id: app.client_id,
         user: user
       }
     end
@@ -125,16 +117,14 @@ defmodule Glimesh.Api.AuthTest do
 
     test "authenticated api access with lowercased authorization header gets accepted", %{
       conn: conn,
-      user: user
+      user: user,
+      token: token
     } do
       conn =
         conn
         |> Plug.Conn.put_req_header(
           "authorization",
-          conn
-          |> Plug.Conn.get_req_header("authorization")
-          |> hd()
-          |> String.downcase()
+          "bearer #{token}"
         )
 
       conn =
@@ -158,7 +148,12 @@ defmodule Glimesh.Api.AuthTest do
       conn = post(conn, "/api/graph", %{"query" => @myself_query})
 
       assert json_response(conn, 401) == %{
-               "errors" => [%{"message" => "You must be logged in to access the api"}]
+               "errors" => [
+                 %{
+                   "message" => "Provided access token is invalid.",
+                   "header_error" => "invalid_access_token"
+                 }
+               ]
              }
     end
   end

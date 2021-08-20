@@ -12,7 +12,9 @@ defmodule Glimesh.Apps.App do
     field :logo, Glimesh.AppLogo.Type
 
     belongs_to :user, Glimesh.Accounts.User
-    belongs_to :oauth_application, Glimesh.OauthApplications.OauthApplication
+    # belongs_to :oauth_application, Glimesh.OauthApplications.OauthApplication
+    field :oauth_application_id, :integer
+    belongs_to :client, Boruta.Ecto.Client, type: :binary_id
 
     timestamps()
   end
@@ -20,40 +22,47 @@ defmodule Glimesh.Apps.App do
   @doc """
   Changeset for our own application
   """
-  def changeset(app, attrs) do
-    app
-    |> cast(attrs, [:name, :homepage_url, :description, :logo])
-    |> validate_required([:name, :description])
-    |> validate_length(:name, min: 3, max: 50)
-    |> validate_length(:description, max: 255)
-    |> cast_attachments(attrs, [:logo])
-    |> cast_assoc(:oauth_application,
-      required: true,
-      with: &oauth_changset/2
-    )
+  def changeset(app, attrs, assoc_cast \\ false) do
+    changeset =
+      app
+      |> cast(attrs, [:name, :homepage_url, :description, :logo])
+      |> validate_required([:name, :description])
+      |> validate_length(:name, min: 3, max: 50)
+      |> validate_length(:description, max: 255)
+      |> cast_attachments(attrs, [:logo])
+
+    if assoc_cast do
+      changeset
+      |> cast_assoc(:client,
+        required: true,
+        with: &oauth_changeset/2
+      )
+    else
+      changeset
+    end
   end
 
-  def oauth_changset(application, %{owner: %Glimesh.Accounts.User{}} = params) do
-    # Manually set the owner
-    %{application | owner: params.owner}
-    |> ExOauth2Provider.Applications.Application.changeset(params, otp_app: :glimesh)
-    |> validate_localhost_http_redirect_urls(:redirect_uri)
+  def oauth_changeset(client, %{access_token_ttl: _} = params) do
+    Boruta.Ecto.Client.create_changeset(client, params)
+    |> validate_required([:redirect_uris])
+    |> validate_length(:redirect_uris, min: 1)
+    |> validate_localhost_http_redirect_urls(:redirect_uris)
   end
 
-  def oauth_changset(application, params) do
-    ExOauth2Provider.Applications.Application.changeset(application, params, otp_app: :glimesh)
+  def oauth_changeset(client, params) do
+    # |> validate_localhost_http_redirect_urls(:redirect_uris)
+    Boruta.Ecto.Client.update_changeset(client, params)
   end
 
   def validate_localhost_http_redirect_urls(changeset, field) when is_atom(field) do
     changeset
     |> Ecto.Changeset.get_field(field)
     |> Kernel.||("")
-    |> String.split()
     |> Enum.reduce(changeset, fn url, changeset ->
       url
       |> validate_localhost_http_url()
       |> case do
-        {:error, error} -> Ecto.Changeset.add_error(changeset, :redirect_uri, error)
+        {:error, error} -> Ecto.Changeset.add_error(changeset, :redirect_uris, error)
         {:ok, _} -> changeset
       end
     end)

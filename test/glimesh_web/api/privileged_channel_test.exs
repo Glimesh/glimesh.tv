@@ -103,7 +103,7 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
       assert [
                %{
                  "locations" => _,
-                 "message" => "Unauthorized to access hmacKey query.",
+                 "message" => "unauthorized",
                  "path" => _
                }
              ] = json_response(conn, 200)["errors"]
@@ -122,7 +122,7 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
       assert [
                %{
                  "locations" => _,
-                 "message" => "Access denied",
+                 "message" => "unauthorized",
                  "path" => _
                }
              ] = json_response(conn, 200)["errors"]
@@ -215,7 +215,7 @@ defmodule GlimeshWeb.Api.PrivilegedChannelTest do
       assert [
                %{
                  "locations" => _,
-                 "message" => "User is unauthorized to start a stream.",
+                 "message" => "Access denied",
                  "path" => _
                }
              ] = json_response(conn, 200)["errors"]

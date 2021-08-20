@@ -16,13 +16,18 @@ defmodule GlimeshWeb.SubscriptionCase do
     end
   end
 
+  @spec setup_socket(any) :: %{socket: Phoenix.Socket.t(), user: any}
   def setup_socket(_) do
     user = user_fixture()
 
-    {:ok, %{token: token}} =
-      ExOauth2Provider.AccessTokens.create_token(user, %{scopes: "public email chat streamkey"},
-        otp_app: :glimesh
-      )
+    {:ok, app} = Glimesh.ApiFixtures.app_fixture(user)
+
+    {:ok, %Boruta.Oauth.Token{value: token}} =
+      Boruta.Oauth.Authorization.token(%Boruta.Oauth.ClientCredentialsRequest{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        scope: "public email chat streamkey"
+      })
 
     {:ok, socket} =
       connect(GlimeshWeb.ApiSocket, %{

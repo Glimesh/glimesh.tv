@@ -76,19 +76,22 @@ config :glimesh, GlimeshWeb.Gettext,
   locales: Enum.map(locales, fn {_, x} -> x end),
   one_module_per_locale: true
 
-config :ex_oauth2_provider, namespace: Glimesh
-
-config :ex_oauth2_provider, ExOauth2Provider,
+config :boruta, Boruta.Oauth,
   repo: Glimesh.Repo,
-  resource_owner: Glimesh.Accounts.User,
-  use_refresh_token: true,
-  revoke_refresh_token_on_use: true,
-  default_scopes: ~w(public),
-  optional_scopes: ~w(email chat streamkey),
-  authorization_code_expires_in: 600,
-  access_token_expires_in: 21600,
-  grant_flows: ~w(authorization_code client_credentials implicit_grant),
-  force_ssl_in_redirect_uri: false
+  cache_backend: Boruta.Cache,
+  contexts: [
+    access_tokens: Boruta.Ecto.AccessTokens,
+    clients: Glimesh.Oauth.Clients,
+    codes: Boruta.Ecto.Codes,
+    # mandatory for user flows
+    resource_owners: Glimesh.Oauth.ResourceOwners,
+    scopes: Boruta.Ecto.Scopes
+  ],
+  max_ttl: [
+    authorization_code: 60,
+    access_token: 60 * 60 * 24
+  ],
+  token_generator: Boruta.TokenGenerator
 
 # Configures Elixir's Logger
 config :logger, :console,

@@ -20,5 +20,9 @@ defmodule Glimesh.Apps.Policy do
   def authorize(:update_app, %User{is_admin: true}, _app), do: true
   def authorize(:update_app, %User{} = user, %App{} = app), do: user.id == app.user_id
 
+  def authorize(:revoke_token, %User{id: user_id}, %Boruta.Ecto.Token{sub: sub}) do
+    Integer.to_string(user_id) == sub
+  end
+
   def authorize(_, _, _), do: false
 end

@@ -54,9 +54,9 @@ defmodule GlimeshWeb.Router do
   scope "/api/oauth", GlimeshWeb do
     pipe_through :oauth
 
-    post "/token", Oauth2Provider.TokenController, :create
-    post "/revoke", Oauth2Provider.TokenController, :revoke
-    post "/introspec", Oauth2Provider.TokenController, :introspec
+    post "/token", OauthController, :token
+    post "/revoke", OauthController, :revoke
+    post "/introspect", OauthController, :introspect
   end
 
   scope "/api/webhook", GlimeshWeb do
@@ -146,14 +146,12 @@ defmodule GlimeshWeb.Router do
     put "/users/settings/applications/:id/rotate", UserApplicationsController, :rotate
     resources "/users/settings/applications", UserApplicationsController
 
-    resources "/users/settings/authorizations", Oauth2Provider.AuthorizedApplicationController,
+    resources "/users/settings/authorizations", UserAuthorizedAppsController,
       only: [:index, :delete],
-      param: "uid"
+      param: "id"
 
-    get "/oauth/authorize", Oauth2Provider.AuthorizationController, :new
-    get "/oauth/authorize/:code", Oauth2Provider.AuthorizationController, :show
-    post "/oauth/authorize", Oauth2Provider.AuthorizationController, :create
-    delete "/oauth/authorize", Oauth2Provider.AuthorizationController, :delete
+    get "/oauth/authorize", OauthController, :authorize
+    post "/oauth/authorize", OauthController, :process_authorize
   end
 
   scope "/", GlimeshWeb do

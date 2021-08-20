@@ -1,8 +1,10 @@
-defmodule GlimeshWeb.Oauth2Provider.AuthorizationView do
-  use GlimeshWeb, :view
+defmodule Glimesh.Oauth.Scopes do
+  @moduledoc false
 
-  def scope_gettext(text) do
-    case text do
+  import GlimeshWeb.Gettext
+
+  def scope_gettext(scope) do
+    case scope do
       "public" -> gettext("scopepublic")
       "email" -> gettext("scopeemail")
       "chat" -> gettext("scopechat")

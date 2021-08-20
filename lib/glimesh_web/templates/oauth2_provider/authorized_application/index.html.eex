@@ -15,23 +15,17 @@
         <thead>
           <tr>
             <th><%= gettext("Application") %></th>
-            <th><%= gettext("Homepage") %></th>
             <th><%= gettext("Installed at") %></th>
             <th><%= gettext("Actions") %></th>
           </tr>
         </thead>
         <tbody>
-          <%= for application <- @applications do %>
+          <%= for token <- @tokens do %>
           <tr>
-            <td><%= application.name %></td>
-            <%= if application.app.homepage_url do%>
-              <td><%= link application.app.homepage_url, to: application.app.homepage_url %></td>
-            <% else %>
-              <td>N/A</td>
-            <% end %>
-            <td><%= application.inserted_at %></td>
+            <td><%= token.client.name %></td>
+            <td><%= token.inserted_at %></td>
             <td>
-              <%= link gettext("Unauthorize"), to: Routes.authorized_application_path(@conn, :delete, application), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+              <%= link gettext("Unauthorize"), to: Routes.user_authorized_apps_path(@conn, :delete, token.id), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
             </td>
           </tr>
           <% end %>

@@ -7,8 +7,8 @@ defmodule Glimesh.Resolvers.AccountResolver do
 
   # Users
 
-  def myself(_, _, %{context: %{user_access: ua}}) do
-    if user = Accounts.get_user(ua.user.id) do
+  def myself(_, _, %{context: %{access: access}}) do
+    if user = Accounts.get_user(access.user.id) do
       {:ok, user}
     else
       {:error, @error_not_found}

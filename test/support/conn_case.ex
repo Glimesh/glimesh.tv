@@ -124,8 +124,14 @@ defmodule GlimeshWeb.ConnCase do
   end
 
   def create_token_and_return_context(conn, user, scopes \\ "public email chat streamkey") do
-    {:ok, %{token: token}} =
-      ExOauth2Provider.AccessTokens.create_token(user, %{scopes: scopes}, otp_app: :glimesh)
+    {:ok, app} = Glimesh.ApiFixtures.app_fixture(user)
+
+    {:ok, %Boruta.Oauth.Token{value: token}} =
+      Boruta.Oauth.Authorization.token(%Boruta.Oauth.ClientCredentialsRequest{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        scope: scopes
+      })
 
     %{
       conn: conn |> Plug.Conn.put_req_header("authorization", "Bearer #{token}"),

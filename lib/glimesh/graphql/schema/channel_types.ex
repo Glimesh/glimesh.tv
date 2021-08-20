@@ -196,21 +196,25 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :thumbnail, :string
 
     field :stream_key, :string do
-      resolve(fn channel, _, %{context: %{current_user: current_user}} ->
-        if current_user.is_admin do
-          {:ok, Glimesh.Streams.get_stream_key(channel)}
-        else
-          {:error, "Unauthorized to access streamKey field."}
+      resolve(fn channel, _, %{context: %{access: access}} ->
+        case Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
+          :ok ->
+            {:ok, Glimesh.Streams.get_stream_key(channel)}
+
+          _ ->
+            {:error, "Unauthorized to access streamKey field."}
         end
       end)
     end
 
     field :hmac_key, :string do
-      resolve(fn channel, _, %{context: %{current_user: current_user}} ->
-        if current_user.is_admin do
-          {:ok, channel.hmac_key}
-        else
-          {:error, "Unauthorized to access hmacKey field."}
+      resolve(fn channel, _, %{context: %{access: access}} ->
+        case Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
+          :ok ->
+            {:ok, channel.hmac_key}
+
+          _ ->
+            {:error, "Unauthorized to access hmacKey field."}
         end
       end)
     end
