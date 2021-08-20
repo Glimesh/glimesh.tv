@@ -18,7 +18,7 @@ defmodule GlimeshWeb.ApiSocket do
            Glimesh.Oauth.get_unprivileged_api_access_from_client(client) do
       {:ok,
        socket
-       |> assign(:user_id, access.user.id)
+       |> assign(:user_id, nil)
        |> Absinthe.Phoenix.Socket.put_options(
          context: %{
            access: access
