@@ -88,7 +88,6 @@ defmodule Glimesh.Api.ChannelResolver do
   def find_channel(_, _), do: {:error, @error_not_found}
 
   # Streams
-  @decorate transaction_event()
   def start_stream(_parent, %{channel_id: channel_id}, %{context: %{access: access}}) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
       with %Glimesh.Streams.Channel{} = channel <- ChannelLookups.get_channel(channel_id),
@@ -108,7 +107,6 @@ defmodule Glimesh.Api.ChannelResolver do
     {:error, @error_access_denied}
   end
 
-  @decorate transaction_event()
   def end_stream(_parent, %{stream_id: stream_id}, %{context: %{access: access}}) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
       if stream = Streams.get_stream(stream_id) do

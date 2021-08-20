@@ -105,8 +105,9 @@ defmodule Glimesh.Resolvers.ChannelResolver do
         else
           {:error, "Stream has ended"}
         end
-    else
-      {:error, @error_not_found}
+      else
+        {:error, @error_not_found}
+      end
     end
   end
 
