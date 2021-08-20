@@ -1,6 +1,8 @@
 defmodule GlimeshWeb.OauthView do
   use GlimeshWeb, :view
 
+  require Ecto.Query
+
   alias Boruta.Oauth.IntrospectResponse
   alias Boruta.Oauth.TokenResponse
 
@@ -40,11 +42,17 @@ defmodule GlimeshWeb.OauthView do
           refresh_token: refresh_token
         }
       }) do
+    # Hack to get expiration time
+    token =
+      Ecto.Query.from("tokens", where: [value: ^access_token], select: [:inserted_at], limit: 1)
+      |> Glimesh.Repo.one()
+
     %{
       token_type: token_type,
       access_token: access_token,
       expires_in: expires_in,
-      refresh_token: refresh_token
+      refresh_token: refresh_token,
+      created_at: token.inserted_at
     }
   end
 
