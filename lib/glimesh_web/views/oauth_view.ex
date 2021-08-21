@@ -44,7 +44,11 @@ defmodule GlimeshWeb.OauthView do
       }) do
     # Hack to get expiration time
     token =
-      Ecto.Query.from("tokens", where: [value: ^access_token], select: [:inserted_at], limit: 1)
+      Ecto.Query.from("tokens",
+        where: [value: ^access_token],
+        select: [:inserted_at, :scope],
+        limit: 1
+      )
       |> Glimesh.Repo.one()
 
     %{
@@ -52,7 +56,8 @@ defmodule GlimeshWeb.OauthView do
       access_token: access_token,
       expires_in: expires_in,
       refresh_token: refresh_token,
-      created_at: token.inserted_at
+      created_at: token.inserted_at,
+      scope: token.scope
     }
   end
 
