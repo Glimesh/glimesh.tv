@@ -159,8 +159,8 @@ if sentry_dsn = System.get_env("SENTRY_DSN") do
   config :sentry,
     dsn: sentry_dsn,
     environment_name: :prod,
-    release: Glimesh.get_version(),
-    server_name: Atom.to_string(node()),
+    release: to_string(Glimesh.get_version()),
+    server_name: to_string(node()),
     enable_source_code_context: true,
     root_source_code_path: File.cwd!(),
     tags: %{
