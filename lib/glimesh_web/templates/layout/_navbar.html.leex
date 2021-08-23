@@ -1,24 +1,13 @@
-<nav class="navbar navbar-expand-lg sticky-top shadow-sm acrylic">
+<nav class="navbar navbar-expand-lg shadow-sm sticky-top acrylic">
     <%= live_redirect class: "navbar-brand", to: Routes.homepage_path(@conn, :index) do %>
-    <picture class="d-inline-block align-top" height="34">
-        <source srcset="/images/logos/logo-sm-alpha.png" media="(max-width: 768px)">
-        <source srcset="/images/logos/logo-alpha.png">
-        <img src="/images/logos/logo-alpha.png" class="d-inline-block align-top" alt="Glimesh | Alpha" height="34">
-    </picture>
+    <img src="/images/logos/logo-alpha.png" class="d-inline-block align-top" alt="Glimesh | Alpha" height="34">
     <% end %>
 
     <div class="d-lg-none">
         <ul class="navbar-nav d-inline-block">
-            <%= if assigns[:current_user] do %>
-            <li class="nav-item d-inline mr-3">
-                <%= live_redirect to: Routes.streams_list_path(@conn, :index, "following") do %>
-                <i class="fas fa-heart fa-fw"></i> <%= if count_live = count_live_following_channels(@conn) do %><span class="badge badge-danger"><%= count_live %></span><% end %>
-                <% end %>
-            </li>
-            <% end %>
-            <li class="nav-item d-inline pr-2">
+            <li class="nav-item">
                 <%= live_redirect to: Routes.streams_index_path(@conn, :index) do %>
-                <i class="fas fa-grip-horizontal fa-fw"></i>
+                <i class="fas fa-th-large fa-fw"></i>
                 <% end %>
             </li>
         </ul>
@@ -50,7 +39,7 @@
             </li>
             <li class="nav-item dropdown user-profile-dropdown">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="moreDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <i class="fa fa-ellipsis-v"></i><span class="d-sm-inline d-lg-none"> <%= gettext("More") %></span>
+                    <%= gettext("More") %>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="moreDropdown">
                     <%= link class: "dropdown-item", to: Routes.user_index_path(@conn, :index) do %>
@@ -90,7 +79,7 @@
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="settingsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <%= site_locale_label(@conn) %> <%= site_theme_label(@conn) %>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="settingsDropdown">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="settingsDropdown">
                     <%= f = form_for :user_preference, Routes.quick_preference_path(@conn, :update_preference), [class: "px-4 py-3"]%>
                     <%= hidden_input f, :user_return_to, value: @conn.request_path %>
                     <div class="form-group">
@@ -120,7 +109,7 @@
                     <%= @current_user.displayname %>
                     <img src="<%= Glimesh.Avatar.url({@current_user.avatar, @current_user}, :original) %>" alt="avatar" width="34" height="34" class="img-avatar <%= if Glimesh.Accounts.can_receive_payments?(@current_user), do: "img-verified-streamer", else: "" %>">
                 </a>
-                <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="userProfileDropdown">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userProfileDropdown">
                     <%= if @current_user.is_gct do %>
                     <%= link class: "dropdown-item", to: Routes.gct_path(@conn, :index) do %>
                     <i class="fas fa-user fa-fw"></i>

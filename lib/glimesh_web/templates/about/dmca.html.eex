@@ -18,7 +18,7 @@
             <div class="row justify-content-md-center mt-4">
                 <div class="col-md-10">
                     <p>
-                       <%= raw(gettext("To start with Glimesh's policies on the DMCA we have to begin with a basic understanding of what the DMCA is. %{a_start}The Digital Millennium Copyright Act%{a_end} is not an organization that policies digital copyrights but it was an act passed back in 1998 that helped establish rules around copyright materials and their use on the internet. For us, the DMCA defines how we as a service provider responsibly and fairly handle copyrighted material.", a_start: "<a href=\"https://www.copyright.gov/legislation/dmca.pdf\" target=\"_blank\">", a_end: "</a>")) %>
+                        <%= gettext("To start with Glimesh's policies on the DMCA we have to begin with a basic understanding of what the DMCA is. The DMCA is not an organization that polices digital copyrights but it was an act back in 1998 that helped establish rules around copyright materials and their use on the internet. For us the DMCA defines how we as a service provider responsibly and fairly handle copyrighted material.") %>
                     </p>
                 </div>
             </div>
@@ -78,7 +78,7 @@
             <div class="row justify-content-md-center mt-4">
                 <div class="col-md-10">
                     <p>
-                        <%= raw(gettext("The DMCA is not just about copyrights though. The DMCA has some built-in protections for sites like Glimesh called %{a_start}Safe Harbor%{a_end}. Simply put, Safe Harbor provisions are rules in the DMCA that protect websites from being shut down or sued by copyright owners as long as the site remains compliant. As long as Glimesh remains compliant to the process these Safe Harbor provisions in the DMCA will keep us safe from lawsuits for copyright violations.", a_start: "<a href=\"https://www.law.cornell.edu/uscode/text/17/512\" target=\"_blank\">", a_end: "</a>")) %>
+                        <%= gettext("The DMCA is not just about copyrights though. The DMCA has some built in protections for sites like Glimesh called Safe Harbor. Simply put, Safe Harbor provisions are rules in the DMCA that protect websites from being shut down or sued by copyright owners as long as the site remains compliant. As long as Glimesh remains compliant to the process these Safe Harbor provisions in the DMCA will keep us safe from Lawsuits for copyright violations.") %>
                     </p>
                 </div>
             </div>
@@ -192,7 +192,7 @@
                             <%= gettext("Glimesh will be clear as to how the rules work. There will be no guessing as to how to counter notice or how the process works. Also Glimesh will require that takedown notices include very specifically where the copyright content is so that you are not guessing what you may have a strike for.") %>
                         </li>
                         <li>
-                            <%= gettext("Glimesh aims to be as fair as possible. While we cannot condone improper use of copyright material we know that not all DMCA claims are fair. We will be open to help in whatever ways possible to ensure you have the best opportunity to correct DMCA claims. While we are not lawyers and cannot offer legal advice we will do our best to help you get in the right direction for correcting any claims in a fair manner.") %>
+                            <%= gettext("Glimesh aims to be fair as possible. While we cannot condone improper use of copyright material we know that not all DMCA claims are fair. We will be open to help in whatever ways possible to ensure you have the best opportunity to correct DMCA claims. While we are not lawyers and cannot offer legal advice we will do our best to help you get in the right direction for correcting any claims in a fair manner.") %>
                         </li>
                         <li>
                             <%= gettext("Lastly Glimesh is working to partner with music providers or independant artists who will provide proper music licenses for you to use.") %>
@@ -207,7 +207,7 @@
             <div class="row justify-content-md-center mt-4">
                 <div class="col-md-10">
                     <p>
-                        <%= gettext("We appreciate this document may leave you wondering what to do moving forward should you enjoy playing music in your stream. Thankfully there are several music platforms available to you that allow you the benefit of being able to play music whilst you stream without the concern or risk surrounding the above information. As such, please see below some sources that we’d suggest checking out:") %>
+                        <%= gettext("We appreciate this document may leave you wondering what to do moving forward should you enjoy playing music in your stream. Thankfully there are several music platforms available to you that allow you benefit of being able to play music whilst you stream without the concern or risk surrounding the above information. As such, please see below a couple that we’d suggest checking out:") %>
                     </p>
 
                     <div class="text-center mt-4 mb-4">

@@ -143,14 +143,3 @@ $close-color: var(--secondary-color);
         color: var(--body-color);
     }
 }
-
-// Acrylic blur fallback for Mozilla Firefox (backdrop-filters not enabled so need to reduce transparency for legibility)
-@supports (-moz-appearance:meterbar) {
-    :root {
-        --navbar-bg-color: rgba(14, 23, 38, 0.98);
-    }
-
-    [data-theme="light"] {
-        --navbar-bg-color: rgba(255,255,255, 0.96);
-    }
-}
