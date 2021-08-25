@@ -56,7 +56,7 @@ defmodule GlimeshWeb.OauthView do
       access_token: access_token,
       expires_in: expires_in,
       refresh_token: refresh_token,
-      created_at: token.inserted_at,
+      created_at: NaiveDateTime.truncate(token.inserted_at, :second),
       scope: token.scope
     }
   end
