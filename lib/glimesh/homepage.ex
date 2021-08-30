@@ -30,6 +30,18 @@ defmodule Glimesh.Homepage do
     Glimesh.ChannelLookups.search_live_channels(%{"ids" => channel_ids})
   end
 
+  def list_homepage_channels do
+    now = NaiveDateTime.utc_now()
+
+    Repo.all(
+      from f in HomepageChannel,
+        select: f.channel_id,
+        where:
+          f.slot_started_at <= ^now and
+            f.slot_ended_at >= ^now
+    )
+  end
+
   @doc """
   Update the homepage with new streams.
 
