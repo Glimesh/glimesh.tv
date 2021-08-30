@@ -6,6 +6,7 @@ defmodule Glimesh.Api.ChannelResolver do
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
   alias Glimesh.Chat.ChatMessage
+  alias Glimesh.Homepage
   alias Glimesh.Streams
 
   @error_not_found "Could not find resource"
@@ -86,6 +87,10 @@ defmodule Glimesh.Api.ChannelResolver do
   end
 
   def find_channel(_, _), do: {:error, @error_not_found}
+
+  def list_homepage_streams(_, _) do
+    {:ok, Homepage.get_homepage()}
+  end
 
   # Streams
   def start_stream(_parent, %{channel_id: channel_id}, %{context: %{access: access}}) do
