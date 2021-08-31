@@ -40,7 +40,7 @@
         </p>
 
         <div class="mt-4 mb-1 text-center">
-            <a href="https://discord.gg/Glimesh"
+            <a href="https://glimesh.tv/s/discord"
                 class="btn btn-primary btn-lg mx-4"><%= gettext("Join our Discord") %></a>
         </div>
 

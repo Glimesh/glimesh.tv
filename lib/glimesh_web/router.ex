@@ -258,6 +258,7 @@ defmodule GlimeshWeb.Router do
 
     # Short Links
     get "/s/event-form", ShortLinkController, :event_form
+    get "/s/discord", ShortLinkController, :community_discord
 
     # This must be the last route
     live "/:username", UserLive.Stream, :index
