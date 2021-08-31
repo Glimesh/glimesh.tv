@@ -83,7 +83,7 @@
                 </div>
             </div>
             <div class="text-center mt-4 mb-4">
-                <%= link gettext("Join Our Discord"), to: "https://discord.gg/Glimesh", class: "btn btn-primary" %>
+                <%= link gettext("Join Our Discord"), to: "https://glimesh.tv/s/discord", class: "btn btn-primary" %>
             </div>
         </div>
     </div>

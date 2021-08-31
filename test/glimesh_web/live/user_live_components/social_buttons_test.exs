@@ -21,12 +21,12 @@ defmodule GlimeshWeb.UserLive.Components.SocialButtonsTest do
     test "render correctly", %{conn: conn, streamer: streamer} do
       {:ok, _} =
         Glimesh.Accounts.update_user_profile(streamer, %{
-          "social_discord" => "glimesh"
+          "social_discord" => "foobar"
         })
 
       {:ok, _, html} = live_isolated(conn, @component, session: %{"user_id" => streamer.id})
 
-      assert html =~ "https://discord.gg/glimesh"
+      assert html =~ "https://discord.gg/foobar"
       assert String.contains?(html, "Twitter") == false
     end
   end

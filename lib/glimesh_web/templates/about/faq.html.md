@@ -12,7 +12,7 @@ The core inspiration of this project has been equality. There are two main probl
 
 ##### What makes Glimesh unique?
 
-Glimesh is built by the community, for the community. We are an  [Open Company](https://www.opencompany.org/)  dedicated to putting true transparency and openness first. Come see for yourself by joining our [Discord](https://discord.gg/glimesh)!
+Glimesh is built by the community, for the community. We are an  [Open Company](https://www.opencompany.org/)  dedicated to putting true transparency and openness first. Come see for yourself by joining our [Discord](https://glimesh.tv/s/discord)!
 
 ##### When will it be ready?
 
@@ -20,7 +20,7 @@ Let's be realistic, there's a lot to tackle. Design, development, infrastructure
 
 ##### How can I help?
 
-Easy! Join us in [Discord](https://discord.gg/glimesh) and look for the #volunteers channel and let us know what you can do.
+Easy! Join us in [Discord](https://glimesh.tv/s/discord) and look for the #volunteers channel and let us know what you can do.
 
 
 ## Business Questions
