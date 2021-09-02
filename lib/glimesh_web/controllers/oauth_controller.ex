@@ -71,6 +71,15 @@ defmodule GlimeshWeb.OauthController do
     )
   end
 
+  def authorize(conn, _) do
+    authorize_error(conn, %Error{
+      status: :unauthorized,
+      error: :access_denied,
+      format: :page,
+      error_description: "Missing client_id from the request."
+    })
+  end
+
   def process_authorize(conn, %{"action" => "authorize"}) do
     current_user = conn.assigns[:current_user]
 
