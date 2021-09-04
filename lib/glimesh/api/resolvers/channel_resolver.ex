@@ -88,7 +88,7 @@ defmodule Glimesh.Api.ChannelResolver do
 
   def find_channel(_, _), do: {:error, @error_not_found}
 
-  def list_homepage_streams(args, _) do
+  def list_homepage_channels(args, _) do
     homepage_channel_ids = Homepage.list_homepage_channels()
 
     Glimesh.Streams.Channel
