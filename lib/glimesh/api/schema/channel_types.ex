@@ -61,6 +61,11 @@ defmodule Glimesh.Api.ChannelTypes do
 
       resolve(&ChannelResolver.all_channels/2)
     end
+
+    @desc "List the channels currently on the homepage"
+    connection field :homepage_channels, node_type: :channel do
+      resolve(&ChannelResolver.list_homepage_channels/2)
+    end
   end
 
   object :streams_mutations do
