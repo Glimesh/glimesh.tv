@@ -79,7 +79,7 @@ Yes! We’re planning on launching the mobile app in phase 2 of alpha and are cu
 
 ##### How does Glimesh plan to implement new features created by the community?
 
-We want to make sure we have a very clear standard on how feature development works. All large features should start with some sort of spec or document that is well throughout and researched before developing against it.
+We want to make sure we have a very clear standard on how feature development works. All large features should start with some sort of spec or document that is well thought out and researched before developing against it.
 
 ##### Will Glimesh have a feature like Mixplay?
 
