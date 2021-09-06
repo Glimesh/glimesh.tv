@@ -39,7 +39,7 @@ We also recognize that your growth as a streamer is our growth as a platform and
 
 ##### Will Glimesh use my content in advertising? If yes, how so?
 
-The Terms of Service that binds your usage of our website gives us permission to use your content for advertising, redistribution, storage, and more. However, we want to form strong bonds with streamers so appreciate us using their content to grow the platform and their stream.
+The Terms of Service that binds your usage of our website gives us permission to use your content for advertising, redistribution, storage, and more. However, we want to form strong bonds with streamers who appreciate us using their content to grow the platform and their stream.
 
 ##### Has everyone the opportunity to get a sub button? What are the requirements for a sub button?
 
