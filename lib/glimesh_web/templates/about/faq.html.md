@@ -41,7 +41,7 @@ We also recognize that your growth as a streamer is our growth as a platform and
 
 The Terms of Service that binds your usage of our website gives us permission to use your content for advertising, redistribution, storage, and more. However, we want to form strong bonds with streamers who appreciate us using their content to grow the platform and their stream.
 
-##### Has everyone the opportunity to get a sub button? What are the requirements for a sub button?
+##### Does everyone have the opportunity to get a sub button? What are the requirements for a sub button?
 
 Yes! We’re offering subscriptions to all users in supported countries. The only requirement to set up your banking details is verifying your identity with our 3rd party and waiting for your bank to be connected. In addition, you are ultimately in control of your own stream so you can also disable your subscription button at will.
 
