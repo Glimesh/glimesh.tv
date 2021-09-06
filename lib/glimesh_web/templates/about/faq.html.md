@@ -87,7 +87,7 @@ We pride ourselves on live engagement with your community and we think real-time
 
 ##### Will mods have a different color or icon for username?
 
-Yes, they will have a moderator tag in chat. For now, it’s blue and is labeled moderator.
+Yes, they will have a moderator tag in chat. For now, it’s blue and is labeled mod.
 
 ##### What alerts will there be for streams?
 
