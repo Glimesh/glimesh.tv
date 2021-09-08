@@ -37,8 +37,11 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <%= label f, gettext("Language") %>
-                        <p><%= gettext("Language settings moved to your Preferences, or the top nav.") %></p>
+                        <div class="form-group">
+                            <%= label f, gettext("Preferred Pronoun") %>
+                            <%= select f, :pronoun_id, @pronouns, [class: "form-control"] %>
+                            <%= error_tag f, :pronoun_id %>
+                        </div>
                     </div>
                 </div>
                 <div class="info">
