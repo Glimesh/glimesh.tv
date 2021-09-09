@@ -72,6 +72,9 @@
                             <%= if @channel.mature_content do %>
                             <span class="badge badge-pill badge-warning ml-2"><%= gettext("Mature") %></span>
                             <% end %>
+                            <%= if @streamer.pronoun_id != "None" and @streamer.pronoun_stream do %>
+                            <span class="badge badge-pill badge-success ml-2"><%= @streamer.pronoun_id %></span>
+                            <% end %>
 
                             <%= live_render(@socket, GlimeshWeb.UserLive.Components.SocialButtons, id: "social-buttons", container: {:ul, class: "list-inline ml-2 mb-0"}, session: %{"user_id" => @streamer.id}) %>
                         </div>

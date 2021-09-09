@@ -19,8 +19,6 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <h5 class=""><%= gettext "Settings" %></h5>
-
                 <%= if @profile_changeset.action do %>
                 <div class="alert alert-danger">
                     <p style="margin-bottom: 0px;">
@@ -30,6 +28,7 @@
 
                 <div class="row">
                     <div class="col-sm-6">
+                        <h5 class=""><%= gettext "Settings" %></h5>
                         <div class="form-group">
                             <%= label f, gettext("Display Name") %>
                             <%= text_input f, :displayname, [class: "form-control"]%>
@@ -37,13 +36,28 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
+                        <h5><%= gettext("Pronoun Settings") %></h5>
                         <div class="form-group">
                             <%= label f, gettext("Preferred Pronoun") %>
                             <%= select f, :pronoun_id, @pronouns, [class: "form-control"] %>
                             <%= error_tag f, :pronoun_id %>
                         </div>
+
+                        <span> <%= gettext "Display Pronoun:" %> </span>
+                        <div class="custom-control custom-checkbox">
+                            <%= checkbox f, :pronoun_stream, class: "custom-control-input" %>
+                            <%= label f, :pronoun_stream, gettext("On Channel"), class: "custom-control-label" %>
+                            <%= error_tag f, :pronoun_stream %>
+                        </div>
+
+                        <div class="custom-control custom-checkbox">
+                            <%= checkbox f, :pronoun_profile, class: "custom-control-input" %>
+                            <%= label f, :pronoun_profile, gettext("On Profile"), class: "custom-control-label" %>
+                            <%= error_tag f, :pronoun_profile %>
+                        </div>
                     </div>
                 </div>
+
                 <div class="info">
                     <h5 class=""><%= gettext "Social" %></h5>
 

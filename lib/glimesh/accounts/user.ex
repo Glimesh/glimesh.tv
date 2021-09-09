@@ -11,6 +11,8 @@ defmodule Glimesh.Accounts.User do
     field :username, :string
     field :displayname, :string
     field :pronoun_id, :string
+    field :pronoun_stream, :boolean
+    field :pronoun_profile, :boolean
     field :email, :string
     field :password, :string, virtual: true
     field :hashed_password, :string
@@ -236,6 +238,8 @@ defmodule Glimesh.Accounts.User do
     |> cast(attrs, [
       :displayname,
       :pronoun_id,
+      :pronoun_stream,
+      :pronoun_profile,
       :social_twitter,
       :social_youtube,
       :social_instagram,

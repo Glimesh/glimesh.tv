@@ -7,5 +7,5 @@ defmodule GlimeshWeb.ShortLinkController do
 
   def community_discord(conn, _params) do
     conn |> redirect(external: "https://discord.gg/5TdhmkQSqT")
-  end 
+  end
 end

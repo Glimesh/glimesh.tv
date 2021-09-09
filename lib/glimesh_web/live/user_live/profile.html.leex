@@ -12,7 +12,7 @@
                     </div>
                     <% end %>
 
-                     <%= if @streamer.pronoun_id != "None" do %>
+                     <%= if @streamer.pronoun_id != "None" and @streamer.pronoun_profile do %>
                     <div class="mb-4"><span class="badge badge-success"><%= @streamer.pronoun_id %></span>
                     </div>
                     <% end %>
