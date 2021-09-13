@@ -10,9 +10,9 @@ defmodule Glimesh.Accounts.User do
   schema "users" do
     field :username, :string
     field :displayname, :string
-    field :pronoun_id, :string
-    field :pronoun_stream, :boolean
-    field :pronoun_profile, :boolean
+    field :pronoun, :string
+    field :show_pronoun_stream, :boolean
+    field :show_pronoun_profile, :boolean
     field :email, :string
     field :password, :string, virtual: true
     field :hashed_password, :string
@@ -237,9 +237,9 @@ defmodule Glimesh.Accounts.User do
     user
     |> cast(attrs, [
       :displayname,
-      :pronoun_id,
-      :pronoun_stream,
-      :pronoun_profile,
+      :pronoun,
+      :show_pronoun_stream,
+      :show_pronoun_profile,
       :social_twitter,
       :social_youtube,
       :social_instagram,

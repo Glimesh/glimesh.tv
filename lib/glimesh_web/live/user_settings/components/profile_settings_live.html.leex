@@ -39,21 +39,21 @@
                         <h5><%= gettext("Pronoun Settings") %></h5>
                         <div class="form-group">
                             <%= label f, gettext("Preferred Pronoun") %>
-                            <%= select f, :pronoun_id, @pronouns, [class: "form-control"] %>
-                            <%= error_tag f, :pronoun_id %>
+                            <%= select f, :pronoun, @pronouns, [class: "form-control"] %>
+                            <%= error_tag f, :pronoun %>
                         </div>
 
                         <span> <%= gettext "Display Pronoun:" %> </span>
                         <div class="custom-control custom-checkbox">
-                            <%= checkbox f, :pronoun_stream, class: "custom-control-input" %>
-                            <%= label f, :pronoun_stream, gettext("On Channel"), class: "custom-control-label" %>
-                            <%= error_tag f, :pronoun_stream %>
+                            <%= checkbox f, :show_pronoun_stream, class: "custom-control-input" %>
+                            <%= label f, :show_pronoun_stream, gettext("On Channel"), class: "custom-control-label" %>
+                            <%= error_tag f, :show_pronoun_stream %>
                         </div>
 
                         <div class="custom-control custom-checkbox">
-                            <%= checkbox f, :pronoun_profile, class: "custom-control-input" %>
-                            <%= label f, :pronoun_profile, gettext("On Profile"), class: "custom-control-label" %>
-                            <%= error_tag f, :pronoun_profile %>
+                            <%= checkbox f, :show_pronoun_profile, class: "custom-control-input" %>
+                            <%= label f, :show_pronoun_profile, gettext("On Profile"), class: "custom-control-label" %>
+                            <%= error_tag f, :show_pronoun_profile %>
                         </div>
                     </div>
                 </div>
