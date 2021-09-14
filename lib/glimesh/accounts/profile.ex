@@ -22,6 +22,10 @@ defmodule Glimesh.Accounts.Profile do
     end
   end
 
+  def list_pronouns do
+    Keyword.get(Application.get_env(:glimesh, :pronouns), :pronouns, [])
+  end
+
   def safe_user_markdown_to_html(nil) do
     {:ok, nil}
   end

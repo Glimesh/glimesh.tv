@@ -173,6 +173,28 @@ config :glimesh, :stripe_config,
     Uruguay: "UY"
   ]
 
+config :glimesh, :pronouns,
+  pronouns: [
+    None: "None",
+    "Ar/Aer": "Ae/Aer",
+    "E/Em": "E/Em",
+    "Fae/Faer": "Fae/Faer",
+    "He/Him": "He/Him",
+    "He/She": "He/She",
+    "He/They": "He/They",
+    "It/Its": "It/Its",
+    Other: "Other",
+    "Per/Per": "Per/Per",
+    "She/Her": "She/Her",
+    "She/They": "She/They",
+    "They/Them": "They/Them",
+    "They/He": "They/He",
+    "They/She": "They/She",
+    "Ve/Ver": "Ve/Ver",
+    "Xe/Xem": "Xe/Xem",
+    "Zie/Hir": "Zie/Hir"
+  ]
+
 config :hcaptcha,
   public_key: "10000000-ffff-ffff-ffff-000000000001",
   secret: "0x0000000000000000000000000000000000000000"
