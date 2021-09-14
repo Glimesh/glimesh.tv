@@ -81,7 +81,7 @@ config :boruta, Boruta.Oauth,
   cache_backend: Boruta.Cache,
   contexts: [
     access_tokens: Boruta.Ecto.AccessTokens,
-    clients: Glimesh.Oauth.Clients,
+    clients: Boruta.Ecto.Clients,
     codes: Boruta.Ecto.Codes,
     # mandatory for user flows
     resource_owners: Glimesh.Oauth.ResourceOwners,

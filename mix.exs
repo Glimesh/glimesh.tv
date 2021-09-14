@@ -73,7 +73,7 @@ defmodule Glimesh.MixProject do
       # Temporary until a new release is deployed
       {:boruta, "~> 1.1.0",
        git: "https://gitlab.com/patatoid/boruta_auth.git",
-       ref: "825bca95280915b3e02f032d832fb8f3f250d132"},
+       ref: "13-boruta-does-not-refresh-a-token-without-a-client_secret"},
       {:slugify, "~> 1.3"},
       {:phoenix_markdown, "~> 1.0"},
       {:html_sanitize_ex, "~> 1.4.1"},
