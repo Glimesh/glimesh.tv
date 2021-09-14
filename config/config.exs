@@ -17,7 +17,7 @@ locales = [
   Deutsch: "de",
   日本語: "ja",
   "Norsk Bokmål": "nb",
-  "Norsk Nynorsk": "nn"
+  "Norsk Nynorsk": "nn",
   Français: "fr",
   Svenska: "sv",
   "Tiếng Việt": "vi",
