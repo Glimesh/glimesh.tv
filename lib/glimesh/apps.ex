@@ -70,7 +70,8 @@ defmodule Glimesh.Apps do
             name: attrs.name,
             redirect_uris: String.split(attrs[:client][:redirect_uris] || ""),
             access_token_ttl: 60 * 60 * 24,
-            authorization_code_ttl: 60
+            authorization_code_ttl: 60,
+            public_refresh_token: true
           }
         })
 

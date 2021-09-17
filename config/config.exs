@@ -82,7 +82,7 @@ config :boruta, Boruta.Oauth,
   cache_backend: Boruta.Cache,
   contexts: [
     access_tokens: Boruta.Ecto.AccessTokens,
-    clients: Glimesh.Oauth.Clients,
+    clients: Boruta.Ecto.Clients,
     codes: Boruta.Ecto.Codes,
     # mandatory for user flows
     resource_owners: Glimesh.Oauth.ResourceOwners,
@@ -90,7 +90,8 @@ config :boruta, Boruta.Oauth,
   ],
   max_ttl: [
     authorization_code: 60,
-    access_token: 60 * 60 * 24
+    access_token: 60 * 60 * 24,
+    refresh_token: 60 * 60 * 24 * 30
   ],
   token_generator: Boruta.TokenGenerator
 
