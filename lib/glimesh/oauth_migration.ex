@@ -232,7 +232,13 @@ defmodule Glimesh.OauthMigration do
 
     case Repo.one(query) do
       %{id: id} ->
-        Ecto.UUID.load!(id)
+        case Ecto.UUID.load(id) do
+          {:ok, uuid} ->
+            uuid
+
+          _ ->
+            nil
+        end
 
       nil ->
         # By making this blank, the next step which is the validator will reject it.
