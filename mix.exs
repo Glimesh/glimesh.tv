@@ -70,10 +70,7 @@ defmodule Glimesh.MixProject do
       {:dataloader, "~> 1.0.0"},
       # HTTP Helpers
       {:plug_canonical_host, "~> 2.0"},
-      # Temporary until a new release is deployed
-      {:boruta, "~> 1.1.0",
-       git: "https://gitlab.com/patatoid/boruta_auth.git",
-       ref: "13-boruta-does-not-refresh-a-token-without-a-client_secret"},
+      {:boruta, "~> 1.2"},
       {:slugify, "~> 1.3"},
       {:phoenix_markdown, "~> 1.0"},
       {:html_sanitize_ex, "~> 1.4.1"},

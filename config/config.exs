@@ -89,7 +89,8 @@ config :boruta, Boruta.Oauth,
   ],
   max_ttl: [
     authorization_code: 60,
-    access_token: 60 * 60 * 24
+    access_token: 60 * 60 * 24,
+    refresh_token: 60 * 60 * 24 * 30
   ],
   token_generator: Boruta.TokenGenerator
 
