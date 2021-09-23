@@ -116,5 +116,36 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
       assert get_flash(conn, :error) =~
                "Captcha validation failed, please make sure you have JavaScript enabled."
     end
+
+    test "does not pay attention to misc fields", %{conn: conn} do
+      username = unique_user_username()
+      email = unique_user_email()
+
+      conn =
+        post(conn, Routes.user_registration_path(conn, :create), %{
+          "h-captcha-response" => "valid_response",
+          "user" => %{
+            "username" => username,
+            "email" => email,
+            "password" => valid_user_password(),
+            "is_admin" => true,
+            "gct_level" => 5
+          }
+        })
+
+      assert get_session(conn, :user_token)
+      assert redirected_to(conn) =~ "/"
+
+      user = Glimesh.Accounts.get_user_by_email(email)
+      refute user.is_admin
+      assert is_nil(user.gct_level)
+
+      # Now do a logged in request and assert on the menu
+      conn = get(conn, "/")
+      response = html_response(conn, 200)
+      assert response =~ username
+      assert response =~ "Settings"
+      assert response =~ "Sign Out"
+    end
   end
 end
