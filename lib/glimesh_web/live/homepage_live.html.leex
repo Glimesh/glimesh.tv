@@ -21,13 +21,10 @@
         <div class="col-12 col-md-6 order-md-1">
             <%= live_render(@socket, GlimeshWeb.Channels.VideoPlayer, id: "homepage-video", session: %{"muted" => true, "channel_id" => @random_channel.id, "channel_poster" => @random_channel_thumbnail}) %>
             <div class="d-flex align-items-start mt-2">
-                <img src="<%= Glimesh.Avatar.url({@random_channel.user.avatar, @random_channel.user}, :original) %>"
-                    alt="<%= @random_channel.user.displayname%>" width="48" height="48"
-                    class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(@random_channel.user), do: "img-verified-streamer", else: "" %>">
+                <img src="<%= Glimesh.Avatar.url({@random_channel.user.avatar, @random_channel.user}, :original) %>" alt="<%= @random_channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(@random_channel.user), do: "img-verified-streamer", else: "" %>">
                 <div class="pl-1 pr-1">
                     <h6 class="mb-0 mt-1 text-wrap"><%= @random_channel.title %></h6>
-                    <p class="mb-0 card-stream-username"><%= @random_channel.user.displayname %> <span
-                            class="badge badge-info"><%= Glimesh.Streams.get_channel_language(@random_channel) %></span>
+                    <p class="mb-0 card-stream-username"><%= @random_channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(@random_channel) %></span>
                         <%= if @random_channel.mature_content do %>
                         <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
                         <% end %>
@@ -66,6 +63,77 @@
 </div>
 <% end %>
 
+<div class="container mt-4">
+    <h2 class="text-white"><span class="text-color-alpha">Upcoming</span> Events</h2>
+
+    <div class="row mt-2 mb-4">
+        <div class="col-12 col-sm-6 col-lg-3 mb-2">
+            <div class="card h-100">
+                <img src="/images/events/2021-09-25-twloha.png" class="card-img-top" alt="National Burrito Day">
+                <div class="card-body">
+                    <h5 class="card-title" style="font-size: 14px">Masquemare's Charity Stream</h5>
+                    <p class="card-text">Join /Masquemare for a variety filled charity stream for "To Write Love On Her Arms", an organization dedicated to providing hope and help for those struggling with addiction, depression, self-harm, and suicide.</p>
+                    <p class="text-center">
+                        Live <relative-time phx-update="ignore" datetime="2021-09-25T09:00:00-04:00">September 25th 9:00am EDT</relative-time> on <a href="https://glimesh.tv/Masquemare">glimesh.tv/Masquemare</a>
+                    </p>
+                </div>
+                <div class="card-footer text-center lead">
+                    <local-time phx-update="ignore" datetime="2021-09-25T09:00:00-04:00">
+                        Sept 25th 9:00am EDT
+                    </local-time>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 mb-2">
+            <div class="card h-100">
+                <img src="/images/events/2021-09-25-goose-goose-glimesh.png" class="card-img-top" alt="Goose Goose Glimesh">
+                <div class="card-body">
+                    <h5 class="card-title" style="font-size: 18px">Goose Goose Glimesh</h5>
+                    <p class="card-text">Who's ready for some FOWL PLAY? Join in the MALLARD MAYHEM over on /Banjax ... unless of course you're CHICKEN!</p>
+                    <p class="text-center">
+                        Live <relative-time phx-update="ignore" datetime="2021-09-25T16:00:00-04:00">September 25th 4:00pm EDT</relative-time> on <a href="https://glimesh.tv/Banjax">glimesh.tv/Banjax</a>
+                    </p>
+                </div>
+                <div class="card-footer text-center lead">
+                    <local-time phx-update="ignore" datetime="2021-09-25T16:00:00-04:00">
+                        Sept 25th 4:00pm EDT
+                    </local-time>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 mb-2">
+            <div class="card h-100">
+                <img src="/images/events/2021-09-25-life-stream.png" class="card-img-top" alt="Life-Stream">
+                <div class="card-body">
+                    <h5 class="card-title">Life-Stream</h5>
+                    <p class="card-text">Join /SailingLurch as he games with the community to meet fun milestones and raise money for The Trevor Project, an organization focused on suicide prevention for LGBTQ+ youth</p>
+                    <p class="text-center">
+                        Live <relative-time phx-update="ignore" datetime="2021-09-25T19:00:00-04:00">September 25th 7:00pm EDT</relative-time> on <a href="https://glimesh.tv/SailingLurch">glimesh.tv/SailingLurch</a>
+                    </p>
+                </div>
+                <div class="card-footer text-center lead">
+                    <local-time phx-update="ignore" datetime="2021-09-25T19:00:00-04:00">
+                        Sept 25th 7:00pm EDT
+                    </local-time>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 mb-2">
+            <div class="card">
+                <img src="/images/events/glimesh-events.jpg" class="card-img-top" alt="Glimesh Events">
+                <div class="card-body">
+                    <h5 class="card-title">Hosting an event?</h5>
+                    <p class="card-text">Glimesh will help promote your events! Let us know what you have by filling in our Google Form.</p>
+                    <p class="text-center">
+                        <a href="https://glimesh.tv/s/event-form">glimesh.tv/s/event-form</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 
 <%= if length(@channels) > 0 do %>
 <div class="container container-stream-list">
@@ -74,8 +142,7 @@
         <div class="col-sm-12 col-md-6 col-xl-4 mt-2 mt-md-4">
             <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
             <div class="card card-stream">
-                <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>"
-                    alt="<%= channel.title %>" class="card-img" height="468" width="832">
+                <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>" alt="<%= channel.title %>" class="card-img" height="468" width="832">
                 <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
 
                     <div>
@@ -91,13 +158,10 @@
                     </div>
 
                     <div class="media card-stream-streamer">
-                        <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>"
-                            alt="<%= channel.user.displayname%>" width="48" height="48"
-                            class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(channel.user), do: "img-verified-streamer", else: "" %>">
+                        <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>" alt="<%= channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(channel.user), do: "img-verified-streamer", else: "" %>">
                         <div class="media-body">
                             <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
-                            <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span
-                                    class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
+                            <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
                                 <%= if channel.mature_content do %>
                                 <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
                                 <% end %>
