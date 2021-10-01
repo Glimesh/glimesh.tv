@@ -40,6 +40,8 @@ defmodule Glimesh.MixProject do
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:floki, ">= 0.0.0", only: :test},
       {:excoveralls, "~> 0.13.1", only: :test},
+      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
+      {:dart_sass, "~> 0.2", runtime: Mix.env() == :dev},
       # Core
       {:bcrypt_elixir, "~> 2.0"},
       {:phoenix, "~> 1.6.0"},
@@ -117,7 +119,13 @@ defmodule Glimesh.MixProject do
         "run priv/repo/seeds/scopes.exs",
         "test"
       ],
-      code_quality: ["format", "credo --strict"]
+      code_quality: ["format", "credo --strict"],
+      "assets.deploy": [
+        "cmd assets/copy-fonts.sh",
+        "esbuild default --minify",
+        "sass default --no-source-map --style=compressed",
+        "phx.digest -o priv/static/assets"
+      ]
     ]
   end
 end

@@ -46,7 +46,7 @@ $color-teal: #48D1BD;
     --body-bg-color: #ffffff;
     --body-color: #000;
 
-    --navbar-bg-color: rgba(255,255,255,.9);
+    --navbar-bg-color: rgba(255, 255, 255, .9);
     --navbar-border-color: #fff;
     --navbar-color: #000;
 
@@ -151,6 +151,6 @@ $close-color: var(--secondary-color);
     }
 
     [data-theme="light"] {
-        --navbar-bg-color: rgba(255,255,255, 0.96);
+        --navbar-bg-color: rgba(255, 255, 255, 0.96);
     }
 }
