@@ -41,7 +41,7 @@ defmodule Glimesh.MixProject do
       {:floki, ">= 0.0.0", only: :test},
       {:excoveralls, "~> 0.13.1", only: :test},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
-      {:dart_sass, "~> 0.2", runtime: Mix.env() == :dev},
+      {:dart_sass, "~> 0.3", runtime: Mix.env() == :dev},
       # Core
       {:bcrypt_elixir, "~> 2.0"},
       {:phoenix, "~> 1.6.0"},
