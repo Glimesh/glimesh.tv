@@ -35,23 +35,24 @@ defmodule Glimesh.MixProject do
   defp deps do
     [
       # Dev & Test Libs
-      {:phx_gen_auth, "~> 0.4.0", only: :dev, runtime: false},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:faker, "~> 0.14", only: :dev},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:floki, ">= 0.0.0", only: :test},
       {:excoveralls, "~> 0.13.1", only: :test},
+      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
+      {:dart_sass, "~> 0.3", runtime: Mix.env() == :dev},
       # Core
       {:bcrypt_elixir, "~> 2.0"},
-      {:phoenix, "~> 1.5.8"},
-      {:phoenix_ecto, "~> 4.2.1"},
-      {:ecto_sql, "~> 3.5"},
+      {:phoenix, "~> 1.6.0"},
+      {:phoenix_ecto, "~> 4.4"},
+      {:ecto_sql, "~> 3.7"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_live_view, "~> 0.15.4"},
-      {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_dashboard, "~> 0.4.0"},
-      {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
+      {:phoenix_live_view, "~> 0.16.4"},
+      {:phoenix_html, "~> 3.0"},
+      {:phoenix_live_dashboard, "~> 0.5"},
+      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_poller, "~> 0.5"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
@@ -118,7 +119,13 @@ defmodule Glimesh.MixProject do
         "run priv/repo/seeds/scopes.exs",
         "test"
       ],
-      code_quality: ["format", "credo --strict"]
+      code_quality: ["format", "credo --strict"],
+      "assets.deploy": [
+        "cmd assets/copy-fonts.sh",
+        "esbuild default --minify",
+        "sass default --no-source-map --style=compressed",
+        "phx.digest -o priv/static/assets"
+      ]
     ]
   end
 end
