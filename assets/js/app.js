@@ -70,14 +70,10 @@ function ignoreDropdownFormClosing() {
 bsCustomFileInput.init();
 ignoreDropdownFormClosing();
 
-console.log(BSN.initCallback(document.body))
- 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", () => {});
 window.addEventListener("phx:page-loading-stop", info => {
-    console.log("hello")
     if (info.detail && info.detail.kind && info.detail.kind === "initial") {
-        console.log("retriggering")
         // Only do a full reload of dom whenever the entire page changes 
         BSN.initCallback(document.body);
         bsCustomFileInput.init();

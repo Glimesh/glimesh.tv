@@ -39,7 +39,7 @@ defmodule GlimeshWeb.Endpoint do
   plug Plug.Static,
     at: "/",
     from: :glimesh,
-    gzip: false,
+    gzip: Application.get_env(:glimesh, :environment) == :prod,
     only:
       ~w(assets css fonts images videos js cache_manifest.json favicons emotes browserconfig.xml favicon.ico robots.txt site.webmanifest)
 

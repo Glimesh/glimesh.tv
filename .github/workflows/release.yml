@@ -27,10 +27,7 @@ jobs:
         run: npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
 
       - name: Build static assets
-        run: npm run --prefix ./assets deploy
-
-      - name: Digest static assets
-        run: mix phx.digest
+        run: mix assets.deploy
 
       - name: Build release
         run: mix do compile, release

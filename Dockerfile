@@ -27,8 +27,7 @@ RUN npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
 
 COPY priv priv
 COPY assets assets
-RUN npm run --prefix ./assets deploy
-RUN mix phx.digest
+RUN mix assets.deploy
 
 # compile and build release
 COPY lib lib
