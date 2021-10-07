@@ -1,3 +1,5 @@
 fa-fonts/
-css/
-js/
+
+# Compiled from $PROJECT_DIR/assets/
+app.js
+app.css
