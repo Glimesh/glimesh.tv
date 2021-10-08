@@ -124,7 +124,7 @@ defmodule Glimesh.MixProject do
         "cmd assets/copy-fonts.sh",
         "esbuild default --minify",
         "sass default --no-source-map --style=compressed",
-        "phx.digest -o priv/static/assets"
+        "phx.digest priv/static -o priv/assets"
       ]
     ]
   end
