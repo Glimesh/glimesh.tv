@@ -29,7 +29,7 @@ body {
 @import "glimesh/variables";
 @import "bootstrap/scss/bootstrap";
 
-$fa-font-path: "fa-fonts";
+$fa-font-path: "/fa-fonts";
 @import "@fortawesome/fontawesome-free/scss/fontawesome";
 @import "@fortawesome/fontawesome-free/scss/brands";
 @import "@fortawesome/fontawesome-free/scss/regular";

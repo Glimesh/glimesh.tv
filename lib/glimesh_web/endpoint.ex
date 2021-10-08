@@ -41,7 +41,7 @@ defmodule GlimeshWeb.Endpoint do
     from: {:glimesh, "priv/assets"},
     gzip: Application.get_env(:glimesh, :environment) == :prod,
     only:
-      ~w(emotes fa-fonts favicons fonts images app.css app.js browserconfig.xml cache_manifest.json favicon.ico robots.txt)
+      ~w(emotes fa-fonts favicons fonts images css js browserconfig.xml cache_manifest.json favicon.ico robots.txt)
 
   if Application.get_env(:waffle, :asset_host) do
     # If we're using an asset host, we just want to redirect requests

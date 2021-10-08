@@ -9,7 +9,7 @@
     <%= live_title_tag(Map.get(assigns, :page_title, "Glimesh")) %>
 
     <meta name="description" content="<%= Map.get(assigns, :page_description, "Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish.") %>">
-    <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/app.css") %>" />
+    <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>" />
 
     <link rel="apple-touch-icon" sizes="180x180" href="<%= Routes.static_path(@conn, "/favicons/apple-touch-icon.png") %>">
     <link rel="icon" type="image/png" sizes="32x32" href="<%= Routes.static_path(@conn, "/favicons/favicon-32x32.png") %>">
@@ -50,7 +50,7 @@
     <meta name="twitter:image" content="https://glimesh.tv/images/og-image.jpg">
     <% end %>
 
-    <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/app.js") %>"></script>
+    <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     <%= if Application.get_env(:glimesh, :environment) == :prod do %>
     <script async defer data-domain="glimesh.tv" src="https://s.glimesh.tv/js/index.js"></script>
     <% end %>
