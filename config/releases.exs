@@ -55,7 +55,7 @@ url_scheme = System.fetch_env!("URL_SCHEME")
 
 config :glimesh, GlimeshWeb.Endpoint,
   server: true,
-  cache_static_manifest: "priv/static/assets/cache_manifest.json",
+  cache_static_manifest: "priv/assets/cache_manifest.json",
   canonical_host: url_host,
   url: [
     scheme: url_scheme,
