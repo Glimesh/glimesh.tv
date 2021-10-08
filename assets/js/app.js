@@ -52,13 +52,15 @@ function ignoreDropdownFormClosing() {
 // Init the file upload handler
 bsCustomFileInput.init();
 ignoreDropdownFormClosing();
+window.BSN = BSN;
+window.BSN.initCallback(document.body);
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", () => {});
 window.addEventListener("phx:page-loading-stop", info => {
     if (info.detail && info.detail.kind && info.detail.kind === "initial") {
         // Only do a full reload of dom whenever the entire page changes 
-        BSN.initCallback(document.body);
+        window.BSN.initCallback(document.body);
         bsCustomFileInput.init();
 
         // Close the nav bar on navigate
