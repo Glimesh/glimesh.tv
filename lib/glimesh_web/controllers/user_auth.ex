@@ -200,6 +200,19 @@ defmodule GlimeshWeb.UserAuth do
   end
 
   @doc """
+  Used for routes that require the user to be an events team member.
+  """
+  def require_events_team_user(conn, _opts) do
+    if conn.assigns[:current_user] && conn.assigns[:current_user].is_events_team do
+      conn
+    else
+      conn
+      |> redirect(to: Routes.user_session_path(conn, :new))
+      |> halt()
+    end
+  end
+
+  @doc """
   Used for api routes that require authentication.
   """
   def require_authenticated_user_api(conn, _opts) do

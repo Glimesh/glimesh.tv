@@ -127,6 +127,19 @@
                 </div>
             </div>
             <% end %>
+
+                <%= if @conn.assigns.current_user.gct_level >= 4 || @conn.assigns.current_user.is_admin do %>
+            <hr>
+            <h5><%= gettext("Event Team Settings") %></h5>
+            <div class="row mt-1">
+                <div class="col-sm-6">
+                    <%= label f, gettext("Is Event Team") %>
+                    <%= select f, :is_events_team, [Yes: true, No: false], [class: "form-control"] %>
+                    <%= error_tag f, :is_events_team %>
+                </div>
+            </div>
+                <% end %>
+
             <hr>
             <h5><%= gettext("Ban Settings") %></h5>
             <div class="row mt-1">

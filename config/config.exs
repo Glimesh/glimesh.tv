@@ -195,6 +195,19 @@ config :glimesh, :pronouns,
     "Zie/Hir": "Zie/Hir"
   ]
 
+config :glimesh, :event_type,
+  event_labels: [
+    nil: "-",
+    "GCT Event": "GCT Event",
+    "Community Event": "Community Event",
+    "Glimesh Event": "Glimesh Event"
+  ],
+  event_colors: [
+    "GCT Event": "var(--success)",
+    "Community Event": "#00AFEF",
+    "Glimesh Event": "var(--danger)"
+  ]
+
 config :hcaptcha,
   public_key: "10000000-ffff-ffff-ffff-000000000001",
   secret: "0x0000000000000000000000000000000000000000"

@@ -98,7 +98,8 @@ defmodule Glimesh.MixProject do
       {:scrivener_ecto, "~> 2.0"},
       {:libcluster, "~> 3.2"},
       {:httpoison, "~> 1.8"},
-      {:con_cache, "~> 1.0"}
+      {:con_cache, "~> 1.0"},
+      {:tzdata, "~> 1.1"}
     ]
   end
 
