@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    .calendar
+    {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    width: 420px;
+    margin: 0 auto;
+    height: auto;
+    overflow: hidden;
+    }
+
+    .calendar_header
+    {
+    height: 70px;
+    width: 420px;
+    background: rgba(48, 74, 202, 1);
+    text-align: center;
+    position: relative;
+    z-index: 100;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    }
+
+    .header_month {
+    margin: 0;
+    padding: 5px;
+    font-size: 25px;
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    line-height: 30px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    }
+
+    .left, .right {
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    top: 50%;
+    margin-top: -7.5px;
+    cursor: pointer;
+    }
+
+    .left{
+    border-width: 7.5px 10px 7.5px 0;
+    border-color: transparent rgba(255, 255, 255, 1) transparent transparent;
+    left: 20px;
+    }
+
+    .right {
+    border-width: 7.5px 0 7.5px 10px;
+    border-color: transparent transparent transparent rgba(255, 255, 255, 1);
+    right: 20px;
+    }
+
+    .week {
+    background: #36468B
+    }
+
+    .day {
+    display: inline-block;
+    width: 60px;
+    padding: 10px;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+    background: #36468B;
+    position: relative;
+    z-index: 100;
+    }
+
+        .day.disabled {
+        color: rgba(230, 62, 63, 1);
+        }
+
+
+        .day.today {
+        color: rgba(156, 202, 235, 1);
+        }
+
+    .day-name {
+    font-size: 9px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    color: rgba(255, 255, 255, .5);
+    letter-spacing: .7px;
+    }
+
+    .day-number {
+    font-size: 24px;
+    letter-spacing: 1.5px;
+    }
+
+    .event {
+    border: 3px solid black;
+    border-radius: 25px;
+    width: 8px;
+    height: 8px;
+    margin: 0px;
+    display: inline-block;
+    }
+
+    .selected {
+        border-radius: 25px 25px 0px 0px;
+        background-color: rgba(48, 74, 202, 1)
+    }
+
+    .key {
+        width: 420px;
+        border-radius: 25px;
+        background-color: rgba(48, 74, 202, 1)
+    }
+
+
+
+</style>
+<table class="calendar">
+
+<tr>
+<th class="calendar_header">
+<div class ="left" phx-click="last_month" phx-value-month="<%= @current_month %>" phx-value-year="<%= @current_year %>"></div>
+<span class = "header_month"><%= @calendar_title %></span>
+<div class = "right" phx-click="next_month" phx-value-month="<%= @current_month %>" phx-value-year="<%= @current_year %>"></div>
+</th>
+</tr>
+</table>
+
+<table class="calendar mb-4">
+<tr class="week">
+<th class ="day day-name">Mon</th>
+<th class ="day day-name">Tue</th>
+<th class ="day day-name">Wed</th>
+<th class ="day day-name">Thu</th>
+<th class ="day day-name">Fri</th>
+<th class ="day day-name">Sat</th>
+<th class ="day day-name">Sun</th>
+</tr>
+
+<%= for week <- @weeks do %>
+    <tr class="week">
+    <%= for day <- week.days do %>
+        <td class="day day-number <%= if not day.in_month, do: "disabled" %> <%= if day.today, do: "today" %> <%= if day.selected, do: "selected" %>" >
+        <%= if day.in_month do %>
+            <div phx-click="select_day" phx-value-month="<%= @current_month %>" phx-value-year="<%= @current_year %>" phx-value-day="<%= day.day %>">
+            <% else %>
+            <div>
+        <% end %>
+        <%= day.day %>
+        <%= for event <- day.todays_events do %>
+        <div class="event" style="border-color: <%= get_event_color(event) %>; background: <%= get_event_color(event) %>;" title="<%= event.label %>"></div>
+        <% end %>
+        </div>
+        </td>
+    <% end %>
+    </tr>
+    <%= if week.expanded do %>
+    <tr class="calendar_header"><td colspan="7">
+    <ul class="my-1 list-unstyled">
+    <%= for event <- week.days |> Enum.filter(fn x ->x.selected end) |> Enum.map(fn x -> x.todays_events end) |> List.first() do %>
+       <li class="text-left"><div class="event ml-2 mr-2" style="border-color: <%= get_event_color(event) %>; background: <%= get_event_color(event) %>;"></div><%= event.label %> <%= Calendar.strftime(event.start_date, "%I:%M %p") %> Eastern</li>
+    <% end %>
+    </td></tr>
+    <% end %>
+<% end %>
+
+
+
+</table>
+
+<div class="mb-5 key p-3">
+<h5>Key</h5>
+    <ul class="my-1 list-unstyled">
+        <%= for event_type <- @event_types_key do %>
+        <li class="text-left">
+        <div class="event ml-2 mr-2" style="border-color: <%= event_type.color %>; background: <%= event_type.color %>;"></div>
+        <%= event_type.label %>
+        </li>
+        <% end %>
+    </ul>
+</div>

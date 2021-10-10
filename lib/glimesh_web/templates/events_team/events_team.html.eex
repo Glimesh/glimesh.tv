@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div class="container">
+        <div class="text-center mt-4 mb-4">
+        <h2><%= gettext("Glimesh Events") %></h2>
+        <h5> Want your event featured? click <a href= "https://forms.gle/6VpqMzc6i1XomaP86/" >HERE</a> to apply now </h5>
+        </div>
+    </div>
+    <div class="row" style="padding:20px">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+				    <h4 class="text-center mt-2 mb-4"><%= gettext("Upcoming Events") %></h4>
+                </div>
+
+                <%# calendar is here %>
+                <div class="align-self-center"><%= live_render(@conn, GlimeshWeb.CalendarLive) %></div>
+
+            </div>
+        </div>
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+				<h4 class="text-center mt-2 mb-4"><%= gettext("Featured Events") %></h4>
+            </div>
+        </div>
+
+    <%= for event <- @featured do %>
+    <div class="col-md-20">
+        <div class="card mt-2">
+            <div class="card-body">
+                <img src="uploads/event-image/<%= event.image.file_name %>.png" style="float:left; padding:20px" height="300px" width="300px" alt="<%= event.label %>">
+                        <br>
+                    <h5> <%= event.label %></h5>
+                    <p> <%= event.description %> </p>
+                        <p> <%= if Glimesh.EventsTeam.live_now(event) do %>
+                            <span class="badge badge-pill badge-danger">Live now</span>
+                            <% else %>
+                            Live <relative-time phx-update="ignore" datetime="<%= Glimesh.EventsTeam.date_to_utc(event.start_date) %>"></relative-time>
+                            <% end %>
+                             on <br> <a href="https://glimesh.tv/<%= event.channel %>">glimesh.tv/<%= event.channel %></a></span></p>
+                            <p> <local-time phx-update="ignore" datetime="<%= Glimesh.EventsTeam.date_to_utc(event.start_date)%>">
+                                    <%= Calendar.strftime(event.start_date, "%B %d#{Glimesh.EventsTeam.get_day_ordinal(event.start_date)} %I:%M%p") %> Eastern
+                                </local-time> </p>
+                </div>
+            </div>
+    <% end %>
+        </div>
+    </div>
+</div>
+</body>
