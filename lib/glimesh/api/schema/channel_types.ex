@@ -239,7 +239,7 @@ defmodule Glimesh.Api.ChannelTypes do
 
     field :show_on_homepage, :boolean, description: "Toggle for homepage visibility"
 
-    field :show_recent_chat_messages_only, :boolean, "Only show recent chat messages?"
+    field :show_recent_chat_messages_only, :boolean, description: "Only show recent chat messages?"
 
     field :disable_hyperlinks, :boolean,
       description: "Toggle for links automatically being clickable"

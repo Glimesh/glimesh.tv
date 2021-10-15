@@ -208,7 +208,7 @@ defmodule Glimesh.Schema.ChannelTypes do
             {:ok, Glimesh.Streams.get_stream_key(channel)}
 
           _ ->
-            {:error, "Unauthorized to access streamKey field."}
+            {:error, description: "Unauthorized to access streamKey field."}
         end
       end)
     end
@@ -231,7 +231,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :chat_rules_md, :string, description: "Chat rules in markdown"
     field :chat_rules_html, :string, description: "Chat rules in html"
 
-    field :show_recent_chat_messages_only, :boolean, "Only show recent chat messages?"
+    field :show_recent_chat_messages_only, :boolean, description: "Only show recent chat messages?"
 
     field :disable_hyperlinks, :boolean,
       description: "Toggle for links automatically being clickable"
@@ -344,11 +344,11 @@ defmodule Glimesh.Schema.ChannelTypes do
   @desc "A subscription is an exchange of money for support."
   object :sub do
     field :id, :id, description: "Subscription unique identifier"
-    field :is_active, :boolean, "Is the subscription currently active?"
-    field :started_at, non_null(:datetime), "When the subscription started"
-    field :ended_at, :datetime, "When the subscription ended"
-    field :price, :integer, "Price of the subscription"
-    field :product_name, :string, "Subscription product name"
+    field :is_active, :boolean, description: "Is the subscription currently active?"
+    field :started_at, non_null(:datetime), description: "When the subscription started"
+    field :ended_at, :datetime, description: "When the subscription ended"
+    field :price, :integer, description: "Price of the subscription"
+    field :product_name, :string, description: "Subscription product name"
 
     field :streamer, :user, resolve: dataloader(Repo),
       description: "The streamer receiving the support from the subscription"
