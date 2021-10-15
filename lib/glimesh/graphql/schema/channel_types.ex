@@ -226,7 +226,7 @@ defmodule Glimesh.Schema.ChannelTypes do
       end)
     end
 
-    field :inaccessible, :boolean, "Is the stream inaccessible?"
+    field :inaccessible, :boolean, description: "Is the stream inaccessible?"
 
     field :chat_rules_md, :string, description: "Chat rules in markdown"
     field :chat_rules_html, :string, description: "Chat rules in html"

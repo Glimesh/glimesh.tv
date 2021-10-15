@@ -232,7 +232,7 @@ defmodule Glimesh.Api.ChannelTypes do
     @desc "Hash-based Message Authentication Code for the stream"
     field :hmac_key, :string, resolve: &ChannelResolver.resolve_hmac_key/3
 
-    field :inaccessible, :boolean, "Is the stream inaccessible?"
+    field :inaccessible, :boolean, description: "Is the stream inaccessible?"
 
     field :chat_rules_md, :string, description: "Chat rules in markdown"
     field :chat_rules_html, :string, description: "Chat rules in html"
