@@ -125,6 +125,7 @@ defmodule Glimesh.Api.AccountResolver do
 
     Glimesh.Streams.Channel
     |> where([c], c.user_id in ^following_user_ids)
+    |> where([c], c.status == "live")
     |> order_by(:id)
     |> Api.connection_from_query_with_count(args)
   end
