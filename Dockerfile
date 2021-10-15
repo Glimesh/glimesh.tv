@@ -1,7 +1,8 @@
-FROM elixir:1.12.1-alpine AS build
+FROM elixir:1.12.1 AS build
+# Doesn't use alpine because we need dart-sass to work and it needs glibc
 
-# install build dependencies
-RUN apk add --no-cache build-base npm git
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+RUN apt-get install -y nodejs
 
 # prepare build dir
 WORKDIR /app
@@ -27,8 +28,7 @@ RUN npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
 
 COPY priv priv
 COPY assets assets
-RUN npm run --prefix ./assets deploy
-RUN mix phx.digest
+RUN mix assets.deploy
 
 # compile and build release
 COPY lib lib

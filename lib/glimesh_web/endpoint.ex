@@ -38,10 +38,10 @@ defmodule GlimeshWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :glimesh,
-    gzip: false,
+    from: {:glimesh, "priv/assets"},
+    gzip: Application.get_env(:glimesh, :environment) == :prod,
     only:
-      ~w(css fonts images videos js cache_manifest.json favicons emotes browserconfig.xml favicon.ico robots.txt site.webmanifest)
+      ~w(emotes fa-fonts favicons fonts images css js browserconfig.xml cache_manifest.json favicon.ico robots.txt)
 
   if Application.get_env(:waffle, :asset_host) do
     # If we're using an asset host, we just want to redirect requests

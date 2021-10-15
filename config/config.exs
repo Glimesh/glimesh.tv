@@ -17,6 +17,7 @@ locales = [
   Deutsch: "de",
   日本語: "ja",
   "Norsk Bokmål": "nb",
+  "Norsk Nynorsk": "nn",
   Français: "fr",
   Svenska: "sv",
   "Tiếng Việt": "vi",
@@ -50,6 +51,21 @@ config :glimesh,
 
 config :glimesh, Glimesh.Repo, prepare: :unnamed
 
+config :esbuild,
+  version: "0.12.18",
+  default: [
+    args: ~w(js/app.js --bundle --target=es2016 --outdir=../priv/static/js),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
+config :dart_sass,
+  version: "1.39.0",
+  default: [
+    args: ~w(--load-path=./node_modules css/app.scss ../priv/static/css/app.css),
+    cd: Path.expand("../assets", __DIR__)
+  ]
+
 config :waffle,
   storage: Waffle.Storage.Local,
   storage_dir: "uploads",
@@ -81,7 +97,7 @@ config :boruta, Boruta.Oauth,
   cache_backend: Boruta.Cache,
   contexts: [
     access_tokens: Boruta.Ecto.AccessTokens,
-    clients: Glimesh.Oauth.Clients,
+    clients: Boruta.Ecto.Clients,
     codes: Boruta.Ecto.Codes,
     # mandatory for user flows
     resource_owners: Glimesh.Oauth.ResourceOwners,
@@ -89,7 +105,8 @@ config :boruta, Boruta.Oauth,
   ],
   max_ttl: [
     authorization_code: 60,
-    access_token: 60 * 60 * 24
+    access_token: 60 * 60 * 24,
+    refresh_token: 60 * 60 * 24 * 30
   ],
   token_generator: Boruta.TokenGenerator
 

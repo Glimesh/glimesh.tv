@@ -11,13 +11,21 @@ defmodule GlimeshWeb.UserRegistrationController do
   end
 
   def create(conn, %{"user" => user_params, "h-captcha-response" => captcha_response}) do
+    safe_params =
+      Map.take(user_params, [
+        "username",
+        "password",
+        "email",
+        "allow_glimesh_newsletter_emails"
+      ])
+
     existing_preferences = %Glimesh.Accounts.UserPreference{
       locale: GlimeshWeb.LayoutView.site_locale(conn),
       site_theme: GlimeshWeb.LayoutView.site_theme(conn)
     }
 
     user_ip = conn.remote_ip |> :inet.ntoa() |> to_string()
-    user_params = Map.put(user_params, "raw_user_ip", user_ip)
+    user_params = Map.put(safe_params, "raw_user_ip", user_ip)
 
     case Hcaptcha.verify(captcha_response) do
       {:ok, _} ->

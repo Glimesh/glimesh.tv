@@ -77,6 +77,8 @@ Running Glimesh.tv natively on Windows is not yet understood. However you can ru
 On modern versions of Ubuntu, you can install these packages with the following command:
 
 ```sh
+wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && sudo dpkg -i erlang-solutions_2.0_all.deb
+sudo apt update
 sudo apt install git esl-erlang elixir postgresql npm inotify-tools librsvg2-bin
 sudo npm -g install svgo
 ```
