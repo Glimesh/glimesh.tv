@@ -170,6 +170,9 @@ defmodule Glimesh.Api.AccountsTest do
 
     test "returns all followers in node relation", %{conn: conn, user: user} do
       streamer = streamer_fixture()
+
+      Glimesh.Streams.start_stream(streamer.channel)
+
       random_user = user_fixture()
       AccountFollows.follow(user, random_user)
       AccountFollows.follow(streamer, user)
