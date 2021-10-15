@@ -169,7 +169,9 @@ defmodule Glimesh.Api.AccountsTest do
     end
 
     test "returns all followers in node relation", %{conn: conn, user: user} do
-      streamer = streamer_fixture()
+      streamer = streamer_fixture(%{}, %{
+        status: "live"
+      })
       random_user = user_fixture()
       AccountFollows.follow(user, random_user)
       AccountFollows.follow(streamer, user)
