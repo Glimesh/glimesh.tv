@@ -10,24 +10,24 @@ defmodule Glimesh.Schema.ChannelTypes do
   alias Glimesh.Streams
 
   input_object :stream_metadata_input do
-    field :ingest_server, :string
-    field :ingest_viewers, :integer
-    field :stream_time_seconds, :integer
+    field :ingest_server, :string, description: "Ingest Server URL"
+    field :ingest_viewers, :integer, description: "Viewers on the ingest"
+    field :stream_time_seconds, :integer, description: "Current Stream time in seconds"
 
-    field :source_bitrate, :integer
-    field :source_ping, :integer
+    field :source_bitrate, :integer, description: "Bitrate at the source"
+    field :source_ping, :integer, description: "Ping to the source"
 
-    field :recv_packets, :integer
-    field :lost_packets, :integer
-    field :nack_packets, :integer
+    field :recv_packets, :integer, description: "Received stream input data packets"
+    field :lost_packets, :integer, description: "Lost stream input data packets"
+    field :nack_packets, :integer, description: "Negative Acknowledged stream input data packets"
 
-    field :vendor_name, :string
-    field :vendor_version, :string
+    field :vendor_name, :string, description: "Client vendor name"
+    field :vendor_version, :string, description: "Client vendor version"
 
-    field :video_codec, :string
-    field :video_height, :integer
-    field :video_width, :integer
-    field :audio_codec, :string
+    field :video_codec, :string, description: "Stream video codec"
+    field :video_height, :integer, description: "Stream video height"
+    field :video_width, :integer, description: "Stream video width"
+    field :audio_codec, :string, description: "Stream audio codec"
   end
 
   object :streams_queries do
@@ -111,6 +111,7 @@ defmodule Glimesh.Schema.ChannelTypes do
     end
   end
 
+  @desc "Current channel status"
   enum :channel_status do
     value(:live, as: "live")
     value(:offline, as: "offline")
@@ -118,10 +119,13 @@ defmodule Glimesh.Schema.ChannelTypes do
 
   @desc "Categories are the containers for live streaming content."
   object :category do
-    field :id, :id
+    field :id, :id, description: "Unique category identifier"
     field :name, :string, description: "Name of the category"
 
+    @desc "Tags associated with the category"
     field :tags, list_of(:tag), resolve: dataloader(Repo)
+
+    @desc "Subcategories within the category"
     field :subcategories, list_of(:subcategory), resolve: dataloader(Repo)
 
     field :tag_name, :string do
@@ -145,14 +149,15 @@ defmodule Glimesh.Schema.ChannelTypes do
 
   @desc "Subcategories are specific games, topics, or genre's that exist under a Category."
   object :subcategory do
-    field :id, :id
+    field :id, :id, description: "ID of subcategory"
     field :name, :string, description: "Name of the subcategory"
     field :slug, :string, description: "URL friendly name of the subcategory"
 
-    field :user_created, :boolean
-    field :source, :string
-    field :source_id, :string
+    field :user_created, :boolean, description: "Was the subcategory created by a user?"
+    field :source, :string, description: "Subcategory source"
+    field :source_id, :string, description: "Subcategory source ID"
 
+    @desc "Subcategory background image URL"
     field :background_image_url, :string do
       # Resolve URL to our actual public route
       resolve(fn subcategory, _, _ ->
@@ -160,41 +165,42 @@ defmodule Glimesh.Schema.ChannelTypes do
       end)
     end
 
-    field :category, :category, resolve: dataloader(Repo)
+    field :category, :category, resolve: dataloader(Repo), description: "Parent category"
 
-    field :inserted_at, non_null(:naive_datetime)
-    field :updated_at, non_null(:naive_datetime)
+    field :inserted_at, non_null(:naive_datetime), description: "Subcategory creation date"
+    field :updated_at, non_null(:naive_datetime), description: "Subcategory updated date"
   end
 
   @desc "Tags are user created labels that are either global or category specific."
   object :tag do
-    field :id, :id
+    field :id, :id, description: "Unique tag identifier"
     field :name, :string, description: "Name of the tag"
     field :slug, :string, description: "URL friendly name of the tag"
     field :count_usage, :integer, description: "The number of streams started with this tag"
 
-    field :category, :category, resolve: dataloader(Repo)
+    field :category, :category, resolve: dataloader(Repo), description: "Parent category"
 
-    field :inserted_at, non_null(:naive_datetime)
-    field :updated_at, non_null(:naive_datetime)
+    field :inserted_at, non_null(:naive_datetime), description: "Tag creation date"
+    field :updated_at, non_null(:naive_datetime), description: "Tag updated date"
   end
 
   @desc "A channel is a user's actual container for live streaming."
   object :channel do
-    field :id, :id
+    field :id, :id, description: "Unique channel identifier"
 
-    field :status, :channel_status
+    field :status, :channel_status, description: "The current status of the channnel"
     field :title, :string, description: "The title of the current stream, live or offline."
-    field :category, :category, resolve: dataloader(Repo)
-    field :subcategory, :subcategory, resolve: dataloader(Repo)
+    field :category, :category, resolve: dataloader(Repo), description: "Category the current stream is in"
+    field :subcategory, :subcategory, resolve: dataloader(Repo), description: "Subcategory the current stream is in"
 
     field :mature_content, :boolean,
       description:
         "If the streamer has flagged this channel as only appropriate for Mature Audiences."
 
     field :language, :string, description: "The language a user can expect in the stream."
-    field :thumbnail, :string
+    field :thumbnail, :string, description: "Current stream thumbnail"
 
+    @desc "Current streams unique stream key"
     field :stream_key, :string do
       resolve(fn channel, _, %{context: %{access: access}} ->
         case Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
@@ -207,6 +213,7 @@ defmodule Glimesh.Schema.ChannelTypes do
       end)
     end
 
+    @desc "Hash-based Message Authentication Code for the stream"
     field :hmac_key, :string do
       resolve(fn channel, _, %{context: %{access: access}} ->
         case Bodyguard.permit(Glimesh.Api.Scopes, :stream_mutations, access) do
@@ -219,114 +226,136 @@ defmodule Glimesh.Schema.ChannelTypes do
       end)
     end
 
-    field :inaccessible, :boolean
+    field :inaccessible, :boolean, "Is the stream inaccessible?"
 
-    field :chat_rules_md, :string
-    field :chat_rules_html, :string
+    field :chat_rules_md, :string, description: "Chat rules in markdown"
+    field :chat_rules_html, :string, description: "Chat rules in html"
 
-    field :show_recent_chat_messages_only, :boolean
-    field :disable_hyperlinks, :boolean
-    field :block_links, :boolean
-    field :require_confirmed_email, :boolean
-    field :minimum_account_age, :integer
+    field :show_recent_chat_messages_only, :boolean, "Only show recent chat messages?"
 
-    field :stream, :stream, resolve: dataloader(Repo)
+    field :disable_hyperlinks, :boolean,
+      description: "Toggle for links automatically being clickable"
 
-    field :streamer, non_null(:user), resolve: dataloader(Repo)
-    field :chat_messages, list_of(:chat_message), resolve: dataloader(Repo)
-    field :bans, list_of(:channel_ban), resolve: dataloader(Repo)
-    field :moderators, list_of(:channel_moderator), resolve: dataloader(Repo)
-    field :moderation_logs, list_of(:channel_moderation_log), resolve: dataloader(Repo)
+    field :block_links, :boolean, description: "Toggle for blocking anyone from posting links"
+
+    field :require_confirmed_email, :boolean,
+      description: "Toggle for requiring confirmed email before chatting"
+
+    field :minimum_account_age, :integer,
+      description: "Minimum account age length before chatting"
+
+    field :stream, :stream, resolve: dataloader(Repo),
+      description: "If the channel is live, this will be the current Stream"
+
+    field :streamer, non_null(:user), resolve: dataloader(Repo),
+      description: "User associated with the channel"
+    field :chat_messages, list_of(:chat_message), resolve: dataloader(Repo),
+      description: "List of chat messages sent in the channel"
+    field :bans, list_of(:channel_ban), resolve: dataloader(Repo),
+      description: "List of bans in the channel"
+    field :moderators, list_of(:channel_moderator), resolve: dataloader(Repo),
+      description: "List of moderators in the channel"
+    field :moderation_logs, list_of(:channel_moderation_log), resolve: dataloader(Repo),
+      description: "List of moderation events in the channel"
 
     field :user, non_null(:user),
       resolve: dataloader(Repo),
       deprecate: "Please use the streamer field"
 
-    field :tags, list_of(:tag), resolve: dataloader(Repo)
+    field :tags, list_of(:tag), resolve: dataloader(Repo),
+      description: "Tags associated with the channel"
 
-    field :inserted_at, non_null(:naive_datetime)
-    field :updated_at, non_null(:naive_datetime)
+    field :inserted_at, non_null(:naive_datetime), description: "Channel creation date"
+    field :updated_at, non_null(:naive_datetime), description: "Channel updated date"
   end
 
   @desc "A stream is a single live stream in, either current or historical."
   object :stream do
-    field :id, :id
+    field :id, :id, description: "Unique stream identifier"
 
-    field :channel, non_null(:channel), resolve: dataloader(Repo)
+    field :channel, non_null(:channel), resolve: dataloader(Repo),
+      description: "Channel running with the stream"
 
     field :title, :string, description: "The title of the stream."
-    field :category, non_null(:category), resolve: dataloader(Repo)
-    field :subcategory, :subcategory, resolve: dataloader(Repo)
-    field :metadata, list_of(:stream_metadata), resolve: dataloader(Repo)
+    field :category, non_null(:category), resolve: dataloader(Repo),
+      description: "The category the current stream is in"
+    field :subcategory, :subcategory, resolve: dataloader(Repo),
+      description: "The subategory the current stream is in"
+    field :metadata, list_of(:stream_metadata), resolve: dataloader(Repo),
+      description: "Current stream metadata"
 
-    field :started_at, non_null(:naive_datetime)
-    field :ended_at, :naive_datetime
+    field :started_at, non_null(:naive_datetime), description: "Datetime of when the stream was started"
+    field :ended_at, :naive_datetime, description: "Datetime of when the stream ended, or null if still going"
 
     # field :viewers, :viewers, resolve: dataloader(Repo)
     # field :chatters, :chatters, resolve: dataloader(Repo)
 
-    field :count_viewers, :integer
-    field :count_chatters, :integer
+    field :count_viewers, :integer, description: "Concurrent viewers during last snapshot"
+    field :count_chatters, :integer, description: "Concurrent chatters during last snapshot"
 
-    field :peak_viewers, :integer
-    field :peak_chatters, :integer
-    field :avg_viewers, :integer
-    field :avg_chatters, :integer
-    field :new_subscribers, :integer
-    field :resub_subscribers, :integer
+    field :peak_viewers, :integer, description: "Peak concurrent viewers"
+    field :peak_chatters, :integer, description: "Peak concurrent chatters"
+    field :avg_viewers, :integer, description: "Average viewers during the stream"
+    field :avg_chatters, :integer, description: "Average chatters during the stream"
+    field :new_subscribers, :integer, description: "Total new subscribers gained during the stream"
+    field :resub_subscribers, :integer, description: "Total resubscribers during the stream"
 
+    @desc "Thumbnail URL of the stream"
     field :thumbnail, :string do
       resolve(fn stream, _, _ ->
         {:ok, Glimesh.StreamThumbnail.url({stream.thumbnail, stream})}
       end)
     end
 
-    field :inserted_at, non_null(:naive_datetime)
-    field :updated_at, non_null(:naive_datetime)
+    field :inserted_at, non_null(:naive_datetime), description: "Stream created date"
+    field :updated_at, non_null(:naive_datetime), description: "Stream updated date"
   end
 
   @desc "A single instance of stream metadata."
   object :stream_metadata do
-    field :id, :id
+    field :id, :id, description: "Unique stream metadata identifier"
 
-    field :stream, non_null(:stream), resolve: dataloader(Repo)
+    field :stream, non_null(:stream), resolve: dataloader(Repo),
+      description: "Current stream metadata references"
 
-    field :ingest_server, :string
-    field :ingest_viewers, :string
-    field :stream_time_seconds, :integer
+    field :ingest_server, :string, description: "Ingest Server URL"
+    field :ingest_viewers, :string, description: "Viewers on the ingest"
+    field :stream_time_seconds, :integer, description: "Current Stream time in seconds"
 
-    field :source_bitrate, :integer
-    field :source_ping, :integer
+    field :source_bitrate, :integer, description: "Bitrate at the source"
+    field :source_ping, :integer, description: "Ping to the source"
 
-    field :recv_packets, :integer
-    field :lost_packets, :integer
-    field :nack_packets, :integer
+    field :recv_packets, :integer, description: "Received stream input data packets"
+    field :lost_packets, :integer, description: "Lost stream input data packets"
+    field :nack_packets, :integer, description: "Negative Acknowledged stream input data packets"
 
-    field :vendor_name, :string
-    field :vendor_version, :string
+    field :vendor_name, :string, description: "Client vendor name"
+    field :vendor_version, :string, description: "Client vendor version"
 
-    field :video_codec, :string
-    field :video_height, :integer
-    field :video_width, :integer
-    field :audio_codec, :string
+    field :video_codec, :string, description: "Stream video codec"
+    field :video_height, :integer, description: "Stream video height"
+    field :video_width, :integer, description: "Stream video width"
+    field :audio_codec, :string, description: "Stream audio codec"
 
-    field :inserted_at, non_null(:naive_datetime)
-    field :updated_at, non_null(:naive_datetime)
+    field :inserted_at, non_null(:naive_datetime), description: "Stream metadata created date"
+    field :updated_at, non_null(:naive_datetime), description: "Stream metadata updated date"
   end
 
   @desc "A subscription is an exchange of money for support."
   object :sub do
-    field :id, :id
-    field :is_active, :boolean
-    field :started_at, non_null(:datetime)
-    field :ended_at, :datetime
-    field :price, :integer
-    field :product_name, :string
+    field :id, :id, description: "Subscription unique identifier"
+    field :is_active, :boolean, "Is the subscription currently active?"
+    field :started_at, non_null(:datetime), "When the subscription started"
+    field :ended_at, :datetime, "When the subscription ended"
+    field :price, :integer, "Price of the subscription"
+    field :product_name, :string, "Subscription product name"
 
-    field :streamer, :user, resolve: dataloader(Repo)
-    field :user, non_null(:user), resolve: dataloader(Repo)
+    field :streamer, :user, resolve: dataloader(Repo),
+      description: "The streamer receiving the support from the subscription"
+    field :user, non_null(:user), resolve: dataloader(Repo),
+      description: "The user giving the support with the subscription"
 
-    field :inserted_at, non_null(:naive_datetime)
-    field :updated_at, non_null(:naive_datetime)
+    field :inserted_at, non_null(:naive_datetime), description: "Subscription created date"
+    field :updated_at, non_null(:naive_datetime), description: "Subscription updated date"
   end
 end
