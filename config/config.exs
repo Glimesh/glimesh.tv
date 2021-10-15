@@ -195,6 +195,7 @@ config :glimesh, :pronouns,
     "Zie/Hir": "Zie/Hir"
   ]
 
+#Configuration for the Event System
 config :glimesh, :event_type,
   event_labels: [
     nil: "-",
