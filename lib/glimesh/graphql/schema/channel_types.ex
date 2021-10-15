@@ -208,7 +208,7 @@ defmodule Glimesh.Schema.ChannelTypes do
             {:ok, Glimesh.Streams.get_stream_key(channel)}
 
           _ ->
-            {:error, description: "Unauthorized to access streamKey field."}
+            {:error, "Unauthorized to access streamKey field."}
         end
       end)
     end
