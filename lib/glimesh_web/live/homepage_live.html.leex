@@ -67,80 +67,42 @@
 <%= if length(@channels) > 0 do %>
 <div class="container container-stream-list">
     <div class="row">
-        <div class="col-xl-10">
-            <div class="row">
-                <%= for channel <- @channels do %>
-                <div class="col-sm-12 col-md-6 col-xl-4 mt-2 mt-md-4">
-                    <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
-                    <div class="card card-stream">
-                        <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>" alt="<%= channel.title %>" class="card-img" height="468" width="832">
-                        <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
+        <%= for channel <- @channels do %>
+        <div class="col-sm-12 col-md-6 col-xl-4 mt-2 mt-md-4">
+            <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
+            <div class="card card-stream">
+                <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>" alt="<%= channel.title %>" class="card-img" height="468" width="832">
+                <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
 
-                            <div>
-                                <div class="card-stream-category">
-                                    <span class="badge badge-primary"><%= channel.category.name %></span>
-                                </div>
+                    <div>
+                        <div class="card-stream-category">
+                            <span class="badge badge-primary"><%= channel.category.name %></span>
+                        </div>
 
-                                <div class="card-stream-tags">
-                                    <%= if channel.subcategory do %>
-                                    <span class="badge badge-info"><%= channel.subcategory.name %></span>
-                                    <% end %>
-                                </div>
-                            </div>
-
-                            <div class="media card-stream-streamer">
-                                <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>" alt="<%= channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(channel.user), do: "img-verified-streamer", else: "" %>">
-                                <div class="media-body">
-                                    <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
-                                    <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
-                                        <%= if channel.mature_content do %>
-                                        <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
-                                        <% end %>
-                                    </p>
-                                </div>
-                            </div>
+                        <div class="card-stream-tags">
+                            <%= if channel.subcategory do %>
+                            <span class="badge badge-info"><%= channel.subcategory.name %></span>
+                            <% end %>
                         </div>
                     </div>
-                    <% end %>
-                </div>
-                <% end %>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-2">
-            <%= if NaiveDateTime.compare(NaiveDateTime.utc_now(), ~N[2021-10-16 21:00:00]) == :lt do %>
-            <div class="card h-100">
-                <img src="/images/events/2021-10-16-grusom-kanin.png" class="card-img-top" alt="A charity fundraising stream for mental health and suicide awareness.">
-                <div class="card-body">
-                    <p class="card-text">Join <a href="https://glimesh.tv/GrusomKanin">GrusomKanin</a> for a charity stream focused on mental health and suicide awareness. Benefitting SAVE - Suicide Awareness Voices of Education!</p>
-                    <p class="text-center">
-                        Live <relative-time id="event-relative-time" phx-update="ignore" datetime="2021-10-16T17:00:00-04:00">October 16th 5:00PM EDT</relative-time> on <br> <a href="https://glimesh.tv/GrusomKanin">glimesh.tv/GrusomKanin</a>
-                    </p>
-                </div>
-                <div class="card-footer text-center lead">
-                    <local-time id="event-local-time" phx-update="ignore" datetime="2021-10-16T17:00:00-04:00">
-                        October 16th 5:00PM EDT
-                    </local-time>
-                </div>
-            </div>
-            <% else %>
-            <div class="card h-100">
-                <img src="/images/events/2021-10-22-united-front-charity-stream.jpg" class="card-img-top" alt="United Front Charity Stream hosted by CemetaryGate">
-                <div class="card-body">
-                    <p class="card-text">Join <a href="https://glimesh.tv/CemetaryGate">CemetaryGate</a> for a charity stream supporting Mission 22, dealing with PTSD and suicide among veterans. The stream will feature giveaways, gaming, educational talks with veterans and more!</p>
-                    <p class="text-center">
-                        Live <relative-time id="event-relative-time" phx-update="ignore" datetime="2021-10-22T20:30:00-04:00">October 22nd 8:30PM EDT</relative-time> on <br> <a href="https://glimesh.tv/CemetaryGate">glimesh.tv/CemetaryGate</a>
-                    </p>
-                </div>
-                <div class="card-footer text-center lead">
-                    <local-time id="event-local-time" phx-update="ignore" datetime="2021-10-22T20:30:00-04:00">
-                        October 22nd 8:30PM EDT
-                    </local-time>
+
+                    <div class="media card-stream-streamer">
+                        <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>" alt="<%= channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(channel.user), do: "img-verified-streamer", else: "" %>">
+                        <div class="media-body">
+                            <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
+                            <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
+                                <%= if channel.mature_content do %>
+                                <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
+                                <% end %>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <% end %>
         </div>
+        <% end %>
     </div>
-
 </div>
 <% end %>
 <%#
