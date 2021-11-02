@@ -159,6 +159,37 @@ defmodule Glimesh.Payments do
     end
   end
 
+  def donate_to_channel(user, streamer, payment_source, amount) when is_integer(amount) do
+    # if user.id == streamer.id do
+    #   raise ArgumentError, "You cannot donate to yourself."
+    # end
+
+    if amount < 100 or amount > 10000 do
+      raise ArgumentError, "Amount must be more than 1.00 and less than 100.00."
+    end
+
+    customer_id = Accounts.get_stripe_customer_id(user)
+
+    stripe_input = %{
+      amount: amount,
+      currency: "USD",
+      description: "Donation to #{streamer.displayname}",
+      source: payment_source,
+      customer: customer_id
+    }
+
+    results = Stripe.Charge.create(stripe_input, expand: ["latest_invoice.payment_intent"])
+
+    channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
+
+    Glimesh.Chat.create_chat_message(user, channel, %{
+      message: " just donated!",
+      is_subscription_message: false
+    })
+
+    results
+  end
+
   @doc """
   Stripe Test Card Numbers:
     4000 0000 0000 0341 sub.status: "incomplete", sub.latest_invoice.status = "open"
