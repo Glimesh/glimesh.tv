@@ -55,8 +55,7 @@ defmodule Glimesh.Api.AccountTypes do
 
   @desc "A user of Glimesh, can be a streamer, a viewer or both!"
   object :user do
-    field :id, non_null(:id)
-
+    field :id, non_null(:id), description: "Unique User identifier"
     field :username, non_null(:string), description: "Lowercase user identifier"
 
     field :displayname, non_null(:string),
@@ -150,7 +149,7 @@ defmodule Glimesh.Api.AccountTypes do
 
   @desc "A linked social account for a Glimesh user."
   object :user_social do
-    field :id, non_null(:id)
+    field :id, non_null(:id), description: "Unique social account identifier"
 
     field :platform, :string, description: "Platform that is linked, eg: twitter"
 
@@ -159,20 +158,23 @@ defmodule Glimesh.Api.AccountTypes do
 
     field :username, :string, description: "Username for the user on the linked platform"
 
-    field :inserted_at, non_null(:naive_datetime)
-    field :updated_at, non_null(:naive_datetime)
+    field :inserted_at, non_null(:naive_datetime), description: "User socials created date"
+    field :updated_at, non_null(:naive_datetime), description: "User socials updated date"
   end
 
   @desc "A follower is a user who subscribes to notifications for a particular user's channel."
   object :follower do
-    field :id, non_null(:id)
-    field :has_live_notifications, non_null(:boolean)
+    field :id, non_null(:id), description: "Unique follower identifier"
+    field :has_live_notifications, non_null(:boolean),
+      description: "Does this follower have live notifications enabled?"
 
-    field :streamer, non_null(:user), resolve: dataloader(Repo)
-    field :user, non_null(:user), resolve: dataloader(Repo)
+    field :streamer, non_null(:user), resolve: dataloader(Repo),
+      description: "The streamer the user is following"
+    field :user, non_null(:user), resolve: dataloader(Repo),
+      description: "The user that is following the streamer"
 
-    field :inserted_at, non_null(:naive_datetime)
-    field :updated_at, non_null(:naive_datetime)
+    field :inserted_at, non_null(:naive_datetime), description: "Following creation date"
+    field :updated_at, non_null(:naive_datetime), description: "Following updated date"
   end
 
   connection node_type: :follower do

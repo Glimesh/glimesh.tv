@@ -53,7 +53,7 @@ defmodule Glimesh.Schema.AccountTypes do
 
   @desc "A user of Glimesh, can be a streamer, a viewer or both!"
   object :user do
-    field :id, :id
+    field :id, :id, description: "Unique User identifier"
 
     field :username, :string, description: "Lowercase user identifier"
 
@@ -61,8 +61,10 @@ defmodule Glimesh.Schema.AccountTypes do
       description: "Exactly the same as the username, but with casing the user prefers"
 
     # field :email, :string, let's hide this for now :)
-    field :confirmed_at, :naive_datetime
+    field :confirmed_at, :naive_datetime,
+      description: "Datetime the user confirmed their email address"
 
+    @desc "User Avatar"
     field :avatar, :string do
       # Need to strip the asset_host url from this property
       resolve(fn user, _, _ ->
@@ -95,6 +97,7 @@ defmodule Glimesh.Schema.AccountTypes do
       end)
     end
 
+    @desc "URL to the user's avatar"
     field :avatar_url, :string do
       resolve(fn user, _, _ ->
         avatar_url =
@@ -156,19 +159,22 @@ defmodule Glimesh.Schema.AccountTypes do
 
     field :username, :string, description: "Username for the user on the linked platform"
 
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
+    field :inserted_at, non_null(:naive_datetime), description: "User socials created date"
+    field :updated_at, non_null(:naive_datetime), description: "User socials updated date"
   end
 
   @desc "A follower is a user who subscribes to notifications for a particular user's channel."
   object :follower do
-    field :id, :id
-    field :has_live_notifications, :boolean
+    field :id, :id, description: "Unique follower identifier"
+    field :has_live_notifications, :boolean,
+      description: "Does this follower have live notifications enabled?"
 
-    field :streamer, non_null(:user), resolve: dataloader(Repo)
-    field :user, non_null(:user), resolve: dataloader(Repo)
+    field :streamer, non_null(:user), resolve: dataloader(Repo),
+      description: "The streamer the user is following"
+    field :user, non_null(:user), resolve: dataloader(Repo),
+      description: "The user that is following the streamer"
 
-    field :inserted_at, non_null(:naive_datetime)
-    field :updated_at, non_null(:naive_datetime)
+    field :inserted_at, non_null(:naive_datetime), description: "Following creation date"
+    field :updated_at, non_null(:naive_datetime), description: "Following updated date"
   end
 end
