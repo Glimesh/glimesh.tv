@@ -36,7 +36,7 @@
         <h2 class="text-center"><%= gettext("Join Us!") %></h2>
 
         <p>
-            <%= gettext("We also encourage our community to become part of our team as we know there are many talented people out there who wish to be part of something new. If you feel that you can offer Glimesh and the community your talents, whether that’s web development, designing, or moderation, then we would love to hear from you. If this is of any interest, please reach out to us in our Discord and mention your interest within our #volunteer channel.") %>
+            <%= gettext("We also encourage our community to become part of our team as we know there are many talented people out there who wish to be part of something new. If you feel that you can offer Glimesh and the community your talents, whether that’s web development, designing, or moderation, then we would love to hear from you. If this is of any interest, please reach out to us in our Discord or head to") %><a href= "https://build.glimesh.tv"> <%= gettext("Building Glimesh") %></a> <%= gettext("to get involved.") %>
         </p>
 
         <div class="mt-4 mb-1 text-center">
