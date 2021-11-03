@@ -145,4 +145,21 @@ defmodule Glimesh.EventsTeam do
     NaiveDateTime.compare(event.start_date, now) == :lt and
       NaiveDateTime.compare(event.end_date, now) == :gt
   end
+
+  def get_event_color(%Event{} = event) do
+    labels =
+      Keyword.to_list(Keyword.get(Application.get_env(:glimesh, :event_type), :event_labels, []))
+
+    Keyword.to_list(Keyword.get(Application.get_env(:glimesh, :event_type), :event_colors, []))
+    |> Enum.filter(fn x ->
+      key =
+        labels
+        |> Enum.filter(fn y -> elem(y, 1) == event.type end)
+        |> List.first()
+
+      elem(key, 0) == elem(x, 0)
+    end)
+    |> Enum.map(fn x -> elem(x, 1) end)
+    |> List.first()
+  end
 end
