@@ -1,0 +1,104 @@
+.calendar {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    margin: 0 auto;
+    height: auto;
+    overflow: hidden;
+
+
+    .calendar_header {
+        background: rgba(48, 74, 202, 1);
+        text-align: center;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .calendar_footer {
+        background: rgba(48, 74, 202, 1);
+        text-align: center;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    .events_header {
+        background: rgba(48, 74, 202, 1);
+    }
+
+    .header_month {
+        margin: 0;
+        padding: 5px;
+        font-size: 25px;
+        font-family: "Roboto", sans-serif;
+        font-style: normal;
+        line-height: 30px;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+    }
+
+    .left,
+    .right {
+        cursor: pointer;
+    }
+
+    .left {
+        border-width: 7.5px 10px 7.5px 0;
+        border-color: transparent rgba(255, 255, 255, 1) transparent transparent;
+    }
+
+    .right {
+        border-width: 7.5px 0 7.5px 10px;
+        border-color: transparent transparent transparent rgba(255, 255, 255, 1);
+    }
+
+    .week {
+        background: #36468B
+    }
+
+    .day {
+        text-align: center;
+        vertical-align: top;
+        cursor: pointer;
+        background: #36468B;
+    }
+
+    .day.disabled {
+        color: rgba(255, 255, 255, .5);
+    }
+
+
+    .day.today {
+        color: rgba(156, 202, 235, 1);
+    }
+
+    .day-name {
+        font-size: 9px;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        color: rgba(255, 255, 255, .5);
+        letter-spacing: .7px;
+    }
+
+    .day-number {
+        font-size: 24px;
+        letter-spacing: 1.5px;
+    }
+
+
+    .selected {
+        border-radius: 25px 25px 0px 0px;
+        background-color: rgba(48, 74, 202, 1)
+    }
+
+    .key {
+        border-radius: 25px;
+        background-color: rgba(48, 74, 202, 1)
+    }
+}
+
+.calendar-event {
+    border: 3px solid black;
+    border-radius: 25px;
+    margin: 0px;
+    display: inline-block;
+}

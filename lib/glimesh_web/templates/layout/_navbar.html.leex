@@ -78,6 +78,9 @@
                 <% end %>
             </li>
             <% end %>
+             <li class="nav-item">
+                <%= live_redirect gettext("Events"), class: "nav-link", to: Routes.events_team_path(@conn, :events_team) %>
+            </li>
         </ul>
         <ul class="navbar-nav d-lg-flex align-items-lg-center">
             <li class="nav-item">
@@ -125,6 +128,12 @@
                     <%= link class: "dropdown-item", to: Routes.gct_path(@conn, :index) do %>
                     <i class="fas fa-user fa-fw"></i>
                     <%= gettext("GCT Dash") %>
+                    <% end %>
+                    <% end %>
+                      <%= if @current_user.is_events_team do %>
+                    <%= link class: "dropdown-item", to: Routes.events_admin_path(@conn, :index) do %>
+                    <i class="fas fa-calendar fa-fw"></i>
+                    <%= gettext("Events Dash") %>
                     <% end %>
                     <% end %>
                     <!-- Check for a channel and display an option to go to it -->

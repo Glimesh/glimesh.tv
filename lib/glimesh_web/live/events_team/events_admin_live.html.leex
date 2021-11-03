@@ -1,0 +1,118 @@
+<div class="text-center mt-4 mb-4">
+    <h2><%= gettext("Events Team Dashboard") %></h2>
+</div>
+<div class="row" style="padding:15px">
+    <div class="col-md-4" style="max-height: 760px; overflow: auto;">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="text-center mt-2 mb-4"><%= gettext("All Events") %></h4>
+            </div>
+
+
+            <%= for event <- @all_events do %>
+            <div class="card-body">
+                <div>
+                    <b>Event Name:</b> <%= event.label %><br>
+                    <b>Description:</b> <%= event.description %><br>
+                    <%= event.start_date %><br>
+                    _______________________
+                </div>
+                <button class="btn btn-primary" phx-click="select-event" phx-value-eventid="<%= event.id %>" type="button">Edit</button>
+                <button class="btn btn-danger" phx-click="delete-event" phx-value-eventid="<%= event.id %>" type="button">Delete</button>
+            </div>
+            <% end %>
+        </div>
+    </div>
+
+    <div class="col-8">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="text-center">Event Upload Form</h4>
+            </div>
+        </div>
+
+
+        <div class="col-md-20">
+            <div class="card mt-2">
+                <div class="card-body">
+
+                    <%= f = form_for @changeset, "#", [id: "event_image_upload", phx_submit: :save, phx_change: :validate, multipart: true] %>
+
+                    <%= hidden_input f, :id %>
+
+                    <div class="row">
+                        <div class="col-3">Name of Event</div>
+                        <div class="col-9">
+                            <%= text_input f, :label, [class: "form-control"] %>
+                        </div>
+                    </div><br>
+
+                    <div class="row">
+                        <div class="col-3">Description</div>
+                        <div class="col-9">
+                            <%= textarea f, :description, [class: "form-control", rows: 5] %>
+                        </div>
+                    </div><br>
+
+
+                    <div class="row">
+                        <div class="col-3"> Event Image </div>
+                        <div class="col-9">
+                            <div class="custom-file">
+                                <%# class: "custom-file-input", accept: "image/png, image/jpeg" %>
+                                <%= live_file_input @uploads.image %>
+                                <%# <%= label f, gettext("choose file"), class: "custom-file-label" %>
+                            </div>
+                            <%= if f.errors[:image] do %>
+                            <div>
+                                <span class="text-danger"><%= gettext("invalid image. Must be either a PNG or JPG.")%></span>
+                                <% end %>
+                            </div>
+                        </div><br>
+
+                        <div class="row">
+                            <div class="col-3">Channel Name</div>
+                            <div class="col-9">
+                                <%= text_input f, :channel, [class: "form-control"] %>
+                            </div>
+                        </div><br>
+
+                        <div class="row">
+                            <div class="col-3">Start Date and Time</div>
+                            <div class="col-9">
+                                <%= datetime_select f, :start_date %> </div>
+                        </div>*Times are Glimtime (Eastern) <br><br>
+                        <div class="row">
+                            <div class="col-3">End Date and Time</div>
+                            <div class="col-9"><%= datetime_select f, :end_date %></div>
+                        </div>*Times are Glimtime (Eastern)<br><br>
+
+                        <div class="row">
+                            <div class="col-3">Featured Event? </div>
+                            <div class="col-9">
+                                <div class="custom-control customer-checkbox">
+                                    <%= checkbox f, :featured, class: "custom-control-input" %>
+                                    <%= label f, :featured, "Tick here if yes", class: "custom-control-label" %>
+                                </div>
+                            </div>
+                        </div><br>
+
+                        <div class="row">
+                            <div class="col-3">Event Type</div>
+                            <div class="col-9">
+                                <%= select f, :type, @types, [class: "form-control"] %>
+                                <%= error_tag f, :type %>
+                            </div>
+                        </div><br>
+
+                        <div class="row">
+                            <div class="col-3">
+                                <%= submit gettext("Save"), class: "btn btn-primary" %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
