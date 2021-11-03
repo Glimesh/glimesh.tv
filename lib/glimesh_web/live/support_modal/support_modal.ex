@@ -93,7 +93,7 @@ defmodule GlimeshWeb.SupportModal do
                         <div class="tab-content" id="v-pills-tabContent">
                             <div class="tab-pane fade show active mt-4 mb-4" role="tabpanel">
                                 <%= if @tab == "subscription" do %>
-                                <.subscribe_contents socket={@socket} is_the_streamer={@is_the_streamer} streamer={@streamer} />
+                                <.subscribe_contents socket={@socket} is_the_streamer={@is_the_streamer} streamer={@streamer} user={@user} />
                                 <% end %>
 
                                 <%= if @tab == "donate" do %>
@@ -157,8 +157,8 @@ defmodule GlimeshWeb.SupportModal do
           <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider." class="img-fluid mt-4 mx-auto d-block">
       </div>
       <div class="col-sm">
-          <%= unless @is_the_streamer do %>
-          <p class="text-center mt-4"><%= gettext("You cannot subscribe to yourself, but others will see a payment dialog here :)!") %></p>
+          <%= if @is_the_streamer do %>
+          <p class="text-center mt-4"><%= gettext("You cannot donate to yourself, but others will see a donation box here :)!") %></p>
           <% else %>
           <%= live_render(@socket, GlimeshWeb.SupportModal.DonateForm, id: "donate-form", session: %{"user" => @user, "streamer" => @streamer}) %>
           <% end %>
