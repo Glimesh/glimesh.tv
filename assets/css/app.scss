@@ -37,6 +37,7 @@ $fa-font-path: "/fa-fonts";
 
 
 // Glimesh SCSS
+@import "glimesh/components/calendar";
 @import "glimesh/components/choices";
 @import "glimesh/components/live-modal";
 @import "glimesh/components/img-avatar";
@@ -75,6 +76,10 @@ $fa-font-path: "/fa-fonts";
 }
 
 .text-color-link {
+    color: var(--body-color);
+}
+
+.text-color-link-no-hover:hover {
     color: var(--body-color);
 }
 
