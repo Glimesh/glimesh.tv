@@ -110,6 +110,14 @@ config :boruta, Boruta.Oauth,
   ],
   token_generator: Boruta.TokenGenerator
 
+config :boruta, Boruta.Cache,
+  primary: [
+    # => 1 day
+    gc_interval: 86_400_000,
+    backend: :shards,
+    partitions: 2
+  ]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
@@ -212,7 +220,7 @@ config :glimesh, :pronouns,
     "Zie/Hir": "Zie/Hir"
   ]
 
-#Configuration for the Event System
+# Configuration for the Event System
 config :glimesh, :event_type,
   event_labels: [
     nil: "-",
