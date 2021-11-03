@@ -191,6 +191,50 @@ defmodule Glimesh.Payments do
   end
 
   @doc """
+  Start a channel donation by creating a Stripe Checkout Session, and returning a URL that the user can finish the payment on. This method is bundled with a webhook from Stripe to finalize the donation.
+
+  Currently no state is saved unless the webhook comes back through the API.
+  If a checkout session is abandoned, Stripe will automatically delete it in a day.
+  """
+  def start_channel_donation(%User{} = user, %User{} = streamer, amount_in_cents, return_url)
+      when is_integer(amount_in_cents) do
+    cond do
+      user.id == streamer.id ->
+        {:validation, "You cannot donate to yourself."}
+
+      amount_in_cents < 100 or amount_in_cents > 10000 ->
+        {:validation, "Amount must be more than 1.00 and less than 100.00."}
+
+      true ->
+        description = "Donation to #{streamer.displayname}"
+
+        stripe_input = %{
+          "cancel_url" => return_url,
+          "success_url" => return_url <> "?stripe_session_id={CHECKOUT_SESSION_ID}",
+          "mode" => "payment",
+          "payment_method_types" => [
+            "card"
+          ],
+          "submit_type" => "donate",
+          "customer" => Accounts.get_stripe_customer_id(user),
+          "line_items" => [
+            %{
+              "description" => description,
+              "quantity" => 1,
+              "price_data" => %{
+                "product" => "prod_KWQlLJ3VOjLZVN",
+                "currency" => "USD",
+                "unit_amount" => amount_in_cents
+              }
+            }
+          ]
+        }
+
+        Stripe.Session.create(stripe_input)
+    end
+  end
+
+  @doc """
   Stripe Test Card Numbers:
     4000 0000 0000 0341 sub.status: "incomplete", sub.latest_invoice.status = "open"
     4242 4242 4242 4242 sub.status: "active", sub.latest_invoice.status = "paid"
