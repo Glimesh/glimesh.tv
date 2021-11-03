@@ -33,7 +33,7 @@ defmodule GlimeshWeb.EventsTeam.EventsAdminLive do
 
   @impl true
   def handle_event("delete-event", %{"eventid" => eventid}, socket) do
-    changeset = EventsTeam.delete_event(eventid)
+    EventsTeam.delete_event(eventid)
 
     {:noreply,
      socket

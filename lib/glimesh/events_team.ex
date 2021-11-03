@@ -56,6 +56,7 @@ defmodule Glimesh.EventsTeam do
         where: e.start_date <= ^to,
         order_by: [asc: e.start_date]
     )
+    |> Enum.map(fn x -> times_from_utc(x) end)
   end
 
   def empty_event do

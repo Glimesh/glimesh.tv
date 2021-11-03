@@ -25,15 +25,13 @@
                 <div class="card mt-2">
                     <div class="card-body">
                         <div class="media">
-                            <img src="uploads/event-image/<%= event.image.file_name %>.png" style="max-height: 225px" alt="<%= event.label %>">
+                            <img src="<%= Glimesh.EventImage.url({event.image, event.image}, :original) %>" style="max-height: 225px" alt="<%= event.label %>">
                             <div class="media-body ml-4">
                                 <span class="badge badge-pill" style="vertical-align: middle; border-color: <%= Glimesh.EventsTeam.get_event_color(event) %>; background: <%= Glimesh.EventsTeam.get_event_color(event) %>;"><%= event.type %></span>
                                 <h5>
                                     <%= event.label %><br>
                                     <small class="text-muted">
-                                        <local-time phx-update="ignore" datetime="<%= Glimesh.EventsTeam.date_to_utc(event.start_date)%>">
-                                            <%= Calendar.strftime(event.start_date, "%B %d#{Glimesh.EventsTeam.get_day_ordinal(event.start_date)} %I:%M%p") %> Eastern
-                                        </local-time>
+                                        <%= Calendar.strftime(event.start_date, "%B %d#{Glimesh.EventsTeam.get_day_ordinal(event.start_date)} %I:%M%p") %> Eastern
                                     </small>
                                 </h5>
                                 <p><%= event.description %></p>
