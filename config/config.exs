@@ -113,7 +113,7 @@ config :boruta, Boruta.Oauth,
 config :boruta, Boruta.Cache,
   primary: [
     # => 1 day
-    gc_interval: 86_400_000,
+    gc_interval: :timer.hours(6),
     backend: :shards,
     partitions: 2
   ]
