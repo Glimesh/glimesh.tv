@@ -7,11 +7,11 @@
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
                                 <td class="h1 pb25" style="color:#ffffff; font-family:'Roboto', Arial,sans-serif; font-size:40px; line-height:46px; text-align:center; padding-bottom:25px;">
-                                    Congratulations! <br><small>Your Sub Button is LIVE!</small></td>
+                                    Congratulations! <br><small>Your Sub and Donation buttons are LIVE!</small></td>
                             </tr>
                             <tr>
                                 <td class="text-center pb25" style="color:#ebedf2; font-family:'Roboto', Arial,sans-serif; font-size:16px; line-height:30px; text-align:center; padding-bottom:25px;">
-                                    Hi <%= @user.displayname %>! We're happy to let you know we have processed all of your infomation, and your Sub Button is now live on Glimesh. If you have any questions please reach out to us at <a href="mailto:support@glimesh.tv">support@glimesh.tv</a>.</td>
+                                    Hi <%= @user.displayname %>! We're happy to let you know we have processed all of your infomation, and your subscribe & donate buttons are now live on Glimesh. If you have any questions please reach out to us at <a href="mailto:support@glimesh.tv">support@glimesh.tv</a>.</td>
                             </tr>
                             <!-- Button -->
                             <tr>

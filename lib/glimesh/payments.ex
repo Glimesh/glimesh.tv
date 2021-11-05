@@ -189,6 +189,9 @@ defmodule Glimesh.Payments do
           ],
           "submit_type" => "donate",
           "customer" => Accounts.get_stripe_customer_id(user),
+          "payment_intent_data" => %{
+            "description" => description
+          },
           "line_items" => [
             %{
               "description" => description,
@@ -527,12 +530,38 @@ defmodule Glimesh.Payments do
     )
   end
 
+  def count_incoming(user) do
+    Repo.one(
+      from s in Subscription,
+        select: count(s.id),
+        where: s.streamer_id == ^user.id and s.is_active == true
+    )
+  end
+
+  def count_outgoing(user) do
+    Repo.one(
+      from s in Subscription,
+        select: count(s.id),
+        where: s.user_id == ^user.id and s.is_active == true
+    )
+  end
+
   def list_payment_history(%User{stripe_customer_id: nil}), do: []
 
   def list_payment_history(%User{stripe_customer_id: stripe_customer_id}) do
     {:ok, payment_history} = Stripe.Charge.list(%{customer: stripe_customer_id})
 
     payment_history.data
+  end
+
+  def list_payables_history(%User{} = user) do
+    Repo.all(
+      from p in Payable,
+        select: struct(p, [:streamer_payout_at, :streamer_payout_amount, :stripe_transfer_id]),
+        where: p.streamer_id == ^user.id and not is_nil(p.streamer_payout_at),
+        group_by: [p.streamer_payout_at, p.streamer_payout_amount, p.stripe_transfer_id],
+        order_by: [desc: p.streamer_payout_at]
+    )
   end
 
   # Not ready for this yet...
