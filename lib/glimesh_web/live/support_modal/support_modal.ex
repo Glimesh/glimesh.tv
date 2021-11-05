@@ -125,7 +125,7 @@ defmodule GlimeshWeb.SupportModal do
                                   <% end %>
 
                                   <%= if @tab == "streamloots" do %>
-                                  <.streamloots_contents is_the_streamer={@is_the_streamer} streamer={@streamer} />
+                                  <.streamloots_contents is_the_streamer={@is_the_streamer} streamer={@streamer} channel={@channel} />
                                   <% end %>
                               </div>
                           </div>

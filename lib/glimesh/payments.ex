@@ -7,6 +7,7 @@ defmodule Glimesh.Payments do
 
   alias Glimesh.Accounts
   alias Glimesh.Accounts.User
+  alias Glimesh.Payments.Payable
   alias Glimesh.Payments.Subscription
   alias Glimesh.Payments.SubscriptionInvoice
   alias Glimesh.Repo
@@ -27,6 +28,8 @@ defmodule Glimesh.Payments do
   def get_channel_sub_base_product_id, do: get_stripe_config(:channel_sub_base_product_id)
   def get_channel_sub_base_price_id, do: get_stripe_config(:channel_sub_base_price_id)
   def get_channel_sub_base_price, do: get_stripe_config(:channel_sub_base_price)
+
+  def get_channel_donation_product_id, do: get_stripe_config(:channel_donation_production_id)
 
   def get_stripe_config(key) do
     Application.get_env(:glimesh, :stripe_config)[key]
@@ -159,37 +162,6 @@ defmodule Glimesh.Payments do
     end
   end
 
-  def donate_to_channel(user, streamer, payment_source, amount) when is_integer(amount) do
-    # if user.id == streamer.id do
-    #   raise ArgumentError, "You cannot donate to yourself."
-    # end
-
-    if amount < 100 or amount > 10000 do
-      raise ArgumentError, "Amount must be more than 1.00 and less than 100.00."
-    end
-
-    customer_id = Accounts.get_stripe_customer_id(user)
-
-    stripe_input = %{
-      amount: amount,
-      currency: "USD",
-      description: "Donation to #{streamer.displayname}",
-      source: payment_source,
-      customer: customer_id
-    }
-
-    results = Stripe.Charge.create(stripe_input, expand: ["latest_invoice.payment_intent"])
-
-    channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
-
-    Glimesh.Chat.create_chat_message(user, channel, %{
-      message: " just donated!",
-      is_subscription_message: false
-    })
-
-    results
-  end
-
   @doc """
   Start a channel donation by creating a Stripe Checkout Session, and returning a URL that the user can finish the payment on. This method is bundled with a webhook from Stripe to finalize the donation.
 
@@ -202,7 +174,7 @@ defmodule Glimesh.Payments do
       user.id == streamer.id ->
         {:validation, "You cannot donate to yourself."}
 
-      amount_in_cents < 100 or amount_in_cents > 10000 ->
+      amount_in_cents < 100 or amount_in_cents > 10_000 ->
         {:validation, "Amount must be more than 1.00 and less than 100.00."}
 
       true ->
@@ -222,12 +194,19 @@ defmodule Glimesh.Payments do
               "description" => description,
               "quantity" => 1,
               "price_data" => %{
-                "product" => "prod_KWQlLJ3VOjLZVN",
+                "product" => Glimesh.Payments.get_channel_donation_product_id(),
                 "currency" => "USD",
                 "unit_amount" => amount_in_cents
               }
             }
-          ]
+          ],
+          "metadata" => %{
+            "type" => "donation",
+            "product_id" => Glimesh.Payments.get_channel_donation_product_id(),
+            "user_id" => user.id,
+            "streamer_id" => streamer.id,
+            "amount" => amount_in_cents
+          }
         }
 
         Stripe.Session.create(stripe_input)
@@ -663,6 +642,15 @@ defmodule Glimesh.Payments do
     )
   end
 
+  def list_unpaidout_payables do
+    Repo.all(
+      from pb in Payable,
+        where:
+          not is_nil(pb.streamer_id) and not is_nil(pb.user_paid_at) and
+            is_nil(pb.streamer_payout_at)
+    )
+  end
+
   @doc """
   Returns the list of subscription invoices.
 
@@ -739,5 +727,95 @@ defmodule Glimesh.Payments do
   """
   def change_subscription_invoice(%SubscriptionInvoice{} = invoice, attrs \\ %{}) do
     SubscriptionInvoice.create_changeset(invoice, attrs)
+  end
+
+  def get_payable_by_source(source, reference) when is_binary(source) and is_binary(reference) do
+    Repo.one(
+      from pb in Payable,
+        where: pb.external_source == ^source and pb.external_reference == ^reference
+    )
+  end
+
+  @doc """
+  Creates a payable.
+
+  ## Examples
+
+      iex> create_payable(%{field: value})
+      {:ok, %Payable{}}
+
+      iex> create_payable(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_payable(attrs \\ %{}) do
+    %Payable{}
+    |> Payable.create_changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a payable.
+
+  ## Examples
+
+      iex> update_payable(payable, %{field: new_value})
+      {:ok, %Payable{}}
+
+      iex> update_payable(payable, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_payable(%Payable{} = payable, attrs) do
+    payable
+    |> Payable.update_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking payable changes.
+
+  ## Examples
+
+      iex> change_payable(payable)
+      %Ecto.Changeset{data: %Payable{}}
+
+  """
+  def change_payable(%Payable{} = payable, attrs \\ %{}) do
+    Payable.create_changeset(payable, attrs)
+  end
+
+  @doc """
+  Utility function to convert our subscription_invoices over to payables.
+  """
+  def convert_subscription_invoices_to_payables do
+    subscription_invoices =
+      Repo.all(
+        from si in SubscriptionInvoice,
+          where: not is_nil(si.streamer_id)
+      )
+
+    Enum.each(subscription_invoices, fn %SubscriptionInvoice{} = invoice ->
+      user = Accounts.get_user!(invoice.user_id)
+      streamer = Accounts.get_user!(invoice.streamer_id)
+
+      create_payable(%{
+        type: "subscription",
+        external_source: "stripe",
+        external_reference: invoice.stripe_invoice_id,
+        status: if(invoice.streamer_paidout, do: "paidout", else: "paid"),
+        user: user,
+        streamer: streamer,
+        total_amount: invoice.total_amount,
+        external_fees: 0,
+        our_fees: invoice.total_amount - (invoice.payout_amount + invoice.withholding_amount),
+        withholding_amount: invoice.withholding_amount,
+        payout_amount: invoice.payout_amount,
+        user_paid_at: invoice.inserted_at,
+        streamer_payout_at: if(invoice.streamer_paidout, do: invoice.updated_at, else: nil),
+        streamer_payout_amount: invoice.streamer_payout_amount,
+        stripe_transfer_id: invoice.stripe_transfer_id
+      })
+    end)
   end
 end
