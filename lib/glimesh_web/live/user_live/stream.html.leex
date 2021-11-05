@@ -13,7 +13,9 @@
                                 <div class="stream-info btn-toolbar">
                                     <div class="btn-group mr-1" role="group" aria-label="First group">
                                         <%= if @has_some_support_option do %>
-                                        <%= live_render(@socket, GlimeshWeb.SupportModal, id: "support-modal", session: %{"user" => @user, "streamer" => @streamer}) %>
+                                        <%= live_patch to: Routes.user_stream_path(@socket, :support, @channel.user.username), class: "btn btn-secondary btn-responsive" do %>
+                                        <span class="d-none d-lg-block"><i class="fas fa-hand-holding-usd fa-fw"></i> <%= gettext("Support") %></span><span class="d-lg-none"><i class="fas fa-hand-holding-usd fa-fw"></i></span>
+                                        <% end %>
                                         <% end %>
                                     </div>
                                     <div class="btn-group mr-1" role="group" aria-label="Second group">
@@ -212,3 +214,7 @@ updated_at: <%= @stream_metadata.updated_at %>
     </div>
 
 </div>
+
+<%= if @show_support_modal do %>
+<%= live_render(@socket, GlimeshWeb.SupportModal, id: "support-modal", session: %{"user" => @user, "streamer" => @streamer, "tab" => @support_modal_tab, "stripe_session_id" => @stripe_session_id}) %>
+<% end %>

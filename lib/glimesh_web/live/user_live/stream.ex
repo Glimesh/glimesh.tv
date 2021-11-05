@@ -6,7 +6,7 @@ defmodule GlimeshWeb.UserLive.Stream do
   alias Glimesh.Presence
   alias Glimesh.Streams
 
-  def mount(%{"username" => streamer_username}, session, socket) do
+  def mount(%{"username" => streamer_username} = params, session, socket) do
     case ChannelLookups.get_channel_for_username(streamer_username) do
       %Glimesh.Streams.Channel{} = channel ->
         if session["locale"], do: Gettext.put_locale(session["locale"])
@@ -29,6 +29,9 @@ defmodule GlimeshWeb.UserLive.Stream do
          socket
          |> put_page_title(channel.title)
          |> assign(:show_debug, false)
+         |> assign(:show_support_modal, socket.assigns.live_action == :support)
+         |> assign(:support_modal_tab, Map.get(params, "tab"))
+         |> assign(:stripe_session_id, Map.get(params, "stripe_session_id"))
          |> assign(:unique_user, Map.get(session, "unique_user"))
          |> assign(:country, Map.get(session, "country"))
          |> assign(:prompt_mature, Streams.prompt_mature_content(channel, maybe_user))
@@ -49,6 +52,10 @@ defmodule GlimeshWeb.UserLive.Stream do
       nil ->
         {:ok, redirect(socket, to: "/#{streamer_username}/profile")}
     end
+  end
+
+  def handle_params(_unsigned_params, _uri, socket) do
+    {:noreply, socket |> assign(:show_support_modal, socket.assigns.live_action == :support)}
   end
 
   def handle_info(:load_stream, socket) do
