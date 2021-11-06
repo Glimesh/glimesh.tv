@@ -166,12 +166,16 @@ defmodule Glimesh.Schema.AccountTypes do
   @desc "A follower is a user who subscribes to notifications for a particular user's channel."
   object :follower do
     field :id, :id, description: "Unique follower identifier"
+
     field :has_live_notifications, :boolean,
       description: "Does this follower have live notifications enabled?"
 
-    field :streamer, non_null(:user), resolve: dataloader(Repo),
+    field :streamer, non_null(:user),
+      resolve: dataloader(Repo),
       description: "The streamer the user is following"
-    field :user, non_null(:user), resolve: dataloader(Repo),
+
+    field :user, non_null(:user),
+      resolve: dataloader(Repo),
       description: "The user that is following the streamer"
 
     field :inserted_at, non_null(:naive_datetime), description: "Following creation date"

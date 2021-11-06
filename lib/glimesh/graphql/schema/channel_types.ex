@@ -190,8 +190,14 @@ defmodule Glimesh.Schema.ChannelTypes do
 
     field :status, :channel_status, description: "The current status of the channnel"
     field :title, :string, description: "The title of the current stream, live or offline."
-    field :category, :category, resolve: dataloader(Repo), description: "Category the current stream is in"
-    field :subcategory, :subcategory, resolve: dataloader(Repo), description: "Subcategory the current stream is in"
+
+    field :category, :category,
+      resolve: dataloader(Repo),
+      description: "Category the current stream is in"
+
+    field :subcategory, :subcategory,
+      resolve: dataloader(Repo),
+      description: "Subcategory the current stream is in"
 
     field :mature_content, :boolean,
       description:
@@ -231,7 +237,8 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :chat_rules_md, :string, description: "Chat rules in markdown"
     field :chat_rules_html, :string, description: "Chat rules in html"
 
-    field :show_recent_chat_messages_only, :boolean, description: "Only show recent chat messages?"
+    field :show_recent_chat_messages_only, :boolean,
+      description: "Only show recent chat messages?"
 
     field :disable_hyperlinks, :boolean,
       description: "Toggle for links automatically being clickable"
@@ -244,25 +251,36 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :minimum_account_age, :integer,
       description: "Minimum account age length before chatting"
 
-    field :stream, :stream, resolve: dataloader(Repo),
+    field :stream, :stream,
+      resolve: dataloader(Repo),
       description: "If the channel is live, this will be the current Stream"
 
-    field :streamer, non_null(:user), resolve: dataloader(Repo),
+    field :streamer, non_null(:user),
+      resolve: dataloader(Repo),
       description: "User associated with the channel"
-    field :chat_messages, list_of(:chat_message), resolve: dataloader(Repo),
+
+    field :chat_messages, list_of(:chat_message),
+      resolve: dataloader(Repo),
       description: "List of chat messages sent in the channel"
-    field :bans, list_of(:channel_ban), resolve: dataloader(Repo),
+
+    field :bans, list_of(:channel_ban),
+      resolve: dataloader(Repo),
       description: "List of bans in the channel"
-    field :moderators, list_of(:channel_moderator), resolve: dataloader(Repo),
+
+    field :moderators, list_of(:channel_moderator),
+      resolve: dataloader(Repo),
       description: "List of moderators in the channel"
-    field :moderation_logs, list_of(:channel_moderation_log), resolve: dataloader(Repo),
+
+    field :moderation_logs, list_of(:channel_moderation_log),
+      resolve: dataloader(Repo),
       description: "List of moderation events in the channel"
 
     field :user, non_null(:user),
       resolve: dataloader(Repo),
       deprecate: "Please use the streamer field"
 
-    field :tags, list_of(:tag), resolve: dataloader(Repo),
+    field :tags, list_of(:tag),
+      resolve: dataloader(Repo),
       description: "Tags associated with the channel"
 
     field :inserted_at, non_null(:naive_datetime), description: "Channel creation date"
@@ -273,19 +291,29 @@ defmodule Glimesh.Schema.ChannelTypes do
   object :stream do
     field :id, :id, description: "Unique stream identifier"
 
-    field :channel, non_null(:channel), resolve: dataloader(Repo),
+    field :channel, non_null(:channel),
+      resolve: dataloader(Repo),
       description: "Channel running with the stream"
 
     field :title, :string, description: "The title of the stream."
-    field :category, non_null(:category), resolve: dataloader(Repo),
+
+    field :category, non_null(:category),
+      resolve: dataloader(Repo),
       description: "The category the current stream is in"
-    field :subcategory, :subcategory, resolve: dataloader(Repo),
+
+    field :subcategory, :subcategory,
+      resolve: dataloader(Repo),
       description: "The subategory the current stream is in"
-    field :metadata, list_of(:stream_metadata), resolve: dataloader(Repo),
+
+    field :metadata, list_of(:stream_metadata),
+      resolve: dataloader(Repo),
       description: "Current stream metadata"
 
-    field :started_at, non_null(:naive_datetime), description: "Datetime of when the stream was started"
-    field :ended_at, :naive_datetime, description: "Datetime of when the stream ended, or null if still going"
+    field :started_at, non_null(:naive_datetime),
+      description: "Datetime of when the stream was started"
+
+    field :ended_at, :naive_datetime,
+      description: "Datetime of when the stream ended, or null if still going"
 
     # field :viewers, :viewers, resolve: dataloader(Repo)
     # field :chatters, :chatters, resolve: dataloader(Repo)
@@ -297,7 +325,10 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :peak_chatters, :integer, description: "Peak concurrent chatters"
     field :avg_viewers, :integer, description: "Average viewers during the stream"
     field :avg_chatters, :integer, description: "Average chatters during the stream"
-    field :new_subscribers, :integer, description: "Total new subscribers gained during the stream"
+
+    field :new_subscribers, :integer,
+      description: "Total new subscribers gained during the stream"
+
     field :resub_subscribers, :integer, description: "Total resubscribers during the stream"
 
     @desc "Thumbnail URL of the stream"
@@ -315,7 +346,8 @@ defmodule Glimesh.Schema.ChannelTypes do
   object :stream_metadata do
     field :id, :id, description: "Unique stream metadata identifier"
 
-    field :stream, non_null(:stream), resolve: dataloader(Repo),
+    field :stream, non_null(:stream),
+      resolve: dataloader(Repo),
       description: "Current stream metadata references"
 
     field :ingest_server, :string, description: "Ingest Server URL"
@@ -350,9 +382,12 @@ defmodule Glimesh.Schema.ChannelTypes do
     field :price, :integer, description: "Price of the subscription"
     field :product_name, :string, description: "Subscription product name"
 
-    field :streamer, :user, resolve: dataloader(Repo),
+    field :streamer, :user,
+      resolve: dataloader(Repo),
       description: "The streamer receiving the support from the subscription"
-    field :user, non_null(:user), resolve: dataloader(Repo),
+
+    field :user, non_null(:user),
+      resolve: dataloader(Repo),
       description: "The user giving the support with the subscription"
 
     field :inserted_at, non_null(:naive_datetime), description: "Subscription created date"
