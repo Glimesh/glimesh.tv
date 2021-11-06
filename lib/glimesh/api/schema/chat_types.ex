@@ -152,8 +152,13 @@ defmodule Glimesh.Api.ChatTypes do
     #   end)
     # end
 
-    field :channel, non_null(:channel), resolve: dataloader(Repo), description: "Channel where the chat message occurs"
-    field :user, non_null(:user), resolve: dataloader(Repo), description: "User who sent the chat message"
+    field :channel, non_null(:channel),
+      resolve: dataloader(Repo),
+      description: "Channel where the chat message occurs"
+
+    field :user, non_null(:user),
+      resolve: dataloader(Repo),
+      description: "User who sent the chat message"
 
     field :inserted_at, non_null(:naive_datetime), description: "Chat message creation date"
     field :updated_at, non_null(:naive_datetime), description: "Chat message updated date"
@@ -179,7 +184,11 @@ defmodule Glimesh.Api.ChatTypes do
   @desc "A channel timeout or ban"
   object :channel_ban do
     field :id, non_null(:id), description: "Unique channel ban identifier"
-    field :channel, non_null(:channel), resolve: dataloader(Repo), description: "Channel the ban affects"
+
+    field :channel, non_null(:channel),
+      resolve: dataloader(Repo),
+      description: "Channel the ban affects"
+
     field :user, non_null(:user), resolve: dataloader(Repo), description: "User the ban affects"
 
     field :expires_at, :naive_datetime, description: "When the ban expires"
@@ -209,7 +218,11 @@ defmodule Glimesh.Api.ChatTypes do
   @desc "A channel moderator"
   object :channel_moderator do
     field :id, non_null(:id), description: "Unique channel moderator identifier"
-    field :channel, non_null(:channel), resolve: dataloader(Repo), description: "Channel the moderator can moderate in"
+
+    field :channel, non_null(:channel),
+      resolve: dataloader(Repo),
+      description: "Channel the moderator can moderate in"
+
     field :user, non_null(:user), resolve: dataloader(Repo), description: "Moderating User"
 
     field :can_short_timeout, :boolean, description: "Can perform a short timeout action"
@@ -243,9 +256,18 @@ defmodule Glimesh.Api.ChatTypes do
   @desc "A moderation event that happened"
   object :channel_moderation_log do
     field :id, non_null(:id), description: "Unique moderation event identifier"
-    field :channel, non_null(:channel), resolve: dataloader(Repo), description: "Channel the event occurred in"
-    field :moderator, non_null(:user), resolve: dataloader(Repo), description: "Moderator that performed the event"
-    field :user, non_null(:user), resolve: dataloader(Repo), description: "Receiving user of the event"
+
+    field :channel, non_null(:channel),
+      resolve: dataloader(Repo),
+      description: "Channel the event occurred in"
+
+    field :moderator, non_null(:user),
+      resolve: dataloader(Repo),
+      description: "Moderator that performed the event"
+
+    field :user, non_null(:user),
+      resolve: dataloader(Repo),
+      description: "Receiving user of the event"
 
     field :action, :string, description: "Action performed"
 

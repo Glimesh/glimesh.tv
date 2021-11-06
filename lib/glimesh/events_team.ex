@@ -30,6 +30,21 @@ defmodule Glimesh.EventsTeam do
     |> Enum.map(fn x -> times_from_utc(x) end)
   end
 
+  def get_one_upcoming_event do
+    now = DateTime.utc_now()
+    five_days_from_now = DateTime.add(DateTime.utc_now(), 7 * 24 * 3600, :second)
+
+    Repo.one(
+      from e in Event,
+        where: e.featured == true,
+        where: e.start_date <= ^five_days_from_now,
+        where: e.end_date >= ^now,
+        order_by: [asc: e.end_date],
+        limit: 1
+    )
+    |> times_from_utc()
+  end
+
   def get_day_ordinal(date) do
     case date.day do
       1 -> "st"
@@ -129,6 +144,10 @@ defmodule Glimesh.EventsTeam do
       | start_date: DateTime.to_naive(start_time_glimtime),
         end_date: DateTime.to_naive(end_time_glimtime)
     }
+  end
+
+  defp times_from_utc(inp) do
+    inp
   end
 
   def date_to_utc(date) do

@@ -216,9 +216,18 @@ defmodule Glimesh.Api.ChannelTypes do
 
     field :title, :string, description: "The title of the current stream, live or offline."
     field :status, :channel_status, description: "The current status of the channnel"
-    field :category, :category, resolve: dataloader(Repo), description: "Category the current stream is in"
-    field :subcategory, :subcategory, resolve: dataloader(Repo), description: "Subcategory the current stream is in"
-    field :tags, list_of(:tag), resolve: dataloader(Repo), description: "Tags associated with the current stream"
+
+    field :category, :category,
+      resolve: dataloader(Repo),
+      description: "Category the current stream is in"
+
+    field :subcategory, :subcategory,
+      resolve: dataloader(Repo),
+      description: "Subcategory the current stream is in"
+
+    field :tags, list_of(:tag),
+      resolve: dataloader(Repo),
+      description: "Tags associated with the current stream"
 
     field :mature_content, :boolean,
       description:
@@ -239,7 +248,8 @@ defmodule Glimesh.Api.ChannelTypes do
 
     field :show_on_homepage, :boolean, description: "Toggle for homepage visibility"
 
-    field :show_recent_chat_messages_only, :boolean, description: "Only show recent chat messages?"
+    field :show_recent_chat_messages_only, :boolean,
+      description: "Only show recent chat messages?"
 
     field :disable_hyperlinks, :boolean,
       description: "Toggle for links automatically being clickable"
@@ -274,7 +284,8 @@ defmodule Glimesh.Api.ChannelTypes do
       resolve(&ChannelResolver.get_streams/2)
     end
 
-    field :streamer, non_null(:user), resolve: dataloader(Repo),
+    field :streamer, non_null(:user),
+      resolve: dataloader(Repo),
       description: "User associated with the channel"
 
     @desc "List of chat messages sent in the channel"
@@ -322,11 +333,14 @@ defmodule Glimesh.Api.ChannelTypes do
   object :stream do
     field :id, :id, description: "Unique stream identifier"
 
-    field :channel, non_null(:channel), resolve: dataloader(Repo),
+    field :channel, non_null(:channel),
+      resolve: dataloader(Repo),
       description: "Channel running with the stream"
 
     field :title, :string, description: "The title of the channel when the stream was started"
-    field :category, non_null(:category), resolve: dataloader(Repo),
+
+    field :category, non_null(:category),
+      resolve: dataloader(Repo),
       description: "The category the current stream is in"
 
     @desc "Current stream metadata"
@@ -375,7 +389,8 @@ defmodule Glimesh.Api.ChannelTypes do
   object :stream_metadata do
     field :id, :id, description: "Unique stream metadata identifier"
 
-    field :stream, non_null(:stream), resolve: dataloader(Repo),
+    field :stream, non_null(:stream),
+      resolve: dataloader(Repo),
       description: "Current stream metadata references"
 
     field :ingest_server, :string, description: "Ingest Server URL"
