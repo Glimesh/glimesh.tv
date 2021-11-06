@@ -1,32 +1,24 @@
 defmodule GlimeshWeb.SupportModal do
   use GlimeshWeb, :live_view
 
-  alias Glimesh.Accounts
-
-  @valid_tabs [
-    "subscription",
-    "donate",
-    "streamloots"
-  ]
-
   @impl true
   def mount(_params, %{"streamer" => streamer, "user" => nil} = session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
     channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
-    can_receive_payments = Accounts.can_receive_payments?(streamer)
 
-    open_tab =
-      user_input_tab(session["tab"], default_tab(can_receive_payments, channel.streamloots_url))
+    tabs = Glimesh.Streams.list_support_tabs(streamer, channel)
+    open_tab = user_input_tab(tabs, session["tab"])
 
     {:ok,
      socket
+     |> assign(:async_success_message, nil)
      |> assign(:show_modal, Map.get(session, "shown", false))
      |> assign(:site_theme, session["site_theme"])
      |> assign(:streamer, streamer)
      |> assign(:channel, channel)
-     |> assign(:can_receive_payments, can_receive_payments)
      |> assign(:is_the_streamer, false)
+     |> assign(:tabs, tabs)
      |> assign(:tab, open_tab)
      |> assign(:user, nil)}
   end
@@ -36,10 +28,10 @@ defmodule GlimeshWeb.SupportModal do
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
     channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
-    can_receive_payments = Accounts.can_receive_payments?(streamer)
 
-    open_tab =
-      user_input_tab(session["tab"], default_tab(can_receive_payments, channel.streamloots_url))
+    tabs = Glimesh.Streams.list_support_tabs(streamer, channel)
+
+    open_tab = user_input_tab(tabs, session["tab"])
 
     async_success_message =
       if session_id = Map.get(session, "stripe_session_id") do
@@ -58,7 +50,7 @@ defmodule GlimeshWeb.SupportModal do
      |> assign(:show_modal, Map.get(session, "shown", false))
      |> assign(:site_theme, session["site_theme"])
      |> assign(:is_the_streamer, streamer.id == user.id)
-     |> assign(:can_receive_payments, can_receive_payments)
+     |> assign(:tabs, tabs)
      |> assign(:tab, open_tab)
      |> assign(:streamer, streamer)
      |> assign(:channel, channel)
@@ -82,21 +74,25 @@ defmodule GlimeshWeb.SupportModal do
                   <div class="row">
                       <div class="col-lg-2">
                           <div class="nav nav-pills flex-row flex-lg-column text-center" role="tablist" aria-orientation="vertical">
-                              <%= if @can_receive_payments do %>
-                              <a phx-click="change_tab" phx-value-tab="subscription" href="#" class={["nav-link text-color", if(@tab == "subscription", do: "active")]}>
+                              <%= if "subscribe" in @tabs do %>
+                              <a phx-click="change_tab" phx-value-tab="subscribe" href="#" class={["nav-link text-color", if(@tab == "subscribe", do: "active")]}>
                                   <i class="fas fa-star fa-fw fa-2x"></i><br>
                                   <%= gettext("Subscribe") %>
                               </a>
+                              <% end %>
+                              <!--
                               <a phx-click="change_tab" phx-value-tab="gift_subscription" href="#" class={["mt-2 nav-link text-color",  if(@tab == "gift_subscription", do: "active")]}>
                               <i class="fas fa-gift fa-fw fa-2x"></i><br>
                               Gift a Sub
                               </a>
+                              -->
+                              <%= if "donate" in @tabs do %>
                               <a phx-click="change_tab" phx-value-tab="donate" href="#" class={["mt-2 nav-link text-color",  if(@tab == "donate", do: "active")]}>
                                   <i class="fas fa-money-bill-wave fa-fw fa-2x"></i><br>
                                   Donate
                               </a>
                               <% end %>
-                              <%= if @channel.streamloots_url do %>
+                              <%= if "streamloots" in @tabs do %>
                               <a phx-click="change_tab" phx-value-tab="streamloots" href="#" class={["mt-lg-2 nav-link text-color",  if(@tab == "streamloots", do: "active")]}>
                                   <%= if @site_theme == "light" do %>
                                   <img src="/images/support-modal/streamloots-logo-black.svg" alt="" height="40" width="32">
@@ -116,15 +112,15 @@ defmodule GlimeshWeb.SupportModal do
                                   <p class="alert alert-success" role="alert"><%= @async_success_message %></p>
                                   <% end %>
 
-                                  <%= if @tab == "subscription" do %>
+                                  <%= if "subscribe" in @tabs and @tab == "subscribe" do %>
                                   <.subscribe_contents socket={@socket} is_the_streamer={@is_the_streamer} streamer={@streamer} user={@user} />
                                   <% end %>
 
-                                  <%= if @tab == "donate" do %>
+                                  <%= if "donate" in @tabs and @tab == "donate" do %>
                                   <.donate_contents socket={@socket} is_the_streamer={@is_the_streamer} user={@user} streamer={@streamer} />
                                   <% end %>
 
-                                  <%= if @tab == "streamloots" do %>
+                                  <%= if "streamloots" in @tabs and @tab == "streamloots" do %>
                                   <.streamloots_contents is_the_streamer={@is_the_streamer} streamer={@streamer} channel={@channel} />
                                   <% end %>
                               </div>
@@ -221,19 +217,11 @@ defmodule GlimeshWeb.SupportModal do
     {:noreply, socket |> assign(:tab, tab)}
   end
 
-  defp default_tab(can_receive_payments, streamloots_url) do
-    cond do
-      can_receive_payments -> "subscription"
-      !is_nil(streamloots_url) -> "streamloots"
-      true -> ""
-    end
-  end
-
-  defp user_input_tab(input, default) do
-    if Enum.member?(@valid_tabs, input) do
+  defp user_input_tab(tabs, input) do
+    if input in tabs do
       input
     else
-      default
+      if length(tabs) > 0, do: hd(tabs), else: nil
     end
   end
 end

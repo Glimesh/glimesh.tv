@@ -215,6 +215,6 @@ updated_at: <%= @stream_metadata.updated_at %>
 
 </div>
 
-<%= if @show_support_modal do %>
+<%= if @has_some_support_option and @show_support_modal do %>
 <%= live_render(@socket, GlimeshWeb.SupportModal, id: "support-modal", session: %{"user" => @user, "streamer" => @streamer, "tab" => @support_modal_tab, "stripe_session_id" => @stripe_session_id}) %>
 <% end %>

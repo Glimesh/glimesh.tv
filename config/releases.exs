@@ -246,4 +246,5 @@ config :glimesh, :stripe_config,
   platform_sub_founder_price: 2500,
   channel_sub_base_product_id: "prod_I60qVBVw8n1Y1e",
   channel_sub_base_price_id: "price_1HVoopBLNaYgaiU5r5JTEEoj",
-  channel_sub_base_price: 500
+  channel_sub_base_price: 500,
+  channel_donation_product_id: "prod_KXgBrHAjDHTJLf"

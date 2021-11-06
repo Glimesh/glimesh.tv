@@ -315,6 +315,18 @@ defmodule Glimesh.Streams do
 
   # System API Calls
 
+  def list_support_tabs(%User{} = streamer, %Channel{} = channel) do
+    can_receive_payments = Glimesh.Accounts.can_receive_payments?(streamer)
+
+    [
+      {"subscribe", can_receive_payments && channel.show_subscribe_button},
+      {"donate", can_receive_payments && channel.show_donate_button},
+      {"streamloots", channel.show_streamloots_button && not is_nil(channel.streamloots_url)}
+    ]
+    |> Enum.filter(fn {_, testcase} -> testcase end)
+    |> Enum.map(fn {tab, _} -> tab end)
+  end
+
   def prompt_mature_content(%Channel{mature_content: true}, %User{} = user) do
     user_pref = Glimesh.Accounts.get_user_preference!(user)
 

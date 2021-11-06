@@ -23,7 +23,7 @@ defmodule GlimeshWeb.UserLive.Stream do
         avatar_url = Glimesh.Avatar.url({streamer.avatar, streamer}, :original)
 
         has_some_support_option =
-          Accounts.can_receive_payments?(channel.user) or channel.streamloots_url
+          length(Glimesh.Streams.list_support_tabs(channel.user, channel)) > 0
 
         {:ok,
          socket

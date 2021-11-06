@@ -29,7 +29,7 @@ defmodule Glimesh.Payments do
   def get_channel_sub_base_price_id, do: get_stripe_config(:channel_sub_base_price_id)
   def get_channel_sub_base_price, do: get_stripe_config(:channel_sub_base_price)
 
-  def get_channel_donation_product_id, do: get_stripe_config(:channel_donation_production_id)
+  def get_channel_donation_product_id, do: get_stripe_config(:channel_donation_product_id)
 
   def get_stripe_config(key) do
     Application.get_env(:glimesh, :stripe_config)[key]
