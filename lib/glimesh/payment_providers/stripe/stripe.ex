@@ -82,52 +82,57 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
     amount_in_cents = String.to_integer(amount_in_cents)
 
     # Get the Stripe fees directly from the payment intent
-    case get_stripe_fees(session.payment_intent) do
-      {:ok, total_fees} ->
-        amount_to_be_paid = amount_in_cents - total_fees
+    total_fees =
+      case get_stripe_fees(session.payment_intent) do
+        {:ok, total_fees} ->
+          total_fees
 
-        user = Accounts.get_user!(user_id)
-        streamer = Accounts.get_user!(streamer_id)
+        _error ->
+          # Edge case, sometimes we don't have a payment intent immediately? Guess fees...
+          Logger.info("Invalid Payment Intent: #{inspect(session)}")
+          ceil(amount_in_cents - (amount_in_cents - amount_in_cents * 0.029 - 30))
+      end
 
-        res =
-          Payments.create_payable(%{
-            type: "donation",
-            external_source: "stripe",
-            external_reference: session.id,
-            status: "paid",
+    amount_to_be_paid = amount_in_cents - total_fees
 
-            # Relations
-            user: user,
-            streamer: streamer,
+    user = Accounts.get_user!(user_id)
+    streamer = Accounts.get_user!(streamer_id)
 
-            # These fields are calculated by us
-            # Cents of course...
-            total_amount: amount_in_cents,
-            external_fees: total_fees,
-            our_fees: 0,
-            withholding_amount: 0,
-            payout_amount: amount_to_be_paid,
+    res =
+      Payments.create_payable(%{
+        type: "donation",
+        external_source: "stripe",
+        external_reference: session.id,
+        status: "paid",
 
-            # These fields are what actually happened
-            user_paid_at: NaiveDateTime.utc_now()
-          })
+        # Relations
+        user: user,
+        streamer: streamer,
 
-        channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
+        # These fields are calculated by us
+        # Cents of course...
+        total_amount: amount_in_cents,
+        external_fees: total_fees,
+        our_fees: 0,
+        withholding_amount: 0,
+        payout_amount: amount_to_be_paid,
 
-        if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
-          human_amount = :erlang.float_to_binary(amount_in_cents / 100, decimals: 2)
+        # These fields are what actually happened
+        user_paid_at: NaiveDateTime.utc_now()
+      })
 
-          Glimesh.Chat.create_chat_message(user, channel, %{
-            message: " just donated $#{human_amount}!",
-            is_subscription_message: true
-          })
-        end
+    channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
 
-        res
+    if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
+      human_amount = :erlang.float_to_binary(amount_in_cents / 100, decimals: 2)
 
-      error ->
-        error
+      Glimesh.Chat.create_chat_message(user, channel, %{
+        message: " just donated $#{human_amount}!",
+        is_subscription_message: true
+      })
     end
+
+    res
   end
 
   @doc """
@@ -369,5 +374,9 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
       error ->
         error
     end
+  end
+
+  defp get_stripe_fees(_) do
+    {:error, "Invalid payment intent input"}
   end
 end
