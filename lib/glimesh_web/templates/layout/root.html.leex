@@ -52,7 +52,7 @@
 
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     <%= if Application.get_env(:glimesh, :environment) == :prod do %>
-    <script async defer data-domain="glimesh.tv" src="https://s.glimesh.tv/js/index.js"></script>
+    <script defer data-domain="glimesh.tv" data-api="https://glimesh.tv/track/api/event" src="https://glimesh.tv/track/js/script.js"></script>
     <% end %>
 
     <script async defer src="https://js.stripe.com/v3/"></script>
