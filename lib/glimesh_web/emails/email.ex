@@ -93,7 +93,10 @@ defmodule GlimeshWeb.Emails.Email do
     |> assign(:stream_title, channel.title)
     |> assign(
       :stream_link,
-      Routes.user_stream_url(GlimeshWeb.Endpoint, :index, streamer.username)
+      Routes.user_stream_url(GlimeshWeb.Endpoint, :index, streamer.username,
+        utm_source: "follow_alert",
+        utm_medium: "email"
+      )
     )
     |> assign(:unsubscribe_link, Routes.user_settings_url(GlimeshWeb.Endpoint, :notifications))
     |> assign(:streamer_name, streamer.displayname)
