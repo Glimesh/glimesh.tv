@@ -10,23 +10,23 @@ defmodule GlimeshWeb.SupportModalTest do
     test "sub button doesn't show by default", %{conn: conn, user: user} do
       streamer = streamer_fixture()
 
-      {:ok, view, _html} =
+      {:ok, _view, html} =
         live_isolated(conn, GlimeshWeb.SupportModal,
           session: %{"streamer" => streamer, "user" => user}
         )
 
-      refute view |> element("button", "Support") |> render_click() =~ "Subscribe"
+      refute html =~ "Subscribe"
     end
 
     test "sub button shows up when enabled", %{conn: conn, user: user} do
       streamer = setup_sub_streamer(streamer_fixture())
 
-      {:ok, view, _html} =
+      {:ok, _view, html} =
         live_isolated(conn, GlimeshWeb.SupportModal,
           session: %{"streamer" => streamer, "user" => user}
         )
 
-      assert view |> element("button", "Support") |> render_click() =~ "Subscribe"
+      assert html =~ "Subscribe"
     end
   end
 
@@ -36,23 +36,23 @@ defmodule GlimeshWeb.SupportModalTest do
     test "streamloots button doesn't show by default", %{conn: conn, user: user} do
       streamer = streamer_fixture()
 
-      {:ok, view, _html} =
+      {:ok, _view, html} =
         live_isolated(conn, GlimeshWeb.SupportModal,
           session: %{"streamer" => streamer, "user" => user}
         )
 
-      refute view |> element("button", "Support") |> render_click() =~ "Streamloots"
+      refute html =~ "Streamloots"
     end
 
     test "streamloots shows up when enabled", %{conn: conn, user: user} do
       streamer = setup_streamloots_streamer(streamer_fixture())
 
-      {:ok, view, _html} =
+      {:ok, _view, html} =
         live_isolated(conn, GlimeshWeb.SupportModal,
           session: %{"streamer" => streamer, "user" => user}
         )
 
-      assert view |> element("button", "Support") |> render_click() =~ "Streamloots"
+      assert html =~ "Streamloots"
     end
   end
 

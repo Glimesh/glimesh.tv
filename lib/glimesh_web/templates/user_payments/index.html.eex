@@ -1,35 +1,86 @@
 <div class="container">
     <h2 class="mt-4"><%= gettext("Your Payment Portal") %></h2>
-    <p><%= gettext("Manage your ongoing subscriptions, see your transaction history, and setup your payout information subscriptions!") %>
+    <p><%= gettext("Manage your ongoing subscriptions, see your transaction history, and setup your streamer payout information!") %>
     </p>
 
     <%= if @can_payments do %>
     <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <i class="fas fa-wallet float-right"></i>
-                    <h6 class="value">$<%= format_price(@incoming) %></h6>
-                    <p class="mb-0"><%= gettext("Receiving Monthly") %></p>
-                </div>
-            </div>
-
-            <div class="card mt-2">
-                <div class="card-body">
-                    <i class="fas fa-gift float-right"></i>
-                    <h6 class="value">$<%= format_price(@outgoing) %></h6>
-                    <p class="mb-0"><%= gettext("Giving Monthly") %></p>
-                </div>
-            </div>
+        <div class="col">
+            <i class="fas fa-gift float-right"></i>
+            <h6 class="mb-0"><%= gettext("Giving Monthly") %></h6>
+            <p class="value">$<%= format_price(@sum_outgoing) %></p>
         </div>
+        <div class="col">
+            <i class="fas fa-wallet float-right"></i>
+            <h6 class="mb-0"><%= gettext("Receiving Monthly") %></h6>
+            <p class="value">$<%= format_price(@sum_incoming) %></p>
+        </div>
+        <div class="col">
+            <i class="fas fa-gift float-right"></i>
+            <h6 class="mb-0"><%= gettext("Active Subscriptions") %></h6>
+            <p class="value"><%= @count_outgoing %></p>
+        </div>
+        <div class="col">
+            <i class="fas fa-wallet float-right"></i>
+            <h6 class="mb-0"><%= gettext("Active Subscribers") %></h6>
+            <p class="value"><%= @count_incoming %></p>
+        </div>
+    </div>
 
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
+    <div class="card">
+        <div class="card-header">
+            <h4>Giving Details</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-9">
+                    <h5><%= gettext("Active Subscriptions") %></h5>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Subscription</th>
+                                <th>Monthly Amount</th>
+                                <th>Start Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%= if @platform_subscription do %>
+                            <tr>
+                                <td><%= @platform_subscription.product_name %> Platform Sub</td>
+                                <td>$<%= format_price(@platform_subscription.price) %></td>
+                                <td><%= format_datetime(@platform_subscription.started_at) %></td>
+                                <td>
+                                    <%= if @platform_subscription.is_canceling do %>
+                                    <%= gettext("Canceling on %{date}", date: format_datetime(@platform_subscription.ended_at)) %>
+                                    <% else %>
+                                    <%= link gettext("Manage Subscription"), to: Routes.platform_subscription_index_path(@conn, :index), class: "" %>
+                                    <% end %>
+                                </td>
+                            </tr>
+                            <% end %>
+                            <%= for sub <- @subscriptions do %>
+                            <tr>
+                                <td><%= sub.streamer.displayname %> Channel Sub</td>
+                                <td>$<%= format_price(sub.price) %></td>
+                                <td><%= format_datetime(sub.started_at) %></td>
+                                <td>
+                                    <%= if sub.is_canceling do %>
+                                    <%= gettext("Canceling on %{date}", date: format_datetime(sub.ended_at)) %>
+                                    <% else %>
+                                    <%= link "Manage Subscription", to: Routes.user_stream_path(@conn, :index, sub.streamer.displayname), class: "" %>
+                                    <% end %>
+                                </td>
+                            </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-3">
                     <%= if @has_payment_method do %>
 
-                    <h5 class=""><%= gettext("Saved Payment Method") %></h5>
-
+                    <h5><%= gettext("Saved Payment Method") %></h5>
                     <p><%= gettext("You have an existing saved payment method. You can delete it by clicking the button below.") %>
                     </p>
 
@@ -55,10 +106,74 @@
                     <% end %>
                 </div>
             </div>
+
+            <h5 class="mt-4"><%= gettext("Payment History") %></h5>
+            <p><%= gettext("See something you don't expect? Need a refund? Please email us at %{email} and we'll be happy to help!",
+              email: "support@glimesh.tv"
+            ) %></p>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#fullPaymentHistory" aria-expanded="false" aria-controls="fullPaymentHistory"><%= gettext("Show Full Payment History") %></button>
+            <div class="collapse" id="fullPaymentHistory">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><%= gettext("Date / Time") %></th>
+                            <th><%= gettext("Description") %></th>
+                            <th><%= gettext("Amount") %></th>
+                            <th><%= gettext("Status") %></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%= for payment <- @payment_history do %>
+                        <tr>
+                            <td><%= format_datetime(payment.created) %></td>
+                            <td><%= payment.description %></td>
+                            <td>$<%= format_price(payment.amount) %></td>
+                            <td><%= payment.status %></td>
+                            <td>
+                                <%= unless payment.status == "failed" do %>
+                                <a href="<%= payment.receipt_url %>" target="_blank">Receipt</a>
+                                <% end %>
+                            </td>
+                        </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>Receiving Details</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-9">
+                    <h5><%= gettext("Payout History") %></h5>
+                    <p><%= gettext("Please note payouts may take several days to deposit into your bank account. The date shown below is the start of the transfer.") %></p>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Payout Date</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%= for payable <- @payable_history do %>
+                            <tr>
+                                <td><%= format_datetime(payable.streamer_payout_at) %></td>
+                                <td>$<%= format_price(payable.streamer_payout_amount) %></td>
+                            </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                    <%= if @stripe_dashboard_url do %>
+                    <a href="<%= @stripe_dashboard_url %>" class="btn btn-primary" target="_blank"><%= gettext("View payout details on Stripe") %></a>
+                    <% else %>
+                    <%= gettext("No additional payout information details available.") %>
+                    <% end %>
+                </div>
+                <div class="col-3">
                     <%= if @user.is_stripe_setup do %>
                     <h5><%= gettext("Glimesh Payouts") %></h5>
                     <%= if @user.is_stripe_setup == false or @user.is_tax_verified == false do %>
@@ -67,7 +182,8 @@
                     <ul>
                         <li><%= gettext("Stripe Setup:") %> <%= truthy_checkbox(@user.is_stripe_setup) %></li>
                         <li><%= gettext("Taxes Verified:") %> <%= truthy_checkbox(@user.is_tax_verified) %></li>
-                        <li><%= gettext("Sub Button:") %> <%= truthy_checkbox(@can_receive_payments) %></li>
+                        <li><%= gettext("Subscribe Button:") %> <%= truthy_checkbox(@can_receive_payments) %></li>
+                        <li><%= gettext("Donate Button:") %> <%= truthy_checkbox(@can_receive_payments) %></li>
                     </ul>
                     <%= unless @user.is_tax_verified do %>
                     <%= link gettext("Submit Tax Forms"), to: Routes.user_payments_path(@conn, :taxes), class: "btn btn-secondary btn-block mb-2" %>
@@ -90,100 +206,14 @@
                     <%= submit gettext("Start Process"), class: "btn btn-secondary", "data-confirm": "Are you sure you wish to start the payouts setup with this country? You cannot change your country if you make a mistake." %>
                     <% end %>
                     <% end %>
-
                 </div>
             </div>
-        </div>
-    </div>
-
-    <h4 class="mt-4"><%= gettext("Your Subscriptions") %></h4>
-    <div class="row">
-        <%= if @platform_subscription do %>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><%= @platform_subscription.product_name %> - $<%= format_price(@platform_subscription.price) %>/mo</h5>
-                    <p>
-                        <%= gettext("Subscribed since %{date}", date: format_datetime(@platform_subscription.started_at)) %>
-                    </p>
-                    <%= if @platform_subscription.is_canceling do %>
-                    <%= gettext("Canceling on %{date}", date: format_datetime(@platform_subscription.ended_at)) %>
-                    <% else %>
-                    <%= link gettext("Manage Subscription"), to: Routes.platform_subscription_index_path(@conn, :index), class: "" %>
-                    <% end %>
-                </div>
-            </div>
-        </div>
-        <% end %>
-        <%= for sub <- @subscriptions do %>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><%= sub.streamer.displayname %> - $<%= format_price(sub.price) %>/mo</h5>
-                    <p>
-                        <%= gettext("Subscribed since %{date}", date: format_datetime(sub.started_at)) %></p>
-                    <%= if sub.is_canceling do %>
-                    <%= gettext("Canceling on %{date}", date: format_datetime(sub.ended_at)) %>
-                    <% else %>
-                    <%= link "Manage Subscription", to: Routes.user_stream_path(@conn, :index, sub.streamer.displayname), class: "" %>
-                    <% end %>
-                </div>
-            </div>
-        </div>
-        <% end %>
-    </div>
-
-    <div class="card mt-4">
-        <div class="card-header">
-            <h5><%= gettext("Payout History") %> </h5>
-        </div>
-        <div class="card-body">
-            <%= if @stripe_dashboard_url do %>
-            <a href="<%= @stripe_dashboard_url %>" class="btn btn-primary" target="_blank"><%= gettext("View on Stripe") %></a>
-            <% else %>
-            <%= gettext("Not available") %>
-            <% end %>
-        </div>
-    </div>
-    <div class="card mt-4">
-        <div class="card-header">
-            <h5><%= gettext("Payment History") %></h5>
-        </div>
-        <div class="card-body">
-            <p><%= gettext("See something you don't expect? Need a refund? Please email us at %{email} and we'll be happy to help!",
-              email: "support@glimesh.tv"
-            ) %></p>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th><%= gettext("Date / Time") %></th>
-                        <th><%= gettext("Description") %></th>
-                        <th><%= gettext("Amount") %></th>
-                        <th><%= gettext("Status") %></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%= for payment <- @payment_history do %>
-                    <tr>
-                        <td><%= format_datetime(payment.created) %></td>
-                        <td><%= payment.description %></td>
-                        <td>$<%= format_price(payment.amount) %></td>
-                        <td><%= payment.status %></td>
-                        <td>
-                            <%= unless payment.status == "failed" do %>
-                            <a href="<%= payment.receipt_url %>" target="_blank">Receipt</a>
-                            <% end %>
-                        </td>
-                    </tr>
-                    <% end %>
-                </tbody>
-            </table>
         </div>
     </div>
 
     <% else %>
     <div class="alert alert-primary" role="alert">
-        <%= gettext("We're not quite ready to accept payments yet. Once we launch the platform, you'll be able to access this page!") %>
+        <%= gettext("Your account does not currently have payments enabled.") %>
     </div>
     <% end %>
 </div>

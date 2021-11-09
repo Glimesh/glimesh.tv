@@ -5,6 +5,7 @@ defmodule Glimesh.Streams do
   require Logger
 
   import Ecto.Query, warn: false
+  alias Glimesh.Accounts
   alias Glimesh.Accounts.User
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
@@ -192,7 +193,7 @@ defmodule Glimesh.Streams do
   """
   def start_stream(%Channel{} = channel) do
     # Even though a service is starting the stream, we check the permissions against the user.
-    user = Glimesh.Accounts.get_user!(channel.user_id)
+    user = Accounts.get_user!(channel.user_id)
 
     with :ok <- Bodyguard.permit(__MODULE__, :start_stream, user) do
       # 0. End all current streams
@@ -315,8 +316,20 @@ defmodule Glimesh.Streams do
 
   # System API Calls
 
+  def list_support_tabs(%User{} = streamer, %Channel{} = channel) do
+    can_receive_payments = Accounts.can_receive_payments?(streamer)
+
+    [
+      {"subscribe", can_receive_payments && channel.show_subscribe_button},
+      {"donate", can_receive_payments && channel.show_donate_button},
+      {"streamloots", channel.show_streamloots_button && not is_nil(channel.streamloots_url)}
+    ]
+    |> Enum.filter(fn {_, testcase} -> testcase end)
+    |> Enum.map(fn {tab, _} -> tab end)
+  end
+
   def prompt_mature_content(%Channel{mature_content: true}, %User{} = user) do
-    user_pref = Glimesh.Accounts.get_user_preference!(user)
+    user_pref = Accounts.get_user_preference!(user)
 
     !user_pref.show_mature_content
   end

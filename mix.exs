@@ -91,7 +91,7 @@ defmodule Glimesh.MixProject do
       {:sentry, "~> 8.0"},
       {:prom_ex, "~> 1.3"},
       {:hcaptcha, "~> 0.0.1"},
-      {:stripity_stripe, "~> 2.9"},
+      {:stripity_stripe, "~> 2.12"},
       {:eqrcode, "~> 0.1.7"},
       {:scrivener_ecto, "~> 2.0"},
       {:libcluster, "~> 3.2"},

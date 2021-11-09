@@ -8,6 +8,12 @@ defmodule GlimeshWeb.WebhookController do
         |> send_resp(:ok, "Accepted.")
         |> halt()
 
+      {:error_unimplemented, msg} ->
+        # We don't want to send this as an error, because we don't want Stripe to hate us.
+        conn
+        |> send_resp(:ok, msg)
+        |> halt()
+
       {:error, message} when is_binary(message) ->
         conn
         |> send_resp(:bad_request, message)

@@ -13,6 +13,7 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
         id: id,
         subscription: sub,
         status: "some_status",
+        payment_intent: "123",
         total: 500
       })
 
@@ -41,6 +42,7 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
           id: "1",
           subscription: "456",
           status: "some_status",
+          payment_intent: "1234",
           total: 500
         })
 
@@ -49,6 +51,7 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
           id: "2",
           subscription: "789",
           status: "some_status",
+          payment_intent: "345",
           total: 1000
         })
 
@@ -66,7 +69,7 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
       transfers = Transfers.prepare_payouts()
       transfer_request = hd(transfers)
       assert length(transfers) == 1
-      assert transfer_request.transfer.amount == 250
+      assert transfer_request.transfer.amount == 300
     end
 
     test "prepare_payouts/0 can prepare multiple payouts", %{streamer: streamer} do
@@ -79,7 +82,7 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
       transfers = Transfers.prepare_payouts()
       transfer_request = hd(transfers)
       assert length(transfers) == 1
-      assert transfer_request.transfer.amount == 500
+      assert transfer_request.transfer.amount == 600
     end
 
     test "commit_payouts/1 sends the correct payouts", %{streamer: streamer, user: user} do
@@ -94,7 +97,7 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
 
       Enum.map(paid_out_transfers, fn {result, data} ->
         assert result == :ok
-        assert data.amount == 500
+        assert data.amount == 600
       end)
     end
   end
@@ -124,15 +127,15 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
       create_and_pay_invoice("1", "456")
       {:ok, subscription_invoice} = create_and_pay_invoice("2", "789")
       assert subscription_invoice.total_amount == 500
-      assert subscription_invoice.withholding_amount == 75
-      assert subscription_invoice.payout_amount == 175
+      assert subscription_invoice.withholding_amount == 90
+      assert subscription_invoice.payout_amount == 210
 
       transfers = Transfers.prepare_payouts()
       paid_out_transfers = Transfers.commit_payouts(transfers)
 
       Enum.map(paid_out_transfers, fn {result, data} ->
         assert result == :ok
-        assert data.amount == 350
+        assert data.amount == 420
       end)
     end
   end
@@ -162,15 +165,15 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
       create_and_pay_invoice("1", "456")
       {:ok, subscription_invoice} = create_and_pay_invoice("2", "789")
       assert subscription_invoice.total_amount == 500
-      assert subscription_invoice.withholding_amount == 13
-      assert subscription_invoice.payout_amount == 237
+      assert subscription_invoice.withholding_amount == 15
+      assert subscription_invoice.payout_amount == 285
 
       transfers = Transfers.prepare_payouts()
       paid_out_transfers = Transfers.commit_payouts(transfers)
 
       Enum.map(paid_out_transfers, fn {result, data} ->
         assert result == :ok
-        assert data.amount == 474
+        assert data.amount == 570
       end)
     end
   end

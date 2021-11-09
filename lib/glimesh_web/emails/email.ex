@@ -18,7 +18,7 @@ defmodule GlimeshWeb.Emails.Email do
   def user_sub_button_enabled(user, url) do
     user_base_email()
     |> to(user.email)
-    |> subject("Your Glimesh Sub Button is LIVE!")
+    |> subject("Your Glimesh Sub & Donation buttons are LIVE!")
     |> assign(:user, user)
     |> assign(:url, url)
     |> render(:sub_button)

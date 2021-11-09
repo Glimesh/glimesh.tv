@@ -96,11 +96,24 @@ defmodule Glimesh.PaymentProviders.StripeProvider.Webhooks do
     end
   end
 
+  def handle_webhook(%{
+        type: "checkout.session.completed",
+        data: %{object: %Stripe.Session{} = session}
+      }) do
+    case session.payment_status do
+      "paid" ->
+        StripeProvider.complete_session(session)
+
+      other ->
+        Logger.error("Unhandled Session.payment_status = #{other}")
+    end
+  end
+
   def handle_webhook(%{type: type} = webhook) do
     #   Fall through webhook handler for stripe events, logging into prod for now so we can figure
     # out the right methods to implement.
     Logger.info("Unimplemented Stripe Webhook: #{type} = " <> inspect(webhook))
-    {:error, "Webhook endpoint not found for #{type}"}
+    {:error_unimplemented, "Webhook endpoint not found for #{type}"}
   end
 
   def handle_webhook(_) do

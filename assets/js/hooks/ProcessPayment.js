@@ -35,7 +35,7 @@ export default {
     },
 
 
-    createSubscription(customerId, paymentMethodId, priceId) {
+    createSubscription(customerId, paymentMethodId) {
         return new Promise((resolve, reject) => {
             this.pushEvent("subscriptions.subscribe", {
                 customerId: customerId,
@@ -55,13 +55,6 @@ export default {
                 name: billingName,
             },
         })
-    },
-
-    productId() {
-        return this.el.dataset.stripeProductId
-    },
-    priceId() {
-        return this.el.dataset.stripePriceId
     },
 
     stripePublicKey() {
@@ -125,7 +118,7 @@ export default {
             backend.savingForm();
 
             if (backend.stripePaymentMethod()) {
-                backend.createSubscription(backend.customerId(), backend.stripePaymentMethod(), backend.priceId())
+                backend.createSubscription(backend.customerId(), backend.stripePaymentMethod())
                     .then(backend.onSubscriptionComplete.bind(backend));
             } else {
                 // Create a payment method first if we don't have one...
@@ -134,7 +127,7 @@ export default {
                 backend.createPaymentMethod(card, billingName.value).then(function ({
                     paymentMethod
                 }) {
-                    backend.createSubscription(backend.customerId(), paymentMethod.id, backend.priceId())
+                    backend.createSubscription(backend.customerId(), paymentMethod.id)
                         .then(backend.onSubscriptionComplete.bind(backend));
                 });
             }

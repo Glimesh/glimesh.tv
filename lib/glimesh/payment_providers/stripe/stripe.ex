@@ -7,8 +7,8 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
   alias Glimesh.Accounts
   alias Glimesh.Accounts.User
   alias Glimesh.Payments
+  alias Glimesh.Payments.Payable
   alias Glimesh.Payments.Subscription
-  alias Glimesh.Payments.SubscriptionInvoice
 
   alias Glimesh.PaymentProviders.StripeProvider.Transfers
 
@@ -40,13 +40,13 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
   Update a subscription invoice as paid so we can create a transfer for the Streamer at some point in the future.
   """
   def pay_invoice(%Stripe.Invoice{} = invoice) do
-    case Glimesh.Payments.get_subscription_invoice_by_stripe_id(invoice.id) do
-      %SubscriptionInvoice{} = sub_invoice ->
+    case Glimesh.Payments.get_payable_by_source("stripe", invoice.id) do
+      %Payable{} = payable ->
         # Create invoice for this subscription
 
-        Payments.update_subscription_invoice(sub_invoice, %{
-          stripe_status: invoice.status,
-          user_paid: true
+        Payments.update_payable(payable, %{
+          stripe_status: "paid",
+          user_paid_at: NaiveDateTime.utc_now()
         })
 
       nil ->
@@ -58,6 +58,75 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
           {:error, msg} ->
             {:error, msg}
         end
+    end
+  end
+
+  def complete_session(%Stripe.Session{} = session) do
+    # Completes a session and stores the payment in our DB for proper routing
+    donation_id = Payments.get_channel_donation_product_id()
+
+    case session.metadata do
+      %{"type" => "donation", "product_id" => ^donation_id} = payment_router ->
+        complete_donation(session, payment_router)
+    end
+  end
+
+  def complete_donation(%Stripe.Session{} = session, payment_router) do
+    %{
+      "type" => "donation",
+      "user_id" => user_id,
+      "streamer_id" => streamer_id,
+      "amount" => amount_in_cents
+    } = payment_router
+
+    amount_in_cents = String.to_integer(amount_in_cents)
+
+    # Get the Stripe fees directly from the payment intent
+    case get_stripe_fees(session.payment_intent) do
+      {:ok, total_fees} ->
+        amount_to_be_paid = amount_in_cents - total_fees
+
+        user = Accounts.get_user!(user_id)
+        streamer = Accounts.get_user!(streamer_id)
+
+        res =
+          Payments.create_payable(%{
+            type: "donation",
+            external_source: "stripe",
+            external_reference: session.id,
+            status: "paid",
+
+            # Relations
+            user: user,
+            streamer: streamer,
+
+            # These fields are calculated by us
+            # Cents of course...
+            total_amount: amount_in_cents,
+            external_fees: total_fees,
+            our_fees: 0,
+            withholding_amount: 0,
+            payout_amount: amount_to_be_paid,
+
+            # These fields are what actually happened
+            user_paid_at: NaiveDateTime.utc_now()
+          })
+
+        channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
+
+        if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
+          human_amount = :erlang.float_to_binary(amount_in_cents / 100, decimals: 2)
+
+          Glimesh.Chat.create_chat_message(user, channel, %{
+            message: " just donated $#{human_amount}!",
+            is_subscription_message: true
+          })
+        end
+
+        res
+
+      error ->
+        error
     end
   end
 
@@ -173,8 +242,17 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
     # Hold back a widtholding amount
     total_amount = invoice.total
 
+    stripe_fees =
+      case get_stripe_fees(invoice.payment_intent) do
+        {:ok, fees} ->
+          fees
+
+        _ ->
+          0
+      end
+
     # This is recalculated just in case our cut changes or the invoice is discounted.
-    glimesh_cut_percent = 0.50
+    glimesh_cut_percent = 0.40
     glimesh_cut = trunc(total_amount * glimesh_cut_percent)
     potential_payout_amount = total_amount - glimesh_cut
 
@@ -190,37 +268,45 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
 
     payout_amount = potential_payout_amount - withholding_amount
 
-    Payments.create_subscription_invoice(%{
+    Payments.create_payable(%{
+      type: "subscription",
+      external_source: "stripe",
+      external_reference: invoice.id,
+      status: "created",
+
       # Relations
       user: user,
       streamer: streamer,
-      subscription: subscription,
-      # Fields
-      stripe_invoice_id: invoice.id,
-      stripe_status: invoice.status,
+
+      # These fields are calculated by us
+      # Cents of course...
       total_amount: total_amount,
-      # our_amount: our_amount,
+      external_fees: stripe_fees,
+      our_fees: glimesh_cut,
       withholding_amount: withholding_amount,
       payout_amount: payout_amount
     })
   end
 
-  defp create_subscription_invoice(%Subscription{} = subscription, %Stripe.Invoice{} = invoice) do
+  defp create_subscription_invoice(%Subscription{} = _subscription, %Stripe.Invoice{} = _invoice) do
     # Platform Subscription
-    user = Accounts.get_user!(subscription.user_id)
+    # user = Accounts.get_user!(subscription.user_id)
 
-    Payments.create_subscription_invoice(%{
-      # Relations
-      user: user,
-      streamer: nil,
-      subscription: subscription,
-      # Fields
-      stripe_invoice_id: invoice.id,
-      stripe_status: invoice.status,
-      total_amount: invoice.total,
-      withholding_amount: 0,
-      payout_amount: 0
-    })
+    # Payments.create_subscription_invoice(%{
+    #   # Relations
+    #   user: user,
+    #   streamer: nil,
+    #   subscription: subscription,
+    #   # Fields
+    #   stripe_invoice_id: invoice.id,
+    #   stripe_payment_intent_id: invoice.payment_intent,
+    #   stripe_status: invoice.status,
+    #   total_amount: invoice.total,
+    #   withholding_amount: 0,
+    #   payout_amount: 0
+    # })
+
+    {:ok, false}
   end
 
   defp get_connect_link(%Stripe.Account{} = account, return_url, refresh_url) do
@@ -271,5 +357,17 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
         service_agreement: "recipient"
       }
     }
+  end
+
+  defp get_stripe_fees(payment_intent) when is_binary(payment_intent) do
+    case Stripe.PaymentIntent.retrieve(payment_intent, %{},
+           expand: ["charges.data.balance_transaction"]
+         ) do
+      {:ok, %Stripe.PaymentIntent{charges: %Stripe.List{data: charges}}} ->
+        {:ok, Enum.map(charges, fn x -> x.balance_transaction.fee end) |> Enum.sum()}
+
+      error ->
+        error
+    end
   end
 end

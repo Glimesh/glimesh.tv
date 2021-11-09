@@ -13,7 +13,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.Addons do
       %Glimesh.Streams.Channel{} = channel ->
         {:ok,
          socket
-         |> put_page_title(gettext("Addons"))
+         |> put_page_title(gettext("Support Modal"))
          |> assign(:site_theme, session["site_theme"])
          |> assign(:username, streamer.username)
          |> assign(:addons, Streams.change_addons(channel))

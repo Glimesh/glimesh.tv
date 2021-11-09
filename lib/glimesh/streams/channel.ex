@@ -37,6 +37,10 @@ defmodule Glimesh.Streams.Channel do
     # This is here temporarily as we add additional schema to handle it.
     field :streamloots_url, :string, default: nil
 
+    field :show_subscribe_button, :boolean, default: true
+    field :show_donate_button, :boolean, default: true
+    field :show_streamloots_button, :boolean, default: true
+
     field :poster, Glimesh.ChannelPoster.Type
     field :chat_bg, Glimesh.ChatBackground.Type
 
@@ -127,7 +131,12 @@ defmodule Glimesh.Streams.Channel do
 
   def addons_changest(channel, attrs \\ %{}) do
     channel
-    |> cast(attrs, [:streamloots_url])
+    |> cast(attrs, [
+      :streamloots_url,
+      :show_subscribe_button,
+      :show_donate_button,
+      :show_streamloots_button
+    ])
     |> validate_format(:streamloots_url, ~r/https:\/\/www\.streamloots\.com\/([a-zA-Z0-9._]+)/)
   end
 

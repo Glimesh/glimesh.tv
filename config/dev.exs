@@ -102,7 +102,8 @@ config :glimesh, :stripe_config,
   platform_sub_founder_price: 2500,
   channel_sub_base_product_id: "prod_channel_sub",
   channel_sub_base_price_id: "price_channel_sub",
-  channel_sub_base_price: 500
+  channel_sub_base_price: 500,
+  channel_donation_product_id: "prod_channel_donation"
 
 if File.exists?("config/local.exs") do
   import_config "local.exs"
