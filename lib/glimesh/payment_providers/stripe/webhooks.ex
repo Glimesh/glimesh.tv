@@ -106,6 +106,7 @@ defmodule Glimesh.PaymentProviders.StripeProvider.Webhooks do
 
       other ->
         Logger.error("Unhandled Session.payment_status = #{other}")
+        {:error, "Unknown payment status"}
     end
   end
 

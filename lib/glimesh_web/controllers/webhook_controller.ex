@@ -1,27 +1,40 @@
 defmodule GlimeshWeb.WebhookController do
   use GlimeshWeb, :controller
 
+  require Logger
+
   def stripe(%Plug.Conn{assigns: %{stripe_event: stripe_event}} = conn, _params) do
-    case Glimesh.PaymentProviders.StripeProvider.Webhooks.handle_webhook(stripe_event) do
-      {:ok, _} ->
-        conn
-        |> send_resp(:ok, "Accepted.")
-        |> halt()
+    try do
+      case Glimesh.PaymentProviders.StripeProvider.Webhooks.handle_webhook(stripe_event) do
+        {:ok, _} ->
+          conn
+          |> send_resp(:ok, "Accepted.")
+          |> halt()
 
-      {:error_unimplemented, msg} ->
-        # We don't want to send this as an error, because we don't want Stripe to hate us.
-        conn
-        |> send_resp(:ok, msg)
-        |> halt()
+        {:error_unimplemented, msg} ->
+          # We don't want to send this as an error, because we don't want Stripe to hate us.
+          conn
+          |> send_resp(:ok, msg)
+          |> halt()
 
-      {:error, message} when is_binary(message) ->
-        conn
-        |> send_resp(:bad_request, message)
-        |> halt()
+        {:error, message} when is_binary(message) ->
+          Logger.error(message)
 
-      _ ->
+          conn
+          |> send_resp(:bad_request, message)
+          |> halt()
+
+        _ ->
+          conn
+          |> send_resp(:bad_request, "Unknown error")
+          |> halt()
+      end
+    rescue
+      e ->
+        Logger.error(Exception.format(:error, e, __STACKTRACE__))
+
         conn
-        |> send_resp(:bad_request, "Unknown error")
+        |> send_resp(:bad_request, "Unknown exception")
         |> halt()
     end
   end

@@ -68,6 +68,9 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
     case session.metadata do
       %{"type" => "donation", "product_id" => ^donation_id} = payment_router ->
         complete_donation(session, payment_router)
+
+      _ ->
+        {:error, "No matching metadata found"}
     end
   end
 
@@ -132,7 +135,14 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
       })
     end
 
-    res
+    case res do
+      {:ok, _struct} = resp ->
+        resp
+
+      {:error, changeset} ->
+        Logger.error("Error saving changeset #{inspect(changeset)}")
+        {:error, "Failed to save database record"}
+    end
   end
 
   @doc """
