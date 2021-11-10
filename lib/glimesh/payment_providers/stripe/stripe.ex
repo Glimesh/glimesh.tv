@@ -101,39 +101,52 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
     user = Accounts.get_user!(user_id)
     streamer = Accounts.get_user!(streamer_id)
 
+    update_attributes = %{
+      status: "paid",
+
+      # These fields are calculated by us
+      # Cents of course...
+      total_amount: amount_in_cents,
+      external_fees: total_fees,
+      our_fees: 0,
+      withholding_amount: 0,
+      payout_amount: amount_to_be_paid
+    }
+
     res =
-      Payments.create_payable(%{
-        type: "donation",
-        external_source: "stripe",
-        external_reference: session.id,
-        status: "paid",
+      case Payments.get_payable_by_source("stripe", session.id) do
+        %Payable{} = payable ->
+          Payments.update_payable(payable, update_attributes)
 
-        # Relations
-        user: user,
-        streamer: streamer,
+        _ ->
+          Payments.create_payable(
+            Map.merge(update_attributes, %{
+              type: "donation",
+              external_source: "stripe",
+              external_reference: session.id,
+              status: "paid",
 
-        # These fields are calculated by us
-        # Cents of course...
-        total_amount: amount_in_cents,
-        external_fees: total_fees,
-        our_fees: 0,
-        withholding_amount: 0,
-        payout_amount: amount_to_be_paid,
+              # Relations
+              user: user,
+              streamer: streamer,
 
-        # These fields are what actually happened
-        user_paid_at: NaiveDateTime.utc_now()
-      })
+              # These fields are what actually happened
+              user_paid_at: NaiveDateTime.utc_now()
+            })
+          )
 
-    channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
+          # Only notify channel on create
+          channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
 
-    if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
-      human_amount = :erlang.float_to_binary(amount_in_cents / 100, decimals: 2)
+          if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
+            human_amount = :erlang.float_to_binary(amount_in_cents / 100, decimals: 2)
 
-      Glimesh.Chat.create_chat_message(user, channel, %{
-        message: " just donated $#{human_amount}!",
-        is_subscription_message: true
-      })
-    end
+            Glimesh.Chat.create_chat_message(user, channel, %{
+              message: " just donated $#{human_amount}!",
+              is_subscription_message: true
+            })
+          end
+      end
 
     case res do
       {:ok, _struct} = resp ->
