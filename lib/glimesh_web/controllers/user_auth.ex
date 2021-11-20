@@ -27,6 +27,7 @@ defmodule GlimeshWeb.UserAuth do
   """
   def log_in_user(conn, user, params \\ %{}) do
     token = Accounts.generate_user_session_token(user)
+    user_return_to = get_session(conn, :user_return_to)
     last_path = NavigationHistory.last_path(conn)
     user_preference = Accounts.get_user_preference!(user)
 
@@ -40,7 +41,7 @@ defmodule GlimeshWeb.UserAuth do
     |> put_session(:locale, user_preference.locale)
     |> put_session(:site_theme, user_preference.site_theme)
     |> maybe_write_remember_me_cookie(token, params)
-    |> redirect(to: last_path)
+    |> redirect(to: user_return_to || last_path || signed_in_path(conn))
 
   end
 
@@ -80,7 +81,7 @@ defmodule GlimeshWeb.UserAuth do
   """
   def log_out_user(conn) do
     user_token = get_session(conn, :user_token)
-    last_path = NavigationHistory.last_path(conn)
+    last_path = NavigationHistory.last_path(conn, default: "/")
     user_token && Accounts.delete_session_token(user_token)
 
     if live_socket_id = get_session(conn, :live_socket_id) do
@@ -258,5 +259,7 @@ defmodule GlimeshWeb.UserAuth do
   end
 
   defp maybe_store_return_to(conn), do: conn
+
+  defp signed_in_path(_conn), do: "/"
 
 end
