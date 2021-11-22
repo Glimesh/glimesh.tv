@@ -29,7 +29,7 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title"><%= gettext("3. Payouts") %></h5>
-                <p><%= gettext("Glimesh payouts happen weekly, but there is some delay in getting a new subscriber and seeing their money in your bank account. All subscriptions and payouts happen in USD, and will be converted.") %></p>
+                <p><%= gettext("Glimesh payouts happen bi-weekly, but there is some delay in getting a new subscriber and seeing their money in your bank account. All subscriptions and payouts happen in USD, and will be converted.") %></p>
                 <ol>
                     <li><%= gettext("After subscribing, funds can take time to settle in our account") %></li>
                     <li><%= gettext("Payouts happen Wednesday") %></li>

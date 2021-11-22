@@ -170,7 +170,7 @@ defmodule GlimeshWeb.SupportModal do
           <ul>
             <li><%= gettext("Stripe Fees: 2.9% + 30¢ USD") %></li>
             <li><%= gettext("Glimesh Fees: None") %></li>
-            <li><%= gettext("Weekly payouts for streamer") %></li>
+            <li><%= gettext("Bi-weekly payouts for streamer") %></li>
           </ul>
 
           <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider." class="img-fluid mt-4 mx-auto d-block">

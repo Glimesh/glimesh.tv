@@ -9,8 +9,8 @@ mix deps.get
 mix ecto.setup
 
 # install nodejs stuff
-cd assets && npm ci
-cd ..
+npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
+mix assets.deploy
 
 FILE=./priv/cert/selfsigned.pem
 if [ ! -f "$FILE" ]; then
