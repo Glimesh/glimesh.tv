@@ -126,6 +126,7 @@ defmodule GlimeshWeb.Router do
     get "/users/settings/addons", UserSettingsController, :addons
     get "/users/settings/emotes", UserSettingsController, :emotes
     get "/users/settings/upload_emotes", UserSettingsController, :upload_emotes
+    get "/users/settings/hosting", UserSettingsController, :hosting
 
     put "/users/settings/create_channel", UserSettingsController, :create_channel
     put "/users/settings/delete_channel", UserSettingsController, :delete_channel

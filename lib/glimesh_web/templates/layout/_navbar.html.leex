@@ -12,7 +12,14 @@
             <%= if assigns[:current_user] do %>
             <li class="nav-item d-inline mr-3">
                 <%= live_redirect to: Routes.streams_list_path(@conn, :index, "following") do %>
-                <i class="fas fa-heart fa-fw"></i> <%= if count_live = count_live_following_channels(@conn) do %><span class="badge badge-danger"><%= count_live %></span><% end %>
+                <i class="fas fa-heart fa-fw"></i>
+                    <%= cond do %>
+                    <% count_live = count_live_following_channels(@conn) -> %>
+                    <span class="badge badge-danger"><%= count_live %></span>
+                    <% count_hosted = count_live_hosted_channels(@conn) -> %>
+                    <span class="badge badge-primary"><%= count_hosted %></span>
+                    <% true -> %>
+                    <% end %>
                 <% end %>
             </li>
             <% end %>
@@ -74,7 +81,14 @@
             <%= if assigns[:current_user] do %>
             <li class="nav-item">
                 <%= live_redirect class: "nav-link", to: Routes.streams_list_path(@conn, :index, "following") do %>
-                <%= gettext("Following") %> <%= if count_live = count_live_following_channels(@conn) do %><span class="badge badge-danger"><%= count_live %></span><% end %>
+                <%= gettext("Following") %>
+                    <%= cond do %>
+                    <% count_live = count_live_following_channels(@conn) -> %>
+                    <span class="badge badge-danger align-top"><%= count_live %></span>
+                    <% count_hosted = count_live_hosted_channels(@conn) -> %>
+                    <span class="badge badge-primary align-top"><%= count_hosted %></span>
+                    <% true -> %>
+                    <% end %>
                 <% end %>
             </li>
             <% end %>

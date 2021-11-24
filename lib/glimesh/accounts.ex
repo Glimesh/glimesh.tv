@@ -656,4 +656,8 @@ defmodule Glimesh.Accounts do
        valid?: false
      }}
   end
+
+  def get_account_age_in_days(%User{} = user) do
+    NaiveDateTime.diff(NaiveDateTime.utc_now(), user.inserted_at, :second) / 86_400
+  end
 end

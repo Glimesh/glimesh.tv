@@ -78,6 +78,26 @@ defmodule Glimesh.AccountsFixtures do
     user
   end
 
+  def change_inserted_at_for_user(%Glimesh.Accounts.User{} = user, new_inserted_at) do
+    user
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.force_change(:inserted_at, new_inserted_at)
+    |> Glimesh.Repo.update!()
+
+    Glimesh.Accounts.get_user!(user.id)
+    |> Glimesh.Repo.preload(channel: [:category, :subcategory, :tags])
+  end
+
+  def change_user_banned_status(%Glimesh.Accounts.User{} = user, new_status) do
+    user
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.force_change(:is_banned, new_status)
+    |> Glimesh.Repo.update()
+
+    Glimesh.Accounts.get_user!(user.id)
+    |> Glimesh.Repo.preload(channel: [:category, :subcategory, :tags])
+  end
+
   def admin_fixture(_attrs \\ %{}) do
     user_fixture(%{is_admin: true})
   end

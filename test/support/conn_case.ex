@@ -67,6 +67,32 @@ defmodule GlimeshWeb.ConnCase do
   end
 
   @doc """
+  Setup helper that registers and logs in a streamer that is eligible to host other streams
+
+      setup :register_and_log_in_streamer_that_can_host
+
+  """
+  def register_and_log_in_streamer_that_can_host(%{conn: conn}) do
+    user =
+      Glimesh.AccountsFixtures.streamer_fixture()
+      |> Glimesh.AccountsFixtures.change_inserted_at_for_user(
+        NaiveDateTime.add(NaiveDateTime.utc_now(), 86_400 * -6)
+        |> NaiveDateTime.truncate(:second)
+      )
+
+    channel = Glimesh.ChannelLookups.get_channel_for_user(user)
+
+    Glimesh.Streams.create_stream(channel, %{
+      started_at:
+        NaiveDateTime.add(NaiveDateTime.utc_now(), 60 * 60 * -10)
+        |> NaiveDateTime.truncate(:second),
+      ended_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+    })
+
+    %{conn: log_in_user(conn, user), user: user, channel: channel}
+  end
+
+  @doc """
   Setup helper that registers and logs in admin user.
 
       setup :register_and_log_in_admin_user

@@ -8,7 +8,7 @@ defmodule Glimesh.ChannelLookups do
   alias Glimesh.AccountFollows.Follower
   alias Glimesh.Accounts.User
   alias Glimesh.Repo
-  alias Glimesh.Streams.{Category, Channel}
+  alias Glimesh.Streams.{Category, Channel, ChannelHosts}
 
   ## Filtering
   @spec search_live_channels(map) :: list
@@ -113,6 +113,62 @@ defmodule Glimesh.ChannelLookups do
     |> Repo.preload([:category, :user, :stream, :subcategory, :tags])
   end
 
+  def count_live_followed_channels_that_are_hosting(%User{} = user) do
+    from(c in Channel,
+      left_join: f in Follower,
+      on: c.user_id == f.streamer_id,
+      join: ch in ChannelHosts,
+      on: c.id == ch.hosting_channel_id,
+      join: target in Channel,
+      on: target.id == ch.target_channel_id,
+      left_join: target_followers in Follower,
+      on: target.user_id == target_followers.streamer_id,
+      where: ch.status == "hosting",
+      where: target.status == "live",
+      where: f.user_id == ^user.id,
+      where: target_followers.user_id != ^user.id or is_nil(target_followers.user_id),
+      distinct: target.id,
+      select: [target]
+    )
+    |> Repo.all()
+    |> length()
+  end
+
+  def list_live_followed_channels_and_hosts(%User{} = user) do
+    include_hosts_query =
+      from(c in Channel,
+        left_join: f in Follower,
+        on: c.user_id == f.streamer_id,
+        join: ch in ChannelHosts,
+        on: c.id == ch.hosting_channel_id,
+        join: target in Channel,
+        on: target.id == ch.target_channel_id,
+        left_join: target_followers in Follower,
+        on: target.user_id == target_followers.streamer_id,
+        where: ch.status == "hosting",
+        where: target.status == "live",
+        where: f.user_id == ^user.id,
+        where: target_followers.user_id != ^user.id or is_nil(target_followers.user_id),
+        distinct: target.id,
+        select: [target],
+        select_merge: %{match_type: "hosting"}
+      )
+
+    live_followed_query =
+      from([c] in Channel,
+        join: f in Follower,
+        on: c.user_id == f.streamer_id,
+        where: c.status == "live",
+        where: f.user_id == ^user.id,
+        select_merge: %{match_type: "live"}
+      )
+
+    query = live_followed_query |> union_all(^include_hosts_query)
+
+    Repo.all(query)
+    |> Repo.preload([:user, :category, :stream, :subcategory, :tags])
+  end
+
   def list_all_followed_channels(user) do
     Repo.all(
       from c in Channel,
@@ -201,5 +257,39 @@ defmodule Glimesh.ChannelLookups do
   """
   def get_any_channel_for_user(user) do
     Repo.one(from c in Channel, where: c.user_id == ^user.id)
+  end
+
+  def search_hostable_channels_by_name(hosting_user, target_name) do
+    if target_name != nil and String.length(target_name) < 25 do
+      search_term = Regex.replace(~r/(\\\\|_|%)/, target_name, "\\\\\\1") <> "%"
+
+      Repo.all(
+        from c in Channel,
+          join: u in User,
+          on: c.user_id == u.id,
+          where: ilike(u.displayname, ^search_term),
+          where: c.allow_hosting == true,
+          where: c.inaccessible == false,
+          where: c.user_id != ^hosting_user.id,
+          where: u.is_banned == false,
+          where: u.can_stream == true,
+          where:
+            fragment(
+              "not exists(select user_id from channel_bans where user_id = ? and channel_id = ? and expires_at is null)",
+              ^hosting_user.id,
+              c.id
+            ),
+          where:
+            fragment(
+              "not exists(select target_channel_id from channel_hosts where target_channel_id = ?)",
+              c.id
+            ),
+          order_by: [asc: u.displayname],
+          limit: 10
+      )
+      |> Repo.preload([:user])
+    else
+      []
+    end
   end
 end

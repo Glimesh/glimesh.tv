@@ -38,6 +38,11 @@ defmodule GlimeshWeb.UserSettingsController do
     |> Controller.live_render(ChannelSettingsLive.UploadEmotes)
   end
 
+  def hosting(conn, _params) do
+    conn
+    |> Controller.live_render(ChannelSettingsLive.Hosting)
+  end
+
   def preference(conn, _params) do
     render(conn, "preference.html", page_title: format_page_title(gettext("Preferences")))
   end

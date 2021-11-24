@@ -2,14 +2,14 @@
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
         <div class="col-md-12 mx-auto ">
             <h1 class="display-4 font-weight-normal">
-                <%= gettext("Live Followed Streams") %>
+                <%= gettext("Live Streams") %>
             </h1>
             <%= if length(@channels) == 0 do %>
             <p><%= gettext("None of the streams you follow are live.") %></p>
             <% end %>
         </div>
     </div>
-    <div class="row">
+    <div class="row d-flex justify-content-center">
         <%= for channel <- @channels do %>
         <div class="col-sm-12 col-md-6 col-xl-4 mt-4">
             <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
@@ -18,8 +18,12 @@
                 <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
 
                     <div>
+                        <div class="card-stream-category">
+                            <%= if channel.match_type == "hosting" do %>
+                            <span class="badge badge-warning"><%= gettext("Hosted") %></span>
+                            <% end %>
+                        </div>
                         <div class="card-stream-tags">
-
                             <%= if channel.subcategory do %>
                             <span class="badge badge-info"><%= channel.subcategory.name %></span>
                             <% end %>

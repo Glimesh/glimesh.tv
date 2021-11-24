@@ -34,6 +34,8 @@ defmodule Glimesh.Streams.Channel do
 
     field :emote_prefix, :string
 
+    field :allow_hosting, :boolean, default: false
+
     # This is here temporarily as we add additional schema to handle it.
     field :streamloots_url, :string, default: nil
 
@@ -43,6 +45,9 @@ defmodule Glimesh.Streams.Channel do
 
     field :poster, Glimesh.ChannelPoster.Type
     field :chat_bg, Glimesh.ChatBackground.Type
+
+    # This is used when searching for live channels that are live or hosted
+    field :match_type, :string, virtual: true
 
     many_to_many :tags, Glimesh.Streams.Tag, join_through: "channel_tags", on_replace: :delete
 
@@ -98,7 +103,8 @@ defmodule Glimesh.Streams.Channel do
       :disable_hyperlinks,
       :block_links,
       :require_confirmed_email,
-      :minimum_account_age
+      :minimum_account_age,
+      :allow_hosting
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)
@@ -247,5 +253,16 @@ defmodule Glimesh.Streams.Channel do
 
   defp generate_hmac_key do
     :crypto.strong_rand_bytes(64) |> Base.encode64() |> binary_part(0, 64)
+  end
+
+  def change_allow_hosting(%Glimesh.Streams.Channel{} = channel, attrs \\ %{}) do
+    channel
+    |> cast(attrs, [:allow_hosting])
+    |> validate_required(:allow_hosting)
+  end
+
+  def update_allow_hosting(%Glimesh.Streams.Channel{} = channel, attrs \\ %{}) do
+    change_allow_hosting(channel, attrs)
+    |> Glimesh.Repo.update()
   end
 end

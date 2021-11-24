@@ -55,5 +55,34 @@ defmodule GlimeshWeb.StreamsLive.FollowingTest do
       assert html =~ "All Followed Streamers"
       assert html =~ streamer.displayname
     end
+
+    test "lists channels hosted by followed streams", %{
+      conn: conn,
+      user: user,
+      streamer: streamer,
+      channel: channel
+    } do
+      Glimesh.AccountFollows.follow(streamer, user)
+      live_streamer_not_followed = streamer_fixture(%{}, %{title: "Live being hosted"})
+      Glimesh.Streams.start_stream(live_streamer_not_followed.channel)
+      not_live_but_hosting_streamer = streamer_fixture(%{}, %{title: "Not live but hosting"})
+
+      %Glimesh.Streams.ChannelHosts{
+        hosting_channel_id: not_live_but_hosting_streamer.channel.id,
+        target_channel_id: live_streamer_not_followed.channel.id,
+        status: "hosting"
+      }
+      |> Glimesh.Repo.insert()
+
+      Glimesh.AccountFollows.follow(not_live_but_hosting_streamer, user)
+
+      {:ok, _, html} = live(conn, Routes.streams_list_path(conn, :index, "following"))
+
+      assert html =~ "Live being hosted"
+      assert html =~ live_streamer_not_followed.displayname
+      assert html =~ channel.title
+      assert html =~ streamer.displayname
+      refute html =~ "Not live but hosting"
+    end
   end
 end

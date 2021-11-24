@@ -2,7 +2,7 @@ defmodule GlimeshWeb.UserLive.Stream do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Accounts
-  alias Glimesh.ChannelLookups
+  alias Glimesh.{ChannelHostsLookups, ChannelLookups}
   alias Glimesh.Presence
   alias Glimesh.Streams
 
@@ -11,47 +11,92 @@ defmodule GlimeshWeb.UserLive.Stream do
       %Glimesh.Streams.Channel{} = channel ->
         if session["locale"], do: Gettext.put_locale(session["locale"])
 
-        if connected?(socket) do
-          # Wait until the socket connection is ready to load the stream
-          Process.send(self(), :load_stream, [])
-          Streams.subscribe_to(:channel, channel.id)
-        end
-
         maybe_user = Accounts.get_user_by_session_token(session["user_token"])
         streamer = Accounts.get_user!(channel.streamer_id)
 
-        avatar_url = Glimesh.Avatar.url({streamer.avatar, streamer}, :original)
-
-        has_some_support_option =
-          length(Glimesh.Streams.list_support_tabs(channel.user, channel)) > 0
-
         {:ok,
-         socket
-         |> put_page_title(channel.title)
-         |> assign(:show_debug, false)
-         |> assign(:show_support_modal, socket.assigns.live_action == :support)
-         |> assign(:support_modal_tab, Map.get(params, "tab"))
-         |> assign(:stripe_session_id, Map.get(params, "stripe_session_id"))
-         |> assign(:unique_user, Map.get(session, "unique_user"))
-         |> assign(:country, Map.get(session, "country"))
-         |> assign(:prompt_mature, Streams.prompt_mature_content(channel, maybe_user))
-         |> assign(:streamer, channel.user)
-         |> assign(:can_receive_payments, Accounts.can_receive_payments?(channel.user))
-         |> assign(:has_some_support_option, has_some_support_option)
-         |> assign(:channel, channel)
-         |> assign(:stream, channel.stream)
-         |> assign(:channel_poster, get_stream_thumbnail(channel))
-         |> assign(:custom_meta, meta_tags(channel, avatar_url))
-         |> assign(:janus_url, "Pending...")
-         |> assign(:janus_hostname, "Pending...")
-         |> assign(:lost_packets, 0)
-         |> assign(:stream_metadata, get_last_stream_metadata(channel.stream))
-         |> assign(:player_error, nil)
-         |> assign(:user, maybe_user)}
+         %{
+           :redirect_to_hosted_target => redirect_to_hosted_target,
+           :hosting_channel => hosting_channel
+         }} = get_hosting_data(params, channel, maybe_user, streamer)
+
+        if redirect_to_hosted_target do
+          {:ok,
+           socket
+           |> redirect(
+             to:
+               "/#{hosting_channel.target.user.username}/?host=#{hosting_channel.host.user.username}"
+           )}
+        else
+          if connected?(socket) do
+            # Wait until the socket connection is ready to load the stream
+            Process.send(self(), :load_stream, [])
+            Streams.subscribe_to(:channel, channel.id)
+          end
+
+          avatar_url = Glimesh.Avatar.url({streamer.avatar, streamer}, :original)
+
+          has_some_support_option =
+            length(Glimesh.Streams.list_support_tabs(channel.user, channel)) > 0
+
+          {:ok,
+           socket
+           |> put_page_title(channel.title)
+           |> assign(:show_debug, false)
+           |> assign(:show_support_modal, socket.assigns.live_action == :support)
+           |> assign(:support_modal_tab, Map.get(params, "tab"))
+           |> assign(:stripe_session_id, Map.get(params, "stripe_session_id"))
+           |> assign(:unique_user, Map.get(session, "unique_user"))
+           |> assign(:country, Map.get(session, "country"))
+           |> assign(:prompt_mature, Streams.prompt_mature_content(channel, maybe_user))
+           |> assign(:streamer, channel.user)
+           |> assign(:can_receive_payments, Accounts.can_receive_payments?(channel.user))
+           |> assign(:has_some_support_option, has_some_support_option)
+           |> assign(:channel, channel)
+           |> assign(:hosting_channel, hosting_channel)
+           |> assign(:stream, channel.stream)
+           |> assign(:channel_poster, get_stream_thumbnail(channel))
+           |> assign(:custom_meta, meta_tags(channel, avatar_url))
+           |> assign(:janus_url, "Pending...")
+           |> assign(:janus_hostname, "Pending...")
+           |> assign(:lost_packets, 0)
+           |> assign(:stream_metadata, get_last_stream_metadata(channel.stream))
+           |> assign(:player_error, nil)
+           |> assign(:user, maybe_user)}
+        end
 
       nil ->
         {:ok, redirect(socket, to: "/#{streamer_username}/profile")}
     end
+  end
+
+  defp get_hosting_data(params, channel, maybe_user, streamer) do
+    is_live = Streams.is_live?(channel)
+
+    hosting_channel =
+      cond do
+        params["host"] ->
+          ChannelHostsLookups.get_targets_host_info(params["host"], channel)
+
+        is_live == false ->
+          ChannelHostsLookups.get_current_hosting_target(channel)
+
+        true ->
+          nil
+      end
+
+    # this channel is hosting another
+    redirect_to_hosted_target =
+      is_live == false and hosting_channel != nil and params["host"] == nil and
+        params["follow_host"] != "false" and
+        (maybe_user == nil or maybe_user.id != streamer.id)
+
+    {:ok,
+     %{
+       is_live: is_live,
+       hosting_channel: hosting_channel,
+       redirect_to_hosted_target: redirect_to_hosted_target
+     }}
   end
 
   def handle_params(_unsigned_params, _uri, socket) do
