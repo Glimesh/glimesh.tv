@@ -126,6 +126,7 @@ defmodule Glimesh.AccountFollows do
     Repo.all(
       from f in Follower,
         where: f.user_id == ^streamer.id,
+        where: u.is_banned == false,
         offset: ^((current_page - 1) * per_page),
         limit: ^per_page,
         preload: [:streamer]
@@ -136,6 +137,7 @@ defmodule Glimesh.AccountFollows do
     Repo.all(
       from f in Follower,
         where: f.streamer_id == ^streamer.id,
+        where: u.is_banned == false,
         offset: ^((current_page - 1) * per_page),
         limit: ^per_page,
         preload: [:user]
