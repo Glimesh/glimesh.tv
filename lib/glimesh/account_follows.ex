@@ -125,6 +125,9 @@ defmodule Glimesh.AccountFollows do
   def list_following_with_scroll(streamer, _query, current_page, per_page) do
     Repo.all(
       from f in Follower,
+        inner_join: u in User,
+        on: u.id == f.streamer_id,
+        where: u.is_banned == false,
         where: f.user_id == ^streamer.id,
         offset: ^((current_page - 1) * per_page),
         limit: ^per_page,
@@ -135,6 +138,9 @@ defmodule Glimesh.AccountFollows do
   def list_follower_with_scroll(streamer, _query, current_page, per_page) do
     Repo.all(
       from f in Follower,
+        inner_join: u in User,
+        on: u.id == f.user_id,
+        where: u.is_banned == false,
         where: f.streamer_id == ^streamer.id,
         offset: ^((current_page - 1) * per_page),
         limit: ^per_page,
