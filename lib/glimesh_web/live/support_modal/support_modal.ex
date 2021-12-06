@@ -144,7 +144,6 @@ defmodule GlimeshWeb.SupportModal do
             <ul>
                 <li><%= gettext("Support the streamer") %></li>
                 <li><%= gettext("Channel sub badge") %></li>
-                <li><%= gettext("Site-wide emote usage") %></li>
             </ul>
 
             <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider." class="img-fluid mt-4 mx-auto d-block">
