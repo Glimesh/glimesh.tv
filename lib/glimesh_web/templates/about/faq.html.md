@@ -2,7 +2,7 @@
 
 ## General Questions
 
-##### What is Glimesh?
+##### What's Glimesh?
 
 Glimesh is a next-generation streaming platform built by the community, for the community. We know establishing a following is hard and the hours are long. Our platform focuses on increasing discoverability for content creators and implementing the latest in streaming technology to level the playing field. We understand the importance of interaction between content creators and their fans and we’re dedicated to innovating new ways to bring communities closer together.
 
