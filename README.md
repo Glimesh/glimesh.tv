@@ -196,7 +196,7 @@ You can create a `config/local.exs` config file to change any local settings to 
 easier. This file is ignored from git, so you don't have to worry about committing any secrets.
 
 ```elixir
-use Mix.Config
+import Config
 
 config :glimesh, GlimeshWeb.Endpoint,
   url: [host: "glimesh.dev", port: 443]

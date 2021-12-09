@@ -36,7 +36,7 @@ defmodule Glimesh.MixProject do
     [
       # Dev & Test Libs
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:faker, "~> 0.14", only: :dev},
+      {:faker, "~> 0.17", only: :dev},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:floki, ">= 0.0.0", only: :test},
       {:excoveralls, "~> 0.13.1", only: :test},
