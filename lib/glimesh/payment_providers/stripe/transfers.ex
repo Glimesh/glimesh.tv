@@ -48,6 +48,17 @@ defmodule Glimesh.PaymentProviders.StripeProvider.Transfers do
         raise "Payout Amount is less than 0 cents, aborting!"
       end
 
+      payables_string =
+        Enum.map(payables_for_streamer, & &1.external_reference) |> Enum.join(", ")
+
+      # Figure out better way of storing this info, since Stripe has a 500 char limit
+      included_payables =
+        if String.length(payables_string) >= 500,
+          do:
+            Enum.map(payables_for_streamer, &String.slice(&1.external_reference, 0, 15))
+            |> Enum.join(", "),
+          else: payables_string
+
       %TransferRequest{
         streamer_id: streamer_id,
         payables: payables_for_streamer,
@@ -60,8 +71,7 @@ defmodule Glimesh.PaymentProviders.StripeProvider.Transfers do
           metadata: %{
             total_withholding_amount:
               Enum.map(payables_for_streamer, & &1.withholding_amount) |> Enum.sum(),
-            included_payables:
-              Enum.map(payables_for_streamer, & &1.external_reference) |> Enum.join(", ")
+            included_payables: included_payables
           }
         }
       }
