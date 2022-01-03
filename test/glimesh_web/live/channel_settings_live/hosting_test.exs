@@ -174,7 +174,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.HostingTest do
 
       assert has_element?(
                view,
-               "#hosted-row-#{error_target.channel.id}-status > .fa-circle-xmark"
+               "#hosted-row-#{error_target.channel.id}-status > .fa-times-circle"
              )
 
       assert has_element?(view, "#hosted-row-#{active_target.channel.id}-status > .fa-tv")
