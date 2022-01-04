@@ -187,11 +187,11 @@ config :glimesh, :stripe_config,
     Poland: "PL",
     Portugal: "PT",
     Romania: "RO",
-    Saudi Arabia, "SA"
+    "Saudi Arabia": "SA",
     Singapore: "SG",
     Slovakia: "SK",
     Slovenia: "SI",
-    South Africa: "ZA"
+    "South Africa": "ZA",
     Spain: "ES",
     Sweden: "SE",
     Switzerland: "CH",
