@@ -79,6 +79,7 @@ defmodule Glimesh.MixProject do
       {:oauther, "~> 1.1", github: "Glimesh/oauther", override: true},
       {:oauth2, "~> 2.0"},
       {:extwitter, "~> 0.12.2"},
+      {:navigation_history, "~> 0.4"},
       # Uploads
       {:waffle, "~> 1.1"},
       {:waffle_ecto, "~> 0.0.9"},

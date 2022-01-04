@@ -28,6 +28,7 @@ defmodule GlimeshWeb.UserAuth do
   def log_in_user(conn, user, params \\ %{}) do
     token = Accounts.generate_user_session_token(user)
     user_return_to = get_session(conn, :user_return_to)
+    last_path = NavigationHistory.last_path(conn)
     user_preference = Accounts.get_user_preference!(user)
 
     user_ip = conn.remote_ip |> :inet.ntoa() |> to_string()
@@ -40,7 +41,8 @@ defmodule GlimeshWeb.UserAuth do
     |> put_session(:locale, user_preference.locale)
     |> put_session(:site_theme, user_preference.site_theme)
     |> maybe_write_remember_me_cookie(token, params)
-    |> redirect(to: user_return_to || signed_in_path(conn))
+    |> redirect(to: user_return_to || last_path || signed_in_path(conn))
+
   end
 
   defp maybe_write_remember_me_cookie(conn, token, %{"remember_me" => "true"}) do
@@ -79,6 +81,7 @@ defmodule GlimeshWeb.UserAuth do
   """
   def log_out_user(conn) do
     user_token = get_session(conn, :user_token)
+    last_path = NavigationHistory.last_path(conn, default: "/")
     user_token && Accounts.delete_session_token(user_token)
 
     if live_socket_id = get_session(conn, :live_socket_id) do
@@ -88,7 +91,7 @@ defmodule GlimeshWeb.UserAuth do
     conn
     |> renew_session()
     |> delete_resp_cookie(@remember_me_cookie)
-    |> redirect(to: "/")
+    |> redirect(to: last_path)
   end
 
   def ban_user(conn) do
@@ -258,4 +261,5 @@ defmodule GlimeshWeb.UserAuth do
   defp maybe_store_return_to(conn), do: conn
 
   defp signed_in_path(_conn), do: "/"
+
 end
