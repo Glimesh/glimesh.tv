@@ -27,6 +27,9 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
   """
   def create_invoice(%Stripe.Invoice{} = invoice) do
     case Glimesh.Payments.get_subscription_by_stripe_id(invoice.subscription) do
+      %Subscription{streamer_id: nil} ->
+        {:error_unimplemented, "Not currently saving payables for Glimesh direct Subscriptions"}
+
       %Subscription{} = subscription ->
         create_subscription_invoice(subscription, invoice)
 
@@ -54,6 +57,9 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
         case create_invoice(invoice) do
           {:ok, _} ->
             pay_invoice(invoice)
+
+          {:error_unimplemented, msg} ->
+            {:error_unimplemented, msg}
 
           {:error, msg} ->
             {:error, msg}
