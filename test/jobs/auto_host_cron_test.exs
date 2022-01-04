@@ -23,6 +23,10 @@ defmodule Glimesh.Jobs.AutoHostCronTest do
       ended_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     })
 
+    Ecto.Changeset.change(hosting_channel.channel)
+    |> Ecto.Changeset.force_change(:status, "offline")
+    |> Repo.update()
+
     good_target = streamer_fixture(%{}, %{allow_hosting: true})
 
     Channel.changeset(good_target.channel, %{status: "live"})
@@ -86,6 +90,40 @@ defmodule Glimesh.Jobs.AutoHostCronTest do
                    where: ch.hosting_channel_id == ^host.channel.id and ch.status == "hosting"
                )
              ) == 1
+    end
+
+    test "Will un-host a channel whose hosting channel is now live", %{
+      good_target_channel_hosts: good_target,
+      host: host,
+      hosting_target_no_longer_live_channel_hosts: bad_target
+    } do
+      assert :ok = AutoHostCron.perform([])
+
+      assert Repo.get_by(ChannelHosts, %{id: good_target.id, status: "hosting"})
+      assert Repo.get_by(ChannelHosts, %{id: bad_target.id, status: "ready"})
+
+      assert length(
+               Repo.all(
+                 from ch in ChannelHosts,
+                   where: ch.hosting_channel_id == ^host.channel.id and ch.status == "hosting"
+               )
+             ) == 1
+
+      Ecto.Changeset.change(host.channel)
+      |> Ecto.Changeset.force_change(:status, "live")
+      |> Repo.update()
+
+      assert :ok = AutoHostCron.perform([])
+
+      assert Repo.get_by(ChannelHosts, %{id: good_target.id, status: "ready"})
+      assert Repo.get_by(ChannelHosts, %{id: bad_target.id, status: "ready"})
+
+      assert length(
+               Repo.all(
+                 from ch in ChannelHosts,
+                   where: ch.hosting_channel_id == ^host.channel.id and ch.status == "hosting"
+               )
+             ) == 0
     end
 
     test "Will not host more than one target per host channel", %{

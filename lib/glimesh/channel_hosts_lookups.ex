@@ -46,8 +46,9 @@ defmodule Glimesh.ChannelHostsLookups do
       set status = 'ready'\
       where id in\
       (select ch.id from channel_hosts as ch\
-       inner join channels as c on ch.target_channel_id = c.id\
-       where c.status != 'live'\
+       inner join channels as tc on ch.target_channel_id = tc.id\
+       inner join channels as hc on ch.hosting_channel_id = hc.id\
+       where (tc.status != 'live' or hc.status = 'live')\
        and ch.status = 'hosting')\
       returning id\
     """
