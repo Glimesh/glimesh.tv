@@ -11,6 +11,7 @@ defmodule Glimesh.Resolvers.ChannelResolver do
 
   @error_not_found "Could not find resource"
   @error_access_denied "Access denied"
+  @edge_not_found "Edge not found"
 
   # Channels
 
@@ -60,6 +61,32 @@ defmodule Glimesh.Resolvers.ChannelResolver do
   end
 
   def find_channel(_, _), do: {:error, @error_not_found}
+
+  def watch_stream(_parent, %{channel_id: channel_id, country: country}, %{
+        context: %{access: access}
+      }) do
+    case Glimesh.Janus.get_closest_edge_location(country) do
+      %Glimesh.Janus.EdgeRoute{} = edge ->
+        Glimesh.Presence.track_presence(
+          self(),
+          Glimesh.Streams.get_subscribe_topic(:viewers, channel_id),
+          access.access_identifier,
+          %{
+            janus_edge_id: edge.id
+          }
+        )
+
+        {:ok, edge}
+
+      _ ->
+        # In the event we can't find an edge, something is real wrong
+        {:error, @edge_not_found}
+    end
+  end
+
+  def watch_stream(_parent, _args, _resolution) do
+    {:error, @edge_not_found}
+  end
 
   # Streams
   def start_stream(_parent, %{channel_id: channel_id}, %{context: %{access: access}}) do
