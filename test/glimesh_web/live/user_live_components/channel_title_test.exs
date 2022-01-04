@@ -100,6 +100,8 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitleTest do
                  "title" => "Foobar"
                }
              }) =~ "Foobar"
+
+      assert page_title(view) =~ "Foobar"
     end
   end
 end

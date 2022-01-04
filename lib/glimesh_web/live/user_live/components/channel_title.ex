@@ -91,6 +91,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
       {:ok, channel} ->
         {:noreply,
          socket
+         |> put_page_title(channel.title)
          |> assign_subcategory(channel.category)
          |> assign_existing_tags(channel)
          |> assign(:editing, false)
