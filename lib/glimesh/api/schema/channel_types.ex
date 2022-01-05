@@ -69,6 +69,14 @@ defmodule Glimesh.Api.ChannelTypes do
   end
 
   object :streams_mutations do
+    @desc "Watch a channel"
+    field :watch_channel, type: :edge_route do
+      arg(:channel_id, non_null(:id))
+      arg(:country, non_null(:string))
+
+      resolve(&ChannelResolver.watch_channel/3)
+    end
+
     @desc "Start a stream"
     field :start_stream, type: :stream do
       arg(:channel_id, non_null(:id))
@@ -431,5 +439,21 @@ defmodule Glimesh.Api.ChannelTypes do
         end)
       end
     end
+  end
+
+  @desc "An edge to watch a FTL stream."
+  object :edge_route do
+    field :id, :id, description: "ID of the edge route"
+
+    field :hostname, :string, description: "Edge hostname"
+    field :url, :string, description: "Fully qualified edge URL"
+    field :priority, :integer, description: "Edge priority"
+    field :available, :integer, description: "Availability of edge for viewer traffic"
+
+    field :country_codes, list_of(:string),
+      description: "List of recommended country codes, used for latency"
+
+    field :inserted_at, non_null(:naive_datetime), description: "Edge created date"
+    field :updated_at, non_null(:naive_datetime), description: "Edge updated date"
   end
 end
