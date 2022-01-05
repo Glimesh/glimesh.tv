@@ -32,6 +32,32 @@ defmodule Glimesh.Api.ChannelResolver do
 
   # Channels
 
+  def watch_channel(_parent, %{channel_id: channel_id, country: country}, %{
+        context: %{access: access}
+      }) do
+    case Glimesh.Janus.get_closest_edge_location(country) do
+      %Glimesh.Janus.EdgeRoute{} = edge ->
+        Glimesh.Presence.track_presence(
+          self(),
+          Glimesh.Streams.get_subscribe_topic(:viewers, channel_id),
+          access.access_identifier,
+          %{
+            janus_edge_id: edge.id
+          }
+        )
+
+        {:ok, edge}
+
+      _ ->
+        # In the event we can't find an edge, something is real wrong
+        {:error, @edge_not_found}
+    end
+  end
+
+  def watch_channel(_parent, _args, _resolution) do
+    {:error, @edge_not_found}
+  end
+
   def all_channels(args, _) do
     case query_all_channels(args) do
       {:ok, channels} ->
