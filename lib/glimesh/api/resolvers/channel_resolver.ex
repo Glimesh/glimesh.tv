@@ -11,6 +11,7 @@ defmodule Glimesh.Api.ChannelResolver do
 
   @error_not_found "Could not find resource"
   @error_access_denied "Access denied"
+  @edge_not_found "Edge not found"
 
   # Channel Resolvers
   def resolve_stream_key(channel, _, %{context: %{access: access}}) do
