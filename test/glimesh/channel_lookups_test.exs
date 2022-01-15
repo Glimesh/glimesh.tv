@@ -331,6 +331,29 @@ defmodule Glimesh.ChannelLookupsTest do
       end
     end
 
+    test "Already hosted channels should show up in other users searches", %{
+      target_allowed_hosting: target_channel,
+      hosting_channel_five_days_old: hosting_channel
+    } do
+      %{hosting_channel_five_days_old: other_channel} = create_hosting_data(%{})
+
+      case ChannelHosts.add_new_host(hosting_channel, hosting_channel.channel, %ChannelHosts{
+             hosting_channel_id: hosting_channel.channel.id,
+             target_channel_id: target_channel.channel.id
+           }) do
+        {:ok, _channel_hosts} ->
+          assert length(
+                   ChannelLookups.search_hostable_channels_by_name(
+                     other_channel,
+                     target_channel.displayname
+                   )
+                 ) == 1
+
+        {:error, _channel_hosts} ->
+          flunk("Unable to setup channel host")
+      end
+    end
+
     test "Search terms should be sanitized", %{hosting_channel_five_days_old: hosting_channel} do
       assert length(ChannelLookups.search_hostable_channels_by_name(hosting_channel, "user_")) ==
                0
