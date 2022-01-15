@@ -50,7 +50,7 @@ defmodule Glimesh.Jobs.AutoHostCron do
     end
 
     complete = NaiveDateTime.utc_now()
-    time = NaiveDateTime.diff(start, complete, :millisecond)
+    time = NaiveDateTime.diff(complete, start, :millisecond)
     Logger.info("Auto-Host runner finished in #{time} ms")
 
     Rihanna.schedule(Glimesh.Jobs.AutoHostCron, [], in: @interval)
