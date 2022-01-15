@@ -263,6 +263,8 @@ defmodule Glimesh.ChannelLookups do
     if target_name != nil and String.length(target_name) < 25 do
       search_term = Regex.replace(~r/(\\\\|_|%)/, target_name, "\\\\\\1") <> "%"
 
+      hosting_channel = Glimesh.ChannelLookups.get_channel_for_user_id(hosting_user.id)
+
       Repo.all(
         from c in Channel,
           join: u in User,
@@ -281,8 +283,9 @@ defmodule Glimesh.ChannelLookups do
             ),
           where:
             fragment(
-              "not exists(select target_channel_id from channel_hosts where target_channel_id = ?)",
-              c.id
+              "not exists(select target_channel_id from channel_hosts where target_channel_id = ? and hosting_channel_id = ?)",
+              c.id,
+              ^hosting_channel.id
             ),
           order_by: [asc: u.displayname],
           limit: 10
