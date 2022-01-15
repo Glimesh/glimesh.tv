@@ -10,7 +10,7 @@ defmodule GlimeshWeb.StreamsLive.Following do
       %Glimesh.Accounts.User{} = user ->
         if session["locale"], do: Gettext.put_locale(session["locale"])
 
-        live_streams = Glimesh.ChannelLookups.list_live_followed_channels(user)
+        live_streams = Glimesh.ChannelLookups.list_live_followed_channels_and_hosts(user)
 
         {:ok,
          socket

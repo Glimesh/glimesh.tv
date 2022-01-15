@@ -1,0 +1,40 @@
+@mixin show-dropdown {
+  z-index: 9999;
+  display: block;
+  max-height: 250px;
+  overflow: auto;
+}
+
+.channel-typeahead {
+    position: relative;
+    &-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      margin-top: -2px;
+      > .list-group-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        margin: 0;
+        opacity: 100;
+        &:hover {
+            background: blue;
+            cursor: pointer;
+        }
+      }
+      &:hover {
+        @include show-dropdown;
+      }
+  }
+    &-input {
+      position: relative;
+      &:focus {
+        + .channel-typeahead-dropdown {
+          @include show-dropdown;
+        }
+      }
+    }
+}

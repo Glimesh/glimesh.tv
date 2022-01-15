@@ -71,6 +71,10 @@ defmodule GlimeshWeb.LayoutView do
     )
   end
 
+  def active_user_hosting_path(conn) do
+    truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :hosting])
+  end
+
   def active_channel_addons_path(conn) do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :addons])
   end
@@ -151,6 +155,20 @@ defmodule GlimeshWeb.LayoutView do
   end
 
   def count_live_following_channels(_) do
+    nil
+  end
+
+  def count_live_hosted_channels(%{assigns: %{current_user: user}}) do
+    count = Glimesh.ChannelLookups.count_live_followed_channels_that_are_hosting(user)
+
+    if count > 0 do
+      count
+    else
+      nil
+    end
+  end
+
+  def count_live_hosted_channels(_) do
     nil
   end
 end

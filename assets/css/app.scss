@@ -58,8 +58,10 @@ $fa-font-path: "/fa-fonts";
 @import "glimesh/components/follow-button";
 @import "glimesh/components/apex-charts";
 @import "glimesh/components/video";
+@import "glimesh/components/channel-lookup-typeahead";
 
 @import "glimesh/pages/dmca";
+@import "glimesh/pages/hosting.scss";
 
 @include media-breakpoint-up(lg) {
     .layout-spacing {

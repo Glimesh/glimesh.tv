@@ -155,4 +155,89 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       assert render(view) =~ "lost_packets"
     end
   end
+
+  describe "hosting information" do
+    setup do
+      streamer = streamer_fixture()
+      host = streamer_fixture()
+      {:ok, _} = Glimesh.Streams.start_stream(streamer.channel)
+
+      Glimesh.Repo.insert(%Glimesh.Streams.ChannelHosts{
+        hosting_channel_id: host.channel.id,
+        target_channel_id: streamer.channel.id,
+        status: "hosting"
+      })
+
+      %{
+        channel: streamer.channel,
+        streamer: streamer,
+        host: host
+      }
+    end
+
+    test "shows hosted message", %{conn: conn, streamer: streamer, host: host} do
+      path =
+        get(conn, Routes.user_stream_path(conn, :index, streamer.username), host: host.username)
+
+      assert {:ok, view, html} = live(path)
+
+      assert html =~ "#{host.displayname} is hosting #{streamer.displayname}"
+
+      assert view
+             |> has_element?("#hosted-banner")
+    end
+
+    test "redirects to hosted channel", %{conn: conn, streamer: streamer, host: host} do
+      assert {:ok, conn} =
+               live(conn, Routes.user_stream_path(conn, :index, host.username))
+               |> follow_redirect(conn)
+
+      assert html_response(conn, 200) =~ "#{host.displayname} is hosting #{streamer.displayname}"
+
+      {:ok, view, _} = live(conn)
+
+      assert view
+             |> has_element?("#hosted-banner")
+    end
+
+    test "shows hosting message without redirect", %{conn: conn, streamer: streamer, host: host} do
+      path = get(conn, Routes.user_stream_path(conn, :index, host.username), follow_host: "false")
+      assert {:ok, view, html} = live(path)
+      assert html =~ "#{host.displayname} is hosting #{streamer.displayname}"
+
+      assert view
+             |> has_element?("#hosting-banner")
+    end
+
+    test "does not redirect for host user", %{conn: conn, streamer: streamer} do
+      %{conn: conn, user: host, channel: channel} =
+        register_and_log_in_streamer_that_can_host(%{conn: conn})
+
+      Glimesh.Repo.insert(%Glimesh.Streams.ChannelHosts{
+        hosting_channel_id: channel.id,
+        target_channel_id: streamer.channel.id,
+        status: "hosting"
+      })
+
+      assert {:ok, view, html} = live(conn, Routes.user_stream_path(conn, :index, host.username))
+      assert html =~ "#{host.displayname} is hosting #{streamer.displayname}"
+
+      assert view
+             |> has_element?("#hosting-banner")
+    end
+
+    test "does not redirect if the host user is live", %{
+      conn: conn,
+      host: host,
+      streamer: streamer
+    } do
+      {:ok, _} = Glimesh.Streams.start_stream(host.channel)
+
+      assert {:ok, view, html} = live(conn, Routes.user_stream_path(conn, :index, host.username))
+      refute html =~ "#{host.displayname} is hosting #{streamer.displayname}"
+
+      refute view
+             |> has_element?("#hosting_banner")
+    end
+  end
 end

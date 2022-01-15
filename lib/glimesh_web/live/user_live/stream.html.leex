@@ -1,3 +1,25 @@
+<%= if @hosting_channel != nil and @hosting_channel.target.id == @channel.id do %>
+<div id="hosted-banner" class="container bg-secondary collapse show">
+    <div class="float-right"><button class="btn btn-close" data-toggle="collapse" data-target="#hosted-banner">&times;</button></div>
+    <div class="row pt-2">
+        <div class="col-9 text-center">
+            <h2><img class="img-avatar" src="<%= Glimesh.Avatar.url({@hosting_channel.host.user.avatar, @hosting_channel.host.user}, :original) %>" width=50 height=50>&nbsp;<%= gettext("%{hostname} is hosting %{targetname}", hostname: @hosting_channel.host.user.displayname, targetname: @hosting_channel.target.user.displayname) %>&nbsp;<img class="img-avatar" src="<%= Glimesh.Avatar.url({@hosting_channel.target.user.avatar, @hosting_channel.target.user}, :original) %>" width=50 height=50></h2>
+        </div>
+        <div class="col-3 text-center pt-2"><a class="btn btn-primary" href="<%= "/#{@hosting_channel.host.user.username}/?follow_host=false" %>"><%= gettext("Return to host") %></a></div>
+    </div>
+</div>
+<% end %>
+<%= if @hosting_channel != nil and @hosting_channel.host.id == @channel.id do %>
+<div id="hosting-banner" class="container bg-secondary collapse show">
+    <div class="float-right"><button class="btn btn-close" data-toggle="collapse" data-target="#hosting-banner">&times;</button></div>
+    <div class="row pt-2">
+        <div class="col-9 text-center">
+            <h2><img class="img-avatar" src="<%= Glimesh.Avatar.url({@hosting_channel.host.user.avatar, @hosting_channel.host.user}, :original) %>" width=50 height=50>&nbsp;<%= gettext("%{hostname} is hosting %{targetname}", hostname: @hosting_channel.host.user.displayname, targetname: @hosting_channel.target.user.displayname) %>&nbsp;<img class="img-avatar" src="<%= Glimesh.Avatar.url({@hosting_channel.target.user.avatar, @hosting_channel.target.user}, :original) %>" width=50 height=50></h2>
+        </div>
+        <div class="col-3 text-center pt-2"><a class="btn btn-primary" href="<%= "/#{@hosting_channel.target.user.username}/?host=#{@hosting_channel.host.user.username}" %>"><%= gettext("Go there") %></a></div>
+    </div>
+</div>
+<% end %>
 <div class="container-fluid container-stream">
     <div class="row mt-lg-3">
 
