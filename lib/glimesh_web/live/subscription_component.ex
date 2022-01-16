@@ -5,14 +5,14 @@ defmodule GlimeshWeb.SubscriptionComponent do
 
   @impl true
   def render(assigns) do
-    ~L"""
+    ~H"""
       <form id="subscription-form"
         phx-hook="ProcessPayment"
-        data-stripe-public-key="<%= @stripe_public_key %>"
-        data-stripe-customer-id="<%= @stripe_customer_id %>"
-        data-stripe-payment-method="<%= @stripe_payment_method %>"
-        data-stripe-product-id="<%= @stripe_product_id %>"
-        data-stripe-price-id="<%= @stripe_price_id %>">
+        data-stripe-public-key={@stripe_public_key}
+        data-stripe-customer-id={@stripe_customer_id}
+        data-stripe-payment-method={@stripe_payment_method}
+        data-stripe-product-id={@stripe_product_id}
+        data-stripe-price-id={@stripe_price_id}>
           <%= if @stripe_payment_method do %>
             <p><%= gettext("Payment method already attached!") %> </p>
           <% else %>

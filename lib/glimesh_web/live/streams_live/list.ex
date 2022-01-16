@@ -80,14 +80,14 @@ defmodule GlimeshWeb.StreamsLive.List do
 
     prefilled_tags =
       if tags = Map.get(params, "tags") do
-        Enum.map(tags, &Map.get(socket.assigns.tags_and_slugs, &1)) |> Enum.join(", ")
+        Enum.map_join(tags, ", ", &Map.get(socket.assigns.tags_and_slugs, &1))
       else
         ""
       end
 
     prefilled_subcategory =
       if tags = Map.get(params, "subcategory") do
-        Enum.map(tags, &Map.get(socket.assigns.subcategories_and_slugs, &1)) |> Enum.join(", ")
+        Enum.map_join(tags, ",", &Map.get(socket.assigns.subcategories_and_slugs, &1))
       else
         ""
       end

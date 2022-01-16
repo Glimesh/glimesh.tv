@@ -2,7 +2,7 @@ defmodule GlimeshWeb.TagifyComponent do
   use GlimeshWeb, :live_component
 
   def render(assigns) do
-    ~L"""
+    ~H"""
     <%= text_input @form, @field,
         id: @id,
         value: @value,

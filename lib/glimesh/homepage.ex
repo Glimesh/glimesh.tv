@@ -13,7 +13,6 @@ defmodule Glimesh.Homepage do
   @doc """
   Gets the homepage channels.
   """
-  @spec get_homepage :: [%Channel{}, ...]
   def get_homepage do
     now = NaiveDateTime.utc_now()
 

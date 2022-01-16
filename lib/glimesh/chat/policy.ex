@@ -75,7 +75,7 @@ defmodule Glimesh.Chat.Policy do
   def authorize(:short_timeout, %User{is_admin: true}, _channel), do: true
   def authorize(:long_timeout, %User{is_admin: true}, _channel), do: true
   def authorize(:delete, %User{is_admin: true}, _channel), do: true
-  
+
   # GCT
   def authorize(:ban, %User{is_gct: true}, _channel), do: true
   def authorize(:unban, %User{is_gct: true}, _channel), do: true

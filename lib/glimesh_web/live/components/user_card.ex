@@ -4,13 +4,13 @@ defmodule GlimeshWeb.Components.UserCard do
   def render(assigns) do
     user = assigns.user
 
-    ~L"""
+    ~H"""
       <div class="card">
         <div class="card-body">
-            <h4 class="<%= Glimesh.Chat.Effects.get_username_color(user, "text-color-link") %>">
+            <h4 class={Glimesh.Chat.Effects.get_username_color(user, "text-color-link")}>
                 <%= user.displayname %></h4>
             <div class="media flex-wrap">
-                <img src="<%= Glimesh.Avatar.url({user.avatar, user}, :original) %>" alt="<%= user.displayname %>" height="128" class="mr-3 img-avatar <%= if Glimesh.Accounts.can_receive_payments?(user), do: "img-verified-streamer", else: "" %>">
+                <img src={Glimesh.Avatar.url({user.avatar, user}, :original)} alt={user.displayname} height="128" class={["mr-3 img-avatar", if(Glimesh.Accounts.can_receive_payments?(user), do: "img-verified-streamer", else: "")]}>
                 <div class="media-body">
                     <ul class="list-unstyled">
                         <li>
@@ -27,7 +27,7 @@ defmodule GlimeshWeb.Components.UserCard do
                         </li>
                         <li>
                             <%= if twitter_user = Glimesh.Socials.get_social(user, "twitter") do %>
-                            <span class="fa-stack" data-toggle="tooltip" title="<%= gettext("Linked Twitter Account @%{username}", username: twitter_user.username) %>">
+                            <span class="fa-stack" data-toggle="tooltip" title={gettext("Linked Twitter Account @%{username}", username: twitter_user.username)}>
                                 <i class="fas fa-certificate fa-stack-2x" style="color:#007bff"></i>
                                 <i class="fab fa-twitter fa-stack-1x"></i>
                             </span>

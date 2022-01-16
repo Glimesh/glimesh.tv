@@ -448,8 +448,6 @@ defmodule Glimesh.ChannelCategories do
   @doc """
   Creates or updates a subcategory based on source+source_id existance
   """
-  @spec upsert_subcategory_from_source(binary(), binary(), map) ::
-          {:ok, %Category{}} | {:error, any()}
   def upsert_subcategory_from_source(source, source_id, attrs) do
     if subcategory = subcategory_source_exists?(source, source_id) do
       update_subcategory(subcategory, attrs)
