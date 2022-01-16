@@ -71,7 +71,7 @@ config :glimesh, GlimeshWeb.Emails.Mailer, adapter: Bamboo.LocalAdapter
 config :glimesh, GlimeshWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/assets/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/glimesh_web/(live|views)/.*(ex)$",
       ~r"lib/glimesh_web/templates/.*(eex|md)$"
