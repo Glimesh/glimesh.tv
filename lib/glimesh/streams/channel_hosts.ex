@@ -63,6 +63,8 @@ defmodule Glimesh.Streams.ChannelHosts do
     if Repo.exists?(validate_host_query) and host_channel_hours >= 10 do
       changeset
     else
+      IO.inspect("Got #{host_channel_hours} instead of >= 10")
+
       add_error(
         changeset,
         :hosting_channel_id,
