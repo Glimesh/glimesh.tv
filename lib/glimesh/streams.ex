@@ -360,8 +360,12 @@ defmodule Glimesh.Streams do
     dec |> Decimal.round(0, :up) |> Decimal.to_integer()
   end
 
-  defp trunc_hours(hours) when is_integer(hours) do
+  defp trunc_hours(hours) when is_float(hours) do
     hours |> trunc()
+  end
+
+  defp trunc_hours(hours) when is_integer(hours) do
+    hours
   end
 
   defp trunc_hours(_), do: 0
