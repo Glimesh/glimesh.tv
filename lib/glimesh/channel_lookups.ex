@@ -121,12 +121,10 @@ defmodule Glimesh.ChannelLookups do
       on: c.id == ch.hosting_channel_id,
       join: target in Channel,
       on: target.id == ch.target_channel_id,
-      left_join: target_followers in Follower,
-      on: target.user_id == target_followers.streamer_id,
       where: ch.status == "hosting",
       where: target.status == "live",
       where: f.user_id == ^user.id,
-      where: target_followers.user_id != ^user.id or is_nil(target_followers.user_id),
+      where: fragment("not exists(select true from followers where user_id = ? and streamer_id = ?)", ^user.id, target.user_id),
       distinct: target.id,
       select: [target]
     )
@@ -143,12 +141,10 @@ defmodule Glimesh.ChannelLookups do
         on: c.id == ch.hosting_channel_id,
         join: target in Channel,
         on: target.id == ch.target_channel_id,
-        left_join: target_followers in Follower,
-        on: target.user_id == target_followers.streamer_id,
         where: ch.status == "hosting",
         where: target.status == "live",
         where: f.user_id == ^user.id,
-        where: target_followers.user_id != ^user.id or is_nil(target_followers.user_id),
+        where: fragment("not exists(select true from followers where user_id = ? and streamer_id = ?)", ^user.id, target.user_id),
         distinct: target.id,
         select: [target],
         select_merge: %{match_type: "hosting"}
