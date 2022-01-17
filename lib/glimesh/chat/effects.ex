@@ -118,7 +118,22 @@ defmodule Glimesh.Chat.Effects do
     )
   end
 
-  def render_username_and_avatar(%Message{} = message) do
+  def render_username_and_avatar(%Message{metadata: %Metadata{}} = message) do
+    [render_avatar(message), " ", render_username(message)]
+  end
+
+  def render_username_and_avatar(%Message{user: user} = message) do
+    # Backwards compatibility
+    message =
+      Map.put(
+        message,
+        :metadata,
+        Map.merge(Metadata.defaults(), %{
+          platform_founder_subscriber: Payments.is_platform_founder_subscriber?(user),
+          platform_supporter_subscriber: Payments.is_platform_supporter_subscriber?(user)
+        })
+      )
+
     [render_avatar(message), " ", render_username(message)]
   end
 
