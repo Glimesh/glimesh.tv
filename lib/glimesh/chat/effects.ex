@@ -37,7 +37,19 @@ defmodule Glimesh.Chat.Effects do
     end
   end
 
-  def render_username(user) do
+  def get_username_color_for_message(
+        %Message{user: user, metadata: metadata},
+        default \\ "text-color-link"
+      ) do
+    cond do
+      user.is_admin -> "text-danger"
+      user.is_gct -> "text-success"
+      metadata.platform_founder_subscriber -> "text-warning"
+      true -> default
+    end
+  end
+
+  def render_username(%Message{user: user, metadata: metadata} = message) do
     tags =
       cond do
         user.is_admin ->
@@ -52,13 +64,13 @@ defmodule Glimesh.Chat.Effects do
             title: gettext("Glimesh Community Team")
           ]
 
-        Payments.is_platform_founder_subscriber?(user) ->
+        metadata.platform_founder_subscriber ->
           [
             "data-toggle": "tooltip",
             title: gettext("Glimesh Gold Supporter Subscriber")
           ]
 
-        Payments.is_platform_supporter_subscriber?(user) ->
+        metadata.platform_supporter_subscriber ->
           [
             "data-toggle": "tooltip",
             title: gettext("Glimesh Supporter Subscriber")
@@ -68,7 +80,7 @@ defmodule Glimesh.Chat.Effects do
           []
       end
 
-    color_class = [class: get_username_color(user)]
+    color_class = [class: get_username_color_for_message(message)]
 
     default_tags = [
       to: Routes.user_profile_path(GlimeshWeb.Endpoint, :index, user.username),
@@ -78,16 +90,16 @@ defmodule Glimesh.Chat.Effects do
     Phoenix.HTML.Link.link(user.displayname, default_tags ++ color_class ++ tags)
   end
 
-  def render_avatar(user) do
+  def render_avatar(%Message{metadata: metadata, user: user}) do
     tags =
       cond do
         user.is_admin ->
           [class: "avatar-ring platform-admin-ring"]
 
-        Payments.is_platform_founder_subscriber?(user) ->
+        metadata.platform_founder_subscriber ->
           [class: "avatar-ring avatar-animated-ring platform-founder-ring"]
 
-        Payments.is_platform_supporter_subscriber?(user) ->
+        metadata.platform_supporter_subscriber ->
           [class: "avatar-ring platform-supporter-ring"]
 
         true ->
@@ -106,8 +118,8 @@ defmodule Glimesh.Chat.Effects do
     )
   end
 
-  def render_username_and_avatar(user) do
-    [render_avatar(user), " ", render_username(user)]
+  def render_username_and_avatar(%Message{} = message) do
+    [render_avatar(message), " ", render_username(message)]
   end
 
   @doc """

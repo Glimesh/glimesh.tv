@@ -12,12 +12,7 @@ defmodule Glimesh.ChatMessageFactory do
           message: Faker.Lorem.paragraph(1),
           user: build(:user),
           channel: build(:channel),
-          metadata: %{
-            streamer: false,
-            subscriber: false,
-            moderator: false,
-            admin: false
-          }
+          metadata: Glimesh.Chat.ChatMessage.Metadata.defaults()
         }
       end
     end

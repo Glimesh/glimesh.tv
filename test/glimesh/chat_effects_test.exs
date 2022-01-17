@@ -70,10 +70,11 @@ defmodule Glimesh.ChatEffectsTest do
 
     test "renders appropriate tags for admins", %{channel: channel} do
       admin = admin_fixture()
+      message = mock_message(admin)
 
-      assert safe_to_string(Effects.render_username(admin)) =~ "Glimesh Staff"
+      assert safe_to_string(Effects.render_username(message)) =~ "Glimesh Staff"
 
-      assert safe_to_string(Effects.render_avatar(admin)) =~
+      assert safe_to_string(Effects.render_avatar(message)) =~
                "avatar-ring platform-admin-ring"
 
       assert Effects.render_channel_badge(channel, admin) == ""
@@ -94,8 +95,9 @@ defmodule Glimesh.ChatEffectsTest do
       user: user
     } do
       {:ok, _sub} = platform_founder_subscription_fixture(user)
-      rendered_username = safe_to_string(Effects.render_username(user))
-      rendered_avatar = safe_to_string(Effects.render_avatar(user))
+      message = mock_message(user)
+      rendered_username = safe_to_string(Effects.render_username(message))
+      rendered_avatar = safe_to_string(Effects.render_avatar(message))
 
       assert rendered_username =~ "text-warning"
       assert rendered_username =~ "Glimesh Gold Supporter Subscriber"
@@ -104,8 +106,9 @@ defmodule Glimesh.ChatEffectsTest do
 
     test "renders appropriate tags for platform supporter subscribers", %{user: user} do
       {:ok, _sub} = platform_supporter_subscription_fixture(user)
-      rendered_username = safe_to_string(Effects.render_username(user))
-      rendered_avatar = safe_to_string(Effects.render_avatar(user))
+      message = mock_message(user)
+      rendered_username = safe_to_string(Effects.render_username(message))
+      rendered_avatar = safe_to_string(Effects.render_avatar(message))
 
       assert rendered_username =~ "text-color-link"
       assert rendered_username =~ "Glimesh Supporter Subscriber"
@@ -135,8 +138,9 @@ defmodule Glimesh.ChatEffectsTest do
     end
 
     test "renders appropriate tags for regular viewer", %{user: user} do
-      rendered_username = safe_to_string(Effects.render_username(user))
-      rendered_avatar = safe_to_string(Effects.render_avatar(user))
+      message = mock_message(user)
+      rendered_username = safe_to_string(Effects.render_username(message))
+      rendered_avatar = safe_to_string(Effects.render_avatar(message))
 
       assert rendered_username =~ "text-color-link"
       assert rendered_username =~ user.displayname
@@ -166,5 +170,18 @@ defmodule Glimesh.ChatEffectsTest do
 
       assert Effects.user_in_message(user, message)
     end
+  end
+
+  defp mock_message(user) do
+    metadata =
+      Map.merge(Glimesh.Chat.ChatMessage.Metadata.defaults(), %{
+        platform_founder_subscriber: Glimesh.Payments.is_platform_founder_subscriber?(user),
+        platform_supporter_subscriber: Glimesh.Payments.is_platform_supporter_subscriber?(user)
+      })
+
+    %Glimesh.Chat.ChatMessage{
+      user: user,
+      metadata: metadata
+    }
   end
 end
