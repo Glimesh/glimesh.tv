@@ -1,5 +1,5 @@
 <div id="chat-form" phx-hook="Chat" data-emotes={@emotes} data-theme={@theme}>
-    <.form let={f} for={@changeset} id="chat_message-form" class="chat-form" phx_target={@myself} phx_submit="send">
+    <.form let={f} for={@changeset} id="chat_message-form" class="chat-form" phx-target={@myself} phx-submit="send">
 
         <%= if message = f.errors[:message] do %>
         <div id="channel-footer" class="channel-footer">

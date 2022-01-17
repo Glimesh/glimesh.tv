@@ -3,6 +3,37 @@ defmodule GlimeshWeb.Admin.TagLive.FormComponent do
 
   alias Glimesh.ChannelCategories
 
+  @impl Phoenix.LiveComponent
+  def render(assigns) do
+    ~H"""
+      <div>
+        <.form let={f} for={@changeset} id="tag-form" phx_target={@myself} phx-change="validate" phx-submit="save">
+          <h2><%= @title %></h2>
+
+          <div class="form-group">
+            <%= label f, :category_id, gettext("Category") %>
+            <%= select f, :category_id, @categories, class: "form-control" %>
+            <%= error_tag f, :category_id %>
+          </div>
+
+          <div class="form-group">
+            <%= label f, :name %>
+            <%= text_input f, :name, class: "form-control" %>
+            <%= error_tag f, :name %>
+          </div>
+
+          <div class="form-group">
+            <%= label f, :count_usage %>
+            <%= number_input f, :count_usage, class: "form-control", disabled: true %>
+            <%= error_tag f, :count_usage %>
+          </div>
+
+          <%= submit "Save", class: "btn btn-primary", phx_disable_with: "Saving..." %>
+        </.form>
+      </div>
+    """
+  end
+
   @impl true
   def update(%{tag: tag} = assigns, socket) do
     changeset = ChannelCategories.change_tag(tag)

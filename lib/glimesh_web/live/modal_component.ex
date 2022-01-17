@@ -8,7 +8,7 @@ defmodule GlimeshWeb.ModalComponent do
       phx-capture-click="close"
       phx-window-keydown="close"
       phx-key="escape"
-      phx-target={"#" <> @id}
+      phx-target={"##{@id}"}
       phx-page-loading>
 
       <div class="modal-dialog" role="document">

@@ -46,7 +46,7 @@
             <div class="row">
                 <div class="col-12 col-lg-6">
                     <div class="input-group">
-                        <%= live_component(GlimeshWeb.Components.ChannelLookupTypeahead, [id: "channel_lookup", user: @user, field: "add_channel", value: @add_channel, class: "form-control pl-0 channel-typeahead-input", matches: @matches, timeout: 700, extra_params: "maxlength=24"]) %>
+                        <%= live_component(GlimeshWeb.Components.ChannelLookupTypeahead, [id: "channel_lookup", user: @user, field: "add_channel", value: @add_channel, class: "form-control pl-0 channel-typeahead-input", matches: @matches, timeout: 700, extra_params: %{"maxlength" => "24"}]) %>
                         <div class="input-group-append">
                             <button id="add-channel-button" type="button" class="btn btn-primary btn-block"
                                 aria-label="Add Channel" phx-click="add_hosting_channel"
