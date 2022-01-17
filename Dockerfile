@@ -53,5 +53,6 @@ COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/glimesh ./
 ENV HOME=/app
 
 RUN ls /app
+RUN ls /app/erts-12.2/bin/
 
 CMD ["bin/glimesh", "start"]
