@@ -41,7 +41,7 @@ defmodule GlimeshWeb.SupportModal.SubForm do
           </div>
         <% end %>
 
-        <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :channel, user: @user, streamer: @streamer, product_id: @product_id, price_id: @price_id, price: @price %>
+        <%= live_component GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :channel, user: @user, streamer: @streamer, product_id: @product_id, price_id: @price_id, price: @price %>
         <% else %>
         <h4 class="mt-4"><%= gettext("What is Glimesh?") %></h4>
         <p class="">

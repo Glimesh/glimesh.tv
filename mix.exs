@@ -36,12 +36,13 @@ defmodule Glimesh.MixProject do
     [
       # Dev & Test Libs
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:faker, "~> 0.17", only: :dev},
+      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
+      {:dart_sass, "~> 0.3", runtime: Mix.env() == :dev},
+      {:faker, "~> 0.17", only: [:dev, :test]},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:floki, ">= 0.0.0", only: :test},
       {:excoveralls, "~> 0.13.1", only: :test},
-      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
-      {:dart_sass, "~> 0.3", runtime: Mix.env() == :dev},
+      {:ex_machina, "~> 2.7.0", only: :test},
       # Core
       {:bcrypt_elixir, "~> 2.0"},
       {:phoenix, "~> 1.6.0"},
@@ -82,7 +83,7 @@ defmodule Glimesh.MixProject do
       {:navigation_history, "~> 0.4"},
       # Uploads
       {:waffle, "~> 1.1"},
-      {:waffle_ecto, "~> 0.0.9"},
+      {:waffle_ecto, "~> 0.0.10"},
       {:ex_aws, "~> 2.1.2"},
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.17"},

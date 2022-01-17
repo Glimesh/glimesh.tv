@@ -9,6 +9,15 @@ defmodule Glimesh.Chat.Effects do
   alias GlimeshWeb.Router.Helpers, as: Routes
   alias Phoenix.HTML.Tag
 
+  alias Glimesh.Chat.Effects.Badges.{
+    ChannelSubscriberBadge,
+    ModeratorBadge,
+    StreamerBadge
+  }
+
+  alias Glimesh.Chat.ChatMessage, as: Message
+  alias Glimesh.Chat.ChatMessage.Metadata
+
   def render_global_badge(_user) do
     # if user.is_admin do
     #   Tag.content_tag(:span, "Team Glimesh", class: "badge badge-danger")
@@ -28,7 +37,19 @@ defmodule Glimesh.Chat.Effects do
     end
   end
 
-  def render_username(user) do
+  def get_username_color_for_message(
+        %Message{user: user, metadata: metadata},
+        default \\ "text-color-link"
+      ) do
+    cond do
+      user.is_admin -> "text-danger"
+      user.is_gct -> "text-success"
+      metadata.platform_founder_subscriber -> "text-warning"
+      true -> default
+    end
+  end
+
+  def render_username(%Message{user: user, metadata: metadata} = message) do
     tags =
       cond do
         user.is_admin ->
@@ -43,13 +64,13 @@ defmodule Glimesh.Chat.Effects do
             title: gettext("Glimesh Community Team")
           ]
 
-        Payments.is_platform_founder_subscriber?(user) ->
+        metadata.platform_founder_subscriber ->
           [
             "data-toggle": "tooltip",
             title: gettext("Glimesh Gold Supporter Subscriber")
           ]
 
-        Payments.is_platform_supporter_subscriber?(user) ->
+        metadata.platform_supporter_subscriber ->
           [
             "data-toggle": "tooltip",
             title: gettext("Glimesh Supporter Subscriber")
@@ -59,7 +80,7 @@ defmodule Glimesh.Chat.Effects do
           []
       end
 
-    color_class = [class: get_username_color(user)]
+    color_class = [class: get_username_color_for_message(message)]
 
     default_tags = [
       to: Routes.user_profile_path(GlimeshWeb.Endpoint, :index, user.username),
@@ -69,16 +90,16 @@ defmodule Glimesh.Chat.Effects do
     Phoenix.HTML.Link.link(user.displayname, default_tags ++ color_class ++ tags)
   end
 
-  def render_avatar(user) do
+  def render_avatar(%Message{metadata: metadata, user: user}) do
     tags =
       cond do
         user.is_admin ->
           [class: "avatar-ring platform-admin-ring"]
 
-        Payments.is_platform_founder_subscriber?(user) ->
+        metadata.platform_founder_subscriber ->
           [class: "avatar-ring avatar-animated-ring platform-founder-ring"]
 
-        Payments.is_platform_supporter_subscriber?(user) ->
+        metadata.platform_supporter_subscriber ->
           [class: "avatar-ring platform-supporter-ring"]
 
         true ->
@@ -97,35 +118,46 @@ defmodule Glimesh.Chat.Effects do
     )
   end
 
-  def render_username_and_avatar(user) do
-    [render_avatar(user), " ", render_username(user)]
+  def render_username_and_avatar(%Message{} = message) do
+    [render_avatar(message), " ", render_username(message)]
   end
+
+  @doc """
+  Renders channel badges based on message metadata
+  """
+  def render_channel_badge(%Message{metadata: %Metadata{streamer: true}}) do
+    StreamerBadge.render()
+  end
+
+  def render_channel_badge(%Message{metadata: %Metadata{subscriber: true, moderator: true}}) do
+    [ModeratorBadge.render(), " ", ChannelSubscriberBadge.render()]
+  end
+
+  def render_channel_badge(%Message{metadata: %Metadata{moderator: true}}) do
+    ModeratorBadge.render()
+  end
+
+  def render_channel_badge(%Message{metadata: %Metadata{subscriber: true}}) do
+    ChannelSubscriberBadge.render()
+  end
+
+  def render_channel_badge(%Message{metadata: %Metadata{admin: true}}), do: ""
+  def render_channel_badge(%Message{metadata: nil}), do: nil
+  def render_channel_badge(%Message{metadata: %Metadata{} = _metadata}), do: nil
 
   def render_channel_badge(channel, user) do
     cond do
       channel.user_id == user.id ->
-        Tag.content_tag(:span, "Streamer", class: "badge badge-primary")
+        StreamerBadge.render()
 
       Glimesh.Chat.is_moderator?(channel, user) and Payments.is_subscribed?(channel, user) ->
-        [
-          Tag.content_tag(:span, "Mod", class: "badge badge-primary"),
-          " ",
-          Tag.content_tag(:span, Tag.content_tag(:i, "", class: "fas fa-trophy"),
-            class: "badge badge-secondary",
-            "data-toggle": "tooltip",
-            title: gettext("Channel Subscriber")
-          )
-        ]
+        [ModeratorBadge.render(), " ", ChannelSubscriberBadge.render()]
 
       Glimesh.Chat.is_moderator?(channel, user) ->
-        Tag.content_tag(:span, "Mod", class: "badge badge-primary")
+        ModeratorBadge.render()
 
       Payments.is_subscribed?(channel, user) ->
-        Tag.content_tag(:span, Tag.content_tag(:i, "", class: "fas fa-trophy"),
-          class: "badge badge-secondary",
-          "data-toggle": "tooltip",
-          title: gettext("Channel Subscriber")
-        )
+        ChannelSubscriberBadge.render()
 
       true ->
         ""
