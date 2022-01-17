@@ -136,7 +136,10 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
       :existing_subcategory,
       if(channel.subcategory, do: channel.subcategory.name, else: "")
     )
-    |> assign(:existing_tags, Enum.map(channel.tags, fn tag -> tag.name end) |> Enum.join(", "))
+    |> assign(
+      :existing_tags,
+      Enum.map_join(channel.tags, ", ", fn tag -> tag.name end)
+    )
   end
 
   defp assign_categories(socket) do

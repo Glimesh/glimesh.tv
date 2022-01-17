@@ -42,7 +42,6 @@ defmodule GlimeshWeb.UserAuth do
     |> put_session(:site_theme, user_preference.site_theme)
     |> maybe_write_remember_me_cookie(token, params)
     |> redirect(to: user_return_to || last_path || signed_in_path(conn))
-
   end
 
   defp maybe_write_remember_me_cookie(conn, token, %{"remember_me" => "true"}) do
@@ -261,5 +260,4 @@ defmodule GlimeshWeb.UserAuth do
   defp maybe_store_return_to(conn), do: conn
 
   defp signed_in_path(_conn), do: "/"
-
 end

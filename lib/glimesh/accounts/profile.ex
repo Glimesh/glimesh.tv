@@ -44,10 +44,9 @@ defmodule Glimesh.Accounts.Profile do
   end
 
   defp format_earmark_messages(error_messages) do
-    Enum.map(error_messages, fn {_severity, line, message} ->
+    Enum.map_join(error_messages, "\n", fn {_severity, line, message} ->
       "#{message} on line #{line}"
     end)
-    |> Enum.join("\n")
   end
 
   def youtube_video_id(youtube_intro_url) do

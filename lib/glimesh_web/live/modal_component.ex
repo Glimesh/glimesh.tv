@@ -3,12 +3,12 @@ defmodule GlimeshWeb.ModalComponent do
 
   @impl true
   def render(assigns) do
-    ~L"""
-    <div id="<%= @id %>" class="live-modal"
+    ~H"""
+    <div id={@id} class="live-modal"
       phx-capture-click="close"
       phx-window-keydown="close"
       phx-key="escape"
-      phx-target="#<%= @id %>"
+      phx-target={"##{@id}"}
       phx-page-loading>
 
       <div class="modal-dialog" role="document">
@@ -22,7 +22,7 @@ defmodule GlimeshWeb.ModalComponent do
                 <%= live_patch raw("&times;"), to: @return_to, class: "close" %>
             </div>
             <div class="modal-body">
-                <%= live_component @socket, @component, @opts %>
+                <%= live_component @component, @opts %>
             </div>
         </div>
       </div>

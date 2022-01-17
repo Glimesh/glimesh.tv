@@ -353,12 +353,22 @@ defmodule Glimesh.Streams do
           group_by: s.channel_id
       )
 
-    if hours do
-      hours |> trunc()
-    else
-      0
-    end
+    trunc_hours(hours)
   end
+
+  defp trunc_hours(%Decimal{} = dec) do
+    dec |> Decimal.round(0, :up) |> Decimal.to_integer()
+  end
+
+  defp trunc_hours(hours) when is_float(hours) do
+    hours |> trunc()
+  end
+
+  defp trunc_hours(hours) when is_integer(hours) do
+    hours
+  end
+
+  defp trunc_hours(_), do: 0
 
   def change_channel(%Channel{} = channel, attrs \\ %{}) do
     Channel.changeset(channel, attrs)

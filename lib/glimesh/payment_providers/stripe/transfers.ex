@@ -48,15 +48,17 @@ defmodule Glimesh.PaymentProviders.StripeProvider.Transfers do
         raise "Payout Amount is less than 0 cents, aborting!"
       end
 
-      payables_string =
-        Enum.map(payables_for_streamer, & &1.external_reference) |> Enum.join(", ")
+      payables_string = Enum.map_join(payables_for_streamer, ", ", & &1.external_reference)
 
       # Figure out better way of storing this info, since Stripe has a 500 char limit
       included_payables =
         if String.length(payables_string) >= 500,
           do:
-            Enum.map(payables_for_streamer, &String.slice(&1.external_reference, 0, 15))
-            |> Enum.join(", "),
+            Enum.map_join(
+              payables_for_streamer,
+              ", ",
+              &String.slice(&1.external_reference, 0, 15)
+            ),
           else: payables_string
 
       %TransferRequest{

@@ -14,7 +14,8 @@
         <div class="col-sm-12 col-md-6 col-xl-4 mt-4">
             <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
             <div class="card card-stream">
-                <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>" alt="<%= channel.title %>" class="card-img" height="468" width="832">
+                <img src="<%= Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original) %>"
+                    alt="<%= channel.title %>" class="card-img" height="468" width="832">
                 <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
 
                     <div>
@@ -34,12 +35,15 @@
                     </div>
 
                     <div class="media card-stream-streamer">
-                        <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>" alt="<%= channel.user.displayname%>" width="48" height="48" class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(channel.user), do: "img-verified-streamer", else: "" %>">
+                        <img src="<%= Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original) %>"
+                            alt="<%= channel.user.displayname%>" width="48" height="48"
+                            class="img-avatar mr-2 <%= if Glimesh.Accounts.can_receive_payments?(channel.user), do: "img-verified-streamer", else: "" %>">
                         <div class="media-body">
                             <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
-                            <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
+                            <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span
+                                    class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
                                 <%= if channel.mature_content do %>
-                                    <span class="badge badge-warning"><%= gettext("Mature") %> </span>
+                                <span class="badge badge-warning"><%= gettext("Mature") %> </span>
                                 <% end %>
                             </p>
                         </div>
@@ -66,15 +70,18 @@
         <div class="card-body">
             <form phx-change="search">
                 <div class="form-group mb-0">
-                    <input type="text" name="q" value="<%= @query %>" placeholder="<%= gettext("Search for usernames") %>" list="results" autocomplete="off" class="form-control form-control-lg" />
+                    <input type="text" name="q" value="<%= @query %>"
+                        placeholder="<%= gettext("Search for usernames") %>" list="results" autocomplete="off"
+                        class="form-control form-control-lg" />
                 </div>
             </form>
         </div>
     </div>
-    <div id="users" class="row mt-2" phx-update="<%= @update_mode %>" phx-hook="InfiniteScroll" data-page="<%= @page %>">
+    <div id="users" class="row mt-2" phx-update="<%= @update_mode %>" phx-hook="InfiniteScroll"
+        data-page="<%= @page %>">
         <%= for user <- @users do %>
         <div id="user-<%= user.id %>" class="col-md-4 mb-4" phx-update="ignore">
-            <%= live_component(@socket, GlimeshWeb.Components.UserCard, user: user) %>
+            <%= live_component(GlimeshWeb.Components.UserCard, user: user) %>
         </div>
         <% end %>
     </div>

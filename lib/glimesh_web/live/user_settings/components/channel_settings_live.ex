@@ -34,7 +34,7 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
        :existing_subcategory,
        if(channel.subcategory, do: channel.subcategory.name, else: "")
      )
-     |> assign(:existing_tags, Enum.map(channel.tags, fn tag -> tag.name end) |> Enum.join(", "))
+     |> assign(:existing_tags, Enum.map_join(channel.tags, ", ", fn tag -> tag.name end))
      |> assign(:route, session["route"])
      |> assign(:user, session["user"])
      |> assign(:delete_route, session["delete_route"])

@@ -2,8 +2,9 @@ defmodule GlimeshWeb.TagifyComponent do
   use GlimeshWeb, :live_component
 
   def render(assigns) do
-    ~L"""
-    <%= text_input @form, @field,
+    ~H"""
+      <div>
+      <%= text_input @form, @field,
         id: @id,
         value: @value,
         class: "tagify",
@@ -15,6 +16,7 @@ defmodule GlimeshWeb.TagifyComponent do
         "phx-target": @myself,
         "phx-hook": "Tagify",
         placeholder: assigns.placeholder %>
+      </div>
     """
   end
 

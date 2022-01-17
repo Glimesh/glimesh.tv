@@ -259,9 +259,9 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
   end
 
   def check_account_capabilities_and_upgrade(%User{stripe_user_id: stripe_user_id}) do
-    with {:ok, account} <- Stripe.Account.retrieve(stripe_user_id),
-         {:ok, something} <- check_account_capabilities_and_upgrade(account) do
-      {:ok, something}
+    case Stripe.Account.retrieve(stripe_user_id) do
+      {:ok, account} ->
+        check_account_capabilities_and_upgrade(account)
     end
   end
 

@@ -49,7 +49,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
                           </div>
                         <% end %>
 
-                        <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :channel, user: @user, streamer: @streamer, product_id: @product_id, price_id: @price_id, price: @price %>
+                        <%= live_component GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :channel, user: @user, streamer: @streamer, product_id: @product_id, price_id: @price_id, price: @price %>
                         <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider."
                         class="img-fluid mt-4 mx-auto d-block">
                     </div>

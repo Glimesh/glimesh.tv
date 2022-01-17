@@ -19,7 +19,8 @@
                     </ul>
 
                     <%= if @is_platform_subscriber == false do %>
-                    <button phx-click="select-platform-supporter" class="button btn btn-primary btn-block mt-2"><%= gettext("Select") %></button>
+                    <button phx-click="select-platform-supporter"
+                        class="button btn btn-primary btn-block mt-2"><%= gettext("Select") %></button>
                     <% end %>
                 </div>
             </div>
@@ -40,7 +41,8 @@
                     </ul>
 
                     <%= if @is_platform_subscriber == false do %>
-                    <button phx-click="select-platform-founder" class="button btn btn-primary btn-block mt-2"><%= gettext("Select") %></button>
+                    <button phx-click="select-platform-founder"
+                        class="button btn btn-primary btn-block mt-2"><%= gettext("Select") %></button>
                     <% end %>
                 </div>
             </div>
@@ -53,9 +55,11 @@
 
 
                     <%= if @canceling do %>
-                    <p><%= gettext("Your subscription is set to be canceled automatically at the end of the billing cycle.") %></p>
+                    <p><%= gettext("Your subscription is set to be canceled automatically at the end of the billing cycle.") %>
+                    </p>
 
-                    <button class="btn btn-primary btn-block btn-lg" phx-click="resubscribe" phx-throttle="5000"><%= gettext("Resubscribe") %></button>
+                    <button class="btn btn-primary btn-block btn-lg" phx-click="resubscribe"
+                        phx-throttle="5000"><%= gettext("Resubscribe") %></button>
                     <% else %>
                     <h6><%= gettext("Thanks for supporting Glimesh. Your genuine support is appreciated.") %></h6>
                     <div class="text-center mt-4">
@@ -64,7 +68,8 @@
                                 <%= gettext("monthly") %></small></h4>
                     </div>
 
-                    <button class="btn btn-danger btn-block" phx-click="cancel-subscription" phx-throttle="1000"><%= gettext("Cancel Subscription") %></button>
+                    <button class="btn btn-danger btn-block" phx-click="cancel-subscription"
+                        phx-throttle="1000"><%= gettext("Cancel Subscription") %></button>
                     <% end %>
 
                     <% else %>
@@ -75,9 +80,10 @@
                     </div>
                     <% end %>
 
-                    <%= live_component @socket, GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :platform, user: @user, product_id: @product_id, price_id: @price_id, price: @price %>
+                    <%= live_component GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :platform, user: @user, product_id: @product_id, price_id: @price_id, price: @price %>
 
-                    <img src="/images/stripe-badge-white.png" alt="<%= gettext("We use Stripe as our payment provider.") %>" class="img-fluid mt-4">
+                    <img src="/images/stripe-badge-white.png"
+                        alt="<%= gettext("We use Stripe as our payment provider.") %>" class="img-fluid mt-4">
                     <% end %>
                 </div>
             </div>

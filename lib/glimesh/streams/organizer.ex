@@ -11,7 +11,6 @@ defmodule Glimesh.Streams.Organizer do
     defstruct [:type, :title, :channels, :all_channels, :background_image_url]
   end
 
-  @spec organize(list, list) :: [%Glimesh.Streams.Organizer.Block{}, ...]
   def organize(list_of_channels, options \\ []) when is_list(list_of_channels) do
     limit = Keyword.get(options, :limit, 120)
 
