@@ -1,4 +1,4 @@
-FROM elixir:1.12.1 AS build
+FROM elixir:1.13.1-alpine AS build
 # Doesn't use alpine because we need dart-sass to work and it needs glibc
 
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
