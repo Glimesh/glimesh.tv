@@ -357,7 +357,7 @@ defmodule Glimesh.Streams do
   end
 
   defp trunc_hours(%Decimal{} = dec) do
-    dec |> Decimal.round() |> Decimal.to_integer()
+    dec |> Decimal.round(0, :up) |> Decimal.to_integer()
   end
 
   defp trunc_hours(hours) when is_integer(hours) do
