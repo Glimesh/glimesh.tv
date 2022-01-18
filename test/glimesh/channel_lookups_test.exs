@@ -385,6 +385,7 @@ defmodule Glimesh.ChannelLookupsTest do
 
   defp create_followed_hosting_data(_) do
     user = user_fixture()
+    additional_follower = user_fixture()
     non_followed_live_channel = streamer_fixture()
 
     Ecto.Changeset.change(non_followed_live_channel.channel)
@@ -392,6 +393,8 @@ defmodule Glimesh.ChannelLookupsTest do
     |> Repo.update()
 
     live_channel_hosted = streamer_fixture(%{}, %{status: "live"})
+    # make sure hosted channels have more than one follower
+    Glimesh.AccountFollows.follow(live_channel_hosted, additional_follower)
 
     Ecto.Changeset.change(live_channel_hosted.channel)
     |> Ecto.Changeset.force_change(:status, "live")
@@ -407,6 +410,7 @@ defmodule Glimesh.ChannelLookupsTest do
     |> Repo.insert()
 
     Glimesh.AccountFollows.follow(host, user)
+    Glimesh.AccountFollows.follow(host, additional_follower)
 
     live_channel_hosted_but_not_followed = streamer_fixture()
 
@@ -430,6 +434,7 @@ defmodule Glimesh.ChannelLookupsTest do
     |> Repo.update()
 
     Glimesh.AccountFollows.follow(live_channel_followed_but_not_hosted, user)
+    Glimesh.AccountFollows.follow(live_channel_followed_but_not_hosted, additional_follower)
 
     %{
       user: user,
@@ -537,6 +542,17 @@ defmodule Glimesh.ChannelLookupsTest do
       Glimesh.AccountFollows.follow(live_hosted, user)
       assert ChannelLookups.count_live_followed_channels_that_are_hosting(user) == 0
       assert length(ChannelLookups.list_live_followed_channels(user)) == 2
+    end
+
+    test "a host who follows themselves should not see a channel they follow and are hosting duplicated on the following page",
+         %{
+           host: host,
+           live_channel_hosted: live_hosted
+         } do
+      Glimesh.AccountFollows.follow(host, host)
+      Glimesh.AccountFollows.follow(live_hosted, host)
+      results = ChannelLookups.list_live_followed_channels_and_hosts(host)
+      assert length(results) == 1
     end
   end
 end
