@@ -28,9 +28,8 @@ npm-debug.log
 # The directory NPM/Yarn downloads your dependencies sources to.
 /assets/node_modules/
 
-# We build from priv/static and save compiled assets to priv/assets
-/priv/assets/
-/priv/static/cache_manifest.json
+# We build from priv/static and save compiled assets to priv/public
+/priv/public
 
 # Don't commit the SSL keys. Generate them with the mix phx.gen.cert command
 /priv/cert/

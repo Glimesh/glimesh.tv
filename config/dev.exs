@@ -9,6 +9,23 @@ config :glimesh, Glimesh.Repo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
+# For development, we build directly to the priv/public folder so we can have instant reloads
+# For production, build directly to priv/assets so it can be digested
+config :esbuild,
+  version: "0.12.18",
+  default: [
+    args: ~w(js/app.js --bundle --target=es2016 --outdir=../priv/public/js),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
+config :dart_sass,
+  version: "1.39.0",
+  default: [
+    args: ~w(--load-path=./node_modules css/app.scss ../priv/public/css/app.css),
+    cd: Path.expand("../assets", __DIR__)
+  ]
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
@@ -71,7 +88,7 @@ config :glimesh, GlimeshWeb.Emails.Mailer, adapter: Bamboo.LocalAdapter
 config :glimesh, GlimeshWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/assets/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/public/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/glimesh_web/(live|views)/.*(ex)$",
       ~r"lib/glimesh_web/templates/.*(eex|md)$"

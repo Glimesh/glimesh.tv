@@ -3,3 +3,7 @@ fa-fonts/
 # Compiled from $PROJECT_DIR/assets/
 app.js
 app.css
+
+# mix assets.deploy builds these assets into priv/static and then and 
+css/
+js/

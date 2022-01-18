@@ -54,7 +54,7 @@ config :glimesh, Glimesh.Repo, prepare: :unnamed
 config :esbuild,
   version: "0.12.18",
   default: [
-    args: ~w(js/app.js --bundle --target=es2016 --outdir=../priv/assets/js),
+    args: ~w(js/app.js --bundle --target=es2016 --outdir=../priv/static/js),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
@@ -62,7 +62,7 @@ config :esbuild,
 config :dart_sass,
   version: "1.39.0",
   default: [
-    args: ~w(--load-path=./node_modules css/app.scss ../priv/assets/css/app.css),
+    args: ~w(--load-path=./node_modules css/app.scss ../priv/static/css/app.css),
     cd: Path.expand("../assets", __DIR__)
   ]
 

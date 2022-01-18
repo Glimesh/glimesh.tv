@@ -38,7 +38,7 @@ defmodule GlimeshWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: {:glimesh, "priv/assets"},
+    from: {:glimesh, "priv/public"},
     gzip: Application.get_env(:glimesh, :environment) == :prod,
     only:
       ~w(emotes fa-fonts favicons fonts images css js browserconfig.xml cache_manifest.json favicon.ico robots.txt)

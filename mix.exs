@@ -111,7 +111,7 @@ defmodule Glimesh.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup", "cmd npm install --prefix assets"],
+      setup: ["deps.get", "ecto.setup", "cmd npm install --prefix=./assets"],
       "ecto.seed": ["run priv/repo/seeds.#{Mix.env()}.exs"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
@@ -127,7 +127,7 @@ defmodule Glimesh.MixProject do
         "cmd assets/copy-fonts.sh",
         "esbuild default --minify",
         "sass default --no-source-map --style=compressed",
-        "phx.digest priv/static -o priv/assets"
+        "phx.digest priv/static -o priv/public"
       ]
     ]
   end
