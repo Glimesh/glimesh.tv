@@ -50,6 +50,26 @@
       <h5><%= gettext("Channel Bans") %></h5>
     </div>
     <div class="card-body">
+
+      <h6><%= gettext("Ban User") %></h6>
+      <p>
+        <%= gettext("You can ban a user by entering their username below, optionally if a user is causing issues in your chat you can ban them in the chat message without leaving your stream.") %>
+      </p>
+      <%= form_for :ban, Routes.channel_moderator_path(@conn, :ban_user), fn f -> %>
+
+      <%= label f, "Username to Ban" %>
+      <div class="input-group mb-3" style="max-width: 400px;">
+        <%= text_input f, :ban_username, class: "form-control", autocomplete: "off" %>
+        <div class="input-group-append">
+          <%= submit gettext("Ban User"), class: "btn btn-danger", role: "button" %>
+        </div>
+      </div>
+      <%= error_tag f, :ban_username %>
+
+
+      <% end %>
+
+      <h6 class="mt-4"><%= gettext("Active Channel Bans") %></h6>
       <table class="table">
         <thead>
           <tr>
