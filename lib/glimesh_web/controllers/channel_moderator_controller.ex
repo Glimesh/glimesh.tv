@@ -3,6 +3,7 @@ defmodule GlimeshWeb.ChannelModeratorController do
 
   action_fallback GlimeshWeb.FallbackController
 
+  alias Glimesh.Accounts
   alias Glimesh.ChannelLookups
   alias Glimesh.StreamModeration
   alias Glimesh.Streams.ChannelModerator
@@ -25,10 +26,32 @@ defmodule GlimeshWeb.ChannelModeratorController do
     )
   end
 
+  def ban_user(conn, %{"ban" => %{"ban_username" => username}}) do
+    user = conn.assigns.current_user
+    channel = ChannelLookups.get_channel_for_user(conn.assigns.current_user)
+
+    with %Accounts.User{} = ban_user <- Accounts.get_by_username(username),
+         {:ok, _} <- Glimesh.Chat.ban_user(user, channel, ban_user) do
+      conn
+      |> put_flash(:info, "User banned successfully.")
+      |> redirect(to: Routes.channel_moderator_path(conn, :index))
+    else
+      nil ->
+        conn
+        |> put_flash(:error, "Username not found.")
+        |> redirect(to: Routes.channel_moderator_path(conn, :index))
+
+      {:error, _} ->
+        conn
+        |> put_flash(:error, "Unable to ban user.")
+        |> redirect(to: Routes.channel_moderator_path(conn, :index))
+    end
+  end
+
   def unban_user(conn, %{"username" => username}) do
     user = conn.assigns.current_user
     channel = ChannelLookups.get_channel_for_user(conn.assigns.current_user)
-    unban_user = Glimesh.Accounts.get_by_username!(username)
+    unban_user = Accounts.get_by_username!(username)
 
     case Glimesh.Chat.unban_user(user, channel, unban_user) do
       {:ok, _} ->
@@ -55,7 +78,7 @@ defmodule GlimeshWeb.ChannelModeratorController do
   def create(conn, %{"channel_moderator" => channel_moderator_params}) do
     user = conn.assigns.current_user
     channel = ChannelLookups.get_channel_for_user(user)
-    new_mod_user = Glimesh.Accounts.get_by_username(channel_moderator_params["username"])
+    new_mod_user = Accounts.get_by_username(channel_moderator_params["username"])
 
     case StreamModeration.create_channel_moderator(
            user,
