@@ -4,32 +4,27 @@ defmodule GlimeshWeb.WebhookController do
   require Logger
 
   def stripe(%Plug.Conn{assigns: %{stripe_event: stripe_event}} = conn, _params) do
+    Logger.info("Starting handle_webhook")
+
     case Glimesh.PaymentProviders.StripeProvider.Webhooks.handle_webhook(stripe_event) do
       {:ok, _} ->
+        Logger.info("Responding accepted")
+
         conn
         |> send_resp(:ok, "Accepted.")
         |> halt()
 
-      {:error_unimplemented, msg} ->
-        # We don't want to send this as an error, because we don't want Stripe to hate us.
-        conn
-        |> send_resp(:ok, msg)
-        |> halt()
-
       {:error, message} when is_binary(message) ->
+        Logger.info("Responding error")
         Logger.error(message)
 
         conn
         |> send_resp(:bad_request, message)
         |> halt()
-
-      _ ->
-        conn
-        |> send_resp(:bad_request, "Unknown error")
-        |> halt()
     end
   rescue
     e ->
+      Logger.info("Responding unknown exception")
       Logger.error(Exception.format(:error, e, __STACKTRACE__))
 
       conn
