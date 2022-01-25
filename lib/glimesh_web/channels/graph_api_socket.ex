@@ -10,6 +10,26 @@ defmodule GlimeshWeb.GraphApiSocket do
     schema: Glimesh.Api.Schema
 
   @impl true
+  def connect(%{"client_id" => original_client_id}, socket, _connect_info) do
+    # Convert the Client ID if needed to the boruta ID
+    client_id = Glimesh.OauthMigration.convert_client_id(original_client_id)
+
+    with %Boruta.Oauth.Client{} = client <- Boruta.Config.clients().get_by(id: client_id),
+         {:ok, %Glimesh.Api.Access{} = access} <-
+           Glimesh.Oauth.get_unprivileged_api_access_from_client(client) do
+      {:ok,
+       socket
+       |> assign(:user_id, nil)
+       |> Absinthe.Phoenix.Socket.put_options(
+         context: %{
+           access: access
+         }
+       )}
+    else
+      _ -> :error
+    end
+  end
+
   def connect(%{"token" => access_token}, socket, _connect_info) do
     with {:ok, %Boruta.Oauth.Token{} = token} <-
            Boruta.Oauth.Authorization.AccessToken.authorize(value: access_token),
