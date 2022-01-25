@@ -23,6 +23,7 @@ defmodule Glimesh.Api.Schema do
   end
 
   mutation do
+    import_fields(:account_mutations)
     import_fields(:streams_mutations)
     import_fields(:chat_mutations)
   end

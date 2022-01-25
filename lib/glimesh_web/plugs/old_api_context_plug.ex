@@ -64,7 +64,7 @@ defmodule GlimeshWeb.Plugs.OldApiContextPlug do
   defp authorize(_, conn) do
     # Since this is the old API, try a session based auth
     if user = conn.assigns[:current_user] do
-      Oauth.access_for_user(user, "public email chat streamkey")
+      Oauth.access_for_user(user, "public email chat streamkey follow")
     else
       {:error, :unauthorized}
     end
