@@ -29,6 +29,81 @@ defmodule Glimesh.Api.AccountResolver do
     end
   end
 
+  def follow_channel(
+        _parent,
+        %{channel_id: channel_id, live_notifications: live_notifications},
+        %{context: %{access: access}}
+      ) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
+         channel when channel != nil <- Glimesh.ChannelLookups.get(channel_id, [:user]),
+         streamer when streamer != nil <- Accounts.get_user(channel.user.id),
+         user when user != nil <- Accounts.get_user(access.user.id),
+         {:ok, following} <- AccountFollows.follow(streamer, user, live_notifications)
+    do
+      {:ok, following}
+    else
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:error, Glimesh.Api.parse_ecto_changeset_errors(changeset)}
+
+      {:error, message} when is_binary(message) -> {:error, message}
+
+      nil -> {:error, @error_not_found}
+
+      _ -> {:error, "Unknown error."}
+    end
+  end
+
+  def update_follow(
+        _parent,
+        %{channel_id: channel_id, live_notifications: live_notifications},
+        %{context: %{access: access}}
+      ) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
+         channel when channel != nil <- Glimesh.ChannelLookups.get(channel_id, [:user]),
+         following when following != nil <- AccountFollows.get_following(channel.user, access.user)
+    do
+      AccountFollows.update_following(following, %{
+        has_live_notifications: live_notifications
+      })
+    else
+      {:ok, following} -> {:ok, following}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:error, Glimesh.Api.parse_ecto_changeset_errors(changeset)}
+
+      {:error, message} when is_binary(message) -> {:error, message}
+
+      nil -> {:error, @error_not_found}
+
+      _ -> {:error, "Unknown error."}
+    end
+  end
+
+  def unfollow_channel(
+        _parent,
+        %{channel_id: channel_id},
+        %{context: %{access: access}}
+      ) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
+         channel when channel != nil <- Glimesh.ChannelLookups.get(channel_id, [:user]),
+         streamer when streamer != nil <- Accounts.get_user(channel.user.id),
+         user when user != nil <- Accounts.get_user(access.user.id)
+    do
+      AccountFollows.unfollow(streamer, user)
+    else
+      {:ok, following} -> {:ok, following}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:error, Glimesh.Api.parse_ecto_changeset_errors(changeset)}
+
+      {:error, message} when is_binary(message) -> {:error, message}
+
+      nil -> {:error, @error_not_found}
+
+      _ -> {:error, "Unknown error."}
+    end
+  end
+
   def all_users(args, _) do
     Accounts.query_users()
     |> order_by(:id)

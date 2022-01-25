@@ -18,49 +18,52 @@ defmodule Glimesh.AccountFollows do
 
   defp sub_and_return(topic), do: {Phoenix.PubSub.subscribe(Glimesh.PubSub, topic), topic}
 
-  defp broadcast({:error, _reason} = error, _event), do: error
-
-  defp broadcast({:ok, %Follower{} = following}, :followers = event) do
+  defp broadcast(%Follower{} = following, :followers = event) do
     Glimesh.Events.broadcast(
       get_subscribe_topic(:follows, following.streamer_id),
       get_subscribe_topic(:follows),
       event,
       following
     )
-
-    {:ok, following}
   end
 
   def follow(%User{} = streamer, %User{} = user, live_notifications \\ false) do
-    attrs = %{
-      has_live_notifications: live_notifications
-    }
 
-    results =
+    result =
       %Follower{
         streamer: streamer,
-        user: user
+        user: user,
+        has_live_notifications: live_notifications
       }
-      |> Follower.changeset(attrs)
+      |> Follower.changeset()
       |> Repo.insert()
 
-    channel = ChannelLookups.get_channel_for_user(streamer)
+    with {:ok, follower} <- result
+    do
+      channel = ChannelLookups.get_channel_for_user(streamer)
 
-    broadcast(results, :followers)
+      broadcast(follower, :followers)
 
-    if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) and
-         sent_follow_message_recently?(channel, user) do
-      Chat.create_chat_message(user, channel, %{
-        message: " just followed the stream!",
-        is_followed_message: true
-      })
+      if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) and
+          sent_follow_message_recently?(channel, user) do
+        Chat.create_chat_message(user, channel, %{
+          message: " just followed the stream!",
+          is_followed_message: true
+        })
+      end
+
+      {:ok, follower}
+    else
+      {:error, error} -> {:error, error}
     end
-
-    results
   end
 
   def unfollow(%User{} = streamer, %User{} = user) do
-    Repo.get_by(Follower, streamer_id: streamer.id, user_id: user.id) |> Repo.delete()
+    if follower = Repo.get_by(Follower, streamer_id: streamer.id, user_id: user.id) do
+      Repo.delete(follower)
+    else
+      {:error, "Not following"}
+    end
   end
 
   def update_following(%Follower{} = following, attrs \\ %{}) do
