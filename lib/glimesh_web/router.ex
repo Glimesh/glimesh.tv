@@ -63,7 +63,7 @@ defmodule GlimeshWeb.Router do
   scope "/api/webhook", GlimeshWeb do
     pipe_through :api
 
-    post "/stripe", WebhookController, :stripe
+    # post "/stripe", WebhookController, :stripe
     post "/taxidpro", WebhookController, :taxidpro
   end
 

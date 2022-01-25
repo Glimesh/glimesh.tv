@@ -70,9 +70,12 @@ defmodule GlimeshWeb.Endpoint do
   plug Plug.RequestId
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 
-  # Pluck out the stripe webhook request if it exists
-  plug GlimeshWeb.StripeWebhookPlug
   plug GlimeshWeb.TaxIDProWebhookPlug
+
+  plug Stripe.WebhookPlug,
+    at: "/api/webhook/stripe",
+    handler: Glimesh.PaymentProviders.StripeProvider.StripeHandler,
+    secret: {Application, :get_env, [:stripity_stripe, :webhook_secret]}
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
