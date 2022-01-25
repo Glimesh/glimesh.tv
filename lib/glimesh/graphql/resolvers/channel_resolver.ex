@@ -30,12 +30,20 @@ defmodule Glimesh.Resolvers.ChannelResolver do
     {:ok, ChannelLookups.list_channels()}
   end
 
+  def find_channel(%{id: nil}, _) do
+    {:error, @error_not_found}
+  end
+
   def find_channel(%{id: id}, _) do
     if channel = ChannelLookups.get_channel(id) do
       {:ok, channel}
     else
       {:error, @error_not_found}
     end
+  end
+
+  def find_channel(%{username: nil}, _) do
+    {:error, @error_not_found}
   end
 
   def find_channel(%{username: username}, _) do
