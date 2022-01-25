@@ -1,4 +1,8 @@
 defmodule Glimesh.PaymentProviders.StripeProvider.ProcessWebhook do
+  @moduledoc """
+  Async processor for Stripe Webhooks
+  """
+  # credo:disable-for-this-file
   @behaviour Rihanna.Job
 
   alias Glimesh.PaymentProviders.StripeProvider
