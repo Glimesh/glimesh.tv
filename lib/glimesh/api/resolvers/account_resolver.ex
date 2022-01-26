@@ -4,9 +4,12 @@ defmodule Glimesh.Api.AccountResolver do
 
   alias Absinthe.Relay.Connection
   alias Glimesh.AccountFollows
+  alias Glimesh.AccountFollows.Follower
   alias Glimesh.Accounts
+  alias Glimesh.Accounts.User
   alias Glimesh.Api
   alias Glimesh.ChannelLookups
+  alias Glimesh.Streams.Channel
 
   @error_not_found "Could not find resource"
 
@@ -36,9 +39,9 @@ defmodule Glimesh.Api.AccountResolver do
         %{context: %{access: access}}
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
-         channel when channel != nil <- ChannelLookups.get(channel_id, [:user]),
-         streamer when streamer != nil <- Accounts.get_user(channel.user.id),
-         user when user != nil <- Accounts.get_user(access.user.id),
+         %Channel{} = channel <- ChannelLookups.get(channel_id, [:user]),
+         %User{} = streamer <- Accounts.get_user(channel.user.id),
+         %User{} = user <- Accounts.get_user(access.user.id),
          {:ok, following} <- AccountFollows.follow(streamer, user, live_notifications) do
       {:ok, following}
     else
@@ -62,15 +65,14 @@ defmodule Glimesh.Api.AccountResolver do
         %{context: %{access: access}}
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
-         channel when channel != nil <- Glimesh.ChannelLookups.get(channel_id, [:user]),
-         following when following != nil <-
-           AccountFollows.get_following(channel.user, access.user) do
-      AccountFollows.update_following(following, %{
+         %Channel{} = channel <- Glimesh.ChannelLookups.get(channel_id, [:user]),
+         %Follower{} = follower <- AccountFollows.get_following(channel.user, access.user) do
+      AccountFollows.update_following(follower, %{
         has_live_notifications: live_notifications
       })
     else
-      {:ok, following} ->
-        {:ok, following}
+      {:ok, follower} ->
+        {:ok, follower}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:error, Api.parse_ecto_changeset_errors(changeset)}
@@ -92,9 +94,10 @@ defmodule Glimesh.Api.AccountResolver do
         %{context: %{access: access}}
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
-         channel when channel != nil <- Glimesh.ChannelLookups.get(channel_id, [:user]),
-         streamer when streamer != nil <- Accounts.get_user(channel.user.id),
-         user when user != nil <- Accounts.get_user(access.user.id) do
+         %Channel{} = channel when channel != nil <-
+           Glimesh.ChannelLookups.get(channel_id, [:user]),
+         %User{} = streamer when streamer != nil <- Accounts.get_user(channel.user.id),
+         %User{} = user when user != nil <- Accounts.get_user(access.user.id) do
       AccountFollows.unfollow(streamer, user)
     else
       {:ok, following} ->

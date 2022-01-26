@@ -31,10 +31,11 @@ defmodule Glimesh.AccountFollows do
     changeset =
       %Follower{
         streamer: streamer,
-        user: user,
-        has_live_notifications: live_notifications
+        user: user
       }
-      |> Follower.changeset()
+      |> Follower.changeset(%{
+        has_live_notifications: live_notifications
+      })
 
     case Repo.insert(changeset) do
       {:ok, follower} ->
