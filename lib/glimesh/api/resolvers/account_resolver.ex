@@ -35,20 +35,20 @@ defmodule Glimesh.Api.AccountResolver do
 
   def follow_channel(
         _parent,
-        %{channel_id: channel_id, live_notifications: live_notifications},
+        %{channel_id: channel_id, has_live_notifications: has_live_notifications},
         %{context: %{access: access}}
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
          %Channel{} = channel <- ChannelLookups.get(channel_id, [:user]),
          %User{} = streamer <- Accounts.get_user(channel.user.id),
          %User{} = user <- Accounts.get_user(access.user.id),
-         {:ok, following} <- AccountFollows.follow(streamer, user, live_notifications) do
+         {:ok, following} <- AccountFollows.follow(streamer, user, has_live_notifications) do
       {:ok, following}
     else
       {:error, %Ecto.Changeset{} = changeset} ->
         {:error, Api.parse_ecto_changeset_errors(changeset)}
 
-      {:error, message} when is_binary(message) ->
+      {:error, message} ->
         {:error, message}
 
       nil ->
@@ -61,15 +61,13 @@ defmodule Glimesh.Api.AccountResolver do
 
   def update_follow(
         _parent,
-        %{channel_id: channel_id, live_notifications: live_notifications},
+        %{channel_id: channel_id} = args,
         %{context: %{access: access}}
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
          %Channel{} = channel <- Glimesh.ChannelLookups.get(channel_id, [:user]),
          %Follower{} = follower <- AccountFollows.get_following(channel.user, access.user) do
-      AccountFollows.update_following(follower, %{
-        has_live_notifications: live_notifications
-      })
+      AccountFollows.update_following(follower, args)
     else
       {:ok, follower} ->
         {:ok, follower}
@@ -77,7 +75,7 @@ defmodule Glimesh.Api.AccountResolver do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:error, Api.parse_ecto_changeset_errors(changeset)}
 
-      {:error, message} when is_binary(message) ->
+      {:error, message} ->
         {:error, message}
 
       nil ->
@@ -106,14 +104,13 @@ defmodule Glimesh.Api.AccountResolver do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:error, Api.parse_ecto_changeset_errors(changeset)}
 
-      {:error, message} when is_binary(message) ->
+      {:error, message} ->
         {:error, message}
 
       nil ->
         {:error, @error_not_found}
 
-      _ ->
-        {:error, "Unknown error."}
+      error -> error
     end
   end
 

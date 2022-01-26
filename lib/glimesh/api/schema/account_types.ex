@@ -41,7 +41,7 @@ defmodule Glimesh.Api.AccountTypes do
     @desc "Follow a channel"
     field :follow_create, type: :follower do
       arg(:channel_id, non_null(:id))
-      arg(:live_notifications, :boolean, default_value: false)
+      arg(:has_live_notifications, :boolean, default_value: false)
 
       resolve(&AccountResolver.follow_channel/3)
     end
@@ -49,7 +49,7 @@ defmodule Glimesh.Api.AccountTypes do
     @desc "Update a channel follow"
     field :follow_update, type: :follower do
       arg(:channel_id, non_null(:id))
-      arg(:live_notifications, :boolean, default_value: nil)
+      arg(:has_live_notifications, :boolean, default_value: nil)
 
       resolve(&AccountResolver.update_follow/3)
     end
