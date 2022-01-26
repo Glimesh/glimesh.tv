@@ -39,26 +39,25 @@ defmodule Glimesh.Api.AccountTypes do
 
   object :account_mutations do
     @desc "Follow a channel"
-    field :follow_channel, type: :follower do
+    field :follow_create, type: :follower do
       arg(:channel_id, non_null(:id))
       arg(:live_notifications, :boolean, default_value: false)
 
       resolve(&AccountResolver.follow_channel/3)
     end
 
+    @desc "Update a channel follow"
+    field :follow_update, type: :follower do
+      arg(:channel_id, non_null(:id))
+      arg(:live_notifications, :boolean, default_value: nil)
+
+      resolve(&AccountResolver.update_follow/3)
+    end
     @desc "Unfollow a channel"
-    field :unfollow_channel, type: :follower do
+    field :follow_remove, type: :follower do
       arg(:channel_id, non_null(:id))
 
       resolve(&AccountResolver.unfollow_channel/3)
-    end
-
-    @desc "Update a channel follow"
-    field :update_follow, type: :follower do
-      arg(:channel_id, non_null(:id))
-      arg(:live_notifications, :boolean, default_value: false)
-
-      resolve(&AccountResolver.update_follow/3)
     end
   end
 
