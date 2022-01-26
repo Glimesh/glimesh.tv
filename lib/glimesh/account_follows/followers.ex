@@ -14,7 +14,7 @@ defmodule Glimesh.AccountFollows.Follower do
   end
 
   @doc false
-  def changeset(followers, attrs \\ %{}) do
+  def changeset(followers, attrs) do
     followers
     |> cast(attrs, [:has_live_notifications])
     |> validate_required([:streamer, :user, :has_live_notifications])
