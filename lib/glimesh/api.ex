@@ -18,7 +18,7 @@ defmodule Glimesh.Api do
                 email: false,
                 chat: false,
                 streamkey: false,
-                follow: false,
+                follow: false
               }
   end
 
@@ -60,12 +60,12 @@ defmodule Glimesh.Api do
   """
   def parse_ecto_changeset_errors(%Ecto.Changeset{} = changeset) do
     changeset
-      |> Ecto.Changeset.traverse_errors(fn {msg, opts} ->
-           Enum.reduce(opts, msg, fn {key, value}, acc ->
-             String.replace(acc, "%{#{key}}", to_string(value))
-           end)
-         end)
-      |> Enum.map(fn {key, value} -> "#{key}: #{value}" end)
+    |> Ecto.Changeset.traverse_errors(fn {msg, opts} ->
+      Enum.reduce(opts, msg, fn {key, value}, acc ->
+        String.replace(acc, "%{#{key}}", to_string(value))
+      end)
+    end)
+    |> Enum.map(fn {key, value} -> "#{key}: #{value}" end)
   end
 
   @doc """

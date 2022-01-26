@@ -6,6 +6,7 @@ defmodule Glimesh.Api.AccountResolver do
   alias Glimesh.AccountFollows
   alias Glimesh.Accounts
   alias Glimesh.Api
+  alias Glimesh.ChannelLookups
 
   @error_not_found "Could not find resource"
 
@@ -17,7 +18,7 @@ defmodule Glimesh.Api.AccountResolver do
   end
 
   def resolve_avatar_url(user, _, _) do
-    {:ok, Glimesh.Api.resolve_full_url(Glimesh.Avatar.url({user.avatar, user}))}
+    {:ok, Api.resolve_full_url(Glimesh.Avatar.url({user.avatar, user}))}
   end
 
   # Users
@@ -35,21 +36,23 @@ defmodule Glimesh.Api.AccountResolver do
         %{context: %{access: access}}
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
-         channel when channel != nil <- Glimesh.ChannelLookups.get(channel_id, [:user]),
+         channel when channel != nil <- ChannelLookups.get(channel_id, [:user]),
          streamer when streamer != nil <- Accounts.get_user(channel.user.id),
          user when user != nil <- Accounts.get_user(access.user.id),
-         {:ok, following} <- AccountFollows.follow(streamer, user, live_notifications)
-    do
+         {:ok, following} <- AccountFollows.follow(streamer, user, live_notifications) do
       {:ok, following}
     else
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:error, Glimesh.Api.parse_ecto_changeset_errors(changeset)}
+        {:error, Api.parse_ecto_changeset_errors(changeset)}
 
-      {:error, message} when is_binary(message) -> {:error, message}
+      {:error, message} when is_binary(message) ->
+        {:error, message}
 
-      nil -> {:error, @error_not_found}
+      nil ->
+        {:error, @error_not_found}
 
-      _ -> {:error, "Unknown error."}
+      _ ->
+        {:error, "Unknown error."}
     end
   end
 
@@ -60,22 +63,26 @@ defmodule Glimesh.Api.AccountResolver do
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
          channel when channel != nil <- Glimesh.ChannelLookups.get(channel_id, [:user]),
-         following when following != nil <- AccountFollows.get_following(channel.user, access.user)
-    do
+         following when following != nil <-
+           AccountFollows.get_following(channel.user, access.user) do
       AccountFollows.update_following(following, %{
         has_live_notifications: live_notifications
       })
     else
-      {:ok, following} -> {:ok, following}
+      {:ok, following} ->
+        {:ok, following}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:error, Glimesh.Api.parse_ecto_changeset_errors(changeset)}
+        {:error, Api.parse_ecto_changeset_errors(changeset)}
 
-      {:error, message} when is_binary(message) -> {:error, message}
+      {:error, message} when is_binary(message) ->
+        {:error, message}
 
-      nil -> {:error, @error_not_found}
+      nil ->
+        {:error, @error_not_found}
 
-      _ -> {:error, "Unknown error."}
+      _ ->
+        {:error, "Unknown error."}
     end
   end
 
@@ -87,20 +94,23 @@ defmodule Glimesh.Api.AccountResolver do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
          channel when channel != nil <- Glimesh.ChannelLookups.get(channel_id, [:user]),
          streamer when streamer != nil <- Accounts.get_user(channel.user.id),
-         user when user != nil <- Accounts.get_user(access.user.id)
-    do
+         user when user != nil <- Accounts.get_user(access.user.id) do
       AccountFollows.unfollow(streamer, user)
     else
-      {:ok, following} -> {:ok, following}
+      {:ok, following} ->
+        {:ok, following}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:error, Glimesh.Api.parse_ecto_changeset_errors(changeset)}
+        {:error, Api.parse_ecto_changeset_errors(changeset)}
 
-      {:error, message} when is_binary(message) -> {:error, message}
+      {:error, message} when is_binary(message) ->
+        {:error, message}
 
-      nil -> {:error, @error_not_found}
+      nil ->
+        {:error, @error_not_found}
 
-      _ -> {:error, "Unknown error."}
+      _ ->
+        {:error, "Unknown error."}
     end
   end
 

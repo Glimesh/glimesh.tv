@@ -53,7 +53,6 @@ defmodule Glimesh.Api.AccountTypes do
       resolve(&AccountResolver.unfollow_channel/3)
     end
 
-
     @desc "Update a channel follow"
     field :update_follow, type: :follower do
       arg(:channel_id, non_null(:id))

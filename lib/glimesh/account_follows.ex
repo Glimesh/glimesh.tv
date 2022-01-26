@@ -28,33 +28,32 @@ defmodule Glimesh.AccountFollows do
   end
 
   def follow(%User{} = streamer, %User{} = user, live_notifications \\ false) do
-
-    result =
+    changeset =
       %Follower{
         streamer: streamer,
         user: user,
         has_live_notifications: live_notifications
       }
       |> Follower.changeset()
-      |> Repo.insert()
 
-    with {:ok, follower} <- result
-    do
-      channel = ChannelLookups.get_channel_for_user(streamer)
+    case Repo.insert(changeset) do
+      {:ok, follower} ->
+        channel = ChannelLookups.get_channel_for_user(streamer)
 
-      broadcast(follower, :followers)
+        broadcast(follower, :followers)
 
-      if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) and
-          sent_follow_message_recently?(channel, user) do
-        Chat.create_chat_message(user, channel, %{
-          message: " just followed the stream!",
-          is_followed_message: true
-        })
-      end
+        if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) and
+             sent_follow_message_recently?(channel, user) do
+          Chat.create_chat_message(user, channel, %{
+            message: " just followed the stream!",
+            is_followed_message: true
+          })
+        end
 
-      {:ok, follower}
-    else
-      {:error, error} -> {:error, error}
+        {:ok, follower}
+
+      error ->
+        error
     end
   end
 
