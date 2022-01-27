@@ -11,7 +11,14 @@
     <span class="badge badge-primary"><%= @channel.category.name %></span>
     <%= @channel.title %>
     <%= if @can_change do %>
-      <a class="fas fa-edit" phx-click="toggle-edit" href="#" aria-label={gettext("Edit")}></a>
+      <a
+        class="fas fa-edit"
+        id="stream-title-edit"
+        phx-click="toggle-edit"
+        href="#"
+        aria-label={gettext("Edit")}
+      >
+      </a>
     <% end %>
   </h5>
   <%= if @channel.subcategory do %>
@@ -68,11 +75,11 @@
               <%= select(f, :category_id, @categories, class: "form-control") %>
               <%= error_tag(f, :category_id) %>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-1">
               <%= label(f, :subcategory, @subcategory_label) %>
               <%= live_component(
                 GlimeshWeb.TagifyComponent,
-                id: "category-selector",
+                id: "category-selector-#{@category.id}",
                 form: f,
                 field: :subcategory,
                 max_options: 1,
@@ -83,14 +90,21 @@
                 category: @category,
                 search_func: &search_categories/2
               ) %>
-              <p><%= @subcategory_attribution %></p>
+              <p class="mb-0"><%= @subcategory_attribution %></p>
               <%= error_tag(f, :subcategory) %>
             </div>
-            <div class="form-group">
+            <%= live_component(
+              GlimeshWeb.UserLive.Components.RecentTags,
+              fieldid: "category-selector-#{@category.id}",
+              recent_tags: @recent_subcategories,
+              operation: "replace"
+            ) %>
+
+            <div class="form-group mb-0 mt-2">
               <%= label(f, :tags, gettext("Tags")) %>
               <%= live_component(
                 GlimeshWeb.TagifyComponent,
-                id: "tag-selector",
+                id: "tag-selector-#{@category.id}",
                 form: f,
                 field: :tags,
                 value: @existing_tags,
@@ -103,8 +117,14 @@
               ) %>
               <%= error_tag(f, :tags) %>
             </div>
+            <%= live_component(
+              GlimeshWeb.UserLive.Components.RecentTags,
+              fieldid: "tag-selector-#{@category.id}",
+              recent_tags: @recent_tags,
+              operation: "append"
+            ) %>
 
-            <button type="submit" class="btn btn-primary btn-block btn-lg">
+            <button type="submit" class="btn btn-primary btn-block btn-lg mt-3">
               <%= gettext("Save") %>
             </button>
             <a
