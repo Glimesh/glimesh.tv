@@ -239,5 +239,36 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       refute view
              |> has_element?("#hosting_banner")
     end
+
+    test "will not redirect the twitter bot to hosted channel", %{
+      conn: conn,
+      streamer: streamer,
+      host: host
+    } do
+      conn =
+        conn
+        |> put_req_header("user-agent", "Twitterbot")
+
+      {:ok, view, html} = live(conn, Routes.user_stream_path(conn, :index, host.username))
+      assert html =~ "#{host.displayname} is hosting #{streamer.displayname}"
+      refute conn.status == 302
+
+      assert view
+             |> has_element?("#hosting-banner")
+
+      conn =
+        conn
+        |> put_req_header("user-agent", "test agent")
+
+      assert {:ok, conn} =
+               live(conn, Routes.user_stream_path(conn, :index, host.username))
+               |> follow_redirect(conn)
+
+      assert html_response(conn, 200) =~ "#{host.displayname} is hosting #{streamer.displayname}"
+      {:ok, view, _} = live(conn)
+
+      assert view
+             |> has_element?("#hosted-banner")
+    end
   end
 end

@@ -18,7 +18,7 @@ defmodule GlimeshWeb.UserLive.Stream do
          %{
            :redirect_to_hosted_target => redirect_to_hosted_target,
            :hosting_channel => hosting_channel
-         }} = get_hosting_data(params, channel, maybe_user, streamer)
+         }} = get_hosting_data(params, channel, maybe_user, streamer, session["user_agent"])
 
         if redirect_to_hosted_target do
           {:ok,
@@ -70,8 +70,9 @@ defmodule GlimeshWeb.UserLive.Stream do
     end
   end
 
-  defp get_hosting_data(params, channel, maybe_user, streamer) do
+  defp get_hosting_data(params, channel, maybe_user, streamer, user_agent) do
     is_live = Streams.is_live?(channel)
+    is_twitterbot = user_agent =~ "Twitterbot"
 
     hosting_channel =
       cond do
@@ -86,17 +87,22 @@ defmodule GlimeshWeb.UserLive.Stream do
       end
 
     # this channel is hosting another
-    redirect_to_hosted_target =
-      is_live == false and hosting_channel != nil and params["host"] == nil and
-        params["follow_host"] != "false" and
-        (maybe_user == nil or maybe_user.id != streamer.id)
+    not_bot_and_not_live = is_twitterbot == false and is_live == false
+
+    host_valid = hosting_channel != nil and check_host_params(params)
+
+    not_streamer = maybe_user == nil or maybe_user.id != streamer.id
 
     {:ok,
      %{
        is_live: is_live,
        hosting_channel: hosting_channel,
-       redirect_to_hosted_target: redirect_to_hosted_target
+       redirect_to_hosted_target: not_bot_and_not_live and host_valid and not_streamer
      }}
+  end
+
+  defp check_host_params(params) do
+    params["host"] == nil and params["follow_host"] != "false"
   end
 
   def handle_params(_unsigned_params, _uri, socket) do
