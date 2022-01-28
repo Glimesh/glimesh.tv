@@ -1,4 +1,5 @@
 defmodule Glimesh.PaymentProviders.StripeProvider.StripeHandler do
+  @moduledoc false
   @behaviour Stripe.WebhookHandler
 
   @impl true
