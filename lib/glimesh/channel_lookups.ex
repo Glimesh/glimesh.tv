@@ -195,12 +195,12 @@ defmodule Glimesh.ChannelLookups do
     |> Repo.preload([:category, :user, :streamer])
   end
 
-  def get_channel(id) do
-    Repo.get_by(Channel, id: id) |> Repo.preload([:category, :subcategory, :user, :tags])
+  def get_channel(id, preloads \\ [:category, :subcategory, :user, :tags]) do
+    Channel |> preload(^preloads) |> Repo.get(id)
   end
 
-  def get_channel!(id) do
-    Repo.get_by!(Channel, id: id) |> Repo.preload([:category, :subcategory, :user, :tags])
+  def get_channel!(id, preloads \\ [:category, :subcategory, :user, :tags]) do
+    Channel |> preload(^preloads) |> Repo.get!(id)
   end
 
   def get_channel_for_username(username, ignore_banned \\ false) do

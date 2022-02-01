@@ -3,7 +3,9 @@ defmodule Glimesh.Api.AccountsTest do
 
   import Glimesh.AccountsFixtures
   import Glimesh.Support.GraphqlHelper
+
   alias Glimesh.AccountFollows
+  alias Glimesh.Streams
 
   @myself_query """
   query getMyself {
@@ -133,6 +135,38 @@ defmodule Glimesh.Api.AccountsTest do
             username
           }
         }
+      }
+    }
+  }
+  """
+
+  @follow_create_mutation """
+  mutation FollowCreate($channelId: ID!) {
+    follow(channelId: $channelId) {
+      user {
+        username
+      }
+      hasLiveNotifications
+    }
+  }
+  """
+
+  @follow_update_mutation """
+  mutation FollowUpdate($channelId: ID!, $liveNotifications: Boolean!) {
+    follow(channelId: $channelId, liveNotifications: $liveNotifications) {
+      user {
+        username
+      }
+      hasLiveNotifications
+    }
+  }
+  """
+
+  @unfollow_mutation """
+  mutation FollowRemove($channelId: ID!) {
+    unfollow(channelId: $channelId) {
+      user {
+        username
       }
     }
   }
@@ -287,6 +321,175 @@ defmodule Glimesh.Api.AccountsTest do
     end
   end
 
+  describe "accounts api follow mutations without scope" do
+    setup [:create_user, :create_channel]
+
+    setup context do
+      create_token_and_return_context(context.conn, context.user, "public")
+    end
+
+    test "cannot follow a channel", %{conn: conn, channel: channel} do
+      resp =
+        run_query(conn, @follow_create_mutation, %{
+          channelId: "#{channel.id}"
+        })
+
+      assert is_nil(resp["data"]["follow"])
+      assert [
+               %{
+                 "locations" => _,
+                 "message" => "unauthorized",
+                 "path" => _
+               }
+             ] = resp["errors"]
+    end
+
+    test "cannot update a follow", %{conn: conn, channel: channel} do
+      resp =
+        run_query(conn, @follow_update_mutation, %{
+          channelId: "#{channel.id}",
+          liveNotifications: true
+        })
+
+      assert is_nil(resp["data"]["follow"])
+      assert [
+               %{
+                 "locations" => _,
+                 "message" => "unauthorized",
+                 "path" => _
+               }
+             ] = resp["errors"]
+    end
+
+    test "cannot remove a follow", %{conn: conn, channel: channel} do
+      resp =
+        run_query(conn, @unfollow_mutation, %{
+          channelId: "#{channel.id}"
+        })
+
+      assert is_nil(resp["data"]["unfollow"])
+      assert [
+               %{
+                 "locations" => _,
+                 "message" => "unauthorized",
+                 "path" => _
+               }
+             ] = resp["errors"]
+    end
+  end
+
+  describe "accounts api follow mutations" do
+    setup [:register_and_set_user_token, :create_channel]
+
+    test "can follow a channel", %{conn: conn, user: user, channel: channel} do
+      resp =
+        run_query(conn, @follow_create_mutation, %{
+          channelId: "#{channel.id}"
+        })
+
+      assert resp["errors"] == nil
+      assert resp["data"]["follow"] == %{
+               "user" => %{
+                 "username" => user.username
+               },
+               "hasLiveNotifications" => false
+             }
+    end
+
+    test "can update a follow", %{conn: conn, user: user} do
+      streamer = streamer_fixture()
+      {:ok, follower} = AccountFollows.follow(streamer, user)
+      assert follower.has_live_notifications == false
+
+      resp =
+        run_query(conn, @follow_update_mutation, %{
+          channelId: "#{streamer.channel.id}",
+          liveNotifications: true
+        })
+
+      assert resp["errors"] == nil
+      assert resp["data"]["follow"] == %{
+               "user" => %{
+                 "username" => user.username
+               },
+               "hasLiveNotifications" => true
+             }
+    end
+
+    test "updating a follow without setting liveNotifications sets it to false", %{
+      conn: conn,
+      user: user
+    } do
+      streamer = streamer_fixture()
+      {:ok, follower} = AccountFollows.follow(streamer, user, true)
+      assert follower.has_live_notifications == true
+
+      resp =
+        run_query(conn, @follow_create_mutation, %{
+          channelId: "#{streamer.channel.id}"
+        })
+
+      assert resp["errors"] == nil
+      assert resp["data"]["follow"] == %{
+               "user" => %{
+                 "username" => user.username
+               },
+               "hasLiveNotifications" => false
+             }
+    end
+
+    test "can remove a follow", %{conn: conn, user: user} do
+      streamer = streamer_fixture()
+      {:ok, _} = AccountFollows.follow(streamer, user)
+
+      resp =
+        run_query(conn, @unfollow_mutation, %{
+          channelId: "#{streamer.channel.id}"
+        })
+
+      assert resp["errors"] == nil
+      assert resp["data"]["unfollow"] == %{
+               "user" => %{
+                 "username" => user.username
+               }
+             }
+    end
+
+    test "can follow a channel twice", %{conn: conn, user: user} do
+      streamer = streamer_fixture()
+      {:ok, _} = AccountFollows.follow(streamer, user)
+
+      resp =
+        run_query(conn, @follow_create_mutation, %{
+          channelId: "#{streamer.channel.id}"
+        })
+
+      assert resp["errors"] == nil
+      assert resp["data"]["follow"] == %{
+                "user" => %{
+                  "username" => user.username
+                },
+                "hasLiveNotifications" => false
+              }
+    end
+
+    test "cannot remove a follow if channel is not followed", %{conn: conn, channel: channel} do
+      resp =
+        run_query(conn, @unfollow_mutation, %{
+          channelId: "#{channel.id}"
+        })
+
+      assert is_nil(resp["data"]["unfollow"])
+      assert [
+               %{
+                 "locations" => _,
+                 "message" => "Not following",
+                 "path" => _
+               }
+             ] = resp["errors"]
+    end
+  end
+
   describe "accounts api scoped functionality" do
     setup :register_and_set_user_token
 
@@ -302,5 +505,14 @@ defmodule Glimesh.Api.AccountsTest do
                "email"
              ]) == nil
     end
+  end
+
+  def create_user(_) do
+    %{user: user_fixture()}
+  end
+
+  def create_channel(%{user: user}) do
+    {:ok, channel} = Streams.create_channel(user)
+    %{channel: channel}
   end
 end

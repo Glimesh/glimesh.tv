@@ -2,7 +2,7 @@ FROM elixir:1.12.1
 
 # Install package dependencies
 RUN apt-get update
-RUN apt-get install -y build-essential postgresql-client inotify-tools imagemagick-6.q16 rsvg-convert
+RUN apt-get install -y build-essential postgresql-client inotify-tools imagemagick-6.q16 librsvg2-bin
 
 # install hex + rebar
 RUN mix local.hex --force

@@ -4,8 +4,12 @@ defmodule Glimesh.Api.AccountResolver do
 
   alias Absinthe.Relay.Connection
   alias Glimesh.AccountFollows
+  alias Glimesh.AccountFollows.Follower
   alias Glimesh.Accounts
+  alias Glimesh.Accounts.User
   alias Glimesh.Api
+  alias Glimesh.ChannelLookups
+  alias Glimesh.Streams.Channel
 
   @error_not_found "Could not find resource"
 
@@ -17,7 +21,7 @@ defmodule Glimesh.Api.AccountResolver do
   end
 
   def resolve_avatar_url(user, _, _) do
-    {:ok, Glimesh.Api.resolve_full_url(Glimesh.Avatar.url({user.avatar, user}))}
+    {:ok, Api.resolve_full_url(Glimesh.Avatar.url({user.avatar, user}))}
   end
 
   # Users
@@ -26,6 +30,59 @@ defmodule Glimesh.Api.AccountResolver do
       {:ok, user}
     else
       {:error, @error_not_found}
+    end
+  end
+
+  def follow_channel(
+        _parent,
+        %{channel_id: channel_id, live_notifications: live_notifications},
+        %{context: %{access: access}}
+      ) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
+         %Channel{} = channel <- ChannelLookups.get_channel(channel_id, [:user]),
+         %User{} = streamer <- Accounts.get_user(channel.user.id),
+         %User{} = user <- Accounts.get_user(access.user.id) do
+      AccountFollows.follow(streamer, user, live_notifications)
+    else
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:error, Api.parse_ecto_changeset_errors(changeset)}
+
+      {:error, message} ->
+        {:error, message}
+
+      nil ->
+        {:error, @error_not_found}
+
+      _ ->
+        {:error, "Unknown error."}
+    end
+  end
+
+  def unfollow_channel(
+        _parent,
+        %{channel_id: channel_id},
+        %{context: %{access: access}}
+      ) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
+         %Channel{} = channel <- ChannelLookups.get_channel(channel_id, [:user]),
+         %User{} = streamer <- Accounts.get_user(channel.user.id),
+         %User{} = user <- Accounts.get_user(access.user.id) do
+      AccountFollows.unfollow(streamer, user)
+    else
+      {:ok, following} ->
+        {:ok, following}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:error, Api.parse_ecto_changeset_errors(changeset)}
+
+      {:error, message} ->
+        {:error, message}
+
+      nil ->
+        {:error, @error_not_found}
+
+      _ ->
+        {:error, "Unknown error."}
     end
   end
 

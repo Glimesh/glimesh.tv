@@ -17,7 +17,8 @@ defmodule Glimesh.Api do
                 public: false,
                 email: false,
                 chat: false,
-                streamkey: false
+                streamkey: false,
+                follow: false
               }
   end
 
@@ -58,11 +59,13 @@ defmodule Glimesh.Api do
   Parse a list of changeset errors into actionable API errors
   """
   def parse_ecto_changeset_errors(%Ecto.Changeset{} = changeset) do
-    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
+    changeset
+    |> Ecto.Changeset.traverse_errors(fn {msg, opts} ->
       Enum.reduce(opts, msg, fn {key, value}, acc ->
         String.replace(acc, "%{#{key}}", to_string(value))
       end)
     end)
+    |> Enum.map(fn {key, value} -> "#{key}: #{value}" end)
   end
 
   @doc """
