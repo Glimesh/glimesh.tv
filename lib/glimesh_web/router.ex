@@ -15,6 +15,7 @@ defmodule GlimeshWeb.Router do
     plug GlimeshWeb.Plugs.Locale
     plug GlimeshWeb.Plugs.CfCountryPlug
     plug GlimeshWeb.Plugs.Ban
+    plug GlimeshWeb.Plugs.UserAgent
     plug GlimeshWeb.UniqueUserPlug
     plug NavigationHistory.Tracker, excluded_paths: ["/users/log_in", "/users/register"]
   end
