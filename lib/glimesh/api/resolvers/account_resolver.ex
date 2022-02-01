@@ -35,43 +35,15 @@ defmodule Glimesh.Api.AccountResolver do
 
   def follow_channel(
         _parent,
-        %{channel_id: channel_id, has_live_notifications: has_live_notifications},
+        %{channel_id: channel_id, live_notifications: live_notifications},
         %{context: %{access: access}}
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
-         %Channel{} = channel <- ChannelLookups.get(channel_id, [:user]),
+         %Channel{} = channel <- ChannelLookups.get_channel(channel_id, [:user]),
          %User{} = streamer <- Accounts.get_user(channel.user.id),
-         %User{} = user <- Accounts.get_user(access.user.id),
-         {:ok, following} <- AccountFollows.follow(streamer, user, has_live_notifications) do
-      {:ok, following}
+         %User{} = user <- Accounts.get_user(access.user.id) do
+      AccountFollows.follow(streamer, user, live_notifications)
     else
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:error, Api.parse_ecto_changeset_errors(changeset)}
-
-      {:error, message} ->
-        {:error, message}
-
-      nil ->
-        {:error, @error_not_found}
-
-      _ ->
-        {:error, "Unknown error."}
-    end
-  end
-
-  def update_follow(
-        _parent,
-        %{channel_id: channel_id} = args,
-        %{context: %{access: access}}
-      ) do
-    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
-         %Channel{} = channel <- Glimesh.ChannelLookups.get(channel_id, [:user]),
-         %Follower{} = follower <- AccountFollows.get_following(channel.user, access.user) do
-      AccountFollows.update_following(follower, args)
-    else
-      {:ok, follower} ->
-        {:ok, follower}
-
       {:error, %Ecto.Changeset{} = changeset} ->
         {:error, Api.parse_ecto_changeset_errors(changeset)}
 
@@ -92,10 +64,9 @@ defmodule Glimesh.Api.AccountResolver do
         %{context: %{access: access}}
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
-         %Channel{} = channel when channel != nil <-
-           Glimesh.ChannelLookups.get(channel_id, [:user]),
-         %User{} = streamer when streamer != nil <- Accounts.get_user(channel.user.id),
-         %User{} = user when user != nil <- Accounts.get_user(access.user.id) do
+         %Channel{} = channel <- ChannelLookups.get_channel(channel_id, [:user]),
+         %User{} = streamer <- Accounts.get_user(channel.user.id),
+         %User{} = user <- Accounts.get_user(access.user.id) do
       AccountFollows.unfollow(streamer, user)
     else
       {:ok, following} ->
@@ -110,7 +81,8 @@ defmodule Glimesh.Api.AccountResolver do
       nil ->
         {:error, @error_not_found}
 
-      error -> error
+      _ ->
+        {:error, "Unknown error."}
     end
   end
 

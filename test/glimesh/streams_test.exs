@@ -4,6 +4,7 @@ defmodule Glimesh.StreamsTest do
 
   import Glimesh.AccountsFixtures
   alias Glimesh.AccountFollows
+  alias Glimesh.AccountFollows.Follower
   alias Glimesh.ChannelLookups
   alias Glimesh.Streams
   alias Glimesh.Repo
@@ -47,12 +48,16 @@ defmodule Glimesh.StreamsTest do
       assert AccountFollows.is_following?(streamer, user) == true
     end
 
-    test "follow/2 twice returns error changeset" do
+    test "follow/2 twice successfully updates follow" do
       streamer = streamer_fixture()
       user = user_fixture()
-
       AccountFollows.follow(streamer, user)
-      assert {:error, %Ecto.Changeset{}} = AccountFollows.follow(streamer, user)
+
+
+      assert {:ok, %Follower{}} = AccountFollows.follow(streamer, user)
+
+      followed = ChannelLookups.list_all_followed_channels(user)
+      assert Enum.map(followed, fn x -> x.user.username end) == [streamer.username]
     end
 
     test "list_all_follows/0 successfully returns data" do

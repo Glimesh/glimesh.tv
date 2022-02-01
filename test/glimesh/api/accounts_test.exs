@@ -142,7 +142,7 @@ defmodule Glimesh.Api.AccountsTest do
 
   @follow_create_mutation """
   mutation FollowCreate($channelId: ID!) {
-    followCreate(channelId: $channelId) {
+    follow(channelId: $channelId) {
       user {
         username
       }
@@ -152,8 +152,8 @@ defmodule Glimesh.Api.AccountsTest do
   """
 
   @follow_update_mutation """
-  mutation FollowUpdate($channelId: ID!, $hasLiveNotifications: Boolean) {
-    followUpdate(channelId: $channelId, hasLiveNotifications: $hasLiveNotifications) {
+  mutation FollowUpdate($channelId: ID!, $liveNotifications: Boolean!) {
+    follow(channelId: $channelId, liveNotifications: $liveNotifications) {
       user {
         username
       }
@@ -162,9 +162,9 @@ defmodule Glimesh.Api.AccountsTest do
   }
   """
 
-  @follow_remove_mutation """
+  @unfollow_mutation """
   mutation FollowRemove($channelId: ID!) {
-    followRemove(channelId: $channelId) {
+    unfollow(channelId: $channelId) {
       user {
         username
       }
@@ -334,8 +334,7 @@ defmodule Glimesh.Api.AccountsTest do
           channelId: "#{channel.id}"
         })
 
-      assert is_nil(resp["data"]["followCreate"])
-
+      assert is_nil(resp["data"]["follow"])
       assert [
                %{
                  "locations" => _,
@@ -348,11 +347,11 @@ defmodule Glimesh.Api.AccountsTest do
     test "cannot update a follow", %{conn: conn, channel: channel} do
       resp =
         run_query(conn, @follow_update_mutation, %{
-          channelId: "#{channel.id}"
+          channelId: "#{channel.id}",
+          liveNotifications: true
         })
 
-      assert is_nil(resp["data"]["followUpdate"])
-
+      assert is_nil(resp["data"]["follow"])
       assert [
                %{
                  "locations" => _,
@@ -364,12 +363,11 @@ defmodule Glimesh.Api.AccountsTest do
 
     test "cannot remove a follow", %{conn: conn, channel: channel} do
       resp =
-        run_query(conn, @follow_remove_mutation, %{
+        run_query(conn, @unfollow_mutation, %{
           channelId: "#{channel.id}"
         })
 
-      assert is_nil(resp["data"]["followRemove"])
-
+      assert is_nil(resp["data"]["unfollow"])
       assert [
                %{
                  "locations" => _,
@@ -389,11 +387,12 @@ defmodule Glimesh.Api.AccountsTest do
           channelId: "#{channel.id}"
         })
 
-      assert resp["data"]["followCreate"] == %{
+      assert resp["errors"] == nil
+      assert resp["data"]["follow"] == %{
                "user" => %{
                  "username" => user.username
                },
-               "hasLiveNotifications" => false,
+               "hasLiveNotifications" => false
              }
     end
 
@@ -405,32 +404,37 @@ defmodule Glimesh.Api.AccountsTest do
       resp =
         run_query(conn, @follow_update_mutation, %{
           channelId: "#{streamer.channel.id}",
-          hasLiveNotifications: true,
+          liveNotifications: true
         })
 
-      assert resp["data"]["followUpdate"] == %{
+      assert resp["errors"] == nil
+      assert resp["data"]["follow"] == %{
                "user" => %{
                  "username" => user.username
                },
-               "hasLiveNotifications" => true,
+               "hasLiveNotifications" => true
              }
     end
 
-    test "updating a follow without setting liveNotifications should not change the value", %{conn: conn, user: user} do
+    test "updating a follow without setting liveNotifications sets it to false", %{
+      conn: conn,
+      user: user
+    } do
       streamer = streamer_fixture()
       {:ok, follower} = AccountFollows.follow(streamer, user, true)
       assert follower.has_live_notifications == true
 
       resp =
-        run_query(conn, @follow_update_mutation, %{
-          channelId: "#{streamer.channel.id}",
+        run_query(conn, @follow_create_mutation, %{
+          channelId: "#{streamer.channel.id}"
         })
 
-      assert resp["data"]["followUpdate"] == %{
+      assert resp["errors"] == nil
+      assert resp["data"]["follow"] == %{
                "user" => %{
                  "username" => user.username
                },
-               "hasLiveNotifications" => true,
+               "hasLiveNotifications" => false
              }
     end
 
@@ -439,18 +443,19 @@ defmodule Glimesh.Api.AccountsTest do
       {:ok, _} = AccountFollows.follow(streamer, user)
 
       resp =
-        run_query(conn, @follow_remove_mutation, %{
-          channelId: "#{streamer.channel.id}",
+        run_query(conn, @unfollow_mutation, %{
+          channelId: "#{streamer.channel.id}"
         })
 
-      assert resp["data"]["followRemove"] == %{
+      assert resp["errors"] == nil
+      assert resp["data"]["unfollow"] == %{
                "user" => %{
                  "username" => user.username
-               },
+               }
              }
     end
 
-    test "cannot follow a channel twice", %{conn: conn, user: user} do
+    test "can follow a channel twice", %{conn: conn, user: user} do
       streamer = streamer_fixture()
       {:ok, _} = AccountFollows.follow(streamer, user)
 
@@ -459,32 +464,29 @@ defmodule Glimesh.Api.AccountsTest do
           channelId: "#{streamer.channel.id}"
         })
 
-      assert is_nil(resp["data"]["followCreate"])
-
-      assert [
-                %{
-                  "locations" => _,
-                  "message" => "streamer_id: has already been taken",
-                  "path" => _
-                }
-              ] = resp["errors"]
+      assert resp["errors"] == nil
+      assert resp["data"]["follow"] == %{
+                "user" => %{
+                  "username" => user.username
+                },
+                "hasLiveNotifications" => false
+              }
     end
 
     test "cannot remove a follow if channel is not followed", %{conn: conn, channel: channel} do
       resp =
-        run_query(conn, @follow_remove_mutation, %{
+        run_query(conn, @unfollow_mutation, %{
           channelId: "#{channel.id}"
         })
 
-      assert is_nil(resp["data"]["followRemove"])
-
+      assert is_nil(resp["data"]["unfollow"])
       assert [
-                %{
-                  "locations" => _,
-                  "message" => "Not following",
-                  "path" => _
-                }
-              ] = resp["errors"]
+               %{
+                 "locations" => _,
+                 "message" => "Not following",
+                 "path" => _
+               }
+             ] = resp["errors"]
     end
   end
 
