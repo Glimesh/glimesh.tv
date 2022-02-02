@@ -1,4 +1,4 @@
-defmodule Glimesh.Schema do
+defmodule Glimesh.OldSchema do
   @moduledoc """
   GraphQL Schema for the API
   """
@@ -9,9 +9,9 @@ defmodule Glimesh.Schema do
 
   import_types(Absinthe.Type.Custom)
 
-  import_types(Glimesh.Schema.AccountTypes)
-  import_types(Glimesh.Schema.ChannelTypes)
-  import_types(Glimesh.Schema.ChatTypes)
+  import_types(Glimesh.OldSchema.AccountTypes)
+  import_types(Glimesh.OldSchema.ChannelTypes)
+  import_types(Glimesh.OldSchema.ChatTypes)
 
   query do
     import_fields(:accounts_queries)

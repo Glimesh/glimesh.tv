@@ -4,7 +4,6 @@ defmodule Glimesh.Api.AccountResolver do
 
   alias Absinthe.Relay.Connection
   alias Glimesh.AccountFollows
-  alias Glimesh.AccountFollows.Follower
   alias Glimesh.Accounts
   alias Glimesh.Accounts.User
   alias Glimesh.Api

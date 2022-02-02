@@ -10,14 +10,14 @@ defmodule GlimeshWeb.SubscriptionCase do
     quote do
       # Import conveniences for testing with channels
       use GlimeshWeb.ChannelCase
-      use Absinthe.Phoenix.SubscriptionTest, schema: Glimesh.Schema
+      use Absinthe.Phoenix.SubscriptionTest, schema: Glimesh.OldSchema
 
       import GlimeshWeb.SubscriptionCase
     end
   end
 
-  @spec setup_socket(any) :: %{socket: Phoenix.Socket.t(), user: any}
-  def setup_socket(_) do
+  @spec setup_old_socket(any) :: %{socket: Phoenix.Socket.t(), user: any}
+  def setup_old_socket(_) do
     user = user_fixture()
 
     {:ok, app} = Glimesh.ApiFixtures.app_fixture(user)
@@ -30,7 +30,7 @@ defmodule GlimeshWeb.SubscriptionCase do
       })
 
     {:ok, socket} =
-      connect(GlimeshWeb.ApiSocket, %{
+      connect(GlimeshWeb.OldApiSocket, %{
         "token" => token
       })
 

@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.ApiSocket do
+defmodule GlimeshWeb.OldApiSocket do
   @moduledoc """
   Allow for connections to the API socket with either an API token or a client id.
   Client ID is for read API access only.
@@ -6,7 +6,7 @@ defmodule GlimeshWeb.ApiSocket do
   use Phoenix.Socket
 
   use Absinthe.Phoenix.Socket,
-    schema: Glimesh.Schema
+    schema: Glimesh.OldSchema
 
   @impl true
   def connect(%{"client_id" => original_client_id}, socket, _connect_info) do

@@ -53,7 +53,6 @@ defmodule Glimesh.StreamsTest do
       user = user_fixture()
       AccountFollows.follow(streamer, user)
 
-
       assert {:ok, %Follower{}} = AccountFollows.follow(streamer, user)
 
       followed = ChannelLookups.list_all_followed_channels(user)

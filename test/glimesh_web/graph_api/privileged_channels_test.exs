@@ -1,4 +1,4 @@
-defmodule Glimesh.Api.PrivilegedChannelsTest do
+defmodule GlimeshWeb.GraphApi.PrivilegedChannelsTest do
   use GlimeshWeb.ConnCase
 
   alias Glimesh.Streams

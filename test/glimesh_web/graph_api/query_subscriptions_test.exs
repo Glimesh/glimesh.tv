@@ -1,7 +1,129 @@
-defmodule GlimeshWeb.Api.SubscriptionTest do
-  use GlimeshWeb.SubscriptionCase
+defmodule GlimeshWeb.GraphApi.QuerySubscriptionsTest do
+  use GlimeshWeb.GraphSubscriptionCase
 
   import Glimesh.AccountsFixtures
+
+  describe "anonymous subscriptions" do
+    setup :setup_anonymous_socket
+
+    test "can subscribe to normal channel data", %{socket: socket} do
+      streamer = streamer_fixture()
+
+      ref =
+        push_doc(
+          socket,
+          """
+            subscription channel($channelId: ID!) {
+              channel(id: $channelId) {
+                title
+              }
+            }
+          """,
+          variables: %{
+            "channelId" => streamer.channel.id
+          }
+        )
+
+      assert_reply(ref, :ok, %{subscriptionId: subscription_id})
+
+      Glimesh.Streams.update_channel(streamer, streamer.channel, %{
+        title: "This is changed"
+      })
+
+      assert_push("subscription:data", push)
+
+      assert push == %{
+               result: %{
+                 data: %{
+                   "channel" => %{"title" => "This is changed"}
+                 }
+               },
+               subscriptionId: subscription_id
+             }
+    end
+
+    test "can watch a channel", %{socket: socket} do
+      streamer = streamer_fixture()
+
+      Glimesh.Janus.create_edge_route(%{
+        hostname: "new-york",
+        url: "https://new-york/janus",
+        priority: 1.0,
+        available: true,
+        country_codes: ["US"]
+      })
+
+      channel_id = streamer.channel.id
+
+      ref =
+        push_doc(
+          socket,
+          """
+            mutation watchChannel($channelId: ID!, $country: String!) {
+              watchChannel(channelId: $channelId, country: $country) {
+                id
+              }
+            }
+          """,
+          variables: %{
+            "channelId" => channel_id,
+            "country" => "US"
+          }
+        )
+
+      assert_reply(ref, :ok, %{data: %{"watchChannel" => %{"id" => _}}})
+
+      # For some reason this does not work... I'm guessing because of multiple processes?
+      # viewer_count =
+      #   Glimesh.Streams.get_subscribe_topic(:viewers, channel_id)
+      #   |> Glimesh.Presence.list_presences()
+      #   |> Enum.count()
+
+      # assert viewer_count == 1
+    end
+
+    test "cannot perform auth-required actions", %{socket: socket} do
+      streamer = streamer_fixture()
+
+      ref =
+        push_doc(
+          socket,
+          """
+            mutation CreateChatMessage($channelId: ID!, $message: ChatMessageInput!) {
+              createChatMessage(channelId: $channelId, message: $message) {
+                message
+                user {
+                  username
+                }
+                tokens {
+                  type
+                  text
+                  ... on EmoteToken {
+                    src
+                  }
+                }
+              }
+            }
+          """,
+          variables: %{
+            "channelId" => streamer.channel.id,
+            message: %{
+              message: "Hello world"
+            }
+          }
+        )
+
+      assert_reply(ref, :ok, %{
+        data: %{"createChatMessage" => nil},
+        errors: [
+          %{
+            message: "unauthorized",
+            path: ["createChatMessage"]
+          }
+        ]
+      })
+    end
+  end
 
   describe "channel subscriptions" do
     setup :setup_socket
@@ -160,7 +282,7 @@ defmodule GlimeshWeb.Api.SubscriptionTest do
     end
   end
 
-  describe "followers" do
+  describe "follower subscriptions" do
     setup :setup_socket
 
     test "following subcription works", %{socket: socket, user: user} do

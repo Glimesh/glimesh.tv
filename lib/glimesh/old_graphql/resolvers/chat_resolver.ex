@@ -1,4 +1,4 @@
-defmodule Glimesh.Resolvers.ChatResolver do
+defmodule Glimesh.OldResolvers.ChatResolver do
   @moduledoc false
 
   alias Glimesh.Accounts

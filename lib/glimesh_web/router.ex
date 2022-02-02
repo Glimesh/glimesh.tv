@@ -73,7 +73,7 @@ defmodule GlimeshWeb.Router do
 
     forward "/", Glimesh.Api.GraphiQLPlug,
       schema: Glimesh.Api.Schema,
-      socket: GlimeshWeb.ApiSocket,
+      socket: GlimeshWeb.GraphApiSocket,
       default_url: {__MODULE__, :graph_default_url},
       socket_url: {__MODULE__, :graph_socket_url},
       interface: :playground,
@@ -85,8 +85,8 @@ defmodule GlimeshWeb.Router do
     pipe_through :graphql
 
     forward "/", Absinthe.Plug.GraphiQL,
-      schema: Glimesh.Schema,
-      socket: GlimeshWeb.ApiSocket,
+      schema: Glimesh.OldSchema,
+      socket: GlimeshWeb.OldApiSocket,
       default_url: {__MODULE__, :graphiql_default_url},
       socket_url: {__MODULE__, :graphiql_socket_url}
   end

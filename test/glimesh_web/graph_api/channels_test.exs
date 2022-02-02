@@ -1,4 +1,4 @@
-defmodule Glimesh.Api.ChannelsTest do
+defmodule GlimeshWeb.GraphApi.ChannelsTest do
   use GlimeshWeb.ConnCase
 
   alias Glimesh.Streams

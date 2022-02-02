@@ -1,4 +1,4 @@
-defmodule Glimesh.Resolvers.ChannelResolver do
+defmodule Glimesh.OldResolvers.ChannelResolver do
   @moduledoc false
 
   alias Glimesh.Accounts

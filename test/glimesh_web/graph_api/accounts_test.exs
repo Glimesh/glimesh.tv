@@ -1,4 +1,4 @@
-defmodule Glimesh.Api.AccountsTest do
+defmodule GlimeshWeb.GraphApi.AccountsTest do
   use GlimeshWeb.ConnCase
 
   import Glimesh.AccountsFixtures
@@ -335,6 +335,7 @@ defmodule Glimesh.Api.AccountsTest do
         })
 
       assert is_nil(resp["data"]["follow"])
+
       assert [
                %{
                  "locations" => _,
@@ -352,6 +353,7 @@ defmodule Glimesh.Api.AccountsTest do
         })
 
       assert is_nil(resp["data"]["follow"])
+
       assert [
                %{
                  "locations" => _,
@@ -368,6 +370,7 @@ defmodule Glimesh.Api.AccountsTest do
         })
 
       assert is_nil(resp["data"]["unfollow"])
+
       assert [
                %{
                  "locations" => _,
@@ -388,6 +391,7 @@ defmodule Glimesh.Api.AccountsTest do
         })
 
       assert resp["errors"] == nil
+
       assert resp["data"]["follow"] == %{
                "user" => %{
                  "username" => user.username
@@ -408,6 +412,7 @@ defmodule Glimesh.Api.AccountsTest do
         })
 
       assert resp["errors"] == nil
+
       assert resp["data"]["follow"] == %{
                "user" => %{
                  "username" => user.username
@@ -430,6 +435,7 @@ defmodule Glimesh.Api.AccountsTest do
         })
 
       assert resp["errors"] == nil
+
       assert resp["data"]["follow"] == %{
                "user" => %{
                  "username" => user.username
@@ -448,6 +454,7 @@ defmodule Glimesh.Api.AccountsTest do
         })
 
       assert resp["errors"] == nil
+
       assert resp["data"]["unfollow"] == %{
                "user" => %{
                  "username" => user.username
@@ -465,12 +472,13 @@ defmodule Glimesh.Api.AccountsTest do
         })
 
       assert resp["errors"] == nil
+
       assert resp["data"]["follow"] == %{
-                "user" => %{
-                  "username" => user.username
-                },
-                "hasLiveNotifications" => false
-              }
+               "user" => %{
+                 "username" => user.username
+               },
+               "hasLiveNotifications" => false
+             }
     end
 
     test "cannot remove a follow if channel is not followed", %{conn: conn, channel: channel} do
@@ -480,6 +488,7 @@ defmodule Glimesh.Api.AccountsTest do
         })
 
       assert is_nil(resp["data"]["unfollow"])
+
       assert [
                %{
                  "locations" => _,
