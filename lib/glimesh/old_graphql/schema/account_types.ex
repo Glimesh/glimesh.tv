@@ -6,8 +6,8 @@ defmodule Glimesh.OldSchema.AccountTypes do
 
   alias Glimesh.AccountFollows
   alias Glimesh.Avatar
-  alias Glimesh.Repo
   alias Glimesh.OldResolvers.AccountResolver
+  alias Glimesh.Repo
 
   object :accounts_queries do
     @desc "Get yourself"

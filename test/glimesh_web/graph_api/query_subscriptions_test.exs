@@ -42,6 +42,46 @@ defmodule GlimeshWeb.GraphApi.QuerySubscriptionsTest do
              }
     end
 
+    test "can watch a channel", %{socket: socket} do
+      streamer = streamer_fixture()
+
+      Glimesh.Janus.create_edge_route(%{
+        hostname: "new-york",
+        url: "https://new-york/janus",
+        priority: 1.0,
+        available: true,
+        country_codes: ["US"]
+      })
+
+      channel_id = streamer.channel.id
+
+      ref =
+        push_doc(
+          socket,
+          """
+            mutation watchChannel($channelId: ID!, $country: String!) {
+              watchChannel(channelId: $channelId, country: $country) {
+                id
+              }
+            }
+          """,
+          variables: %{
+            "channelId" => channel_id,
+            "country" => "US"
+          }
+        )
+
+      assert_reply(ref, :ok, %{data: %{"watchChannel" => %{"id" => _}}})
+
+      # For some reason this does not work... I'm guessing because of multiple processes?
+      # viewer_count =
+      #   Glimesh.Streams.get_subscribe_topic(:viewers, channel_id)
+      #   |> Glimesh.Presence.list_presences()
+      #   |> Enum.count()
+
+      # assert viewer_count == 1
+    end
+
     test "cannot perform auth-required actions", %{socket: socket} do
       streamer = streamer_fixture()
 

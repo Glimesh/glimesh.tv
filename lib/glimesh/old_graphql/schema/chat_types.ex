@@ -4,8 +4,8 @@ defmodule Glimesh.OldSchema.ChatTypes do
 
   import Absinthe.Resolution.Helpers
 
-  alias Glimesh.Repo
   alias Glimesh.OldResolvers.ChatResolver
+  alias Glimesh.Repo
   alias Glimesh.Streams
 
   input_object :chat_message_input do

@@ -5,8 +5,8 @@ defmodule Glimesh.OldSchema.ChannelTypes do
   import Absinthe.Resolution.Helpers
   import_types(Absinthe.Plug.Types)
 
-  alias Glimesh.Repo
   alias Glimesh.OldResolvers.ChannelResolver
+  alias Glimesh.Repo
   alias Glimesh.Streams
 
   input_object :stream_metadata_input do
