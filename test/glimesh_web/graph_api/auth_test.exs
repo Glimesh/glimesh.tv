@@ -1,4 +1,4 @@
-defmodule Glimesh.Api.AuthTest do
+defmodule GlimeshWeb.GraphApi.AuthTest do
   use GlimeshWeb.ConnCase
 
   import Glimesh.AccountsFixtures

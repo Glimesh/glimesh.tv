@@ -1,4 +1,4 @@
-defmodule Glimesh.Resolvers.AccountResolver do
+defmodule Glimesh.OldResolvers.AccountResolver do
   @moduledoc false
   alias Glimesh.AccountFollows
   alias Glimesh.Accounts

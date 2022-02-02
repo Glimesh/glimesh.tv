@@ -1,11 +1,11 @@
-defmodule Glimesh.Schema.ChatTypes do
+defmodule Glimesh.OldSchema.ChatTypes do
   @moduledoc false
   use Absinthe.Schema.Notation
 
   import Absinthe.Resolution.Helpers
 
   alias Glimesh.Repo
-  alias Glimesh.Resolvers.ChatResolver
+  alias Glimesh.OldResolvers.ChatResolver
   alias Glimesh.Streams
 
   input_object :chat_message_input do

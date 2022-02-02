@@ -1,7 +1,89 @@
-defmodule Glimesh.Api.QuerySubscriptionsTest do
-  use GlimeshWeb.SubscriptionCase
+defmodule GlimeshWeb.GraphApi.QuerySubscriptionsTest do
+  use GlimeshWeb.GraphSubscriptionCase
 
   import Glimesh.AccountsFixtures
+
+  describe "anonymous subscriptions" do
+    setup :setup_anonymous_socket
+
+    test "can subscribe to normal channel data", %{socket: socket} do
+      streamer = streamer_fixture()
+
+      ref =
+        push_doc(
+          socket,
+          """
+            subscription channel($channelId: ID!) {
+              channel(id: $channelId) {
+                title
+              }
+            }
+          """,
+          variables: %{
+            "channelId" => streamer.channel.id
+          }
+        )
+
+      assert_reply(ref, :ok, %{subscriptionId: subscription_id})
+
+      Glimesh.Streams.update_channel(streamer, streamer.channel, %{
+        title: "This is changed"
+      })
+
+      assert_push("subscription:data", push)
+
+      assert push == %{
+               result: %{
+                 data: %{
+                   "channel" => %{"title" => "This is changed"}
+                 }
+               },
+               subscriptionId: subscription_id
+             }
+    end
+
+    test "cannot perform auth-required actions", %{socket: socket} do
+      streamer = streamer_fixture()
+
+      ref =
+        push_doc(
+          socket,
+          """
+            mutation CreateChatMessage($channelId: ID!, $message: ChatMessageInput!) {
+              createChatMessage(channelId: $channelId, message: $message) {
+                message
+                user {
+                  username
+                }
+                tokens {
+                  type
+                  text
+                  ... on EmoteToken {
+                    src
+                  }
+                }
+              }
+            }
+          """,
+          variables: %{
+            "channelId" => streamer.channel.id,
+            message: %{
+              message: "Hello world"
+            }
+          }
+        )
+
+      assert_reply(ref, :ok, %{
+        data: %{"createChatMessage" => nil},
+        errors: [
+          %{
+            message: "unauthorized",
+            path: ["createChatMessage"]
+          }
+        ]
+      })
+    end
+  end
 
   describe "channel subscriptions" do
     setup :setup_socket

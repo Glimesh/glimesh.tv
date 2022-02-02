@@ -1,4 +1,4 @@
-defmodule Glimesh.Schema.ChannelTypes do
+defmodule Glimesh.OldSchema.ChannelTypes do
   @moduledoc false
   use Absinthe.Schema.Notation
 
@@ -6,7 +6,7 @@ defmodule Glimesh.Schema.ChannelTypes do
   import_types(Absinthe.Plug.Types)
 
   alias Glimesh.Repo
-  alias Glimesh.Resolvers.ChannelResolver
+  alias Glimesh.OldResolvers.ChannelResolver
   alias Glimesh.Streams
 
   input_object :stream_metadata_input do

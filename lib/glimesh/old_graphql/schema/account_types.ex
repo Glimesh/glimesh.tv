@@ -1,4 +1,4 @@
-defmodule Glimesh.Schema.AccountTypes do
+defmodule Glimesh.OldSchema.AccountTypes do
   @moduledoc false
   use Absinthe.Schema.Notation
 
@@ -7,7 +7,7 @@ defmodule Glimesh.Schema.AccountTypes do
   alias Glimesh.AccountFollows
   alias Glimesh.Avatar
   alias Glimesh.Repo
-  alias Glimesh.Resolvers.AccountResolver
+  alias Glimesh.OldResolvers.AccountResolver
 
   object :accounts_queries do
     @desc "Get yourself"

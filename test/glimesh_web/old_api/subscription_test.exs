@@ -4,7 +4,7 @@ defmodule GlimeshWeb.Api.SubscriptionTest do
   import Glimesh.AccountsFixtures
 
   describe "channel subscriptions" do
-    setup :setup_socket
+    setup :setup_old_socket
 
     test "updating channel title sends subscription update", %{socket: socket} do
       streamer = streamer_fixture()
@@ -75,7 +75,7 @@ defmodule GlimeshWeb.Api.SubscriptionTest do
   end
 
   describe "chat message subscriptions" do
-    setup :setup_socket
+    setup :setup_old_socket
 
     test "sending a chat message updates subscription", %{socket: socket, user: user} do
       streamer = streamer_fixture()
@@ -161,7 +161,7 @@ defmodule GlimeshWeb.Api.SubscriptionTest do
   end
 
   describe "followers" do
-    setup :setup_socket
+    setup :setup_old_socket
 
     test "following subcription works", %{socket: socket, user: user} do
       streamer = streamer_fixture()

@@ -1,4 +1,4 @@
-defmodule Glimesh.Api.ChatsTest do
+defmodule GlimeshWeb.GraphApi.ChatsTest do
   use GlimeshWeb.ConnCase
 
   import Glimesh.AccountsFixtures

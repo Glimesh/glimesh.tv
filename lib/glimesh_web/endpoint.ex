@@ -16,7 +16,7 @@ defmodule GlimeshWeb.Endpoint do
   # Redirect to primary domain before doing anything
   plug :canonical_host
 
-  socket "/api/socket", GlimeshWeb.ApiSocket,
+  socket "/api/socket", GlimeshWeb.OldApiSocket,
     # We can check_origin: false here because the only method of using this connection
     # is by having an existing API key you are authorized to use. This allows for devs
     # to run third party apps on their own client websites.
