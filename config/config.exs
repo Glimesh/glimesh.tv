@@ -50,6 +50,7 @@ config :glimesh,
   locales: locales
 
 config :glimesh, Glimesh.Repo, prepare: :unnamed
+config :glimesh, Glimesh.Repo.ReadReplica, prepare: :unnamed
 
 config :esbuild,
   version: "0.12.18",

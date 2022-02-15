@@ -52,7 +52,7 @@ defmodule Glimesh.Api do
         args
       end
 
-    Connection.from_query(query, &Repo.all/1, args, options)
+    Connection.from_query(query, &Repo.replica().all/1, args, options)
   end
 
   @doc """

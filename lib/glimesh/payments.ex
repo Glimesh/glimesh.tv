@@ -36,7 +36,7 @@ defmodule Glimesh.Payments do
   end
 
   def list_all_subscriptions do
-    Repo.all(
+    Repo.replica().all(
       from s in Subscription,
         where: s.is_active == true
     )
@@ -44,7 +44,7 @@ defmodule Glimesh.Payments do
   end
 
   def list_streamer_subscribers(streamer) do
-    Repo.all(
+    Repo.replica().all(
       from s in Subscription,
         where: s.streamer_id == ^streamer.id and s.is_active == true
     )
@@ -52,7 +52,7 @@ defmodule Glimesh.Payments do
   end
 
   def list_user_subscriptions(user) do
-    Repo.all(
+    Repo.replica().all(
       from s in Subscription,
         where: s.user_id == ^user.id and s.is_active == true and not is_nil(s.streamer_id)
     )
@@ -442,7 +442,7 @@ defmodule Glimesh.Payments do
   end
 
   def get_channel_subscriptions(user) do
-    Repo.all(
+    Repo.replica().all(
       from s in Subscription,
         where: s.user_id == ^user.id and s.is_active == true and not is_nil(s.streamer_id)
     )
@@ -450,12 +450,20 @@ defmodule Glimesh.Payments do
   end
 
   def get_channel_subscription(user, streamer) do
-    Repo.get_by(Subscription, user_id: user.id, is_active: true, streamer_id: streamer.id)
+    Repo.replica().get_by(Subscription,
+      user_id: user.id,
+      is_active: true,
+      streamer_id: streamer.id
+    )
     |> Repo.preload([:user, :streamer])
   end
 
   def get_channel_subscription!(user, streamer) do
-    Repo.get_by!(Subscription, user_id: user.id, is_active: true, streamer_id: streamer.id)
+    Repo.replica().get_by!(Subscription,
+      user_id: user.id,
+      is_active: true,
+      streamer_id: streamer.id
+    )
     |> Repo.preload([:user, :streamer])
   end
 
@@ -478,7 +486,7 @@ defmodule Glimesh.Payments do
       "Glimesh.Payments.list_platform_founder_subscribers()",
       fn ->
         {:ok,
-         Repo.all(
+         Repo.replica().all(
            from s in Subscription,
              where:
                s.is_active == true and is_nil(s.streamer_id) and
@@ -494,7 +502,7 @@ defmodule Glimesh.Payments do
       "Glimesh.Payments.list_platform_supporter_subscribers()",
       fn ->
         {:ok,
-         Repo.all(
+         Repo.replica().all(
            from s in Subscription,
              where:
                s.is_active == true and is_nil(s.streamer_id) and
@@ -555,7 +563,7 @@ defmodule Glimesh.Payments do
   end
 
   def list_payables_history(%User{} = user) do
-    Repo.all(
+    Repo.replica().all(
       from p in Payable,
         select: struct(p, [:streamer_payout_at, :streamer_payout_amount, :stripe_transfer_id]),
         where: p.streamer_id == ^user.id and not is_nil(p.streamer_payout_at),
@@ -569,7 +577,7 @@ defmodule Glimesh.Payments do
   # List our historical payouts for the user
   # """
   # def list_payout_history(%User{} = streamer) do
-  #   Repo.all(
+  #   Repo.replica().all(
   #     from si in SubscriptionInvoice,
   #       where:
   #         si.streamer_id == ^streamer.id and si.user_paid == true and si.streamer_paidout == true
@@ -586,7 +594,7 @@ defmodule Glimesh.Payments do
 
   """
   def list_subscriptions do
-    Repo.all(Subscription)
+    Repo.replica().all(Subscription)
   end
 
   @doc """
@@ -664,7 +672,7 @@ defmodule Glimesh.Payments do
   end
 
   def list_unpaidout_invoices do
-    Repo.all(
+    Repo.replica().all(
       from si in SubscriptionInvoice,
         where:
           not is_nil(si.streamer_id) and si.user_paid == true and si.streamer_paidout == false
@@ -672,7 +680,7 @@ defmodule Glimesh.Payments do
   end
 
   def list_unpaidout_payables do
-    Repo.all(
+    Repo.replica().all(
       from pb in Payable,
         where:
           not is_nil(pb.streamer_id) and not is_nil(pb.user_paid_at) and
@@ -690,7 +698,7 @@ defmodule Glimesh.Payments do
 
   """
   def list_subscription_invoices do
-    Repo.all(SubscriptionInvoice)
+    Repo.replica().all(SubscriptionInvoice)
   end
 
   @doc """
@@ -819,7 +827,7 @@ defmodule Glimesh.Payments do
   """
   def convert_subscription_invoices_to_payables do
     subscription_invoices =
-      Repo.all(
+      Repo.replica().all(
         from si in SubscriptionInvoice,
           where: not is_nil(si.streamer_id)
       )

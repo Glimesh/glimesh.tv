@@ -199,7 +199,7 @@ defmodule Glimesh.Chat do
 
   """
   def list_chat_messages(channel, limit \\ 5) do
-    Repo.all(
+    Repo.replica().all(
       from m in ChatMessage,
         where: m.is_visible == true and m.channel_id == ^channel.id,
         order_by: [desc: :inserted_at],
@@ -221,7 +221,7 @@ defmodule Glimesh.Chat do
   def list_recent_chat_messages(channel, limit \\ 5) do
     timeframe = NaiveDateTime.add(NaiveDateTime.utc_now(), -(60 * 60), :second)
 
-    Repo.all(
+    Repo.replica().all(
       from m in ChatMessage,
         where:
           m.is_visible == true and
@@ -268,7 +268,8 @@ defmodule Glimesh.Chat do
       ** (Ecto.NoResultsError)
 
   """
-  def get_chat_message!(id), do: Repo.get!(ChatMessage, id) |> Repo.preload([:user, :channel])
+  def get_chat_message!(id),
+    do: Repo.replica().get!(ChatMessage, id) |> Repo.preload([:user, :channel])
 
   @doc """
   Gets the latest follower message from a channel for a user

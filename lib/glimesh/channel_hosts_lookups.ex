@@ -13,7 +13,7 @@ defmodule Glimesh.ChannelHostsLookups do
     ChannelHosts
     |> where([ch], ch.hosting_channel_id == ^channel_id)
     |> preload(host: [:user], target: [:user])
-    |> Repo.all()
+    |> Repo.replica().all()
   end
 
   def get_current_hosting_target(channel) do

@@ -40,6 +40,6 @@ defmodule Glimesh.Jobs do
   end
 
   def enqueued do
-    __MODULE__ |> Glimesh.Repo.all()
+    __MODULE__ |> Glimesh.Repo.replica().all()
   end
 end

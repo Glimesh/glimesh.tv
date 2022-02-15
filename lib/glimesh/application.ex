@@ -13,6 +13,7 @@ defmodule Glimesh.Application do
       {Cluster.Supervisor, [topologies, [name: Glimesh.ClusterSupervisor]]},
       # Start the Ecto repository
       Glimesh.Repo,
+      Glimesh.Repo.ReadReplica,
       # Start the Telemetry supervisor
       GlimeshWeb.Telemetry,
       # Start the PubSub system

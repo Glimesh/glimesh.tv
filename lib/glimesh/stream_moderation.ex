@@ -15,7 +15,7 @@ defmodule Glimesh.StreamModeration do
 
   # User API Calls
   def get_channel_moderator!(%User{} = user, id) do
-    chan_mod = Repo.get!(ChannelModerator, id) |> Repo.preload([:channel, :user])
+    chan_mod = Repo.replica().get!(ChannelModerator, id) |> Repo.preload([:channel, :user])
 
     with :ok <- Bodyguard.permit(__MODULE__, :show_channel_moderator, user, chan_mod.channel) do
       chan_mod
@@ -23,7 +23,7 @@ defmodule Glimesh.StreamModeration do
   end
 
   def get_channel_moderator(%User{} = user, id) do
-    chan_mod = Repo.get(ChannelModerator, id) |> Repo.preload([:channel, :user])
+    chan_mod = Repo.replica().get(ChannelModerator, id) |> Repo.preload([:channel, :user])
 
     if chan_mod do
       with :ok <- Bodyguard.permit(__MODULE__, :show_channel_moderator, user, chan_mod.channel) do
@@ -37,14 +37,14 @@ defmodule Glimesh.StreamModeration do
 
   def list_channel_moderators(%User{} = user, %Channel{} = channel) do
     with :ok <- Bodyguard.permit(__MODULE__, :show_channel_moderator, user, channel) do
-      Repo.all(from cm in ChannelModerator, where: cm.channel_id == ^channel.id)
+      Repo.replica().all(from cm in ChannelModerator, where: cm.channel_id == ^channel.id)
       |> Repo.preload([:user])
     end
   end
 
   def list_channel_moderation_log(%User{} = user, %Channel{} = channel) do
     with :ok <- Bodyguard.permit(__MODULE__, :show_channel_moderator, user, channel) do
-      Repo.all(
+      Repo.replica().all(
         from ml in ChannelModerationLog,
           where: ml.channel_id == ^channel.id,
           order_by: [desc: :inserted_at]
@@ -55,7 +55,7 @@ defmodule Glimesh.StreamModeration do
 
   def list_channel_moderation_log_for_mod(%User{} = user, %ChannelModerator{} = chan_mod) do
     with :ok <- Bodyguard.permit(__MODULE__, :show_channel_moderator, user, chan_mod.channel) do
-      Repo.all(
+      Repo.replica().all(
         from ml in ChannelModerationLog,
           where: ml.channel_id == ^chan_mod.channel_id and ml.moderator_id == ^chan_mod.user_id,
           order_by: [desc: :inserted_at]
@@ -66,7 +66,7 @@ defmodule Glimesh.StreamModeration do
 
   def list_channel_bans(%User{} = user, %Channel{} = channel) do
     with :ok <- Bodyguard.permit(__MODULE__, :show_channel_moderator, user, channel) do
-      Repo.all(
+      Repo.replica().all(
         from cb in ChannelBan,
           where: cb.channel_id == ^channel.id and is_nil(cb.expires_at),
           order_by: [desc: :inserted_at]
