@@ -170,15 +170,15 @@ defmodule Glimesh.Streams do
 
   # Streams
   def get_stream(id) do
-    Repo.get_by(Glimesh.Streams.Stream, id: id)
+    Repo.replica().get_by(Glimesh.Streams.Stream, id: id)
   end
 
   def get_stream!(id) do
-    Repo.get_by!(Glimesh.Streams.Stream, id: id)
+    Repo.replica().get_by!(Glimesh.Streams.Stream, id: id)
   end
 
   def list_streams(channel) do
-    Repo.all(
+    Repo.replica().all(
       from s in Glimesh.Streams.Stream,
         where: s.channel_id == ^channel.id,
         order_by: [desc: s.started_at]
@@ -270,7 +270,7 @@ defmodule Glimesh.Streams do
       s in Glimesh.Streams.Stream,
       where: s.channel_id == ^channel.id and is_nil(s.ended_at)
     )
-    |> Repo.all()
+    |> Repo.replica().all()
     |> Enum.map(fn stream ->
       stream
       |> Glimesh.Streams.Stream.stop_changeset()

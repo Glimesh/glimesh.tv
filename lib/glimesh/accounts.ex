@@ -11,7 +11,7 @@ defmodule Glimesh.Accounts do
 
   ## Database getters
 
-  def list_users, do: Repo.all(query_users())
+  def list_users, do: Repo.replica().all(query_users())
 
   def query_users do
     User
@@ -25,7 +25,7 @@ defmodule Glimesh.Accounts do
   def search_users(query, current_page, per_page) do
     like = "%#{query}%"
 
-    Repo.all(
+    Repo.replica().all(
       from u in User,
         where: ilike(u.username, ^like),
         where: u.is_banned == false,
@@ -36,11 +36,11 @@ defmodule Glimesh.Accounts do
   end
 
   def list_admins do
-    Repo.all(from u in User, where: u.is_admin == true)
+    Repo.replica().all(from u in User, where: u.is_admin == true)
   end
 
   def list_team_users do
-    Repo.all(
+    Repo.replica().all(
       from u in User,
         where: not is_nil(u.team_role),
         order_by: [asc: u.username]
@@ -60,7 +60,7 @@ defmodule Glimesh.Accounts do
 
   """
   def get_user_by_email(email) when is_binary(email) do
-    Repo.get_by(User, email: email)
+    Repo.replica().get_by(User, email: email)
   end
 
   @doc """
@@ -77,15 +77,15 @@ defmodule Glimesh.Accounts do
   """
   def get_by_username(username, ignore_banned \\ false) when is_binary(username) do
     case ignore_banned do
-      false -> Repo.get_by(User, username: username, is_banned: false)
-      true -> Repo.get_by(User, username: username)
+      false -> Repo.replica().get_by(User, username: username, is_banned: false)
+      true -> Repo.replica().get_by(User, username: username)
     end
   end
 
   def get_by_username!(username, ignore_banned \\ false) when is_binary(username) do
     case ignore_banned do
-      false -> Repo.get_by!(User, username: username, is_banned: false)
-      true -> Repo.get_by!(User, username: username)
+      false -> Repo.replica().get_by!(User, username: username, is_banned: false)
+      true -> Repo.replica().get_by!(User, username: username)
     end
   end
 
@@ -124,13 +124,13 @@ defmodule Glimesh.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
-  def get_user(id), do: Repo.get(User, id)
+  def get_user!(id), do: Repo.replica().get!(User, id)
+  def get_user(id), do: Repo.replica().get(User, id)
 
   def is_user_banned?(%User{} = user), do: user.is_banned
 
   def is_user_banned_by_username?(username) do
-    user = Repo.get_by(User, username: username)
+    user = Repo.replica().get_by(User, username: username)
     user.is_banned
   end
 
@@ -192,7 +192,7 @@ defmodule Glimesh.Accounts do
   end
 
   def get_user_preference!(%User{} = user) do
-    Repo.get_by!(UserPreference, user_id: user.id)
+    Repo.replica().get_by!(UserPreference, user_id: user.id)
   end
 
   @doc """

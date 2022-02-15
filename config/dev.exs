@@ -1,13 +1,17 @@
 import Config
 
 # Configure your database
-config :glimesh, Glimesh.Repo,
+database = [
   username: "postgres",
   password: "postgres",
   database: "glimesh_dev",
   hostname: System.get_env("DATABASE_URL") || "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
+]
+
+config :glimesh, Glimesh.Repo, database
+config :glimesh, Glimesh.Repo.ReadReplica, database
 
 # For development, we build directly to the priv/public folder so we can have instant reloads
 # For production, build directly to priv/assets so it can be digested

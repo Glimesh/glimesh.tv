@@ -122,6 +122,6 @@ defmodule Glimesh.Streams.ChannelHosts do
   end
 
   def get_by_id(id) do
-    Repo.get_by(ChannelHosts, id: id)
+    Repo.replica().get_by(ChannelHosts, id: id)
   end
 end

@@ -19,7 +19,7 @@ defmodule Glimesh.Emails do
 
   """
   def list_email_log(%User{} = user) do
-    Repo.all(
+    Repo.replica().all(
       from l in EmailLog,
         where: l.user_id == ^user.id,
         order_by: [desc: l.inserted_at],

@@ -23,7 +23,7 @@ defmodule Glimesh.Janus do
   end
 
   def all_edge_routes do
-    Repo.all(EdgeRoute)
+    Repo.replica().all(EdgeRoute)
   end
 
   def create_edge_route(attrs \\ %{}) do

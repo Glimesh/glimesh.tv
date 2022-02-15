@@ -17,7 +17,7 @@ defmodule Glimesh.Homepage do
     now = NaiveDateTime.utc_now()
 
     channel_ids =
-      Repo.all(
+      Repo.replica().all(
         from f in HomepageChannel,
           select: f.channel_id,
           where:
@@ -32,7 +32,7 @@ defmodule Glimesh.Homepage do
   def list_homepage_channels do
     now = NaiveDateTime.utc_now()
 
-    Repo.all(
+    Repo.replica().all(
       from f in HomepageChannel,
         select: f.channel_id,
         where:
@@ -92,7 +92,7 @@ defmodule Glimesh.Homepage do
         group_by: s.channel_id,
         having: sum(s.ended_at - s.started_at) >= fragment("INTERVAL '10 hours'")
 
-    Repo.all(
+    Repo.replica().all(
       from c in Channel,
         as: :channel,
         join: s in assoc(c, :streams),

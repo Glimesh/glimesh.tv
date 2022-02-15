@@ -22,7 +22,7 @@ defmodule Glimesh.Apps do
 
   """
   def list_apps(%User{} = user) do
-    Repo.all(from a in App, where: a.user_id == ^user.id)
+    Repo.replica().all(from a in App, where: a.user_id == ^user.id)
     |> Repo.preload(:client)
   end
 
@@ -41,7 +41,7 @@ defmodule Glimesh.Apps do
 
   """
   def get_app(%User{} = user, id) do
-    app = Repo.get(App, id) |> Repo.preload(:client)
+    app = Repo.replica().get(App, id) |> Repo.preload(:client)
 
     with :ok <- Bodyguard.permit(__MODULE__, :show_app, user, app) do
       {:ok, app}
@@ -132,7 +132,7 @@ defmodule Glimesh.Apps do
     sub = Integer.to_string(user_id)
     now = DateTime.utc_now() |> DateTime.to_unix()
 
-    Repo.all(
+    Repo.replica().all(
       from t in Boruta.Ecto.Token,
         where:
           t.sub == ^sub and
@@ -143,7 +143,7 @@ defmodule Glimesh.Apps do
   end
 
   def revoke_token_by_id(%Glimesh.Accounts.User{} = user, token_id) do
-    token = Repo.get_by(Boruta.Ecto.Token, id: token_id)
+    token = Repo.replica().get_by(Boruta.Ecto.Token, id: token_id)
 
     with :ok <- Bodyguard.permit(__MODULE__, :revoke_token, user, token) do
       client = Boruta.Ecto.Admin.get_client!(token.client_id)
@@ -168,11 +168,11 @@ defmodule Glimesh.Apps do
 
   """
   def get_app_by_client_id!(client_id) do
-    Repo.get_by!(App, client_id: client_id) |> Repo.preload(:client)
+    Repo.replica().get_by!(App, client_id: client_id) |> Repo.preload(:client)
   end
 
   def get_app_owner_by_client_id!(client_id) do
-    app = Repo.get_by!(App, client_id: client_id) |> Repo.preload(:user)
+    app = Repo.replica().get_by!(App, client_id: client_id) |> Repo.preload(:user)
 
     app.user
   end
@@ -199,7 +199,7 @@ defmodule Glimesh.Apps do
 
   """
   def list_apps do
-    Repo.all(from(a in App)) |> Repo.preload(:client)
+    Repo.replica().all(from(a in App)) |> Repo.preload(:client)
   end
 
   @doc """

@@ -10,7 +10,7 @@ defmodule Glimesh.EventsTeam do
   alias Glimesh.Repo
 
   def list_events do
-    Repo.all(
+    Repo.replica().all(
       from e in Event,
         order_by: [desc: e.start_date]
     )
@@ -20,7 +20,7 @@ defmodule Glimesh.EventsTeam do
   def list_featured_events do
     now = DateTime.utc_now()
 
-    Repo.all(
+    Repo.replica().all(
       from e in Event,
         where: e.featured == true,
         where: e.end_date >= ^now,
@@ -59,13 +59,13 @@ defmodule Glimesh.EventsTeam do
   end
 
   def get_event(eventid) do
-    Repo.get_by!(Glimesh.EventsTeam.Event, id: eventid)
+    Repo.replica().get_by!(Glimesh.EventsTeam.Event, id: eventid)
     |> times_from_utc()
     |> Event.changeset()
   end
 
   def list_events_in_month(from, to) do
-    Repo.all(
+    Repo.replica().all(
       from e in Event,
         where: e.end_date >= ^from,
         where: e.start_date <= ^to,

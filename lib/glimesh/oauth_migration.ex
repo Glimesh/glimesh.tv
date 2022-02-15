@@ -146,7 +146,7 @@ defmodule Glimesh.OauthMigration do
     # select * from oauth_access_tokens
     # where application_id = 5 and inserted_at + expires_in * interval '1 second' > now() and revoked_at is not null;
     all_non_revoked_refresh_tokens =
-      Repo.all(
+      Repo.replica().all(
         from t in "oauth_access_tokens",
           select: %{
             token: t.token,

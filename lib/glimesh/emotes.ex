@@ -41,7 +41,7 @@ defmodule Glimesh.Emotes do
     Emote
     |> where([e], is_nil(e.approved_at) == false)
     |> perform_emote_query(%{include_animated: include_animated, channel_id: channel_id})
-    |> Repo.all()
+    |> Repo.replica().all()
   end
 
   defp perform_emote_query(query, %{include_animated: false, channel_id: nil}) do
@@ -67,7 +67,7 @@ defmodule Glimesh.Emotes do
   end
 
   def list_static_emotes do
-    Repo.all(
+    Repo.replica().all(
       from(e in Emote,
         where: is_nil(e.channel_id) and is_nil(e.approved_at) == false and e.animated == false,
         order_by: e.emote
@@ -76,7 +76,7 @@ defmodule Glimesh.Emotes do
   end
 
   def list_animated_emotes do
-    Repo.all(
+    Repo.replica().all(
       from(e in Emote,
         where: is_nil(e.channel_id) and is_nil(e.approved_at) == false and e.animated == true,
         order_by: e.emote
@@ -85,7 +85,7 @@ defmodule Glimesh.Emotes do
   end
 
   def list_pending_emotes do
-    Repo.all(
+    Repo.replica().all(
       from(e in Emote,
         where: is_nil(e.approved_at) and is_nil(e.rejected_at),
         order_by: e.inserted_at
@@ -104,7 +104,7 @@ defmodule Glimesh.Emotes do
   end
 
   def list_emotes_for_channel(%Channel{id: channel_id}) do
-    Repo.all(
+    Repo.replica().all(
       from(e in Emote,
         where: is_nil(e.approved_at) == false and e.channel_id == ^channel_id,
         order_by: e.emote
@@ -113,7 +113,7 @@ defmodule Glimesh.Emotes do
   end
 
   def list_static_emotes_for_channel(%Channel{id: channel_id}) do
-    Repo.all(
+    Repo.replica().all(
       from(e in Emote,
         where:
           is_nil(e.approved_at) == false and e.animated == false and e.channel_id == ^channel_id,
@@ -123,7 +123,7 @@ defmodule Glimesh.Emotes do
   end
 
   def list_animated_emotes_for_channel(%Channel{id: channel_id}) do
-    Repo.all(
+    Repo.replica().all(
       from(e in Emote,
         where:
           is_nil(e.approved_at) == false and e.animated == true and e.channel_id == ^channel_id,
@@ -133,7 +133,7 @@ defmodule Glimesh.Emotes do
   end
 
   def list_submitted_emotes_for_channel(%Channel{id: channel_id}) do
-    Repo.all(
+    Repo.replica().all(
       from(e in Emote,
         where: is_nil(e.approved_at) and e.channel_id == ^channel_id,
         order_by: [desc: e.rejected_at]
@@ -142,11 +142,11 @@ defmodule Glimesh.Emotes do
   end
 
   def get_emote_by_id(id) do
-    Repo.get_by(Emote, id: id)
+    Repo.replica().get_by(Emote, id: id)
   end
 
   def get_emote_by_emote(emote) when is_binary(emote) do
-    Repo.get_by(Emote, emote: emote)
+    Repo.replica().get_by(Emote, emote: emote)
   end
 
   def create_global_emote(%User{} = user, attrs \\ %{}) do

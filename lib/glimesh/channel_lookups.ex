@@ -23,7 +23,7 @@ defmodule Glimesh.ChannelLookups do
     |> order_by(fragment("RANDOM()"))
     |> group_by([c], c.id)
     |> preload([:category, :subcategory, :user, :stream, :tags])
-    |> Repo.all()
+    |> Repo.replica().all()
   end
 
   defp apply_filter(query, :category, %{"ids" => ids}) when is_list(ids) do
@@ -76,7 +76,7 @@ defmodule Glimesh.ChannelLookups do
     )
   end
 
-  def list_channels(wheres \\ []), do: Repo.all(query_channels(wheres))
+  def list_channels(wheres \\ []), do: Repo.replica().all(query_channels(wheres))
 
   def query_channels(wheres \\ []) do
     from c in Channel,
@@ -91,7 +91,7 @@ defmodule Glimesh.ChannelLookups do
   end
 
   def list_live_subscribed_followers(%Channel{} = channel) do
-    Repo.all(
+    Repo.replica().all(
       from u in User,
         left_join: f in Follower,
         on: u.id == f.user_id,
@@ -103,7 +103,7 @@ defmodule Glimesh.ChannelLookups do
   end
 
   def list_live_followed_channels(user) do
-    Repo.all(
+    Repo.replica().all(
       from c in Channel,
         join: f in Follower,
         on: c.user_id == f.streamer_id,
@@ -133,7 +133,7 @@ defmodule Glimesh.ChannelLookups do
       distinct: target.id,
       select: [target]
     )
-    |> Repo.all()
+    |> Repo.replica().all()
     |> length()
   end
 
@@ -171,12 +171,12 @@ defmodule Glimesh.ChannelLookups do
 
     query = live_followed_query |> union_all(^include_hosts_query)
 
-    Repo.all(query)
+    Repo.replica().all(query)
     |> Repo.preload([:user, :category, :stream, :subcategory, :tags])
   end
 
   def list_all_followed_channels(user) do
-    Repo.all(
+    Repo.replica().all(
       from c in Channel,
         join: f in Follower,
         on: c.user_id == f.streamer_id,
@@ -186,7 +186,7 @@ defmodule Glimesh.ChannelLookups do
   end
 
   def list_followed_live_notification_channels(user) do
-    Repo.all(
+    Repo.replica().all(
       from c in Channel,
         join: f in Follower,
         on: c.user_id == f.streamer_id,
@@ -196,11 +196,11 @@ defmodule Glimesh.ChannelLookups do
   end
 
   def get_channel(id, preloads \\ [:category, :subcategory, :user, :tags]) do
-    Channel |> preload(^preloads) |> Repo.get(id)
+    Channel |> preload(^preloads) |> Repo.replica().get(id)
   end
 
   def get_channel!(id, preloads \\ [:category, :subcategory, :user, :tags]) do
-    Channel |> preload(^preloads) |> Repo.get!(id)
+    Channel |> preload(^preloads) |> Repo.replica().get!(id)
   end
 
   def get_channel_for_username(username, ignore_banned \\ false) do
@@ -271,7 +271,7 @@ defmodule Glimesh.ChannelLookups do
 
       hosting_channel = Glimesh.ChannelLookups.get_channel_for_user_id(hosting_user.id)
 
-      Repo.all(
+      Repo.replica().all(
         from c in Channel,
           join: u in User,
           on: c.user_id == u.id,

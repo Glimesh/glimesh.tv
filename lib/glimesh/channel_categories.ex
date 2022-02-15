@@ -23,11 +23,11 @@ defmodule Glimesh.ChannelCategories do
 
   """
   def list_categories do
-    Repo.all(Category)
+    Repo.replica().all(Category)
   end
 
   def list_categories_for_select do
-    Repo.all(from c in Category, order_by: [asc: :name])
+    Repo.replica().all(from c in Category, order_by: [asc: :name])
     |> Enum.map(&{&1.name, &1.id})
   end
 
@@ -49,7 +49,7 @@ defmodule Glimesh.ChannelCategories do
   def get_category(slug),
     do: Repo.one(from c in Category, where: c.slug == ^slug)
 
-  def get_category_by_id!(id), do: Repo.get_by!(Category, id: id)
+  def get_category_by_id!(id), do: Repo.replica().get_by!(Category, id: id)
 
   @doc """
   Creates a category.
@@ -128,15 +128,17 @@ defmodule Glimesh.ChannelCategories do
 
   """
   def list_tags do
-    Repo.all(from t in Tag, order_by: [desc: :count_usage]) |> Repo.preload(:category)
+    Repo.replica().all(from t in Tag, order_by: [desc: :count_usage]) |> Repo.preload(:category)
   end
 
   def list_tags(category_id) do
-    Repo.all(from t in Tag, where: t.category_id == ^category_id, order_by: [desc: :count_usage])
+    Repo.replica().all(
+      from t in Tag, where: t.category_id == ^category_id, order_by: [desc: :count_usage]
+    )
   end
 
   def list_tags_for_channel(%Channel{} = channel) do
-    Repo.all(
+    Repo.replica().all(
       from t in Tag,
         join: c in Channel,
         join: ct in "channel_tags",
@@ -146,7 +148,7 @@ defmodule Glimesh.ChannelCategories do
   end
 
   def list_live_subcategories(category_id) do
-    Repo.all(
+    Repo.replica().all(
       from sc in Subcategory,
         join: c in Channel,
         on: sc.id == c.subcategory_id,
@@ -156,7 +158,7 @@ defmodule Glimesh.ChannelCategories do
   end
 
   def list_live_tags(category_id) do
-    Repo.all(
+    Repo.replica().all(
       from t in Tag,
         join: c in Channel,
         join: ct in "channel_tags",
@@ -171,7 +173,7 @@ defmodule Glimesh.ChannelCategories do
       when is_binary(search_value) do
     search_param = "%#{search_value}%"
 
-    Repo.all(
+    Repo.replica().all(
       from t in Tag,
         where: t.category_id == ^category.id and ilike(t.name, ^search_param),
         limit: 15
@@ -180,7 +182,7 @@ defmodule Glimesh.ChannelCategories do
   end
 
   def list_tags_for_tagify(category_id) do
-    Repo.all(
+    Repo.replica().all(
       from t in Tag,
         where: t.category_id == ^category_id,
         order_by: [desc: :count_usage]
@@ -214,7 +216,7 @@ defmodule Glimesh.ChannelCategories do
       ** (Ecto.NoResultsError)
 
   """
-  def get_tag!(id), do: Repo.get!(Tag, id)
+  def get_tag!(id), do: Repo.replica().get!(Tag, id)
 
   @doc """
   Creates a tag.
@@ -321,7 +323,7 @@ defmodule Glimesh.ChannelCategories do
       when is_binary(search_value) do
     search_param = "%#{search_value}%"
 
-    Repo.all(
+    Repo.replica().all(
       from c in Subcategory,
         where: c.category_id == ^category.id and ilike(c.name, ^search_param),
         limit: 10
@@ -385,7 +387,7 @@ defmodule Glimesh.ChannelCategories do
   end
 
   def list_subcategories(category_id) do
-    Repo.all(
+    Repo.replica().all(
       from c in Subcategory,
         where: c.category_id == ^category_id
     )

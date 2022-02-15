@@ -34,6 +34,12 @@ config :glimesh, Glimesh.Repo,
   url: database_url,
   pool_size: String.to_integer(System.get_env("POOL_SIZE", "10"))
 
+config :glimesh, Glimesh.Repo.ReadReplica,
+  # ssl: true,
+  # Fallback to regular database if we don't want a read database
+  url: System.get_env("READ_DATABASE_URL", database_url),
+  pool_size: String.to_integer(System.get_env("READ_POOL_SIZE", "10"))
+
 # Endpoint Configuration
 secret_key_base =
   System.get_env("SECRET_KEY_BASE") ||

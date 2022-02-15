@@ -55,7 +55,7 @@ defmodule Glimesh.AccountFollows do
   end
 
   def unfollow(%User{} = streamer, %User{} = user) do
-    if follower = Repo.get_by(Follower, streamer_id: streamer.id, user_id: user.id) do
+    if follower = Repo.replica().get_by(Follower, streamer_id: streamer.id, user_id: user.id) do
       Repo.delete(follower)
     else
       {:error, "Not following"}
@@ -76,7 +76,9 @@ defmodule Glimesh.AccountFollows do
   end
 
   def get_following(%User{} = streamer, %User{} = user, preloads \\ []) do
-    Follower |> preload(^preloads) |> Repo.get_by(streamer_id: streamer.id, user_id: user.id)
+    Follower
+    |> preload(^preloads)
+    |> Repo.replica().get_by(streamer_id: streamer.id, user_id: user.id)
   end
 
   def count_followers(%User{} = user) do
@@ -87,11 +89,13 @@ defmodule Glimesh.AccountFollows do
     Repo.one!(from f in Follower, select: count(f.id), where: f.user_id == ^user.id)
   end
 
-  def list_all_follows, do: Repo.all(query_all_follows())
-  def list_followers(%User{} = user), do: Repo.all(query_followers(user)) |> Repo.preload(:user)
+  def list_all_follows, do: Repo.replica().all(query_all_follows())
+
+  def list_followers(%User{} = user),
+    do: Repo.replica().all(query_followers(user)) |> Repo.preload(:user)
 
   def list_following(%User{} = user),
-    do: Repo.all(query_following(user)) |> Repo.preload(:streamer)
+    do: Repo.replica().all(query_following(user)) |> Repo.preload(:streamer)
 
   def query_all_follows do
     from(f in Follower)
@@ -108,7 +112,7 @@ defmodule Glimesh.AccountFollows do
   def search_following(user, query, current_page, per_page) do
     like = "%#{query}%"
 
-    Repo.all(
+    Repo.replica().all(
       from u in User,
         inner_join: f in Follower,
         on: f.user_id == ^user.id,
@@ -122,7 +126,7 @@ defmodule Glimesh.AccountFollows do
   end
 
   def list_following_with_scroll(streamer, _query, current_page, per_page) do
-    Repo.all(
+    Repo.replica().all(
       from f in Follower,
         inner_join: u in User,
         on: u.id == f.streamer_id,
@@ -135,7 +139,7 @@ defmodule Glimesh.AccountFollows do
   end
 
   def list_follower_with_scroll(streamer, _query, current_page, per_page) do
-    Repo.all(
+    Repo.replica().all(
       from f in Follower,
         inner_join: u in User,
         on: u.id == f.user_id,
