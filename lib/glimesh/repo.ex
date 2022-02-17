@@ -6,10 +6,6 @@ defmodule Glimesh.Repo do
 
   use Scrivener, page_size: 10
 
-  def data do
-    Dataloader.Ecto.new(Glimesh.Repo, query: &query/2)
-  end
-
   # Read Replicas
   if Mix.env() == :test do
     def replica, do: __MODULE__
@@ -32,5 +28,9 @@ defmodule Glimesh.Repo do
         adapter: Ecto.Adapters.Postgres,
         read_only: true
     end
+  end
+
+  def data do
+    Dataloader.Ecto.new(Glimesh.Repo.ReadReplica)
   end
 end
