@@ -67,7 +67,7 @@
                     </div>
 
                     <% else %>
-                    <div id="video-container" class="embed-responsive embed-responsive-16by9">
+                    <div id="video-container" class="embed-responsive <%= if @ultrawide, do: "embed-responsive-21by9", else: "embed-responsive-16by9"%>">
                         <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo" controls playsinline poster="<%= @channel_poster %>"></video>
                         <div id="video-loading-container" class="">
                             <div class="lds-ring">

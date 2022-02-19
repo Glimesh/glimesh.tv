@@ -11,6 +11,21 @@ export default {
         let videoLoadingContainer = document.getElementById("video-loading-container");
         let forceMuted = container.dataset.muted;
         let saveVolumeChanges = false;
+        let currentlyInUltrawide = false;
+
+        // Handle 21:9 aspect ratio monitors/browers
+        let containerParent = container.parentElement;
+        // Get browser aspect ratio
+        let size = {
+            width: window.innerWidth || document.body.clientWidth,
+            height: window.innerHeight || document.body.clientHeight
+        }
+        let currentAspectRatio = size.width / size.height;
+        if (currentAspectRatio > 2.3) {
+            // We assume this is an ultrawide of some sort
+            parent.pushEvent("ultrawide", {enabled: true});
+            currentlyInUltrawide = true;
+        }
 
         this.handleEvent("load_video", ({janus_url, channel_id}) => {
             player = new FtlPlayer(container, janus_url, {
@@ -73,6 +88,26 @@ export default {
         container.addEventListener("playing", function() {
             videoLoadingContainer.classList.remove("loading");
         });
+
+        window.onresize = function() {
+            // Get current aspect ratio
+            let size = {
+                width: window.innerWidth || document.body.clientWidth,
+                height: window.innerHeight || document.body.clientHeight
+            }
+            let currentAspectRatio = size.width / size.height;
+            if (currentAspectRatio > 2.3) {
+                if (!currentlyInUltrawide) {
+                    parent.pushEvent("ultrawide", {enabled: true});
+                }
+                currentlyInUltrawide = true;
+            } else {
+                if (currentlyInUltrawide) {
+                    parent.pushEvent("ultrawide", {enabled: false});
+                }
+                currentlyInUltrawide = false;
+            }
+        }
     },
     destroyed() {
         if(player) {

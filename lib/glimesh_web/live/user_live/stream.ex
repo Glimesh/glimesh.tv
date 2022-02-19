@@ -62,7 +62,8 @@ defmodule GlimeshWeb.UserLive.Stream do
            |> assign(:lost_packets, 0)
            |> assign(:stream_metadata, get_last_stream_metadata(channel.stream))
            |> assign(:player_error, nil)
-           |> assign(:user, maybe_user)}
+           |> assign(:user, maybe_user)
+           |> assign(:ultrawide, false)}
         end
 
       nil ->
@@ -186,6 +187,10 @@ defmodule GlimeshWeb.UserLive.Stream do
 
   def handle_event("lost_packets", _, socket) do
     {:noreply, socket}
+  end
+
+  def handle_event("ultrawide", %{"enabled" => enabled}, socket) do
+    {:noreply, socket |> assign(:ultrawide, enabled)}
   end
 
   defp get_stream_thumbnail(channel) do
