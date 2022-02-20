@@ -7,8 +7,6 @@ defmodule Glimesh.Api.AccountResolver do
   alias Glimesh.Accounts
   alias Glimesh.Accounts.User
   alias Glimesh.Api
-  alias Glimesh.ChannelLookups
-  alias Glimesh.Streams.Channel
 
   @error_not_found "Could not find resource"
 
@@ -34,12 +32,11 @@ defmodule Glimesh.Api.AccountResolver do
 
   def follow_channel(
         _parent,
-        %{channel_id: channel_id, live_notifications: live_notifications},
+        %{streamer_id: streamer_id, live_notifications: live_notifications},
         %{context: %{access: access}}
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
-         %Channel{} = channel <- ChannelLookups.get_channel(channel_id, [:user]),
-         %User{} = streamer <- Accounts.get_user(channel.user.id),
+         %User{} = streamer <- Accounts.get_user(streamer_id),
          %User{} = user <- Accounts.get_user(access.user.id) do
       AccountFollows.follow(streamer, user, live_notifications)
     else
@@ -59,12 +56,11 @@ defmodule Glimesh.Api.AccountResolver do
 
   def unfollow_channel(
         _parent,
-        %{channel_id: channel_id},
+        %{streamer_id: streamer_id},
         %{context: %{access: access}}
       ) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :follow, access),
-         %Channel{} = channel <- ChannelLookups.get_channel(channel_id, [:user]),
-         %User{} = streamer <- Accounts.get_user(channel.user.id),
+         %User{} = streamer <- Accounts.get_user(streamer_id),
          %User{} = user <- Accounts.get_user(access.user.id) do
       AccountFollows.unfollow(streamer, user)
     else
