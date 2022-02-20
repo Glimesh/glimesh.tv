@@ -141,8 +141,8 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
   """
 
   @follow_create_mutation """
-  mutation FollowCreate($channelId: ID!) {
-    follow(channelId: $channelId) {
+  mutation FollowCreate($streamerId: ID!) {
+    follow(streamerId: $streamerId) {
       user {
         username
       }
@@ -152,8 +152,8 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
   """
 
   @follow_update_mutation """
-  mutation FollowUpdate($channelId: ID!, $liveNotifications: Boolean!) {
-    follow(channelId: $channelId, liveNotifications: $liveNotifications) {
+  mutation FollowUpdate($streamerId: ID!, $liveNotifications: Boolean!) {
+    follow(streamerId: $streamerId, liveNotifications: $liveNotifications) {
       user {
         username
       }
@@ -163,8 +163,8 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
   """
 
   @unfollow_mutation """
-  mutation FollowRemove($channelId: ID!) {
-    unfollow(channelId: $channelId) {
+  mutation FollowRemove($streamerId: ID!) {
+    unfollow(streamerId: $streamerId) {
       user {
         username
       }
@@ -331,7 +331,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
     test "cannot follow a channel", %{conn: conn, channel: channel} do
       resp =
         run_query(conn, @follow_create_mutation, %{
-          channelId: "#{channel.id}"
+          streamerId: "#{channel.user.id}"
         })
 
       assert is_nil(resp["data"]["follow"])
@@ -348,7 +348,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
     test "cannot update a follow", %{conn: conn, channel: channel} do
       resp =
         run_query(conn, @follow_update_mutation, %{
-          channelId: "#{channel.id}",
+          streamerId: "#{channel.user.id}",
           liveNotifications: true
         })
 
@@ -366,7 +366,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
     test "cannot remove a follow", %{conn: conn, channel: channel} do
       resp =
         run_query(conn, @unfollow_mutation, %{
-          channelId: "#{channel.id}"
+          streamerId: "#{channel.user.id}"
         })
 
       assert is_nil(resp["data"]["unfollow"])
@@ -387,7 +387,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
     test "can follow a channel", %{conn: conn, user: user, channel: channel} do
       resp =
         run_query(conn, @follow_create_mutation, %{
-          channelId: "#{channel.id}"
+          streamerId: "#{channel.user.id}"
         })
 
       assert resp["errors"] == nil
@@ -407,7 +407,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
 
       resp =
         run_query(conn, @follow_update_mutation, %{
-          channelId: "#{streamer.channel.id}",
+          streamerId: "#{streamer.id}",
           liveNotifications: true
         })
 
@@ -431,7 +431,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
 
       resp =
         run_query(conn, @follow_create_mutation, %{
-          channelId: "#{streamer.channel.id}"
+          streamerId: "#{streamer.id}"
         })
 
       assert resp["errors"] == nil
@@ -450,7 +450,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
 
       resp =
         run_query(conn, @unfollow_mutation, %{
-          channelId: "#{streamer.channel.id}"
+          streamerId: "#{streamer.id}"
         })
 
       assert resp["errors"] == nil
@@ -468,7 +468,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
 
       resp =
         run_query(conn, @follow_create_mutation, %{
-          channelId: "#{streamer.channel.id}"
+          streamerId: "#{streamer.id}"
         })
 
       assert resp["errors"] == nil
@@ -484,7 +484,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
     test "cannot remove a follow if channel is not followed", %{conn: conn, channel: channel} do
       resp =
         run_query(conn, @unfollow_mutation, %{
-          channelId: "#{channel.id}"
+          streamerId: "#{channel.user.id}"
         })
 
       assert is_nil(resp["data"]["unfollow"])
