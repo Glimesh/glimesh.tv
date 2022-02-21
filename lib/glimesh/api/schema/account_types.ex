@@ -31,8 +31,8 @@ defmodule Glimesh.Api.AccountTypes do
 
     @desc "List all follows or followers"
     connection field :followers, node_type: :follower do
-      arg(:streamer_id, :integer)
-      arg(:user_id, :integer)
+      arg(:streamer_id, :id)
+      arg(:user_id, :id)
       resolve(&AccountResolver.all_followers/2)
     end
   end
