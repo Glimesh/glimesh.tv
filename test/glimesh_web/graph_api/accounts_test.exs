@@ -84,8 +84,9 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
   """
 
   @follower_query_streamerid_userid_single """
-  query getUser($user_id: Number!) {
-    followers(userId: $user_id, streamerId: $user_id, first: 200) {
+  query getUser($user_id: ID!, $streamer_id: ID!) {
+    followers(userId: $user_id, streamerId: $streamer_id, first: 200) {
+      count
       edges{
         node{
           user{
@@ -241,17 +242,41 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
              }
     end
 
-    test "returns a follower from user id and streamer id", %{conn: conn} do
+    test "returns a follower from user id and streamer id", %{conn: conn, user: user} do
       streamer = streamer_fixture()
-      AccountFollows.follow(streamer, streamer)
+      AccountFollows.follow(streamer, user)
 
       resp =
-        run_query(conn, @follower_query_streamerid_userid_single, %{user_id: streamer.id})["data"]
+        run_query(conn, @follower_query_streamerid_userid_single, %{
+          user_id: user.id,
+          streamer_id: streamer.id
+        })["data"]
 
       assert resp == %{
                "followers" => %{
-                 "edges" => [%{"node" => %{"user" => %{"username" => streamer.username}}}]
+                 "count" => 1,
+                 "edges" => [%{"node" => %{"user" => %{"username" => user.username}}}]
                }
+             }
+    end
+
+    test "returns no followers when appropriate", %{conn: conn, user: user} do
+      streamer = streamer_fixture()
+
+      resp =
+        run_query(conn, @follower_query_streamerid_userid_single, %{
+          user_id: user.id,
+          streamer_id: streamer.id
+        })
+
+      assert [
+               %{
+                 "message" => "Could not find resource"
+               }
+             ] = resp["errors"]
+
+      assert resp["data"] == %{
+               "followers" => nil
              }
     end
 
@@ -277,6 +302,16 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
       assert resp == %{
                "followers" => %{
                  "edges" => [%{"node" => %{"user" => %{"username" => streamer.username}}}]
+               }
+             }
+    end
+
+    test "returns no followers for a user", %{conn: conn, user: user} do
+      resp = run_query(conn, @follower_query_streamerid_list, %{user_id: user.id})["data"]
+
+      assert resp == %{
+               "followers" => %{
+                 "edges" => []
                }
              }
     end

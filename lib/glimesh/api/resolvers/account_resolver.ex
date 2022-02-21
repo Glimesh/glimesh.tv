@@ -117,9 +117,10 @@ defmodule Glimesh.Api.AccountResolver do
   defp query_followers(%{streamer_id: streamer_id, user_id: user_id}) do
     streamer = Accounts.get_user(streamer_id)
     user = Accounts.get_user(user_id)
+    following = AccountFollows.get_following(streamer, user)
 
-    if !is_nil(streamer) and !is_nil(user) do
-      {:ok, :single, AccountFollows.get_following(streamer, user)}
+    if !is_nil(streamer) and !is_nil(user) and !is_nil(following) do
+      {:ok, :single, following}
     else
       {:error, @error_not_found}
     end
