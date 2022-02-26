@@ -214,7 +214,7 @@ defmodule Glimesh.Streams do
       # 2. Change Channel to use Stream
       # 3. Change Channel to Live
       {:ok, channel} =
-        channel
+        ChannelLookups.get_channel(channel.id)
         |> Channel.start_changeset(%{
           stream_id: stream.id
         })
