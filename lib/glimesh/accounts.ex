@@ -157,14 +157,11 @@ defmodule Glimesh.Accounts do
         true -> attrs
       end
 
-    user_insert =
-      %User{
-        user_preference: existing_preferences
-      }
-      |> User.registration_changeset(attrs)
-      |> Repo.insert()
-
-    user_insert
+    %User{
+      user_preference: existing_preferences
+    }
+    |> User.registration_changeset(attrs)
+    |> Repo.insert()
   end
 
   @doc """
@@ -191,8 +188,12 @@ defmodule Glimesh.Accounts do
     |> Repo.update()
   end
 
+  @doc """
+  Get the user preference.
+  Due to a possible race condition, we must query the write server for this information.
+  """
   def get_user_preference!(%User{} = user) do
-    Repo.replica().get_by!(UserPreference, user_id: user.id)
+    Repo.get_by!(UserPreference, user_id: user.id)
   end
 
   @doc """
