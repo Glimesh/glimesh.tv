@@ -29,7 +29,8 @@ defmodule GlimeshWeb.UserAuth do
     token = Accounts.generate_user_session_token(user)
     user_return_to = get_session(conn, :user_return_to)
     last_path = NavigationHistory.last_path(conn)
-    user_preference = Accounts.get_user_preference!(user)
+
+    user_preference = get_user_preference(user)
 
     user_ip = conn.remote_ip |> :inet.ntoa() |> to_string()
     {:ok, _} = Accounts.update_user_ip(user, user_ip)
@@ -42,6 +43,16 @@ defmodule GlimeshWeb.UserAuth do
     |> put_session(:site_theme, user_preference.site_theme)
     |> maybe_write_remember_me_cookie(token, params)
     |> redirect(to: user_return_to || last_path || signed_in_path(conn))
+  end
+
+  defp get_user_preference(%Glimesh.Accounts.User{user_preference: user_preference} = user) do
+    case user_preference do
+      %Glimesh.Accounts.UserPreference{} = pref ->
+        pref
+
+      _ ->
+        Glimesh.Accounts.get_user_preference!(user)
+    end
   end
 
   defp maybe_write_remember_me_cookie(conn, token, %{"remember_me" => "true"}) do

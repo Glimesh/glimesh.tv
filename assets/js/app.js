@@ -43,6 +43,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
     },
     hooks: Hooks
 });
+liveSocket.enableDebug();
 
 // Make sure no dropdown form's are automatically closed on action
 function ignoreDropdownFormClosing() {

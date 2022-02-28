@@ -12,7 +12,7 @@ defmodule Glimesh.Accounts.UserPreference do
     field :site_theme, :string, default: "dark"
     field :show_timestamps, :boolean, default: false
     field :show_mod_icons, :boolean, default: true
-    field :show_mature_content, :boolean
+    field :show_mature_content, :boolean, default: false
 
     timestamps()
   end
