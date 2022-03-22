@@ -13,13 +13,13 @@
             <li class="nav-item d-inline mr-3">
                 <%= live_redirect to: Routes.streams_list_path(@conn, :index, "following") do %>
                 <i class="fas fa-heart fa-fw"></i>
-                    <%= cond do %>
-                    <% count_live = count_live_following_channels(@conn) -> %>
-                    <span class="badge badge-danger"><%= count_live %></span>
-                    <% count_hosted = count_live_hosted_channels(@conn) -> %>
-                    <span class="badge badge-primary"><%= count_hosted %></span>
-                    <% true -> %>
-                    <% end %>
+                <%= cond do %>
+                <% count_live = count_live_following_channels(@conn) -> %>
+                <span class="badge badge-danger"><%= count_live %></span>
+                <% count_hosted = count_live_hosted_channels(@conn) -> %>
+                <span class="badge badge-primary"><%= count_hosted %></span>
+                <% true -> %>
+                <% end %>
                 <% end %>
             </li>
             <% end %>
@@ -57,7 +57,7 @@
             </li>
             <li class="nav-item dropdown user-profile-dropdown">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="moreDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <i class="fa fa-ellipsis-v"></i><span class="d-sm-inline d-lg-none"> <%= gettext("More") %></span>
+                    <span class="d-sm-inline"> <%= gettext("More") %></span> <i class="fa fa-ellipsis-v"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="moreDropdown">
                     <%= link class: "dropdown-item", to: Routes.user_index_path(@conn, :index) do %>
@@ -82,18 +82,21 @@
             <li class="nav-item">
                 <%= live_redirect class: "nav-link", to: Routes.streams_list_path(@conn, :index, "following") do %>
                 <%= gettext("Following") %>
-                    <%= cond do %>
-                    <% count_live = count_live_following_channels(@conn) -> %>
-                    <span class="badge badge-danger align-top"><%= count_live %></span>
-                    <% count_hosted = count_live_hosted_channels(@conn) -> %>
-                    <span class="badge badge-primary align-top"><%= count_hosted %></span>
-                    <% true -> %>
-                    <% end %>
+                <%= cond do %>
+                <% count_live = count_live_following_channels(@conn) -> %>
+                <span class="badge badge-danger align-top"><%= count_live %></span>
+                <% count_hosted = count_live_hosted_channels(@conn) -> %>
+                <span class="badge badge-primary align-top"><%= count_hosted %></span>
+                <% true -> %>
+                <% end %>
                 <% end %>
             </li>
             <% end %>
-             <li class="nav-item">
+            <li class="nav-item">
                 <%= live_redirect gettext("Events"), class: "nav-link", to: Routes.events_team_path(@conn, :events_team) %>
+            </li>
+            <li class="nav-item">
+                <%= live_redirect gettext("App!"), class: "nav-link text-warning", to: Routes.app_path(@conn, :index) %>
             </li>
         </ul>
         <ul class="navbar-nav d-lg-flex align-items-lg-center">
@@ -135,7 +138,8 @@
             <li class="nav-item dropdown user-profile-dropdown">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <%= @current_user.displayname %>
-                    <img src="<%= Glimesh.Avatar.url({@current_user.avatar, @current_user}, :original) %>" alt="avatar" width="34" height="34" class="img-avatar <%= if Glimesh.Accounts.can_receive_payments?(@current_user), do: "img-verified-streamer", else: "" %>">
+                    <img src="<%= Glimesh.Avatar.url({@current_user.avatar, @current_user}, :original) %>" alt="avatar" width="34" height="34"
+                        class="img-avatar <%= if Glimesh.Accounts.can_receive_payments?(@current_user), do: "img-verified-streamer", else: "" %>">
                 </a>
                 <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="userProfileDropdown">
                     <%= if @current_user.is_gct do %>
@@ -144,7 +148,7 @@
                     <%= gettext("GCT Dash") %>
                     <% end %>
                     <% end %>
-                      <%= if @current_user.is_events_team do %>
+                    <%= if @current_user.is_events_team do %>
                     <%= link class: "dropdown-item", to: Routes.events_admin_path(@conn, :index) do %>
                     <i class="fas fa-calendar fa-fw"></i>
                     <%= gettext("Events Dash") %>

@@ -47,7 +47,8 @@ config :glimesh,
   environment: Mix.env(),
   email_physical_address: "1234 Fake St.<br>Pittsburgh, PA 15217",
   alpha_api_enable: true,
-  locales: locales
+  locales: locales,
+  privacy_policy_version: ~N[2022-03-21 11:55:00]
 
 config :glimesh, Glimesh.Repo, prepare: :unnamed
 config :glimesh, Glimesh.Repo.ReadReplica, prepare: :unnamed
@@ -266,6 +267,8 @@ config :sentry,
   dsn: "",
   environment_name: :dev,
   included_environments: [:prod]
+
+config :phoenix_markdown, :server_tags, only: ["privacy.html", "cookies.html", "terms.html"]
 
 import_config "badwords.exs"
 import_config "emotes.exs"

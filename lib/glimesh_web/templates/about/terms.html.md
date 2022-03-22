@@ -1,4 +1,5 @@
 # Terms of Service
+*Last Update: <%= @terms_version %>* 
 
 This Terms of Service covers [https://glimesh.tv/](https://glimesh.tv/), including all subdomains (“Sites”) and Glimesh’s other products, services or any other features, technologies, or functionalities offered by us on our Sites or through any other means (collectively, “Services”). Glimesh provides, among other things, a live streaming platform for content creators to play, make, share, teach, and otherwise create media and content for their communities. Any reference to "you" refers to you, the user of the site and to your account.
 

@@ -39,19 +39,47 @@ defmodule GlimeshWeb.AboutController do
   def privacy(conn, _param) do
     conn
     |> put_layout("text.html")
-    |> render("privacy.html", page_title: format_page_title(gettext("Privacy & Cookie Policy")))
+    |> render("privacy.html",
+      page_title: format_page_title(gettext("Privacy & Cookie Policy")),
+      privacy_version: Glimesh.get_privacy_version()
+    )
+  end
+
+  def accept_privacy(conn, _params) do
+    user = conn.assigns.current_user
+
+    user_return_to = get_session(conn, :user_return_to)
+    last_path = NavigationHistory.last_path(conn)
+
+    # Unlikely to fail, but we don't care if it does...
+    Glimesh.Accounts.update_user_privacy_version(user, Glimesh.get_privacy_version())
+
+    conn
+    |> redirect(to: user_return_to || last_path || "/")
   end
 
   def terms(conn, _param) do
     conn
     |> put_layout("text.html")
-    |> render("terms.html", page_title: format_page_title(gettext("Terms of Service")))
+    |> render("terms.html",
+      page_title: format_page_title(gettext("Terms of Service")),
+      terms_version: Glimesh.get_privacy_version()
+    )
   end
 
   def conduct(conn, _param) do
     conn
     |> put_layout("text.html")
     |> render("conduct.html", page_title: format_page_title(gettext("Rules of Conduct")))
+  end
+
+  def cookies(conn, _param) do
+    conn
+    |> put_layout("text.html")
+    |> render("cookies.html",
+      page_title: format_page_title(gettext("Cookie Policy")),
+      cookie_version: Glimesh.get_privacy_version()
+    )
   end
 
   def dmca(conn, _params) do
