@@ -1,7 +1,7 @@
 # Cookie Policy
 *Last Update: <%= @cookie_version %>* 
 
-This cookie policy explains how Glimesh (“Glimesh'', “We”, “Us”, “Our”) uses cookies to recognize when you visit our Our website [https://glimesh.tv/](https://glimesh.tv/) and all subdomains (“Sites”), mobile application (“Apps”) or other services (“Services” which include the website and mobile application). It explains why we use them and your rights to control Our use of them. 
+This cookie policy explains how Glimesh (“Glimesh”, “We”, “Us”, “Our”) uses cookies to recognize when you visit our Our website [https://glimesh.tv/](https://glimesh.tv/) and all subdomains (“Sites”), mobile application (“Apps”) or other services (“Services” which include the website and mobile application). It explains why we use them and your rights to control Our use of them. 
 
 In some cases We may use cookies to collect Personal Information, or that may become Personal Information when We combine it with other information, you can find out more about what we do with that Personal Information in our Privacy Policy. 
 
