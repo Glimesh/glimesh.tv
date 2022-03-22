@@ -1,4 +1,23 @@
+<div style="background-color: #5271fd;">
+    <div class="container">
+        <div class="row">
+            <div class="col-4 d-none d-md-block text-center">
+                <img src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/app-demo.gif" )} class="img-fluid text-center align-self-center">
+            </div>
+            <div class="col col-md-8 d-flex flex-column justify-content-center">
+                <h1 class="display-3 text-center mt-4 mb-0" style="font-family: Roboto;">The app is here!</h1>
 
+                <p class="text-center lead">Finally, Glimesh from the comfort of your phone or tablet. Download it now!</p>
+
+                <div class="row m-4 justify-content-center">
+                    <div class="col-6 col-sm-4 px-4"><a href="https://testflight.apple.com/join/0gxM8YIG" target="_blank"><img class="img-fluid" src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/download-on-the-app-store.png" )}></a>
+                    </div>
+                    <div class="col-6 col-sm-4 px-4"><a href="https://play.google.com/store/apps/details?id=tv.glimesh.app" target="_blank"><img class="img-fluid" src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/get-it-on-google-play.png" )}></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <%= if @random_channel do %>
 <div class="container mt-4">
@@ -23,7 +42,7 @@
         <div class="col-12 col-md-6 order-md-1">
             <%= live_render(@socket, GlimeshWeb.Channels.VideoPlayer, id: "homepage-video", session: %{"muted" => true, "channel_id" => @random_channel.id, "channel_poster" => @random_channel_thumbnail}) %>
             <div class="d-flex align-items-start mt-2">
-                <img src={Glimesh.Avatar.url({@random_channel.user.avatar, @random_channel.user}, :original)} alt={@random_channel.user.displayname} width="48" height="48" class={["img-avatar mr-2", (if Glimesh.Accounts.can_receive_payments?(@random_channel.user), do: "img-verified-streamer")]}>
+                <img src={Glimesh.Avatar.url({@random_channel.user.avatar, @random_channel.user}, :original)} alt={@random_channel.user.displayname} width="48" height="48" class={[ "img-avatar mr-2" , (if Glimesh.Accounts.can_receive_payments?(@random_channel.user), do: "img-verified-streamer" ) ]}>
                 <div class="pl-1 pr-1">
                     <h6 class="mb-0 mt-1 text-wrap"><%= @random_channel.title %></h6>
                     <p class="mb-0 card-stream-username"><%= @random_channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(@random_channel) %></span>
@@ -80,7 +99,7 @@
     <% else %>
     <.live_channels_component channels={@channels} />
     <% end %>
-    
+
 </div>
 <% end %>
 

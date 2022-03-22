@@ -56,6 +56,8 @@ defmodule Glimesh.Accounts.User do
     field :allow_glimesh_newsletter_emails, :boolean, default: false
     field :allow_live_subscription_emails, :boolean, default: true
 
+    field :privacy_policy_version, :naive_datetime, default: ~N[2021-02-25 15:17:00]
+
     has_one :channel, Glimesh.Streams.Channel
     has_one :user_preference, Glimesh.Accounts.UserPreference
 
@@ -107,6 +109,13 @@ defmodule Glimesh.Accounts.User do
     |> cast(attrs, [
       :allow_glimesh_newsletter_emails,
       :allow_live_subscription_emails
+    ])
+  end
+
+  def privacy_changeset(user, attrs) do
+    user
+    |> cast(attrs, [
+      :privacy_policy_version
     ])
   end
 

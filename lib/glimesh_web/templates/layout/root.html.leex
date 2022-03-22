@@ -75,6 +75,14 @@
             <p class="alert alert-warning"><strong>System Message:</strong> <%= message %></p>
         </div>
         <% end %>
+        <%= if !is_nil(assigns[:current_user]) and assigns.current_user.privacy_policy_version !== Glimesh.get_privacy_version() do %>
+        <div class="container">
+            <div class="alert alert-warning" style="line-height: 31px;">
+                <strong>Policy Updates:</strong> The <%= link gettext("Privacy Policy"), to: Routes.about_path(@conn, :privacy) %> has been updated to reflect new data processing rules and add in support for our Mobile App.
+                <%= button "Accept & Close", to: Routes.about_path(@conn, :accept_privacy), method: :post, class: "btn btn-primary btn-sm mt-0 float-right" %>
+            </div>
+        </div>
+        <% end %>
 
         <% end %>
 
@@ -87,19 +95,30 @@
         <section class="footer-main pt-5 pb-5">
             <div class="container">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-6 col-md-4 order-1">
                         <h6><%= gettext("GLIMESH.TV") %></h6>
                         <ul class="list-unstyled text-small">
+                            <li><%= link gettext("Mobile App!"), to: Routes.app_path(@conn, :index), class: "text-warning" %></li>
                             <li><%= link gettext("About Us"), to: Routes.about_path(@conn, :index) %></li>
-                            <li><%= link gettext("Credits"), to: Routes.about_path(@conn, :credits) %></li>
-                            <li><%= link gettext("DMCA Policy"), to: Routes.about_path(@conn, :dmca) %></li>
                             <li><%= link gettext("Frequently Asked Questions"), to: Routes.about_path(@conn, :faq) %></li>
+                            <li><%= link gettext("Credits"), to: Routes.about_path(@conn, :credits) %></li>
                             <li><%= link gettext("Open Data"), to: Routes.open_data_path(@conn, :index) %></li>
                             <li><%= link gettext("Support"), to: "https://support.glimesh.tv/", target: "_blank" %></li>
                         </ul>
                     </div>
 
-                    <div class="col-8">
+                    <div class="col-6 col-md-4 order-2 order-md-3">
+                        <h6><%= gettext("LEGALS") %></h6>
+                        <ul class="list-unstyled text-small">
+                            <li><%= link gettext("Terms of Service"), to: Routes.about_path(@conn, :terms) %></li>
+                            <li><%= link gettext("Rules of Conduct"), to: Routes.about_path(@conn, :conduct) %></li>
+                            <li><%= link gettext("Privacy Policy"), to: Routes.about_path(@conn, :privacy) %></li>
+                            <li><%= link gettext("Cookie Policy"), to: Routes.about_path(@conn, :cookies) %></li>
+                            <li><%= link gettext("DMCA Policy"), to: Routes.about_path(@conn, :dmca) %></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-12 col-md-4 order-3 order-md-2">
                         <h6><a href="https://blog.glimesh.tv" class="text-color-link"><%= gettext("BLOG") %></a></h6>
                         <ul class="list-unstyled text-small">
                             <%= for {title, url} <- Glimesh.BlogMigration.list_recent_posts() do %>
@@ -107,6 +126,7 @@
                             <% end %>
                         </ul>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -127,11 +147,7 @@
 
         <section class="footer-end pt-5 pb-4">
             <p class="text-center mb-0">
-                <%= gettext("Copyright © 2021 Glimesh, Inc.") %> <%= gettext("All rights reserved.") %><br>
-                <%= link gettext("Terms of Service"), to: Routes.about_path(@conn, :terms) %> |
-                <%= link gettext("Rules of Conduct"), to: Routes.about_path(@conn, :conduct) %> |
-                <%= link gettext("Privacy & Cookie Policy"), to: Routes.about_path(@conn, :privacy) %>
-
+                <%= gettext("Copyright © 2022 Glimesh, Inc.") %> <%= gettext("All rights reserved.") %>
             </p>
             <p class="text-center">
                 <small>Build Version: <%= Glimesh.get_version() %></small>

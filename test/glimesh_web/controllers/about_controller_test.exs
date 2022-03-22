@@ -51,7 +51,14 @@ defmodule GlimeshWeb.AboutControllerTest do
       conn = get(conn, Routes.about_path(conn, :privacy))
 
       assert html_response(conn, 200) =~
-               "This Privacy Policy explains how your personal information is collected, used, and disclosed by Glimesh, its subsidiaries, and affiliated companies (“Glimesh”)."
+               "We take the protection of your (“You”, “Your”) private information and right to privacy seriously and have created this Policy to the best of our ability for the current stage of development."
+    end
+
+    test "shows the cookie policy page", %{conn: conn} do
+      conn = get(conn, Routes.about_path(conn, :cookies))
+
+      assert html_response(conn, 200) =~
+               "This cookie policy explains how Glimesh (“Glimesh”, “We”, “Us”, “Our”) uses cookies to recognize when you visit our Our website"
     end
 
     test "shows the terms of service page", %{conn: conn} do

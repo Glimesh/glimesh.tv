@@ -109,6 +109,8 @@ defmodule GlimeshWeb.Router do
   scope "/", GlimeshWeb do
     pipe_through [:browser, :require_authenticated_user]
 
+    post "/about/privacy", AboutController, :accept_privacy
+
     live "/platform_subscriptions", PlatformSubscriptionLive.Index, :index
 
     get "/users/social/twitter", UserSocialController, :twitter
@@ -246,11 +248,14 @@ defmodule GlimeshWeb.Router do
     get "/about/terms", AboutController, :terms
     get "/about/conduct", AboutController, :conduct
     get "/about/credits", AboutController, :credits
+    get "/about/cookies", AboutController, :cookies
     get "/about/dmca", AboutController, :dmca
 
     live "/about/open-data", About.OpenDataLive, :index
     live "/about/open-data/subscriptions", About.OpenDataLive, :subscriptions
     live "/about/open-data/streams", About.OpenDataLive, :streams
+
+    live "/about/app", About.AppLive, :index
 
     get "/events", EventsTeamController, :events_team
 

@@ -1,8 +1,8 @@
 <div class="container mt-4">
     <div class="row justify-content-md-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
-                <div class="card-body text-heavy-content">
+                <div class="card-body text-heavy-content user-content-body">
 
                     <%= @inner_content %>
 

@@ -158,7 +158,8 @@ defmodule Glimesh.Accounts do
       end
 
     %User{
-      user_preference: existing_preferences
+      user_preference: existing_preferences,
+      privacy_policy_version: Glimesh.get_privacy_version()
     }
     |> User.registration_changeset(attrs)
     |> Repo.insert()
@@ -209,6 +210,17 @@ defmodule Glimesh.Accounts do
   def update_user_preference(%UserPreference{} = user_preference, attrs \\ %{}) do
     user_preference
     |> UserPreference.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Updates a users privacy policy version
+  """
+  def update_user_privacy_version(%User{} = user, new_version) do
+    user
+    |> User.privacy_changeset(%{
+      privacy_policy_version: new_version
+    })
     |> Repo.update()
   end
 
