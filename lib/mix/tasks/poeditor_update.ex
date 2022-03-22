@@ -12,7 +12,7 @@ defmodule Mix.Tasks.Poeditor.Update do
     project_id = Application.fetch_env!(:glimesh, :poeditor)[:project_id]
     languages = list_languages(api_token, project_id)
 
-    Enum.map(languages, fn language ->
+    Enum.each(languages, fn language ->
       if language["percentage"] > 60 do
         IO.puts("Exporting and setting up #{language["name"]} at #{language["percentage"]}%")
 
