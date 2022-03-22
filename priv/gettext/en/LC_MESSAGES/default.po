@@ -3623,7 +3623,7 @@ msgstr "Invalid image. Must be either a PNG or JPG."
 
 #: lib/glimesh/oauth/scopes.ex:12
 msgid "scopefollow"
-msgstr "Follow"
+msgstr "Allows this app to follow channels on your behalf."
 
 #: lib/glimesh_web/templates/about/team.html.eex:39
 msgid "to get involved."
