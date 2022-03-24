@@ -32,6 +32,14 @@ defmodule GlimeshWeb.Emails.Email do
     |> render(:launch)
   end
 
+  def user_privacy_update(user) do
+    user_base_email()
+    |> to(user.email)
+    |> subject("Glimesh Privacy Policy Update")
+    |> assign(:user, user)
+    |> render(:privacy_update)
+  end
+
   def user_confirmation_instructions(user, url) do
     user_base_email()
     |> to(user.email)
