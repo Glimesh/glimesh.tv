@@ -27,6 +27,24 @@ defmodule Glimesh.Accounts.UserNotifier do
     end
   end
 
+  def deliver_privacy_update(user) do
+    email = Email.user_privacy_update(user)
+
+    if Glimesh.Emails.email_sent?(user, function: "service:privacy_update_march_2022") do
+      {:ok, :debounced}
+    else
+      Mailer.deliver_later(email)
+      |> log_bamboo_delivery(
+        user,
+        "Account Update",
+        "service:privacy_update_march_2022",
+        email.subject
+      )
+
+      {:ok, %{to: email.to, body: email.text_body}}
+    end
+  end
+
   def deliver_sub_button_enabled(user, url) do
     email = Email.user_sub_button_enabled(user, url)
 
