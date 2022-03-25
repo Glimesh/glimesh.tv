@@ -5,6 +5,7 @@ defmodule Glimesh.Accounts.UserNotifier do
   alias GlimeshWeb.Emails.Mailer
 
   import Glimesh.Emails, only: [log_bamboo_delivery: 5]
+  alias Glimesh.Emails
 
   @doc """
   Deliver instructions to confirm account.
@@ -12,7 +13,7 @@ defmodule Glimesh.Accounts.UserNotifier do
   def deliver_launch_update(user) do
     email = Email.user_launch_info(user)
 
-    if Glimesh.Emails.email_sent?(user, subject: email.subject) do
+    if Emails.email_sent?(user, subject: email.subject) do
       {:ok, :debounced}
     else
       Mailer.deliver_later(email)
@@ -30,7 +31,7 @@ defmodule Glimesh.Accounts.UserNotifier do
   def deliver_privacy_update(user) do
     email = Email.user_privacy_update(user)
 
-    if Glimesh.Emails.email_sent?(user, function: "service:privacy_update_march_2022") do
+    if Emails.email_sent?(user, function: "service:privacy_update_march_2022") do
       {:ok, :debounced}
     else
       Mailer.deliver_later(email)
@@ -48,7 +49,7 @@ defmodule Glimesh.Accounts.UserNotifier do
   def deliver_sub_button_enabled(user, url) do
     email = Email.user_sub_button_enabled(user, url)
 
-    if Glimesh.Emails.email_sent?(user, subject: email.subject) do
+    if Emails.email_sent?(user, subject: email.subject) do
       {:ok, :debounced}
     else
       Mailer.deliver_later(email)
