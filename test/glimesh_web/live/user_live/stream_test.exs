@@ -240,6 +240,20 @@ defmodule GlimeshWeb.UserLive.StreamTest do
              |> has_element?("#hosting_banner")
     end
 
+    test "does not redirect if the target user is no longer live", %{
+      conn: conn,
+      host: host,
+      streamer: streamer
+    } do
+      {:ok, _} = Glimesh.Streams.end_stream(streamer.channel)
+
+      assert {:ok, view, html} = live(conn, Routes.user_stream_path(conn, :index, host.username))
+      refute html =~ "#{host.displayname} is hosting #{streamer.displayname}"
+
+      refute view
+             |> has_element?("#hosting_banner")
+    end
+
     test "will not redirect the twitter bot to hosted channel", %{
       conn: conn,
       streamer: streamer,

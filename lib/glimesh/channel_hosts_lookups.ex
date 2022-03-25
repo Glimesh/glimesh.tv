@@ -7,6 +7,7 @@ defmodule Glimesh.ChannelHostsLookups do
 
   alias Glimesh.ChannelLookups
   alias Glimesh.Repo
+  alias Glimesh.Streams.Channel
   alias Glimesh.Streams.ChannelHosts
 
   def get_channel_hosting_list(channel_id) do
@@ -17,11 +18,18 @@ defmodule Glimesh.ChannelHostsLookups do
   end
 
   def get_current_hosting_target(channel) do
-    ChannelHosts
-    |> where([ch], ch.hosting_channel_id == ^channel.id and ch.status == "hosting")
-    |> limit(1)
-    |> preload(host: [:user], target: [:user])
-    |> Repo.one()
+    query =
+      from ch in ChannelHosts,
+        select: ch,
+        join: hosted in Channel,
+        on: ch.target_channel_id == hosted.id,
+        where: ch.hosting_channel_id == ^channel.id,
+        where: ch.status == "hosting",
+        where: hosted.status == "live",
+        limit: 1,
+        preload: [host: [:user], target: [:user]]
+
+    Repo.replica().one(query)
   end
 
   def get_targets_host_info(host_username, target_channel) do
