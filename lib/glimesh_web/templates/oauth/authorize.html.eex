@@ -6,9 +6,7 @@
           <%= gettext("Authorize %{name}?", name: @app.name) %>
         </h5>
         <div class="card-body">
-          <img class="img-avatar mx-auto d-block mb-4"
-            src="<%= Glimesh.AppLogo.url({@app.logo, @app}, :original) %>"
-            alt="<%= @app.name %>">
+          <img class="img-avatar mx-auto d-none d-sm-block mb-4" src="<%= Glimesh.AppLogo.url({@app.logo, @app}, :original) %>" alt="<%= @app.name %>">
           <p><em><%= @app.description %></em></p>
 
           <p class="mt-4">
