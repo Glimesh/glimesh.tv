@@ -14,7 +14,7 @@ defmodule GlimeshWeb.AboutControllerTest do
 
     test "shows the the team page", %{conn: conn} do
       conn = get(conn, Routes.about_path(conn, :team))
-      assert html_response(conn, 200) =~ "The Glimesh Team is a core group"
+      assert html_response(conn, 200) =~ "Glimesh is not quite like a traditional company!"
     end
 
     test "shows the our mission page", %{conn: conn} do
