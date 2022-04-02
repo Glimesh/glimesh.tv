@@ -22,7 +22,7 @@ Let’s be realistic, there’s a lot to tackle until the beta is ready. We curr
 
 ##### How can I help?
 
-Easy! Join us on [Building Glimesh](build.glimesh.tv/) and choose in which areas you would like to help out.
+Easy! Join us on [Building Glimesh](https://build.glimesh.tv/) and choose in which areas you would like to help out.
 
 ## Business Questions
 
@@ -68,7 +68,7 @@ Good news, we recently launched custom channel emotes. At the moment they are no
 
 ##### Will channel hosting be available? Will you be able to raid another stream when you are done?
 
-Raiding is a part of phase 2 in our alpha roadmap, which we currently are in. We’re still in the process of researching this feature, and are learning about the differences between the two and ways of simplifying it. We don’t want to devalue hosting/raiding in any way, we want it to be impactful.
+You can setup a roster of channels you'd like to automatically host when you are offline via your [hosting dashboard](https://glimesh.tv/users/settings/hosting). Hosting channels manually is not currently supported, but will be added in the future! Raiding is a part of phase 2 in our alpha roadmap, which we currently are in. We’re still in the process of researching this feature, and are learning about the differences between the two and ways of simplifying it. We don’t want to devalue hosting/raiding in any way, we want it to be impactful.
 
 ##### Will we have the option to turn off saving VODs and clips?
 
@@ -76,7 +76,9 @@ Yes, absolutely. Once we have the ability to have VODs, clips, or other saved me
 
 ##### Will there be an app for mobile devices and/or consoles?
 
-Yes! We’re planning on launching the mobile app in phase 2 of alpha and are currently working hard on it. We are still researching how to deal with the 30% transaction cut that Apple and Google take on their respective app stores and are trying to make it fair for our content creators. This and other features will not be a part of the initial app release, since the main focus of the app at the moment is viewing streams and chatting. However, we of course will be updating the app with features after launching it.
+In March 2022 we launched our [mobile app](https://glimesh.tv/about/app) to Android & iOS devices! The main focus of the app at the moment is watching streams and chatting, however in the future you'll be able to subscribe and support streams directly.
+
+A console app is unfortunately very far off. 
 
 ##### How does Glimesh plan to implement new features created by the community?
 
@@ -85,10 +87,6 @@ We want to make sure we have a very clear standard on how feature development wo
 ##### Will Glimesh have a feature like Mixplay?
 
 We pride ourselves on live engagement with your community and we think real-time features are a requirement for us. The goal is to provide a developer framework for anyone to create custom content like Mixplay.
-
-##### Will mods have a different color or icon for username?
-
-Yes, they will have a moderator tag in chat. For now, it’s blue and is labeled mod.
 
 ##### What alerts will there be for streams?
 
@@ -102,21 +100,17 @@ Probably not in Alpha. At the moment you can timeout users for 5 and 10 minutes.
 
 This is a great opportunity for a 3rd party tool.
 
-##### Do you support a timeout of 0 secs to just clear messages?
-
-Not at this time, however, you can delete individual messages.
-
 ##### Which game database are you using? And what if a game is not in the database?
 
 We are using the RAWG database. If you want to stream a game that is not a part of the database yet, then we give you the option to manually add the game. For that, you simply type in the game’s name and then press enter. It then is added to the Glimesh database of custom games and will stay available.
 
 ##### What is the max bitrate supported?
 
-We’re going to have a bandwidth cap for the time being to help throttle the platform. This will help our chances of being profitable, which will be a requirement for a successful growing platform. The current cap is 6000 kbps, which in our testing is more than enough. Once we continue to expand, we’ll evaluate what we can handle and how we should adjust.
+Glimesh currently has a maximum recommended bitrate of 6000 Kbps. Due to minimal compression with FTL, most streams end up looking extremely crisp even at this lower bitrate limit.
 
 ##### Will you only be able to stream using FTL, or will there be also a way to do RTMP streams?
 
-Currently, you can only stream using clients that are compatible with the FTL streaming protocol, which includes OBS and SLOBS (after using the patcher). In the future we might implement other protocols as well.
+Currently, you can only stream using clients that are compatible with the FTL streaming protocol, which includes OBS and SLOBS. Low-latency RTMP support is coming in Phase 2 of the Alpha.
 
 ##### Will gift subs be available?
 

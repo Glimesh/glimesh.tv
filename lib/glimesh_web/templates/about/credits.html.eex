@@ -25,23 +25,33 @@
 <%= for sub <- @supporter_subscribers do %>
 
 <%= live_redirect to: Routes.user_profile_path(@conn, :index, sub.user.username), class: "text-white nowrap" do %>
-<img src="<%= Glimesh.Avatar.url({sub.user.avatar, sub.user}, :original) %>" alt="<%= sub.user.displayname %>"
-    class="img-avatar" height="20" width="20"> <%= sub.user.displayname %>
+<img src="<%= Glimesh.Avatar.url({sub.user.avatar, sub.user}, :original) %>" alt="<%= sub.user.displayname %>" class="img-avatar" height="20" width="20"> <%= sub.user.displayname %>
 
 <% end %>
 
 <% end %>
+
+<h2><%= gettext("Our Projects") %></h2>
+<p><%= gettext("We've created several large projects to help build Glimesh. You can find all of them on our GitHub, along with contribution records:") %>
+</p>
+
+
+<nav class="nav nav-fill mt-4 mb-4">
+    <a class="nav-item nav-link" href="https://github.com/Glimesh/glimesh.tv" target="_blank">glimesh.tv</a>
+    <a class="nav-item nav-link" href="https://github.com/Glimesh/glimesh_app" target="_blank">glimesh_app</a>
+    <a class="nav-item nav-link" href="https://github.com/Glimesh/blog.glimesh.tv" target="_blank">blog.glimesh.tv</a>
+    <a class="nav-item nav-link" href="https://github.com/Glimesh/handbook.glimesh.tv" target="_blank">handbook.glimesh.tv</a>
+</nav>
+<nav class="nav nav-fill mt-4 mb-4">
+    <a class="nav-item nav-link" href="https://github.com/Glimesh/janus-ftl-plugin" target="_blank">janus-ftl-plugin</a>
+    <a class="nav-item nav-link" href="https://github.com/Glimesh/janus-ftl-orchestrator" target="_blank">janus-ftl-orchestrator</a>
+    <a class="nav-item nav-link" href="https://github.com/Glimesh/janus-ftl-player" target="_blank">janus-ftl-player</a>
+    <a class="nav-item nav-link" href="https://github.com/Glimesh/rtmp-ingest" target="_blank">rtmp-ingest</a>
+</nav>
 
 <h2><%= gettext("Open Source Libraries") %></h2>
 <p><%= gettext("We use numerous open source projects to power Glimesh, and without them this project would never have been possible. This is not a comprehensive list, unfortunately. You can find a full list by browsing our core repositories:") %>
 </p>
-<nav class="nav nav-fill mt-4 mb-4">
-    <a class="nav-item nav-link" href="https://github.com/Glimesh/glimesh.tv" target="_blank">glimesh.tv</a>
-    <a class="nav-item nav-link" href="https://github.com/Glimesh/janus-ftl-plugin" target="_blank">janus-ftl-plugin</a>
-    <a class="nav-item nav-link" href="https://github.com/Glimesh/janus-ftl-orchestrator"
-        target="_blank">janus-ftl-orchestrator</a>
-    <a class="nav-item nav-link" href="https://github.com/Glimesh/janus-ftl-player" target="_blank">janus-ftl-player</a>
-</nav>
 
 <h4><%= gettext("FTL Libraries") %></h4>
 <div class="table-responsive">

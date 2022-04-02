@@ -15,7 +15,7 @@ defmodule GlimeshWeb.AboutController do
     users = Glimesh.Accounts.list_team_users()
 
     render(conn, "team.html",
-      page_title: format_page_title(gettext("The Team")),
+      page_title: format_page_title(gettext("Contributors")),
       users: users
     )
   end

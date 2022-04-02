@@ -41,13 +41,24 @@ defmodule Glimesh.Credits do
   end
 
   defp node_deps do
-    case File.read("assets/package.json") do
-      {:ok, content} ->
-        Jason.decode!(content) |> Map.get("dependencies", [])
-
-      {:error, _} ->
-        []
-    end
+    [
+      {"@fortawesome/fontawesome-free", "The iconic font, CSS, and SVG framework."},
+      {"@github/markdown-toolbar-element", "Markdown formatting buttons for text inputs."},
+      {"@github/time-elements",
+       "Formats a timestamp as a localized string or as relative text that auto-updates in the user's browser."},
+      {"@joeattardi/emoji-button", "Vanilla JavaScript emoji picker."},
+      {"@yaireo/tagify",
+       "Lightweight, efficient Tags input component in Vanilla JS / React / Angular [super customizable, tiny size & top performance]."},
+      {"apexcharts", "A JavaScript Chart Library."},
+      {"bootstrap",
+       "The most popular front-end framework for developing responsive, mobile first projects on the web."},
+      {"bootstrap.native",
+       "Native JavaScript for Bootstrap, the sweetest JavaScript library without jQuery."},
+      {"bs-custom-file-input",
+       "A little plugin which makes Bootstrap 4 custom file input dynamic with no dependencies."},
+      {"choices.js", "A vanilla JS customisable text input/select box plugin."},
+      {"janus-ftl-player", "Simple player for Janus FTL streams."}
+    ]
   end
 
   defp elixir_deps do
