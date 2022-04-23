@@ -43,7 +43,7 @@
                         phx-value-user={@user.username}>
                         <%= if @show_mod_icons, do: gettext("Hide Mod Icons"), else: gettext("Show Mod Icons") %>
                     </a>
-                    <% else %> %>
+                    <% else %>
                     <a id="toggle-timestamps" class="dropdown-item" href="#"
                         phx-click="toggle_timestamps"><%= if @show_timestamps, do: gettext("Hide Timestamps"), else: gettext("Show Timestamps") %>
                     </a>
