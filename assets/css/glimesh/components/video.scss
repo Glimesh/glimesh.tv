@@ -58,3 +58,18 @@
 
     }
 }
+
+@media (min-width: 992px) {
+    #video-column {
+        max-height: calc(100vh - 90px);
+        overflow: hidden;
+
+        > .card {
+            height: 100%;
+
+            > .card-body {
+                display: flex;
+            }
+        }
+    }
+}
