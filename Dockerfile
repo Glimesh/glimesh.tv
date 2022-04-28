@@ -39,17 +39,17 @@ RUN mix do compile, release
 # prepare release image
 FROM debian:bullseye-slim AS app
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends libssl-dev libncurses-dev ca-certificates imagemagick librsvg npm
+RUN apt-get install -y --no-install-recommends libssl-dev libncurses-dev ca-certificates imagemagick librsvg2-bin npm
 
 RUN npm install -g svgo
 
 WORKDIR /app
 
-RUN chown nobody:nobody /app
+RUN chown nobody:nogroup /app
 
-USER nobody:nobody
+USER nobody:nogroup
 
-COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/glimesh ./
+COPY --from=build --chown=nobody:nogroup /app/_build/prod/rel/glimesh ./
 
 ENV HOME=/app
 
