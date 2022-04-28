@@ -1,0 +1,369 @@
+<.form
+  let={f}
+  for={@channel_changeset}
+  route={@route}
+  phx-change="change_channel"
+  multipart
+  class="form"
+>
+  <%= if @channel_changeset.action do %>
+    <div class="alert alert-danger text-center">
+      <%= gettext("Oops, something went wrong! Please check the errors below.") %>
+    </div>
+  <% end %>
+
+  <%= if @user.can_stream do %>
+    <div class="form-group">
+      <%= label(f, gettext("Stream Key")) %>
+      <p class="text-muted form-text">
+        <%= gettext(
+          "A key used to uniquely identify and connect to your stream. Treat your Stream Key as a password."
+        ) %>
+      </p>
+      <div class="input-group">
+        <input
+          type="text"
+          value={@stream_key}
+          class="form-control stream-key"
+          readonly="readonly"
+        />
+
+        <div class="input-group-append">
+          <%= live_render(@socket, GlimeshWeb.Components.ClickToCopy,
+            id: "stream_key_copy",
+            session: %{"value" => @stream_key}
+          ) %>
+          <button
+            class="btn btn-danger"
+            type="button"
+            phx-click="rotate_stream_key"
+            phx-throttle="5000"
+          >
+            Reset Stream
+            Key
+          </button>
+        </div>
+      </div>
+      <%= error_tag(f, :hmac_key) %>
+    </div>
+  <% end %>
+
+  <h2 class="mt-4"><%= gettext("Channel Customization") %></h2>
+  <p>
+    <%= gettext(
+      "Create and design a channel custom to you by uploading unique images and identifying what type of content viewers can expect from your channel. You can customize the content that appears under your stream on your Profile page."
+    ) %>
+  </p>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, gettext("Channel Primary Language")) %>
+        <%= select(f, :language, Application.get_env(:glimesh, :locales), class: "form-control") %>
+        <%= error_tag(f, :language) %>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, gettext("Mature Content")) %>
+        <div class="custom-control custom-switch">
+          <%= checkbox(f, :mature_content, class: "custom-control-input") %>
+          <label class="custom-control-label" for={input_id(f, :mature_content)}>
+            <%= gettext("Channel contains mature content") %>
+          </label>
+        </div>
+        <%= error_tag(f, :mature_content) %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, :poster, gettext("Channel Poster")) %>
+        <p class="text-muted form-text">
+          <%= gettext(
+            "An image for your channel that will be shown whenever you are offline. Will be resized or cropped to 1920x1080."
+          ) %>
+        </p>
+
+        <div class="custom-file">
+          <%= file_input(f, :poster, class: "custom-file-input", accept: "image/png, image/jpeg") %>
+          <%= label(f, gettext("Choose file"), class: "custom-file-label") %>
+        </div>
+        <%= if f.errors[:poster] do %>
+          <div>
+            <span class="text-danger">
+              <%= gettext("Invalid image. Must be either a PNG or JPG.") %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, :chat_bg, gettext("Chat Background")) %>
+        <p class="text-muted form-text">
+          <%= gettext(
+            "A repeatable background for your chat. Make sure it's not too noisy, and it's an image that can repeat nicely right and down. Max Size: 100Kb"
+          ) %>
+        </p>
+
+        <div class="custom-file">
+          <%= file_input(f, :chat_bg, class: "custom-file-input", accept: "image/png, image/jpeg") %>
+          <%= label(f, :chat_bg, gettext("Choose file"), class: "custom-file-label") %>
+        </div>
+        <%= if f.errors[:chat_bg] do %>
+          <div>
+            <span class="text-danger"><%= gettext("Invalid image. Max size is 100KB.") %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mt-4"><%= gettext("Stream Information") %></h2>
+  <p>
+    <%= gettext(
+      "Customize the information you want to show viewers based on the content you are doing right now. You can also access these options by clicking the edit button in the title of your channel page."
+    ) %>
+  </p>
+  <div class="row mt-4">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, gettext("Channel Title")) %>
+        <%= text_input(f, :title, class: "form-control") %>
+        <%= error_tag(f, :title) %>
+      </div>
+
+      <div class="form-group">
+        <%= label(f, :tags, gettext("Tags")) %>
+        <%= live_component(
+          GlimeshWeb.TagifyComponent,
+          id: "tag-selector",
+          form: f,
+          field: :tags,
+          value: @existing_tags,
+          placeholder: gettext("Search for tags to describe your stream"),
+          max_options: 10,
+          create_regex: "^[A-Za-z0-9: -]{2,18}$",
+          allow_edit: "true",
+          category: @category,
+          search_func: &search_tags/2
+        ) %>
+        <%= error_tag(f, :tags) %>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, gettext("Channel Category")) %>
+        <%= select(f, :category_id, @categories, class: "form-control") %>
+        <%= error_tag(f, :category_id) %>
+      </div>
+      <div class="form-group">
+        <%= label(f, :subcategory, @subcategory_label) %>
+        <%= live_component(
+          GlimeshWeb.TagifyComponent,
+          id: "category-selector",
+          form: f,
+          field: :subcategory,
+          max_options: 1,
+          allow_edit: "true",
+          create_regex: "^[A-Za-z0-9: -]{2,40}$",
+          value: @existing_subcategory,
+          placeholder: @subcategory_placeholder,
+          category: @category,
+          search_func: &search_categories/2
+        ) %>
+        <p><%= @subcategory_attribution %></p>
+        <%= error_tag(f, :subcategory) %>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mt-4"><%= gettext("Chat Customization") %></h2>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, gettext("Chat Rules (Markdown Supported)")) %>
+        <markdown-toolbar id="chatrules-edit-box" for="chatRules_edit" phx-update="ignore">
+          <div class="d-inline-flex mb-2">
+            <div class="pr-3">
+              <md-bold
+                class="fas fa-bold fa-2x"
+                data-toggle="tooltip"
+                data-placement="top"
+                title={gettext("Bold")}
+              >
+              </md-bold>
+              <md-italic
+                class="fas fa-italic fa-2x"
+                data-toggle="tooltip"
+                data-placement="top"
+                title={gettext("Italic")}
+              >
+              </md-italic>
+              <md-header
+                class="fas fa-heading fa-2x"
+                data-toggle="tooltip"
+                data-placement="top"
+                title={gettext("Heading")}
+              >
+              </md-header>
+            </div>
+            <div class="pr-3 pl-3">
+              <md-quote
+                class="fas fa-quote-right fa-2x"
+                data-toggle="tooltip"
+                data-placement="top"
+                title={gettext("Quote")}
+              >
+              </md-quote>
+              <md-code
+                class="fas fa-code fa-2x"
+                data-toggle="tooltip"
+                data-placement="top"
+                title={gettext("Code")}
+              >
+              </md-code>
+              <md-link
+                class="fas fa-link fa-2x"
+                data-toggle="tooltip"
+                data-placement="top"
+                title={gettext("Link")}
+              >
+              </md-link>
+              <md-image
+                class="fas fa-image fa-2x"
+                data-toggle="tooltip"
+                data-placement="top"
+                title={gettext("Image")}
+              >
+              </md-image>
+            </div>
+            <div class="pr-3 pl-3">
+              <md-unordered-list
+                class="fas fa-list-ul fa-2x"
+                data-toggle="tooltip"
+                data-placement="top"
+                title={gettext("Unordered List")}
+              >
+              </md-unordered-list>
+              <md-ordered-list
+                class="fas fa-list-ol fa-2x"
+                data-toggle="tooltip"
+                data-placement="top"
+                title={gettext("Ordered List")}
+              >
+              </md-ordered-list>
+            </div>
+          </div>
+        </markdown-toolbar>
+        <%= textarea(f, :chat_rules_md, class: "form-control mb-4", rows: 20, id: "chatRules_edit") %>
+        <%= error_tag(f, :chat_rules_md) %>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, :show_recent_chat_messages_only, gettext("Show recent chat messages only?")) %>
+        <%= select(f, :show_recent_chat_messages_only, [Yes: true, No: false],
+          class: "form-control"
+        ) %>
+        <small class="form-text text-muted">
+          <%= gettext(
+            "If yes, chat will only show 5 messages posted in the last 60 minutes when a new viewer joins."
+          ) %>
+        </small>
+        <%= error_tag(f, :show_recent_chat_messages_only) %>
+      </div>
+      <div class="form-group">
+        <%= label(f, :disable_hyperlinks, gettext("Should links automatically be clickable?")) %>
+        <%= select(f, :disable_hyperlinks, [Yes: false, No: true],
+          class: "form-control",
+          disabled: @channel.block_links
+        ) %>
+        <%= error_tag(f, :disable_hyperlinks) %>
+      </div>
+      <div class="form-group">
+        <%= label(f, :block_links, gettext("Block viewers from posting links?")) %>
+        <%= select(f, :block_links, [Yes: true, No: false], class: "form-control") %>
+        <%= error_tag(f, :block_links) %>
+      </div>
+      <div class="form-group">
+        <%= label(
+          f,
+          :require_confirmed_email,
+          gettext("Require confirmed email before chatting?")
+        ) %>
+        <%= select(f, :require_confirmed_email, [Yes: true, No: false], class: "form-control") %>
+        <%= error_tag(f, :require_confirmed_email) %>
+      </div>
+      <div class="form-group">
+        <%= label(
+          f,
+          :minimum_account_age,
+          gettext("Require minimum account length before chatting?")
+        ) %>
+        <div class="input-group mb-3">
+          <%= number_input(f, :minimum_account_age, class: "form-control", min: "0", max: "720") %>
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon2"><%= gettext("Hours") %></span>
+          </div>
+        </div>
+        <small class="form-text text-muted">
+          <%= gettext(
+            "How many hours should the account exist before they can chat? Set to zero to disable."
+          ) %>
+        </small>
+        <%= error_tag(f, :minimum_account_age) %>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mt-4"><%= gettext("Homepage") %></h2>
+  <p>
+    <%= gettext(
+      "Glimesh is now showing your channels on the homepage! It's a completely random process, however you must opt-in and you must have completed the following qualifications first."
+    ) %>
+  </p>
+  <div class="row mb-4">
+    <div class="col-sm-6">
+      <strong><%= gettext("Homepage Qualifications") %></strong>
+      <ul>
+        <li><%= gettext("Show on Homepage must be checked") %></li>
+        <li><%= gettext("Must have streamed for at least 10 hours total on Glimesh") %></li>
+        <li><%= gettext("No previous disciplinary actions") %></li>
+        <li><%= gettext("Current stream must be live for at least 15 minutes") %></li>
+      </ul>
+    </div>
+    <div class="col-sm-6">
+      <p>
+        <%= gettext("Total Channel Hours: %{channel_hours} hours", channel_hours: @channel_hours) %>
+      </p>
+      <div class="form-group">
+        <%= label(f, :show_on_homepage, gettext("Show on Homepage")) %>
+        <div class="custom-control custom-switch">
+          <%= checkbox(f, :show_on_homepage, class: "custom-control-input") %>
+          <label class="custom-control-label" for={input_id(f, :show_on_homepage)}>
+            <%= gettext("Show channel on homepage randomly") %>
+          </label>
+        </div>
+        <%= error_tag(f, :show_on_homepage) %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <%= submit(gettext("Update Channel"), class: "btn btn-primary") %>
+      <%= button(gettext("Deactivate Channel"),
+        to: @delete_route,
+        method: "put",
+        class: "btn btn-danger",
+        disabled: @channel_delete_disabled,
+        data: [
+          confirm:
+            "Pressing OK will: \n- Deactivate your channel until you restore it\n\nPressing OK will NOT: \n- Delete your Glimesh account \n- Remove all profile related settings \n\nAre you sure you want to do this?"
+        ]
+      ) %>
+    </div>
+  </div>
+</.form>

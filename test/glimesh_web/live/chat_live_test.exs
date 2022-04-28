@@ -129,13 +129,19 @@ defmodule GlimeshWeb.ChatLiveTest do
           session: %{"user" => streamer, "channel_id" => channel.id}
         )
 
-      target = "##{chat_message.id} > div.user-message-header > i.short-timeout"
+      target = "#chat-message-#{chat_message.id} > div.user-message-header > i.short-timeout"
 
       view
       |> element(target)
       |> render_click()
 
-      assert render(view) =~ "hidden"
+      # Render a new view to test to make sure the message is gone
+      {:ok, new_view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => streamer, "channel_id" => channel.id}
+        )
+
+      refute render(new_view) =~ chat_message.message
     end
 
     test "long timeout removes chat message", %{conn: conn} do
@@ -150,13 +156,19 @@ defmodule GlimeshWeb.ChatLiveTest do
           session: %{"user" => streamer, "channel_id" => channel.id}
         )
 
-      target = "##{chat_message.id} > div.user-message-header > i.long-timeout"
+      target = "#chat-message-#{chat_message.id} > div.user-message-header > i.long-timeout"
 
       view
       |> element(target)
       |> render_click()
 
-      assert render(view) =~ "hidden"
+      # Render a new view to test to make sure the message is gone
+      {:ok, new_view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => streamer, "channel_id" => channel.id}
+        )
+
+      refute render(new_view) =~ chat_message.message
     end
 
     test "ban removes chat message", %{conn: conn} do
@@ -171,13 +183,19 @@ defmodule GlimeshWeb.ChatLiveTest do
           session: %{"user" => streamer, "channel_id" => channel.id}
         )
 
-      target = "##{chat_message.id} > div.user-message-header > i.ban"
+      target = "#chat-message-#{chat_message.id} > div.user-message-header > i.ban"
 
       view
       |> element(target)
       |> render_click()
 
-      assert render(view) =~ "hidden"
+      # Render a new view to test to make sure the message is gone
+      {:ok, new_view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => streamer, "channel_id" => channel.id}
+        )
+
+      refute render(new_view) =~ chat_message.message
     end
 
     test "delete message button deletes message", %{conn: conn} do
@@ -192,13 +210,19 @@ defmodule GlimeshWeb.ChatLiveTest do
           session: %{"user" => streamer, "channel_id" => channel.id}
         )
 
-      target = "##{chat_message.id} > div.user-message-header > i.delete-message"
+      target = "#chat-message-#{chat_message.id} > div.user-message-header > i.delete-message"
 
       view
       |> element(target)
       |> render_click()
 
-      assert render(view) =~ "hidden"
+      # Render a new view to test to make sure the message is gone
+      {:ok, new_view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => streamer, "channel_id" => channel.id}
+        )
+
+      refute render(new_view) =~ chat_message.message
     end
   end
 

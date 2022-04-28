@@ -1,5 +1,5 @@
 # Doesn't use alpine because we need dart-sass to work and it needs glibc
-FROM elixir:1.13.1 AS build
+FROM elixir:1.13.4 AS build
 
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs

@@ -37,33 +37,11 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
   @impl Phoenix.LiveView
   def handle_event("save_upload", %{"emotes" => emote_names}, socket) do
     attempted_uploads =
-      consume_uploaded_entries(socket, :emote, fn %{path: path}, entry ->
-        emote_name = Map.get(emote_names, entry.ref)
-
-        emote_data =
-          if String.ends_with?(entry.client_name, ".gif") or entry.client_type == "image/gif" do
-            %{
-              animated: true,
-              animated_file: path
-            }
-          else
-            %{
-              animated: false,
-              static_file: path
-            }
-          end
-
-        Emotes.create_channel_emote(
-          socket.assigns.user,
-          socket.assigns.channel,
-          Map.merge(
-            %{
-              emote: emote_name
-            },
-            emote_data
-          )
-        )
-      end)
+      consume_uploaded_entries(
+        socket,
+        :emote,
+        &process_upload(socket.assigns.user, socket.assigns.channel, emote_names, &1, &2)
+      )
 
     {_, errored} = Enum.split_with(attempted_uploads, fn {status, _} -> status == :ok end)
 
@@ -134,5 +112,39 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
 
   def prune_file_type(input) do
     input
+  end
+
+  defp process_upload(user, channel, emote_names, %{path: path}, entry) do
+    emote_name = Map.get(emote_names, entry.ref)
+
+    emote_data =
+      if String.ends_with?(entry.client_name, ".gif") or entry.client_type == "image/gif" do
+        %{
+          animated: true,
+          animated_file: path
+        }
+      else
+        %{
+          animated: false,
+          static_file: path
+        }
+      end
+
+    case Emotes.create_channel_emote(
+           user,
+           channel,
+           Map.merge(
+             %{
+               emote: emote_name
+             },
+             emote_data
+           )
+         ) do
+      {:ok, emote} ->
+        {:ok, {:ok, emote}}
+
+      {:error, changeset} ->
+        {:postpone, {:error, changeset}}
+    end
   end
 end

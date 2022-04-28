@@ -5,7 +5,7 @@ defmodule Glimesh.MixProject do
     [
       app: :glimesh,
       version: "0.1.0",
-      elixir: "~> 1.11",
+      elixir: "~> 1.13.4",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -49,7 +49,7 @@ defmodule Glimesh.MixProject do
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.7"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_live_view, "~> 0.17.5"},
+      {:phoenix_live_view, "~> 0.17.9"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_dashboard, "~> 0.6.2"},
       {:telemetry_metrics, "~> 0.6"},

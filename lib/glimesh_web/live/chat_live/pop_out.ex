@@ -4,6 +4,17 @@ defmodule GlimeshWeb.ChatLive.PopOut do
   alias Glimesh.Accounts
   alias Glimesh.ChannelLookups
 
+  def render(assigns) do
+    ~H"""
+    <div class="pop-out-chat">
+      <%= live_render(@socket, GlimeshWeb.ChatLive.Index,
+        id: "chat",
+        session: %{"user" => @user, "channel_id" => @channel_id, "popped_out" => true}
+      ) %>
+    </div>
+    """
+  end
+
   def mount(%{"username" => streamer_username}, session, socket) do
     case ChannelLookups.get_channel_for_username(streamer_username) do
       %Glimesh.Streams.Channel{} = channel ->

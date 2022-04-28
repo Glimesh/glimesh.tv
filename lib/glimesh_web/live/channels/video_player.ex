@@ -6,16 +6,25 @@ defmodule GlimeshWeb.Channels.VideoPlayer do
 
   @impl Phoenix.LiveView
   def render(assigns) do
-    ~L"""
+    ~H"""
     <div id="video-container" class="embed-responsive embed-responsive-16by9">
-      <video id="video-player" class="embed-responsive-item" phx-hook="FtlVideo" controls playsinline poster="<%= @channel_poster %>" data-muted="<%= @muted %>"></video>
+      <video
+        id="video-player"
+        class="embed-responsive-item"
+        phx-hook="FtlVideo"
+        controls
+        playsinline
+        poster={@channel_poster}
+        data-muted={@muted}
+      >
+      </video>
       <div id="video-loading-container" class="">
-          <div class="lds-ring">
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-          </div>
+        <div class="lds-ring">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       </div>
     </div>
     """

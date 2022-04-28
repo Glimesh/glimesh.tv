@@ -16,40 +16,75 @@ defmodule GlimeshWeb.SupportModal.DonateForm do
       <% end %>
 
       <%= if @user do %>
-      <form id="donation-form" phx-target={@myself} phx-submit="submit" phx-change="change_amount">
+        <form id="donation-form" phx-target={@myself} phx-submit="submit" phx-change="change_amount">
           <div class="form-group">
             <label for="donationAmount"><%= gettext("Amount") %></label>
             <div class="input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text">$</span>
               </div>
-              <input id="donationAmount" name="amount" type="number" min="1" max="100" step="any" value={float_to_binary(@amount)} placeholder="5.00" required autofocus class="form-control">
+              <input
+                id="donationAmount"
+                name="amount"
+                type="number"
+                min="1"
+                max="100"
+                step="any"
+                value={float_to_binary(@amount)}
+                placeholder="5.00"
+                required
+                autofocus
+                class="form-control"
+              />
             </div>
           </div>
 
-          <p>The streamer will receive about $<%= float_to_binary(@streamer_amount) %> after processing fees.</p>
+          <p>
+            The streamer will receive about $<%= float_to_binary(@streamer_amount) %>
+            after processing fees.
+          </p>
 
           <p>You will be redirected to our payments provider Stripe to complete your donation.</p>
 
           <div id="card-errors" role="alert"></div>
 
           <div class="text-center">
-            <div class="show-on-loading spinner-border mb-4" style="width: 3rem; height: 3rem;" role="status">
+            <div
+              class="show-on-loading spinner-border mb-4"
+              style="width: 3rem; height: 3rem;"
+              role="status"
+            >
               <span class="sr-only">Loading...</span>
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary btn-block btn-lg"><%= gettext("Proceed to Checkout") %></button>
-      </form>
+          <button type="submit" class="btn btn-primary btn-block btn-lg">
+            <%= gettext("Proceed to Checkout") %>
+          </button>
+        </form>
       <% else %>
-      <h4 class="mt-4"><%= gettext("What is Glimesh?") %></h4>
+        <h4 class="mt-4"><%= gettext("What is Glimesh?") %></h4>
         <p class="">
-            <%= gettext("People first streaming, with discoverability as a primary feature. Let's build the next
-            generation of streaming.") %> <%= link gettext("Learn More"), to: Routes.about_path(@socket, :faq), target: "_blank" %>
+          <%= gettext(
+            "People first streaming, with discoverability as a primary feature. Let's build the next
+            generation of streaming."
+          ) %>
+          <%= link(gettext("Learn More"), to: Routes.about_path(@socket, :faq), target: "_blank") %>
         </p>
-        <%= link gettext("Register"), class: "btn btn-primary btn-block mt-4", to: Routes.user_registration_path(@socket, :new), target: "_blank" %>
-        <p class="mt-2 text-center">or <%= link gettext("Log in"), class: "", to: Routes.user_session_path(@socket, :new), target: "_blank" %></p>
-        <% end %>
+        <%= link(gettext("Register"),
+          class: "btn btn-primary btn-block mt-4",
+          to: Routes.user_registration_path(@socket, :new),
+          target: "_blank"
+        ) %>
+        <p class="mt-2 text-center">
+          or
+          <%= link(gettext("Log in"),
+            class: "",
+            to: Routes.user_session_path(@socket, :new),
+            target: "_blank"
+          ) %>
+        </p>
+      <% end %>
     </div>
     """
   end

@@ -1,0 +1,36 @@
+<div class="container">
+  <h2 class="mt-4"><%= gettext("Our Users") %></h2>
+
+  <div class="card">
+    <div class="card-body">
+      <form phx-change="search">
+        <div class="form-group mb-0">
+          <input
+            type="text"
+            name="q"
+            value={@query}
+            placeholder={gettext("Search for usernames")}
+            list="results"
+            autocomplete="off"
+            autofocus
+            class="form-control form-control-lg"
+          />
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div
+    id="users"
+    class="row mt-2"
+    phx-update={@update_mode}
+    phx-hook="InfiniteScroll"
+    data-page={@page}
+  >
+    <%= for user <- @users do %>
+      <div id={"user-#{user.id}"} class="col-md-4 mb-4" phx-update="ignore">
+        <%= live_component(GlimeshWeb.Components.UserCard, user: user) %>
+      </div>
+    <% end %>
+  </div>
+</div>

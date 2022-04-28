@@ -62,22 +62,44 @@ defmodule GlimeshWeb.HomepageLive do
   def featured_events_component(assigns) do
     ~H"""
     <div class="card h-100">
-        <img src={Glimesh.EventImage.url({@event.image, @event.image}, :original)} class="card-img-top" alt={@event.label}>
-        <div class="card-body">
-          <h5><%= @event.label %></h5>
-          <p class="card-text"><%= @event.description %></p>
-          <%= if Glimesh.EventsTeam.live_now(@event) do %>
-            <span class="badge badge-pill badge-danger">Live now</span>
-            <%= live_patch "Watch Event", to: Routes.user_stream_path(GlimeshWeb.Endpoint, :index, @event.channel) %>
-          <% else %>
-            <p class="text-center">
-              Live <relative-time id="event-relative-time" phx-update="ignore" datetime={Glimesh.EventsTeam.date_to_utc(@event.start_date)}><%= @event.start_date %></relative-time> on <br> <%= live_patch "glimesh.tv/#{@event.channel}", to: Routes.user_stream_path(GlimeshWeb.Endpoint, :index, @event.channel) %>
-            </p>
-          <% end %>
-        </div>
-        <div class="card-footer text-center">
-          <%= Calendar.strftime(@event.start_date, "%B %d#{Glimesh.EventsTeam.get_day_ordinal(@event.start_date)} %I:%M%p") %> Eastern US
-        </div>
+      <img
+        src={Glimesh.EventImage.url({@event.image, @event.image}, :original)}
+        class="card-img-top"
+        alt={@event.label}
+      />
+      <div class="card-body">
+        <h5><%= @event.label %></h5>
+        <p class="card-text"><%= @event.description %></p>
+        <%= if Glimesh.EventsTeam.live_now(@event) do %>
+          <span class="badge badge-pill badge-danger">Live now</span>
+          <%= live_patch("Watch Event",
+            to: Routes.user_stream_path(GlimeshWeb.Endpoint, :index, @event.channel)
+          ) %>
+        <% else %>
+          <p class="text-center">
+            Live
+            <relative-time
+              id="event-relative-time"
+              phx-update="ignore"
+              datetime={Glimesh.EventsTeam.date_to_utc(@event.start_date)}
+            >
+              <%= @event.start_date %>
+            </relative-time>
+            on
+            <br />
+
+            <%= live_patch("glimesh.tv/#{@event.channel}",
+              to: Routes.user_stream_path(GlimeshWeb.Endpoint, :index, @event.channel)
+            ) %>
+          </p>
+        <% end %>
+      </div>
+      <div class="card-footer text-center">
+        <%= Calendar.strftime(
+          @event.start_date,
+          "%B %d#{Glimesh.EventsTeam.get_day_ordinal(@event.start_date)} %I:%M%p"
+        ) %> Eastern US
+      </div>
     </div>
     """
   end
@@ -85,41 +107,65 @@ defmodule GlimeshWeb.HomepageLive do
   def live_channels_component(assigns) do
     ~H"""
     <div class="row">
-        <%= for channel <- @channels do %>
+      <%= for channel <- @channels do %>
         <div class="col-sm-12 col-md-6 col-xl-4 mt-2 mt-md-4">
-            <%= link to: Routes.user_stream_path(GlimeshWeb.Endpoint, :index, channel.user.username), class: "text-color-link" do %>
+          <%= link to: Routes.user_stream_path(GlimeshWeb.Endpoint, :index, channel.user.username), class: "text-color-link" do %>
             <div class="card card-stream">
-                <img src={Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original)} alt={channel.title} class="card-img" height="468" width="832">
-                <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
+              <img
+                src={
+                  Glimesh.StreamThumbnail.url({channel.stream.thumbnail, channel.stream}, :original)
+                }
+                alt={channel.title}
+                class="card-img"
+                height="468"
+                width="832"
+              />
+              <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
+                <div>
+                  <div class="card-stream-category">
+                    <span class="badge badge-primary"><%= channel.category.name %></span>
+                  </div>
 
-                    <div>
-                        <div class="card-stream-category">
-                            <span class="badge badge-primary"><%= channel.category.name %></span>
-                        </div>
-
-                        <div class="card-stream-tags">
-                            <%= if channel.subcategory do %>
-                            <span class="badge badge-info"><%= channel.subcategory.name %></span>
-                            <% end %>
-                        </div>
-                    </div>
-
-                    <div class="media card-stream-streamer">
-                        <img src={Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original)} alt={channel.user.displayname} width="48" height="48" class={["img-avatar mr-2", (if Glimesh.Accounts.can_receive_payments?(channel.user), do: "img-verified-streamer")]}>
-                        <div class="media-body">
-                            <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
-                            <p class="mb-0 card-stream-username"><%= channel.user.displayname %> <span class="badge badge-info"><%= Glimesh.Streams.get_channel_language(channel) %></span>
-                                <%= if channel.mature_content do %>
-                                <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
-                                <% end %>
-                            </p>
-                        </div>
-                    </div>
+                  <div class="card-stream-tags">
+                    <%= if channel.subcategory do %>
+                      <span class="badge badge-info"><%= channel.subcategory.name %></span>
+                    <% end %>
+                  </div>
                 </div>
+
+                <div class="media card-stream-streamer">
+                  <img
+                    src={Glimesh.Avatar.url({channel.user.avatar, channel.user}, :original)}
+                    alt={channel.user.displayname}
+                    width="48"
+                    height="48"
+                    class={
+                      [
+                        "img-avatar mr-2",
+                        if(Glimesh.Accounts.can_receive_payments?(channel.user),
+                          do: "img-verified-streamer"
+                        )
+                      ]
+                    }
+                  />
+                  <div class="media-body">
+                    <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>
+                    <p class="mb-0 card-stream-username">
+                      <%= channel.user.displayname %>
+                      <span class="badge badge-info">
+                        <%= Glimesh.Streams.get_channel_language(channel) %>
+                      </span>
+                      <%= if channel.mature_content do %>
+                        <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
+                      <% end %>
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <% end %>
+          <% end %>
         </div>
-        <% end %>
+      <% end %>
     </div>
     """
   end
