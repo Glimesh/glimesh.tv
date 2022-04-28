@@ -6,12 +6,18 @@ defmodule GlimeshWeb.Components.ClickToCopy do
 
   @impl true
   def render(assigns) do
-    ~L"""
-        <button id="<%= @id %>" class="btn btn-info" type="button"
-          phx-hook="ClickToCopy"
-          data-copy-value="<%= assigns.value %>"
-          data-copied-error-text="<%= gettext("Error") %>"
-          data-copied-text="<%= gettext("Copied to Clipboard") %>"><%= gettext("Click to Copy") %></button>
+    ~H"""
+    <button
+      id={@id}
+      class="btn btn-info"
+      type="button"
+      phx-hook="ClickToCopy"
+      data-copy-value={assigns.value}
+      data-copied-error-text={gettext("Error")}
+      data-copied-text={gettext("Copied to Clipboard")}
+    >
+      <%= gettext("Click to Copy") %>
+    </button>
     """
   end
 

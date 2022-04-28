@@ -53,16 +53,22 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
             }
           end
 
-        Emotes.create_channel_emote(
-          socket.assigns.user,
-          socket.assigns.channel,
-          Map.merge(
-            %{
-              emote: emote_name
-            },
-            emote_data
-          )
-        )
+        case Emotes.create_channel_emote(
+               socket.assigns.user,
+               socket.assigns.channel,
+               Map.merge(
+                 %{
+                   emote: emote_name
+                 },
+                 emote_data
+               )
+             ) do
+          {:ok, emote} ->
+            {:ok, {:ok, emote}}
+
+          {:error, changeset} ->
+            {:postpone, {:error, changeset}}
+        end
       end)
 
     {_, errored} = Enum.split_with(attempted_uploads, fn {status, _} -> status == :ok end)

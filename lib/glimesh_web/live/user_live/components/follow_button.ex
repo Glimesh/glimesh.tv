@@ -5,23 +5,50 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
 
   @impl true
   def render(assigns) do
-    ~L"""
+    ~H"""
     <%= if @user do %>
       <%= if @following do %>
         <div class="btn-group" role="group">
-          <button class="btn btn-primary follow-button btn-responsive" phx-click="unfollow" data-confirm="<%= gettext("Are you sure?")%>"><span class="d-none d-lg-block"><%= gettext("Unfollow") %></span><span class="d-lg-none"><i class="fas fa-user-minus fa-fw"></i></span></button>
+          <button
+            class="btn btn-primary follow-button btn-responsive"
+            phx-click="unfollow"
+            data-confirm={gettext("Are you sure?")}
+          >
+            <span class="d-none d-lg-block"><%= gettext("Unfollow") %></span>
+            <span class="d-lg-none"><i class="fas fa-user-minus fa-fw"></i></span>
+          </button>
           <%= if @following.has_live_notifications do %>
-          <button type="button" class="btn btn-primary live-notifications-button btn-responsive" phx-click="disable_live_notifications"><i class="fas fa-bell fa-fw"></i></button>
+            <button
+              type="button"
+              class="btn btn-primary live-notifications-button btn-responsive"
+              phx-click="disable_live_notifications"
+            >
+              <i class="fas fa-bell fa-fw"></i>
+            </button>
           <% else %>
-          <button type="button" class="btn btn-primary live-notifications-button btn-responsive" phx-click="enable_live_notifications"><i class="far fa-bell fa-fw"></i></button>
+            <button
+              type="button"
+              class="btn btn-primary live-notifications-button btn-responsive"
+              phx-click="enable_live_notifications"
+            >
+              <i class="far fa-bell fa-fw"></i>
+            </button>
           <% end %>
         </div>
       <% else %>
-        <button class="btn btn-primary follow-button btn-responsive" phx-click="follow" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Follow") %></span><span class="d-lg-none"><i class="fas fa-user-plus fa-fw"></i></span></button>
+        <button
+          class="btn btn-primary follow-button btn-responsive"
+          phx-click="follow"
+          phx-throttle="5000"
+        >
+          <span class="d-none d-lg-block"><%= gettext("Follow") %></span>
+          <span class="d-lg-none"><i class="fas fa-user-plus fa-fw"></i></span>
+        </button>
       <% end %>
     <% else %>
       <%= link to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-responsive" do %>
-      <span class="d-none d-lg-block"><%= gettext("Follow") %></span><span class="d-lg-none"><i class="fas fa-user-plus fa-fw"></i></span>
+        <span class="d-none d-lg-block"><%= gettext("Follow") %></span>
+        <span class="d-lg-none"><i class="fas fa-user-plus fa-fw"></i></span>
       <% end %>
     <% end %>
     """

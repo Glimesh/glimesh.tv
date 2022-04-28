@@ -46,16 +46,22 @@ defmodule GlimeshWeb.GctLive.GlobalEmotes do
             }
           end
 
-        Glimesh.Emotes.create_global_emote(
-          socket.assigns.user,
-          Map.merge(
-            %{
-              emote: emote_name,
-              approved_at: NaiveDateTime.utc_now()
-            },
-            emote_data
-          )
-        )
+        case Glimesh.Emotes.create_global_emote(
+               socket.assigns.user,
+               Map.merge(
+                 %{
+                   emote: emote_name,
+                   approved_at: NaiveDateTime.utc_now()
+                 },
+                 emote_data
+               )
+             ) do
+          {:ok, emote} ->
+            {:ok, {:ok, emote}}
+
+          {:error, changeset} ->
+            {:postpone, {:error, changeset}}
+        end
       end)
 
     {successful, errored} =

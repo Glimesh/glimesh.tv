@@ -1,0 +1,168 @@
+<%= if live_flash(@flash, :hosting_info) do %>
+  <p
+    class="alert alert-success"
+    role="alert"
+    phx-click="lv:clear-flash"
+    phx-value-key="hosting_info"
+  >
+    <%= live_flash(@flash, :hosting_info) %>
+  </p>
+<% end %>
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-10">
+        <h4><%= gettext("Manage Hosting") %></h4>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <.form
+      let={f}
+      for={@allow_changeset}
+      class="form_allow_hosting"
+      phx-change="toggle_allow_hosting"
+    >
+      <h5><%= gettext("Being Hosted") %></h5>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <div class="custom-control custom-switch">
+              <%= checkbox(f, :allow_hosting, class: "custom-control-input") %>
+              <%= label(f, :allow_hosting, gettext("Other streamers may host my channel"),
+                class: "custom-control-label"
+              ) %>
+              <%= error_tag(f, :allow_hosting) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </.form>
+    <p>
+      <%= gettext(
+        "Hosting channels must still meet the following qualifications in order to host your channel:"
+      ) %>
+    </p>
+    <ul>
+      <li><%= gettext("They must have a verified email address.") %></li>
+      <li><%= gettext("Their account must be more than 5 days old.") %></li>
+      <li><%= gettext("They must NOT be banned from your channel.") %></li>
+      <li><%= gettext("They must have streamed for at least 10 hours total on Glimesh.") %></li>
+    </ul>
+
+    <h5><%= gettext("Hosting Others") %></h5>
+    <p><%= gettext("Host other Glimesh channels when you are not live.") %></p>
+    <%= if not @hosting_qualified do %>
+      <div class="row">
+        <div id="not-qualified" class="col-12 card card-body text-center">
+          <%= gettext(
+            "You have not met the minimum qualifications to host others, see list above for details"
+          ) %>
+        </div>
+      </div>
+    <% else %>
+      <.form for={:nothing} class="form_add_channel" phx-change="suggest">
+        <div class="row">
+          <div class="col-12 col-lg-6">
+            <div class="input-group">
+              <%= live_component(GlimeshWeb.Components.ChannelLookupTypeahead,
+                id: "channel_lookup",
+                user: @user,
+                field: "add_channel",
+                value: @add_channel,
+                class: "form-control pl-0 channel-typeahead-input",
+                matches: @matches,
+                timeout: 700,
+                extra_params: %{"maxlength" => "24"}
+              ) %>
+              <div class="input-group-append">
+                <button
+                  id="add-channel-button"
+                  type="button"
+                  class="btn btn-primary btn-block"
+                  aria-label="Add Channel"
+                  phx-click="add_hosting_channel"
+                  phx-value-name={@add_channel}
+                  phx-value-selected={@add_channel_selected_value}
+                >
+                  <span aria-hidden="true"><%= gettext("Add Channel") %></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </.form>
+      <div class="row">
+        <div class="col-12 pt-3">
+          <table class="table">
+            <thead style="background-color: var(--input-bg-color);">
+              <tr>
+                <th><%= gettext("Channel") %></th>
+                <th class="text-center"><%= gettext("Status") %></th>
+                <th><%= gettext("Last Hosted") %></th>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= for host <- @hosted_channels do %>
+                <tr id={"hosted-row-#{host.target_channel_id}"}>
+                  <td>
+                    <img
+                      class="img-avatar"
+                      src={
+                        Glimesh.Avatar.url({host.target.user.avatar, host.target.user}, :original)
+                      }
+                      width="50"
+                      height="50"
+                    />
+                    &nbsp;<%= host.target.user.displayname %>
+                  </td>
+                  <td id={"hosted-row-#{host.target_channel_id}-status"} class="text-center">
+                    <%= case host.status do %>
+                      <% "ready" -> %>
+                        <i class="fas fa-check text-success" title={gettext("Ready to host")}></i>
+                      <% "error" -> %>
+                        <i
+                          class="fas fa-times-circle text-danger"
+                          title={gettext("Unable to host")}
+                        >
+                        </i>
+                      <% "hosting" -> %>
+                        <i class="fas fa-tv text-info" title={gettext("Currently hosting")}></i>
+                      <% _ -> %>
+                        gettext(host.status)
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= if host.last_hosted_date do %>
+                      <local-time
+                        id="last-hosted-date"
+                        phx-update="ignore"
+                        datetime={"#{host.last_hosted_date}Z"}
+                      >
+                        <%= host.last_hosted_date %>
+                      </local-time>
+                    <% else %>
+                      -
+                    <% end %>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      id={"remove-channel-button-#{host.target_channel_id}"}
+                      class="close close-delete"
+                      phx-click="remove_host"
+                      phx-value-id={host.id}
+                    >
+                      &times;
+                    </button>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

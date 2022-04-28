@@ -1,0 +1,35 @@
+<div class="container">
+  <h2 class="mt-4"><%= @page_title %></h2>
+
+  <ul class="nav nav-pills mb-4">
+    <li class="nav-item">
+      <%= live_redirect("Followers",
+        to: Routes.user_followers_path(@socket, :followers, @streamer.username),
+        class: "nav-link " <> if(@live_action == :followers, do: "active", else: "")
+      ) %>
+    </li>
+
+    <li class="nav-item">
+      <%= live_redirect("Following",
+        to: Routes.user_followers_path(@socket, :following, @streamer.username),
+        class: "nav-link " <> if(@live_action == :following, do: "active", else: "")
+      ) %>
+    </li>
+  </ul>
+
+  <div
+    id="users"
+    class="row layout-top-spacing"
+    phx-update={@update_mode}
+    phx-hook="InfiniteScroll"
+    data-page={@page}
+  >
+    <%= for follower <- @users do %>
+      <div id={"user-#{follower.id}"} class="col-md-4 mb-4" phx-update="ignore">
+        <%= live_component(GlimeshWeb.Components.UserCard,
+          user: if(@live_action == :followers, do: follower.user, else: follower.streamer)
+        ) %>
+      </div>
+    <% end %>
+  </div>
+</div>

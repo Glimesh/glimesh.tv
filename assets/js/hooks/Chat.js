@@ -105,7 +105,7 @@ export default {
             // Scroll if we need to
             this.maybeScrollToBottom(chatMessages);
 
-            let thisMessage = document.getElementById(e.message_id);
+            let thisMessage = document.getElementById("chat-message-" + e.message_id);
             // Apply a BS init to just the new chat message
             BSN.initCallback(thisMessage);
         });
@@ -134,7 +134,7 @@ export default {
         });
 
         this.handleEvent("remove_deleted_message", (e) => {
-            document.getElementById(e["message_id"]).hidden = true;
+            document.getElementById("chat-message-" + e["message_id"]).hidden = true;
         });
 
         // Scrolling voo-doo

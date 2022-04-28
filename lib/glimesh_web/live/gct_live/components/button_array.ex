@@ -6,45 +6,80 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
 
   @impl true
   def render(assigns) do
-    ~L"""
-    <%= live_redirect gettext("Edit Profile"), class: (if @can_edit_profile, do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_user_profile, @user.username) %>
-    <%= live_redirect gettext("Edit User"), class: (if @can_edit_user, do: "btn btn-primary", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :edit_user, @user.username) %>
+    ~H"""
+    <%= live_redirect(gettext("Edit Profile"),
+      class: if(@can_edit_profile, do: "btn btn-primary", else: "btn btn-primary disabled"),
+      to: Routes.gct_path(@socket, :edit_user_profile, @user.username)
+    ) %>
+    <%= live_redirect(gettext("Edit User"),
+      class: if(@can_edit_user, do: "btn btn-primary", else: "btn btn-primary disabled"),
+      to: Routes.gct_path(@socket, :edit_user, @user.username)
+    ) %>
     <%= if @can_edit_payments do %>
-    <div class="dropdown d-inline-block">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="paymentActionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <%= gettext("Stripe Actions") %>
-      </button>
-      <div class="dropdown-menu" aria-labelledby="paymentActionsDropdown">
-      <a href="#" class="dropdown-item" phx-click="delete_stripe_account" data-confirm="Are you sure you wish to delete the user's Stripe account? It cannot be restored and will need to be recreated."><%= gettext("Delete Stripe Account") %></a>
+      <div class="dropdown d-inline-block">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="paymentActionsDropdown"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <%= gettext("Stripe Actions") %>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="paymentActionsDropdown">
+          <a
+            href="#"
+            class="dropdown-item"
+            phx-click="delete_stripe_account"
+            data-confirm="Are you sure you wish to delete the user's Stripe account? It cannot be restored and will need to be recreated."
+          >
+            <%= gettext("Delete Stripe Account") %>
+          </a>
+        </div>
       </div>
-    </div>
     <% end %>
     <div class="dropdown d-inline-block">
-      <button class="btn btn-success dropdown-toggle" type="button" id="userActionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <%= gettext("User Actions") %>
+      <button
+        class="btn btn-success dropdown-toggle"
+        type="button"
+        id="userActionsDropdown"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <%= gettext("User Actions") %>
       </button>
       <div class="dropdown-menu" aria-labelledby="userActionsDropdown">
-        <%= live_redirect gettext("View Chat Logs"), class: (if @view_chat_logs, do: "dropdown-item", else: "btn btn-primary disabled"), to: Routes.gct_path(@socket, :user_chat_log, @user.id) %>
+        <%= live_redirect(gettext("View Chat Logs"),
+          class: if(@view_chat_logs, do: "dropdown-item", else: "btn btn-primary disabled"),
+          to: Routes.gct_path(@socket, :user_chat_log, @user.id)
+        ) %>
         <%= if @user.tfa_token do %>
           <a href="#" class="dropdown-item" phx-click="remove_2fa"><%= gettext("Remove 2FA") %></a>
         <% end %>
         <%= if @can_ban do %>
-        <%= unless @user.is_banned do %>
-          <a href="#" class="dropdown-item" phx-click="show_ban_modal"><%= gettext("Ban User")%></a>
-        <% else %>
-          <a href="#" class="dropdown-item" phx-click="unban_user"><%= gettext("Unban User")%></a>
-        <% end %>
+          <%= unless @user.is_banned do %>
+            <a href="#" class="dropdown-item" phx-click="show_ban_modal">
+              <%= gettext("Ban User") %>
+            </a>
+          <% else %>
+            <a href="#" class="dropdown-item" phx-click="unban_user"><%= gettext("Unban User") %></a>
+          <% end %>
         <% end %>
       </div>
     </div>
 
     <%= if @show_ban do %>
-      <div id="ban-modal" class="live-modal"
+      <div
+        id="ban-modal"
+        class="live-modal"
         phx-capture-click="hide_ban_modal"
         phx-window-keydown="hide_ban_modal"
         phx-key="escape"
         phx-target="#paymentModal2"
-        phx-page-loading>
+        phx-page-loading
+      >
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -55,10 +90,17 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
             </div>
 
             <div class="modal-body">
-              <%= form_for :user, "#", [phx_submit: :ban] %>
+              <%= form_for(:user, "#", phx_submit: :ban) %>
               <div class="form-group ">
                 <label for="banReason"><%= gettext("Ban Reason") %></label>
-                <textarea rows="5" class="form-control" name="ban_reason" id="banReason" placeholder="A descriptive reason to why this user is being banned. This is required, if you don't provide one then the user will not be banned."></textarea>
+                <textarea
+                  rows="5"
+                  class="form-control"
+                  name="ban_reason"
+                  id="banReason"
+                  placeholder="A descriptive reason to why this user is being banned. This is required, if you don't provide one then the user will not be banned."
+                >
+                </textarea>
               </div>
 
               <button class="btn btn-danger btn-block mt-4"><%= gettext("Ban User") %></button>

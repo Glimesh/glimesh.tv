@@ -1,0 +1,132 @@
+<div class="calendar" style="width: 100%">
+  <div class="d-flex calendar_header">
+    <div
+      class="left p-2"
+      phx-click="last_month"
+      phx-value-month={@current_month}
+      phx-value-year={@current_year}
+    >
+      <i class="fas fa-chevron-left"></i>
+    </div>
+
+    <div class="flex-grow-1 header_month"><%= @calendar_title %></div>
+
+    <div
+      class="right p-2"
+      phx-click="next_month"
+      phx-value-month={@current_month}
+      phx-value-year={@current_year}
+    >
+      <i class="fas fa-chevron-right"></i>
+    </div>
+  </div>
+</div>
+
+<div class="calendar">
+  <div class="week d-flex">
+    <div class="flex-grow-1 pt-2 day day-name">Mon</div>
+
+    <div class="flex-grow-1 pt-2 day day-name">Tue</div>
+
+    <div class="flex-grow-1 pt-2 day day-name">Wed</div>
+
+    <div class="flex-grow-1 pt-2 day day-name">Thu</div>
+
+    <div class="flex-grow-1 pt-2 day day-name">Fri</div>
+
+    <div class="flex-grow-1 pt-2 day day-name">Sat</div>
+
+    <div class="flex-grow-1 pt-2 day day-name">Sun</div>
+  </div>
+
+  <%= for week <- @weeks do %>
+    <div class="week d-flex">
+      <%= for day <- week.days do %>
+        <div class={
+          [
+            "flex-grow-1 p-1 day day-number",
+            if(not day.in_month, do: "disabled"),
+            if(day.today, do: "today"),
+            if(day.selected, do: "selected")
+          ]
+        }>
+          <%= if day.in_month do %>
+            <div
+              phx-click="select_day"
+              phx-value-month={@current_month}
+              phx-value-year={@current_year}
+              phx-value-day={day.day}
+            >
+              <%= day.day %>
+              <br />
+
+              <%= for event <- day.todays_events do %>
+                <div
+                  class="calendar-event"
+                  style={
+                    "border-color: #{get_event_color(event)}; background: #{get_event_color(event)};"
+                  }
+                  title={event.label}
+                >
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div>
+              <%= day.day %>
+              <br />
+
+              <%= for event <- day.todays_events do %>
+                <div
+                  class="calendar-event"
+                  style={
+                    "border-color: #{get_event_color(event)}; background: #{get_event_color(event)};"
+                  }
+                  title={event.label}
+                >
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <%= if week.expanded do %>
+      <div class="events_header">
+        <ul class="list-unstyled mb-0 py-2">
+          <%= for event <- week.days |> Enum.filter(fn x ->x.selected end) |> Enum.map(fn x -> x.todays_events end) |> List.first() do %>
+            <li class="text-left">
+              <div
+                class="calendar-event ml-2 mr-2"
+                style={
+                  "border-color: #{get_event_color(event)}; background: #{get_event_color(event)};"
+                }
+              >
+              </div>
+              <a href={"#event#{event.id}"} class="text-color-link text-color-link-no-hover">
+                <%= event.label %> at <%= Calendar.strftime(event.start_date, "%I:%M %p") %>
+                Eastern
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="calendar" style="width: 100%">
+  <div class="d-flex justify-content-around calendar_footer py-2">
+    <%= for event_type <- @event_types_key do %>
+      <span
+        class="badge badge-pill"
+        style={
+          "vertical-align: middle; border-color: #{event_type.color}; background: #{event_type.color}"
+        }
+      >
+        <%= event_type.label %>
+      </span>
+    <% end %>
+  </div>
+</div>

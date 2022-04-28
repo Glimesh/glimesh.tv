@@ -1,0 +1,13 @@
+<!-- live.html.leex -->
+<%= if live_flash(@flash, :info) do %>
+  <p class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info">
+    <%= live_flash(@flash, :info) %>
+  </p>
+<% end %>
+<%= if live_flash(@flash, :error) do %>
+  <p class="alert alert-danger" role="alert" phx-click="lv:clear-flash" phx-value-key="error">
+    <%= live_flash(@flash, :error) %>
+  </p>
+<% end %>
+<!-- live.html.leex -->
+<%= @inner_content %>

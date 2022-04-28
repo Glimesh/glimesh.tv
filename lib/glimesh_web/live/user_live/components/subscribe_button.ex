@@ -6,94 +6,161 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
 
   @impl true
   def render(assigns) do
-    ~L"""
+    ~H"""
     <span id="subscription-magic">
-        <%= if @user do %>
-            <%= if @can_subscribe do %>
-                <%= if @subscribed do %>
-                    <%= if @canceling do %>
-                    <button class="btn btn-secondary btn-responsive" phx-click="show_resub_modal" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Resubscribe") %></span><span class="d-lg-none"><i class="fas fa-star fa-fw"></i></span></button>
-                    <% else %>
-                    <button class="btn btn-secondary btn-responsive" phx-click="unsubscribe" phx-throttle="5000" data-confirm="<%= gettext("Are you sure you want to unsubscribe?") %>"><span class="d-none d-lg-block"><%= gettext("Unsubscribe") %></span><span class="d-lg-none"><i class="fas fa-star fa-fw"></i></span></button>
-                    <% end %>
-                <% else %>
-                    <button class="btn btn-secondary btn-responsive" phx-click="show_modal" phx-throttle="5000"><span class="d-none d-lg-block"><%= gettext("Subscribe") %></span><span class="d-lg-none"><i class="fas fa-star fa-fw"></i></span></button>
-                <% end %>
+      <%= if @user do %>
+        <%= if @can_subscribe do %>
+          <%= if @subscribed do %>
+            <%= if @canceling do %>
+              <button
+                class="btn btn-secondary btn-responsive"
+                phx-click="show_resub_modal"
+                phx-throttle="5000"
+              >
+                <span class="d-none d-lg-block"><%= gettext("Resubscribe") %></span>
+                <span class="d-lg-none"><i class="fas fa-star fa-fw"></i></span>
+              </button>
             <% else %>
-                <button class="btn btn-secondary btn-responsive disabled" data-toggle="tooltip" data-placement="bottom" title="<%= gettext("You cannot subscribe to this user.")%>"><span class="d-none d-lg-block"><%= gettext("Subscribe") %></span><span class="d-lg-none"><i class="fas fa-star fa-fw"></i></span></button>
+              <button
+                class="btn btn-secondary btn-responsive"
+                phx-click="unsubscribe"
+                phx-throttle="5000"
+                data-confirm={gettext("Are you sure you want to unsubscribe?")}
+              >
+                <span class="d-none d-lg-block"><%= gettext("Unsubscribe") %></span>
+                <span class="d-lg-none"><i class="fas fa-star fa-fw"></i></span>
+              </button>
             <% end %>
+          <% else %>
+            <button
+              class="btn btn-secondary btn-responsive"
+              phx-click="show_modal"
+              phx-throttle="5000"
+            >
+              <span class="d-none d-lg-block"><%= gettext("Subscribe") %></span>
+              <span class="d-lg-none"><i class="fas fa-star fa-fw"></i></span>
+            </button>
+          <% end %>
         <% else %>
-          <span class="d-none d-lg-block"><%= link gettext("Subscribe"), to: Routes.user_registration_path(@socket, :new), class: "btn btn-secondary btn-responsive" %></span>
+          <button
+            class="btn btn-secondary btn-responsive disabled"
+            data-toggle="tooltip"
+            data-placement="bottom"
+            title={gettext("You cannot subscribe to this user.")}
+          >
+            <span class="d-none d-lg-block"><%= gettext("Subscribe") %></span>
+            <span class="d-lg-none"><i class="fas fa-star fa-fw"></i></span>
+          </button>
         <% end %>
+      <% else %>
+        <span class="d-none d-lg-block">
+          <%= link(gettext("Subscribe"),
+            to: Routes.user_registration_path(@socket, :new),
+            class: "btn btn-secondary btn-responsive"
+          ) %>
+        </span>
+      <% end %>
 
-        <%= if @show_subscription do %>
-        <div id="paymentModal2" class="live-modal"
-            phx-capture-click="hide_modal"
-            phx-window-keydown="hide_modal"
-            phx-key="escape"
-            phx-target="#paymentModal2"
-            phx-page-loading>
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"><%= gettext("Payment Details") %></h5>
-                        <button type="button" class="close" phx-click="hide_modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+      <%= if @show_subscription do %>
+        <div
+          id="paymentModal2"
+          class="live-modal"
+          phx-capture-click="hide_modal"
+          phx-window-keydown="hide_modal"
+          phx-key="escape"
+          phx-target="#paymentModal2"
+          phx-page-loading
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title"><%= gettext("Payment Details") %></h5>
+                <button type="button" class="close" phx-click="hide_modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
 
-                    <div class="modal-body">
-                        <%= if @stripe_error do %>
-                          <div class="alert alert-danger" role="alert">
-                            <%= @stripe_error %>
-                          </div>
-                        <% end %>
+              <div class="modal-body">
+                <%= if @stripe_error do %>
+                  <div class="alert alert-danger" role="alert">
+                    <%= @stripe_error %>
+                  </div>
+                <% end %>
 
-                        <%= live_component GlimeshWeb.SubscriptionComponent, id: "subscription-component", type: :channel, user: @user, streamer: @streamer, product_id: @product_id, price_id: @price_id, price: @price %>
-                        <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider."
-                        class="img-fluid mt-4 mx-auto d-block">
-                    </div>
-
-                </div>
+                <%= live_component(GlimeshWeb.SubscriptionComponent,
+                  id: "subscription-component",
+                  type: :channel,
+                  user: @user,
+                  streamer: @streamer,
+                  product_id: @product_id,
+                  price_id: @price_id,
+                  price: @price
+                ) %>
+                <img
+                  src="/images/stripe-badge-white.png"
+                  alt="We use Stripe as our payment provider."
+                  class="img-fluid mt-4 mx-auto d-block"
+                />
+              </div>
             </div>
+          </div>
         </div>
-        <% end %>
-        <%= if @show_resub_modal do %>
-        <div id="resubModal" class="live-modal"
-            phx-capture-click="hide_resub_modal"
-            phx-window-keydown="hide_resub_modal"
-            phx-key="escape"
-            phx-target="#resubModal"
-            phx-page-loading>
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"><%= gettext("Resubscribe") %></h5>
-                        <button type="button" class="close" phx-click="hide_resub_modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+      <% end %>
+      <%= if @show_resub_modal do %>
+        <div
+          id="resubModal"
+          class="live-modal"
+          phx-capture-click="hide_resub_modal"
+          phx-window-keydown="hide_resub_modal"
+          phx-key="escape"
+          phx-target="#resubModal"
+          phx-page-loading
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title"><%= gettext("Resubscribe") %></h5>
+                <button type="button" class="close" phx-click="hide_resub_modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
 
-                    <div class="modal-body">
-                        <%= if @stripe_error do %>
-                          <div class="alert alert-danger" role="alert">
-                            <%= @stripe_error %>
-                          </div>
-                        <% end %>
+              <div class="modal-body">
+                <%= if @stripe_error do %>
+                  <div class="alert alert-danger" role="alert">
+                    <%= @stripe_error %>
+                  </div>
+                <% end %>
 
-                        <p><%= gettext("Your subscription is currently set to automatically cancel at the end of your billing cycle.") %></p>
-                        <p><%= gettext("You can resubscribe by clicking the button below, and your subscription will be renewed until you cancel it.") %></p>
+                <p>
+                  <%= gettext(
+                    "Your subscription is currently set to automatically cancel at the end of your billing cycle."
+                  ) %>
+                </p>
+                <p>
+                  <%= gettext(
+                    "You can resubscribe by clicking the button below, and your subscription will be renewed until you cancel it."
+                  ) %>
+                </p>
 
-                        <button class="btn btn-primary btn-block btn-lg" phx-click="resubscribe" phx-throttle="5000"><%= gettext("Resubscribe") %></button>
+                <button
+                  class="btn btn-primary btn-block btn-lg"
+                  phx-click="resubscribe"
+                  phx-throttle="5000"
+                >
+                  <%= gettext("Resubscribe") %>
+                </button>
 
-                        <img src="/images/stripe-badge-white.png" alt="We use Stripe as our payment provider."
-                        class="img-fluid mt-4 mx-auto d-block">
-                    </div>
-
-                </div>
+                <img
+                  src="/images/stripe-badge-white.png"
+                  alt="We use Stripe as our payment provider."
+                  class="img-fluid mt-4 mx-auto d-block"
+                />
+              </div>
             </div>
+          </div>
         </div>
-        <% end %>
+      <% end %>
     </span>
     """
   end

@@ -129,7 +129,7 @@ defmodule GlimeshWeb.ChatLiveTest do
           session: %{"user" => streamer, "channel_id" => channel.id}
         )
 
-      target = "##{chat_message.id} > div.user-message-header > i.short-timeout"
+      target = "#chat-message-#{chat_message.id} > div.user-message-header > i.short-timeout"
 
       view
       |> element(target)
@@ -150,7 +150,8 @@ defmodule GlimeshWeb.ChatLiveTest do
           session: %{"user" => streamer, "channel_id" => channel.id}
         )
 
-      target = "##{chat_message.id} > div.user-message-header > i.long-timeout"
+      target = "#chat-message-#{chat_message.id} > div.user-message-header > i.long-timeout"
+      IO.inspect(target, label: "target")
 
       view
       |> element(target)
@@ -171,7 +172,7 @@ defmodule GlimeshWeb.ChatLiveTest do
           session: %{"user" => streamer, "channel_id" => channel.id}
         )
 
-      target = "##{chat_message.id} > div.user-message-header > i.ban"
+      target = "#chat-message-#{chat_message.id} > div.user-message-header > i.ban"
 
       view
       |> element(target)
@@ -192,7 +193,7 @@ defmodule GlimeshWeb.ChatLiveTest do
           session: %{"user" => streamer, "channel_id" => channel.id}
         )
 
-      target = "##{chat_message.id} > div.user-message-header > i.delete-message"
+      target = "#chat-message-#{chat_message.id} > div.user-message-header > i.delete-message"
 
       view
       |> element(target)

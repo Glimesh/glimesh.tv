@@ -1,0 +1,27 @@
+<div class="card">
+  <div class="alert alert-info" role="alert">
+    <strong><%= gettext("Early Feature Alert!") %></strong>
+    Hey there! Channel Statistics are a new feature still under heavy development. We're continually building this new feature, and we'd love your opinion on how we should do it. Thank you!
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th><%= gettext("Stream title") %></th>
+        <th><%= gettext("Stream started") %></th>
+        <th><%= gettext("Stream ended") %></th>
+        <th><%= gettext("Category") %></th>
+        <th><%= gettext("Peak Viewers") %></th>
+      </tr>
+    </thead>
+    <%= for stream <- @streams do %>
+      <tr>
+        <td><%= stream.title %></td>
+        <td><%= stream.started_at %></td>
+        <td><%= stream.ended_at %></td>
+        <td><%= stream.category.name %></td>
+        <td><%= stream.peak_viewers %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

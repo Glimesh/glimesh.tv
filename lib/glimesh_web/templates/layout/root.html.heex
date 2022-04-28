@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang={site_locale(@conn)} data-theme={site_theme(@conn)}>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%= csrf_meta_tag() %>
+    <%= live_title_tag(Map.get(assigns, :page_title, "Glimesh")) %>
+
+    <meta
+      name="description"
+      content={
+        Map.get(
+          assigns,
+          :page_description,
+          "Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish."
+        )
+      }
+    />
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/css/app.css")} />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href={Routes.static_path(@conn, "/favicons/apple-touch-icon.png")}
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href={Routes.static_path(@conn, "/favicons/favicon-32x32.png")}
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href={Routes.static_path(@conn, "/favicons/favicon-16x16.png")}
+    />
+    <link rel="manifest" href={Routes.static_path(@conn, "/favicons/site.webmanifest")} />
+    <link
+      rel="mask-icon"
+      href={Routes.static_path(@conn, "/favicons/safari-pinned-tab.svg")}
+      color="#0e1726"
+    />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#0E1726" />
+
+    <script type="application/ld+json">
+      {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "url": "https://glimesh.tv/",
+          "logo": "https://glimesh.tv/images/logos/logo-with-text-sm.png"
+      }
+    </script>
+
+    <%= if assigns[:custom_meta] do %>
+      <meta property="og:url" content="https://glimesh.tv/" />
+      <meta property="og:title" content={assigns.custom_meta.title} />
+      <meta property="og:description" content={assigns.custom_meta.description} />
+      <meta property="og:image" content={assigns.custom_meta.image_url} />
+      <meta name="twitter:card" content={Map.get(assigns.custom_meta, :card_type, "summary")} />
+      <meta name="twitter:site" content="@Glimesh" />
+      <meta name="twitter:title" content={assigns.custom_meta.title} />
+      <meta name="twitter:description" content={assigns.custom_meta.description} />
+      <meta name="twitter:image" content={assigns.custom_meta.image_url} />
+    <% else %>
+      <meta property="og:url" content="https://glimesh.tv/" />
+      <meta property="og:title" content="Glimesh - Next-Gen Live Streaming" />
+      <meta
+        property="og:description"
+        content="Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish."
+      />
+      <meta property="og:image" content="https://glimesh.tv/images/og-image.jpg" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@Glimesh" />
+      <meta name="twitter:title" content="Glimesh - Next-Gen Live Streaming" />
+      <meta
+        name="twitter:description"
+        content="Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish."
+      />
+      <meta name="twitter:image" content="https://glimesh.tv/images/og-image.jpg" />
+    <% end %>
+
+    <script
+      defer
+      phx-track-static
+      type="text/javascript"
+      src={Routes.static_path(@conn, "/js/app.js")}
+    >
+    </script>
+    <%= if Application.get_env(:glimesh, :environment) == :prod do %>
+      <script
+        defer
+        data-domain="glimesh.tv"
+        data-api="https://glimesh.tv/track/api/event"
+        src="https://glimesh.tv/track/js/script.js"
+      >
+      </script>
+    <% end %>
+
+    <script async defer src="https://js.stripe.com/v3/">
+    </script>
+  </head>
+
+  <body>
+    <%= if Application.get_env(:glimesh, :show_staging_warning) do %>
+      <div class="alert alert-danger mb-0 rounded-0" role="alert">
+        <strong>Danger!</strong>
+        This is our public TESTING website, all data & streams are FAKE. You can find the real
+        Glimesh at <a href="https://glimesh.tv/">https://glimesh.tv/</a>.
+      </div>
+    <% end %>
+
+    <div id="app">
+      <%= if Map.get(assigns, :render_nav, true) do %>
+        <%= render("_navbar.html", assigns) %>
+
+        <%= if message = Glimesh.Configurations.get_configuration_value("system_message") do %>
+          <div class="container">
+            <p class="alert alert-warning"><strong>System Message:</strong> <%= message %></p>
+          </div>
+        <% end %>
+        <%= if !is_nil(assigns[:current_user]) and assigns.current_user.privacy_policy_version !== Glimesh.get_privacy_version() do %>
+          <div class="container">
+            <div class="alert alert-warning" style="line-height: 31px;">
+              <strong>Policy Updates:</strong> The
+              <%= link(gettext("Privacy Policy"), to: Routes.about_path(@conn, :privacy)) %>
+              has been updated to reflect new data processing rules and add in support for our Mobile App.
+              <%= button("Accept & Close",
+                to: Routes.about_path(@conn, :accept_privacy),
+                method: :post,
+                class: "btn btn-primary btn-sm mt-0 float-right"
+              ) %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+
+      <%= @inner_content %>
+    </div>
+
+    <%= if Map.get(assigns, :render_footer, true) do %>
+      <footer class="mt-4">
+        <section class="footer-main pt-5 pb-5">
+          <div class="container">
+            <div class="row">
+              <div class="col-6 col-md-4 order-1">
+                <h6><%= gettext("GLIMESH.TV") %></h6>
+                <ul class="list-unstyled text-small">
+                  <li>
+                    <%= link(gettext("Mobile App!"),
+                      to: Routes.app_path(@conn, :index),
+                      class: "text-warning"
+                    ) %>
+                  </li>
+                  <li><%= link(gettext("About Us"), to: Routes.about_path(@conn, :index)) %></li>
+                  <li>
+                    <%= link(gettext("Frequently Asked Questions"),
+                      to: Routes.about_path(@conn, :faq)
+                    ) %>
+                  </li>
+                  <li><%= link(gettext("Credits"), to: Routes.about_path(@conn, :credits)) %></li>
+                  <li>
+                    <%= link(gettext("Open Data"), to: Routes.open_data_path(@conn, :index)) %>
+                  </li>
+                  <li>
+                    <%= link(gettext("Support"),
+                      to: "https://support.glimesh.tv/",
+                      target: "_blank"
+                    ) %>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="col-6 col-md-4 order-2 order-md-3">
+                <h6><%= gettext("LEGALS") %></h6>
+                <ul class="list-unstyled text-small">
+                  <li>
+                    <%= link(gettext("Terms of Service"), to: Routes.about_path(@conn, :terms)) %>
+                  </li>
+                  <li>
+                    <%= link(gettext("Rules of Conduct"), to: Routes.about_path(@conn, :conduct)) %>
+                  </li>
+                  <li>
+                    <%= link(gettext("Privacy Policy"), to: Routes.about_path(@conn, :privacy)) %>
+                  </li>
+                  <li>
+                    <%= link(gettext("Cookie Policy"), to: Routes.about_path(@conn, :cookies)) %>
+                  </li>
+                  <li>
+                    <%= link(gettext("DMCA Policy"), to: Routes.about_path(@conn, :dmca)) %>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="col-12 col-md-4 order-3 order-md-2">
+                <h6>
+                  <a href="https://blog.glimesh.tv" class="text-color-link">
+                    <%= gettext("BLOG") %>
+                  </a>
+                </h6>
+                <ul class="list-unstyled text-small">
+                  <%= for {title, url} <- Glimesh.BlogMigration.list_recent_posts() do %>
+                    <li><%= link(title, to: url) %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="footer-social pt-2 pb-1">
+          <div class="container">
+            <div class="btn-group btn-block" role="group" aria-label="Glimesh Socials">
+              <a
+                href="https://twitter.com/Glimesh"
+                class="btn btn-default"
+                target="_blank"
+                title="Twitter"
+              >
+                <i class="fab fa-twitter-square"></i>
+              </a>
+              <a
+                href="https://glimesh.tv/s/discord"
+                class="btn btn-default"
+                target="_blank"
+                title="Discord"
+              >
+                <i class="fab fa-discord"></i>
+              </a>
+              <a
+                href="https://www.guilded.gg/Glimesh"
+                class="btn btn-default"
+                target="_blank"
+                title="Guilded"
+              >
+                <i class="fab fa-guilded"></i>
+              </a>
+              <a
+                href="https://facebook.com/Glimesh"
+                class="btn btn-default"
+                target="_blank"
+                title="Facebook"
+              >
+                <i class="fab fa-facebook-square"></i>
+              </a>
+              <a
+                href="https://instagram.com/Glimesh"
+                class="btn btn-default"
+                target="_blank"
+                title="Instagram"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="https://reddit.com/r/Glimesh"
+                class="btn btn-default"
+                target="_blank"
+                title="Reddit"
+              >
+                <i class="fab fa-reddit"></i>
+              </a>
+              <a
+                href="https://github.com/Glimesh"
+                class="btn btn-default"
+                target="_blank"
+                title="GitHub"
+              >
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section class="footer-end pt-5 pb-4">
+          <p class="text-center mb-0">
+            <%= gettext("Copyright © 2022 Glimesh, Inc.") %>
+            <%= gettext("All rights reserved.") %>
+          </p>
+          <p class="text-center">
+            <small>Build Version: <%= Glimesh.get_version() %></small>
+          </p>
+        </section>
+      </footer>
+    <% end %>
+  </body>
+</html>
