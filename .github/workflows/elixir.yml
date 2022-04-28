@@ -37,7 +37,7 @@ jobs:
     - name: Set up Elixir
       uses: erlef/setup-elixir@v1
       with:
-        elixir-version: '1.12.1'
+        elixir-version: '1.13.4'
         otp-version: '24'
 
     - name: Restore dependencies cache
@@ -74,6 +74,9 @@ jobs:
 
     - name: Code Quality
       run: mix code_quality
+
+    - name: Ensure formatted
+      run: mix format --check-formatted
 
     - name: Code Coverage
       run: mix coveralls.github
