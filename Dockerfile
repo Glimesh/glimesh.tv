@@ -37,8 +37,9 @@ COPY lib lib
 RUN mix do compile, release
 
 # prepare release image
-FROM alpine:3.15 AS app
-RUN apk add --no-cache openssl gcc libc-dev ncurses-libs imagemagick librsvg npm
+FROM debian:bullseye-slim AS app
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends libssl-dev libncurses-dev ca-certificates imagemagick librsvg npm
 
 RUN npm install -g svgo
 
@@ -51,8 +52,5 @@ USER nobody:nobody
 COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/glimesh ./
 
 ENV HOME=/app
-
-RUN ls /app
-RUN ls /app/erts-12.2/bin/
 
 CMD ["bin/glimesh", "start"]
