@@ -2,6 +2,8 @@ defmodule Glimesh.Jobs.StartStreamNotifier do
   @moduledoc false
   @behaviour Rihanna.Job
 
+  def priority, do: 15
+
   def perform([channel_id]) do
     channel = Glimesh.ChannelLookups.get_channel!(channel_id)
     users = Glimesh.ChannelLookups.list_live_subscribed_followers(channel)

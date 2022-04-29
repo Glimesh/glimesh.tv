@@ -12,6 +12,8 @@ defmodule Glimesh.Jobs.StreamPrunerCron do
   # 5 Minutes in seconds
   @prune_diff 300
 
+  def priority, do: 17
+
   def perform(_) do
     channels = ChannelLookups.list_live_channels()
     Logger.info("Checking for stale streams to prune")
