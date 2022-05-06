@@ -53,7 +53,7 @@ defmodule Glimesh.Payments.Payable do
       :streamer_payout_amount,
       :stripe_transfer_id
     ])
-    |> validate_inclusion(:type, ["donation", "subscription"])
+    |> validate_inclusion(:type, ["donation", "subscription", "gift_subscription"])
     |> validate_inclusion(:external_source, ["stripe"])
     |> validate_inclusion(:status, ["created", "paid", "paidout"])
     |> put_assoc(:user, attrs.user)

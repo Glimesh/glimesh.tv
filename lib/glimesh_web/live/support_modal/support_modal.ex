@@ -100,12 +100,18 @@ defmodule GlimeshWeb.SupportModal do
                       <%= gettext("Subscribe") %>
                     </a>
                   <% end %>
-                  <!--
-                              <a phx-click="change_tab" phx-value-tab="gift_subscription" href="#" class={["mt-2 nav-link text-color",  if(@tab == "gift_subscription", do: "active")]}>
-                              <i class="fas fa-gift fa-fw fa-2x"></i><br>
-                              Gift a Sub
-                              </a>
-                              -->
+                  <a
+                    phx-click="change_tab"
+                    phx-value-tab="gift_subscription"
+                    href="#"
+                    class={
+                      ["mt-2 nav-link text-color", if(@tab == "gift_subscription", do: "active")]
+                    }
+                  >
+                    <i class="fas fa-gift fa-fw fa-2x"></i>
+                    <br />
+                    Gift a Sub
+                  </a>
                   <%= if "donate" in @tabs do %>
                     <a
                       phx-click="change_tab"
@@ -155,6 +161,15 @@ defmodule GlimeshWeb.SupportModal do
 
                     <%= if "subscribe" in @tabs and @tab == "subscribe" do %>
                       <.subscribe_contents
+                        socket={@socket}
+                        is_the_streamer={@is_the_streamer}
+                        streamer={@streamer}
+                        user={@user}
+                      />
+                    <% end %>
+
+                    <%= if "gift_subscription" in @tabs and @tab == "gift_subscription" do %>
+                      <.gift_subscription_contents
                         socket={@socket}
                         is_the_streamer={@is_the_streamer}
                         streamer={@streamer}
@@ -222,6 +237,45 @@ defmodule GlimeshWeb.SupportModal do
           <%= live_render(@socket, GlimeshWeb.SupportModal.SubForm,
             id: "sub-form",
             session: %{"user" => @user, "streamer" => @streamer}
+          ) %>
+        <% end %>
+      </div>
+    </div>
+    """
+  end
+
+  def gift_subscription_contents(assigns) do
+    ~H"""
+    <div class="row">
+      <div class="col-sm">
+        <h5><%= gettext("Gift Subscription") %></h5>
+        <p>
+          <%= gettext("Help support %{streamer} by gifting a subscription to anyone you choose.",
+            streamer: @streamer.displayname
+          ) %>
+        </p>
+        <p>
+          <%= gettext(
+            "The recipient will immediately receive the benefits of a channel sub and will have the option to continue their sub before the end of the subscription."
+          ) %>
+        </p>
+
+        <img
+          src="/images/stripe-badge-white.png"
+          alt="We use Stripe as our payment provider."
+          class="img-fluid mt-4 mx-auto d-block"
+        />
+      </div>
+      <div class="col-sm">
+        <%= if @is_the_streamer do %>
+          <p class="text-center mt-4">
+            <%= gettext("You cannot donate to yourself, but others will see a donation box here :)!") %>
+          </p>
+        <% else %>
+          <%= live_component(GlimeshWeb.SupportModal.GiftSubForm,
+            id: "gift-subscription-form",
+            user: @user,
+            streamer: @streamer
           ) %>
         <% end %>
       </div>

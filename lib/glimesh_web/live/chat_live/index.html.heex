@@ -23,7 +23,7 @@
             do: "bubble mention",
             else: "bubble you"
           ),
-          if(chat_message.is_subscription_message, do: "bg-secondary"),
+          if(chat_message.is_subscription_message, do: "bg-secondary text-white"),
           if(chat_message.is_followed_message, do: "border border-info")
         ]
       }

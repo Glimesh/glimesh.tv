@@ -339,4 +339,45 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
                })
     end
   end
+
+  describe "Gift Subscriptions" do
+    setup do
+      %{
+        streamer: streamer_fixture(),
+        user: user_fixture()
+      }
+    end
+
+    test "complete_gift_subscription/2 successfully creates payments and subscriptions", %{
+      streamer: streamer,
+      user: user
+    } do
+      user_to_be_gifted = user_fixture()
+
+      assert {:ok, subscription} =
+               StripeProvider.complete_gift_subscription(
+                 %Stripe.Session{
+                   id: "123",
+                   payment_intent: "foobar"
+                 },
+                 %{
+                   "type" => "gift_subscription",
+                   "product_id" => Glimesh.Payments.get_channel_sub_base_product_id(),
+                   "price_id" => Glimesh.Payments.get_channel_sub_base_price_id(),
+                   "user_doing_gifting_id" => user.id,
+                   "streamer_id" => streamer.id,
+                   "user_to_be_gifted_id" => user_to_be_gifted.id,
+                   "amount" => "500"
+                 }
+               )
+
+      expires_at = Date.utc_today() |> Date.add(30)
+
+      assert subscription.from_user.id == user.id
+      assert subscription.user.id == user_to_be_gifted.id
+      assert subscription.streamer.id == streamer.id
+      assert subscription.is_canceling
+      assert Date.compare(NaiveDateTime.to_date(subscription.ended_at), expires_at) == :eq
+    end
+  end
 end
