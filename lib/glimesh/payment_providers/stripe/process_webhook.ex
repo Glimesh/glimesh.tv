@@ -52,6 +52,9 @@ defmodule Glimesh.PaymentProviders.StripeProvider.ProcessWebhook do
           "unpaid" ->
             Payments.process_unsuccessful_renewal(subscription.id)
 
+          "trialing" ->
+            :ok
+
           "active" ->
             :ok
         end

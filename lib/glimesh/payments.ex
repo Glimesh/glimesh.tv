@@ -109,6 +109,21 @@ defmodule Glimesh.Payments do
   end
 
   def subscribe_to_channel(user, streamer, product_id, price_id) do
+    case get_channel_subscription(user, streamer) do
+      %Subscription{} = sub ->
+        if is_nil(sub.stripe_subscription_id) and not is_nil(sub.from_user_id) do
+          convert_gift_to_subscription(user, streamer, price_id)
+        else
+          # Is this right?
+          new_subscription_to_channel(user, streamer, product_id, price_id)
+        end
+
+      _ ->
+        new_subscription_to_channel(user, streamer, product_id, price_id)
+    end
+  end
+
+  def new_subscription_to_channel(user, streamer, product_id, price_id) do
     if user.id == streamer.id do
       raise ArgumentError, "You cannot subscribe to yourself."
     end
@@ -162,6 +177,41 @@ defmodule Glimesh.Payments do
     end
   end
 
+  def convert_gift_to_subscription(user, streamer, price_id) do
+    if user.id == streamer.id do
+      raise ArgumentError, "You cannot subscribe to yourself."
+    end
+
+    existing_sub = get_channel_subscription!(user, streamer)
+
+    if not existing_sub.is_canceling or not is_nil(existing_sub.stripe_subscription_id) do
+      raise ArgumentError, "You cannot upgrade a non-gifted sub."
+    end
+
+    customer_id = Accounts.get_stripe_customer_id(user)
+
+    stripe_input = %{
+      customer: customer_id,
+      trial_end: existing_sub.stripe_current_period_end,
+      items: [%{price: price_id}]
+    }
+
+    with {:ok, %Stripe.Subscription{} = stripe_sub} <-
+           Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"]),
+         {:ok, subscription} <-
+           update_subscription(existing_sub, %{
+             stripe_subscription_id: stripe_sub.id,
+             is_canceling: false,
+             ended_at:
+               stripe_sub.current_period_end |> DateTime.from_unix!() |> DateTime.to_naive()
+           }) do
+      {:ok, subscription}
+    else
+      error ->
+        error
+    end
+  end
+
   @doc """
   Start a channel donation by creating a Stripe Checkout Session, and returning a URL that the user can finish the payment on. This method is bundled with a webhook from Stripe to finalize the donation.
 
@@ -197,7 +247,7 @@ defmodule Glimesh.Payments do
               "description" => description,
               "quantity" => 1,
               "price_data" => %{
-                "product" => Glimesh.Payments.get_channel_donation_product_id(),
+                "product" => get_channel_donation_product_id(),
                 "currency" => "USD",
                 "unit_amount" => amount_in_cents
               }
@@ -205,9 +255,84 @@ defmodule Glimesh.Payments do
           ],
           "metadata" => %{
             "type" => "donation",
-            "product_id" => Glimesh.Payments.get_channel_donation_product_id(),
+            "product_id" => get_channel_donation_product_id(),
             "user_id" => user.id,
             "streamer_id" => streamer.id,
+            "amount" => amount_in_cents
+          }
+        }
+
+        Stripe.Session.create(stripe_input)
+    end
+  end
+
+  @doc """
+  Start a gift subscription from a user, to a user, for a streamer.
+  This method is bundled with a webhook from Stripe to finalize the donation.
+
+  Currently no state is saved unless the webhook comes back through the API.
+  If a checkout session is abandoned, Stripe will automatically delete it in a day.
+
+  Additional metadata is used to store who the subscription is for, but it needs to show
+  up in user_doing_gifting's payment history.
+  """
+  def start_gift_subscription(
+        %User{} = user_doing_gifting,
+        %User{} = streamer,
+        %User{} = user_to_be_gifted,
+        amount_in_cents,
+        return_url
+      )
+      when is_integer(amount_in_cents) do
+    possible_channel_sub = get_channel_subscription(user_to_be_gifted, streamer)
+
+    cond do
+      not is_nil(possible_channel_sub) ->
+        {:validation, "The recipient already has a subscription for this channel."}
+
+      user_doing_gifting.id == user_to_be_gifted.id ->
+        {:validation, "You cannot gift a subscription to yourself."}
+
+      user_to_be_gifted.id == streamer.id ->
+        {:validation, "You cannot gift a subscription to the streamer."}
+
+      amount_in_cents < 100 or amount_in_cents > 10_000 ->
+        {:validation, "Amount must be more than 1.00 and less than 100.00."}
+
+      true ->
+        description =
+          "Gift subscription to #{user_to_be_gifted.displayname} for #{streamer.displayname}"
+
+        stripe_input = %{
+          "cancel_url" => return_url,
+          "success_url" => return_url <> "?stripe_session_id={CHECKOUT_SESSION_ID}",
+          "mode" => "payment",
+          "payment_method_types" => [
+            "card"
+          ],
+          "submit_type" => "pay",
+          "customer" => Accounts.get_stripe_customer_id(user_doing_gifting),
+          "payment_intent_data" => %{
+            "description" => description
+          },
+          "line_items" => [
+            %{
+              "description" => description,
+              "quantity" => 1,
+              "price_data" => %{
+                "product" => get_channel_sub_base_product_id(),
+                "currency" => "USD",
+                "unit_amount" => amount_in_cents
+              }
+            }
+          ],
+          "metadata" => %{
+            "type" => "gift_subscription",
+            "product_id" => get_channel_sub_base_product_id(),
+            "price_id" => get_channel_sub_base_price_id(),
+            "user_doing_gifting_id" => user_doing_gifting.id,
+            "streamer_id" => streamer.id,
+            "user_to_be_gifted_id" => user_to_be_gifted.id,
             "amount" => amount_in_cents
           }
         }
@@ -446,7 +571,7 @@ defmodule Glimesh.Payments do
       from s in Subscription,
         where: s.user_id == ^user.id and s.is_active == true and not is_nil(s.streamer_id)
     )
-    |> Repo.preload([:user, :streamer])
+    |> Repo.preload([:user, :streamer, :from_user])
   end
 
   def get_channel_subscription(user, streamer) do
@@ -470,7 +595,10 @@ defmodule Glimesh.Payments do
   def has_channel_subscription?(user, streamer) do
     Repo.exists?(
       from s in Subscription,
-        where: s.user_id == ^user.id and s.is_active == true and s.streamer_id == ^streamer.id
+        where:
+          s.user_id == ^user.id and
+            s.is_active == true and
+            s.streamer_id == ^streamer.id
     )
   end
 

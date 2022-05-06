@@ -62,15 +62,25 @@
                             <% end %>
                             <%= for sub <- @subscriptions do %>
                             <tr>
-                                <td><%= sub.streamer.displayname %> Channel Sub</td>
+                                <td>
+                                    <%= if not is_nil(sub.stripe_subscription_id) do %>
+                                    Channel Sub to
+                                    <% else %>
+                                    Gift Sub to
+                                    <% end %>
+                                    <%= link sub.streamer.displayname, to: Routes.user_stream_path(@conn, :index, sub.streamer.displayname), class: "" %>
+                                    <%= if not is_nil(sub.from_user_id) do %>
+                                    <br>
+                                    Gifted from <%= sub.from_user.displayname %>
+                                    <% end %>
+                                </td>
                                 <td>$<%= format_price(sub.price) %></td>
                                 <td><%= format_datetime(sub.started_at) %></td>
                                 <td>
                                     <%= if sub.is_canceling do %>
-                                    <%= gettext("Canceling on %{date}", date: format_datetime(sub.ended_at)) %>
-                                    <% else %>
-                                    <%= link "Manage Subscription", to: Routes.user_stream_path(@conn, :index, sub.streamer.displayname), class: "" %>
+                                    <%= gettext("Canceling on %{date}", date: format_datetime(sub.ended_at)) %><br>
                                     <% end %>
+                                    <%= link "Manage Subscription", to: Routes.user_stream_path(@conn, :support, sub.streamer.displayname), class: "" %>
                                 </td>
                             </tr>
                             <% end %>

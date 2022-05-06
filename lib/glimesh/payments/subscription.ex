@@ -20,6 +20,7 @@ defmodule Glimesh.Payments.Subscription do
            ]}
   schema "subscriptions" do
     belongs_to :user, Glimesh.Accounts.User
+    belongs_to :from_user, Glimesh.Accounts.User
     belongs_to :streamer, Glimesh.Accounts.User
 
     field :stripe_subscription_id, :string
@@ -55,13 +56,14 @@ defmodule Glimesh.Payments.Subscription do
       :product_name,
       :started_at,
       :ended_at,
-      :is_active
+      :is_active,
+      :is_canceling
     ])
     |> put_assoc(:user, attrs.user)
     |> maybe_put_assoc(:streamer, Map.get(attrs, :streamer, nil))
+    |> maybe_put_assoc(:from_user, Map.get(attrs, :from_user, nil))
     |> validate_required([
       :user,
-      :stripe_subscription_id,
       :stripe_product_id,
       :stripe_price_id,
       :stripe_current_period_end,
@@ -77,7 +79,13 @@ defmodule Glimesh.Payments.Subscription do
   @doc false
   def update_changeset(subscription, attrs) do
     subscription
-    |> cast(attrs, [:stripe_current_period_end, :ended_at, :is_active, :is_canceling])
+    |> cast(attrs, [
+      :stripe_subscription_id,
+      :stripe_current_period_end,
+      :ended_at,
+      :is_active,
+      :is_canceling
+    ])
     |> validate_required([:stripe_current_period_end, :ended_at, :is_active])
   end
 

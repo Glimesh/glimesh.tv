@@ -321,6 +321,7 @@ defmodule Glimesh.Streams do
 
     [
       {"subscribe", can_receive_payments && channel.show_subscribe_button},
+      {"gift_subscription", can_receive_payments && channel.show_subscribe_button},
       {"donate", can_receive_payments && channel.show_donate_button},
       {"streamloots", channel.show_streamloots_button && not is_nil(channel.streamloots_url)}
     ]

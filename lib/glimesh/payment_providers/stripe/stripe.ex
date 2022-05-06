@@ -6,6 +6,7 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
 
   alias Glimesh.Accounts
   alias Glimesh.Accounts.User
+  alias Glimesh.Chat
   alias Glimesh.Payments
   alias Glimesh.Payments.Payable
   alias Glimesh.Payments.Subscription
@@ -70,10 +71,14 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
   def complete_session(%Stripe.Session{} = session) do
     # Completes a session and stores the payment in our DB for proper routing
     donation_id = Payments.get_channel_donation_product_id()
+    channel_sub_id = Payments.get_channel_sub_base_product_id()
 
     case session.metadata do
       %{"type" => "donation", "product_id" => ^donation_id} = payment_router ->
         complete_donation(session, payment_router)
+
+      %{"type" => "gift_subscription", "product_id" => ^channel_sub_id} = payment_router ->
+        complete_gift_subscription(session, payment_router)
 
       _ ->
         {:error, "No matching metadata found"}
@@ -144,10 +149,10 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
           # Only notify channel on create
           channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
 
-          if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
+          if !is_nil(channel) and Chat.can_create_chat_message?(channel, user) do
             human_amount = :erlang.float_to_binary(amount_in_cents / 100, decimals: 2)
 
-            Glimesh.Chat.create_chat_message(user, channel, %{
+            Chat.create_chat_message(user, channel, %{
               message: " just donated $#{human_amount}!",
               is_subscription_message: true
             })
@@ -155,6 +160,137 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
       end
 
     case res do
+      {:ok, _struct} = resp ->
+        resp
+
+      {:error, changeset} ->
+        Logger.error("Error saving changeset #{inspect(changeset)}")
+        {:error, "Failed to save database record"}
+    end
+  end
+
+  @doc """
+  Complete a gift subscription by creating a payment for the user_doing_gifting and a expiring subscription for user_to_be_gifted.
+  """
+  def complete_gift_subscription(%Stripe.Session{} = session, payment_router) do
+    %{
+      "type" => "gift_subscription",
+      "product_id" => product_id,
+      "price_id" => price_id,
+      "user_doing_gifting_id" => user_doing_gifting_id,
+      "streamer_id" => streamer_id,
+      "user_to_be_gifted_id" => user_to_be_gifted_id,
+      "amount" => amount_in_cents
+    } = payment_router
+
+    total_amount = String.to_integer(amount_in_cents)
+
+    # Get the Stripe fees directly from the payment intent
+    total_fees =
+      case get_stripe_fees(session.payment_intent) do
+        {:ok, total_fees} ->
+          total_fees
+
+        _error ->
+          # Edge case, sometimes we don't have a payment intent immediately? Guess fees...
+          Logger.info("Invalid Payment Intent: #{inspect(session)}")
+          ceil(total_amount - (total_amount - total_amount * 0.029 - 30))
+      end
+
+    user_doing_gifting = Accounts.get_user!(user_doing_gifting_id)
+    user_to_be_gifted = Accounts.get_user!(user_to_be_gifted_id)
+    streamer = Accounts.get_user!(streamer_id)
+
+    # This is recalculated just in case our cut changes or the invoice is discounted.
+    glimesh_cut_percent = 0.40
+    glimesh_cut = trunc(total_amount * glimesh_cut_percent)
+    potential_payout_amount = total_amount - glimesh_cut
+
+    # Withholding is calculated from the potential payout amount, not the full amount
+    # Rounded UP in the event the withholding is a fractional percent eg 2.50 - 0.125 = 2.38
+    withholding_amount =
+      if streamer.tax_withholding_percent,
+        do:
+          Decimal.to_integer(
+            Decimal.round(Decimal.mult(potential_payout_amount, streamer.tax_withholding_percent))
+          ),
+        else: 0
+
+    payout_amount = potential_payout_amount - withholding_amount
+
+    update_attributes = %{
+      status: "paid",
+
+      # These fields are calculated by us
+      # Cents of course...
+      total_amount: total_amount,
+      external_fees: total_fees,
+      our_fees: glimesh_cut,
+      withholding_amount: withholding_amount,
+      payout_amount: payout_amount
+    }
+
+    # For laziness, we'll expire the subscription in exactly 30 days
+    expires_at = DateTime.utc_now() |> DateTime.add(86_400 * 30)
+
+    with nil <- Payments.get_payable_by_source("stripe", session.id),
+         {:ok, _payment} <-
+           Payments.create_payable(
+             Map.merge(update_attributes, %{
+               type: "gift_subscription",
+               external_source: "stripe",
+               external_reference: session.id,
+               status: "paid",
+
+               # Relations
+               user: user_doing_gifting,
+               streamer: streamer,
+
+               # These fields are what actually happened
+               user_paid_at: NaiveDateTime.utc_now()
+             })
+           ),
+         {:ok, product} <- Stripe.Product.retrieve(product_id),
+         {:ok, price} <- Stripe.Price.retrieve(price_id),
+         {:ok, subscription} <-
+           Payments.create_subscription(%{
+             from_user: user_doing_gifting,
+             user: user_to_be_gifted,
+             streamer: streamer,
+             stripe_product_id: product_id,
+             stripe_price_id: price_id,
+             price: price.unit_amount,
+             fee: 0,
+             payout: price.unit_amount,
+             product_name: product.name,
+             stripe_subscription_id: nil,
+             stripe_current_period_end: DateTime.to_unix(expires_at),
+             is_active: true,
+             is_canceling: true,
+             started_at: NaiveDateTime.utc_now(),
+             ended_at: DateTime.to_naive(expires_at)
+           }) do
+      # Only notify channel on create
+      channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
+
+      if !is_nil(channel) and
+           Chat.can_create_chat_message?(channel, user_doing_gifting) do
+        Chat.create_chat_message(user_doing_gifting, channel, %{
+          message: " just gifted a subscription to #{user_to_be_gifted.displayname}!",
+          is_subscription_message: true
+        })
+      end
+
+      {:ok, subscription}
+    else
+      %Payable{} = payable ->
+        # We just need to update what we have
+        Payments.update_payable(payable, update_attributes)
+
+      error ->
+        error
+    end
+    |> case do
       {:ok, _struct} = resp ->
         resp
 

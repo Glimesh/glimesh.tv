@@ -17,20 +17,42 @@ defmodule GlimeshWeb.SupportModal.SubForm do
             </div>
           <% end %>
 
-          <p>
-            <%= gettext("Your subscription is currently set to automatically cancel on %{date}.",
-              date: format_datetime(@subscription.ended_at)
+          <%= if is_nil(@subscription.stripe_subscription_id) do %>
+            <p>
+              <%= gettext(
+                "Your gift subscription is currently set to automatically cancel on %{date}.",
+                date: format_datetime(@subscription.ended_at)
+              ) %>
+            </p>
+            <%= live_component(GlimeshWeb.SubscriptionComponent,
+              id: "subscription-component",
+              type: :channel,
+              user: @user,
+              streamer: @streamer,
+              product_id: @product_id,
+              price_id: @price_id,
+              price: @price
             ) %>
-          </p>
-          <p>
-            <%= gettext(
-              "You can resubscribe by clicking the button below, and your subscription will be renewed until you cancel it."
-            ) %>
-          </p>
+          <% else %>
+            <p>
+              <%= gettext("Your subscription is currently set to automatically cancel on %{date}.",
+                date: format_datetime(@subscription.ended_at)
+              ) %>
+            </p>
+            <p>
+              <%= gettext(
+                "You can resubscribe by clicking the button below, and your subscription will be renewed until you cancel it."
+              ) %>
+            </p>
 
-          <button class="btn btn-primary btn-block btn-lg" phx-click="resubscribe" phx-throttle="5000">
-            <%= gettext("Resubscribe") %>
-          </button>
+            <button
+              class="btn btn-primary btn-block btn-lg"
+              phx-click="resubscribe"
+              phx-throttle="5000"
+            >
+              <%= gettext("Resubscribe") %>
+            </button>
+          <% end %>
         <% else %>
           <h4 class="mt-2"><%= gettext("You're subscribed!") %></h4>
           <p>
@@ -154,6 +176,7 @@ defmodule GlimeshWeb.SupportModal.SubForm do
        socket
        |> assign(:user, Accounts.get_user!(user.id))
        |> assign(:show_subscription, false)
+       |> assign(:subscription, subscription)
        |> assign(
          :subscribed,
          Payments.has_channel_subscription?(socket.assigns.user, socket.assigns.streamer)
