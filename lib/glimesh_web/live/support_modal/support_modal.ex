@@ -267,17 +267,11 @@ defmodule GlimeshWeb.SupportModal do
         />
       </div>
       <div class="col-sm">
-        <%= if @is_the_streamer do %>
-          <p class="text-center mt-4">
-            <%= gettext("You cannot donate to yourself, but others will see a donation box here :)!") %>
-          </p>
-        <% else %>
-          <%= live_component(GlimeshWeb.SupportModal.GiftSubForm,
-            id: "gift-subscription-form",
-            user: @user,
-            streamer: @streamer
-          ) %>
-        <% end %>
+        <%= live_component(GlimeshWeb.SupportModal.GiftSubForm,
+          id: "gift-subscription-form",
+          user: @user,
+          streamer: @streamer
+        ) %>
       </div>
     </div>
     """

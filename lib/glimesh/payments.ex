@@ -290,9 +290,6 @@ defmodule Glimesh.Payments do
       not is_nil(possible_channel_sub) ->
         {:validation, "The recipient already has a subscription for this channel."}
 
-      user_doing_gifting.id == streamer.id ->
-        {:validation, "You cannot gift a subscription to yourself."}
-
       user_doing_gifting.id == user_to_be_gifted.id ->
         {:validation, "You cannot gift a subscription to yourself."}
 
