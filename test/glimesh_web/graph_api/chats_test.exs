@@ -24,6 +24,21 @@ defmodule GlimeshWeb.GraphApi.ChatsTest do
     }
   }
   """
+  @create_chat_message_with_metadata_mutation """
+  mutation CreateChatMessage($channelId: ID!, $message: ChatMessageInput!) {
+    createChatMessage(channelId: $channelId, message: $message) {
+      message
+      metadata {
+        admin
+        streamer
+        moderator
+        subscriber
+        platform_founder_subscriber
+        platform_supporter_subscriber
+      }
+    }
+  }
+  """
 
   @short_timeout_mutation """
   mutation ShortTimeoutUser($channelId: ID!, $userId: ID!) {
@@ -146,6 +161,35 @@ defmodule GlimeshWeb.GraphApi.ChatsTest do
                "tokens" => [
                  %{"type" => "text", "text" => "Hello world"}
                ]
+             }
+    end
+
+    test "can send a chat message and get appropriate metadata", %{
+      conn: conn,
+      channel: channel
+    } do
+      # This doesn't really belong here, but where does it belong?
+      conn =
+        post(conn, "/api/graph", %{
+          "query" => @create_chat_message_with_metadata_mutation,
+          "variables" => %{
+            channelId: "#{channel.id}",
+            message: %{
+              message: "Hello world"
+            }
+          }
+        })
+
+      assert json_response(conn, 200)["data"]["createChatMessage"] == %{
+               "message" => "Hello world",
+               "metadata" => %{
+                 "admin" => false,
+                 "streamer" => true,
+                 "moderator" => false,
+                 "subscriber" => false,
+                 "platform_founder_subscriber" => false,
+                 "platform_supporter_subscriber" => false
+               }
              }
     end
 
