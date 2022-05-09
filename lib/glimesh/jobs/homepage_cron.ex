@@ -7,6 +7,8 @@ defmodule Glimesh.Jobs.HomepageCron do
   # 5 Minutes
   @interval 300_000
 
+  def priority, do: 5
+
   def perform(_) do
     Logger.info("Generating homepage")
     Glimesh.Homepage.update_homepage()

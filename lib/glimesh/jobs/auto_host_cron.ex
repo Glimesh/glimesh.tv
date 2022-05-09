@@ -9,6 +9,8 @@ defmodule Glimesh.Jobs.AutoHostCron do
   # 10 Minutes
   @interval 600_000
 
+  def priority, do: 10
+
   def perform(_) do
     Logger.info("Starting Auto-Host runner")
     start = NaiveDateTime.utc_now()

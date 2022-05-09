@@ -9,6 +9,8 @@ defmodule Glimesh.Jobs.StreamMetricsCron do
 
   @interval 60_000
 
+  def priority, do: 16
+
   def perform(_) do
     channels = ChannelLookups.list_live_channels()
     Logger.info("Counting live viewers for #{length(channels)} channels")
