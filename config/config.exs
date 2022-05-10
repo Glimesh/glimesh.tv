@@ -233,12 +233,20 @@ config :glimesh, :event_type,
     nil: "-",
     "GCT Event": "GCT Event",
     "Community Event": "Community Event",
-    "Glimesh Event": "Glimesh Event"
+    "Glimesh Event": "Glimesh Event",
+
+    # Adding in Pride Event tag for Pride Month in june
+    "Pride Event": "Pride Event"
   ],
   event_colors: [
     "GCT Event": "var(--success)",
     "Community Event": "#00AFEF",
-    "Glimesh Event": "var(--danger)"
+    "Glimesh Event": "var(--danger)",
+
+    # Adding in color set for Pride tag
+    "Pride Event":
+      "linear-gradient(to right,
+         #FFD2E9 12.5%, #FFB3B3 12.5% 25%, #FFDDB3 25% 37.5%, #FFFFB3 37.5% 50%, #B3DDB3 50% 62.5%, #B3ECEC 62.5% 75%, #C6B3E0 75% 87.5%, #DDB3DD 87.5%);"
   ]
 
 config :hcaptcha,
