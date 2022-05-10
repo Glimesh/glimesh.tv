@@ -14,46 +14,46 @@
                             <p><%= gettext("User ID: %{value}", value: @user.id) %></p>
                             <p><%= gettext("Email Confirmed At: %{value}", value: @user.confirmed_at) %></p>
                             <p><%= gettext("2FA Enabled: %{value}", value: (if @user.tfa_token, do: "✅", else: "❌")) %>
-                            <p><%= gettext("Has Channel: %{value}", value: (if Glimesh.ChannelLookups.get_channel_for_user(@user), do: "✅", else: "❌")) %>
-                                <p><%= gettext("Banned: %{value}", value: (if @user.is_banned, do: "✅", else: "❌")) %>
-                                </p>
-                                <p><%= gettext("GCT: %{value}", value: (if @user.is_gct, do: "✅", else: "❌")) %></p>
-                                <p><%= gettext("Access Level: %{value}", value: Glimesh.CommunityTeam.access_level_to_title(@user.gct_level)) %>
-                                </p>
-                                <p>
-                                    <%= gettext("Team Role: %{value}", value: @user.team_role) %>
-                                </p>
-                                <p><%= gettext("Stripe Setup: %{value}", value: (if @user.is_stripe_setup, do: "✅", else: "❌")) %></p>
-                                <p><%= gettext("Tax Verified: %{value}", value: (if @user.is_tax_verified, do: "✅", else: "❌")) %>
-                                </p>
-                                <p><%= gettext("Sub Ready: %{value}", value: (if Glimesh.Accounts.can_receive_payments?(@user), do: "✅", else: "❌")) %>
-                                </p>
-                                <%= if @user.stripe_user_id do %>
-                                <p><%= gettext("Stripe Customer ID: %{value}", value: @user.stripe_customer_id) %></p>
-                                <% end %>
-                                <%= if @user.stripe_customer_id && @view_billing? do %>
-                                <p><%= gettext("Stripe User ID: %{value}", value: @user.stripe_user_id) %></p>
-                                <p><%= gettext("Stripe Payment Method: %{value}", value: @user.stripe_payment_method) %>
-                                </p>
-                                <% end %>
+                                <p><%= gettext("Has Channel: %{value}", value: (if Glimesh.ChannelLookups.get_channel_for_user(@user), do: "✅", else: "❌")) %>
+                                    <p><%= gettext("Banned: %{value}", value: (if @user.is_banned, do: "✅", else: "❌")) %>
+                                    </p>
+                                    <p><%= gettext("GCT: %{value}", value: (if @user.is_gct, do: "✅", else: "❌")) %></p>
+                                    <p><%= gettext("Access Level: %{value}", value: Glimesh.CommunityTeam.access_level_to_title(@user.gct_level)) %>
+                                    </p>
+                                    <p>
+                                        <%= gettext("Team Role: %{value}", value: @user.team_role) %>
+                                    </p>
+                                    <p><%= gettext("Stripe Setup: %{value}", value: (if @user.is_stripe_setup, do: "✅", else: "❌")) %></p>
+                                    <p><%= gettext("Tax Verified: %{value}", value: (if @user.is_tax_verified, do: "✅", else: "❌")) %>
+                                    </p>
+                                    <p><%= gettext("Sub Ready: %{value}", value: (if Glimesh.Accounts.can_receive_payments?(@user), do: "✅", else: "❌")) %>
+                                    </p>
+                                    <%= if @user.stripe_user_id do %>
+                                    <p><%= gettext("Stripe Customer ID: %{value}", value: @user.stripe_customer_id) %></p>
+                                    <% end %>
+                                    <%= if @user.stripe_customer_id && @view_billing? do %>
+                                    <p><%= gettext("Stripe User ID: %{value}", value: @user.stripe_user_id) %></p>
+                                    <p><%= gettext("Stripe Payment Method: %{value}", value: @user.stripe_payment_method) %>
+                                    </p>
+                                    <% end %>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="row">
                         <div class="col-sm-6">
-                            <%= label :user, gettext("username") %>
+                            <%= label :user, :username, gettext("username") %>
                             <%= text_input :user, :username, [value: @user.username, class: "form-control", disabled: true] %>
                         </div>
                         <div class="col-sm-6">
-                            <%= label :user, gettext("Display Name") %>
+                            <%= label :user, :displayname, gettext("Display Name") %>
                             <%= text_input :user, :displayname, [value: @user.displayname, class: "form-control", disabled: true] %>
                         </div>
                     </div>
 
                     <div class="row mt-1">
                         <div class="col-sm-6">
-                            <%= label :user, gettext("Email") %>
+                            <%= label :user, :email, gettext("Email") %>
                             <%= text_input :user, :email, [value: @user.email, class: "form-control", disabled: true] %>
                         </div>
                         <div class="col-sm-6">
@@ -62,7 +62,7 @@
 
                     <div class="row mt-1">
                         <div class="col-sm-6">
-                            <%= label :user, gettext("Twitter") %>
+                            <%= label :user, :twitter, gettext("Twitter") %>
                             <%= if twitter_user = Glimesh.Socials.get_social(@user, "twitter") do %>
                             <%= text_input :user, :twitter, [value: twitter_user.username, class: "form-control", disabled: true] %>
                             <% else %>
@@ -70,40 +70,38 @@
                             <% end %>
                         </div>
                         <div class="col-sm-6">
-                            <%= label :user, gettext("Youtube") %>
+                            <%= label :user, :youtube, gettext("Youtube") %>
                             <%= text_input :user, :youtube, [value: @user.social_youtube, class: "form-control", disabled: true] %>
                         </div>
                     </div>
 
                     <div class="row mt-1">
                         <div class="col-sm-6">
-                            <%= label :user, gettext("Discord") %>
+                            <%= label :user, :discord, gettext("Discord") %>
                             <%= text_input :user, :discord, [value: @user.social_discord, class: "form-control", disabled: true] %>
                         </div>
                         <div class="col-sm-6">
-                            <%= label :user, gettext("Instagram") %>
+                            <%= label :user, :instagram, gettext("Instagram") %>
                             <%= text_input :user, :instagram, [value: @user.social_instagram, class: "form-control", disabled: true] %>
                         </div>
                     </div>
 
                     <div class="row mt-1">
                         <div class="col-sm-6">
-                            <%= label :user, gettext("Guilded") %>
+                            <%= label :user, :guilded, gettext("Guilded") %>
                             <%= text_input :user, :guilded, [value: @user.social_guilded, class: "form-control", disabled: true] %>
                         </div>
                     </div>
                     <div class="row mt-1">
-                        <div class="col-sm-6">
-                            <%= label :user, gettext("Youtube Teaser URL") %>
-                            <%= text_input :user, :email, [value: @user.youtube_intro_url, class: "form-control", disabled: true] %>
-                        </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
+                            <%= label :user, :youtube_intro_url, gettext("YouTube Teaser URL") %>
+                            <%= text_input :user, :youtube_intro_url, [value: @user.youtube_intro_url, class: "form-control", disabled: true] %>
                         </div>
                     </div>
 
                     <div class="row mt-1">
                         <div class="col">
-                            <%= label :user, gettext("Profile Content") %>
+                            <%= label :user, :profile_content_md, gettext("Profile Content") %>
                             <%= textarea :user, :profile_content_md, [value: @user.profile_content_md ,class: "form-control mb-4", id: "textarea_edit", rows: 7, disabled: true]  %>
                         </div>
                     </div>
@@ -111,7 +109,7 @@
                     <%= if @user.ban_reason do %>
                     <div class="row mt-1">
                         <div class="col">
-                            <%= label :user, gettext("Ban Reason") %>
+                            <%= label :user, :ban_reason, gettext("Ban Reason") %>
                             <%= textarea :user, :ban_reason, [value: @user.ban_reason,class: "form-control mb-4", id: "textarea_edit", rows: 5, disabled: true]  %>
                         </div>
                     </div>
@@ -168,7 +166,7 @@
                         <td><%= payment.status %></td>
                         <td>
                             <%= unless payment.status == "failed" do %>
-                                <a href="<%= payment.receipt_url %>" target="_blank">Receipt</a>
+                            <a href="<%= payment.receipt_url %>" target="_blank">Receipt</a>
                             <% end %>
                         </td>
                     </tr>

@@ -3639,27 +3639,27 @@ msgstr "para estar al tanto."
 
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:99
 msgid "App!"
-msgstr ""
+msgstr "App!"
 
 #: lib/glimesh_web/controllers/about_controller.ex:80
 #: lib/glimesh_web/templates/layout/root.html.leex:116
 msgid "Cookie Policy"
-msgstr ""
+msgstr "Política de cookies"
 
 #: lib/glimesh_web/templates/layout/root.html.leex:150
 msgid "Copyright © 2022 Glimesh, Inc."
-msgstr ""
+msgstr "Copyright © 2022 Glimesh, Inc."
 
 #: lib/glimesh_web/templates/layout/root.html.leex:111
 msgid "LEGALS"
-msgstr ""
+msgstr "INFORMACIÓN LEGAL"
 
 #: lib/glimesh_web/templates/layout/root.html.leex:101
 msgid "Mobile App!"
-msgstr ""
+msgstr "App!"
 
 #: lib/glimesh_web/templates/layout/root.html.leex:81
 #: lib/glimesh_web/templates/layout/root.html.leex:115
 msgid "Privacy Policy"
-msgstr ""
+msgstr "Política de privacidad"
 
