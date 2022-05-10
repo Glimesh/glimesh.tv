@@ -1796,7 +1796,7 @@ msgstr "YouTube"
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:97
 msgid "Youtube Teaser URL"
-msgstr "YouTube"
+msgstr "YouTube Teaser URL"
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:45
 msgid "username"

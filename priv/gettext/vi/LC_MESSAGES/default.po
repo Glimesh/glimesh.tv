@@ -447,7 +447,7 @@ msgstr "Chọn"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:32
 msgid "Support Glimesh's future with your wallet! Get special perks to show off."
-msgstr "Ủng hộ tương lai của Glimesh với ví tiền của bạn! Nhận lại các ưu đãi để khoa trương."
+msgstr "Ủng hộ tương lai của Glimesh với túi tiền của bạn! Nhận lại các ưu đãi để khoa trương."
 
 #: lib/glimesh_web/live/platform_subscription_live/index.html.leex:54
 #: lib/glimesh_web/live/support_modal/sub_form.ex:25
@@ -1200,7 +1200,7 @@ msgstr "Chúng tôi sử dụng nhiều dự án mã nguồn mở để cung c�
 
 #: lib/glimesh_web/live/chat_live/index.html.leex:5
 msgid "Welcome to chat! Follow the rules."
-msgstr "Chào mừng bạn đến khung trò chuyện! Hãy tuân thủ theo quy định."
+msgstr "Chào mừng bạn đến khung chat! Hãy tuân thủ theo quy định."
 
 #: lib/glimesh_web/views/channel_moderator_view.ex:5
 msgid "Yes"
@@ -1886,7 +1886,7 @@ msgstr "Glimesh được tạo ra từ lúc Mixer ngừng hoạt động. Khi Mi
 
 #: lib/glimesh_web/templates/about/index.html.eex:10
 msgid "Glimesh is the next generation streaming platform built by the community for the community. We know establishing a following is hard, and the hours are long. Our platform focuses on increasing discoverability for content creators and implementing the latest in streaming technology to level the playing field. We understand the importance of interaction between content creators and their fans, and we’re dedicated to innovating new ways to bring communities closer together."
-msgstr "Glimesh là nền tảng phát trực tuyến thế hệ tiếp theo do cộng đồng xây dựng vì cộng đồng. Chúng tôi biết rằng việc thiết lập một lượng người theo dõi là rất khó và thời gian còn dài. Nền tảng của chúng tôi tập trung vào việc tăng khả năng khám phá cho người tạo nội dung và triển khai công nghệ phát trực tuyến mới nhất để tạo sân chơi bình đẳng. Chúng tôi hiểu tầm quan trọng của sự tương tác giữa người sáng tạo nội dung và người hâm mộ của họ, đồng thời, chúng tôi nỗ lực cải tiến những cách thức mới để mang các cộng đồng đến gần nhau hơn."
+msgstr "Glimesh là nền tảng phát trực tuyến thế hệ tiếp theo do cộng đồng xây dựng vì cộng đồng. Chúng tôi biết rằng rất khó để dựng nên một lượng người theo dõi và chặng đường còn dài. Nền tảng của chúng tôi tập trung vào việc tăng khả năng khám phá cho người tạo nội dung và triển khai công nghệ phát trực tuyến mới nhất để tạo sân chơi bình đẳng. Chúng tôi hiểu tầm quan trọng của sự tương tác giữa người sáng tạo nội dung và người hâm mộ của họ, đồng thời nỗ lực cải tiến những cách thức mới để mang cộng đồng đến gần nhau hơn."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:192
 msgid "Glimesh will be clear as to how the rules work. There will be no guessing as to how to counter notice or how the process works. Also Glimesh will require that takedown notices include very specifically where the copyright content is so that you are not guessing what you may have a strike for."
@@ -1906,7 +1906,7 @@ msgstr "Quy trình của Glimesh sẽ rất giống với tiêu chuẩn ngành v
 
 #: lib/glimesh_web/templates/about/index.html.eex:24
 msgid "Granted, this journey has not been easy, nor will it be in the future. We’re not aiming to take down the competitors and sell for billions of dollars to the next ephemeral tech company; instead, we’re aiming to create a home."
-msgstr "Phải nói rằng, hành trình này không hề dễ dàng, cũng như sẽ không còn trong tương lai. Chúng tôi không đặt mục tiêu hạ gục đối thủ và bán hàng tỷ đô la cho công ty công nghệ phù du tiếp theo; thay vào đó, chúng tôi đang hướng tới việc tạo ra một ngôi nhà."
+msgstr "Phải nói rằng, hành trình này không hề dễ dàng, và vẫn sẽ như thế trong tương lai. Chúng tôi không đặt mục tiêu hạ gục đối thủ và bán hàng tỷ đô la cho công ty công nghệ phù du tiếp theo; thay vào đó, chúng tôi đang hướng tới việc tạo ra một tổ ấm."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:170
 msgid "If a counter-notice is received by the Copyright Agent, Glimesh will send a copy of the counter-notice to the original complaining party informing that person that it may replace the removed content or cease disabling it in 10 business days. Unless the copyright owner files an action seeking a court order against the content provider, member or user, the removed content may be replaced, or access to it restored, in 10 to 14 business days or more after receipt of the counter-notice, at our sole discretion."
@@ -2040,7 +2040,7 @@ msgstr "Bắt đầu bây giờ"
 #: lib/glimesh_web/controllers/about_controller.ex:11
 #: lib/glimesh_web/templates/about/alpha.html.eex:22 lib/glimesh_web/templates/layout/about.html.eex:15
 msgid "Streaming"
-msgstr "Truyền trực tuyến"
+msgstr "Trực tuyến"
 
 #: lib/glimesh_web/templates/about/streaming.html.eex:3
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:2
@@ -2429,7 +2429,7 @@ msgstr "Gửi biểu mẫu W-8 của bạn"
 #: lib/glimesh_web/live/user_live/stream.html.leex:39 lib/glimesh_web/templates/layout/_navbar.html.leex:77
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:104 lib/glimesh_web/templates/layout/root.html.leex:106
 msgid "Support"
-msgstr "Hỗ trợ"
+msgstr "Ủng hộ"
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:27
 msgid "Tax Verified: %{value}"
@@ -2883,7 +2883,7 @@ msgstr "Sự kiện trực tiếp"
 #: lib/glimesh_web/live/homepage_live.html.heex:28
 #: lib/glimesh_web/live/homepage_live.html.heex:65
 msgid "Live Streaming!"
-msgstr "Phát trực tiếp!"
+msgstr "cho Phát trực tiếp!"
 
 #: lib/glimesh_web/live/support_modal/donate_form.ex:51
 #: lib/glimesh_web/live/support_modal/sub_form.ex:52
@@ -3181,7 +3181,7 @@ msgstr "Cảm ơn bạn đã ủng hộ % {streamer}. Hỗ trợ thực sự c�
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:79
 msgid "The #bugs channel is the first place bugs should be reported. Our team will triage them, and file them to their appropriate places. When you are submitting a bug, it helps to provide any screenshots or clips you have, but please be sure not to leak your private information. If you have a issue with something sensitive, email support@glimesh and we'll try to reach back out to you when the bug is resolved."
-msgstr "Kênh #bugs là nơi đầu tiên cần báo cáo lỗi. Nhóm của chúng tôi sẽ phân loại chúng và gửi chúng đến những nơi thích hợp của họ. Khi bạn gửi lỗi, việc cung cấp bất kỳ ảnh chụp màn hình hoặc clip nào bạn có sẽ giúp ích cho bạn, nhưng hãy đảm bảo không làm rò rỉ thông tin cá nhân của bạn. Nếu bạn gặp sự cố với nội dung nhạy cảm, hãy gửi email tới support @ glimesh và chúng tôi sẽ cố gắng liên hệ lại với bạn khi lỗi được giải quyết."
+msgstr "Kênh #bugs là nơi đầu tiên cần báo cáo lỗi. Nhóm của chúng tôi sẽ phân loại chúng và gửi chúng đến những nơi thích hợp của họ. Khi bạn gửi lỗi, việc cung cấp bất kỳ ảnh chụp màn hình hoặc clip nào bạn có sẽ giúp ích cho bạn, nhưng hãy đảm bảo không làm rò rỉ thông tin cá nhân của bạn. Nếu bạn gặp sự cố với nội dung nhạy cảm, hãy gửi email tới support@glimesh.tv và chúng tôi sẽ cố gắng liên hệ lại với bạn khi lỗi được giải quyết."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:81
 msgid "The DMCA is not just about copyrights though. The DMCA has some built-in protections for sites like Glimesh called %{a_start}Safe Harbor%{a_end}. Simply put, Safe Harbor provisions are rules in the DMCA that protect websites from being shut down or sued by copyright owners as long as the site remains compliant. As long as Glimesh remains compliant to the process these Safe Harbor provisions in the DMCA will keep us safe from lawsuits for copyright violations."
@@ -3625,27 +3625,27 @@ msgstr "để tham gia."
 
 #: lib/glimesh_web/templates/layout/_navbar.html.leex:99
 msgid "App!"
-msgstr ""
+msgstr "Ứng dụng!"
 
 #: lib/glimesh_web/controllers/about_controller.ex:80
 #: lib/glimesh_web/templates/layout/root.html.leex:116
 msgid "Cookie Policy"
-msgstr ""
+msgstr "Chính sách Cookie"
 
 #: lib/glimesh_web/templates/layout/root.html.leex:150
 msgid "Copyright © 2022 Glimesh, Inc."
-msgstr ""
+msgstr "Bản quyền © 2022 Glimesh, Inc."
 
 #: lib/glimesh_web/templates/layout/root.html.leex:111
 msgid "LEGALS"
-msgstr ""
+msgstr "PHÁP LUẬT"
 
 #: lib/glimesh_web/templates/layout/root.html.leex:101
 msgid "Mobile App!"
-msgstr ""
+msgstr "Ứng dụng di động!"
 
 #: lib/glimesh_web/templates/layout/root.html.leex:81
 #: lib/glimesh_web/templates/layout/root.html.leex:115
 msgid "Privacy Policy"
-msgstr ""
+msgstr "Chính sách bảo mật"
 
