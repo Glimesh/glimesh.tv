@@ -128,7 +128,7 @@ defmodule GlimeshWeb.HomepageLive do
 
                   <div class="card-stream-tags">
                     <%= if channel.subcategory do %>
-                      <span class="badge "><%= channel.subcategory.name %></span>
+                      <span class="badge badge-info"><%= channel.subcategory.name %></span>
                     <% end %>
                   </div>
                 </div>
