@@ -23,10 +23,14 @@
       class: "badge badge-pill badge-info"
     ) %>
   <% end %>
+  <!--Adding in color change for Community Pride Tag in Streams-->
   <%= for tag <- @channel.tags do %>
     <%= live_patch(tag.name,
       to: Routes.streams_list_path(@socket, :index, @channel.category.slug, tags: [tag.slug]),
-      class: "badge badge-pill badge-primary"
+      class: [
+        "badge badge-pill text-dark",
+        if(tag.name == "Community Pride", do: "bg-pride", else: "badge-primary")
+      ]
     ) %>
   <% end %>
 </div>

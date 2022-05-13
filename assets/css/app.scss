@@ -219,3 +219,10 @@ $fa-font-path: "/fa-fonts";
     -webkit-backdrop-filter: blur(12px) saturate(160%);
     background-blend-mode: exclusion;
 }
+
+// Addind rainbow colour effect to Community Pride tag
+.bg-pride {
+    background: linear-gradient(to right,
+    #FFD2E9 12.5%, #FFB3B3 12.5% 25%, #FFDDB3 25% 37.5%, #FFFFB3 37.5% 50%, #B3DDB3 50% 62.5%, #B3ECEC 62.5% 75%, #C6B3E0 75% 87.5%, #DDB3DD 87.5%);
+
+}

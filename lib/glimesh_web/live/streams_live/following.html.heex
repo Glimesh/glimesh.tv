@@ -35,7 +35,11 @@
                     <span class="badge badge-info"><%= channel.subcategory.name %></span>
                   <% end %>
                   <%= for tag <- channel.tags do %>
-                    <span class="badge badge-primary"><%= tag.name %></span>
+                    <%= if tag.name == "Community Pride" do %>
+                      <span class="badge text-dark bg-pride"><%= tag.name %></span>
+                    <% else %>
+                      <span class="badge badge-primary"><%= tag.name %></span>
+                    <% end %>
                   <% end %>
                 </div>
               </div>

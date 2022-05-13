@@ -27,7 +27,7 @@
                         <div class="media">
                             <img src="<%= Glimesh.EventImage.url({event.image, event.image}, :original) %>" style="max-height: 225px" alt="<%= event.label %>">
                             <div class="media-body ml-4">
-                                <span class="badge badge-pill" style="vertical-align: middle; border-color: <%= Glimesh.EventsTeam.get_event_color(event) %>; background: <%= Glimesh.EventsTeam.get_event_color(event) %>;"><%= event.type %></span>
+                                <span class="badge badge-pill text-dark" style="vertical-align: middle; border-color: <%= Glimesh.EventsTeam.get_event_color(event) %>; background: <%= Glimesh.EventsTeam.get_event_color(event) %>;"><%= event.type %></span>
                                 <h5>
                                     <%= event.label %><br>
                                     <small class="text-muted">

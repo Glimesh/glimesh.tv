@@ -119,8 +119,9 @@
 <div class="calendar" style="width: 100%">
   <div class="d-flex justify-content-around calendar_footer py-2">
     <%= for event_type <- @event_types_key do %>
+      <!--Temporary text color change to enhance readability on Pride tag-->
       <span
-        class="badge badge-pill"
+        class="badge badge-pill text-dark"
         style={
           "vertical-align: middle; border-color: #{event_type.color}; background: #{event_type.color}"
         }
