@@ -1,6 +1,7 @@
 defmodule GlimeshWeb.About.OpenDataLive do
   use GlimeshWeb, :live_view
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div class="container mt-4">

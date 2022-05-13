@@ -114,9 +114,9 @@
                           <%= for tag <- channel.tags do %>
                             <%= if tag.name == "Community Pride" do %>
                               <span class="badge text-dark bg-pride"><%= tag.name %></span>
-                            <%= else %>
+                            <% else %>
                               <span class="badge badge-primary"><%= tag.name %></span>
-                            <%= end %>
+                            <% end %>
                           <% end %>
                         </div>
                       </div>
