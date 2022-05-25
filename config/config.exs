@@ -213,7 +213,7 @@ config :glimesh, :stripe_config,
     "Trinidad & Tobago": "TT",
     Tunasia: "TN"
     Turkey: "TR",
-    United Arab Emirates: "AE",
+    "United Arab Emirates": "AE",
     "United Kingdom of Great Britain and Northern Ireland": "GB",
     "United States of America": "US",
     Uruguay: "UY"
