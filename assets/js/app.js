@@ -16,6 +16,7 @@ import TagSearch from "./hooks/TagSearch";
 import LaunchCountdown from "./hooks/LaunchCountdown";
 import Tagify from "./hooks/Tagify";
 import ChannelLookupTypeahead from "./hooks/ChannelLookupTypeahead";
+import RecentTags from "./hooks/RecentTags";
 
 // https://github.com/github/markdown-toolbar-element
 import "@github/markdown-toolbar-element";
@@ -35,6 +36,7 @@ Hooks.TagSearch = TagSearch;
 Hooks.LaunchCountdown = LaunchCountdown;
 Hooks.Tagify = Tagify;
 Hooks.ChannelLookupTypeahead = ChannelLookupTypeahead;
+Hooks.RecentTags = RecentTags;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {

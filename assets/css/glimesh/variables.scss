@@ -40,6 +40,8 @@ $color-teal: #48D1BD;
     --chat-bubble-background: #0e1726;
 
     --text-muted-color: #6c757d;
+
+    --hr-bg-color: #ffffff;
 }
 
 [data-theme="light"] {
@@ -72,6 +74,8 @@ $color-teal: #48D1BD;
     --chat-bubble-background: #fff;
 
     --text-muted-color: #000;
+
+    --hr-bg-color: #000;
 }
 
 $font-family-base: 'Roboto',
@@ -143,6 +147,9 @@ $close-color: var(--secondary-color);
         color: var(--body-color);
     }
 }
+
+// hr
+$hr-border-color: var(--hr-bg-color);
 
 // Acrylic blur fallback for Mozilla Firefox (backdrop-filters not enabled so need to reduce transparency for legibility)
 @supports (-moz-appearance:meterbar) {
