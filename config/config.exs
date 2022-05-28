@@ -211,7 +211,7 @@ config :glimesh, :stripe_config,
     Switzerland: "CH",
     Thailand: "TH",
     "Trinidad & Tobago": "TT",
-    Tunasia: "TN"
+    Tunasia: "TN",
     Turkey: "TR",
     "United Arab Emirates": "AE",
     "United Kingdom of Great Britain and Northern Ireland": "GB",
