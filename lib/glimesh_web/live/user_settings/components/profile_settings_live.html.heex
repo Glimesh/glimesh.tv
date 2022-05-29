@@ -194,12 +194,16 @@
 
             <ul class="nav nav-pills" id="markdown-editor">
               <li class="nav-item">
-                <a class="btn btn-primary" phx-click="edit_state" phx-value-state="edit">
+                <a id="edit_button" class="btn btn-primary" phx-click={JS.push("edit_state", value: %{state: "edit"}) |> 
+                JS.add_class("btn-primary", to: "#edit_button") |> JS.remove_class("btn-info", to: "#preview_button")
+                }>
                   <%= gettext("Edit") %>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="btn btn-info ml-2" phx-click="edit_state" phx-value-state="preview">
+                <a id="preview_button" class="btn ml-2" phx-click={JS.push("edit_state", value: %{state: "preview"}) |> 
+                JS.add_class("btn-info", to: "#preview_button") |> JS.remove_class("btn-primary", to: "#edit_button")
+                }>
                   <%= gettext("Preview") %>
                 </a>
               </li>

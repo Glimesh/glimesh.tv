@@ -1,6 +1,7 @@
 defmodule GlimeshWeb.UserSettings.Components.ProfileSettingsLive do
   use GlimeshWeb, :live_view
   alias Glimesh.Accounts.Profile
+  alias Phoenix.LiveView.JS
 
   @impl true
   def mount(_params, session, socket) do
