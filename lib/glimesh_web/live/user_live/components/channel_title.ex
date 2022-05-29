@@ -39,13 +39,18 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
     {:ok,
      socket
      |> assign_categories()
-     |> assign_subcategory(channel.category)
-     |> assign_existing_tags(channel)
      |> assign(:channel, channel)
      |> assign(:user, user)
      |> assign(:channel, channel)
      |> assign(:changeset, Streams.change_channel(channel))
      |> assign(:current_category_id, channel.category_id)
+     |> assign(:subcategory_label, "")
+     |> assign(:subcategory_placeholder, "")
+     |> assign(:subcategory_attribution, "")
+     |> assign(:existing_tags, "")
+     |> assign(:existing_subcategory, "")
+     |> assign(:recent_subcategories, "")
+     |> assign(:recent_tags, "")
      |> assign(:category, channel.category)
      |> assign(:can_change, Bodyguard.permit?(Glimesh.Streams, :update_channel, user, channel))
      |> assign(:editing, false)}
@@ -61,7 +66,18 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
 
   @impl true
   def handle_event("toggle-edit", _value, socket) do
-    {:noreply, socket |> assign(:editing, !socket.assigns.editing)}
+    recent_subcategories =
+      ChannelCategories.get_channel_recent_subcategories_for_category(socket.assigns.channel)
+
+    recent_tags = ChannelCategories.get_channel_recent_tags_for_category(socket.assigns.channel)
+
+    {:noreply,
+     socket
+     |> assign(:editing, !socket.assigns.editing)
+     |> assign_subcategory(socket.assigns.channel.category)
+     |> assign_existing_tags(socket.assigns.channel)
+     |> assign(:recent_subcategories, recent_subcategories)
+     |> assign(:recent_tags, recent_tags)}
   end
 
   @impl true
@@ -72,11 +88,32 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
       ) do
     category = ChannelCategories.get_category_by_id!(channel["category_id"])
 
+    recent_subcategories =
+      ChannelCategories.get_channel_recent_subcategories_for_category(
+        socket.assigns.channel,
+        channel["category_id"]
+      )
+
+    recent_tags =
+      ChannelCategories.get_channel_recent_tags_for_category(
+        socket.assigns.channel,
+        channel["category_id"]
+      )
+
+    socket =
+      if socket.assigns.channel.category_id == category.id do
+        assign_existing_tags(socket, socket.assigns.channel)
+      else
+        socket
+        |> assign(:existing_tags, "")
+        |> assign(:existing_subcategory, "")
+      end
+
     {:noreply,
      socket
      |> assign_subcategory(category)
-     |> assign(:existing_subcategory, "")
-     |> assign(:existing_tags, "")
+     |> assign(:recent_subcategories, recent_subcategories)
+     |> assign(:recent_tags, recent_tags)
      |> assign(:category, category)
      |> assign(:current_category_id, channel["category_id"])}
   end

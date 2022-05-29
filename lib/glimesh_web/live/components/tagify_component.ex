@@ -39,4 +39,8 @@ defmodule GlimeshWeb.TagifyComponent do
     {:noreply,
      push_event(socket, "suggestions-#{socket.assigns.id}", %{value: query, results: results})}
   end
+
+  def handle_event("remove", %{"value" => value}, socket) do
+    {:noreply, push_event(socket, "remove-tag", %{value: value})}
+  end
 end

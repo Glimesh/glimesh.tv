@@ -25,6 +25,8 @@ export default {
             // Target the DOM selector ID to get to the child component
             parent.pushEventTo(`#${parent.el.id}`, "suggest", { value: value });
         });
+
+        this.el.tagify = tagify;
     },
     tagify() {
         let categoryId = this.el.dataset.category;

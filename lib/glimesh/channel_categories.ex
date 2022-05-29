@@ -8,6 +8,7 @@ defmodule Glimesh.ChannelCategories do
   alias Glimesh.Repo
   alias Glimesh.Streams.Category
   alias Glimesh.Streams.Channel
+  alias Glimesh.Streams.Stream
   alias Glimesh.Streams.Subcategory
   alias Glimesh.Streams.Tag
 
@@ -466,5 +467,61 @@ defmodule Glimesh.ChannelCategories do
 
   defp subcategory_source_exists?(source, source_id) do
     Repo.one(from s in Subcategory, where: s.source == ^source and s.source_id == ^source_id)
+  end
+
+  def get_channel_recent_subcategories_for_category(%Channel{} = channel, category_id \\ nil) do
+    category = if category_id, do: category_id, else: channel.category_id
+
+    query =
+      from s in Stream,
+        join: subcat in Subcategory,
+        on: s.subcategory_id == subcat.id,
+        where: s.channel_id == ^channel.id,
+        where: s.category_id == ^category,
+        where: not is_nil(s.ended_at),
+        order_by: [desc: s.started_at],
+        limit: 6,
+        distinct: subcat.id,
+        select: subcat
+
+    exclude_last_subcat =
+      if channel.subcategory_id != nil do
+        dynamic([s, subcat], subcat.id != ^channel.subcategory_id)
+      else
+        true
+      end
+
+    query
+    |> where(^exclude_last_subcat)
+    |> Repo.replica().all()
+  end
+
+  def get_channel_recent_tags_for_category(%Channel{} = channel, category_id \\ nil) do
+    category = if category_id, do: String.to_integer(category_id), else: channel.category_id
+
+    Repo.replica().all(
+      from s in Stream,
+        join:
+          fragment(
+            "(select distinct on (unnest(streams.category_tags)) unnest(streams.category_tags) as cat_tags, id as stream_id
+                       from streams where streams.ended_at is not null
+                       and streams.channel_id = ? and streams.category_id = ?::integer
+                       limit 11)",
+            ^channel.id,
+            ^category
+          ),
+        as: :used_tags,
+        on: as(:used_tags).stream_id == s.id,
+        join: t in Tag,
+        on: t.id == as(:used_tags).cat_tags,
+        where:
+          fragment(
+            "? not in (select tag_id from channel_tags where channel_id = ?)",
+            t.id,
+            ^channel.id
+          ),
+        order_by: [desc: s.started_at],
+        select: t
+    )
   end
 end

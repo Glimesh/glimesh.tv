@@ -3,6 +3,10 @@ defmodule Glimesh.ChannelCategoriesTest do
   use Bamboo.Test
 
   import Glimesh.AccountsFixtures
+  import Glimesh.Factory
+  import Glimesh.Streams.Channel
+
+  alias Glimesh.AccountsFixtures
   alias Glimesh.ChannelCategories
 
   describe "categories" do
@@ -333,6 +337,435 @@ defmodule Glimesh.ChannelCategoriesTest do
 
       assert ChannelCategories.get_subcategory_search_label_description(%Category{slug: "tech"}) ==
                "Search by Topic"
+    end
+  end
+
+  defp create_old_streams_with_tags(_) do
+    gaming_cat = ChannelCategories.get_category("gaming")
+    tech_cat = ChannelCategories.get_category("tech")
+
+    old_game_subcats =
+      insert_list(5, :subcategory, %{name: Faker.Superhero.name(), category: gaming_cat})
+
+    old_tech_subcats =
+      insert_list(5, :subcategory, %{name: Faker.Beer.malt(), category: tech_cat})
+
+    old_game_tags = insert_list(10, :tag, %{name: Faker.Food.dish(), category: gaming_cat})
+    old_game_tags_ids = Enum.map(old_game_tags, fn k -> k.id end)
+    old_tech_tags = insert_list(10, :tag, %{name: Faker.Cat.breed(), category: tech_cat})
+    old_tech_tags_ids = Enum.map(old_tech_tags, fn k -> k.id end)
+
+    gaming_streamer =
+      AccountsFixtures.streamer_fixture(%{}, %{
+        category_id: gaming_cat.id,
+        subcategory_id: Enum.at(old_game_subcats, 4).id,
+        tags: Enum.slice(old_game_tags, 7, 2),
+        language: "en"
+      })
+
+    tech_streamer =
+      AccountsFixtures.streamer_fixture(%{}, %{
+        category_id: tech_cat.id,
+        subcategory_id: Enum.at(old_tech_subcats, 4).id,
+        tags: Enum.slice(old_tech_tags, 7, 2),
+        language: "en"
+      })
+
+    old_game_stream_one =
+      insert(:stream, %{
+        channel_id: gaming_streamer.channel.id,
+        category_id: gaming_cat.id,
+        subcategory_id: Enum.at(old_game_subcats, 2).id,
+        category_tags: Enum.slice(old_game_tags_ids, 0, 3),
+        started_at: NaiveDateTime.utc_now(),
+        ended_at: NaiveDateTime.utc_now()
+      })
+
+    old_game_stream_two =
+      insert(:stream, %{
+        channel_id: gaming_streamer.channel.id,
+        category_id: gaming_cat.id,
+        subcategory_id: Enum.at(old_game_subcats, 3).id,
+        category_tags: Enum.slice(old_game_tags_ids, 3, 3),
+        started_at: NaiveDateTime.utc_now(),
+        ended_at: NaiveDateTime.utc_now()
+      })
+
+    old_tech_stream_one =
+      insert(:stream, %{
+        channel_id: tech_streamer.channel.id,
+        category_id: tech_cat.id,
+        subcategory_id: Enum.at(old_tech_subcats, 2).id,
+        category_tags: Enum.slice(old_tech_tags_ids, 0, 3),
+        started_at: NaiveDateTime.utc_now(),
+        ended_at: NaiveDateTime.utc_now()
+      })
+
+    old_tech_stream_two =
+      insert(:stream, %{
+        channel_id: tech_streamer.channel.id,
+        category_id: tech_cat.id,
+        subcategory_id: Enum.at(old_tech_subcats, 3).id,
+        category_tags: Enum.slice(old_tech_tags_ids, 3, 3),
+        started_at: NaiveDateTime.utc_now(),
+        ended_at: NaiveDateTime.utc_now()
+      })
+
+    %{
+      gaming_streamer: gaming_streamer,
+      tech_streamer: tech_streamer,
+      old_game_stream_one: old_game_stream_one,
+      old_game_stream_two: old_game_stream_two,
+      old_tech_stream_one: old_tech_stream_one,
+      old_tech_stream_two: old_tech_stream_two
+    }
+  end
+
+  describe "Recent Subcategories and Tags" do
+    alias Glimesh.ChannelLookups
+    alias Glimesh.Streams.Tag
+
+    setup [:create_old_streams_with_tags]
+
+    test "shows most recent subcategories", %{
+      gaming_streamer: gaming_streamer,
+      tech_streamer: tech_streamer,
+      old_game_stream_one: game_stream_one,
+      old_game_stream_two: game_stream_two,
+      old_tech_stream_one: tech_stream_one,
+      old_tech_stream_two: tech_stream_two
+    } do
+      recent_game_subcats =
+        ChannelCategories.get_channel_recent_subcategories_for_category(gaming_streamer.channel)
+
+      recent_tech_subcats =
+        ChannelCategories.get_channel_recent_subcategories_for_category(tech_streamer.channel)
+
+      assert Enum.any?(recent_game_subcats, fn x -> game_stream_one.subcategory_id == x.id end)
+      refute Enum.any?(recent_tech_subcats, fn x -> game_stream_one.subcategory_id == x.id end)
+      assert Enum.any?(recent_game_subcats, fn x -> game_stream_two.subcategory_id == x.id end)
+      refute Enum.any?(recent_tech_subcats, fn x -> game_stream_two.subcategory_id == x.id end)
+
+      assert Enum.any?(recent_tech_subcats, fn x -> tech_stream_one.subcategory_id == x.id end)
+      refute Enum.any?(recent_game_subcats, fn x -> tech_stream_one.subcategory_id == x.id end)
+      assert Enum.any?(recent_tech_subcats, fn x -> tech_stream_two.subcategory_id == x.id end)
+      refute Enum.any?(recent_game_subcats, fn x -> tech_stream_two.subcategory_id == x.id end)
+    end
+
+    test "shows most recent tags", %{
+      gaming_streamer: gaming_streamer,
+      tech_streamer: tech_streamer,
+      old_game_stream_one: game_stream_one,
+      old_game_stream_two: game_stream_two,
+      old_tech_stream_one: tech_stream_one,
+      old_tech_stream_two: tech_stream_two
+    } do
+      recent_game_tags =
+        ChannelCategories.get_channel_recent_tags_for_category(gaming_streamer.channel)
+
+      recent_tech_tags =
+        ChannelCategories.get_channel_recent_tags_for_category(tech_streamer.channel)
+
+      assert Enum.all?(game_stream_one.category_tags, fn x ->
+               Enum.find_value(recent_game_tags, false, fn y -> y.id == x end)
+             end)
+
+      refute Enum.all?(game_stream_one.category_tags, fn x ->
+               Enum.find_value(recent_tech_tags, false, fn y -> y.id == x end)
+             end)
+
+      assert Enum.all?(game_stream_two.category_tags, fn x ->
+               Enum.find_value(recent_game_tags, false, fn y -> y.id == x end)
+             end)
+
+      refute Enum.all?(game_stream_two.category_tags, fn x ->
+               Enum.find_value(recent_tech_tags, false, fn y -> y.id == x end)
+             end)
+
+      assert Enum.all?(tech_stream_one.category_tags, fn x ->
+               Enum.find_value(recent_tech_tags, false, fn y -> y.id == x end)
+             end)
+
+      refute Enum.all?(tech_stream_one.category_tags, fn x ->
+               Enum.find_value(recent_game_tags, false, fn y -> y.id == x end)
+             end)
+
+      assert Enum.all?(tech_stream_two.category_tags, fn x ->
+               Enum.find_value(recent_tech_tags, false, fn y -> y.id == x end)
+             end)
+
+      refute Enum.all?(tech_stream_two.category_tags, fn x ->
+               Enum.find_value(recent_game_tags, false, fn y -> y.id == x end)
+             end)
+    end
+
+    test "does not show duplicate recent subcategories or tags", %{
+      gaming_streamer: gaming_streamer,
+      tech_streamer: tech_streamer,
+      old_game_stream_one: game_stream_one,
+      old_tech_stream_one: tech_stream_one
+    } do
+      gaming_cat = ChannelCategories.get_category("gaming")
+      tech_cat = ChannelCategories.get_category("tech")
+
+      old_game_stream_duplicate =
+        insert(:stream, %{
+          channel_id: gaming_streamer.channel.id,
+          category_id: gaming_cat.id,
+          subcategory_id: game_stream_one.subcategory_id,
+          category_tags: game_stream_one.category_tags,
+          started_at: NaiveDateTime.utc_now(),
+          ended_at: NaiveDateTime.utc_now()
+        })
+
+      old_tech_stream_duplicate =
+        insert(:stream, %{
+          channel_id: tech_streamer.channel.id,
+          category_id: tech_cat.id,
+          subcategory_id: tech_stream_one.subcategory_id,
+          category_tags: tech_stream_one.category_tags,
+          started_at: NaiveDateTime.utc_now(),
+          ended_at: NaiveDateTime.utc_now()
+        })
+
+      recent_game_subcats =
+        ChannelCategories.get_channel_recent_subcategories_for_category(gaming_streamer.channel)
+
+      recent_tech_subcats =
+        ChannelCategories.get_channel_recent_subcategories_for_category(tech_streamer.channel)
+
+      assert Enum.count(recent_game_subcats, fn x ->
+               old_game_stream_duplicate.subcategory_id == x.id
+             end) == 1
+
+      assert Enum.count(recent_tech_subcats, fn x ->
+               old_tech_stream_duplicate.subcategory_id == x.id
+             end) == 1
+
+      recent_game_tags =
+        ChannelCategories.get_channel_recent_tags_for_category(gaming_streamer.channel)
+
+      recent_tech_tags =
+        ChannelCategories.get_channel_recent_tags_for_category(tech_streamer.channel)
+
+      assert Enum.count(recent_game_tags, fn x ->
+               Enum.find_value(old_game_stream_duplicate.category_tags, fn y -> y == x.id end)
+             end) == Enum.count(old_game_stream_duplicate.category_tags)
+
+      assert Enum.count(recent_tech_tags, fn x ->
+               Enum.find_value(old_tech_stream_duplicate.category_tags, fn y -> y == x.id end)
+             end) == Enum.count(old_tech_stream_duplicate.category_tags)
+    end
+
+    test "recent subcategories and tags does not include the channel-level (last used) subcategory or tags",
+         %{
+           gaming_streamer: gaming_streamer,
+           tech_streamer: tech_streamer,
+           old_game_stream_one: game_stream_one,
+           old_tech_stream_one: tech_stream_one
+         } do
+      game_tags =
+        Tag
+        |> where([t], t.id in ^game_stream_one.category_tags)
+        |> Repo.all()
+
+      tech_tags =
+        Tag
+        |> where([t], t.id in ^tech_stream_one.category_tags)
+        |> Repo.all()
+
+      gaming_streamer.channel
+      |> changeset(%{subcategory_id: game_stream_one.subcategory_id})
+      |> put_assoc(:tags, game_tags)
+      |> Repo.update()
+
+      tech_streamer.channel
+      |> changeset(%{subcategory_id: tech_stream_one.subcategory_id})
+      |> put_assoc(:tags, tech_tags)
+      |> Repo.update()
+
+      gaming_streamer_channel = ChannelLookups.get_channel(gaming_streamer.channel.id)
+      tech_streamer_channel = ChannelLookups.get_channel(tech_streamer.channel.id)
+
+      recent_game_subcats =
+        ChannelCategories.get_channel_recent_subcategories_for_category(gaming_streamer_channel)
+
+      recent_tech_subcats =
+        ChannelCategories.get_channel_recent_subcategories_for_category(tech_streamer_channel)
+
+      recent_game_tags =
+        ChannelCategories.get_channel_recent_tags_for_category(gaming_streamer_channel)
+
+      recent_tech_tags =
+        ChannelCategories.get_channel_recent_tags_for_category(tech_streamer_channel)
+
+      refute Enum.find_value(recent_game_subcats, fn x ->
+               gaming_streamer_channel.subcategory_id == x.id
+             end)
+
+      refute Enum.find_value(recent_tech_subcats, fn x ->
+               tech_streamer_channel.subcategory_id == x.id
+             end)
+
+      refute Enum.find_value(recent_game_tags, fn x ->
+               Enum.find_value(gaming_streamer_channel.tags, fn y -> y == x.id end)
+             end)
+
+      refute Enum.find_value(recent_tech_tags, fn x ->
+               Enum.find_value(tech_streamer_channel.tags, fn y -> y == x.id end)
+             end)
+    end
+
+    test "no recent subcategories if no previous streams in category", %{
+      gaming_streamer: gaming_streamer,
+      tech_streamer: tech_streamer,
+      old_game_stream_one: game_stream_one,
+      old_game_stream_two: game_stream_two,
+      old_tech_stream_one: tech_stream_one,
+      old_tech_stream_two: tech_stream_two
+    } do
+      art_cat = ChannelCategories.get_category("art")
+
+      recent_game_subcats =
+        ChannelCategories.get_channel_recent_subcategories_for_category(
+          gaming_streamer.channel,
+          "#{art_cat.id}"
+        )
+
+      recent_tech_subcats =
+        ChannelCategories.get_channel_recent_subcategories_for_category(
+          tech_streamer.channel,
+          "#{art_cat.id}"
+        )
+
+      refute Enum.any?(recent_game_subcats, fn x -> game_stream_one.subcategory_id == x.id end)
+      refute Enum.any?(recent_game_subcats, fn x -> game_stream_two.subcategory_id == x.id end)
+      refute Enum.any?(recent_tech_subcats, fn x -> tech_stream_one.subcategory_id == x.id end)
+      refute Enum.any?(recent_tech_subcats, fn x -> tech_stream_two.subcategory_id == x.id end)
+    end
+
+    test "no recent tags if no previous streams in category", %{
+      gaming_streamer: gaming_streamer,
+      tech_streamer: tech_streamer,
+      old_game_stream_one: game_stream_one,
+      old_game_stream_two: game_stream_two,
+      old_tech_stream_one: tech_stream_one,
+      old_tech_stream_two: tech_stream_two
+    } do
+      art_cat = ChannelCategories.get_category("art")
+
+      recent_game_tags =
+        ChannelCategories.get_channel_recent_tags_for_category(
+          gaming_streamer.channel,
+          "#{art_cat.id}"
+        )
+
+      recent_tech_tags =
+        ChannelCategories.get_channel_recent_tags_for_category(
+          tech_streamer.channel,
+          "#{art_cat.id}"
+        )
+
+      refute Enum.all?(game_stream_one.category_tags, fn x ->
+               Enum.find_value(recent_game_tags, false, fn y -> y.id == x end)
+             end)
+
+      refute Enum.all?(game_stream_two.category_tags, fn x ->
+               Enum.find_value(recent_game_tags, false, fn y -> y.id == x end)
+             end)
+
+      refute Enum.all?(tech_stream_one.category_tags, fn x ->
+               Enum.find_value(recent_tech_tags, false, fn y -> y.id == x end)
+             end)
+
+      refute Enum.all?(tech_stream_two.category_tags, fn x ->
+               Enum.find_value(recent_tech_tags, false, fn y -> y.id == x end)
+             end)
+    end
+
+    test "should still show recent subcategories if no channel subcategory set", %{
+      gaming_streamer: gaming_streamer,
+      tech_streamer: tech_streamer,
+      old_game_stream_one: game_stream_one,
+      old_game_stream_two: game_stream_two,
+      old_tech_stream_one: tech_stream_one,
+      old_tech_stream_two: tech_stream_two
+    } do
+      gaming_streamer.channel
+      |> changeset(%{subcategory_id: nil})
+      |> Repo.update()
+
+      tech_streamer.channel
+      |> changeset(%{subcategory_id: nil})
+      |> Repo.update()
+
+      gaming_streamer_channel = ChannelLookups.get_channel(gaming_streamer.channel.id)
+      tech_streamer_channel = ChannelLookups.get_channel(tech_streamer.channel.id)
+
+      recent_game_subcats =
+        ChannelCategories.get_channel_recent_subcategories_for_category(gaming_streamer_channel)
+
+      recent_tech_subcats =
+        ChannelCategories.get_channel_recent_subcategories_for_category(tech_streamer_channel)
+
+      assert Enum.count(recent_game_subcats) == 2
+      assert Enum.count(recent_tech_subcats) == 2
+      assert Enum.any?(recent_game_subcats, fn x -> game_stream_one.subcategory_id == x.id end)
+      assert Enum.any?(recent_game_subcats, fn x -> game_stream_two.subcategory_id == x.id end)
+      assert Enum.any?(recent_tech_subcats, fn x -> tech_stream_one.subcategory_id == x.id end)
+      assert Enum.any?(recent_tech_subcats, fn x -> tech_stream_two.subcategory_id == x.id end)
+    end
+
+    test "should still show most recent tags if no channel tags set", %{
+      gaming_streamer: gaming_streamer,
+      tech_streamer: tech_streamer,
+      old_game_stream_one: game_stream_one,
+      old_game_stream_two: game_stream_two,
+      old_tech_stream_one: tech_stream_one,
+      old_tech_stream_two: tech_stream_two
+    } do
+      gaming_streamer.channel
+      |> changeset()
+      |> put_assoc(:tags, nil)
+      |> Repo.update()
+
+      tech_streamer.channel
+      |> changeset()
+      |> put_assoc(:tags, nil)
+      |> Repo.update()
+
+      gaming_streamer_channel = ChannelLookups.get_channel(gaming_streamer.channel.id)
+      tech_streamer_channel = ChannelLookups.get_channel(tech_streamer.channel.id)
+
+      recent_game_tags =
+        ChannelCategories.get_channel_recent_tags_for_category(gaming_streamer_channel)
+
+      recent_tech_tags =
+        ChannelCategories.get_channel_recent_tags_for_category(tech_streamer_channel)
+
+      assert Enum.count(recent_game_tags) ==
+               Enum.count(game_stream_one.category_tags) +
+                 Enum.count(game_stream_two.category_tags)
+
+      assert Enum.count(recent_tech_tags) ==
+               Enum.count(tech_stream_one.category_tags) +
+                 Enum.count(tech_stream_two.category_tags)
+
+      assert Enum.all?(game_stream_one.category_tags, fn x ->
+               Enum.find_value(recent_game_tags, false, fn y -> y.id == x end)
+             end)
+
+      assert Enum.all?(game_stream_two.category_tags, fn x ->
+               Enum.find_value(recent_game_tags, false, fn y -> y.id == x end)
+             end)
+
+      assert Enum.all?(tech_stream_one.category_tags, fn x ->
+               Enum.find_value(recent_tech_tags, false, fn y -> y.id == x end)
+             end)
+
+      assert Enum.all?(tech_stream_two.category_tags, fn x ->
+               Enum.find_value(recent_tech_tags, false, fn y -> y.id == x end)
+             end)
     end
   end
 end

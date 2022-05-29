@@ -41,7 +41,7 @@
         <a
           class="btn btn-primary"
           href={
-            Routes.user_stream_path(@socket, :support, @hosting_channel.host.user.username, %{
+            Routes.user_stream_path(@socket, :index, @hosting_channel.host.user.username, %{
               "follow_host" => "false"
             })
           }
@@ -96,7 +96,7 @@
         <a
           class="btn btn-primary"
           href={
-            Routes.user_stream_path(@socket, :support, @hosting_channel.target.user.username, %{
+            Routes.user_stream_path(@socket, :index, @hosting_channel.target.user.username, %{
               "host" => @hosting_channel.host.user.username
             })
           }
