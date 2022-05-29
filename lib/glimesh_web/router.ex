@@ -232,7 +232,7 @@ defmodule GlimeshWeb.Router do
   scope "/", GlimeshWeb do
     pipe_through [:browser, :require_events_team_user]
 
-    live "/eventsteam", EventsTeam.EventsAdminLive, :index
+    live "/events/admin", Events.EventsAdminLive, :index
   end
 
   scope "/", GlimeshWeb do
@@ -257,7 +257,7 @@ defmodule GlimeshWeb.Router do
 
     live "/about/app", About.AppLive, :index
 
-    get "/events", EventsTeamController, :events_team
+    live "/events", EventsLive, :index
 
     get "/blog", BlogMigrationController, :redirect_blog
     get "/blog/:slug", BlogMigrationController, :redirect_post
