@@ -1,6 +1,6 @@
 [
-  import_deps: [:ecto, :phoenix],
-  plugins: [Phoenix.LiveView.HTMLFormatter],
-  inputs: ["*.{heex,ex,exs}", "priv/*/seeds.exs", "{config,lib,test}/**/*.{heex,ex,exs}"],
+  import_deps: [:ecto, :phoenix, :surface],
+  plugins: [Phoenix.LiveView.HTMLFormatter, Surface.Formatter.Plugin],
+  inputs: ["*.{heex,ex,exs}", "{config,lib,test}/**/*.{heex,ex,exs,sface}", "priv/*/seeds.exs"],
   subdirectories: ["priv/*/migrations"]
 ]
