@@ -58,7 +58,10 @@
 
               <span><%= gettext("Display Pronoun:") %></span>
               <div class="custom-control custom-checkbox">
-                <%= checkbox(f, :show_pronoun_stream, class: "custom-control-input", phx_update: "ignore") %>
+                <%= checkbox(f, :show_pronoun_stream,
+                  class: "custom-control-input",
+                  phx_update: "ignore"
+                ) %>
                 <%= label(f, :show_pronoun_stream, gettext("On Channel"),
                   class: "custom-control-label"
                 ) %>
@@ -66,7 +69,10 @@
               </div>
 
               <div class="custom-control custom-checkbox">
-                <%= checkbox(f, :show_pronoun_profile, class: "custom-control-input", phx_update: "ignore") %>
+                <%= checkbox(f, :show_pronoun_profile,
+                  class: "custom-control-input",
+                  phx_update: "ignore"
+                ) %>
                 <%= label(f, :show_pronoun_profile, gettext("On Profile"),
                   class: "custom-control-label"
                 ) %>
@@ -80,7 +86,11 @@
 
             <div class="row">
               <div class="col-md-6">
-                <div class="input-group social-tweet mb-3" id="twitter-container" phx-update="ignore">
+                <div
+                  class="input-group social-tweet mb-3"
+                  id="twitter-container"
+                  phx-update="ignore"
+                >
                   <%= if @twitter_account != nil do %>
                     <%= link to: Routes.user_social_path(@socket, :disconnect,  "twitter"), class: "btn btn-danger btn-block", data: [confirm: gettext("Are you sure you want to disconnect your Twitter account?")], method: :delete do %>
                       <i class="fab fa-twitter fa-fw"></i> Disconnect @
@@ -194,24 +204,36 @@
 
             <ul class="nav nav-pills" id="markdown-editor">
               <li class="nav-item">
-                <a id="edit_button" class="btn btn-primary" phx-click={JS.push("edit_state", value: %{state: "edit"}) |> 
-                JS.add_class("btn-primary", to: "#edit_button") |> JS.remove_class("btn-info", to: "#preview_button")
-                }>
+                <a
+                  id="edit_button"
+                  class="btn btn-primary"
+                  phx-click={
+                    JS.push("edit_state", value: %{state: "edit"})
+                    |> JS.add_class("btn-primary", to: "#edit_button")
+                    |> JS.remove_class("btn-info", to: "#preview_button")
+                  }
+                >
                   <%= gettext("Edit") %>
                 </a>
               </li>
               <li class="nav-item">
-                <a id="preview_button" class="btn ml-2" phx-click={JS.push("edit_state", value: %{state: "preview"}) |> 
-                JS.add_class("btn-info", to: "#preview_button") |> JS.remove_class("btn-primary", to: "#edit_button")
-                }>
+                <a
+                  id="preview_button"
+                  class="btn ml-2"
+                  phx-click={
+                    JS.push("edit_state", value: %{state: "preview"})
+                    |> JS.add_class("btn-info", to: "#preview_button")
+                    |> JS.remove_class("btn-primary", to: "#edit_button")
+                  }
+                >
                   <%= gettext("Preview") %>
                 </a>
               </li>
             </ul>
 
             <div class="mt-4" id="tab_container">
-            <%= if @markdown_state == "edit" do %>
-            <markdown-toolbar
+              <%= if @markdown_state == "edit" do %>
+                <markdown-toolbar
                   id="profile-content-edit-box"
                   for="textarea_edit"
                   phx-update="ignore"
@@ -295,9 +317,9 @@
                   phx_change: "update_markdown",
                   value: @raw_markdown
                 ) %>
-            <% else %>
-              <%= raw @formatted_markdown %>
-            <% end %>
+              <% else %>
+                <%= raw(@formatted_markdown) %>
+              <% end %>
             </div>
 
             <%= error_tag(f, :profile_content_md) %>

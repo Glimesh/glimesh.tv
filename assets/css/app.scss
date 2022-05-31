@@ -225,7 +225,7 @@ $fa-font-path: "/fa-fonts";
 // Addind rainbow colour effect to Community Pride tag
 .bg-pride {
     background: linear-gradient(to right,
-    #FFD2E9 12.5%, #FFB3B3 12.5% 25%, #FFDDB3 25% 37.5%, #FFFFB3 37.5% 50%, #B3DDB3 50% 62.5%, #B3ECEC 62.5% 75%, #C6B3E0 75% 87.5%, #DDB3DD 87.5%);
+            #FFD2E9 12.5%, #FFB3B3 12.5% 25%, #FFDDB3 25% 37.5%, #FFFFB3 37.5% 50%, #B3DDB3 50% 62.5%, #B3ECEC 62.5% 75%, #C6B3E0 75% 87.5%, #DDB3DD 87.5%);
 
 }
 
@@ -235,12 +235,13 @@ $fa-font-path: "/fa-fonts";
 }
 
 .pride_bg {
-    background: url(https://i.imgur.com/SRFZabU.png) no-repeat center;
-    text-align: center;
+    background: url("/images/homepage/glimpride.png") no-repeat top;
+    background-size: auto 100%;
+    // background: url(https://i.imgur.com/SRFZabU.png) no-repeat bottom center;
     position: relative;
     padding-bottom: 90px;
     min-height: 900px;
-   }
+}
 
 .pride_frame {
     background-color: #0E1726;
@@ -255,18 +256,19 @@ $fa-font-path: "/fa-fonts";
     text-shadow: 2px 2px 3px grey;
 }
 
-@media (min-width: 400px) {.pride_font
-{ 
-    font-size: 80px; 
-}
-.text-md-nowrap {
-    white-space: nowrap !important;
-}
+@media (min-width: 400px) {
+    .pride_font {
+        font-size: 80px;
+    }
+
+    .text-md-nowrap {
+        white-space: nowrap !important;
+    }
 }
 
 .pride_font_sub {
     font-size: 20px;
-    text-shadow: 2px 2px 3px grey; 
+    text-shadow: 2px 2px 3px grey;
 }
 
 .pride_font_raised {
@@ -275,6 +277,6 @@ $fa-font-path: "/fa-fonts";
 }
 
 .pride_channel_title {
-    max-height: 80px; 
+    max-height: 80px;
     overflow: hidden;
 }

@@ -1,221 +1,151 @@
-<!-- 
-<div style="background-color: #5271fd;">
-    <div class="container">
-        <div class="row">
-            <div class="col-4 d-none d-md-block text-center">
-                <img src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/app-demo.gif" )} class="img-fluid text-center align-self-center">
-            </div>
-            <div class="col col-md-8 d-flex flex-column justify-content-center">
-                <h1 class="display-3 text-center mt-4 mb-0" style="font-family: Roboto;">The app is here!</h1>
-                <p class="text-center lead">Finally, Glimesh from the comfort of your phone or tablet. Download it now!</p>
-                <div class="row m-4 justify-content-center">
-                    <div class="col-6 col-sm-4 px-4"><a href="https://apps.apple.com/us/app/glimesh/id1594860250" target="_blank"><img class="img-fluid" src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/download-on-the-app-store.png" )}></a>
-                    </div>
-                    <div class="col-6 col-sm-4 px-4"><a href="https://play.google.com/store/apps/details?id=tv.glimesh.app" target="_blank"><img class="img-fluid" src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/get-it-on-google-play.png" )}></a></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>-->
 <div class="pride_bg">
-  <div style = "padding-top: 120px; font-family: Roboto;"><br><br>
-  <div class="font-family: Roboto; font-weight-bold pride_font"> Glimesh Community Pride </div>
-    <div class= "font-weight-bold pride_font_sub"> Raising funds and awareness for The Trevor Project this June </div>
-</div>
+  <div class="mt-4 text-center" style="font-family: Roboto;">
+    <br />
+    <br />
+    <div class="font-weight-bold pride_font">
+      Glimesh Community Pride
+    </div>
+    <div class="font-weight-bold pride_font_sub">
+      Raising funds and awareness for The Trevor Project this June
+    </div>
+  </div>
 
-<br>
-    <a href="https://donate.tiltify.com/+glimesh/glimpride" target="_blank" class="btn btn-lg font-weight-bold shadow-lg text-light bg-success">Donate Here</a>
-    <a href="https://www.thetrevorproject.org/" target="_blank" class="btn btn-lg font-weight-bold shadow-lg text-light bg-TrevorProject">About the Trevor Project</a>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfCKGswVF8OptjwTz1DR0ithA3wwcARivMH9Dr3UOdfHdM70A/viewform" target="_blank" class="btn btn-lg font-weight-bold shadow-lg text-light bg-info">Host An Event</a>
-<br><br>
+  <br />
+  <div class="text-center">
+    <a
+      href="https://donate.tiltify.com/+glimesh/glimpride"
+      target="_blank"
+      class="btn btn-lg font-weight-bold shadow-lg text-light bg-success"
+    >
+      Donate Here
+    </a>
+    <a
+      href="https://www.thetrevorproject.org/"
+      target="_blank"
+      class="btn btn-lg font-weight-bold shadow-lg text-light bg-TrevorProject"
+    >
+      About the Trevor Project
+    </a>
+    <a
+      href="https://docs.google.com/forms/d/e/1FAIpQLSfCKGswVF8OptjwTz1DR0ithA3wwcARivMH9Dr3UOdfHdM70A/viewform"
+      target="_blank"
+      class="btn btn-lg font-weight-bold shadow-lg text-light bg-info"
+    >
+      Host An Event
+    </a>
+  </div>
 
-<div class= "font-weight-bold pride_font_raised"> Amount Raised: </div>
-<%= if @random_channel do %>
-  <div class="container">
-    <div class="row">
-    <!-- 
+  <div class="text-center font-weight-bold pride_font_raised my-4">
+    Amount Raised: $<%= format_price(@total_raised) %>
+  </div>
+  <%= if @random_channel do %>
+    <div class="container">
+      <div class="row">
+        <!-- 
       <div class="col-12 mb-4 mb-md-0 col-md-6 order-md-2 d-flex align-items-center">
         <div>
           <h2 class="font-weight-bold">
-            <span class="text-color-alpha"><%= gettext("Next-Gen") %></span>
+            <span class="text-color-alpha"><%= gettext(
+  "Next-Gen"
+) %></span>
             <%= gettext("Live Streaming!") %>
           </h2>
           <p class="lead">
             <%= gettext(
-              "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving."
-            ) %>
+  "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving."
+) %>
           </p>
           <%= if @current_user do %>
-            <%= link(gettext("Create Your Channel"),
-              to: Routes.user_settings_path(@socket, :stream),
-              class: "btn btn-info mt-3"
-            ) %>
+            <%= link(
+  gettext("Create Your Channel"),
+  to: Routes.user_settings_path(@socket, :stream),
+  class: "btn btn-info mt-3"
+) %>
             <%= link(gettext("Setup Payouts"),
-              to: "/users/settings/profile",
-              class: "btn btn-info mt-3"
-            ) %>
+  to: "/users/settings/profile",
+  class: "btn btn-info mt-3"
+) %>
           <% else %>
             <p class="lead">
-              <%= gettext("Join %{user_count} others!", user_count: @user_count) %>
+              <%= gettext(
+  "Join %{user_count} others!",
+  user_count: @user_count
+) %>
             </p>
             <%= link(gettext("Register Your Account"),
-              to: Routes.user_registration_path(@socket, :new),
-              class: "btn btn-primary btn-lg mt-3"
-            ) %>
+  to: Routes.user_registration_path(@socket, :new),
+  class: "btn btn-primary btn-lg mt-3"
+) %>
           <% end %>
         </div>
       </div> -->
-      <div class="container col-12 col-md-6 order-md-1">
-        <%= live_render(@socket, GlimeshWeb.Channels.VideoPlayer,
-          id: "homepage-video",
-          session: %{
-            "muted" => true,
-            "channel_id" => @random_channel.id,
-            "channel_poster" => @random_channel_thumbnail
-          }
-        ) %>
-        <div class="d-flex align-items-start mt-2 pride_frame">
-          <img
-            src={
-              Glimesh.Avatar.url({@random_channel.user.avatar, @random_channel.user}, :original)
+        <div class="container col-12 col-md-6 order-md-1">
+          <%= live_render(@socket, GlimeshWeb.Channels.VideoPlayer,
+            id: "homepage-video",
+            session: %{
+              "muted" => true,
+              "channel_id" => @random_channel.id,
+              "channel_poster" => @random_channel_thumbnail
             }
-            alt={@random_channel.user.displayname}
-            width="48"
-            height="48"
-            class={
-              [
-                "img-avatar mr-2",
-                if(Glimesh.Accounts.can_receive_payments?(@random_channel.user),
-                  do: "img-verified-streamer"
-                )
-              ]
-            }
-          />
-          <div class="pl-1 pr-1">
-            <h6 class="mb-0 mt-1 text-wrap pride_channel_title"><%= @random_channel.title %></h6>
-            <p class="mb-0 card-stream-username">
-              <%= @random_channel.user.displayname %>
-              <span class="badge badge-info">
-                <%= Glimesh.Streams.get_channel_language(@random_channel) %>
-              </span>
-              <%= if @random_channel.mature_content do %>
-                <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
-              <% end %>
-            </p>
-          </div>
-          <%= live_patch(gettext("Watch Live"),
-            to: Routes.user_stream_path(@socket, :index, @random_channel.user.username),
-            class: "btn btn-primary text-md-nowrap ml-auto"
           ) %>
+          <div class="d-flex align-items-start mt-2 pride_frame">
+            <img
+              src={
+                Glimesh.Avatar.url({@random_channel.user.avatar, @random_channel.user}, :original)
+              }
+              alt={@random_channel.user.displayname}
+              width="48"
+              height="48"
+              class={
+                [
+                  "img-avatar mr-2",
+                  if(Glimesh.Accounts.can_receive_payments?(@random_channel.user),
+                    do: "img-verified-streamer"
+                  )
+                ]
+              }
+            />
+            <div class="pl-1 pr-1">
+              <h6 class="mb-0 mt-1 text-wrap pride_channel_title">
+                <%= @random_channel.title %>
+              </h6>
+              <p class="mb-0 card-stream-username">
+                <%= @random_channel.user.displayname %>
+                <span class="badge badge-info">
+                  <%= Glimesh.Streams.get_channel_language(@random_channel) %>
+                </span>
+                <%= if @random_channel.mature_content do %>
+                  <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
+                <% end %>
+              </p>
+            </div>
+            <%= live_patch(gettext("Watch Live"),
+              to: Routes.user_stream_path(@socket, :index, @random_channel.user.username),
+              class: "btn btn-primary text-md-nowrap ml-auto"
+            ) %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-<% else %>
-  <!-- <div class="fancy-bg">
-    <div class="container">
-      <div class="position-relative overflow-hidden p-3 p-md-5">
-        <div class="col-md-12 p-lg-4 mx-auto">
-          <h1 class="display-3 font-weight-bold">
-            <span class="text-color-alpha"><%= gettext("Next-Gen") %></span>
-            <%= gettext("Live Streaming!") %>
-          </h1>
-          <p class="lead" style="max-width: 500px;">
-            <%= gettext(
-              "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving."
-            ) %>
-          </p>
-          <%= if @current_user do %>
-            <%= link(gettext("Customize Your Profile"),
-              to: Routes.user_settings_path(@socket, :profile),
-              class: "btn btn-info mt-3"
-            ) %>
-            <%= link(gettext("Create Your Channel"),
-              to: Routes.user_settings_path(@socket, :stream),
-              class: "btn btn-info mt-3"
-            ) %>
-            <%= link(gettext("Setup Payouts"),
-              to: "/users/settings/profile",
-              class: "btn btn-info mt-3"
-            ) %>
-          <% else %>
-            <p class="lead">
-              <%= gettext("Join %{user_count} others!", user_count: @user_count) %>
-            </p>
-            <%= link(gettext("Register Your Account"),
-              to: Routes.user_registration_path(@socket, :new),
-              class: "btn btn-primary btn-lg mt-3"
-            ) %> 
-          <% end %>
+  <% else %>
+    <!-- <.header_component current_user={@current_user} user_count={@user_count} /> -->
+  <% end %>
+
+  <%= if length(@channels) > 0 do %>
+    <div class="container container-stream-list">
+      <%= if @featured_event do %>
+        <div class="row">
+          <div class="col-md-10">
+            <.live_channels_component channels={@channels} />
+          </div>
+          <div class="col-md-2 mt-4 mx-4 mx-md-0">
+            <.featured_events_component event={@featured_event} />
+          </div>
         </div>
-      </div>
-    </div>
-  </div> -->
-<% end %>
-</div> 
-<%= if length(@channels) > 0 do %>
-  <div class="container container-stream-list">
-    <%= if @featured_event do %>
-      <div class="row">
-        <div class="col-md-10">
-          <.live_channels_component channels={@channels} />
-        </div>
-        <div class="col-md-2 mt-4 mx-4 mx-md-0">
-          <.featured_events_component event={@featured_event} />
-        </div>
-      </div>
-    <% else %>
-      <.live_channels_component channels={@channels} />
-    <% end %>
-  </div> 
-<% end %> 
-<!-- <div class="container">
-  <div class="mt-4 px-4 px-lg-0">
-    <h2><%= gettext("Categories Made Simpler") %></h2>
-    <p class="lead"><%= gettext("Explore our categories and find your new home!") %></p>
-  </div>
-  <div class="row mt-2 mb-4">
-    <div class="col">
-      <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "gaming") do %>
-        <i class="fas fa-gamepad fa-2x fa-fw"></i>
-        <br />
-        <small class="text-color-link"><%= gettext("Gaming") %></small>
+      <% else %>
+        <.live_channels_component channels={@channels} />
       <% end %>
     </div>
-    <div class="col">
-      <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "art") do %>
-        <i class="fas fa-palette fa-2x fa-fw"></i>
-        <br />
-        <small class="text-color-link"><%= gettext("Art") %></small>
-      <% end %>
-    </div>
-    <div class="col">
-      <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "music") do %>
-        <i class="fas fa-headphones fa-2x fa-fw"></i>
-        <br />
-        <small class="text-color-link"><%= gettext("Music") %></small>
-      <% end %>
-    </div>
-    <div class="col">
-      <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "tech") do %>
-        <i class="fas fa-microchip fa-2x fa-fw"></i>
-        <br />
-        <small class="text-color-link"><%= gettext("Tech") %></small>
-      <% end %>
-    </div>
-    <div class="col">
-      <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "irl") do %>
-        <i class="fas fa-camera-retro fa-2x fa-fw"></i>
-        <br />
-        <small class="text-color-link"><%= gettext("IRL") %></small>
-      <% end %>
-    </div>
-    <div class="col">
-      <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "education") do %>
-        <i class="fas fa-graduation-cap fa-2x fa-fw"></i>
-        <br />
-        <small class="text-color-link"><%= gettext("Education") %></small>
-      <% end %>
-    </div> 
-  </div> 
-</div> -->
+  <% end %>
+  <!-- <.categories_component /> -->
+</div>
