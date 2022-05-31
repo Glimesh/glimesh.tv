@@ -7,9 +7,7 @@
             </div>
             <div class="col col-md-8 d-flex flex-column justify-content-center">
                 <h1 class="display-3 text-center mt-4 mb-0" style="font-family: Roboto;">The app is here!</h1>
-
                 <p class="text-center lead">Finally, Glimesh from the comfort of your phone or tablet. Download it now!</p>
-
                 <div class="row m-4 justify-content-center">
                     <div class="col-6 col-sm-4 px-4"><a href="https://apps.apple.com/us/app/glimesh/id1594860250" target="_blank"><img class="img-fluid" src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/download-on-the-app-store.png" )}></a>
                     </div>
@@ -19,37 +17,19 @@
         </div>
     </div>
 </div>-->
-
-
 <div class="pride_bg">
   <div style = "padding-top: 120px; font-family: Roboto;"><br><br>
   <div class="font-family: Roboto; font-weight-bold pride_font"> Glimesh Community Pride </div>
     <div class= "font-weight-bold pride_font_sub"> Raising funds and awareness for The Trevor Project this June </div>
 </div>
--->
-       
+
 <br>
-<div class="pride_bg text-black">
-  <h2 class="text-lg"> Glimesh Community Pride </h2>
-    <div class= "font-weight-bold"> Raising funds and awareness for The Trevor Project this June </div>
-</div>
-
-<div class="container-fluid justify-content-center mt-2">
-      <iframe src="https://overlays.tiltify.com/t17oW29d4FjBe7Fr_FCAQmVuCu5yYCJl" frameborder ="0"; 
-        style="
-        width: 100.5%;
-        height: 74px;
-        border: none;" 
-        scrolling="no">
-      </iframe>
-</div>
-
-<div class="pride_bg">
     <a href="https://donate.tiltify.com/+glimesh/glimpride" target="_blank" class="btn btn-lg font-weight-bold shadow-lg text-light bg-success">Donate Here</a>
     <a href="https://www.thetrevorproject.org/" target="_blank" class="btn btn-lg font-weight-bold shadow-lg text-light bg-TrevorProject">About the Trevor Project</a>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSfCKGswVF8OptjwTz1DR0ithA3wwcARivMH9Dr3UOdfHdM70A/viewform" target="_blank" class="btn btn-lg font-weight-bold shadow-lg text-light bg-info">Host An Event</a>
-</div>
+<br><br>
 
+<div class= "font-weight-bold pride_font_raised"> Amount Raised: </div>
 <%= if @random_channel do %>
   <div class="container">
     <div class="row">
@@ -85,7 +65,6 @@
           <% end %>
         </div>
       </div> -->
-
       <div class="container col-12 col-md-6 order-md-1">
         <%= live_render(@socket, GlimeshWeb.Channels.VideoPlayer,
           id: "homepage-video",
@@ -132,7 +111,6 @@
       </div>
     </div>
   </div>
-
 <% else %>
   <!-- <div class="fancy-bg">
     <div class="container">
@@ -147,7 +125,6 @@
               "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving."
             ) %>
           </p>
-
           <%= if @current_user do %>
             <%= link(gettext("Customize Your Profile"),
               to: Routes.user_settings_path(@socket, :profile),
@@ -176,7 +153,6 @@
   </div> -->
 <% end %>
 </div> 
-
 <%= if length(@channels) > 0 do %>
   <div class="container container-stream-list">
     <%= if @featured_event do %>
@@ -193,14 +169,11 @@
     <% end %>
   </div> 
 <% end %> 
-
-
 <!-- <div class="container">
   <div class="mt-4 px-4 px-lg-0">
     <h2><%= gettext("Categories Made Simpler") %></h2>
     <p class="lead"><%= gettext("Explore our categories and find your new home!") %></p>
   </div>
-
   <div class="row mt-2 mb-4">
     <div class="col">
       <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(@socket, :index, "gaming") do %>
@@ -243,6 +216,6 @@
         <br />
         <small class="text-color-link"><%= gettext("Education") %></small>
       <% end %>
-    </div>
-  </div>
+    </div> 
+  </div> 
 </div> -->
