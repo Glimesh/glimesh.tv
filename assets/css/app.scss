@@ -228,3 +228,53 @@ $fa-font-path: "/fa-fonts";
     #FFD2E9 12.5%, #FFB3B3 12.5% 25%, #FFDDB3 25% 37.5%, #FFFFB3 37.5% 50%, #B3DDB3 50% 62.5%, #B3ECEC 62.5% 75%, #C6B3E0 75% 87.5%, #DDB3DD 87.5%);
 
 }
+
+//adding in the pride homepage design
+.bg-TrevorProject {
+    background: #fd7e14;
+}
+
+.pride_bg {
+    background: url(https://i.imgur.com/SRFZabU.png) no-repeat center;
+    text-align: center;
+    position: relative;
+    padding-bottom: 90px;
+    min-height: 900px;
+   }
+
+.pride_frame {
+    background-color: #0E1726;
+    border: 5px;
+    padding: 10px;
+    text-align: left;
+    overflow-wrap: break-word;
+}
+
+.pride_font {
+    font-size: 60px;
+    text-shadow: 2px 2px 3px grey;
+}
+
+@media (min-width: 400px) {.pride_font
+{ 
+    font-size: 80px; 
+}
+.text-md-nowrap {
+    white-space: nowrap !important;
+}
+}
+
+.pride_font_sub {
+    font-size: 20px;
+    text-shadow: 2px 2px 3px grey; 
+}
+
+.pride_font_raised {
+    font-size: 25px;
+    text-shadow: 2px 2px 3px gre
+}
+
+.pride_channel_title {
+    max-height: 80px; 
+    overflow: hidden;
+}
