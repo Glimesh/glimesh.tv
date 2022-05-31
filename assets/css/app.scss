@@ -226,3 +226,23 @@ $fa-font-path: "/fa-fonts";
     #FFD2E9 12.5%, #FFB3B3 12.5% 25%, #FFDDB3 25% 37.5%, #FFFFB3 37.5% 50%, #B3DDB3 50% 62.5%, #B3ECEC 62.5% 75%, #C6B3E0 75% 87.5%, #DDB3DD 87.5%);
 
 }
+
+//color setting for tervor project button
+.bg-TrevorProject {
+    background: #fd7e14;
+}
+
+//adding in the pride banner at top of page
+.pride_bg {
+
+        background: url(https://i.imgur.com/otOaWMh.png) no-repeat center;
+        position: relative;
+        min-height: 90px;
+        text-align: center;
+        padding: 20px 0;
+   }
+
+//Overriding dark mode text colors for the pride banner
+.text-black {
+    color: black;
+}
