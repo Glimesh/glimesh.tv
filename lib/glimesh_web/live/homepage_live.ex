@@ -1,6 +1,8 @@
 defmodule GlimeshWeb.HomepageLive do
   use GlimeshWeb, :live_view
+
   alias Glimesh.Accounts
+  alias Glimesh.QueryCache
 
   @impl Phoenix.LiveView
   def mount(_params, session, socket) do
@@ -28,10 +30,10 @@ defmodule GlimeshWeb.HomepageLive do
      |> assign(:current_user, maybe_user)}
   end
 
-  def get_tiltify_donation_total() do
+  def get_tiltify_donation_total do
     access_token = Application.get_env(:glimesh, :tiltify_access_token)
 
-    Glimesh.QueryCache.get_and_store!(
+    QueryCache.get_and_store!(
       "GlimeshWeb.HomepageLive.get_tiltify_donation_total()",
       fn ->
         with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
@@ -66,13 +68,13 @@ defmodule GlimeshWeb.HomepageLive do
   defp get_stream_thumbnail(nil), do: nil
 
   defp get_cached_channels do
-    Glimesh.QueryCache.get_and_store!("GlimeshWeb.HomepageLive.get_cached_channels()", fn ->
+    QueryCache.get_and_store!("GlimeshWeb.HomepageLive.get_cached_channels()", fn ->
       {:ok, Glimesh.Homepage.get_homepage()}
     end)
   end
 
   defp get_random_channel(channels) when length(channels) > 0 do
-    Glimesh.QueryCache.get_and_store!("GlimeshWeb.HomepageLive.get_random_channel()", fn ->
+    QueryCache.get_and_store!("GlimeshWeb.HomepageLive.get_random_channel()", fn ->
       {:ok, Enum.random(channels)}
     end)
   end
