@@ -46,7 +46,7 @@ defmodule GlimeshWeb.HomepageLive do
                ),
              {:ok, response} <- Jason.decode(body),
              %{"data" => %{"totalAmountRaised" => amount_raised}} <- response do
-          {:ok, amount_raised}
+          {:ok, amount_raised * 100}
         else
           _ ->
             {:ok, 0}
