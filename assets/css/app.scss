@@ -235,12 +235,29 @@ $fa-font-path: "/fa-fonts";
 }
 
 .pride_bg {
-    background: url("/images/homepage/glimpride.png") no-repeat top;
-    background-size: auto 100%;
-    // background: url(https://i.imgur.com/SRFZabU.png) no-repeat bottom center;
+    background: url("/images/homepage/glimpride.png") no-repeat top center;
+    background-attachment: fixed;
     position: relative;
     padding-bottom: 90px;
     min-height: 900px;
+}
+
+.pride_font {
+    font-size: 40px;
+    text-shadow: 2px 2px 3px grey;
+}
+
+@media (min-width: 768px) {
+
+    .pride_font {
+        font-size: 60px;
+        text-shadow: 2px 2px 3px grey;
+    }
+
+    .pride_bg {
+        background: url("/images/homepage/glimpride.png") no-repeat top;
+        background-size: auto 100%;
+    }
 }
 
 .pride_frame {
@@ -251,15 +268,9 @@ $fa-font-path: "/fa-fonts";
     overflow-wrap: break-word;
 }
 
-.pride_font {
-    font-size: 60px;
-    text-shadow: 2px 2px 3px grey;
-}
 
 @media (min-width: 400px) {
-    .pride_font {
-        font-size: 80px;
-    }
+
 
     .text-md-nowrap {
         white-space: nowrap !important;
