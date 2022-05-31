@@ -20,8 +20,7 @@ defmodule GlimeshWeb.UserSettings.Components.ProfileSettingsLive do
      |> assign(:pronouns, pronouns_list)
      |> assign(:raw_markdown, session["user"].profile_content_md)
      |> assign(:formatted_markdown, session["user"].profile_content_html)
-     |> assign(:markdown_state, "edit")
-    }
+     |> assign(:markdown_state, "edit")}
   end
 
   def handle_event("edit_state", %{"state" => "edit"}, socket) do
@@ -30,9 +29,11 @@ defmodule GlimeshWeb.UserSettings.Components.ProfileSettingsLive do
 
   def handle_event("edit_state", %{"state" => "preview"}, socket) do
     markdown = socket.assigns.raw_markdown |> Profile.safe_user_markdown_to_html() |> elem(1)
-    {:noreply, socket
-    |> assign(:formatted_markdown, markdown)
-    |> assign(:markdown_state, "preview")}
+
+    {:noreply,
+     socket
+     |> assign(:formatted_markdown, markdown)
+     |> assign(:markdown_state, "preview")}
   end
 
   def handle_event("update_markdown", value, socket) do

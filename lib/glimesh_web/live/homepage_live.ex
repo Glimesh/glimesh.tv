@@ -1,6 +1,8 @@
 defmodule GlimeshWeb.HomepageLive do
   use GlimeshWeb, :live_view
+
   alias Glimesh.Accounts
+  alias Glimesh.QueryCache
 
   @impl Phoenix.LiveView
   def mount(_params, session, socket) do
@@ -24,7 +26,33 @@ defmodule GlimeshWeb.HomepageLive do
      |> assign(:random_channel, random_channel)
      |> assign(:random_channel_thumbnail, get_stream_thumbnail(random_channel))
      |> assign(:user_count, user_count)
+     |> assign(:total_raised, get_tiltify_donation_total())
      |> assign(:current_user, maybe_user)}
+  end
+
+  def get_tiltify_donation_total do
+    access_token = Application.get_env(:glimesh, :tiltify_access_token)
+
+    QueryCache.get_and_store!(
+      "GlimeshWeb.HomepageLive.get_tiltify_donation_total()",
+      fn ->
+        with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
+               HTTPoison.get(
+                 "https://tiltify.com/api/v3/campaigns/171961",
+                 [
+                   {"Authorization", "Bearer #{access_token}"},
+                   {"Content-Type", "application/json"}
+                 ]
+               ),
+             {:ok, response} <- Jason.decode(body),
+             %{"data" => %{"totalAmountRaised" => amount_raised}} <- response do
+          {:ok, amount_raised}
+        else
+          _ ->
+            {:ok, 0}
+        end
+      end
+    )
   end
 
   defp get_stream_thumbnail(%Glimesh.Streams.Channel{} = channel) do
@@ -40,13 +68,13 @@ defmodule GlimeshWeb.HomepageLive do
   defp get_stream_thumbnail(nil), do: nil
 
   defp get_cached_channels do
-    Glimesh.QueryCache.get_and_store!("GlimeshWeb.HomepageLive.get_cached_channels()", fn ->
+    QueryCache.get_and_store!("GlimeshWeb.HomepageLive.get_cached_channels()", fn ->
       {:ok, Glimesh.Homepage.get_homepage()}
     end)
   end
 
   defp get_random_channel(channels) when length(channels) > 0 do
-    Glimesh.QueryCache.get_and_store!("GlimeshWeb.HomepageLive.get_random_channel()", fn ->
+    QueryCache.get_and_store!("GlimeshWeb.HomepageLive.get_random_channel()", fn ->
       {:ok, Enum.random(channels)}
     end)
   end
@@ -166,6 +194,105 @@ defmodule GlimeshWeb.HomepageLive do
           <% end %>
         </div>
       <% end %>
+    </div>
+    """
+  end
+
+  def header_component(assigns) do
+    ~H"""
+    <div class="fancy-bg">
+      <div class="container">
+        <div class="position-relative overflow-hidden p-3 p-md-5">
+          <div class="col-md-12 p-lg-4 mx-auto">
+            <h1 class="display-3 font-weight-bold">
+              <span class="text-color-alpha"><%= gettext("Next-Gen") %></span>
+              <%= gettext("Live Streaming!") %>
+            </h1>
+            <p class="lead" style="max-width: 500px;">
+              <%= gettext(
+                "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving."
+              ) %>
+            </p>
+            <%= if @current_user do %>
+              <%= link(gettext("Customize Your Profile"),
+                to: Routes.user_settings_path(GlimeshWeb.Endpoint, :profile),
+                class: "btn btn-info mt-3"
+              ) %>
+              <%= link(gettext("Create Your Channel"),
+                to: Routes.user_settings_path(GlimeshWeb.Endpoint, :stream),
+                class: "btn btn-info mt-3"
+              ) %>
+              <%= link(gettext("Setup Payouts"),
+                to: "/users/settings/profile",
+                class: "btn btn-info mt-3"
+              ) %>
+            <% else %>
+              <p class="lead">
+                <%= gettext("Join %{user_count} others!", user_count: @user_count) %>
+              </p>
+              <%= link(gettext("Register Your Account"),
+                to: Routes.user_registration_path(GlimeshWeb.Endpoint, :new),
+                class: "btn btn-primary btn-lg mt-3"
+              ) %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  def categories_component(assigns) do
+    ~H"""
+    <div class="container">
+      <div class="mt-4 px-4 px-lg-0">
+        <h2><%= gettext("Categories Made Simpler") %></h2>
+        <p class="lead"><%= gettext("Explore our categories and find your new home!") %></p>
+      </div>
+      <div class="row mt-2 mb-4">
+        <div class="col">
+          <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "gaming") do %>
+            <i class="fas fa-gamepad fa-2x fa-fw"></i>
+            <br />
+            <small class="text-color-link"><%= gettext("Gaming") %></small>
+          <% end %>
+        </div>
+        <div class="col">
+          <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "art") do %>
+            <i class="fas fa-palette fa-2x fa-fw"></i>
+            <br />
+            <small class="text-color-link"><%= gettext("Art") %></small>
+          <% end %>
+        </div>
+        <div class="col">
+          <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "music") do %>
+            <i class="fas fa-headphones fa-2x fa-fw"></i>
+            <br />
+            <small class="text-color-link"><%= gettext("Music") %></small>
+          <% end %>
+        </div>
+        <div class="col">
+          <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "tech") do %>
+            <i class="fas fa-microchip fa-2x fa-fw"></i>
+            <br />
+            <small class="text-color-link"><%= gettext("Tech") %></small>
+          <% end %>
+        </div>
+        <div class="col">
+          <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "irl") do %>
+            <i class="fas fa-camera-retro fa-2x fa-fw"></i>
+            <br />
+            <small class="text-color-link"><%= gettext("IRL") %></small>
+          <% end %>
+        </div>
+        <div class="col">
+          <%= live_redirect class: "btn btn-outline-primary btn-lg btn-block py-4", to: Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "education") do %>
+            <i class="fas fa-graduation-cap fa-2x fa-fw"></i>
+            <br />
+            <small class="text-color-link"><%= gettext("Education") %></small>
+          <% end %>
+        </div>
+      </div>
     </div>
     """
   end
