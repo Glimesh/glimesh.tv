@@ -45,6 +45,18 @@ defmodule Glimesh.EventsTeam do
     |> times_from_utc()
   end
 
+  def get_potentially_live_featured_events do
+    now = DateTime.utc_now()
+
+    Repo.all(
+      from e in Event,
+        where: e.featured == true,
+        where: e.start_date <= ^now,
+        where: e.end_date >= ^now
+    )
+    |> Enum.map(fn x -> times_from_utc(x) end)
+  end
+
   def get_day_ordinal(date) do
     case date.day do
       1 -> "st"
