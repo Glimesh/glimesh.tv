@@ -51,6 +51,7 @@ defmodule Glimesh.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_live_view, "~> 0.17.9"},
       {:phoenix_html, "~> 3.0"},
+      {:surface, "~> 0.7.4"},
       {:phoenix_live_dashboard, "~> 0.6.2"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 0.5"},

@@ -71,9 +71,30 @@ defmodule GlimeshWeb do
     end
   end
 
+  def surface_live_view do
+    quote do
+      use Surface.LiveView,
+        layout: {GlimeshWeb.LayoutView, "live.html"}
+
+      import Glimesh.Formatters
+
+      unquote(view_helpers())
+    end
+  end
+
   def live_component do
     quote do
       use Phoenix.LiveComponent
+
+      import Glimesh.Formatters
+
+      unquote(view_helpers())
+    end
+  end
+
+  def surface_live_component do
+    quote do
+      use Surface.LiveComponent
 
       import Glimesh.Formatters
 
