@@ -94,7 +94,7 @@ config :glimesh, GlimeshWeb.Endpoint,
     patterns: [
       ~r"priv/public/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/glimesh_web/(live|views)/.*(ex)$",
+      ~r"lib/glimesh_web/(live|views|components)/.*(ex|js)$",
       ~r"lib/glimesh_web/live/.*(sface)$",
       ~r"lib/glimesh_web/templates/.*(eex|md)$"
     ]

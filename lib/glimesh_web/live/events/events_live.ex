@@ -2,7 +2,7 @@ defmodule GlimeshWeb.EventsLive do
   use GlimeshWeb, :surface_live_view
 
   alias GlimeshWeb.Events.Components.Calendar
-  alias GlimeshWeb.Events.Components.SmallEvent
+  alias GlimeshWeb.Events.Components.EventMedia
 
   @impl true
   def render(assigns) do
@@ -29,7 +29,13 @@ defmodule GlimeshWeb.EventsLive do
           </div>
 
           {#for event <- @events}
-            <SmallEvent event={event} />
+            <div id={"event#{event.id}"}>
+              <div class="card mt-2">
+                <div class="card-body">
+                  <EventMedia event={event} />
+                </div>
+              </div>
+            </div>
           {/for}
         </div>
       </div>

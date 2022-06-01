@@ -256,7 +256,8 @@ $fa-font-path: "/fa-fonts";
 
     .pride_bg {
         background: url("/images/homepage/glimpride.png") no-repeat top;
-        background-size: auto 100%;
+        background-attachment: fixed;
+        // background-size: auto 100%;
     }
 }
 
@@ -284,10 +285,36 @@ $fa-font-path: "/fa-fonts";
 
 .pride_font_raised {
     font-size: 25px;
-    text-shadow: 2px 2px 3px gre
+    text-shadow: 2px 2px 3px grey;
 }
 
 .pride_channel_title {
     max-height: 80px;
     overflow: hidden;
+}
+
+.crossthrough {
+    position: relative;
+    display: inline-block;
+}
+
+.crossthrough::before,
+.crossthrough::after {
+    content: '';
+    width: 100%;
+    position: absolute;
+    right: 0;
+    top: 50%;
+}
+
+.crossthrough::before {
+    border-bottom: 2px solid red;
+    -webkit-transform: skewY(-10deg);
+    transform: skewY(-10deg);
+}
+
+.crossthrough::after {
+    border-bottom: 2px solid red;
+    -webkit-transform: skewY(10deg);
+    transform: skewY(10deg);
 }

@@ -3,7 +3,7 @@ defmodule GlimeshWeb.Events.EventsAdminLive do
 
   alias Glimesh.EventsTeam
   alias Glimesh.EventsTeam.Event
-  alias GlimeshWeb.Events.Components.SmallEvent
+  alias GlimeshWeb.Events.Components.EventMedia
 
   data changeset, :struct
   data event, :struct
@@ -23,7 +23,7 @@ defmodule GlimeshWeb.Events.EventsAdminLive do
           </div>
 
           {#for event <- @all_events}
-            <SmallEvent event={event}>
+            <EventMedia event={event} class="p-2">
               <:footer>
                 <button
                   class="btn btn-primary"
@@ -43,7 +43,7 @@ defmodule GlimeshWeb.Events.EventsAdminLive do
                   Delete
                 </button>
               </:footer>
-            </SmallEvent>
+            </EventMedia>
           {/for}
         </div>
       </div>

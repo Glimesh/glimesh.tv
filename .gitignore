@@ -47,3 +47,5 @@ glimesh.iml
 config/local.exs
 uploads/
 .env
+/assets/js/_hooks/
+

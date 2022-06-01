@@ -24,7 +24,11 @@ import "@github/markdown-toolbar-element";
 // https://github.com/github/time-elements
 import "@github/time-elements";
 
-let Hooks = {};
+import SurfaceHooks from "./_hooks";
+
+// New fancy surface hooks
+let Hooks = SurfaceHooks;
+// Add in our legacy hooks
 Hooks.ProcessPayment = ProcessPayment;
 Hooks.Chat = Chat;
 Hooks.Choices = Choices;
