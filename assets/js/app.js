@@ -17,6 +17,7 @@ import LaunchCountdown from "./hooks/LaunchCountdown";
 import Tagify from "./hooks/Tagify";
 import ChannelLookupTypeahead from "./hooks/ChannelLookupTypeahead";
 import RecentTags from "./hooks/RecentTags";
+import Bootstrapize from "./hooks/Bootstrapize";
 
 // https://github.com/github/markdown-toolbar-element
 import "@github/markdown-toolbar-element";
@@ -25,7 +26,6 @@ import "@github/markdown-toolbar-element";
 import "@github/time-elements";
 
 import SurfaceHooks from "./_hooks";
-
 // New fancy surface hooks
 let Hooks = SurfaceHooks;
 // Add in our legacy hooks
@@ -41,6 +41,7 @@ Hooks.LaunchCountdown = LaunchCountdown;
 Hooks.Tagify = Tagify;
 Hooks.ChannelLookupTypeahead = ChannelLookupTypeahead;
 Hooks.RecentTags = RecentTags;
+Hooks.Bootstrapize = Bootstrapize;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
