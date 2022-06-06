@@ -35,8 +35,8 @@
     <%= live_patch(tag.name,
       to: Routes.streams_list_path(@socket, :index, @channel.category.slug, tags: [tag.slug]),
       class: [
-        "badge badge-pill text-dark",
-        if(tag.name == "Community Pride", do: "bg-pride", else: "badge-primary")
+        "badge badge-pill",
+        if(tag.name == "Community Pride", do: "bg-pride text-dark", else: "badge-primary")
       ]
     ) %>
   <% end %>
