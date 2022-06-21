@@ -26,7 +26,7 @@ defmodule GlimeshWeb.GraphSubscriptionCase do
       Boruta.Oauth.Authorization.token(%Boruta.Oauth.ClientCredentialsRequest{
         client_id: app.client.id,
         client_secret: app.client.secret,
-        scope: "public email chat streamkey follow"
+        scope: "public email chat streamkey follow title"
       })
 
     {:ok, socket} =
