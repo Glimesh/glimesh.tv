@@ -8,7 +8,6 @@ defmodule Glimesh.Api.ChannelResolver do
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Homepage
   alias Glimesh.Streams
-  alias Glimesh.Streams.Title
 
   @error_not_found "Could not find resource"
   @error_access_denied "Access denied"
@@ -32,19 +31,22 @@ defmodule Glimesh.Api.ChannelResolver do
     end
   end
 
-  def change_title(_parent, %{channel_id: channel_id, title: title},
+  def update_stream_info(_parent, %{channel_id: channel_id, title: title},
         %{context: %{access: access}
       }) do
-    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :title, access) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :stream_info, access) do
       channel = Glimesh.ChannelLookups.get_channel(channel_id)
-
-      if String.length(title) > 250 do
-        {:error, "Title must less than 250 characters."}
-      else
-        case channel do
-          nil -> {:error, "Channel not found"}
-          _ -> Title.change_title(channel, title)
+      if channel !== nil do
+        case Streams.update_channel(access.user, channel, %{title: title}) do
+          {:ok, changeset} ->
+            {:ok, changeset}
+          {:error, %Ecto.Changeset{} = changeset} ->
+            {:error, Api.parse_ecto_changeset_errors(changeset)}
+          {:error, :unauthorized} ->
+            {:error, :unauthorized}
         end
+      else
+        {:error, "Channel not found"}
       end
     end
   end
