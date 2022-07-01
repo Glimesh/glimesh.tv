@@ -1,7 +1,7 @@
 defmodule GlimeshWeb.Channels.Components.VideoPlayer do
   use GlimeshWeb, :surface_live_component
 
-  alias Glimesh.Streams.ChannelHosts
+  alias Glimesh.Streams.Channel
 
   prop channel, :struct
   prop country, :string
