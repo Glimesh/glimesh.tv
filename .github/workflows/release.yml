@@ -26,11 +26,14 @@ jobs:
       - name: Install npm assets
         run: npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
 
+      - name: Build glimesh.tv
+        run: mix compile
+
       - name: Build static assets
         run: mix assets.deploy
 
       - name: Build release
-        run: mix do compile, release
+        run: mix release
 
       - name: Upload release
         uses: actions/upload-artifact@v2
