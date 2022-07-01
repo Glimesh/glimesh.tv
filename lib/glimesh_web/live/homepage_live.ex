@@ -13,66 +13,7 @@ defmodule GlimeshWeb.HomepageLive do
   @impl true
   def render(assigns) do
     ~F"""
-    <div class="pride_bg">
-      <div class="mt-4 text-center" style="font-family: Roboto;">
-        <br>
-        <br>
-        <div class="font-weight-bold pride_font">
-          Glimesh Community Pride
-        </div>
-        <div class="font-weight-bold pride_font_sub">
-          Raising funds and awareness for The Trevor Project this June
-        </div>
-      </div>
-
-      <br>
-      <div class="text-center">
-        <a
-          href="https://donate.tiltify.com/+glimesh/glimpride"
-          target="_blank"
-          class="btn btn-lg font-weight-bold shadow-lg text-light bg-success"
-        >
-          Donate Here
-        </a>
-        <a
-          href="https://www.thetrevorproject.org/"
-          target="_blank"
-          class="btn btn-lg font-weight-bold shadow-lg text-light bg-TrevorProject"
-        >
-          About the Trevor Project
-        </a>
-        <a
-          href="https://docs.google.com/forms/d/e/1FAIpQLSfCKGswVF8OptjwTz1DR0ithA3wwcARivMH9Dr3UOdfHdM70A/viewform"
-          target="_blank"
-          class="btn btn-lg font-weight-bold shadow-lg text-light bg-info"
-        >
-          Host An Event
-        </a>
-      </div>
-
-      <div class="container my-4" style="max-width: 600px">
-        <p class="text-center font-weight-bold pride_font_raised">
-          Amount Raised: ${format_price(@total_raised)} of
-          {#if @start_goal_amount !== @final_goal_amount}
-            <span class="crossthrough">${format_price(@start_goal_amount)}</span> <span style="font-size: 30px;">${format_price(@final_goal_amount)}!</span>
-          {#else}
-            <span style="font-size: 30px;">${format_price(@final_goal_amount)}!</span>
-          {/if}
-        </p>
-        <div class="progress shadow" style="height: 32px;">
-          <div
-            class="progress-bar bg-warning lead text-dark progress-bar-striped progress-bar-animated"
-            role="progressbar"
-            aria-valuenow={@total_raised}
-            aria-valuemin="0"
-            aria-valuemax={@final_goal_amount}
-            style={"width: #{@total_raised / @final_goal_amount * 100}%;"}
-          >
-            ${format_price(@total_raised)} of ${format_price(@final_goal_amount)}
-          </div>
-        </div>
-      </div>
-
+    <div class="fancy-bg pt-4">
       {#if @random_channel}
         <div class="container">
           {#if not is_nil(@live_featured_event_channel)}
@@ -87,45 +28,122 @@ defmodule GlimeshWeb.HomepageLive do
               </div>
             </div>
           {#else}
-            <VideoPlayer id="homepage-video-player" muted channel={@random_channel} />
-            <div class="d-flex align-items-start pride_frame">
-              <img
-                src={Glimesh.Avatar.url({@random_channel.user.avatar, @random_channel.user}, :original)}
-                alt={@random_channel.user.displayname}
-                width="48"
-                height="48"
-                class={[
-                  "img-avatar mr-2",
-                  if(Glimesh.Accounts.can_receive_payments?(@random_channel.user),
-                    do: "img-verified-streamer"
-                  )
-                ]}
-              />
-              <div class="pl-1 pr-1">
-                <h6 class="mb-0 mt-1 text-wrap pride_channel_title">
-                  {@random_channel.title}
-                </h6>
-                <p class="mb-0 card-stream-username">
-                  {@random_channel.user.displayname}
-                  <span class="badge badge-info">
-                    {Glimesh.Streams.get_channel_language(@random_channel)}
-                  </span>
-                  {#if @random_channel.mature_content}
-                    <span class="badge badge-warning ml-1">{gettext("Mature")}</span>
-                  {/if}
-                </p>
+            <div class="row">
+              <div class="col-md-7">
+                <div class="card shadow rounded">
+                  <VideoPlayer id="homepage-video-player" muted channel={@random_channel} />
+                  <div class="d-flex align-items-start p-2">
+                    <img
+                      src={Glimesh.Avatar.url({@random_channel.user.avatar, @random_channel.user}, :original)}
+                      alt={@random_channel.user.displayname}
+                      width="48"
+                      height="48"
+                      class={[
+                        "img-avatar mr-2",
+                        if(Glimesh.Accounts.can_receive_payments?(@random_channel.user),
+                          do: "img-verified-streamer"
+                        )
+                      ]}
+                    />
+                    <div class="pl-1 pr-1">
+                      <h6 class="mb-0 mt-1 text-wrap pride_channel_title">
+                        {@random_channel.title}
+                      </h6>
+                      <p class="mb-0 card-stream-username">
+                        {@random_channel.user.displayname}
+                        <span class="badge badge-info">
+                          {Glimesh.Streams.get_channel_language(@random_channel)}
+                        </span>
+                        {#if @random_channel.mature_content}
+                          <span class="badge badge-warning ml-1">{gettext("Mature")}</span>
+                        {/if}
+                      </p>
+                    </div>
+                    <LivePatch
+                      to={Routes.user_stream_path(@socket, :index, @random_channel.user.username)}
+                      class="ml-auto text-md-nowrap mt-1"
+                    >
+                      <button type="button" class="btn btn-primary">{gettext("Watch Live")}</button>
+                    </LivePatch>
+                  </div>
+                </div>
               </div>
-              <LivePatch
-                to={Routes.user_stream_path(@socket, :index, @random_channel.user.username)}
-                class="ml-auto text-md-nowrap mt-1"
-              >
-                <button type="button" class="btn btn-primary">{gettext("Watch Live")}</button>
-              </LivePatch>
+              <div class="col-md-5 py-4 pr-4">
+                <div class="d-flex flex-column align-items-center justify-content-center h-100">
+                  <h2 class="font-weight-bold">
+                    <span class="text-color-alpha">{gettext("Next-Gen")}</span>
+                    {gettext("Live Streaming!")}
+                  </h2>
+                  <p class="lead">
+                    {gettext(
+                      "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving."
+                    )}
+                  </p>
+
+                  {#if @current_user}
+                    <div class="d-flex flex-row justify-content-around mt-3">
+                      {link(gettext("Create Your Channel"),
+                        to: Routes.user_settings_path(@socket, :stream),
+                        class: "btn btn-info mr-4"
+                      )}
+                      {link(gettext("Setup Payouts"),
+                        to: "/users/settings/profile",
+                        class: "btn btn-info"
+                      )}
+                    </div>
+                  {#else}
+                    <p class="lead">
+                      {gettext("Join %{user_count} others!", user_count: @user_count)}
+                    </p>
+                    {link(gettext("Register Your Account"),
+                      to: Routes.user_registration_path(@socket, :new),
+                      class: "btn btn-primary btn-lg"
+                    )}
+                  {/if}
+                </div>
+              </div>
             </div>
           {/if}
         </div>
       {#else}
-        <!-- <.header_component current_user={@current_user} user_count={@user_count} /> -->
+        <div class="container">
+          <div class="position-relative overflow-hidden p-3 p-md-5">
+            <div class="col-md-12 p-lg-4 mx-auto">
+              <h1 class="display-3 font-weight-bold">
+                <span class="text-color-alpha">{gettext("Next-Gen")}</span>
+                {gettext("Live Streaming!")}
+              </h1>
+              <p class="lead" style="max-width: 550px;">
+                {gettext(
+                  "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving."
+                )}
+              </p>
+
+              {#if @current_user}
+                {link(gettext("Customize Your Profile"),
+                  to: Routes.user_settings_path(@socket, :profile),
+                  class: "btn btn-info mt-3"
+                )}
+                {link(gettext("Create Your Channel"),
+                  to: Routes.user_settings_path(@socket, :stream),
+                  class: "btn btn-info mt-3"
+                )}
+                {link(gettext("Setup Payouts"),
+                  to: "/users/settings/profile",
+                  class: "btn btn-info mt-3"
+                )}
+              {#else}
+                <p class="lead">
+                  {gettext("Join %{user_count} others!", user_count: @user_count)}
+                </p>
+                {link(gettext("Register Your Account"),
+                  to: Routes.user_registration_path(@socket, :new),
+                  class: "btn btn-primary btn-lg mt-3"
+                )}
+              {/if}
+            </div>
+          </div>
+        </div>
       {/if}
 
       {#if length(@channels) > 0}
@@ -137,7 +155,24 @@ defmodule GlimeshWeb.HomepageLive do
           </div>
         </div>
       {/if}
-      <!-- <.categories_component /> -->
+
+      <div class="container">
+        <div class="mt-4 px-4 px-lg-0">
+          <h2>{gettext("Categories Made Simpler")}</h2>
+          <p class="lead">{gettext("Explore our categories and find your new home!")}</p>
+        </div>
+        <div class="row mt-2 mb-4">
+          {#for {name, link, icon} <- list_categories()}
+            <div class="col">
+              <LivePatch to={link} class="btn btn-outline-primary btn-lg btn-block py-4">
+                <i class={"fas fa-2x fa-fw", icon} />
+                <br>
+                <small class="text-color-link">{name}</small>
+              </LivePatch>
+            </div>
+          {/for}
+        </div>
+      </div>
     </div>
     """
   end
@@ -157,8 +192,6 @@ defmodule GlimeshWeb.HomepageLive do
     [live_featured_event, live_featured_event_channel] = get_random_event()
 
     user_count = Glimesh.Accounts.count_users()
-
-    [total_raised, start_goal_amount, final_goal_amount] = get_tiltify_donation_total()
 
     if connected?(socket) do
       live_channel_id =
@@ -190,10 +223,42 @@ defmodule GlimeshWeb.HomepageLive do
      |> assign(:random_channel, random_channel)
      |> assign(:random_channel_thumbnail, get_stream_thumbnail(random_channel))
      |> assign(:user_count, user_count)
-     |> assign(:total_raised, total_raised)
-     |> assign(:start_goal_amount, start_goal_amount)
-     |> assign(:final_goal_amount, final_goal_amount)
      |> assign(:current_user, maybe_user)}
+  end
+
+  def list_categories do
+    [
+      {
+        gettext("Gaming"),
+        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "gaming"),
+        "fa-gamepad"
+      },
+      {
+        gettext("Art"),
+        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "art"),
+        "fa-palette"
+      },
+      {
+        gettext("Music"),
+        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "music"),
+        "fa-headphones"
+      },
+      {
+        gettext("Tech"),
+        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "tech"),
+        "fa-microchip"
+      },
+      {
+        gettext("IRL"),
+        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "irl"),
+        "fa-camera-retro"
+      },
+      {
+        gettext("Education"),
+        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "education"),
+        "fa-graduation-cap"
+      }
+    ]
   end
 
   def get_random_event do
@@ -213,37 +278,6 @@ defmodule GlimeshWeb.HomepageLive do
         {:ok, [nil, nil]}
       end
     end)
-  end
-
-  def get_tiltify_donation_total do
-    access_token = Application.get_env(:glimesh, :tiltify_access_token)
-
-    QueryCache.get_and_store!(
-      "GlimeshWeb.HomepageLive.get_tiltify_donation_total()",
-      fn ->
-        with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
-               HTTPoison.get(
-                 "https://tiltify.com/api/v3/campaigns/171961",
-                 [
-                   {"Authorization", "Bearer #{access_token}"},
-                   {"Content-Type", "application/json"}
-                 ]
-               ),
-             {:ok, response} <- Jason.decode(body),
-             %{
-               "data" => %{
-                 "totalAmountRaised" => amount_raised,
-                 "fundraiserGoalAmount" => final_goal,
-                 "originalFundraiserGoal" => original_goal
-               }
-             } <- response do
-          {:ok, [amount_raised * 100, original_goal * 100, final_goal * 100]}
-        else
-          _ ->
-            {:ok, [0, 500, 1000]}
-        end
-      end
-    )
   end
 
   defp get_stream_thumbnail(%Glimesh.Streams.Channel{} = channel) do
@@ -276,50 +310,5 @@ defmodule GlimeshWeb.HomepageLive do
   def handle_info({:debug, _, _}, socket) do
     # Ignore any debug messages from the video player
     {:noreply, socket}
-  end
-
-  def featured_events_component(assigns) do
-    ~H"""
-    <div class="card h-100">
-      <img
-        src={Glimesh.EventImage.url({@event.image, @event.image}, :original)}
-        class="card-img-top"
-        alt={@event.label}
-      />
-      <div class="card-body">
-        <h5><%= @event.label %></h5>
-        <p class="card-text"><%= @event.description %></p>
-        <%= if Glimesh.EventsTeam.live_now(@event) do %>
-          <span class="badge badge-pill badge-danger">Live now</span>
-          <%= live_patch("Watch Event",
-            to: Routes.user_stream_path(GlimeshWeb.Endpoint, :index, @event.channel)
-          ) %>
-        <% else %>
-          <p class="text-center">
-            Live
-            <relative-time
-              id="event-relative-time"
-              phx-update="ignore"
-              datetime={Glimesh.EventsTeam.date_to_utc(@event.start_date)}
-            >
-              <%= @event.start_date %>
-            </relative-time>
-            on
-            <br />
-
-            <%= live_patch("glimesh.tv/#{@event.channel}",
-              to: Routes.user_stream_path(GlimeshWeb.Endpoint, :index, @event.channel)
-            ) %>
-          </p>
-        <% end %>
-      </div>
-      <div class="card-footer text-center">
-        <%= Calendar.strftime(
-          @event.start_date,
-          "%B %d#{Glimesh.EventsTeam.get_day_ordinal(@event.start_date)} %I:%M%p"
-        ) %> Eastern US
-      </div>
-    </div>
-    """
   end
 end

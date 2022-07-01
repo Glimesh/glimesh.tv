@@ -2,7 +2,6 @@ defmodule GlimeshWeb.Channels.Components.VideoPlayer do
   use GlimeshWeb, :surface_live_component
 
   alias Glimesh.Streams.Channel
-  alias GlimeshWeb.Router.Helpers, as: Routes
 
   prop channel, :struct
   prop country, :string
@@ -41,7 +40,7 @@ defmodule GlimeshWeb.Channels.Components.VideoPlayer do
 
   def play(player_id, country) do
     case Glimesh.Janus.get_closest_edge_location(country) do
-      %Glimesh.Janus.EdgeRoute{id: janus_edge_id, url: janus_url, hostname: janus_hostname} ->
+      %Glimesh.Janus.EdgeRoute{url: janus_url} ->
         send_update(__MODULE__, id: player_id, status: "ready", janus_url: janus_url)
 
       _ ->
