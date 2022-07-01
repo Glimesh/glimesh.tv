@@ -120,10 +120,19 @@ defmodule Glimesh.Accounts.UserNotifier do
   """
   def deliver_user_report_alert(reporting_user, reported_user, reason, location, notes) do
     admins = Glimesh.Accounts.list_admins()
+    chat_messages = list_some_chat_messages(reported_user)
 
     for admin <- admins do
       email =
-        Email.user_report_alert(admin, reporting_user, reported_user, reason, location, notes)
+        Email.user_report_alert(
+          admin,
+          reporting_user,
+          reported_user,
+          reason,
+          location,
+          notes,
+          chat_messages
+        )
 
       Mailer.deliver_later(email)
       |> log_bamboo_delivery(
@@ -135,5 +144,21 @@ defmodule Glimesh.Accounts.UserNotifier do
     end
 
     {:ok, %{}}
+  end
+
+  defp list_some_chat_messages(%Glimesh.Accounts.User{} = user) do
+    messages =
+      Glimesh.Chat.list_some_chat_messages_for_user(user)
+      |> Glimesh.Repo.all()
+      |> Enum.map(fn message ->
+        "  #{message.inserted_at} #{user.displayname} in /#{message.channel.streamer.displayname}: #{message.message}"
+      end)
+      |> Enum.join("\n")
+
+    messages
+  end
+
+  defp list_some_chat_messages(_) do
+    ""
   end
 end

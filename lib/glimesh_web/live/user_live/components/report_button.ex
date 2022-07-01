@@ -161,15 +161,13 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
         %{"report_reason" => report_reason, "location" => location, "notes" => notes},
         socket
       ) do
-    some_chat_messages = list_some_chat_messages(socket.assigns.streamer)
-
     {:ok, _} =
       Glimesh.Accounts.UserNotifier.deliver_user_report_alert(
         socket.assigns.user,
         socket.assigns.streamer,
         report_reason,
         location,
-        notes <> "\n\n" <> some_chat_messages
+        notes
       )
 
     {:noreply,
@@ -184,21 +182,5 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
   @impl true
   def handle_event("hide_modal", _value, socket) do
     {:noreply, socket |> assign(:show_report, false)}
-  end
-
-  defp list_some_chat_messages(%Glimesh.Accounts.User{} = user) do
-    messages =
-      Glimesh.Chat.list_some_chat_messages_for_user(user)
-      |> Glimesh.Repo.all()
-      |> Enum.map(fn message ->
-        "  #{message.inserted_at} #{user.displayname} in /#{message.channel.streamer.displayname}: #{message.message}"
-      end)
-      |> Enum.join("\n")
-
-    " Recent Chat Messages: \n#{messages}"
-  end
-
-  defp list_some_chat_messages(_) do
-    ""
   end
 end
