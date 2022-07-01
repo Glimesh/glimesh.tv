@@ -10,7 +10,7 @@ defmodule Glimesh.Oauth.Scopes do
       "chat" -> gettext("scopechat")
       "streamkey" -> gettext("scopestream")
       "follow" -> gettext("scopefollow")
-      "title" -> gettext("scopetitle")
+      "stream_info" -> gettext("scopestream_info")
     end
   end
 end
