@@ -150,10 +150,9 @@ defmodule Glimesh.Accounts.UserNotifier do
     messages =
       Glimesh.Chat.list_some_chat_messages_for_user(user)
       |> Glimesh.Repo.all()
-      |> Enum.map(fn message ->
+      |> Enum.map_join("\n", fn message ->
         "  #{message.inserted_at} #{user.displayname} in /#{message.channel.streamer.displayname}: #{message.message}"
       end)
-      |> Enum.join("\n")
 
     messages
   end
