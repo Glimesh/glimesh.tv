@@ -65,7 +65,8 @@ defmodule GlimeshWeb.UserLive.Components.ReportButtonTest do
           streamer,
           "other",
           "some location",
-          "Some notes"
+          "Some notes",
+          ""
         )
 
       assert_delivered_email(email)
