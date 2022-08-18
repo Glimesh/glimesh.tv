@@ -18,6 +18,10 @@
                                     <p><%= gettext("Banned: %{value}", value: (if @user.is_banned, do: "✅", else: "❌")) %>
                                     </p>
                                     <p><%= gettext("GCT: %{value}", value: (if @user.is_gct, do: "✅", else: "❌")) %></p>
+                                    <p><%= gettext("Community Champion: %{value}", value: (if @user.is_community_champion, do: "✅", else: "❌")) %>
+                                    </p>
+                                    <p><%= gettext("Events Team: %{value}", value: (if @user.is_events_team, do: "✅", else: "❌")) %>
+                                    </p>
                                     <p><%= gettext("Access Level: %{value}", value: Glimesh.CommunityTeam.access_level_to_title(@user.gct_level)) %>
                                     </p>
                                     <p>

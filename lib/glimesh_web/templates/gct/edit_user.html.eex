@@ -113,23 +113,37 @@
                 </div>
             </div>
             <hr>
-            <h5><%= gettext("GCT Settings") %></h5>
+            <h5><%= gettext("Core Team Settings") %></h5>
             <div class="row mt-1">
                 <div class="col-sm-6">
-                    <%= label f, gettext("Is GCT") %>
+                    <%= label f, gettext("Is Core Team") %>
                     <%= select f, :is_gct, [Yes: true, No: false], [class: "form-control"] %>
                     <%= error_tag f, :is_gct %>
                 </div>
                 <div class="col-sm-6">
-                    <%= label f, gettext("GCT Access Level") %>
+                    <%= label f, gettext("Core Team Access Level") %>
                     <%= number_input f, :gct_level, [class: "form-control"] %>
                     <%= error_tag f, :gct_level %>
                 </div>
             </div>
             <% end %>
 
+            <%= if @conn.assigns.current_user.gct_level >= 4 || @conn.assigns.current_user.is_admin do %>
+            <hr>
+
+            <h5><%= gettext("Community Champion Settings") %></h5>
+            <div class="row mt-1">
+                <div class="col-sm-6">
+                    <%= label f, gettext("Is Community Champion") %>
+                    <%= select f, :is_community_champion, [Yes: true, No: false], [class: "form-control"] %>
+                    <%= error_tag f, :is_community_champion %>
+                </div>
+            </div>
+                <% end %>
+
                 <%= if @conn.assigns.current_user.gct_level >= 4 || @conn.assigns.current_user.is_admin do %>
             <hr>
+
             <h5><%= gettext("Event Team Settings") %></h5>
             <div class="row mt-1">
                 <div class="col-sm-6">
