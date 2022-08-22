@@ -1,4 +1,4 @@
-defmodule Glimesh.Repo.Migrations.AddIsGctToUsers do
+defmodule Glimesh.Repo.Migrations.AddIsCommunityChampion do
   use Ecto.Migration
 
   def change do
