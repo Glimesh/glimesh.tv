@@ -31,6 +31,26 @@ defmodule Glimesh.Api.ChannelResolver do
     end
   end
 
+  def update_stream_info(_parent, %{channel_id: channel_id, title: title},
+        %{context: %{access: access}
+      }) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :stream_info, access) do
+      channel = Glimesh.ChannelLookups.get_channel(channel_id)
+      if channel !== nil do
+        case Streams.update_channel(access.user, channel, %{title: title}) do
+          {:ok, changeset} ->
+            {:ok, changeset}
+          {:error, %Ecto.Changeset{} = changeset} ->
+            {:error, Api.parse_ecto_changeset_errors(changeset)}
+          {:error, :unauthorized} ->
+            {:error, :unauthorized}
+        end
+      else
+        {:error, "Channel not found"}
+      end
+    end
+  end
+
   # Channels
 
   def watch_channel(_parent, %{channel_id: channel_id, country: country}, %{

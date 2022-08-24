@@ -18,7 +18,8 @@ defmodule Glimesh.Api do
                 email: false,
                 chat: false,
                 streamkey: false,
-                follow: false
+                follow: false,
+                stream_info: false
               }
   end
 

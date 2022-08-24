@@ -106,6 +106,14 @@ defmodule Glimesh.Api.ChannelTypes do
 
       resolve(&ChannelResolver.upload_stream_thumbnail/3)
     end
+
+    @desc "Update a channel's stream info"
+    field :update_stream_info, type: :channel do
+      arg(:channel_id, non_null(:id))
+      arg(:title, non_null(:string))
+
+      resolve(&ChannelResolver.update_stream_info/3)
+    end
   end
 
   object :streams_subscriptions do
