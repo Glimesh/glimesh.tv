@@ -15,34 +15,30 @@ defmodule Glimesh.Uploaders.StaticEmote do
   use Waffle.Definition
   use Waffle.Ecto.Definition
 
-  @versions [:svg, :png]
+  @versions [:svg]
   @max_size 256_000
 
   def acl(:svg, _), do: :public_read
-  def acl(:png, _), do: :public_read
 
   # Whitelist file extensions:
   def validate({file, _}) do
-    Glimesh.FileValidation.validate_svg(file) and
+    (Glimesh.FileValidation.validate(file, [:png]) or
+       Glimesh.FileValidation.validate_svg(file)) and
       Glimesh.FileValidation.validate_size(file, @max_size)
   end
 
-  def transform(:svg, _) do
+  def transform(:svg, file) do
     # svgo -f input.svg -o output.svg
     config_path = Path.join([:code.priv_dir(:glimesh), "svgo.config.js"])
 
-    {"svgo",
-     fn input, output ->
-       " #{input} -o #{output} --config #{config_path}"
-     end, "svg"}
-  end
-
-  def transform(:png, _) do
-    # rsvg-convert -w 256 -h 256 input.svg > output.png
-    {"rsvg-convert",
-     fn input, output ->
-       " -w 256 -h 256 #{input} -o #{output}"
-     end, "png"}
+    if is_waffle_file?(elem(file, 0)) and Glimesh.FileValidation.validate(elem(file, 0), [:png]) do
+      {:noaction}
+    else
+      {"svgo",
+       fn input, output ->
+         " #{input} -o #{output} --config #{config_path}"
+       end, "svg"}
+    end
   end
 
   # Override the persisted filenames:
@@ -61,5 +57,13 @@ defmodule Glimesh.Uploaders.StaticEmote do
       cache_control: "public, max-age=604800",
       content_type: MIME.from_path(file.file_name)
     ]
+  end
+
+  def is_waffle_file?(%Waffle.File{path: _path}) do
+    true
+  end
+
+  def is_waffle_file?(_) do
+    false
   end
 end

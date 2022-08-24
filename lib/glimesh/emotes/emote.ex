@@ -10,6 +10,7 @@ defmodule Glimesh.Emotes.Emote do
     field :emote, :string
     belongs_to :channel, Glimesh.Streams.Channel
     field :animated, :boolean
+    field :svg, :boolean
 
     field :approved_at, :naive_datetime
     field :rejected_at, :naive_datetime

@@ -151,7 +151,7 @@ defmodule Glimesh.Emotes do
 
   def create_global_emote(%User{} = user, attrs \\ %{}) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_global_emote, user) do
-      %Emote{}
+      %Emote{svg: true}
       |> Emote.changeset(attrs)
       |> Repo.insert()
     end
@@ -160,7 +160,8 @@ defmodule Glimesh.Emotes do
   def create_channel_emote(%User{} = user, %Channel{} = channel, attrs \\ %{}) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_channel_emote, user, channel) do
       %Emote{
-        channel: channel
+        channel: channel,
+        svg: false
       }
       |> Emote.channel_changeset(channel, attrs)
       |> Repo.insert()
@@ -201,7 +202,11 @@ defmodule Glimesh.Emotes do
     Glimesh.Uploaders.AnimatedEmote.url({emote.animated_file, emote}, :gif)
   end
 
-  def full_url(%Emote{} = emote) do
+  def full_url(%Emote{svg: true} = emote) do
     Glimesh.Uploaders.StaticEmote.url({emote.static_file, emote}, :svg)
+  end
+
+  def full_url(%Emote{} = emote) do
+    Glimesh.Uploaders.StaticEmote.url({emote.static_file, emote}, :png)
   end
 end
