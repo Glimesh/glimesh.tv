@@ -23,7 +23,7 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "show index page", %{conn: conn} do
       conn = get(conn, Routes.gct_path(conn, :index))
-      assert html_response(conn, 200) =~ "Glimesh Community Team Dashboard"
+      assert html_response(conn, 200) =~ "Core Team Dashboard"
     end
   end
 

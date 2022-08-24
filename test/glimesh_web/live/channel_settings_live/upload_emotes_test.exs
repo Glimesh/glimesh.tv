@@ -54,7 +54,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotesTest do
       flash = assert_redirected(view, "/users/settings/emotes")
 
       assert flash["emote_info"] ==
-               "Successfully uploaded emotes, pending review by the Glimesh Community Team"
+               "Successfully uploaded emotes, pending review by the Core Team"
 
       emote = Glimesh.Emotes.get_emote_by_emote("testgglimchef")
       assert emote.channel_id == channel.id

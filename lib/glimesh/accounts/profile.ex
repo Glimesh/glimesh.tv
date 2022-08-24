@@ -5,10 +5,13 @@ defmodule Glimesh.Accounts.Profile do
 
   def user_role_color(%User{team_role: team_role}) do
     case team_role do
-      "Core Team" ->
+      "Glimesh Staff" ->
         "bg-danger"
 
-      "Community Team" ->
+      "Core Team" ->
+        "bg-primary"
+
+      "Community Champion" ->
         "bg-success"
 
       "Design Team" ->
@@ -16,6 +19,9 @@ defmodule Glimesh.Accounts.Profile do
 
       "Product Dev Team" ->
         "bg-secondary"
+
+      "Events Team" ->
+        "bg-EventsTeam"
 
       _ ->
         ""

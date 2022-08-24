@@ -70,7 +70,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
        socket
        |> put_flash(
          :emote_info,
-         "Successfully uploaded emotes, pending review by the Glimesh Community Team"
+         "Successfully uploaded emotes, pending review by the Core Team"
        )
        |> redirect(to: Routes.user_settings_path(socket, :emotes))}
     end

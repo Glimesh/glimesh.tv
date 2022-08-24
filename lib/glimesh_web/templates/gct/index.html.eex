@@ -1,5 +1,5 @@
 <div class="container">
-    <h2 class="mt-4 text-center"><%= gettext("Glimesh Community Team Dashboard | Your access level is: %{level}", level: Glimesh.CommunityTeam.access_level_to_title(@conn.assigns.current_user.gct_level)) %></h2>
+    <h2 class="mt-4 text-center"><%= gettext("Core Team Dashboard | Your access level is: %{level}", level: Glimesh.CommunityTeam.access_level_to_title(@conn.assigns.current_user.gct_level)) %></h2>
     <%= if @can_view_audit_log do %>
     <div class="card mb-4">
         <div class="card-body">
