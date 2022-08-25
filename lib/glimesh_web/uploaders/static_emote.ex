@@ -15,6 +15,8 @@ defmodule Glimesh.Uploaders.StaticEmote do
   use Waffle.Definition
   use Waffle.Ecto.Definition
 
+  alias Glimesh.FileValidation, as: FileValidation
+
   @versions [:svg]
   @max_size 256_000
 
@@ -22,16 +24,16 @@ defmodule Glimesh.Uploaders.StaticEmote do
 
   # Whitelist file extensions:
   def validate({file, _}) do
-    (Glimesh.FileValidation.validate(file, [:png]) or
-       Glimesh.FileValidation.validate_svg(file)) and
-      Glimesh.FileValidation.validate_size(file, @max_size)
+    (FileValidation.validate(file, [:png]) or
+       FileValidation.validate_svg(file)) and
+      FileValidation.validate_size(file, @max_size)
   end
 
   def transform(:svg, file) do
     # svgo -f input.svg -o output.svg
     config_path = Path.join([:code.priv_dir(:glimesh), "svgo.config.js"])
 
-    if is_waffle_file?(elem(file, 0)) and Glimesh.FileValidation.validate(elem(file, 0), [:png]) do
+    if is_waffle_file?(elem(file, 0)) and FileValidation.validate(elem(file, 0), [:png]) do
       {:noaction}
     else
       {"svgo",
