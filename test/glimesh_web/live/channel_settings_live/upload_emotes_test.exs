@@ -5,10 +5,10 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotesTest do
 
   @glimchef %{
     last_modified: 1_594_171_879_000,
-    name: "glimchef.svg",
-    content: File.read!("test/assets/glimchef.svg"),
+    name: "glimfairy.png",
+    content: File.read!("test/assets/glimfairy.png"),
     size: 19_056,
-    type: "image/svg+xml"
+    type: "image/png"
   }
 
   describe "Channel Emotes Uploading" do
@@ -42,7 +42,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotesTest do
           @glimchef
         ])
 
-      assert render_upload(avatar, "glimchef.svg") =~ "glimchef"
+      assert render_upload(avatar, "glimfairy.png") =~ "glimfairy"
 
       render_submit(
         element(view, "form#emote_upload"),
