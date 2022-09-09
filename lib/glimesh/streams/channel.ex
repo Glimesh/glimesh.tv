@@ -36,6 +36,9 @@ defmodule Glimesh.Streams.Channel do
 
     field :allow_hosting, :boolean, default: false
 
+    field :interactive_project, Glimesh.Interactive.Type
+    field :interactive_enabled, :boolean, default: false
+
     # This is here temporarily as we add additional schema to handle it.
     field :streamloots_url, :string, default: nil
 
@@ -104,7 +107,8 @@ defmodule Glimesh.Streams.Channel do
       :block_links,
       :require_confirmed_email,
       :minimum_account_age,
-      :allow_hosting
+      :allow_hosting,
+      :interactive_enabled,
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)
@@ -113,7 +117,7 @@ defmodule Glimesh.Streams.Channel do
       less_than_or_equal_to: 720
     )
     |> set_chat_rules_content_html()
-    |> cast_attachments(attrs, [:poster, :chat_bg])
+    |> cast_attachments(attrs, [:poster, :chat_bg, :interactive_project])
     |> maybe_put_tags(:tags, attrs)
     |> maybe_put_subcategory(:subcategory, attrs)
     |> unique_constraint([:user_id])
