@@ -272,6 +272,42 @@ defmodule Glimesh.Api.ChannelResolver do
     |> Api.connection_from_query_with_count(args)
   end
 
+  #Sends a message over client id
+  def send_interactive_message(_parent, args,  %{context: %{access: %{ access_type: "app"}}}) do
+    IO.inspect("Sending interactive packet via app")
+    IO.inspect(args)
+
+    event_name = Map.get(args, :event_name)
+    session = Map.get(args, :session_id)
+    data = Map.get(args, :data)
+
+    Absinthe.Subscription.publish(
+      GlimeshWeb.Endpoint,
+      %{data: data, event_name: event_name, is_server: false},
+      Keyword.put([], :interactive, "streams:interactive:#{session}")
+    )
+
+    {:ok, %{data: data, event_name: event_name, is_server: false}}
+  end
+
+  # Sends a message with an access token
+  def send_interactive_message(_parent, args,  %{context: %{access: _access}}) do
+    IO.inspect("Sending interactive packet via token")
+
+    ## TODO -- Add interactive scope, check that and the ID matches the target session
+    event_name = Map.get(args, :event_name)
+    session = Map.get(args, :session_id)
+    data = Map.get(args, :data)
+
+    Absinthe.Subscription.publish(
+      GlimeshWeb.Endpoint,
+      %{data: data, event_name: event_name, is_server: true},
+      Keyword.put([], :interactive, "streams:interactive:#{session}")
+    )
+
+    {:ok, %{data: data, event_name: event_name, is_server: true}}
+  end
+
   def get_moderation_logs(args, %{source: channel}) do
     Streams.ChannelModerationLog
     |> where(channel_id: ^channel.id)
