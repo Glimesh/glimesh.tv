@@ -318,6 +318,44 @@
     </div>
   </div>
 
+  <h2 class="mt-4"><%= gettext("Interactive") %></h2>
+  <p>Interacive lets you overlay a custom web page over your stream for next-gen interactivity! To use it, enable the feature and upload a project!</p>
+  <div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+        <%= label(f, :interactive_enabled, gettext("Interactive Enabled")) %>
+        <div class="custom-control custom-switch">
+          <%= checkbox(f, :interactive_enabled, class: "custom-control-input") %>
+          <label class="custom-control-label" for={input_id(f, :interactive_enabled)}>
+            <%= gettext("Enable your Interactive Project") %>
+          </label>
+        </div>
+        <%= error_tag(f, :interactive_enabled) %>
+      </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+        <%= label(f, :interactive_project, gettext("Interactive Project")) %>
+        <p class="text-muted form-text">
+          <%= gettext(
+            "An interactive project. It must be a zip folder with the files enclosed."
+          ) %>
+        </p>
+
+        <div class="custom-file">
+          <%= file_input(f, :interactive_project, class: "custom-file-input", accept: ".zip") %>
+          <%= label(f, gettext("Choose file"), class: "custom-file-label") %>
+        </div>
+        <%= if f.errors[:interactive_project] do %>
+          <div>
+            <span class="text-danger">
+              <%= gettext("Invalid Project. Only upload a zip file") %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
   <h2 class="mt-4"><%= gettext("Homepage") %></h2>
   <p>
     <%= gettext(
