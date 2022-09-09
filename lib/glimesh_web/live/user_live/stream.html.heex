@@ -147,6 +147,11 @@
                       session: %{"channel_id" => @channel.id}
                     ) %>
                   </div>
+                  <div class="btn-group" role="group" aria-label="Fourth group">
+                    <button class="btn btn-info btn-responsive ml-1"
+                        title="Toggle Interactive" phx-click="toggle_interactive"
+                        >Interactive</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -190,6 +195,9 @@
                 poster={@channel_poster}
               >
               </video>
+               <%= if @interactive_toggle do %>
+                 <iframe src="http://localhost:8080/client"></iframe>
+                <% end %>
               <div id="video-loading-container" class="">
                 <div class="lds-ring">
                   <div></div>

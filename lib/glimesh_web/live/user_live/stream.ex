@@ -63,7 +63,9 @@ defmodule GlimeshWeb.UserLive.Stream do
            |> assign(:stream_metadata, get_last_stream_metadata(channel.stream))
            |> assign(:player_error, nil)
            |> assign(:user, maybe_user)
-           |> assign(:ultrawide, false)}
+           |> assign(:ultrawide, false)
+           |> assign(:interactive_toggle, false)
+          }
         end
 
       nil ->
@@ -191,6 +193,13 @@ defmodule GlimeshWeb.UserLive.Stream do
 
   def handle_event("ultrawide", %{"enabled" => enabled}, socket) do
     {:noreply, socket |> assign(:ultrawide, enabled)}
+  end
+
+  def handle_event("toggle_interactive", _value, socket) do
+    IO.inspect("Toggling interactive")
+    {:noreply,
+     socket
+     |> assign(:interactive_toggle, !socket.assigns.interactive_toggle)}
   end
 
   defp get_stream_thumbnail(channel) do
