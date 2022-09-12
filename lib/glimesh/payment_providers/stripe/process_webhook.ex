@@ -3,12 +3,13 @@ defmodule Glimesh.PaymentProviders.StripeProvider.ProcessWebhook do
   Async processor for Stripe Webhooks
   """
   # credo:disable-for-this-file
-  @behaviour Rihanna.Job
+  use Oban.Worker
 
   alias Glimesh.PaymentProviders.StripeProvider
   alias Glimesh.Payments
 
-  def perform([type, data]) do
+  @impl Oban.Worker
+  def perform(%Oban.Job{args: %{"type" => type, "data" => data}}) do
     case [type, data] do
       ["account.updated", %{object: %Stripe.Account{} = account}] ->
         case StripeProvider.check_account_capabilities_and_upgrade(account) do

@@ -14,7 +14,9 @@ defmodule Glimesh.PaymentProviders.StripeProvider.Webhooks do
   alias Glimesh.PaymentProviders.StripeProvider.ProcessWebhook
 
   def handle_webhook(%{type: type, data: data}) do
-    Rihanna.enqueue({ProcessWebhook, [type, data]})
+    %{type: type, data: data}
+    |> ProcessWebhook.new()
+    |> Oban.insert()
   end
 
   def handle_webhook(_) do

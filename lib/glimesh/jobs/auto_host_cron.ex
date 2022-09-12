@@ -1,6 +1,6 @@
 defmodule Glimesh.Jobs.AutoHostCron do
   @moduledoc false
-  @behaviour Rihanna.Job
+  use Oban.Worker
 
   require Logger
 
@@ -9,8 +9,7 @@ defmodule Glimesh.Jobs.AutoHostCron do
   # 10 Minutes
   @interval 600_000
 
-  def priority, do: 10
-
+  @impl Oban.Worker
   def perform(_) do
     Logger.info("Starting Auto-Host runner")
     start = NaiveDateTime.utc_now()
@@ -55,7 +54,8 @@ defmodule Glimesh.Jobs.AutoHostCron do
     time = NaiveDateTime.diff(complete, start, :millisecond)
     Logger.info("Auto-Host runner finished in #{time} ms")
 
-    Rihanna.schedule(Glimesh.Jobs.AutoHostCron, [], in: @interval)
+    Glimesh.Jobs.AutoHostCron.new(%{}, schedule_in: @interval)
+    |> Oban.insert()
 
     :ok
   rescue

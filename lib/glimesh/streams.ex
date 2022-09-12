@@ -223,7 +223,9 @@ defmodule Glimesh.Streams do
       Glimesh.ChannelCategories.increment_tags_usage(tags)
 
       # 4. Send Notifications
-      Rihanna.schedule(Glimesh.Jobs.StartStreamNotifier, [channel.id], in: :timer.minutes(2))
+      Glimesh.Jobs.StartStreamNotifier.new(%{channel_id: channel.id}, schedule_in: :timer.minutes(2))
+      |> Oban.insert()
+
 
       # 5. Broadcast to anyone who's listening
       broadcast_message = Repo.preload(channel, [:category, :stream], force: true)

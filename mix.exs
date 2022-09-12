@@ -5,7 +5,7 @@ defmodule Glimesh.MixProject do
     [
       app: :glimesh,
       version: "0.1.0",
-      elixir: "~> 1.13.4",
+      elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers() ++ [:surface],
       start_permanent: Mix.env() == :prod,
@@ -51,7 +51,7 @@ defmodule Glimesh.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_live_view, "~> 0.17.9"},
       {:phoenix_html, "~> 3.0"},
-      {:surface, "~> 0.7.4"},
+      {:surface, "~> 0.8"},
       {:phoenix_live_dashboard, "~> 0.6.2"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 0.5"},
@@ -59,7 +59,7 @@ defmodule Glimesh.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:ecto_psql_extras, "~> 0.2"},
-      {:rihanna, "~> 2.3"},
+      {:oban, "~> 2.13"},
       # Authentication & Authorization
       {:comeonin, "~> 5.3"},
       {:bodyguard, "~> 2.4"},

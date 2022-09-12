@@ -2,6 +2,8 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
   use Glimesh.DataCase
   use Bamboo.Test
 
+  use Oban.Testing, repo: Glimesh.Repo
+
   import Glimesh.AccountsFixtures
 
   describe "channel_notifier" do
@@ -16,11 +18,16 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
       {:ok, stream} = Glimesh.Streams.start_stream(streamer.channel)
 
       # Ensure job has been queued in Rihanna for the channel
-      queued = Glimesh.Jobs.enqueued()
-      assert hd(queued).term == {Glimesh.Jobs.StartStreamNotifier, [streamer.channel.id]}
+      # queued = Glimesh.Jobs.enqueued()
+      # assert hd(queued).term == {Glimesh.Jobs.StartStreamNotifier, [streamer.channel.id]}
+      assert_enqueued(
+        worker: Glimesh.Jobs.StartStreamNotifier,
+        args: %{channel_id: streamer.channel.id},
+        queue: :default
+      )
 
       # Force the job to happen now so we can test
-      Glimesh.Jobs.StartStreamNotifier.perform([streamer.channel.id])
+      perform_job(Glimesh.Jobs.StartStreamNotifier, %{channel_id: streamer.channel.id})
 
       assert_delivered_email(
         GlimeshWeb.Emails.Email.channel_live(
@@ -49,7 +56,7 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
       {:ok, stream} = Glimesh.Streams.start_stream(streamer.channel)
 
       # Force the job through so we can test
-      Glimesh.Jobs.StartStreamNotifier.perform([streamer.channel.id])
+      perform_job(Glimesh.Jobs.StartStreamNotifier, %{channel_id: streamer.channel.id})
 
       assert_delivered_email(
         GlimeshWeb.Emails.Email.channel_live(
@@ -74,7 +81,7 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
         {:ok, stream} = Glimesh.Streams.start_stream(streamer.channel)
 
         # Force the job through so we can test
-        Glimesh.Jobs.StartStreamNotifier.perform([streamer.channel.id])
+        perform_job(Glimesh.Jobs.StartStreamNotifier, %{channel_id: streamer.channel.id})
 
         assert_delivered_email(
           GlimeshWeb.Emails.Email.channel_live(
@@ -91,7 +98,7 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
       {:ok, _} = Glimesh.Streams.start_stream(streamer.channel)
 
       # Force the job through so we can test
-      Glimesh.Jobs.StartStreamNotifier.perform([streamer.channel.id])
+      perform_job(Glimesh.Jobs.StartStreamNotifier, %{channel_id: streamer.channel.id})
 
       assert_no_emails_delivered()
     end

@@ -22,7 +22,7 @@ defmodule Glimesh.Application do
       Glimesh.Presence,
       # Start the Endpoint (http/https)
       GlimeshWeb.Endpoint,
-      {Rihanna.Supervisor, [postgrex: Glimesh.Repo.config()]},
+      {Oban, Application.fetch_env!(:glimesh, Oban)},
       {ConCache,
        [
          name: Glimesh.QueryCache.name(),

@@ -1,3 +1,3 @@
 defmodule Glimesh.Repo.Migrations.CreateRihannaJobs do
-  use Rihanna.Migration
+  # use Rihanna.Migration
 end

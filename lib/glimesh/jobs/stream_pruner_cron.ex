@@ -1,6 +1,6 @@
 defmodule Glimesh.Jobs.StreamPrunerCron do
   @moduledoc false
-  @behaviour Rihanna.Job
+  use Oban.Worker, max_attempts: 10
 
   require Logger
 
@@ -12,8 +12,7 @@ defmodule Glimesh.Jobs.StreamPrunerCron do
   # 5 Minutes in seconds
   @prune_diff 300
 
-  def priority, do: 17
-
+  @impl Oban.Worker
   def perform(_) do
     channels = ChannelLookups.list_live_channels()
     Logger.info("Checking for stale streams to prune")
@@ -37,7 +36,8 @@ defmodule Glimesh.Jobs.StreamPrunerCron do
       end
     end)
 
-    Rihanna.schedule(Glimesh.Jobs.StreamPrunerCron, [], in: @interval)
+    Glimesh.Jobs.StreamPrunerCron.new(%{}, schedule_in: @interval)
+    |> Oban.insert()
 
     :ok
   rescue
@@ -45,15 +45,4 @@ defmodule Glimesh.Jobs.StreamPrunerCron do
       {:error, e}
   end
 
-  def retry_at(_failure_reason, _args, attempts) when attempts < 10 do
-    seconds = attempts * 5
-    due_at = DateTime.add(DateTime.utc_now(), seconds, :second)
-    Logger.info("StreamPrunerCron failed, retrying in #{seconds}")
-    {:ok, due_at}
-  end
-
-  def retry_at(_failure_reason, _args, _attempts) do
-    Logger.error("StreamPrunerCron failed after 10 attempts")
-    :noop
-  end
 end
