@@ -162,7 +162,7 @@ defmodule Glimesh.Api.ChannelTypes do
   object :interactive do
     field :event_name, :string, description: "The name of the event"
     field :data, :json, description: "The data sent across the connection"
-    field :is_server, :boolean, description: "Was this sent from the streamer?"
+    field :authorized, :boolean, description: "Was this sent from the streamer?"
     field :inserted_at, non_null(:naive_datetime), description: "Interactive creation date"
     field :updated_at, non_null(:naive_datetime), description: "Interactive updated date"
   end

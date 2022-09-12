@@ -31,17 +31,20 @@ defmodule Glimesh.Api.ChannelResolver do
     end
   end
 
-  def update_stream_info(_parent, %{channel_id: channel_id, title: title},
-        %{context: %{access: access}
+  def update_stream_info(_parent, %{channel_id: channel_id, title: title}, %{
+        context: %{access: access}
       }) do
     with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :stream_info, access) do
       channel = Glimesh.ChannelLookups.get_channel(channel_id)
+
       if channel !== nil do
         case Streams.update_channel(access.user, channel, %{title: title}) do
           {:ok, changeset} ->
             {:ok, changeset}
+
           {:error, %Ecto.Changeset{} = changeset} ->
             {:error, Api.parse_ecto_changeset_errors(changeset)}
+
           {:error, :unauthorized} ->
             {:error, :unauthorized}
         end
@@ -272,8 +275,8 @@ defmodule Glimesh.Api.ChannelResolver do
     |> Api.connection_from_query_with_count(args)
   end
 
-  #Sends a message over client id
-  def send_interactive_message(_parent, args,  %{context: %{access: %{ access_type: "app"}}}) do
+  # Sends a message over client id
+  def send_interactive_message(_parent, args, %{context: %{access: %{access_type: "app"}}}) do
     IO.inspect("Sending interactive packet via app")
     IO.inspect(args)
 
@@ -283,29 +286,44 @@ defmodule Glimesh.Api.ChannelResolver do
 
     Absinthe.Subscription.publish(
       GlimeshWeb.Endpoint,
-      %{data: data, event_name: event_name, is_server: false},
+      %{data: data, event_name: event_name, authorized: false},
       Keyword.put([], :interactive, "streams:interactive:#{session}")
     )
 
-    {:ok, %{data: data, event_name: event_name, is_server: false}}
+    {:ok, %{data: data, event_name: event_name, authorized: false}}
   end
 
   # Sends a message with an access token
-  def send_interactive_message(_parent, args,  %{context: %{access: _access}}) do
+  def send_interactive_message(_parent, args, %{context: %{access: access}}) do
     IO.inspect("Sending interactive packet via token")
 
-    ## TODO -- Add interactive scope, check that and the ID matches the target session
+    # Get the data from the message
     event_name = Map.get(args, :event_name)
     session = Map.get(args, :session_id)
     data = Map.get(args, :data)
 
-    Absinthe.Subscription.publish(
-      GlimeshWeb.Endpoint,
-      %{data: data, event_name: event_name, is_server: true},
-      Keyword.put([], :interactive, "streams:interactive:#{session}")
-    )
+    # Has interactive scope, channel matches sessionID
+    with true <- Map.get(access.scopes, :interactive),
+         %Glimesh.Streams.Channel{} = channel <-
+           ChannelLookups.get_channel_for_username(access.user.username),
+         true <- channel.id == session do
+      Absinthe.Subscription.publish(
+        GlimeshWeb.Endpoint,
+        %{data: data, event_name: event_name, authorized: true},
+        Keyword.put([], :interactive, "streams:interactive:#{session}")
+      )
 
-    {:ok, %{data: data, event_name: event_name, is_server: true}}
+      {:ok, %{data: data, event_name: event_name, authorized: true}}
+    else
+      _ ->
+      Absinthe.Subscription.publish(
+        GlimeshWeb.Endpoint,
+        %{data: data, event_name: event_name, authorized: false},
+        Keyword.put([], :interactive, "streams:interactive:#{session}")
+      )
+
+      {:ok, %{data: data, event_name: event_name, authorized: false}}
+    end
   end
 
   def get_moderation_logs(args, %{source: channel}) do
