@@ -14,6 +14,7 @@ defmodule Glimesh.Application do
       # Start the Ecto repository
       Glimesh.Repo,
       Glimesh.Repo.ReadReplica,
+      {Oban, Application.fetch_env!(:glimesh, Oban)},
       # Start the Telemetry supervisor
       GlimeshWeb.Telemetry,
       # Start the PubSub system
@@ -22,7 +23,6 @@ defmodule Glimesh.Application do
       Glimesh.Presence,
       # Start the Endpoint (http/https)
       GlimeshWeb.Endpoint,
-      {Oban, Application.fetch_env!(:glimesh, Oban)},
       {ConCache,
        [
          name: Glimesh.QueryCache.name(),

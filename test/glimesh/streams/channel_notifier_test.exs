@@ -2,8 +2,6 @@ defmodule Glimesh.Streams.ChannelNotifierTest do
   use Glimesh.DataCase
   use Bamboo.Test
 
-  use Oban.Testing, repo: Glimesh.Repo
-
   import Glimesh.AccountsFixtures
 
   describe "channel_notifier" do
