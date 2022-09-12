@@ -19,7 +19,8 @@ defmodule Glimesh.Api do
                 chat: false,
                 streamkey: false,
                 follow: false,
-                stream_info: false
+                stream_info: false,
+                interactive: false
               }
   end
 

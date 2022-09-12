@@ -18,6 +18,7 @@ defmodule Glimesh.Api.Scopes do
   def authorize(:streamkey, %Access{} = ua, _params), do: scope_check(ua, :streamkey)
   def authorize(:follow, %Access{} = ua, _params), do: scope_check(ua, :follow)
   def authorize(:stream_info, %Access{} = ua, _params), do: scope_check(ua, :stream_info)
+  def authorize(:interactive, %Access{} = ua, _params), do: scope_check(ua, :interactive)
 
   def authorize(:stream_mutations, %Access{is_admin: true}, _params) do
     true
