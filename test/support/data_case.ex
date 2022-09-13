@@ -24,6 +24,8 @@ defmodule Glimesh.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Glimesh.DataCase
+
+      use Oban.Testing, repo: Glimesh.Repo
     end
   end
 

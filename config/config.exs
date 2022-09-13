@@ -278,8 +278,10 @@ config :glimesh, Glimesh.Emotes, max_channel_emotes: 10, allow_channel_animated_
 config :libcluster,
   topologies: []
 
-config :rihanna,
-  producer_postgres_connection: {Ecto, Glimesh.Repo}
+config :glimesh, Oban,
+  repo: Glimesh.Repo,
+  plugins: [Oban.Plugins.Pruner],
+  queues: [default: 10]
 
 config :glimesh, Glimesh.PaymentProviders.TaxIDPro, webhook_secret: "", api_key: ""
 

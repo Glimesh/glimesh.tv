@@ -1,6 +1,6 @@
 defmodule Glimesh.Jobs.StreamMetricsCron do
   @moduledoc false
-  @behaviour Rihanna.Job
+  use Oban.Worker, max_attempts: 10
 
   require Logger
 
@@ -9,8 +9,7 @@ defmodule Glimesh.Jobs.StreamMetricsCron do
 
   @interval 60_000
 
-  def priority, do: 16
-
+  @impl Oban.Worker
   def perform(_) do
     channels = ChannelLookups.list_live_channels()
     Logger.info("Counting live viewers for #{length(channels)} channels")
@@ -27,23 +26,12 @@ defmodule Glimesh.Jobs.StreamMetricsCron do
       })
     end)
 
-    Rihanna.schedule(Glimesh.Jobs.StreamMetricsCron, [], in: @interval)
+    Glimesh.Jobs.StreamMetricsCron.new(%{}, schedule_in: @interval)
+    |> Oban.insert()
 
     :ok
   rescue
     e ->
       {:error, e}
-  end
-
-  def retry_at(_failure_reason, _args, attempts) when attempts < 10 do
-    seconds = attempts * 5
-    due_at = DateTime.add(DateTime.utc_now(), seconds, :second)
-    Logger.info("StreamMetricsCron failed, retrying in #{seconds}")
-    {:ok, due_at}
-  end
-
-  def retry_at(_failure_reason, _args, _attempts) do
-    Logger.error("StreamMetricsCron failed after 10 attempts")
-    :noop
   end
 end
