@@ -5,10 +5,10 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotesTest do
 
   @glimchef %{
     last_modified: 1_594_171_879_000,
-    name: "glimchef.svg",
-    content: File.read!("test/assets/glimchef.svg"),
-    size: 19_056,
-    type: "image/svg+xml"
+    name: "glimfairy.png",
+    content: File.read!("test/assets/glimfairy.png"),
+    size: 58_042,
+    type: "image/png"
   }
 
   describe "Channel Emotes Uploading" do
@@ -42,12 +42,12 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotesTest do
           @glimchef
         ])
 
-      assert render_upload(avatar, "glimchef.svg") =~ "glimchef"
+      assert render_upload(avatar, "glimfairy.png") =~ "glimfairy"
 
       render_submit(
         element(view, "form#emote_upload"),
         Enum.into(avatar.entries, %{}, fn x ->
-          {x["ref"], "glimchef"}
+          {x["ref"], "glimfairy"}
         end)
       )
 
@@ -56,7 +56,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotesTest do
       assert flash["emote_info"] ==
                "Successfully uploaded emotes, pending review by the Core Team"
 
-      emote = Glimesh.Emotes.get_emote_by_emote("testgglimchef")
+      emote = Glimesh.Emotes.get_emote_by_emote("testgglimfairy")
       assert emote.channel_id == channel.id
       assert is_nil(emote.approved_at)
     end

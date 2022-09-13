@@ -70,7 +70,7 @@ defmodule Glimesh.OauthMigration do
       %{label: "Chat", name: "chat", public: true},
       %{label: "Stream Key", name: "streamkey", public: true},
       %{label: "Follow Channel", name: "follow", public: true},
-      %{label: "Update Stream Info", name: "stream_info", public: true},
+      %{label: "Update Stream Info", name: "stream_info", public: true}
     ]
 
     Enum.each(scopes, fn attrs ->

@@ -273,7 +273,7 @@ config :glimesh, Glimesh.Socials.Twitter,
   access_token: "",
   access_token_secret: ""
 
-config :glimesh, Glimesh.Emotes, max_channel_emotes: 10, allow_channel_animated_emotes: true
+config :glimesh, Glimesh.Emotes, max_channel_emotes: 100, allow_channel_animated_emotes: true
 
 config :libcluster,
   topologies: []
