@@ -122,6 +122,17 @@ defmodule Glimesh.Emotes do
     )
   end
 
+  #def list_static_emotes_for_channel_for_edit(%Channel{id: channel_id}) do
+    #Repo.replica().all(
+      #from(e in Emote,
+      #  where:
+       #   is_nil(e.approved_at) == false and e.animated == false and e.channel_id == ^channel_id,
+      #  order_by: e.emote
+     # )
+   # )
+   # |> Enum.map(fn x -> Emote.preference_changeset(x, %Emote{}) end )
+  # end
+
   def list_animated_emotes_for_channel(%Channel{id: channel_id}) do
     Repo.replica().all(
       from(e in Emote,
@@ -131,6 +142,17 @@ defmodule Glimesh.Emotes do
       )
     )
   end
+
+  #def list_animated_emotes_for_channel_for_edit(%Channel{id: channel_id}) do
+    #Repo.replica().all(
+      #from(e in Emote,
+       # where:
+        #  is_nil(e.approved_at) == false and e.animated == true and e.channel_id == ^channel_id,
+       # order_by: e.emote
+     # )
+  #  )
+   # |> Enum.map(fn x -> Emote.preference_changeset(x, %Emote{}) end )
+#  end
 
   def list_submitted_emotes_for_channel(%Channel{id: channel_id}) do
     Repo.replica().all(
@@ -172,6 +194,13 @@ defmodule Glimesh.Emotes do
     with :ok <- Bodyguard.permit(__MODULE__, :delete_emote, user, emote) do
       emote
       |> Repo.delete()
+    end
+  end
+
+  def save_emote_options(%User{} = user, %Emote{} = emote) do
+    with :ok <- Bodyguard.permit(__MODULE__, :save_emote_options, user, emote) do
+      emote
+      |> Repo.update()
     end
   end
 

@@ -32,5 +32,6 @@ defmodule Glimesh.EventsTeam.Event do
     |> validate_length(:label, max: 250)
     |> validate_length(:description, max: 8192)
     |> cast_attachments(attrs, [:image], allow_paths: true)
+    |> validate_required(:channel)
   end
 end

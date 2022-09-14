@@ -20,13 +20,16 @@ defmodule Glimesh.Emotes.Emote do
     field :static_file, Glimesh.Uploaders.StaticEmote.Type
     field :animated_file, Glimesh.Uploaders.AnimatedEmote.Type
 
+    field :require_channel_sub, :boolean, default: false
+    field :allow_global_usage, :boolean, default: false
+
     timestamps()
   end
 
   @doc false
   def changeset(emote, attrs) do
     emote
-    |> cast(attrs, [:emote, :animated, :approved_at])
+    |> cast(attrs, [:emote, :animated, :approved_at, :require_channel_sub, :allow_global_usage])
     |> validate_required([:emote, :animated])
     |> validate_length(:emote, min: 2, max: 15)
     |> validate_conditional_file(attrs)
@@ -49,6 +52,15 @@ defmodule Glimesh.Emotes.Emote do
     |> validate_conditional_file(attrs)
     |> unique_constraint(:emote)
   end
+
+  # def preference_changeset(emote, attrs) do
+   # emote
+   # |> cast(attrs, [:emote, :animated, :approved_at, :require_channel_sub, :allow_global_usage, :static_path, :animated_path])
+   # |> validate_required([:emote, :animated])
+   # |> validate_length(:emote, min: 2, max: 15)
+   # |> validate_conditional_file(attrs)
+    #|> unique_constraint(:emote)
+ # end
 
   defp validate_channel_max_emotes(emote, channel) do
     config = Application.get_env(:glimesh, Glimesh.Emotes)
@@ -99,5 +111,11 @@ defmodule Glimesh.Emotes.Emote do
       |> cast_attachments(attrs, [:static_file], allow_paths: true)
       |> validate_required(:static_file)
     end
+  end
+
+  def require_channel_sub() do
+  end
+
+  def allow_global_usage() do
   end
 end

@@ -22,7 +22,8 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotes do
        |> assign(:channel, channel)
        |> assign(:static_emotes, static_emotes)
        |> assign(:animated_emotes, animated_emotes)
-       |> assign(:submitted_emotes, submitted_emotes)}
+       |> assign(:submitted_emotes, submitted_emotes)
+       |> assign(:emote_options, %{ static: static_emotes, animated: animated_emotes })}
     else
       {:ok, redirect(socket, to: Routes.user_settings_path(socket, :upload_emotes))}
     end
@@ -43,4 +44,19 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotes do
         {:noreply, socket |> put_flash(:emote_error, "Error deleting #{emote.emote}")}
     end
   end
+
+  @impl Phoenix.LiveView
+  def handle_event("save_emote_options", %{"id" => id}, socket) do
+    emote = Emotes.get_emote_by_id(id)
+
+    case Emotes.save_emote_options(socket.assigns.user, emote) do
+      {:ok, _emote} ->
+        {:noreply,
+         socket
+         |> put_flash(:emote_options_info,"Changes made successfully")}
+
+      {:error, _} ->
+        {:noreply, socket |> put_flash(:emote__options_error, "Error updating #{emote.emote}")}
+      end
+    end
 end
