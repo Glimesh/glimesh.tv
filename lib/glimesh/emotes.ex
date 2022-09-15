@@ -122,18 +122,7 @@ defmodule Glimesh.Emotes do
     )
   end
 
-  #def list_static_emotes_for_channel_for_edit(%Channel{id: channel_id}) do
-    #Repo.replica().all(
-      #from(e in Emote,
-      #  where:
-       #   is_nil(e.approved_at) == false and e.animated == false and e.channel_id == ^channel_id,
-      #  order_by: e.emote
-     # )
-   # )
-   # |> Enum.map(fn x -> Emote.preference_changeset(x, %Emote{}) end )
-  # end
-
-  def list_animated_emotes_for_channel(%Channel{id: channel_id}) do
+   def list_animated_emotes_for_channel(%Channel{id: channel_id}) do
     Repo.replica().all(
       from(e in Emote,
         where:
@@ -142,17 +131,6 @@ defmodule Glimesh.Emotes do
       )
     )
   end
-
-  #def list_animated_emotes_for_channel_for_edit(%Channel{id: channel_id}) do
-    #Repo.replica().all(
-      #from(e in Emote,
-       # where:
-        #  is_nil(e.approved_at) == false and e.animated == true and e.channel_id == ^channel_id,
-       # order_by: e.emote
-     # )
-  #  )
-   # |> Enum.map(fn x -> Emote.preference_changeset(x, %Emote{}) end )
-#  end
 
   def list_submitted_emotes_for_channel(%Channel{id: channel_id}) do
     Repo.replica().all(
@@ -165,10 +143,6 @@ defmodule Glimesh.Emotes do
 
   def get_emote_by_id(id) do
     Repo.replica().get_by(Emote, id: id)
-  end
-
-  def get_emote_by_emote(emote) when is_binary(emote) do
-    Repo.replica().get_by(Emote, emote: emote)
   end
 
   def create_global_emote(%User{} = user, attrs \\ %{}) do
@@ -197,12 +171,14 @@ defmodule Glimesh.Emotes do
     end
   end
 
-  def save_emote_options(%User{} = user, %Emote{} = emote) do
-    with :ok <- Bodyguard.permit(__MODULE__, :save_emote_options, user, emote) do
-      emote
+  def save_emote_options(%User{} = user, %Emote{} = emote, attrs \\ %{}) do
+  with :ok <- Bodyguard.permit(__MODULE__, :save_emote_options, user, emote) do
+    emote
+      |> Emote.preference_changeset(attrs)
       |> Repo.update()
-    end
   end
+end
+
 
   def approve_emote(%User{} = user, %Emote{} = emote) do
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam.Policy, :manage_emotes, user) do

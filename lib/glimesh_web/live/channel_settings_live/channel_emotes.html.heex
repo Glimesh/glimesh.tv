@@ -45,6 +45,7 @@
 
     <h5><%= gettext("Static Emotes") %></h5>
     <div class="row">
+    
       <%= for emote <- @static_emotes do %>
         <div class="col-md-3 mb-4">
           <button
@@ -62,24 +63,26 @@
             <img src={Glimesh.Emotes.full_url(emote)} height="32px" width="32px" />
             <figcaption><code>:<%= emote.emote %>:</code></figcaption>
           </div>
-
-    <div class="form group">
-        <div class="text-center">
-          <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id={"require_channel_sub#{emote.id}"}>
-              <label class="custom-control-label" for={"require_channel_sub#{emote.id}"}>Require Channel Subscription</label>
-          </div>
-          <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id={"allow_global_usage#{emote.id}"}>
-              <label class="custom-control-label" for={"allow_global_usage#{emote.id}"}>Allow Platform Wide Use</label> 
-          </div> 
+          
+          <.form let={f} for={:nothing} phx-id="save_emote_options" phx-change="save_emote_options">
+            <%= hidden_input(f, :emote_id, value: emote.id) %>
+            <div class="form group">
+              <div class="text-center">
+                <div class="custom-control custom-switch">
+                  <%= checkbox(f, :require_channel_sub, class: "custom-control-input", id: "require_channel_sub#{emote.id}", value: emote.require_channel_sub) %>
+                  <%= label(f, :require_channel_sub, for: "require_channel_sub#{emote.id}", class: "custom-control-label") %>
+                </div>
+                <div class="custom-control custom-switch">
+                  <%= checkbox(f, :allow_global_usage, class: "custom-control-input", id: "allow_global_usage#{emote.id}", value: emote.allow_global_usage) %> 
+                  <%= label(f, :allow_global_usage, for: "allow_global_usage#{emote.id}", class: "custom-control-label") %>
+                </div>   
+              </div>
+            </div>
+          </.form>
         </div>
-      </div>
+      <% end %>
     </div>
-<% end %>
-</div>
-</div>
-    
+       
    <!-- !to come back to later <div class="alert alert-info" role="alert">
    By selecting the checkboxes below your emote and clicking "save preferences" below you will be able to make your emotes available 
    to only subscribers, available to be used across the platform, or a combination of both. Please note these options are off by default 
@@ -156,5 +159,8 @@
       <% end %>
     </div>
   </div>
-</div>
+  </div>
+  </div>
+
+
 

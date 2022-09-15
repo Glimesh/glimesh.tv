@@ -53,14 +53,10 @@ defmodule Glimesh.Emotes.Emote do
     |> unique_constraint(:emote)
   end
 
-  # def preference_changeset(emote, attrs) do
-   # emote
-   # |> cast(attrs, [:emote, :animated, :approved_at, :require_channel_sub, :allow_global_usage, :static_path, :animated_path])
-   # |> validate_required([:emote, :animated])
-   # |> validate_length(:emote, min: 2, max: 15)
-   # |> validate_conditional_file(attrs)
-    #|> unique_constraint(:emote)
- # end
+   def preference_changeset(emote, attrs) do
+    emote
+    |> cast(attrs, [:require_channel_sub, :allow_global_usage])
+   end
 
   defp validate_channel_max_emotes(emote, channel) do
     config = Application.get_env(:glimesh, Glimesh.Emotes)

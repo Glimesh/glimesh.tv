@@ -29,5 +29,11 @@ defmodule Glimesh.Emotes.Policy do
     emote.channel.user_id == user_id
   end
 
+  def authorize(:save_emote_options, %User{id: user_id}, %Emote{} = emote) do
+    emote = emote |> Glimesh.Repo.preload(:channel)
+
+    emote.channel.user_id == user_id
+  end
+
   def authorize(_, _, _), do: false
 end
