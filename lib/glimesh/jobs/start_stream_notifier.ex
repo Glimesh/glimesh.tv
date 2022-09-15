@@ -1,10 +1,9 @@
 defmodule Glimesh.Jobs.StartStreamNotifier do
   @moduledoc false
-  @behaviour Rihanna.Job
+  use Oban.Worker
 
-  def priority, do: 15
-
-  def perform([channel_id]) do
+  @impl Oban.Worker
+  def perform(%Oban.Job{args: %{"channel_id" => channel_id} = args}) do
     channel = Glimesh.ChannelLookups.get_channel!(channel_id)
     users = Glimesh.ChannelLookups.list_live_subscribed_followers(channel)
     full_channel = Glimesh.Repo.preload(channel, [:user, :stream, :tags])

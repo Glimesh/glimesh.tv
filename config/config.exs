@@ -273,13 +273,15 @@ config :glimesh, Glimesh.Socials.Twitter,
   access_token: "",
   access_token_secret: ""
 
-config :glimesh, Glimesh.Emotes, max_channel_emotes: 10, allow_channel_animated_emotes: true
+config :glimesh, Glimesh.Emotes, max_channel_emotes: 100, allow_channel_animated_emotes: true
 
 config :libcluster,
   topologies: []
 
-config :rihanna,
-  producer_postgres_connection: {Ecto, Glimesh.Repo}
+config :glimesh, Oban,
+  repo: Glimesh.Repo,
+  plugins: [Oban.Plugins.Pruner],
+  queues: [default: 10]
 
 config :glimesh, Glimesh.PaymentProviders.TaxIDPro, webhook_secret: "", api_key: ""
 
