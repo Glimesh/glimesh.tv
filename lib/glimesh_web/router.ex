@@ -282,6 +282,7 @@ defmodule GlimeshWeb.Router do
 
     # This must be the last route
     live "/:username", UserLive.Stream, :index
+    get "/:username/interactive", InteractiveController, :index
     live "/:username/support", UserLive.Stream, :support
     live "/:username/support/:tab", UserLive.Stream, :support
     live "/:username/profile", UserLive.Profile, :index

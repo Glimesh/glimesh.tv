@@ -196,7 +196,7 @@
               >
               </video>
                <%= if @interactive_toggle do %>
-                 <iframe src="http://localhost:8080/client"></iframe>
+                 <iframe src={"/#{@streamer.username}/interactive"}></iframe>
                 <% end %>
               <div id="video-loading-container" class="">
                 <div class="lds-ring">

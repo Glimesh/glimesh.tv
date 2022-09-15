@@ -1,9 +1,8 @@
 defmodule Glimesh.Interactive do
   use Waffle.Definition
-  @max_file_size 10_000_000
-
-  # Include ecto support (requires package waffle_ecto installed):
   use Waffle.Ecto.Definition
+
+  @max_file_size 10_000_000
 
   @versions [:original]
 
@@ -15,24 +14,34 @@ defmodule Glimesh.Interactive do
   #   :custom_bucket_name
   # end
 
-  # Whitelist file extensions:
+  # Validate interactive projects
   def validate({%Waffle.File{} = file, _}) do
-    file_extension = file.file_name |> Path.extname() |> String.downcase()
-    size_passes = file_size(file) <= @max_file_size
-    # TODO validate file with above stuff or use the file validation file in this dir
+    with true <- file_size(file) <= @max_file_size, # check file size
+      true <- ".zip" == file.file_name |> Path.extname() |> String.downcase(), # must be .zip file
+      {:ok, files} <- :zip.list_dir(String.to_charlist(file.path)), # get files in zip
+      true <- Enum.any?(files, fn e -> elem(e, 1) == 'index.html' end) do # find index.html in folder
+        IO.puts("All passed!")
 
-    # Only accept zip folders.
-    if file_extension == ".zip" do
-      :ok
-    else
-      {:error, "invalid file type"}
-    end
+        :ok
+      else
+        false ->
+          IO.puts("bad error, oh no")
+          {:error, "Upload must be a zip folder with an index.html file located within"}
+        _ ->
+          {:error, "Upload Error. See formats"}
+      end
+    :ok
   end
 
-  # Define a thumbnail transformation:
-  # def transform(:thumb, _) do
-  #   {:convert, "-strip -thumbnail 250x250^ -gravity center -extent 250x250 -format png", :png}
-  # end
+  # Converts the .zip to a normal folder
+   def transform(:original, request) do
+    # get the ID from the channel
+    id = elem(request, 1).id
+    # unzip the folder to the uploads dir
+    :zip.unzip(String.to_charlist(elem(request, 0).path), [{'cwd', "uploads/interactive/#{id}"}])
+    # Since we just converted it the waffle lib doesn't have to do anything
+    {:noaction}
+   end
 
   # Override the persisted filenames:
   def filename(_version, {_file, %Glimesh.Streams.Channel{} = channel}) do
@@ -40,7 +49,7 @@ defmodule Glimesh.Interactive do
   end
 
   # Override the storage directory:
-  def storage_dir(version, {file, scope}) do
+  def storage_dir(_version, {_file, _scope}) do
     "uploads/interactive"
   end
 
