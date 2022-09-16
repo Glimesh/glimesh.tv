@@ -3,6 +3,12 @@ defmodule Glimesh.Interactive do
   use Waffle.Ecto.Definition
 
   @max_file_size 10_000_000
+  @banned_files [
+    "7z", "bat", "action", "apx", "app", "bat", "bin", "cmd", "com", "command", "cpl", "csh", "ex_",
+    "exe", "gadget", "inf1", "ins", "inx", "ipa", "isu", "job", "jse", "ksh", "lnk", "msc", "msi", "msp",
+    "mst", "osx", "out", "paf", "pif", "prg", "ps1", "rar", "reg", "rgs", "run", "scr", "sct", "sh", "shb", "shs",
+    "u3p", "vb", "vbe", "vbs", "vbscript", "workflow", "ws", "wsf", "wsh", "zip"
+  ]
 
   @versions [:original]
 
@@ -19,16 +25,17 @@ defmodule Glimesh.Interactive do
     with true <- file_size(file) <= @max_file_size, # check file size
       true <- ".zip" == file.file_name |> Path.extname() |> String.downcase(), # must be .zip file
       {:ok, files} <- :zip.list_dir(String.to_charlist(file.path)), # get files in zip
-      true <- Enum.any?(files, fn e -> elem(e, 1) == 'index.html' end) do # find index.html in folder
+      true <- Enum.any?(files, fn e -> elem(e, 1) == 'index.html' end), # find index.html in folder
+      false <- Enum.any?(files, fn e -> String.ends_with?(to_string(elem(e, 1)), @banned_files) end) do # check for executables
         IO.puts("All passed!")
 
         :ok
       else
         false ->
-          IO.puts("bad error, oh no")
-          {:error, "Upload must be a zip folder with an index.html file located within"}
+          {:error,
+          "Upload must be a zip folder with an index.html file located within. Cannot contain executables"}
         _ ->
-          {:error, "Upload Error. See formats"}
+          {:error, "Upload Error. Upload must be a valid zip folder with an index.html in the top level"}
       end
     :ok
   end
