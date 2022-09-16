@@ -14,7 +14,7 @@ defmodule Glimesh.Interactive do
   #   :custom_bucket_name
   # end
 
-  # Validate interactive projects
+  # Validate interactive projects.
   def validate({%Waffle.File{} = file, _}) do
     with true <- file_size(file) <= @max_file_size, # check file size
       true <- ".zip" == file.file_name |> Path.extname() |> String.downcase(), # must be .zip file
@@ -38,8 +38,10 @@ defmodule Glimesh.Interactive do
     # get the ID from the channel
     id = elem(request, 1).id
     # unzip the folder to the uploads dir
-    :zip.unzip(String.to_charlist(elem(request, 0).path), [{'cwd', "uploads/interactive/#{id}"}])
+    :zip.unzip(String.to_charlist(elem(request, 0).path), [{:cwd, String.to_charlist("uploads/interactive/#{id}")}])
     # Since we just converted it the waffle lib doesn't have to do anything
+    # Technically, this is an invalid return but it prevents our created file from being deleted.
+    # Waffle isn't meant to handle folders and this is the only way I found to solve that
     {:noaction}
    end
 
@@ -69,5 +71,16 @@ defmodule Glimesh.Interactive do
 
   def file_size(%Waffle.File{} = file) do
     File.stat!(file.path) |> Map.get(:size)
+  end
+
+  # Remove projects that are zip files
+  def cleanup() do
+    files = File.ls("uploads/interactive")
+    elem(files, 1) |> Enum.each(fn file ->
+      case String.ends_with?(file, ".zip") do
+        true -> File.rm_rf("uploads/interactive/#{file}")
+        false -> nil
+      end
+    end)
   end
 end
