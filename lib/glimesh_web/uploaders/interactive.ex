@@ -21,23 +21,21 @@ defmodule Glimesh.Interactive do
   # end
 
   # Validate interactive projects.
-  def validate({%Waffle.File{} = file, _}) do
+  def validate({%Waffle.File{} = file, channel}) do
     with true <- file_size(file) <= @max_file_size, # check file size
-      true <- ".zip" == file.file_name |> Path.extname() |> String.downcase(), # must be .zip file
+      {:zip_check, true} <- {:zip_check, ".zip" == file.file_name |> Path.extname() |> String.downcase()}, # must be .zip file
       {:ok, files} <- :zip.list_dir(String.to_charlist(file.path)), # get files in zip
-      true <- Enum.any?(files, fn e -> elem(e, 1) == 'index.html' end), # find index.html in folder
-      false <- Enum.any?(files, fn e -> String.ends_with?(to_string(elem(e, 1)), @banned_files) end) do # check for executables
+      {:html_check, true} <- {:html_check, Enum.any?(files, fn e -> elem(e, 1) == 'index.html' end)}, # find index.html in folder
+      {:ban_check, false} <- {:ban_check, Enum.any?(files, fn e -> String.ends_with?(to_string(elem(e, 1)), @banned_files) end)} do # check for executables
         IO.puts("All passed!")
-
+        remove_old_project(channel.id)
         :ok
       else
-        false ->
-          {:error,
-          "Upload must be a zip folder with an index.html file located within. Cannot contain executables"}
-        _ ->
-          {:error, "Upload Error. Upload must be a valid zip folder with an index.html in the top level"}
+        {:zip_check, _} -> {:error, "Interactive projects must be a .zip file"}
+        {:html_check, _} -> {:error, "Interactive projects must contain a top level index.html file"}
+        {:ban_check, _} -> {:error, "Interactive projects cannot contain executable files"}
+        _ -> {:error, "An unknown error has occured"}
       end
-    :ok
   end
 
   # Converts the .zip to a normal folder
@@ -80,7 +78,7 @@ defmodule Glimesh.Interactive do
     File.stat!(file.path) |> Map.get(:size)
   end
 
-  # Remove projects that are zip files
+  # Remove projects that are zip files.
   def cleanup() do
     files = File.ls("uploads/interactive")
     elem(files, 1) |> Enum.each(fn file ->
@@ -89,5 +87,13 @@ defmodule Glimesh.Interactive do
         false -> nil
       end
     end)
+  end
+
+  # Cleans out the current project.
+  def remove_old_project(id) do
+    case File.dir?("uploads/interactive/#{id}") do
+      true -> File.rm_rf("uploads/interactive/#{id}")
+      false -> :error
+    end
   end
 end
