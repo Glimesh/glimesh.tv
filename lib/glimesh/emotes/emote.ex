@@ -13,6 +13,7 @@ defmodule Glimesh.Emotes.Emote do
     field :svg, :boolean
 
     field :approved_at, :naive_datetime
+    field :approved_for_global_use, :boolean, default: false
     field :rejected_at, :naive_datetime
     field :rejected_reason, :string
     belongs_to :reviewed_by, Glimesh.Accounts.User
@@ -83,7 +84,7 @@ defmodule Glimesh.Emotes.Emote do
 
   def review_changeset(emote, reviewer, attrs) do
     emote
-    |> cast(attrs, [:approved_at, :rejected_at, :rejected_reason])
+    |> cast(attrs, [:approved_at, :rejected_at, :rejected_reason, :approved_for_global_use])
     |> put_assoc(:reviewed_by, reviewer)
   end
 

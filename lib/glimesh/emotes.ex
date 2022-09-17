@@ -185,7 +185,21 @@ end
       emote
       |> Repo.preload(:reviewed_by)
       |> Emote.review_changeset(user, %{
-        approved_at: NaiveDateTime.utc_now()
+        approved_at: NaiveDateTime.utc_now(),
+        approved_for_global_use: true,
+      })
+      |> Repo.update()
+    end
+  end
+
+  def approve_emote_sub_only(%User{} = user, %Emote{} = emote, reason) do
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam.Policy, :manage_emotes, user) do
+      emote
+      |> Repo.preload(:reviewed_by)
+      |> Emote.review_changeset(user, %{
+        approved_at: NaiveDateTime.utc_now(),
+        approved_for_global_use: false,
+        rejected_reason: reason
       })
       |> Repo.update()
     end

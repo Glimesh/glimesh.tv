@@ -73,9 +73,14 @@
                   <%= label(f, :require_channel_sub, for: "require_channel_sub#{emote.id}", class: "custom-control-label") %>
                 </div>
                 <div class="custom-control custom-switch">
+                  <%= if (emote.approved_for_global_use) do %> 
                   <%= checkbox(f, :allow_global_usage, class: "custom-control-input", id: "allow_global_usage#{emote.id}", value: emote.allow_global_usage) %> 
                   <%= label(f, :allow_global_usage, for: "allow_global_usage#{emote.id}", class: "custom-control-label") %>
-                </div>   
+                  <% else %>
+                  <br>
+                  <p><%= emote.rejected_reason %></p>
+                  <% end %>
+                </div>
               </div>
             </div>
           </.form>
@@ -107,12 +112,26 @@
             <img src={Glimesh.Emotes.full_url(emote)} height="128px" width="128px" />
             <figcaption><code>:<%= emote.emote %>:</code></figcaption>
           </div>
-          <!--
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck1" checked>
-                    <label class="custom-control-label" for="customCheck1">Allow Global Usage</label>
+
+          <.form let={f} for={:nothing} phx-id="save_emote_options" phx-change="save_emote_options">
+            <%= hidden_input(f, :emote_id, value: emote.id) %>
+            <div class="form group">
+              <div class="text-center">
+                <div class="custom-control custom-switch">
+                  <%= checkbox(f, :require_channel_sub, class: "custom-control-input", id: "require_channel_sub#{emote.id}", value: emote.require_channel_sub) %>
+                  <%= label(f, :require_channel_sub, for: "require_channel_sub#{emote.id}", class: "custom-control-label") %>
                 </div>
-                -->
+                <div class="custom-control custom-switch">
+                  <%= if (emote.approved_for_global_use) do %> 
+                  <%= checkbox(f, :allow_global_usage, class: "custom-control-input", id: "allow_global_usage#{emote.id}", value: emote.allow_global_usage) %> 
+                  <%= label(f, :allow_global_usage, for: "allow_global_usage#{emote.id}", class: "custom-control-label") %>
+                  <% else %>
+                  <p><%= emote.rejected_reason %></p>
+                  <% end %>
+                </div>   
+              </div>
+            </div>
+          </.form>
         </div>
       <% end %>
     </div>
