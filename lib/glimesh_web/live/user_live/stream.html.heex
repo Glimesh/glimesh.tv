@@ -196,7 +196,9 @@
               >
               </video>
                <%= if @interactive_toggle do %>
-                 <iframe src={"/#{@streamer.username}/interactive"}></iframe>
+                 <iframe
+                 sandbox="allow-scripts"
+                 src={"/#{@streamer.username}/interactive"}></iframe>
                 <% end %>
               <div id="video-loading-container" class="">
                 <div class="lds-ring">
