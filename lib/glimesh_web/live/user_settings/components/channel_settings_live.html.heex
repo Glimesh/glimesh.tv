@@ -26,6 +26,7 @@
           value={@stream_key}
           class="form-control stream-key"
           readonly="readonly"
+          style="cursor: pointer"
         />
 
         <div class="input-group-append">
@@ -338,7 +339,7 @@
         <%= label(f, :interactive_project, gettext("Interactive Project")) %>
         <p class="text-muted form-text">
           <%= gettext(
-            "An interactive project. It must be a zip folder with the files enclosed."
+            "An interactive project. It must be a zip folder with an index.html at the top level."
           ) %>
         </p>
 
@@ -349,7 +350,7 @@
         <%= if f.errors[:interactive_project] do %>
           <div>
             <span class="text-danger">
-              <%= gettext("Invalid Project. Only upload a zip file") %>
+              <%= elem(f.errors[:interactive_project], 0) %>
             </span>
           </div>
         <% end %>
