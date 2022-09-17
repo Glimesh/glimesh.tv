@@ -1,5 +1,5 @@
 # Doesn't use alpine because we need dart-sass to work and it needs glibc
-FROM elixir:1.13.4 AS build
+FROM elixir:1.14 AS build
 
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
@@ -54,3 +54,7 @@ COPY --from=build --chown=nobody:nogroup /app/_build/prod/rel/glimesh ./
 ENV HOME=/app
 
 CMD ["bin/glimesh", "start"]
+
+# Appended by flyctl
+ENV ECTO_IPV6 true
+ENV ERL_AFLAGS "-proto_dist inet6_tcp"
