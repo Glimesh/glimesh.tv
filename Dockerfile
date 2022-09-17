@@ -23,18 +23,16 @@ RUN mix do deps.get, deps.compile
 RUN git config --global url."https://github.com".insteadOf ssh://git@github.com
 
 # build assets
-COPY assets/package.json assets/package-lock.json ./assets/
+COPY assets assets
 RUN npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
 
 COPY priv priv
-COPY assets assets
-RUN mix assets.deploy
+copy lib lib
 
 # compile and build release
-COPY lib lib
-# uncomment COPY if rel/ exists
-# COPY rel rel
-RUN mix do compile, release
+RUN mix compile
+RUN mix assets.deploy
+RUN mix release
 
 # prepare release image
 FROM debian:bullseye-slim AS app
