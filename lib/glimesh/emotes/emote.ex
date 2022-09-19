@@ -23,6 +23,7 @@ defmodule Glimesh.Emotes.Emote do
 
     field :require_channel_sub, :boolean, default: false
     field :allow_global_usage, :boolean, default: false
+    field :emote_display_off, :boolean, default: false
 
     timestamps()
   end
@@ -30,7 +31,7 @@ defmodule Glimesh.Emotes.Emote do
   @doc false
   def changeset(emote, attrs) do
     emote
-    |> cast(attrs, [:emote, :animated, :approved_at, :require_channel_sub, :allow_global_usage])
+    |> cast(attrs, [:emote, :animated, :approved_at, :require_channel_sub, :allow_global_usage, :emote_display_off])
     |> validate_required([:emote, :animated])
     |> validate_length(:emote, min: 2, max: 15)
     |> validate_conditional_file(attrs)
@@ -56,7 +57,7 @@ defmodule Glimesh.Emotes.Emote do
 
    def preference_changeset(emote, attrs) do
     emote
-    |> cast(attrs, [:require_channel_sub, :allow_global_usage])
+    |> cast(attrs, [:require_channel_sub, :allow_global_usage, :emote_display_off])
    end
 
   defp validate_channel_max_emotes(emote, channel) do
@@ -108,11 +109,5 @@ defmodule Glimesh.Emotes.Emote do
       |> cast_attachments(attrs, [:static_file], allow_paths: true)
       |> validate_required(:static_file)
     end
-  end
-
-  def require_channel_sub() do
-  end
-
-  def allow_global_usage() do
   end
 end

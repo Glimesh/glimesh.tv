@@ -17,7 +17,7 @@
       <strong><%= gettext("Early Feature Alert!") %></strong>
       Hey there! Channel Emotes are still under heavy development, while we are working through how to make the best emote system we can,
       <strong>
-        we are now allowing 10 emotes per channel, though while in testing we are restricting file type to PNG and GIF only
+        we are now allowing 10 emotes per channel, though while in testing we are restricting file type to PNG and GIF only and only 1 emote can be used across the platform
       </strong>
       ! We're continually building this new feature, and we'd love your opinion on how we should do it. Thank you!
     </div>
@@ -70,30 +70,28 @@
               <div class="text-center">
                 <div class="custom-control custom-switch">
                   <%= checkbox(f, :require_channel_sub, class: "custom-control-input", id: "require_channel_sub#{emote.id}", value: emote.require_channel_sub) %>
-                  <%= label(f, :require_channel_sub, for: "require_channel_sub#{emote.id}", class: "custom-control-label") %>
+                  <%= label(f, :require_channel_sub, "Require Channel Subscription", for: "require_channel_sub#{emote.id}", class: "custom-control-label") %>
                 </div>
+                <%= if (emote.approved_for_global_use) do %> 
                 <div class="custom-control custom-switch">
-                  <%= if (emote.approved_for_global_use) do %> 
                   <%= checkbox(f, :allow_global_usage, class: "custom-control-input", id: "allow_global_usage#{emote.id}", value: emote.allow_global_usage) %> 
-                  <%= label(f, :allow_global_usage, for: "allow_global_usage#{emote.id}", class: "custom-control-label") %>
-                  <% else %>
-                  <br>
-                  <p><%= emote.rejected_reason %></p>
-                  <% end %>
+                  <%= label(f, :allow_global_usage, "Allow Platform use", for: "allow_global_usage#{emote.id}", class: "custom-control-label") %>
+                </div> 
+                <% end %>
+                <div class="custom-control custom-switch">
+                  <%= checkbox(f, :emote_display_off, class: "custom-control-input", id: "emote_display_off#{emote.id}", value: emote.emote_display_off) %>
+                  <%= label(f, :emote_display_off, "Hide Emote", for: "emote_display_off#{emote.id}", class: "custom-control-label") %>
                 </div>
+                <%= if (not emote.approved_for_global_use) do %>  
+                  <p><%= emote.rejected_reason %></p>
+                <% end %>                
               </div>
             </div>
           </.form>
         </div>
       <% end %>
     </div>
-       
-   <!-- !to come back to later <div class="alert alert-info" role="alert">
-   By selecting the checkboxes below your emote and clicking "save preferences" below you will be able to make your emotes available 
-   to only subscribers, available to be used across the platform, or a combination of both. Please note these options are off by default 
-   meaning your emotes are available for anyone to use in your channel, but not globally.
-  </div> -->
-      
+            
     <h5><%= gettext("Animated Emotes") %></h5>
     <div class="row">
       <%= for emote <- @animated_emotes do %>
@@ -116,19 +114,24 @@
           <.form let={f} for={:nothing} phx-id="save_emote_options" phx-change="save_emote_options">
             <%= hidden_input(f, :emote_id, value: emote.id) %>
             <div class="form group">
-              <div class="text-center">
+              <div class="text-center">          
                 <div class="custom-control custom-switch">
                   <%= checkbox(f, :require_channel_sub, class: "custom-control-input", id: "require_channel_sub#{emote.id}", value: emote.require_channel_sub) %>
-                  <%= label(f, :require_channel_sub, for: "require_channel_sub#{emote.id}", class: "custom-control-label") %>
+                  <%= label(f, :require_channel_sub, "Require Channel Subscription", for: "require_channel_sub#{emote.id}", class: "custom-control-label") %>
                 </div>
+                <%= if (emote.approved_for_global_use) do %> 
                 <div class="custom-control custom-switch">
-                  <%= if (emote.approved_for_global_use) do %> 
                   <%= checkbox(f, :allow_global_usage, class: "custom-control-input", id: "allow_global_usage#{emote.id}", value: emote.allow_global_usage) %> 
-                  <%= label(f, :allow_global_usage, for: "allow_global_usage#{emote.id}", class: "custom-control-label") %>
-                  <% else %>
+                  <%= label(f, :allow_global_usage, "Allow Platform use", for: "allow_global_usage#{emote.id}", class: "custom-control-label") %>
+                </div> 
+                <% end %>
+                <div class="custom-control custom-switch">
+                  <%= checkbox(f, :emote_display_off, class: "custom-control-input", id: "emote_display_off#{emote.id}", value: emote.emote_display_off) %>
+                  <%= label(f, :emote_display_off, "Hide Emote", for: "emote_display_off#{emote.id}", class: "custom-control-label") %>
+                </div>
+                <%= if (not emote.approved_for_global_use) do %>  
                   <p><%= emote.rejected_reason %></p>
-                  <% end %>
-                </div>   
+                <% end %>      
               </div>
             </div>
           </.form>

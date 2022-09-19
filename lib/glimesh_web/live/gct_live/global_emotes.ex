@@ -1,13 +1,16 @@
 defmodule GlimeshWeb.GctLive.GlobalEmotes do
   use GlimeshWeb, :live_view
 
+  alias Glimesh.Emotes
+  alias Glimesh.Emotes.Emote
+
   @impl true
   def mount(_, session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
     user = Glimesh.Accounts.get_user_by_session_token(session["user_token"])
 
-    emotes = Glimesh.Emotes.list_emotes(true)
+    emotes = Glimesh.Emotes.list_emotes_gct()
 
     {:ok,
      socket
@@ -25,6 +28,23 @@ defmodule GlimeshWeb.GctLive.GlobalEmotes do
   @impl Phoenix.LiveView
   def handle_event("cancel-upload", %{"ref" => ref}, socket) do
     {:noreply, cancel_upload(socket, :emote, ref)}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_event("save_emote_options", %{"nothing" => params}, socket) do
+    emote = Emotes.get_emote_by_id(params["emote_id"])
+
+    case Emotes.save_gct_emote_options(socket.assigns.user, emote, params) do
+      {:ok, _emote} ->
+        emotes = Glimesh.Emotes.list_emotes_gct()
+        {:noreply,
+         socket
+         |> put_flash(:info,"Changes made successfully")
+         |> assign(:emotes, emotes)}
+
+      {:error, _} ->
+        {:noreply, socket |> put_flash(:error, "Error updating #{emote.emote}")}
+    end
   end
 
   @impl Phoenix.LiveView
