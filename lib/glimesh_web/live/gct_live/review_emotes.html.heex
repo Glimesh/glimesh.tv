@@ -15,21 +15,26 @@
               <%= link(emote.channel.user.username,
                 to: Routes.user_stream_path(@socket, :index, emote.channel.user.username)
               ) %>
-            </figcaption><br>
+            </figcaption>
+            <br />
             <button
               phx-click="approve_emote"
               phx-value-id={emote.id}
               class="btn btn-primary btn-sm"
             >
               Global Approval
-            </button><br><br>
+            </button>
+            <br />
+            <br />
             <button
               phx-click="approve_emote_sub_only"
               phx-value-id={emote.id}
               class="btn btn-primary btn-sm"
             >
               Limited Approval
-            </button><br><br>
+            </button>
+            <br />
+            <br />
             <button
               phx-click="reject_emote"
               phx-value-id={emote.id}

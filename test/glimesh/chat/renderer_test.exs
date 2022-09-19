@@ -43,14 +43,15 @@ defmodule Glimesh.Chat.RendererTest do
     end
 
     test "rendering prevents injection" do
-      tokens = Parser.parse("<h2>Hello world</h2>")
+      default_config = %Parser.Config{user_id: 1}
+      tokens = Parser.parse("<h2>Hello world</h2>", default_config)
       assert tokens == [%Token{type: "text", text: "<h2>Hello world</h2>"}]
       assert Renderer.render_html(tokens) == "&lt;h2&gt;Hello world&lt;/h2&gt;"
 
       emote = Glimesh.EmotesFixtures.static_global_emote_fixture()
       emote_url = Glimesh.Emotes.full_url(emote)
 
-      tokens = Parser.parse("<h2>Hello :glimchef: world</h2>")
+      tokens = Parser.parse("<h2>Hello :glimchef: world</h2>", default_config)
 
       assert tokens == [
                %Token{type: "text", text: "<h2>Hello "},

@@ -22,7 +22,7 @@ defmodule GlimeshWeb.GctLive.ReviewEmotes do
     emote = Emotes.get_emote_by_id(id)
 
     case Emotes.approve_emote_sub_only(
-      socket.assigns.user,
+           socket.assigns.user,
            emote,
            "#{emote.emote} is unable to be used platform wide. Please reach out to support@glimesh.tv for more information"
          ) do
@@ -39,7 +39,8 @@ defmodule GlimeshWeb.GctLive.ReviewEmotes do
 
   @impl Phoenix.LiveView
   def handle_event("approve_emote", %{"id" => id}, socket) do
-      emote = Emotes.get_emote_by_id(id)
+    emote = Emotes.get_emote_by_id(id)
+
     case Emotes.approve_emote(socket.assigns.user, emote) do
       {:ok, _emote} ->
         {:noreply,

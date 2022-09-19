@@ -323,7 +323,7 @@ defmodule Glimesh.Chat do
       allow_emotes: true,
       allow_animated_emotes: allow_animated_emotes,
       channel_id: channel.id,
-      user_id: userid,
+      user_id: userid
     }
   end
 

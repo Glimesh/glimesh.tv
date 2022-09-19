@@ -88,17 +88,29 @@
               <img src={Glimesh.Emotes.full_url(emote)} height="128px" width="128px" />
               <figcaption><code>:<%= emote.emote %>:</code></figcaption>
             </div>
-            <.form let={f} for={:nothing} phx-id="save_emote_options" phx-change="save_emote_options">
-            <%= hidden_input(f, :emote_id, value: emote.id) %>
-            <div class="form group">
-              <div class="text-center">
-                <div class="custom-control custom-switch">
-                  <%= checkbox(f, :emote_display_off, class: "custom-control-input", id: "emote_display_off#{emote.id}", value: emote.emote_display_off) %>
-                  <%= label(f, :emote_display_off, "Disable Platform Use", for: "emote_display_off#{emote.id}", class: "custom-control-label") %>
-                </div>   
+            <.form
+              let={f}
+              for={:nothing}
+              phx-id="save_emote_options"
+              phx-change="save_emote_options"
+            >
+              <%= hidden_input(f, :emote_id, value: emote.id) %>
+              <div class="form group">
+                <div class="text-center">
+                  <div class="custom-control custom-switch">
+                    <%= checkbox(f, :emote_display_off,
+                      class: "custom-control-input",
+                      id: "emote_display_off#{emote.id}",
+                      value: emote.emote_display_off
+                    ) %>
+                    <%= label(f, :emote_display_off, "Disable Platform Use",
+                      for: "emote_display_off#{emote.id}",
+                      class: "custom-control-label"
+                    ) %>
+                  </div>
+                </div>
               </div>
-            </div>
-            </.form>           
+            </.form>
           </div>
         <% end %>
       </div>

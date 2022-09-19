@@ -40,7 +40,11 @@ defmodule Glimesh.Chat.Parser do
     # Emotes is just a map of emotes and images the user has access to post.
     # Since this is loaded on every message sent, we should cache this.
     emotes =
-      Glimesh.Emotes.list_emotes_for_parser(config.allow_animated_emotes, config.channel_id, config.user_id)
+      Glimesh.Emotes.list_emotes_for_parser(
+        config.allow_animated_emotes,
+        config.channel_id,
+        config.user_id
+      )
       |> Enum.map(fn emote ->
         {":#{emote.emote}:", Glimesh.Emotes.full_url(emote)}
       end)

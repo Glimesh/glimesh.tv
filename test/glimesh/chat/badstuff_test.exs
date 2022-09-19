@@ -16,9 +16,10 @@ defmodule Glimesh.Chat.BadstuffTest do
       left_hash = :crypto.hash(:sha, lhs) |> Base.encode16()
 
       test "bad inputs: #{left_hash}", context do
+        default_config = %Parser.Config{user_id: 1}
         {l, r} = context.registered.pair
 
-        rendered_output = Parser.parse(l) |> Renderer.render_html()
+        rendered_output = Parser.parse(l, default_config) |> Renderer.render_html()
 
         assert rendered_output =~ r
       end

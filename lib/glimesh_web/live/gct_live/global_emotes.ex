@@ -2,7 +2,6 @@ defmodule GlimeshWeb.GctLive.GlobalEmotes do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Emotes
-  alias Glimesh.Emotes.Emote
 
   @impl true
   def mount(_, session, socket) do
@@ -10,7 +9,7 @@ defmodule GlimeshWeb.GctLive.GlobalEmotes do
 
     user = Glimesh.Accounts.get_user_by_session_token(session["user_token"])
 
-    emotes = Glimesh.Emotes.list_emotes_gct()
+    emotes = Emotes.list_emotes_gct()
 
     {:ok,
      socket
@@ -36,10 +35,11 @@ defmodule GlimeshWeb.GctLive.GlobalEmotes do
 
     case Emotes.save_gct_emote_options(socket.assigns.user, emote, params) do
       {:ok, _emote} ->
-        emotes = Glimesh.Emotes.list_emotes_gct()
+        emotes = Emotes.list_emotes_gct()
+
         {:noreply,
          socket
-         |> put_flash(:info,"Changes made successfully")
+         |> put_flash(:info, "Changes made successfully")
          |> assign(:emotes, emotes)}
 
       {:error, _} ->
@@ -66,7 +66,7 @@ defmodule GlimeshWeb.GctLive.GlobalEmotes do
             }
           end
 
-        case Glimesh.Emotes.create_global_emote(
+        case Emotes.create_global_emote(
                socket.assigns.user,
                Map.merge(
                  %{

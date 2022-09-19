@@ -56,11 +56,11 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotes do
       {:ok, _emote} ->
         {:noreply,
          socket
-         |> put_flash(:emote_info,"Changes made successfully")
+         |> put_flash(:emote_info, "Changes made successfully")
          |> redirect(to: Routes.user_settings_path(socket, :emotes))}
 
       {:error, _} ->
         {:noreply, socket |> put_flash(:emote_error, "Error updating #{emote.emote}")}
-      end
     end
   end
+end
