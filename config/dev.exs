@@ -113,8 +113,6 @@ config :phoenix, :plug_init_mode, :runtime
 # Loads only the English and Spanish locales for development, which speeds up compilation time
 config :glimesh, GlimeshWeb.Gettext, allowed_locales: ["en", "es"]
 
-config :rihanna, debug: true
-
 config :glimesh, :stripe_config,
   platform_sub_supporter_product_id: "prod_platform_supporter",
   platform_sub_supporter_price_id: "price_platform_supporter",

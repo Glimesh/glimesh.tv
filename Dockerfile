@@ -1,5 +1,5 @@
 # Doesn't use alpine because we need dart-sass to work and it needs glibc
-FROM elixir:1.13.4 AS build
+FROM elixir:1.14 AS build
 
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
@@ -23,18 +23,16 @@ RUN mix do deps.get, deps.compile
 RUN git config --global url."https://github.com".insteadOf ssh://git@github.com
 
 # build assets
-COPY assets/package.json assets/package-lock.json ./assets/
+COPY assets assets
 RUN npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
 
 COPY priv priv
-COPY assets assets
-RUN mix assets.deploy
+copy lib lib
 
 # compile and build release
-COPY lib lib
-# uncomment COPY if rel/ exists
-# COPY rel rel
-RUN mix do compile, release
+RUN mix compile
+RUN mix assets.deploy
+RUN mix release
 
 # prepare release image
 FROM debian:bullseye-slim AS app
@@ -54,3 +52,7 @@ COPY --from=build --chown=nobody:nogroup /app/_build/prod/rel/glimesh ./
 ENV HOME=/app
 
 CMD ["bin/glimesh", "start"]
+
+# Appended by flyctl
+ENV ECTO_IPV6 true
+ENV ERL_AFLAGS "-proto_dist inet6_tcp"
