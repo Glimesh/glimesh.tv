@@ -3,11 +3,10 @@ defmodule Glimesh.Interactive do
   use Waffle.Ecto.Definition
 
   @max_file_size 10_000_000
-  @banned_files [
-    "7z", "bat", "action", "apx", "app", "bat", "bin", "cmd", "com", "command", "cpl", "csh", "ex_",
-    "exe", "gadget", "inf1", "ins", "inx", "ipa", "isu", "job", "jse", "ksh", "lnk", "msc", "msi", "msp",
-    "mst", "osx", "out", "paf", "pif", "prg", "ps1", "rar", "reg", "rgs", "run", "scr", "sct", "sh", "shb", "shs",
-    "u3p", "vb", "vbe", "vbs", "vbscript", "workflow", "ws", "wsf", "wsh", "zip"
+  @allowed_files [
+    "htm", "html", "asp", "cshtml", "js", "css", "gif", "png", "jpg",
+    "mp4", "mov", "avi", "mkv", "webm", "mp3", "opus", "ogg", "wem", "flac", "wav",
+    "json", "csv"
   ]
 
   @versions [:original]
@@ -26,14 +25,21 @@ defmodule Glimesh.Interactive do
       {:zip_check, true} <- {:zip_check, ".zip" == file.file_name |> Path.extname() |> String.downcase()}, # must be .zip file
       {:ok, files} <- :zip.list_dir(String.to_charlist(file.path)), # get files in zip
       {:html_check, true} <- {:html_check, Enum.any?(files, fn e -> elem(e, 1) == 'index.html' end)}, # find index.html in folder
-      {:ban_check, false} <- {:ban_check, Enum.any?(files, fn e -> String.ends_with?(to_string(elem(e, 1)), @banned_files) end)} do # check for executables
-        IO.puts("All passed!")
+      {:ext_check, true} <- {:ext_check, Enum.all?(files, fn e ->
+        case e do
+          # Check the filename to the allow list
+          {:zip_file, file_name, _, _, _, _} -> String.ends_with?(to_string(file_name), @allowed_files)
+          # Zip comment, can be ignored
+          _ -> true
+        end
+        end)} do
+        IO.puts("All Interactive files are valid!")
         remove_old_project(channel.id)
         :ok
       else
         {:zip_check, _} -> {:error, "Interactive projects must be a .zip file"}
         {:html_check, _} -> {:error, "Interactive projects must contain a top level index.html file"}
-        {:ban_check, _} -> {:error, "Interactive projects cannot contain executable files"}
+        {:ext_check, _} -> {:error, "Your project included an unsupported file."}
         _ -> {:error, "An unknown error has occured"}
       end
   end
