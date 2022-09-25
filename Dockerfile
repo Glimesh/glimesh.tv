@@ -27,7 +27,8 @@ COPY assets assets
 RUN npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
 
 COPY priv priv
-copy lib lib
+COPY lib lib
+COPY rel rel
 
 # compile and build release
 RUN mix compile
@@ -49,7 +50,13 @@ USER nobody:nogroup
 
 COPY --from=build --chown=nobody:nogroup /app/_build/prod/rel/glimesh ./
 
+# Set the locale
+RUN locale-gen --no-purge en_US.UTF-8
+
 ENV HOME=/app
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
 CMD ["bin/glimesh", "start"]
 

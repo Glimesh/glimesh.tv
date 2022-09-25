@@ -6,11 +6,13 @@ kill_timeout = 5
 processes = []
 
 [deploy]
-  release_command = "/app/bin/migrate"
+  release_command = "/app/bin/glimesh eval Glimesh.Release.migrate"
 
 [env]
-  PHX_HOST = "glimesh.fly.dev"
-  PORT = "8080"
+  URL_HOST = "glimesh.fly.dev"
+  URL_PORT = "443"
+  URL_SCHEME = "https"
+  HTTP_PORT = "8080"
 
 [experimental]
   allowed_public_ports = []
