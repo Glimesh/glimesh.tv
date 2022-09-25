@@ -111,24 +111,29 @@ defmodule GlimeshWeb.OauthController do
         %AuthorizeResponse{
           type: type,
           redirect_uri: redirect_uri,
-          value: value,
           expires_in: expires_in,
           state: state
-        }
+        } = resp
       ) do
-    query_string =
-      case state do
-        nil ->
-          URI.encode_query(%{type => value, "expires_in" => expires_in})
-
-        state ->
-          URI.encode_query(%{type => value, "expires_in" => expires_in, "state" => state})
-      end
+    state = if not is_nil(state), do: %{"state" => state}, else: %{}
 
     url =
       case type do
-        "access_token" -> "#{redirect_uri}##{query_string}"
-        "code" -> "#{redirect_uri}?#{query_string}"
+        :access_token ->
+          query_string =
+            %{"access_token" => resp.access_token, "expires_in" => expires_in}
+            |> Map.merge(state)
+            |> URI.encode_query()
+
+          "#{redirect_uri}##{query_string}"
+
+        :code ->
+          query_string =
+            %{"code" => resp.code, "expires_in" => expires_in}
+            |> Map.merge(state)
+            |> URI.encode_query()
+
+          "#{redirect_uri}?#{query_string}"
       end
 
     redirect(conn, external: url)
