@@ -5,7 +5,7 @@ defmodule Glimesh.Jobs.HomepageCron do
   require Logger
 
   # 5 Minutes
-  @interval 300_000
+  @interval 5 * 60
 
   @impl Oban.Worker
   def perform(_) do

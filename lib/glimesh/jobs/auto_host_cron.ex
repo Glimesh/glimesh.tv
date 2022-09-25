@@ -7,7 +7,7 @@ defmodule Glimesh.Jobs.AutoHostCron do
   alias Glimesh.ChannelHostsLookups
 
   # 10 Minutes
-  @interval 600_000
+  @interval 10 * 60
 
   @impl Oban.Worker
   def perform(_) do
