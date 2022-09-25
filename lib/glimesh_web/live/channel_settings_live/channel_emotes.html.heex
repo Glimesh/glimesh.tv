@@ -16,10 +16,8 @@
     <div class="alert alert-info" role="alert">
       <strong><%= gettext("Early Feature Alert!") %></strong>
       Hey there! Channel Emotes are still under heavy development, while we are working through how to make the best emote system we can,
-      <strong>
-        we are no longer limiting amount of emotes a channel can have, though while in testing we are restricting file type to PNG and GIF only
-      </strong>
-      ! We're continually building this new feature, and we'd love your opinion on how we should do it. Thank you!
+      <strong>you are limited to uploading only 10 emotes.</strong>
+      For now we've disabled vector based SVG emotes, however we'll be bringing them back soon. Emotes can be either static PNG's or animated GIF file types. We're continually building this new feature, and we'd love your opinion on how we should do it. Thank you!
     </div>
     <%= if live_flash(@flash, :emote_info) do %>
       <p
