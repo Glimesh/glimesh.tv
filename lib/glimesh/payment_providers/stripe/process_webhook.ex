@@ -9,7 +9,18 @@ defmodule Glimesh.PaymentProviders.StripeProvider.ProcessWebhook do
   alias Glimesh.Payments
 
   @impl Oban.Worker
-  def perform(%Oban.Job{args: %{"type" => type, "data" => data}}) do
+  def perform(%Oban.Job{args: %{"id" => id}}) do
+    # Re-fetch the event for processing
+    case Stripe.Event.retrieve(id) do
+      {:ok, %Stripe.Event{type: type, data: data}} ->
+        process_event(type, data)
+
+      _ ->
+        {:ok, "Missing Stripe event #{id}"}
+    end
+  end
+
+  defp process_event(type, data) do
     case [type, data] do
       ["account.updated", %{object: %Stripe.Account{} = account}] ->
         case StripeProvider.check_account_capabilities_and_upgrade(account) do
