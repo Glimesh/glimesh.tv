@@ -26,7 +26,10 @@ defmodule Glimesh.Chat.ParserTest do
     test "lexes a simple message", %{static: static, animated: animated} do
       default_config = %Parser.Config{user_id: 1}
       assert Parser.parse("", default_config) == [%Token{type: "text", text: ""}]
-      assert Parser.parse("Hello world", default_config) == [%Token{type: "text", text: "Hello world"}]
+
+      assert Parser.parse("Hello world", default_config) == [
+               %Token{type: "text", text: "Hello world"}
+             ]
 
       assert Parser.parse(":glimchef:", default_config) == [
                %Token{

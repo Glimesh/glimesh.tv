@@ -13,7 +13,7 @@ defmodule Glimesh.EmotesFixtures do
         emote: "glimchef",
         animated: false,
         static_file: "test/assets/glimchef.svg",
-        approved_at: NaiveDateTime.utc_now(),
+        approved_at: NaiveDateTime.utc_now()
       })
 
     emote

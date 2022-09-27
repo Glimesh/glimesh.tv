@@ -11,8 +11,8 @@
             <img src={Glimesh.Emotes.full_url(emote)} height="128px" width="128px" />
             <img src={Glimesh.Emotes.full_url(emote)} height="32px" width="32px" />
             <figcaption>
-              <code>:<%= emote.emote %>:</code> on
-              <%= link(emote.channel.user.username,
+              <code>:<%= emote.emote %>:</code>
+              on <%= link(emote.channel.user.username,
                 to: Routes.user_stream_path(@socket, :index, emote.channel.user.username)
               ) %>
             </figcaption>

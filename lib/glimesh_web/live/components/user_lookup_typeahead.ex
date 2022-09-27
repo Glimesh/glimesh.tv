@@ -32,8 +32,7 @@ defmodule GlimeshWeb.Components.UserLookupTypeahead do
                 src={Glimesh.Avatar.url({user.avatar, user}, :original)}
                 width="50"
                 height="50"
-              />
-              &nbsp;<%= user.displayname %>
+              /> &nbsp;<%= user.displayname %>
             </div>
           <% end %>
         </div>
