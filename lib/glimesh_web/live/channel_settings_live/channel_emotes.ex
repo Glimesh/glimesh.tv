@@ -43,4 +43,24 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotes do
         {:noreply, socket |> put_flash(:emote_error, "Error deleting #{emote.emote}")}
     end
   end
+
+  @impl Phoenix.LiveView
+  def handle_event("save_emote_options", %{"nothing" => params}, socket) do
+    emote = Emotes.get_emote_by_id(params["emote_id"])
+
+    if params["allow_global_usage"] == "true" do
+      Emotes.clear_global_emotes(socket.assigns.user, emote)
+    end
+
+    case Emotes.save_emote_options(socket.assigns.user, emote, params) do
+      {:ok, _emote} ->
+        {:noreply,
+         socket
+         |> put_flash(:emote_info, "Changes made successfully")
+         |> redirect(to: Routes.user_settings_path(socket, :emotes))}
+
+      {:error, _} ->
+        {:noreply, socket |> put_flash(:emote_error, "Error updating #{emote.emote}")}
+    end
+  end
 end

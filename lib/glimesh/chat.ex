@@ -41,7 +41,8 @@ defmodule Glimesh.Chat do
         config =
           Glimesh.Chat.get_chat_parser_config(
             channel,
-            platform_subscriber
+            platform_subscriber,
+            user.id
           )
 
         %ChatMessage{
@@ -316,12 +317,13 @@ defmodule Glimesh.Chat do
     })
   end
 
-  def get_chat_parser_config(%Channel{} = channel, allow_animated_emotes \\ false) do
+  def get_chat_parser_config(%Channel{} = channel, allow_animated_emotes \\ false, userid) do
     %Glimesh.Chat.Parser.Config{
       allow_links: !channel.disable_hyperlinks,
       allow_emotes: true,
       allow_animated_emotes: allow_animated_emotes,
-      channel_id: channel.id
+      channel_id: channel.id,
+      user_id: userid
     }
   end
 

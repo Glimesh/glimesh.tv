@@ -14,6 +14,7 @@ defmodule Glimesh.CommunityTeam.Policy do
   def authorize(:view_audit_log, %User{is_admin: true}, _user), do: true
   def authorize(:soft_delete_channel, %User{is_admin: true}, _user), do: true
   def authorize(:manage_emotes, %User{is_admin: true}, _user), do: true
+  def authorize(:disable_global_emotes, %User{is_admin: true}, _user), do: true
   def authorize(:upload_global_emotes, %User{is_admin: true}, _user), do: true
 
   # Global GCT perms
@@ -30,6 +31,7 @@ defmodule Glimesh.CommunityTeam.Policy do
   def authorize(:view_audit_log, %User{is_gct: true, gct_level: 5}, _user), do: true
   def authorize(:soft_delete_channel, %User{is_gct: true, gct_level: 5}, _user), do: true
   def authorize(:upload_global_emotes, %User{is_gct: true, gct_level: 5}, _user), do: true
+  def authorize(:disable_global_emotes, %User{is_gct: true, gct_level: 5}, _user), do: true
   def authorize(:manage_emotes, %User{is_gct: true, gct_level: 5}, _user), do: true
 
   # GCT Manager perms
@@ -41,6 +43,7 @@ defmodule Glimesh.CommunityTeam.Policy do
   def authorize(:view_audit_log, %User{is_gct: true, gct_level: 4}, _user), do: true
   def authorize(:soft_delete_channel, %User{is_gct: true, gct_level: 4}, _user), do: true
   def authorize(:upload_global_emotes, %User{is_gct: true, gct_level: 4}, _user), do: true
+  def authorize(:disable_global_emotes, %User{is_gct: true, gct_level: 4}, _user), do: true
   def authorize(:manage_emotes, %User{is_gct: true, gct_level: 4}, _user), do: true
 
   # GCT Team Lead perms

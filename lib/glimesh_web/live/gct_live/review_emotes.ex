@@ -18,6 +18,26 @@ defmodule GlimeshWeb.GctLive.ReviewEmotes do
   end
 
   @impl Phoenix.LiveView
+  def handle_event("approve_emote_sub_only", %{"id" => id}, socket) do
+    emote = Emotes.get_emote_by_id(id)
+
+    case Emotes.approve_emote_sub_only(
+           socket.assigns.user,
+           emote,
+           "#{emote.emote} is unable to be used platform wide. Please reach out to support@glimesh.tv for more information"
+         ) do
+      {:ok, _emote} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Approved for subscriber only and general use #{emote.emote}")
+         |> assign(:pending_emotes, Emotes.list_pending_emotes())}
+
+      {:error, _} ->
+        {:noreply, socket |> put_flash(:error, "Error approving #{emote.emote}")}
+    end
+  end
+
+  @impl Phoenix.LiveView
   def handle_event("approve_emote", %{"id" => id}, socket) do
     emote = Emotes.get_emote_by_id(id)
 
@@ -25,7 +45,7 @@ defmodule GlimeshWeb.GctLive.ReviewEmotes do
       {:ok, _emote} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Approved #{emote.emote}")
+         |> put_flash(:info, "Approved for all use #{emote.emote}")
          |> assign(:pending_emotes, Emotes.list_pending_emotes())}
 
       {:error, _} ->

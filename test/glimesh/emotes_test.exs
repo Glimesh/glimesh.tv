@@ -98,7 +98,7 @@ defmodule Glimesh.EmotesTest do
       assert is_nil(emote.approved_at)
       assert emote.channel_id == channel.id
 
-      assert Glimesh.Emotes.list_emotes_for_channel(channel) == []
+      assert Glimesh.Emotes.list_emotes_for_channel(channel, channel.user_id) == []
     end
 
     test "create_channel_emote/3 requires approval to be used", %{
@@ -114,10 +114,10 @@ defmodule Glimesh.EmotesTest do
 
       assert emote.emote == "testgsomeemote"
 
-      assert Glimesh.Emotes.list_emotes_for_channel(channel) == []
+      assert Glimesh.Emotes.list_emotes_for_channel(channel, channel.user_id) == []
 
       {:ok, emote} = Glimesh.Emotes.approve_emote(admin_fixture(), emote)
-      emotes = Glimesh.Emotes.list_emotes_for_channel(channel)
+      emotes = Glimesh.Emotes.list_emotes_for_channel(channel, channel.user_id)
       assert length(emotes) == 1
       assert hd(emotes).id == emote.id
     end
@@ -174,7 +174,7 @@ defmodule Glimesh.EmotesTest do
     test "list_emotes_for_js/1 includes global emotes", %{admin: admin} do
       assert {:ok, %Emote{}} = Emotes.create_global_emote(admin, @static_attrs)
 
-      assert Emotes.list_emotes_for_js() =~ ":someemote:"
+      assert Emotes.list_emotes_for_js(admin.id) =~ ":someemote:"
     end
 
     test "create_channel_emote/3 errors on large file", %{

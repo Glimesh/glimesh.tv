@@ -46,7 +46,13 @@ defmodule GlimeshWeb.ChatLive.Index do
 
     new_socket =
       socket
-      |> assign(:channel_chat_parser_config, Chat.get_chat_parser_config(channel))
+      |> assign(
+        :channel_chat_parser_config,
+        Chat.get_chat_parser_config(
+          channel,
+          if(session["user"], do: session["user"].id, else: nil)
+        )
+      )
       |> assign(:update_action, "replace")
       |> assign(:channel, channel)
       |> assign(:user, session["user"])

@@ -6,13 +6,14 @@ defmodule Glimesh.Emotes do
   import Ecto.Query, warn: false
   alias Glimesh.Accounts.User
   alias Glimesh.Emotes.Emote
+  alias Glimesh.Payments.Subscription
   alias Glimesh.Repo
   alias Glimesh.Streams.Channel
 
   defdelegate authorize(action, user, params), to: Glimesh.Emotes.Policy
 
-  def list_emotes_for_js(include_animated \\ false) do
-    list_emotes(include_animated)
+  def list_emotes_for_js(include_animated \\ false, userid) do
+    list_emotes(include_animated, userid)
     |> convert_for_json()
   end
 
@@ -29,56 +30,108 @@ defmodule Glimesh.Emotes do
     |> Jason.encode!()
   end
 
-  def list_emotes(true) do
-    list_static_emotes() ++ list_animated_emotes()
+  def list_emotes(true, userid) do
+    list_static_emotes(userid) ++ list_glimesh_animated_emotes()
   end
 
-  def list_emotes(false) do
-    list_static_emotes()
+  def list_emotes(false, userid) do
+    list_static_emotes(userid)
   end
 
-  def list_emotes_for_parser(include_animated \\ false, channel_id \\ nil) do
-    Emote
-    |> where([e], is_nil(e.approved_at) == false)
-    |> perform_emote_query(%{include_animated: include_animated, channel_id: channel_id})
-    |> Repo.replica().all()
-  end
-
-  defp perform_emote_query(query, %{include_animated: false, channel_id: nil}) do
-    query
-    |> where([e], e.animated == false and is_nil(e.channel_id))
-  end
-
-  defp perform_emote_query(query, %{include_animated: true, channel_id: nil}) do
-    query
-    |> where([e], is_nil(e.channel_id))
-  end
-
-  defp perform_emote_query(query, %{include_animated: false, channel_id: channel_id}) do
-    # Non platform sub, but should still get channel animated emotes
-    query
-    |> where([e], (e.animated == false and is_nil(e.channel_id)) or e.channel_id == ^channel_id)
-  end
-
-  defp perform_emote_query(query, %{include_animated: true, channel_id: channel_id}) do
-    # Platform sub, should get all emotes
-    query
-    |> where([e], is_nil(e.channel_id) or e.channel_id == ^channel_id)
-  end
-
-  def list_static_emotes do
+  def list_emotes_gct do
     Repo.replica().all(
       from(e in Emote,
-        where: is_nil(e.channel_id) and is_nil(e.approved_at) == false and e.animated == false,
+        left_join: c in Channel,
+        on: c.id == e.channel_id,
+        where:
+          is_nil(e.approved_at) == false and
+            (is_nil(e.channel_id) or
+               (is_nil(e.channel_id) == false and e.approved_for_global_use == true and
+                  e.allow_global_usage == true and e.emote_display_off == false)),
         order_by: e.emote
       )
     )
   end
 
-  def list_animated_emotes do
+  def list_emotes_for_parser(include_animated \\ false, channel_id \\ nil, userid) do
+    Emote
+    |> join(:left, [e], c in Channel, on: c.id == e.channel_id)
+    |> join(:left, [e, c], s in Subscription,
+      on: s.user_id == ^userid and s.streamer_id == c.user_id
+    )
+    |> where([e], is_nil(e.approved_at) == false)
+    |> perform_emote_query(%{include_animated: include_animated, channel_id: channel_id}, userid)
+    |> Repo.replica().all()
+  end
+
+  defp perform_emote_query(query, %{include_animated: false, channel_id: nil}, _userid) do
+    query
+    |> where([e], e.animated == false and is_nil(e.channel_id) and e.emote_display_off == false)
+  end
+
+  defp perform_emote_query(query, %{include_animated: true, channel_id: nil}, _userid) do
+    query
+    |> where([e], is_nil(e.channel_id) and e.emote_display_off == false)
+  end
+
+  defp perform_emote_query(query, %{include_animated: false, channel_id: channel_id}, userid) do
+    # Non platform sub, but should still get channel animated emotes
+    query
+    |> where(
+      [e, c, s],
+      (e.animated == false and is_nil(e.channel_id) and e.emote_display_off == false) or
+        (e.emote_display_off == false and
+           (e.channel_id == ^channel_id or
+              (is_nil(e.channel_id) == false and e.approved_for_global_use == true and
+                 e.allow_global_usage == true)) and
+           (e.require_channel_sub == false or
+              (e.require_channel_sub == true and (s.is_active == true or c.user_id == ^userid))))
+    )
+  end
+
+  defp perform_emote_query(query, %{include_animated: true, channel_id: channel_id}, userid) do
+    # Platform sub, should get all emotes
+    query
+    |> where(
+      [e, c, s],
+      (is_nil(e.channel_id) and e.emote_display_off == false) or
+        (e.emote_display_off == false and
+           (e.channel_id == ^channel_id or
+              (is_nil(e.channel_id) == false and e.approved_for_global_use == true and
+                 e.allow_global_usage == true)) and
+           (e.require_channel_sub == false or
+              (e.require_channel_sub == true and (s.is_active == true or c.user_id == ^userid))))
+    )
+  end
+
+  def list_static_emotes(userid) do
+    # Allow use of all emotes except for Glimesh animated (Platform Sub)
     Repo.replica().all(
       from(e in Emote,
-        where: is_nil(e.channel_id) and is_nil(e.approved_at) == false and e.animated == true,
+        left_join: c in Channel,
+        on: c.id == e.channel_id,
+        left_join: s in Subscription,
+        on: s.user_id == ^userid and s.streamer_id == c.user_id,
+        where:
+          is_nil(e.approved_at) == false and e.emote_display_off == false and
+            ((e.animated == false and is_nil(e.channel_id)) or
+               (is_nil(e.channel_id) == false and e.approved_for_global_use == true and
+                  e.allow_global_usage == true and
+                  (e.require_channel_sub == false or
+                     (e.require_channel_sub == true and
+                        (s.is_active == true or c.user_id == ^userid))))),
+        order_by: e.emote
+      )
+    )
+  end
+
+  def list_glimesh_animated_emotes do
+    # List animated emotes with no channel for use with Platform sub
+    Repo.replica().all(
+      from(e in Emote,
+        where:
+          is_nil(e.approved_at) == false and e.animated == true and is_nil(e.channel_id) and
+            e.emote_display_off == false,
         order_by: e.emote
       )
     )
@@ -103,10 +156,20 @@ defmodule Glimesh.Emotes do
     )
   end
 
-  def list_emotes_for_channel(%Channel{id: channel_id}) do
+  def list_emotes_for_channel(%Channel{id: channel_id}, userid) do
     Repo.replica().all(
       from(e in Emote,
-        where: is_nil(e.approved_at) == false and e.channel_id == ^channel_id,
+        left_join: c in Channel,
+        on: c.id == e.channel_id,
+        left_join: s in Subscription,
+        on: s.user_id == ^userid and s.streamer_id == c.user_id,
+        where:
+          is_nil(e.approved_at) == false and
+            e.channel_id == ^channel_id and
+            (e.approved_for_global_use == false or e.allow_global_usage == false) and
+            e.emote_display_off == false and
+            (e.require_channel_sub == false or
+               (e.require_channel_sub == true and (s.is_active == true or c.user_id == ^userid))),
         order_by: e.emote
       )
     )
@@ -175,12 +238,71 @@ defmodule Glimesh.Emotes do
     end
   end
 
+  def save_emote_options(%User{} = user, %Emote{} = emote, attrs \\ %{}) do
+    with :ok <- Bodyguard.permit(__MODULE__, :save_emote_options, user, emote) do
+      emote
+      |> Emote.preference_changeset(attrs)
+      |> Repo.update()
+    end
+  end
+
+  def clear_global_emotes(%User{} = user, %Emote{} = emote) do
+    oldemote =
+      Repo.replica().one(
+        from(e in Emote,
+          left_join: c in Channel,
+          on: c.id == e.channel_id,
+          where: c.user_id == ^user.id and e.allow_global_usage == true and e.id != ^emote.id
+        )
+      )
+
+    if not is_nil(oldemote) do
+      oldemote
+      |> Emote.preference_changeset(%{allow_global_usage: false})
+      |> Repo.update()
+    end
+  end
+
+  def save_gct_emote_options(%User{} = user, %Emote{} = emote, attrs \\ %{}) do
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam.Policy, :disable_global_emotes, user) do
+      if is_nil(emote.channel_id) or attrs["emote_display_off"] == "false" do
+        emote
+        |> Emote.preference_changeset(attrs)
+        |> Repo.update()
+      else
+        emote
+        |> Repo.preload(:reviewed_by)
+        |> Emote.review_changeset(user, %{
+          approved_at: NaiveDateTime.utc_now(),
+          approved_for_global_use: false,
+          rejected_reason:
+            "#{emote.emote} is unable to be used platform wide. Please reach out to support@glimesh.tv for more information"
+        })
+        |> Repo.update()
+      end
+    end
+  end
+
   def approve_emote(%User{} = user, %Emote{} = emote) do
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam.Policy, :manage_emotes, user) do
       emote
       |> Repo.preload(:reviewed_by)
       |> Emote.review_changeset(user, %{
-        approved_at: NaiveDateTime.utc_now()
+        approved_at: NaiveDateTime.utc_now(),
+        approved_for_global_use: true
+      })
+      |> Repo.update()
+    end
+  end
+
+  def approve_emote_sub_only(%User{} = user, %Emote{} = emote, reason) do
+    with :ok <- Bodyguard.permit(Glimesh.CommunityTeam.Policy, :manage_emotes, user) do
+      emote
+      |> Repo.preload(:reviewed_by)
+      |> Emote.review_changeset(user, %{
+        approved_at: NaiveDateTime.utc_now(),
+        approved_for_global_use: false,
+        rejected_reason: reason
       })
       |> Repo.update()
     end
