@@ -8,7 +8,7 @@ defmodule Glimesh.Jobs.StreamPrunerCron do
   alias Glimesh.Streams
 
   # 5 Minutes in milliseconds
-  @interval 300_000
+  @interval 5 * 60
   # 5 Minutes in seconds
   @prune_diff 300
 
@@ -44,5 +44,4 @@ defmodule Glimesh.Jobs.StreamPrunerCron do
     e ->
       {:error, e}
   end
-
 end

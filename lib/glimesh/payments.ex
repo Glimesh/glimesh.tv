@@ -7,6 +7,7 @@ defmodule Glimesh.Payments do
 
   alias Glimesh.Accounts
   alias Glimesh.Accounts.User
+  alias Glimesh.Accounts.UserPreference
   alias Glimesh.Payments.Payable
   alias Glimesh.Payments.Subscription
   alias Glimesh.Payments.SubscriptionInvoice
@@ -285,6 +286,7 @@ defmodule Glimesh.Payments do
       )
       when is_integer(amount_in_cents) do
     possible_channel_sub = get_channel_subscription(user_to_be_gifted, streamer)
+    preferences = get_user_preferences(user_to_be_gifted)
 
     cond do
       not is_nil(possible_channel_sub) ->
@@ -298,6 +300,9 @@ defmodule Glimesh.Payments do
 
       amount_in_cents < 100 or amount_in_cents > 10_000 ->
         {:validation, "Amount must be more than 1.00 and less than 100.00."}
+
+      not preferences.gift_subs_enabled ->
+        {:validation, "This user has opted out of receiving gift subscriptions"}
 
       true ->
         description =
@@ -590,6 +595,12 @@ defmodule Glimesh.Payments do
       streamer_id: streamer.id
     )
     |> Repo.preload([:user, :streamer])
+  end
+
+  def get_user_preferences(user) do
+    Repo.replica().get_by(UserPreference,
+      user_id: user.id
+    )
   end
 
   def has_channel_subscription?(user, streamer) do

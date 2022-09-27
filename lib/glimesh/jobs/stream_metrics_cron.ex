@@ -7,7 +7,7 @@ defmodule Glimesh.Jobs.StreamMetricsCron do
   alias Glimesh.ChannelLookups
   alias Glimesh.Streams
 
-  @interval 60_000
+  @interval 1 * 60
 
   @impl Oban.Worker
   def perform(_) do
