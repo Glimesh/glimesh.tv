@@ -132,7 +132,21 @@ defmodule Glimesh.Streams.Channel do
   end
 
   defp validate_no_active_emotes(changeset) do
-    changeset
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{emote_prefix: emote_prefix}} ->
+        if Glimesh.Emotes.count_all_emotes_for_channel(changeset.data) > 0 do
+          add_error(
+            changeset,
+            :emote_prefix,
+            "For now, you must delete all of your emotes to change your prefix."
+          )
+        else
+          changeset
+        end
+
+      _ ->
+        changeset
+    end
   end
 
   def addons_changest(channel, attrs \\ %{}) do
