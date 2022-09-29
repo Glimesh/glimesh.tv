@@ -5,6 +5,7 @@ defmodule GlimeshWeb.Plugs.Interactive do
   """
   use Plug.Builder
 
+  # Serves from the uploads/interactive directory
   plug Plug.Static,
     at: "/interactive",
     from: "uploads/interactive"

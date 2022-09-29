@@ -6,6 +6,7 @@ defmodule Glimesh.Jobs.InteractivePrunerCron do
   # Run every 15 minutes
   @interval 900_000
 
+  # Removes all collected zip files every 15 minutes
   @impl Oban.Worker
   def perform(_) do
     Interactive.cleanup()

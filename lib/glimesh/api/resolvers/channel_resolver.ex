@@ -302,7 +302,8 @@ defmodule Glimesh.Api.ChannelResolver do
     session = Map.get(args, :session_id)
     data = Map.get(args, :data)
 
-    # Has interactive scope, channel matches sessionID
+    # Check that it has interactive scope, channel matches sessionID
+    # If so it is an authorized message, if not it isn't
     with true <- Map.get(access.scopes, :interactive),
          %Glimesh.Streams.Channel{} = channel <-
            ChannelLookups.get_channel_for_username(access.user.username),

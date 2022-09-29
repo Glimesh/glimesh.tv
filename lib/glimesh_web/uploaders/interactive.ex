@@ -23,17 +23,18 @@ defmodule Glimesh.Interactive do
   def validate({%Waffle.File{} = file, channel}) do
     with true <- file_size(file) <= @max_file_size, # check file size
       {:zip_check, true} <- {:zip_check, ".zip" == file.file_name |> Path.extname() |> String.downcase()}, # must be .zip file
-      {:ok, files} <- :zip.list_dir(String.to_charlist(file.path)), # get files in zip
+      {:ok, files} <- :zip.list_dir(String.to_charlist(file.path)), # get files in zip. DOES NOT STORE THEM
       {:html_check, true} <- {:html_check, Enum.any?(files, fn e -> elem(e, 1) == 'index.html' end)}, # find index.html in folder
-      {:ext_check, true} <- {:ext_check, Enum.all?(files, fn e ->
+      {:ext_check, true} <- {:ext_check, Enum.all?(files, fn e -> # For each file...
         case e do
-          # Check the filename to the allow list
+          # Check the filename is in the allow list
           {:zip_file, file_name, _, _, _, _} -> String.ends_with?(to_string(file_name), @allowed_files)
           # Zip comment, can be ignored
           _ -> true
         end
         end)} do
         IO.puts("All Interactive files are valid!")
+        # If a user uploaded a previous project it needs to be deleted.
         remove_old_project(channel.id)
         :ok
       else
@@ -48,15 +49,16 @@ defmodule Glimesh.Interactive do
    def transform(:original, request) do
     # get the ID from the channel
     id = elem(request, 1).id
-    # unzip the folder to the uploads dir
+    # unzip the folder to the uploads dir. Use the ID in the path
     :zip.unzip(String.to_charlist(elem(request, 0).path), [{:cwd, String.to_charlist("uploads/interactive/#{id}")}])
-    # Since we just converted it the waffle lib doesn't have to do anything
-    # Technically, this is an invalid return but it prevents our created file from being deleted.
-    # Waffle isn't meant to handle folders and this is the only way I found to solve that
+    # Since we just extracted it the waffle lib doesn't have to do transform anything
+    # Technically, this is an invalid return value but it prevents our created file from being deleted.
+    # I'm really not sure how that works. But it does. C o o l
+    # A proper return is :noaction without the {}
     {:noaction}
    end
 
-  # Override the persisted filenames:
+  # Override the persisted filenames. This is for the zip file
   def filename(_version, {_file, %Glimesh.Streams.Channel{} = channel}) do
     channel.id
   end
@@ -84,7 +86,9 @@ defmodule Glimesh.Interactive do
     File.stat!(file.path) |> Map.get(:size)
   end
 
-  # Remove projects that are zip files.
+  # Remove all of the zip files. See interactive_pruner_cron.ex
+  # Once a project is uploaded and extracted the zip file is no longer needed.
+  # When we get this to a CDN we probably won't need this.
   def cleanup() do
     files = File.ls("uploads/interactive")
     elem(files, 1) |> Enum.each(fn file ->
@@ -95,7 +99,7 @@ defmodule Glimesh.Interactive do
     end)
   end
 
-  # Cleans out the current project.
+  # Cleans out the current project for a channel. This removes the extracted files, not the zip
   def remove_old_project(id) do
     case File.dir?("uploads/interactive/#{id}") do
       true -> File.rm_rf("uploads/interactive/#{id}")
