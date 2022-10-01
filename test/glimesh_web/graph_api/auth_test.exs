@@ -150,7 +150,7 @@ defmodule GlimeshWeb.GraphApi.AuthTest do
       assert json_response(conn, 401) == %{
                "errors" => [
                  %{
-                   "message" => "Provided access token is invalid.",
+                   "message" => "Given access token is invalid, revoked, or expired.",
                    "header_error" => "invalid_access_token"
                  }
                ]

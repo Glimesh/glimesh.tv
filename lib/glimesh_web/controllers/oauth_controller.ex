@@ -119,7 +119,7 @@ defmodule GlimeshWeb.OauthController do
 
     url =
       case type do
-        :access_token ->
+        :token ->
           query_string =
             %{"access_token" => resp.access_token, "expires_in" => expires_in}
             |> Map.merge(state)

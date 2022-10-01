@@ -52,7 +52,7 @@ defmodule GlimeshWeb.Plugs.OldApiContextPlug do
   defp authorize({:client, client_id}, _) do
     client_id = Glimesh.OauthMigration.convert_client_id(client_id)
 
-    case Boruta.Config.clients().get_by(id: client_id) do
+    case Boruta.Ecto.Clients.get_client(client_id) do
       %Boruta.Oauth.Client{} = client ->
         Oauth.get_unprivileged_api_access_from_client(client)
 
