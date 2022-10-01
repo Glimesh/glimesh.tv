@@ -266,7 +266,7 @@ defmodule Glimesh.Streams.Channel do
   end
 
   defp generate_hmac_key do
-    :crypto.strong_rand_bytes(64) |> Base.encode64() |> binary_part(0, 64)
+    Glimesh.Streams.HmacKey.generate_key()
   end
 
   def change_allow_hosting(%Glimesh.Streams.Channel{} = channel, attrs \\ %{}) do
