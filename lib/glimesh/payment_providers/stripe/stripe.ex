@@ -54,7 +54,7 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
         # Create invoice for this subscription
 
         Payments.update_payable(payable, %{
-          stripe_status: "paid",
+          status: "paid",
           user_paid_at: NaiveDateTime.utc_now()
         })
 
