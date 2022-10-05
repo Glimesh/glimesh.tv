@@ -112,7 +112,7 @@ defmodule Glimesh.OauthMigration do
 
       # Set the old UID value
       # Overwrite the secret to be the old secret
-      Ecto.Query.from("clients",
+      Ecto.Query.from("oauth_clients",
         where: [id: ^uuid],
         update: [
           set: [secret: ^old_app.secret, old_uid: ^old_app.uid]
@@ -227,7 +227,7 @@ defmodule Glimesh.OauthMigration do
 
   defp look_up_uuid(old_client_id) do
     query =
-      Ecto.Query.from("clients",
+      Ecto.Query.from("oauth_clients",
         select: [:id],
         where: [old_uid: ^old_client_id]
       )
