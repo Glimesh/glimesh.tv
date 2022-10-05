@@ -152,7 +152,7 @@ defmodule GlimeshWeb.ConnCase do
   def create_token_and_return_context(conn, user, scopes \\ "public email chat streamkey follow") do
     {:ok, app} = Glimesh.ApiFixtures.app_fixture(user)
 
-    {:ok, %Boruta.Oauth.Token{value: token}} =
+    {:ok, %{token: %Boruta.Oauth.Token{value: token}}} =
       Boruta.Oauth.Authorization.token(%Boruta.Oauth.ClientCredentialsRequest{
         client_id: app.client.id,
         client_secret: app.client.secret,
