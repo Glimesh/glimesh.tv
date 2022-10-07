@@ -170,6 +170,7 @@ defmodule Glimesh.Emotes do
             e.emote_display_off == false and
             (e.require_channel_sub == false or
                (e.require_channel_sub == true and (s.is_active == true or c.user_id == ^userid))),
+        distinct: e.id,
         order_by: e.emote
       )
     )
