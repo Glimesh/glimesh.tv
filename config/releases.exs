@@ -32,12 +32,14 @@ database_url =
 config :glimesh, Glimesh.Repo,
   # ssl: true,
   url: database_url,
+  socket_options: [:inet6],
   pool_size: String.to_integer(System.get_env("POOL_SIZE", "10"))
 
 config :glimesh, Glimesh.Repo.ReadReplica,
   # ssl: true,
   # Fallback to regular database if we don't want a read database
   url: System.get_env("READ_DATABASE_URL", database_url),
+  socket_options: [:inet6],
   pool_size: String.to_integer(System.get_env("READ_POOL_SIZE", "10"))
 
 # Endpoint Configuration
