@@ -164,6 +164,12 @@ defmodule Glimesh.CommunityTeam do
     end
   end
 
+  def bounce_channel(%Channel{} = channel, %User{} = gct_member) do
+    with :ok <- Bodyguard.permit(__MODULE__, :edit_channel, gct_member, channel.user) do
+      Glimesh.Streams.end_stream(channel)
+    end
+  end
+
   def shutdown_channel(%Channel{} = channel, %User{} = gct_member) do
     with :ok <- Bodyguard.permit(__MODULE__, :edit_channel, gct_member, channel.user) do
       channel.user

@@ -417,6 +417,41 @@ defmodule GlimeshWeb.GctController do
     end
   end
 
+  def bounce_channel(conn, %{"channel_id" => channel_id}) do
+    current_user = conn.assigns.current_user
+    channel = ChannelLookups.get_channel!(channel_id)
+
+    with :ok <-
+           Bodyguard.permit(
+             Glimesh.CommunityTeam,
+             :edit_channel,
+             current_user,
+             channel.user
+           ) do
+      case CommunityTeam.bounce_channel(channel, current_user) do
+        {:ok, _} ->
+          create_audit_entry_channel(
+            current_user,
+            "bounce channel",
+            channel.user.username,
+            false
+          )
+
+          conn
+          |> put_flash(
+            :info,
+            "Channel stream has been bounced. The user will be able to restart the stream."
+          )
+          |> redirect(to: Routes.gct_path(conn, :index))
+
+        {:error, _changeset} ->
+          conn
+          |> put_flash(:error, "An issue occurred when trying to bounce the channel.")
+          |> redirect(to: Routes.gct_path(conn, :edit_channel, channel_id))
+      end
+    end
+  end
+
   def shutdown_channel(conn, %{"channel_id" => channel_id}) do
     current_user = conn.assigns.current_user
     channel = ChannelLookups.get_channel!(channel_id)
