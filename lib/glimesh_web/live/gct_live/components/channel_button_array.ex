@@ -13,6 +13,12 @@ defmodule GlimeshWeb.GctLive.Components.ChannelButtonArray do
       to: Routes.gct_path(@socket, :channel_chat_log, @channel.id)
     ) %>
     <%= if @channel.status == "live" do %>
+      <%= button(gettext("Bounce Broadcast"),
+        class: if(@can_edit_channel, do: "btn btn-danger", else: "btn btn-danger disabled"),
+        to: Routes.gct_path(@socket, :bounce_channel, @channel.id),
+        "data-confirm":
+          "Are you sure you wish to bounce the current stream? The video broadcast will be interrupted, but the user will be able to restart their stream."
+      ) %>
       <%= button(gettext("Shutdown Broadcast"),
         class: if(@can_edit_channel, do: "btn btn-danger", else: "btn btn-danger disabled"),
         to: Routes.gct_path(@socket, :shutdown_channel, @channel.id),
