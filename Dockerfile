@@ -38,7 +38,20 @@ RUN mix release
 # prepare release image
 FROM debian:bullseye-slim AS app
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends libssl-dev libncurses-dev ca-certificates imagemagick librsvg2-bin npm
+RUN apt-get update -y && apt-get install -y libssl-dev libncurses-dev ca-certificates imagemagick librsvg2-bin npm locales \
+  && apt-get clean && rm -f /var/lib/apt/lists/*_*/
+
+# Set Locale
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+
+ENV HOME /app
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+# Required for fly.io
+ENV ECTO_IPV6 true
+ENV ERL_AFLAGS "-proto_dist inet6_tcp"
 
 RUN npm install -g svgo
 
@@ -50,16 +63,4 @@ USER nobody:nogroup
 
 COPY --from=build --chown=nobody:nogroup /app/_build/prod/rel/glimesh ./
 
-# Set the locale
-RUN locale-gen --no-purge en_US.UTF-8
-
-ENV HOME=/app
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US:en
-ENV LC_ALL=en_US.UTF-8
-
 CMD ["bin/glimesh", "start"]
-
-# Appended by flyctl
-ENV ECTO_IPV6 true
-ENV ERL_AFLAGS "-proto_dist inet6_tcp"
