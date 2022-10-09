@@ -4,16 +4,10 @@ defmodule Glimesh.Jobs.HomepageCron do
 
   require Logger
 
-  # 5 Minutes
-  @interval 5 * 60
-
   @impl Oban.Worker
   def perform(_) do
     Logger.info("Generating homepage")
     Glimesh.Homepage.update_homepage()
-
-    Glimesh.Jobs.HomepageCron.new(%{}, schedule_in: @interval)
-    |> Oban.insert()
 
     :ok
   rescue

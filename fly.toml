@@ -6,13 +6,18 @@ kill_timeout = 5
 processes = []
 
 [deploy]
-  release_command = "/app/bin/glimesh eval Glimesh.Release.migrate"
+  # release_command = "/app/bin/glimesh eval Glimesh.Release.migrate"
 
 [env]
-  URL_HOST = "glimesh.fly.dev"
-  URL_PORT = "443"
-  URL_SCHEME = "https"
+  ENABLE_LIBCLUSTER = "true"
+  POOL_SIZE = 50
+  READ_POOL_SIZE = 50
+  PHX_HOST = "glimesh.tv"
+  PORT = "8080"
   HTTP_PORT = "8080"
+  URL_SCHEME = "https"
+  URL_HOST = "glimesh.tv"
+  URL_PORT = "443"
 
 [experimental]
   allowed_public_ports = []
@@ -25,8 +30,8 @@ processes = []
   protocol = "tcp"
   script_checks = []
   [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
+    hard_limit = 1000
+    soft_limit = 500
     type = "connections"
 
   [[services.ports]]

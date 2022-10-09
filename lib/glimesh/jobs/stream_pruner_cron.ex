@@ -36,9 +36,6 @@ defmodule Glimesh.Jobs.StreamPrunerCron do
       end
     end)
 
-    Glimesh.Jobs.StreamPrunerCron.new(%{}, schedule_in: @interval)
-    |> Oban.insert()
-
     :ok
   rescue
     e ->

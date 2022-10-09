@@ -26,9 +26,6 @@ defmodule Glimesh.Jobs.StreamMetricsCron do
       })
     end)
 
-    Glimesh.Jobs.StreamMetricsCron.new(%{}, schedule_in: @interval)
-    |> Oban.insert()
-
     :ok
   rescue
     e ->
