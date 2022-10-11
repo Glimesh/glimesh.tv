@@ -211,21 +211,21 @@ defmodule GlimeshWeb.About.GoLiveLive do
               <h3>Chat Bots</h3>
               <ul class="list-inline">
                 {#for {name, url} <- bots()}
-                  <li class="list-inline-item"><a href={url}>{name}</a></li>
+                  <li class="list-inline-item"><a href={url} target="_blank">{name}</a></li>
                 {/for}
               </ul>
 
               <h3>Overlays / Alerts</h3>
               <ul class="list-inline">
                 {#for {name, url} <- overlays()}
-                  <li class="list-inline-item"><a href={url}>{name}</a></li>
+                  <li class="list-inline-item"><a href={url} target="_blank">{name}</a></li>
                 {/for}
               </ul>
 
               <h3>Other</h3>
               <ul class="list-inline">
                 {#for {name, url} <- other()}
-                  <li class="list-inline-item"><a href={url}>{name}</a></li>
+                  <li class="list-inline-item"><a href={url} target="_blank">{name}</a></li>
                 {/for}
               </ul>
 
