@@ -206,6 +206,12 @@
         </div>
       </li>
       <%= if assigns[:current_user] do %>
+        <li class="nav-item">
+          <%= live_redirect(gettext("Go Live!"),
+            class: "btn btn-warning btn-sm text-dark",
+            to: Routes.go_live_path(@conn, :index)
+          ) %>
+        </li>
         <li class="nav-item dropdown user-profile-dropdown">
           <a
             href="javascript:void(0);"
