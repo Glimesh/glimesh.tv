@@ -16,11 +16,13 @@ defmodule GlimeshWeb.About.GoLiveLive do
               <hr>
 
               <h3>
-                <img
-                  height="40"
-                  src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/obs-small-icon.png")}
-                  alt="OBS Studio Logo"
-                /> OBS Studio
+                <a href="https://obsproject.com/" targe="_blank" class="text-color-link text-color-link-no-hover">
+                  <img
+                    height="40"
+                    src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/obs-small-icon.png")}
+                    alt="OBS Studio Logo"
+                  /> OBS Studio
+                </a>
               </h3>
 
               <p>OBS Studio is the recommended program for streaming to Glimesh as it has native support for our Low Latency FTL & RTMP protocols, setting it up to stream is as simple as finding it in the services list and hitting Start Streaming.</p>
@@ -29,11 +31,17 @@ defmodule GlimeshWeb.About.GoLiveLive do
               <a href="https://support.glimesh.tv/en-us/7-stream-settings/26-obs-studio-setup-guide">Full OBS Setup Guide</a>
 
               <h3 class="mt-4">
-                <img
-                  height="40"
-                  src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/streamlabs-small-icon.png")}
-                  alt="Streamlabs Logo"
-                /> Streamlabs Desktop
+                <a
+                  href="https://streamlabs.com/streamlabs-live-streaming-software"
+                  targe="_blank"
+                  class="text-color-link text-color-link-no-hover"
+                >
+                  <img
+                    height="40"
+                    src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/streamlabs-small-icon.png")}
+                    alt="Streamlabs Logo"
+                  /> Streamlabs Desktop
+                </a>
               </h3>
 
               <p>You can stream to Glimesh with Streamlabs Desktop, however only basic features like streaming are currently supported.</p>
@@ -53,18 +61,20 @@ defmodule GlimeshWeb.About.GoLiveLive do
               <hr>
 
               <h3>
-                <img
-                  :if={@site_theme == "dark"}
-                  height="40"
-                  src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/aircast-small-logo-dark.png")}
-                  alt="aircast"
-                />
-                <img
-                  :if={@site_theme == "light"}
-                  height="40"
-                  src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/aircast-small-logo-light.png")}
-                  alt="aircast"
-                />
+                <a href="https://airca.st/" targe="_blank" class="text-color-link text-color-link-no-hover">
+                  <img
+                    :if={@site_theme == "dark"}
+                    height="40"
+                    src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/aircast-small-logo-dark.png")}
+                    alt="aircast"
+                  />
+                  <img
+                    :if={@site_theme == "light"}
+                    height="40"
+                    src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/aircast-small-logo-light.png")}
+                    alt="aircast"
+                  />
+                </a>
               </h3>
 
               <p>Aircast has native support for our super low latency FTL technology and has worked collaboratively with Glimesh from the very beginning. With just one click you can enable integrations to stream to Glimesh, and many other platforms at the same time.</p>
