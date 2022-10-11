@@ -115,7 +115,7 @@ defmodule GlimeshWeb.OauthController do
           state: state
         } = resp
       ) do
-    state = if not is_nil(state), do: %{"state" => state}, else: %{}
+    state = state_value(state)
 
     url =
       case type do
@@ -138,6 +138,9 @@ defmodule GlimeshWeb.OauthController do
 
     redirect(conn, external: url)
   end
+
+  defp state_value(nil), do: %{}
+  defp state_value(state), do: %{"state" => state}
 
   # @impl Boruta.Oauth.Application
   # def authorize_error(

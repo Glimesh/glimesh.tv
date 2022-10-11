@@ -1,4 +1,7 @@
 defmodule Glimesh.Streams.HmacKey do
+  @moduledoc """
+  Module for generating a Stream Key specific to Glimesh
+  """
   @alphabet Enum.concat([?0..?9, ?A..?Z, ?a..?z])
 
   def generate_key(length \\ 64) do
@@ -7,7 +10,7 @@ defmodule Glimesh.Streams.HmacKey do
     |> List.to_string()
   end
 
-  defp rand_char() do
+  defp rand_char do
     Enum.random(@alphabet)
   end
 end

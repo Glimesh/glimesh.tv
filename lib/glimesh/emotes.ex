@@ -74,6 +74,7 @@ defmodule Glimesh.Emotes do
     |> where([e], is_nil(e.channel_id) and e.emote_display_off == false)
   end
 
+  # credo:disable-for-lines:14
   defp perform_emote_query(query, %{include_animated: false, channel_id: channel_id}, userid) do
     # Non platform sub, but should still get channel animated emotes
     query
@@ -89,6 +90,7 @@ defmodule Glimesh.Emotes do
     )
   end
 
+  # credo:disable-for-lines:14
   defp perform_emote_query(query, %{include_animated: true, channel_id: channel_id}, userid) do
     # Platform sub, should get all emotes
     query
@@ -104,6 +106,7 @@ defmodule Glimesh.Emotes do
     )
   end
 
+  # credo:disable-for-lines:22
   def list_static_emotes(userid) do
     # Allow use of all emotes except for Glimesh animated (Platform Sub)
     Repo.replica().all(
@@ -156,6 +159,7 @@ defmodule Glimesh.Emotes do
     )
   end
 
+  # credo:disable-for-lines:19
   def list_emotes_for_channel(%Channel{id: channel_id}, userid) do
     Repo.replica().all(
       from(e in Emote,
