@@ -86,7 +86,10 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
         {:ok, channel} ->
           {:noreply,
            socket
-           |> put_flash(:info, "Stream key reset")
+           |> put_flash(
+             :info,
+             "Stream key reset, make sure to update your streaming client with the new key."
+           )
            |> assign(:stream_key, Streams.get_stream_key(channel))
            |> assign(:channel_changeset, Streams.Channel.changeset(channel))}
 

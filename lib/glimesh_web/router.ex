@@ -257,6 +257,7 @@ defmodule GlimeshWeb.Router do
     live "/about/open-data/streams", About.OpenDataLive, :streams
 
     live "/about/app", About.AppLive, :index
+    live "/about/go-live", About.GoLiveLive, :index
 
     live "/events", EventsLive, :index
 

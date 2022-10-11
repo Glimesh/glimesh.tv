@@ -85,6 +85,8 @@ $fa-font-path: "/fa-fonts";
 
 .text-color-link-no-hover:hover {
     color: var(--body-color);
+    text-decoration: none;
+
 }
 
 .text-color-input {
@@ -97,6 +99,10 @@ $fa-font-path: "/fa-fonts";
 
 .text-color-alpha {
     color: #FF4343;
+}
+
+.bg-color-card {
+    background-color: var(--secondary-bg-color);
 }
 
 .close.close-delete {
