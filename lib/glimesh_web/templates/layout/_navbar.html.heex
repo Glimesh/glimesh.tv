@@ -207,7 +207,7 @@
       </li>
       <%= if assigns[:current_user] do %>
         <li class="nav-item">
-          <%= live_redirect(gettext("Go Live!"),
+          <%= live_redirect(gettext("Stream Setup"),
             class: "btn btn-warning btn-sm text-dark",
             to: Routes.go_live_path(@conn, :index)
           ) %>

@@ -50,9 +50,6 @@ config :glimesh,
   locales: locales,
   privacy_policy_version: ~N[2022-03-21 11:55:00]
 
-config :glimesh, Glimesh.Repo, prepare: :unnamed
-config :glimesh, Glimesh.Repo.ReadReplica, prepare: :unnamed
-
 config :esbuild,
   version: "0.12.18",
   default: [

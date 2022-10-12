@@ -79,7 +79,7 @@ defmodule GlimeshWeb.About.GoLiveLive do
 
               <p>Aircast has native support for our super low latency FTL & RTMP technology and has worked collaboratively with Glimesh from the very beginning. With just one click you can enable integrations to stream to Glimesh, and many other platforms at the same time.</p>
 
-              <p :if={show_aircast_promo()} class="text-warning">For a limited time, get 20% off new Aircast subscriptions using the coupon code GLIMESHRTMP</p>
+              <p :if={show_aircast_promo()} class="text-warning">For a limited time, get 20% off a new Aircast subscription (for 12 months!) using the coupon code GLIMESHRTMP at checkout.</p>
 
               <h3>Other Providers</h3>
               <p>You can easily configure multi-streaming with providers like Restream, or dedicated apps like Streamlabs Desktop's multistreaming to work with Glimesh. You'll need an RTMP url from below to get started <strong>and to change some basic settings to get the best experience.</strong></p>
