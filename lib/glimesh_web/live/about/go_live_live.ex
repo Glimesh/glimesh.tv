@@ -77,7 +77,7 @@ defmodule GlimeshWeb.About.GoLiveLive do
                 </a>
               </h3>
 
-              <p>Aircast has native support for our super low latency FTL technology and has worked collaboratively with Glimesh from the very beginning. With just one click you can enable integrations to stream to Glimesh, and many other platforms at the same time.</p>
+              <p>Aircast has native support for our super low latency FTL & RTMP technology and has worked collaboratively with Glimesh from the very beginning. With just one click you can enable integrations to stream to Glimesh, and many other platforms at the same time.</p>
 
               <p :if={show_aircast_promo()} class="text-warning">For a limited time, get 20% off new Aircast subscriptions using the coupon code GLIMESHRTMP</p>
 
@@ -88,10 +88,8 @@ defmodule GlimeshWeb.About.GoLiveLive do
         </div>
       </div>
 
-      <h2 class="mt-4">Configuring Streaming Software</h2>
-
-      {#if @current_user && @current_user.can_stream}
-        <div class="card mb-2">
+      {#if @stream_key}
+        <div class="card mt-4">
           <div class="card-body">
             <div class="form-group">
               <h3>{gettext("Your Stream Key")}</h3>
@@ -115,9 +113,29 @@ defmodule GlimeshWeb.About.GoLiveLive do
         </div>
       {/if}
 
-      <div class="row">
-        <div class="col">
-          <div class="card">
+      <div class="accordion mt-4" id="accordionExample">
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+              <button
+                class="btn btn-link btn-block text-left text-color-link"
+                type="button"
+                data-toggle="collapse"
+                data-target="#collapseOne"
+                aria-expanded="false"
+                aria-controls="collapseOne"
+              >
+                Advanced Settings for Other Streaming Software
+              </button>
+            </h2>
+          </div>
+
+          <div
+            id="collapseOne"
+            class="collapse"
+            aria-labelledby="headingOne"
+            data-parent="#accordionExample"
+          >
             <div class="card-body">
               <div class="row">
                 <div class="col">
@@ -216,7 +234,7 @@ defmodule GlimeshWeb.About.GoLiveLive do
           <div class="card">
             <div class="card-body">
               <h2>3rd Party Addons</h2>
-              <p>Many 3rd parties you are used to support Glimesh. We're also fortunate to have a very active developer community constantly building things the Glimesh community!</p>
+              <p>Many 3rd parties you are used to support Glimesh. We're also fortunate to have a very active developer community constantly building things for the Glimesh community!</p>
 
               <h3>Chat Bots</h3>
               <ul class="list-inline">
@@ -252,23 +270,6 @@ defmodule GlimeshWeb.About.GoLiveLive do
   def mount(_, session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
-    socket =
-      case Glimesh.Accounts.get_user_by_session_token(session["user_token"]) do
-        %Glimesh.Accounts.User{} = user ->
-          if session["locale"], do: Gettext.put_locale(session["locale"])
-
-          channel = Glimesh.ChannelLookups.get_channel_for_user(user)
-
-          socket
-          |> assign(:current_user, user)
-          |> assign(:stream_key, Glimesh.Streams.get_stream_key(channel))
-
-        nil ->
-          socket
-          |> assign(:current_user, nil)
-          |> assign(:stream_key, nil)
-      end
-
     {:ok,
      socket
      |> assign(:page_title, "Go Live on Glimesh")
@@ -280,8 +281,23 @@ defmodule GlimeshWeb.About.GoLiveLive do
        image_url:
          Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/social-media-preview.png"),
        card_type: "summary_large_image"
-     })}
+     })
+     |> assign(:stream_key, get_stream_key(session))}
   end
+
+  defp get_stream_key(%{"user_token" => user_token}) do
+    with %Glimesh.Accounts.User{} = user <-
+           Glimesh.Accounts.get_user_by_session_token(user_token),
+         true = user.can_stream,
+         %Glimesh.Streams.Channel{} = channel <- Glimesh.ChannelLookups.get_channel_for_user(user) do
+      Glimesh.Streams.get_stream_key(channel)
+    else
+      _ ->
+        nil
+    end
+  end
+
+  defp get_stream_key(_), do: nil
 
   defp ingest_servers do
     [
