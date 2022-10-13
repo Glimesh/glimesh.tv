@@ -48,6 +48,13 @@ defmodule GlimeshWeb.About.GoLiveLive do
 
               <a href="https://support.glimesh.tv/en-us/7-stream-settings/113-slobs-setup-guide">Full Streamlabs Desktop Setup Guide</a>
 
+              <div class="alert alert-primary mt-4" role="alert">
+                Looking for RTMP in OBS? Due to some delays with OBS & Streamlabs Desktop updating their services file, you may need to run the <a
+                  href="https://support.glimesh.tv/en-us/7-stream-settings/112-adding-glimesh-as-a-stream-service-in-obs-or-streamlabs-desktop"
+                  target="_blank"
+                >Glimesh Patcher</a> to see "Glimesh - RTMP" as an option.
+              </div>
+
               <h3 class="mt-4">Other Software</h3>
               <p>Most software should support either FTL or RTMP. You'll need to find out which one, and then grab a streaming URL from a location close to you. Some changes to your video output settings will be required to get the best experience!</p>
             </div>
