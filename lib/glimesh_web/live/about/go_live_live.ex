@@ -5,14 +5,16 @@ defmodule GlimeshWeb.About.GoLiveLive do
   def render(assigns) do
     ~F"""
     <div class="container mb-4">
-      <h1 class="display-3 text-center">Go Live on Glimesh</h1>
+      <h1 class="display-3 text-center">{gettext("Go Live on Glimesh")}</h1>
 
       <div class="row">
         <div class="col">
           <div class="card">
             <div class="card-body">
-              <h2>Streaming Directly</h2>
-              <p>You can stream to Glimesh directly using most any of your favorite tools! Applications like OBS and Streamlabs support Glimesh out of the box, and other software can easily be configured to work with Glimesh by using the settings & ingest locations found below.</p>
+              <h2>{gettext("Streaming Directly")}</h2>
+              <p>{gettext(
+                  "You can stream to Glimesh directly using most any of your favorite tools! Applications like OBS and Streamlabs support Glimesh out of the box, and other software can easily be configured to work with Glimesh by using the settings & ingest locations found below."
+                )}</p>
               <hr>
 
               <h3>
@@ -25,10 +27,14 @@ defmodule GlimeshWeb.About.GoLiveLive do
                 </a>
               </h3>
 
-              <p>OBS Studio is the recommended program for streaming to Glimesh as it has native support for our Low Latency FTL & RTMP protocols, setting it up to stream is as simple as finding it in the services list and hitting Start Streaming.</p>
-              <p>Most users who are streaming to Glimesh directly should use the "Glimesh" dropdown, as it has the best technology. However if you are experiencing issues, you can try the "Glimesh - RTMP" option.</p>
+              <p>{gettext(
+                  "OBS Studio is the recommended program for streaming to Glimesh as it has native support for our Low Latency FTL & RTMP protocols, setting it up to stream is as simple as finding it in the services list and hitting Start Streaming."
+                )}</p>
+              <p>{gettext(
+                  "Most users who are streaming to Glimesh directly should use the \"Glimesh\" dropdown, as it has the best technology. However if you are experiencing issues, you can try the \"Glimesh - RTMP\" option."
+                )}</p>
 
-              <a href="https://support.glimesh.tv/en-us/7-stream-settings/26-obs-studio-setup-guide">Full OBS Setup Guide</a>
+              <a href="https://support.glimesh.tv/en-us/7-stream-settings/26-obs-studio-setup-guide">{gettext("Full OBS Setup Guide")}</a>
 
               <h3 class="mt-4">
                 <a
@@ -44,9 +50,11 @@ defmodule GlimeshWeb.About.GoLiveLive do
                 </a>
               </h3>
 
-              <p>You can stream to Glimesh with Streamlabs Desktop, however only basic features like streaming are currently supported.</p>
+              <p>{gettext(
+                  "You can stream to Glimesh with Streamlabs Desktop, however only basic features like streaming are currently supported."
+                )}</p>
 
-              <a href="https://support.glimesh.tv/en-us/7-stream-settings/113-slobs-setup-guide">Full Streamlabs Desktop Setup Guide</a>
+              <a href="https://support.glimesh.tv/en-us/7-stream-settings/113-slobs-setup-guide">{gettext("Full Streamlabs Desktop Setup Guide")}</a>
 
               <div class="alert alert-primary mt-4" role="alert">
                 Looking for RTMP in OBS? Due to some delays with OBS & Streamlabs Desktop updating their services file, you may need to run the <a
@@ -55,16 +63,20 @@ defmodule GlimeshWeb.About.GoLiveLive do
                 >Glimesh Patcher</a> to see "Glimesh - RTMP" as an option.
               </div>
 
-              <h3 class="mt-4">Other Software</h3>
-              <p>Most software should support either FTL or RTMP. You'll need to find out which one, and then grab a streaming URL from a location close to you. Some changes to your video output settings will be required to get the best experience!</p>
+              <h3 class="mt-4">{gettext("Other Software")}</h3>
+              <p>{gettext(
+                  "Most software should support either FTL or RTMP. You'll need to find out which one, and then grab a streaming URL from a location close to you. Some changes to your video output settings will be required to get the best experience!"
+                )}</p>
             </div>
           </div>
         </div>
         <div class="col">
           <div class="card">
             <div class="card-body">
-              <h2>Multi-Streaming</h2>
-              <p>If you want to add Glimesh to your already existing arsenal of platforms, that's easy too! If you are using Aircast, just find Glimesh in the list. If you are using other providers, some custom configuration will be required.</p>
+              <h2>{gettext("Multi-Streaming")}</h2>
+              <p>{gettext(
+                  "If you want to add Glimesh to your already existing arsenal of platforms, that's easy too! If you are using Aircast, just find Glimesh in the list. If you are using other providers, some custom configuration will be required."
+                )}</p>
               <hr>
 
               <h3>
@@ -84,11 +96,13 @@ defmodule GlimeshWeb.About.GoLiveLive do
                 </a>
               </h3>
 
-              <p>Aircast has native support for our super low latency FTL & RTMP technology and has worked collaboratively with Glimesh from the very beginning. With just one click you can enable integrations to stream to Glimesh, and many other platforms at the same time.</p>
+              <p>{gettext(
+                  "Aircast has native support for our super low latency FTL & RTMP technology and has worked collaboratively with Glimesh from the very beginning. With just one click you can enable integrations to stream to Glimesh, and many other platforms at the same time."
+                )}</p>
 
               <p :if={show_aircast_promo()} class="text-warning">For a limited time, get 20% off a new Aircast subscription (for 12 months!) using the coupon code GLIMESHRTMP at checkout.</p>
 
-              <h3>Other Providers</h3>
+              <h3>{gettext("Other Providers")}</h3>
               <p>You can easily configure multi-streaming with providers like Restream, or dedicated apps like Streamlabs Desktop's multistreaming to work with Glimesh. You'll need an RTMP url from below to get started <strong>and to change some basic settings to get the best experience.</strong></p>
             </div>
           </div>
@@ -132,7 +146,7 @@ defmodule GlimeshWeb.About.GoLiveLive do
                 aria-expanded="false"
                 aria-controls="collapseOne"
               >
-                Advanced Settings for Other Streaming Software
+                {gettext("Advanced Settings for Other Streaming Software")}
               </button>
             </h2>
           </div>
@@ -146,43 +160,47 @@ defmodule GlimeshWeb.About.GoLiveLive do
             <div class="card-body">
               <div class="row">
                 <div class="col">
-                  <h3>Video Settings</h3>
-                  <p>If using our dropdowns in OBS or Streamlabs Desktop, these changes will likely already be done for you!</p>
+                  <h3>{gettext("Video Settings")}</h3>
+                  <p>{gettext(
+                      "If using our dropdowns in OBS or Streamlabs Desktop, these changes will likely already be done for you!"
+                    )}</p>
                   <p>It's <strong>very important</strong> to disable b-frames as they cause stream stuttering.</p>
                   <table class="table table-borderless">
                     <thead>
                       <tr>
-                        <th>Setting</th>
-                        <th>Recommendation</th>
+                        <th>{gettext("Setting")}</th>
+                        <th>{gettext("Recommendation")}</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <th>Video Bitrate Cap</th>
+                        <th>{gettext("Video Bitrate Cap")}</th>
                         <td>6000 Kbps</td>
                       </tr>
                       <tr>
-                        <th>B-Frames</th>
+                        <th>{gettext("B-Frames")}</th>
                         <td>0</td>
                       </tr>
                       <tr>
-                        <th>Keyframe Interval</th>
+                        <th>{gettext("Keyframe Interval")}</th>
                         <td>1 or 2 seconds</td>
                       </tr>
                       <tr>
-                        <th>Resolution</th>
+                        <th>{gettext("Resolution")}</th>
                         <td>1280x720 or 1920x1080</td>
                       </tr>
                       <tr>
-                        <th>Frame Rate</th>
+                        <th>{gettext("Frame Rate")}</th>
                         <td>30fps or 60fps</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <div class="col">
-                  <h3>Ingest Locations</h3>
-                  <p>Since Glimesh focuses on low-latency, we have several ingest locations around the world that are available. Use whichever protocol your streaming software supports.</p>
+                  <h3>{gettext("Ingest Locations")}</h3>
+                  <p>{gettext(
+                      "Since Glimesh focuses on low-latency, we have several ingest locations around the world that are available. Use whichever protocol your streaming software supports."
+                    )}</p>
                   <div class="overflow-auto" style="max-height: 300px">
                     <table class="table table-borderless table-sm">
                       <thead class="bg-color-card" style="position: sticky; top: 0;">
@@ -215,56 +233,60 @@ defmodule GlimeshWeb.About.GoLiveLive do
         <div class="col">
           <div class="card">
             <div class="card-body">
-              <h2>Payments</h2>
+              <h2>{gettext("Payments")}</h2>
               <p>Setting up payments on Glimesh is simple, and doesn't have any metric or popularity requirements. To setup your
                 <button class="btn btn-secondary btn-sm">
                   <i class="fas fa-hand-holding-usd fa-fw" />{gettext("Support")}
                 </button>
                 button, visit your <a href="">Payments</a> page to start the process.</p>
-              <p>All channels have access to Subscriptions, Gift Subs, and Donations.</p>
+              <p>{gettext("All channels have access to Subscriptions, Gift Subs, and Donations.")}</p>
               <ul>
-                <li>🌎 80+ countries supported</li>
-                <li>📆 Bi-weekly payouts</li>
-                <li>💳 No payout minimum</li>
-                <li>⚡️ Instant setup</li>
-                <li>✅ No number requirements</li>
-                <li>⚖️ 60% sub cut, we pay the fees</li>
-                <li>💸 No Glimesh cut on donations</li>
-                <li>🛡 100% charge-back protection</li>
-                <li>⛑ No personal data stored on Glimesh</li>
+                <li>🌎 {gettext("80+ countries supported")}</li>
+                <li>📆 {gettext("Bi-weekly payouts")}</li>
+                <li>💳 {gettext("No payout minimum")}</li>
+                <li>⚡️ {gettext("Instant setup")}</li>
+                <li>✅ {gettext("No number requirements")}</li>
+                <li>⚖️ {gettext("60% sub cut, we pay the fees")}</li>
+                <li>💸 {gettext("No Glimesh cut on donations")}</li>
+                <li>🛡 {gettext("100% charge-back protection")}</li>
+                <li>⛑ {gettext("No personal data stored on Glimesh")}</li>
               </ul>
-              <p>We do not currently support Paypal or other payment providers.</p>
+              <p>{gettext("We do not currently support Paypal or other payment providers.")}</p>
             </div>
           </div>
         </div>
         <div class="col">
           <div class="card">
             <div class="card-body">
-              <h2>3rd Party Addons</h2>
-              <p>Many 3rd parties you are used to support Glimesh. We're also fortunate to have a very active developer community constantly building things for the Glimesh community!</p>
+              <h2>{gettext("3rd Party Addons")}</h2>
+              <p>{gettext(
+                  "Many 3rd parties you are used to support Glimesh. We're also fortunate to have a very active developer community constantly building things for the Glimesh community!"
+                )}</p>
 
-              <h3>Chat Bots</h3>
+              <h3>{gettext("Chat Bots")}</h3>
               <ul class="list-inline">
                 {#for {name, url} <- bots()}
                   <li class="list-inline-item"><a href={url} target="_blank">{name}</a></li>
                 {/for}
               </ul>
 
-              <h3>Overlays / Alerts</h3>
+              <h3>{gettext("Overlays / Alerts")}</h3>
               <ul class="list-inline">
                 {#for {name, url} <- overlays()}
                   <li class="list-inline-item"><a href={url} target="_blank">{name}</a></li>
                 {/for}
               </ul>
 
-              <h3>Other</h3>
+              <h3>{gettext("Other")}</h3>
               <ul class="list-inline">
                 {#for {name, url} <- other()}
                   <li class="list-inline-item"><a href={url} target="_blank">{name}</a></li>
                 {/for}
               </ul>
 
-              <p>Many more 3rd parties are available, you can find a full list of them in our Discord server.</p>
+              <p>{gettext(
+                  "Many more 3rd parties are available, you can find a full list of them in our Discord server."
+                )}</p>
             </div>
           </div>
         </div>
