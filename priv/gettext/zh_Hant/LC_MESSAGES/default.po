@@ -98,9 +98,9 @@ msgstr "比數比%{number}多的或者等於到"
 msgid "must be equal to %{number}"
 msgstr "必修要等於到 %{number}"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:4
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:25 lib/glimesh_web/templates/channel_moderator/form.html.eex:4
-#: lib/glimesh_web/templates/user_applications/form.html.eex:4 lib/glimesh_web/templates/user_payments/index.html.eex:90
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:11
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:37 lib/glimesh_web/templates/channel_moderator/form.html.eex:4
+#: lib/glimesh_web/templates/user_applications/form.html.eex:4 lib/glimesh_web/templates/user_payments/index.html.eex:100
 #: lib/glimesh_web/templates/user_reset_password/edit.html.eex:12 lib/glimesh_web/templates/user_security/edit.html.eex:13
 #: lib/glimesh_web/templates/user_security/edit.html.eex:45
 msgid "Oops, something went wrong! Please check the errors below."
@@ -118,23 +118,23 @@ msgstr "電郵變更鏈接無效或過期"
 msgid "Reset password link is invalid or it has expired."
 msgstr "重設密碼鏈接無效或過期的"
 
-#: lib/glimesh/accounts/user.ex:211
+#: lib/glimesh/accounts/user.ex:212
 msgid "Display name must match Username"
 msgstr "顯示名必須匹配用戶名"
 
-#: lib/glimesh/accounts/user.ex:229
+#: lib/glimesh/accounts/user.ex:230
 msgid "Email is the same"
 msgstr "電郵一樣的"
 
-#: lib/glimesh/accounts/user.ex:367
+#: lib/glimesh/accounts/user.ex:369
 msgid "Incorrect YouTube URL format"
 msgstr "《Youtube》網址格式錯的"
 
-#: lib/glimesh/accounts/user.ex:358
+#: lib/glimesh/accounts/user.ex:360
 msgid "Invalid Password"
 msgstr "密碼的無效"
 
-#: lib/glimesh/accounts/user.ex:239
+#: lib/glimesh/accounts/user.ex:240
 msgid "Password does not match"
 msgstr "密碼不匹配"
 
@@ -153,20 +153,20 @@ msgid "Change e-mail"
 msgstr "更改電郵"
 
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:30
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:56 lib/glimesh_web/templates/user_reset_password/new.html.eex:11
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:60 lib/glimesh_web/templates/user_reset_password/new.html.eex:11
 #: lib/glimesh_web/templates/user_security/edit.html.eex:20
 msgid "Email"
 msgstr "電郵"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:89
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:126
 msgid "Instagram Username"
 msgstr "《Instagram》用戶名"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:62
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:85
 msgid "Social"
 msgstr "社交媒體"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:100
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:143
 msgid "YouTube Username"
 msgstr "《Youtube》用戶名"
 
@@ -188,7 +188,7 @@ msgstr "換密碼"
 msgid "New password"
 msgstr "新密碼"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:12
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:16
 msgid "Click Update Settings down below when you've chosen the file."
 msgstr "點擊下面的更新設定當你選擇文件了好後的"
 
@@ -196,20 +196,20 @@ msgstr "點擊下面的更新設定當你選擇文件了好後的"
 msgid "Confirm New Password"
 msgstr "確認新密碼"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:33 lib/glimesh_web/templates/gct/edit_user.html.eex:17
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:49
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:46 lib/glimesh_web/templates/gct/edit_user.html.eex:17
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:53
 msgid "Display Name"
 msgstr "顯示名稱"
 
-#: lib/glimesh_web/live/streams_live/list.html.leex:41
+#: lib/glimesh_web/live/streams_live/list.html.heex:55
 msgid "Language"
 msgstr "語言"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:178 lib/glimesh_web/templates/user_settings/preference.html.eex:69
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:328 lib/glimesh_web/templates/user_settings/preference.html.eex:79
 msgid "Update Settings"
 msgstr "更新設定"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:129
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:186 lib/glimesh_web/templates/gct/lookup_user.html.eex:101
 msgid "YouTube Teaser URL"
 msgstr "《Youtube》宣傳網址"
 
@@ -266,41 +266,41 @@ msgstr "重設密碼"
 msgid "Confirm new password"
 msgstr "確認新密碼"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:41
+#: lib/glimesh_web/live/user_live/profile.html.heex:64
 msgid "Followers"
 msgstr "關注者"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:47
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:84
+#: lib/glimesh_web/live/user_live/profile.html.heex:70
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:122
 msgid "Following"
 msgstr "關注"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:53
+#: lib/glimesh_web/live/user_live/profile.html.heex:82
 msgid "Share my profile on Twitter"
 msgstr "在《Twitter》上分享我的個人資料"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:55
+#: lib/glimesh_web/live/user_live/profile.html.heex:91
 msgid "Share on Twitter"
 msgstr "在《Twitter》上分享"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:11
+#: lib/glimesh_web/live/user_live/profile.html.heex:21
 msgid "Sub-ready Streamer"
 msgstr "訂閱準備的直播人"
 
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:20
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:24
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:44
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:50
 msgid "Follow"
 msgstr "追隨"
 
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:58
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:85
 msgid "User followed successfully"
 msgstr "用戶關注成功"
 
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:72
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:99
 msgid "User unfollowed successfully"
 msgstr "用戶未關注成功"
 
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:12
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:17
 msgid "Unfollow"
 msgstr "未追隨"
 
@@ -308,59 +308,60 @@ msgstr "未追隨"
 msgid "Logged out successfully."
 msgstr "登出成功"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:38
-#: lib/glimesh_web/live/homepage_live.html.heex:78 lib/glimesh_web/templates/about/streaming.html.eex:113
+#: lib/glimesh_web/live/homepage_live.ex:98
+#: lib/glimesh_web/live/homepage_live.ex:139 lib/glimesh_web/templates/about/streaming.html.eex:113
 msgid "Register Your Account"
 msgstr "註冊你的賬戶"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:122
-#: lib/glimesh_web/live/streams_live/index.ex:19 lib/glimesh_web/templates/layout/_navbar.html.leex:44
+#: lib/glimesh_web/live/homepage_live.ex:237
+#: lib/glimesh_web/live/streams_live/index.ex:21 lib/glimesh_web/templates/layout/_navbar.html.heex:60
 msgid "Art"
 msgstr "藝術"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:146
-#: lib/glimesh_web/live/streams_live/index.ex:44 lib/glimesh_web/templates/layout/_navbar.html.leex:56
+#: lib/glimesh_web/live/homepage_live.ex:257
+#: lib/glimesh_web/live/streams_live/index.ex:50 lib/glimesh_web/templates/layout/_navbar.html.heex:84
 msgid "Education"
 msgstr "教育"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:116
-#: lib/glimesh_web/live/streams_live/index.ex:13 lib/glimesh_web/templates/layout/_navbar.html.leex:41
+#: lib/glimesh_web/live/homepage_live.ex:232
+#: lib/glimesh_web/live/streams_live/index.ex:14 lib/glimesh_web/templates/layout/_navbar.html.heex:54
 msgid "Gaming"
 msgstr "遊戲"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:140
-#: lib/glimesh_web/live/streams_live/index.ex:38 lib/glimesh_web/templates/layout/_navbar.html.leex:53
+#: lib/glimesh_web/live/homepage_live.ex:252
+#: lib/glimesh_web/live/streams_live/index.ex:43 lib/glimesh_web/templates/layout/_navbar.html.heex:78
 msgid "IRL"
 msgstr "現實生活中"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:60
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:98
 msgid "More"
 msgstr "跟多"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:128
-#: lib/glimesh_web/live/streams_live/index.ex:25 lib/glimesh_web/templates/layout/_navbar.html.leex:47
+#: lib/glimesh_web/live/homepage_live.ex:242
+#: lib/glimesh_web/live/streams_live/index.ex:28 lib/glimesh_web/templates/layout/_navbar.html.heex:66
 msgid "Music"
 msgstr "音樂"
 
-#: lib/glimesh_web/live/support_modal/donate_form.ex:50
-#: lib/glimesh_web/live/support_modal/sub_form.ex:51 lib/glimesh_web/templates/layout/_navbar.html.leex:188
+#: lib/glimesh_web/live/support_modal/donate_form.ex:73
+#: lib/glimesh_web/live/support_modal/gift_sub_form.ex:71 lib/glimesh_web/live/support_modal/sub_form.ex:103
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:288
 msgid "Register"
 msgstr "註冊"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:183
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:282
 msgid "Sign Out"
 msgstr "登出"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:189
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:294
 msgid "Sign in"
 msgstr "登入"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:134
-#: lib/glimesh_web/live/streams_live/index.ex:32 lib/glimesh_web/templates/layout/_navbar.html.leex:50
+#: lib/glimesh_web/live/homepage_live.ex:247
+#: lib/glimesh_web/live/streams_live/index.ex:36 lib/glimesh_web/templates/layout/_navbar.html.heex:72
 msgid "Tech"
 msgstr "科技"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:171
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:270
 msgid "Upgrade!"
 msgstr "升級!"
 
@@ -368,32 +369,32 @@ msgstr "升級!"
 msgid "Payment method deleted!"
 msgstr "付款方法刪除的!"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:93
+#: lib/glimesh_web/templates/user_payments/index.html.eex:103
 msgid "Delete Saved Payment"
 msgstr "刪除保存的付款方式"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:150
-#: lib/glimesh_web/templates/user_payments/index.html.eex:110
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:152
+#: lib/glimesh_web/templates/user_payments/index.html.eex:120
 msgid "Payment History"
 msgstr "支付方式"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:83
+#: lib/glimesh_web/templates/user_payments/index.html.eex:93
 msgid "Saved Payment Method"
 msgstr "保存的付款方式"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:98
+#: lib/glimesh_web/templates/user_payments/index.html.eex:108
 msgid "Setup Payment Method"
 msgstr "設置付款方式"
 
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:17
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:30
 msgid "Unsubscribe"
 msgstr "退訂"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:102
+#: lib/glimesh_web/templates/user_payments/index.html.eex:112
 msgid "You can link a payment method by creating a subscription to a channel, or the platform."
 msgstr "你可以連接一個付款方法通過創建一個訂閱到一個頻道, 或者這個平臺"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:84
+#: lib/glimesh_web/templates/user_payments/index.html.eex:94
 msgid "You have an existing saved payment method. You can delete it by clicking the button below."
 msgstr "你有一個現有的付款方法. 你可以通過點擊下面的按鈕將其刪除"
 
@@ -402,55 +403,55 @@ msgstr "你有一個現有的付款方法. 你可以通過點擊下面的按鈕�
 msgid "Your Payment Portal"
 msgstr "你的支付門戶"
 
-#: lib/glimesh_web/live/subscription_component.ex:25
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:39
+#: lib/glimesh_web/live/subscription_component.ex:33
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:77
 msgid "Payment Details"
 msgstr "付款詳情"
 
-#: lib/glimesh_web/live/subscription_component.ex:17
+#: lib/glimesh_web/live/subscription_component.ex:19
 msgid "Payment method already attached!"
 msgstr "付款方法早就附了!"
 
-#: lib/glimesh_web/live/subscription_component.ex:45
-#: lib/glimesh_web/live/support_modal/support_modal.ex:80 lib/glimesh_web/live/user_live/components/subscribe_button.ex:20
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:23 lib/glimesh_web/live/user_live/components/subscribe_button.ex:26
+#: lib/glimesh_web/live/subscription_component.ex:59
+#: lib/glimesh_web/live/support_modal/support_modal.ex:100 lib/glimesh_web/live/user_live/components/subscribe_button.ex:40
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:51 lib/glimesh_web/live/user_live/components/subscribe_button.ex:57
 msgid "Subscribe"
 msgstr "訂閱"
 
-#: lib/glimesh_web/live/subscription_component.ex:33
+#: lib/glimesh_web/live/subscription_component.ex:42
 msgid "Total Charge"
 msgstr "總費用"
 
-#: lib/glimesh_web/live/subscription_component.ex:21
+#: lib/glimesh_web/live/subscription_component.ex:23
 msgid "Your Name"
 msgstr "你的名字"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:13
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:34 lib/glimesh_web/live/platform_subscription_live/index.html.leex:68
-#: lib/glimesh_web/live/subscription_component.ex:34 lib/glimesh_web/live/support_modal/sub_form.ex:30
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:17
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:46 lib/glimesh_web/live/platform_subscription_live/index.html.heex:98
+#: lib/glimesh_web/live/subscription_component.ex:43 lib/glimesh_web/live/support_modal/sub_form.ex:67
 msgid "monthly"
 msgstr "月的"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:72
-#: lib/glimesh_web/live/support_modal/sub_form.ex:33
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:108
+#: lib/glimesh_web/live/support_modal/sub_form.ex:73
 msgid "Cancel Subscription"
 msgstr "取消訂閱"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:11
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:15
 msgid "Help us fund the platform & grow!"
 msgstr "幫助我們資助這個平臺, 還有發展!"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:23
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:45
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:30
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:60
 msgid "Select"
 msgstr "選擇"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:32
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:41
 msgid "Support Glimesh's future with your wallet! Get special perks to show off."
 msgstr "用你的錢包支持 《Glimesh》! 獲得特殊炫耀的津貼"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:54
-#: lib/glimesh_web/live/support_modal/sub_form.ex:25
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:70
+#: lib/glimesh_web/live/support_modal/sub_form.ex:57
 msgid "You're subscribed!"
 msgstr "你是訂閱了!"
 
@@ -459,7 +460,7 @@ msgid "Followed Streams"
 msgstr "關注的廣播"
 
 #: lib/glimesh_web/live/user_live/index.ex:14
-#: lib/glimesh_web/live/user_live/index.html.leex:2
+#: lib/glimesh_web/live/user_live/index.html.heex:2
 msgid "Our Users"
 msgstr "我們的用戶"
 
@@ -467,59 +468,60 @@ msgstr "我們的用戶"
 msgid "Report User"
 msgstr "報告用戶"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:68
+#: lib/glimesh_web/live/user_live/components/report_button.ex:97
 msgid "Copyright Infringement / Law Violation"
 msgstr "侵犯版權 / 違反法律"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:56
+#: lib/glimesh_web/live/user_live/components/report_button.ex:73
 msgid "Hate Speech"
 msgstr "仇恨言論"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:62
+#: lib/glimesh_web/live/user_live/components/report_button.ex:85
 msgid "Inappropriate Content"
 msgstr "不適當的內容"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:81
+#: lib/glimesh_web/live/user_live/components/report_button.ex:115
 msgid "Notes"
 msgstr "筆記"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:74
+#: lib/glimesh_web/live/about/go_live_live.ex:280
+#: lib/glimesh_web/live/user_live/components/report_button.ex:109
 msgid "Other"
 msgstr "其他的"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:85
+#: lib/glimesh_web/live/user_live/components/report_button.ex:126
 msgid "Submit Report"
 msgstr "提交報告"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:52
+#: lib/glimesh_web/live/user_live/components/report_button.ex:62
 msgid "What has this user done wrong?"
 msgstr "這個用戶做錯了什麼?"
 
-#: lib/glimesh_web/live/streams_live/list.html.leex:4
+#: lib/glimesh_web/live/streams_live/list.html.heex:5
 msgid "%{category} Streams"
 msgstr "%{category}的直播"
 
-#: lib/glimesh_web/live/admin/category_live/index.html.leex:30
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:12
+#: lib/glimesh_web/live/admin/category_live/index.html.heex:40
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:15
 msgid "Are you sure?"
 msgstr "你確定嗎?"
 
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:27
+#: lib/glimesh_web/live/admin/category_live/show.html.heex:32
 #: lib/glimesh_web/templates/user_applications/new.html.eex:7
 msgid "Back"
 msgstr "回去"
 
-#: lib/glimesh_web/live/admin/category_live/form_component.ex:78
+#: lib/glimesh_web/live/admin/category_live/form_component.ex:86
 msgid "Category created successfully"
 msgstr "類別創建成功的"
 
-#: lib/glimesh_web/live/admin/category_live/form_component.ex:65
+#: lib/glimesh_web/live/admin/category_live/form_component.ex:73
 msgid "Category updated successfully"
 msgstr "類別更新成功的"
 
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:26
-#: lib/glimesh_web/live/user_live/components/channel_title.html.leex:13
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:140
+#: lib/glimesh_web/live/admin/category_live/show.html.heex:26
+#: lib/glimesh_web/live/user_live/components/channel_title.html.heex:19
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:216
 msgid "Edit"
 msgstr "編輯"
 
@@ -529,27 +531,27 @@ msgid "Edit Category"
 msgstr "編輯類別"
 
 #: lib/glimesh_web/live/admin/category_live/index.ex:31
-#: lib/glimesh_web/live/admin/category_live/index.html.leex:2
+#: lib/glimesh_web/live/admin/category_live/index.html.heex:2
 msgid "Listing Categories"
 msgstr "列表類別"
 
-#: lib/glimesh_web/live/admin/category_live/index.html.leex:16
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:15 lib/glimesh_web/templates/user_applications/form.html.eex:9
+#: lib/glimesh_web/live/admin/category_live/index.html.heex:17
+#: lib/glimesh_web/live/admin/category_live/show.html.heex:15 lib/glimesh_web/templates/user_applications/form.html.eex:9
 msgid "Name"
 msgstr "名字"
 
 #: lib/glimesh_web/live/admin/category_live/index.ex:25
-#: lib/glimesh_web/live/admin/category_live/index.html.leex:37
+#: lib/glimesh_web/live/admin/category_live/index.html.heex:50
 msgid "New Category"
 msgstr "新類別"
 
 #: lib/glimesh_web/live/admin/category_live/show.ex:19
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:1
+#: lib/glimesh_web/live/admin/category_live/show.html.heex:1
 msgid "Show Category"
 msgstr "顯示類別"
 
-#: lib/glimesh_web/live/admin/category_live/index.html.leex:17
-#: lib/glimesh_web/live/admin/category_live/show.html.leex:20
+#: lib/glimesh_web/live/admin/category_live/index.html.heex:18
+#: lib/glimesh_web/live/admin/category_live/show.html.heex:20
 msgid "Slug"
 msgstr "可讀網址"
 
@@ -582,8 +584,8 @@ msgstr "輸入你的雙重認證碼!"
 msgid "Invalid 2FA code, if you need help please email %{email}"
 msgstr "無效的雙重認證碼, 萬一你需要幫助請給%{email}發電子郵件"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:175
-#: lib/glimesh_web/templates/layout/user-sidebar.html.eex:9
+#: lib/glimesh_web/live/about/go_live_live.ex:236
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:274 lib/glimesh_web/templates/layout/user-sidebar.html.eex:9
 msgid "Payments"
 msgstr "付款"
 
@@ -591,8 +593,8 @@ msgstr "付款"
 msgid "Please contact %{email}"
 msgstr "請聯繫%{email}"
 
-#: lib/glimesh_web/live/components/user_card.ex:40
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:166 lib/glimesh_web/templates/layout/user-sidebar.html.eex:6
+#: lib/glimesh_web/live/components/user_card.ex:57
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:265 lib/glimesh_web/templates/layout/user-sidebar.html.eex:6
 msgid "Profile"
 msgstr "人資料"
 
@@ -601,12 +603,12 @@ msgstr "人資料"
 msgid "Security"
 msgstr "安全"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:8
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:31 lib/glimesh_web/templates/layout/_navbar.html.leex:179
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:7
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:44 lib/glimesh_web/templates/layout/_navbar.html.heex:278
 msgid "Settings"
 msgstr "設定"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:149
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:186
 msgid "Chat Rules (Markdown Supported)"
 msgstr "聊天規則 (Markdown支持的)"
 
@@ -645,7 +647,7 @@ msgstr "申請撤消了"
 msgid "Applications"
 msgstr "申請"
 
-#: lib/glimesh_web/templates/oauth/authorize.html.eex:16
+#: lib/glimesh_web/templates/oauth/authorize.html.eex:14
 msgid "Are you sure you wish to authorize %{name} to use your account? This application will be able to:"
 msgstr "你確定要授權%{name}用哪個你的戶口?\n"
 "這個應用將能夠:"
@@ -654,7 +656,7 @@ msgstr "你確定要授權%{name}用哪個你的戶口?\n"
 msgid "Authorizations"
 msgstr "授權書"
 
-#: lib/glimesh_web/templates/oauth/authorize.html.eex:29
+#: lib/glimesh_web/templates/oauth/authorize.html.eex:27
 #: lib/glimesh_web/templates/user_applications/show.html.eex:80
 msgid "Authorize"
 msgstr "授權"
@@ -676,12 +678,12 @@ msgstr "瀏覽圖片"
 msgid "Callbacks"
 msgstr "回叫"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:60
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:78 lib/glimesh_web/templates/user_applications/form.html.eex:30
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:90
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:112 lib/glimesh_web/templates/user_applications/form.html.eex:30
 msgid "Choose file"
 msgstr "選擇文件"
 
-#: lib/glimesh_web/live/components/click_to_copy.ex:14
+#: lib/glimesh_web/live/components/click_to_copy.ex:19
 msgid "Click to Copy"
 msgstr "點擊複製"
 
@@ -689,7 +691,7 @@ msgstr "點擊複製"
 msgid "Client ID"
 msgstr "客戶名分"
 
-#: lib/glimesh_web/live/components/click_to_copy.ex:14
+#: lib/glimesh_web/live/components/click_to_copy.ex:17
 msgid "Copied to Clipboard"
 msgstr "複製到剪貼板"
 
@@ -703,12 +705,12 @@ msgstr "創建應用"
 msgid "Credentials"
 msgstr "證書"
 
-#: lib/glimesh_web/templates/oauth/authorize.html.eex:32
+#: lib/glimesh_web/templates/oauth/authorize.html.eex:30
 msgid "Deny"
 msgstr "拒絕"
 
 #: lib/glimesh_web/templates/user_applications/form.html.eex:21
-#: lib/glimesh_web/templates/user_payments/index.html.eex:120
+#: lib/glimesh_web/templates/user_payments/index.html.eex:130
 msgid "Description"
 msgstr "描述"
 
@@ -717,16 +719,16 @@ msgstr "描述"
 msgid "Edit Application"
 msgstr "編輯應用"
 
-#: lib/glimesh_web/live/components/click_to_copy.ex:13
+#: lib/glimesh_web/live/components/click_to_copy.ex:16
 msgid "Error"
 msgstr "出錯"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:222 lib/glimesh_web/templates/user_applications/form.html.eex:15
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:321 lib/glimesh_web/templates/user_applications/form.html.eex:15
 msgid "Homepage"
 msgstr "主頁"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:168
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:157 lib/glimesh_web/templates/user_applications/form.html.eex:27
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:238
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:291 lib/glimesh_web/templates/user_applications/form.html.eex:27
 msgid "Image"
 msgstr "圖片"
 
@@ -786,60 +788,56 @@ msgstr "API 文件資料"
 msgid "Black & White 2FA Image"
 msgstr "黑白雙重認證圖片"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:154
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:149
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:194
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:247
 msgid "Bold"
 msgstr "黑體"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:164
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:155
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:224
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:277
 msgid "Code"
 msgstr "碼"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:171
-msgid "Coming soon!"
-msgstr "快來了!"
-
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:158
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:151
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:208
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:261
 msgid "Heading"
 msgstr "標題"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:156
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:150
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:201
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:254
 msgid "Italic"
 msgstr "斜體"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:166
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:156
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:231
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:284
 msgid "Link"
 msgstr "鏈接"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:175
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:162
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:254
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:307
 msgid "Ordered List"
 msgstr "有序列表"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:141
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:229
 msgid "Preview"
 msgstr "預習"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:162
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:154
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:217
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:270
 msgid "Quote"
 msgstr "引用"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:172
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:160
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:247
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:300
 msgid "Unordered List"
 msgstr "無序列表"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:114
-#: lib/glimesh_web/live/user_live/stream.html.leex:199
+#: lib/glimesh_web/live/user_live/profile.html.heex:178
+#: lib/glimesh_web/live/user_live/stream.html.heex:364
 msgid "Welcome to my profile! I haven't customized it yet, but I can easily do that by clicking my username up in the right hand corner!"
 msgstr "歡迎到我的個人資料頁! 我還沒有定製它, 但我可以輕鬆做到這一點通過點擊我的用戶名在右上角的一角!"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:198
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:286
 msgid "Block viewers from posting links?"
 msgstr "阻止觀衆發佈鏈接的?"
 
@@ -852,35 +850,35 @@ msgid "Giving Monthly"
 msgstr "每月給"
 
 #: lib/glimesh_web/live/platform_subscription_live/index.ex:38
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:2
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:2
 msgid "Glimesh Platform Subscriptions"
 msgstr "《Glimesh》平臺訂閱"
 
-#: lib/glimesh_web/live/about/open_data_live.html.leex:3
+#: lib/glimesh_web/live/about/open_data_live.ex:10
 msgid "Glimesh takes transparency to the exteme, as an open company we build in the public light, and we operate in the public light. We've built graphs for a couple common metrics we use, but if you have any questions about how we run, let us know!"
 msgstr "《Glimesh》將它發揮到極致. 因爲我們是一個開放的共識, 我們建立還有操作在公衆視野下完成的. 我們做了幾個圖表給幾個共同的指標, 但萬一你喲問題關於我們如何的運作, 請讓我們知道的!"
 
-#: lib/glimesh_web/live/about/open_data_live.ex:33
-#: lib/glimesh_web/live/about/open_data_live.html.leex:24 lib/glimesh_web/live/streams_live/following.html.leex:5
+#: lib/glimesh_web/live/about/open_data_live.ex:35
+#: lib/glimesh_web/live/about/open_data_live.ex:90 lib/glimesh_web/live/streams_live/following.html.heex:5
 msgid "Live Streams"
 msgstr "現場直播"
 
-#: lib/glimesh_web/live/about/open_data_live.html.leex:12
+#: lib/glimesh_web/live/about/open_data_live.ex:22
 msgid "Number of users on the platform over time, and net-new each week."
 msgstr "隨着時間的推移平臺上的用戶數, 還有淨新的每週"
 
-#: lib/glimesh_web/live/about/open_data_live.html.leex:2
-#: lib/glimesh_web/templates/layout/root.html.leex:105
+#: lib/glimesh_web/live/about/open_data_live.ex:8
+#: lib/glimesh_web/templates/layout/root.html.heex:164
 msgid "Open Data"
 msgstr "開數據"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:127
-#: lib/glimesh_web/templates/user_payments/index.html.eex:152
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:129
+#: lib/glimesh_web/templates/user_payments/index.html.eex:162
 msgid "Payout History"
 msgstr "付款歷史"
 
-#: lib/glimesh_web/live/about/open_data_live.ex:21
-#: lib/glimesh_web/live/about/open_data_live.html.leex:10
+#: lib/glimesh_web/live/about/open_data_live.ex:19
+#: lib/glimesh_web/live/about/open_data_live.ex:78
 msgid "Platform User Growth"
 msgstr "平臺用戶增長"
 
@@ -889,23 +887,23 @@ msgid "Receiving Monthly"
 msgstr "每月接收"
 
 #: lib/glimesh_web/live/about/open_data_live.ex:27
-#: lib/glimesh_web/live/about/open_data_live.html.leex:16
+#: lib/glimesh_web/live/about/open_data_live.ex:84
 msgid "Recurring Subscriptions"
 msgstr "定期訂閱"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:193
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:278
 msgid "Should links automatically be clickable?"
 msgstr "該鏈接自動可以點擊的?"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:3
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:4
 msgid "Support the platform directly and get a couple of extra perks to really stand out!"
 msgstr "支持這個平臺, 並獲得幾個多津貼真的脫穎而出!"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:10
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:14
 msgid "Supporter"
 msgstr "支持者"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:64
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:88
 msgid "Thanks for supporting Glimesh. Your genuine support is appreciated."
 msgstr "感謝你支持《Glimesh》. 你的真正的支持表示讚賞"
 
@@ -915,25 +913,25 @@ msgstr "用戶帳戶被禁止了. 請聯繫我們在%{email}獲取更多信息"
 
 #: lib/glimesh_web/templates/user_applications/index.html.eex:24
 msgid "Want to build a chat bot, an online tool, or other service that integrates with Glimesh? You're in the right place! Create an Application to get started and check out our API documentation if you need some guidance."
-msgstr "想要蓋一個聊天機器人, 一個在線工具, 還是其他的服務與《Glimesh》整合的? 你是在對的地方!"
+msgstr "想要蓋一個聊天機器人, 一個在線工具, 還是其他的服務與《Glimesh》整合的? 你是在對的地方! 開始建立一個應用程序然後查我們的 API 文件資料萬一你需要幫助."
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:95
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:139
 #: lib/glimesh_web/templates/user_payments/setup.html.eex:51 lib/glimesh_web/templates/user_payments/taxes.html.eex:42
 msgid "We're not quite ready to accept payments yet. Once we launch the platform, you'll be able to access this page!"
 msgstr "我們還沒有準備接受付款的. 一旦我們啓動平臺, 你將能夠連接此網頁!"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:73
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:105
 msgid "A repeatable background for your chat. Make sure it's not too noisy, and it's an image that can repeat nicely right and down. Max Size: 100Kb"
 msgstr "有一個可重複的背景圖給你的聊天框. 確保背景圖像不是太雜訊, 還有那個圖像可以很好的重複的\n"
 "最大尺寸: 100千字節"
 
 #: lib/glimesh_web/templates/layout/about.html.eex:5
-#: lib/glimesh_web/templates/layout/root.html.leex:102
+#: lib/glimesh_web/templates/layout/root.html.heex:156
 msgid "About Us"
 msgstr "關於我們的"
 
-#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:16
-#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:72 lib/glimesh_web/templates/channel_moderator/index.html.eex:103
+#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.heex:16
+#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.heex:110 lib/glimesh_web/templates/channel_moderator/index.html.eex:103
 #: lib/glimesh_web/templates/channel_moderator/show.html.eex:41
 msgid "Action"
 msgstr "動作"
@@ -943,16 +941,16 @@ msgstr "動作"
 msgid "Add Moderator"
 msgstr "加主持人"
 
-#: lib/glimesh_web/templates/layout/root.html.leex:150
+#: lib/glimesh_web/templates/layout/root.html.heex:278
 msgid "All rights reserved."
 msgstr "版權所有"
 
 #: lib/glimesh_web/live/support_modal/donate_form.ex:21
-#: lib/glimesh_web/templates/user_payments/index.html.eex:121
+#: lib/glimesh_web/templates/user_payments/index.html.eex:131
 msgid "Amount"
 msgstr "數量"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:55
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:83
 msgid "An image for your channel that will be shown whenever you are offline. Will be resized or cropped to 1920x1080."
 msgstr "一個圖片給你的頻道會顯示每當你離線. 圖片將被調整還是裁剪到 1920x1080"
 
@@ -964,7 +962,7 @@ msgstr "應用創建成功"
 msgid "Application updated successfully."
 msgstr "應用更新成功"
 
-#: lib/glimesh_web/live/chat_live/index.html.leex:30
+#: lib/glimesh_web/live/chat_live/index.html.heex:69
 msgid "Are you sure you wish to permanently ban %{username}?"
 msgstr "你確定你要你確定你要%{username}?"
 
@@ -978,7 +976,7 @@ msgstr "回去到主持人名單"
 msgid "Ban"
 msgstr "禁止"
 
-#: lib/glimesh_web/live/chat_live/index.html.leex:31
+#: lib/glimesh_web/live/chat_live/index.html.heex:74
 msgid "Ban user from channel."
 msgstr "禁止用戶訪問此頻道"
 
@@ -990,8 +988,8 @@ msgstr "禁止在"
 msgid "Beautiful people who choose to support the platform."
 msgstr "支持這個平臺的很棒的人"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:67
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:161 lib/glimesh_web/templates/layout/user-sidebar.html.eex:26
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:100
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:260 lib/glimesh_web/templates/layout/user-sidebar.html.eex:26
 msgid "Channel"
 msgstr "頻道"
 
@@ -999,7 +997,7 @@ msgstr "頻道"
 msgid "Channel Bans"
 msgstr "頻道禁止"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:120
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:157
 msgid "Channel Category"
 msgstr "頻道類別"
 
@@ -1012,7 +1010,7 @@ msgstr "頻道管理記錄"
 msgid "Channel Moderators"
 msgstr "頻道主持人"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:53
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:81
 msgid "Channel Poster"
 msgstr "頻道招貼"
 
@@ -1025,24 +1023,24 @@ msgstr "頻道設定"
 msgid "Channel Subscriber"
 msgstr "頻道訂戶人"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:95
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:132
 msgid "Channel Title"
 msgstr "頻道名"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:71
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:103
 msgid "Chat Background"
 msgstr "聊天框背景"
 
 #: lib/glimesh_web/controllers/about_controller.ex:106
-#: lib/glimesh_web/templates/layout/root.html.leex:104
+#: lib/glimesh_web/templates/layout/root.html.heex:162
 msgid "Credits"
 msgstr "片尾"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:119
+#: lib/glimesh_web/templates/user_payments/index.html.eex:129
 msgid "Date / Time"
 msgstr "日期 / 時間"
 
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:104
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:131
 msgid "Disabled channel notifications"
 msgstr "禁用音頻頻道通知"
 
@@ -1050,39 +1048,35 @@ msgstr "禁用音頻頻道通知"
 msgid "Edit %{username}"
 msgstr "編輯%{username}"
 
-#: lib/glimesh_web/templates/about/credits.html.eex:66
+#: lib/glimesh_web/templates/about/credits.html.eex:76
 msgid "Elixir Libraries"
 msgstr "《Elixir》庫"
 
-#: lib/glimesh_web/live/user_live/components/follow_button.ex:88
+#: lib/glimesh_web/live/user_live/components/follow_button.ex:115
 msgid "Enabled channel notifications"
 msgstr "啓用頻道通知"
 
-#: lib/glimesh_web/templates/about/credits.html.eex:46
+#: lib/glimesh_web/templates/about/credits.html.eex:56
 msgid "FTL Libraries"
 msgstr "超光速庫"
-
-#: lib/glimesh/chat/effects.ex:64
-msgid "Glimesh Community Team"
-msgstr "《Glimesh》社區團隊"
 
 #: lib/glimesh_web/templates/about/credits.html.eex:3
 msgid "Glimesh Platform Subscribers"
 msgstr "《Glimesh》平臺訂戶"
 
-#: lib/glimesh/chat/effects.ex:58
+#: lib/glimesh/chat/effects.ex:61
 msgid "Glimesh Staff"
 msgstr "《Glimesh》職員"
 
-#: lib/glimesh/chat/effects.ex:76
+#: lib/glimesh/chat/effects.ex:85
 msgid "Glimesh Supporter Subscriber"
 msgstr "《Glimesh》支持者訂戶"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:121
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:176
 msgid "Guilded Server URL"
 msgstr "公會服務器網址"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:15
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:26
 msgid "Invalid image. Must be either png or jpg."
 msgstr "無效圖片. 必須是 png 還是 jpg 的"
 
@@ -1107,7 +1101,7 @@ msgstr "主持人"
 msgid "No"
 msgstr "不"
 
-#: lib/glimesh_web/templates/about/credits.html.eex:86
+#: lib/glimesh_web/templates/about/credits.html.eex:96
 msgid "NodeJS Libraries"
 msgstr "NodeJS庫"
 
@@ -1115,7 +1109,7 @@ msgstr "NodeJS庫"
 msgid "OAuth Client ID & Client Secret rotated successfully."
 msgstr "開放授權客戶名分和客戶機密輪換成功的"
 
-#: lib/glimesh_web/templates/about/credits.html.eex:35
+#: lib/glimesh_web/templates/about/credits.html.eex:52
 msgid "Open Source Libraries"
 msgstr "開源庫"
 
@@ -1123,7 +1117,7 @@ msgstr "開源庫"
 msgid "Permissions"
 msgstr "權限"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:136
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:198
 msgid "Profile Content (%{a_start}Markdown%{a_end} supported)"
 msgstr "個人資料內容(%{a_start}Markdown%{a_end} 支持)"
 
@@ -1141,13 +1135,13 @@ msgstr "取消超時"
 msgid "Rotate Keys"
 msgstr "旋轉密鑰"
 
-#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.leex:79
-#: lib/glimesh_web/live/events_team/events_admin_live.html.leex:110 lib/glimesh_web/live/user_live/components/channel_title.html.leex:84
+#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.heex:131
+#: lib/glimesh_web/live/events/events_admin_live.ex:161 lib/glimesh_web/live/user_live/components/channel_title.html.heex:132
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:54
 msgid "Save"
 msgstr "保存"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:111
+#: lib/glimesh_web/templates/user_payments/index.html.eex:121
 msgid "See something you don't expect? Need a refund? Please email us at %{email} and we'll be happy to help!"
 msgstr "看到一些沒想到的東西? 需要一個退款? 給我們發電子郵件在%{email}, 我們將很樂意提供幫助!"
 
@@ -1160,8 +1154,8 @@ msgstr "超時短"
 msgid "Show"
 msgstr "顯示"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:68
-#: lib/glimesh_web/templates/user_payments/index.html.eex:122
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:101
+#: lib/glimesh_web/templates/user_payments/index.html.eex:132
 msgid "Status"
 msgstr "狀態"
 
@@ -1169,15 +1163,15 @@ msgstr "狀態"
 msgid "Supporters"
 msgstr "支持者"
 
-#: lib/glimesh_web/live/chat_live/index.html.leex:25
+#: lib/glimesh_web/live/chat_live/index.html.heex:59
 msgid "Timeout user for 15 minutes."
 msgstr "超時用戶給十五分鐘"
 
-#: lib/glimesh_web/live/chat_live/index.html.leex:20
+#: lib/glimesh_web/live/chat_live/index.html.heex:49
 msgid "Timeout user for 5 minutes."
 msgstr "超時用戶給五分鐘"
 
-#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:18
+#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.heex:18
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:105 lib/glimesh_web/templates/channel_moderator/show.html.eex:43
 msgid "Timestamp"
 msgstr "時間戳記"
@@ -1186,7 +1180,7 @@ msgstr "時間戳記"
 msgid "Unban"
 msgstr "解禁"
 
-#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:15
+#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.heex:15
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:18 lib/glimesh_web/templates/channel_moderator/index.html.eex:76
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:104 lib/glimesh_web/templates/channel_moderator/show.html.eex:42
 msgid "User"
@@ -1196,11 +1190,11 @@ msgstr "用戶"
 msgid "User Moderation Log"
 msgstr "用戶審覈記錄"
 
-#: lib/glimesh_web/templates/about/credits.html.eex:36
+#: lib/glimesh_web/templates/about/credits.html.eex:53
 msgid "We use numerous open source projects to power Glimesh, and without them this project would never have been possible. This is not a comprehensive list, unfortunately. You can find a full list by browsing our core repositories:"
 msgstr "我們使用多種開源項目去供電《Glimesh》, 還有 沒有他們這個都不可能的. 可惜, 這不是一個全面的名單. 你可以瀏覽核心職責找到一個全名單:"
 
-#: lib/glimesh_web/live/chat_live/index.html.leex:5
+#: lib/glimesh_web/live/chat_live/index.html.heex:14
 msgid "Welcome to chat! Follow the rules."
 msgstr "歡迎來到聊天室! 請遵守規則"
 
@@ -1236,7 +1230,8 @@ msgstr "%{user}的頭像"
 msgid "2FA Token"
 msgstr "雙重認證令牌"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:12
+#: lib/glimesh_web/live/about/go_live_live.ex:118
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:19
 msgid "A key used to uniquely identify and connect to your stream. Treat your Stream Key as a password."
 msgstr "一個鑰唯一識別和連接頻道的. 認爲那是一個密碼"
 
@@ -1245,7 +1240,7 @@ msgstr "一個鑰唯一識別和連接頻道的. 認爲那是一個密碼"
 msgid "About Glimesh"
 msgstr "關於《Glimesh》"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:21
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:25
 msgid "Access Level: %{value}"
 msgstr "訪問等級: %{value}"
 
@@ -1257,21 +1252,21 @@ msgstr "可及性"
 msgid "Admin"
 msgstr "管理員"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:14
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:15
 #: lib/glimesh_web/templates/user_registration/new.html.eex:54
 msgid "Allow Glimesh Newsletter Emails"
 msgstr "允許《Glimesh》電郵通訊"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:47
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:56
 msgid "Allow Live Channel Emails"
 msgstr "允許直播電郵"
 
-#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.leex:49
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:17
+#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.heex:118
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:21
 msgid "Animated Emotes"
 msgstr "動畫表情"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:68
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:95
 msgid "Are you sure you want to disconnect your Twitter account?"
 msgstr "你確定要"
 
@@ -1280,7 +1275,7 @@ msgstr "你確定要"
 msgid "Audit Log"
 msgstr "審覈日誌"
 
-#: lib/glimesh_web/templates/layout/root.html.leex:122
+#: lib/glimesh_web/templates/layout/root.html.heex:199
 msgid "BLOG"
 msgstr "博客"
 
@@ -1288,18 +1283,18 @@ msgstr "博客"
 msgid "Backend: %{value}"
 msgstr "後端: %{value}"
 
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:60
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:152 lib/glimesh_web/templates/gct/lookup_user.html.eex:114
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:105
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:166 lib/glimesh_web/templates/gct/lookup_user.html.eex:116
 msgid "Ban Reason"
 msgstr "禁止原因"
 
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:33
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:51 lib/glimesh_web/live/gct_live/components/button_array.ex:64
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:72
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:96 lib/glimesh_web/live/gct_live/components/button_array.ex:116
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:54 lib/glimesh_web/templates/channel_moderator/index.html.eex:64
 msgid "Ban User"
 msgstr "禁止用戶"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:147
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:161
 msgid "Banned"
 msgstr "禁止的"
 
@@ -1323,13 +1318,13 @@ msgstr "擋住鏈接: %{value}"
 msgid "Can stream"
 msgstr "可以播"
 
-#: lib/glimesh_web/live/admin/tag_live/form_component.ex:14
-#: lib/glimesh_web/live/user_live/components/channel_title.html.leex:44
-#: lib/glimesh_web/live/user_settings/components/channel_statistics_live.html.leex:12 lib/glimesh_web/templates/gct/lookup_channel.html.eex:43
+#: lib/glimesh_web/live/admin/tag_live/form_component.ex:21
+#: lib/glimesh_web/live/user_live/components/channel_title.html.heex:78
+#: lib/glimesh_web/live/user_settings/components/channel_statistics_live.html.heex:13 lib/glimesh_web/templates/gct/lookup_channel.html.eex:43
 msgid "Category"
 msgstr "類別"
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:48
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:58
 msgid "Change your Glimesh experience to feel a little lighter, or a little darker."
 msgstr "改變你的《Glimesh》經驗以使其感覺亮或暗"
 
@@ -1357,12 +1352,12 @@ msgstr "聊天規則"
 msgid "Created At: %{value} UTC"
 msgstr "在%{value} UTC創建的"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:71
+#: lib/glimesh_web/live/homepage_live.ex:123
 msgid "Customize Your Profile"
 msgstr "定製你的個人資料"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:124
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:40
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:189
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:50
 msgid "Dark"
 msgstr "深"
 
@@ -1370,11 +1365,11 @@ msgstr "深"
 msgid "Dashboard"
 msgstr "儀表盤"
 
-#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:61
+#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.heex:98
 msgid "Details for Audit Log #%{log_number}"
 msgstr "細節給審覈記錄#%{log_number}"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:62
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:82
 msgid "Disable Live Notifications"
 msgstr "禁用實時通知"
 
@@ -1386,13 +1381,13 @@ msgstr "禁用的超聯: %{value}"
 msgid "Disabled live channel notifications for %{streamer}"
 msgstr "禁用的實時通知給%{streamer}"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:49
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:61
 msgid "Disallowing Live Subscriptions will disable them across the board, even if you have channels listed\n"
 "                    below. If you allow the notifications you'll start getting going live emails for the listed\n"
 "                    channels."
 msgstr "不允許實時訂閱會全禁用的, 即使你有下面列出頻道. 萬一你允許通知的, 你會開始收到上線的電郵給列出的頻道"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:80
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:84
 msgid "Discord"
 msgstr "《Discord》"
 
@@ -1404,12 +1399,12 @@ msgstr "不存在的"
 msgid "Edit Channel"
 msgstr "編輯頻道"
 
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:10
-#: lib/glimesh_web/live/user_live/profile.html.leex:102
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:11
+#: lib/glimesh_web/live/user_live/profile.html.heex:155
 msgid "Edit Profile"
 msgstr "編輯資料"
 
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:11
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:15
 msgid "Edit User"
 msgstr "編輯用戶"
 
@@ -1421,40 +1416,32 @@ msgstr "電郵確認的在"
 msgid "Email Confirmed At: %{value}"
 msgstr "電郵確認的在: %{value}"
 
-#: lib/glimesh_web/live/components/user_card.ex:21
+#: lib/glimesh_web/live/components/user_card.ex:32
 msgid "Followers:"
 msgstr "關注者:"
 
-#: lib/glimesh_web/live/components/user_card.ex:25
+#: lib/glimesh_web/live/components/user_card.ex:36
 msgid "Following:"
 msgstr "關注:"
 
 #: lib/glimesh_web/controllers/about_controller.ex:36
-#: lib/glimesh_web/templates/layout/root.html.leex:103
+#: lib/glimesh_web/templates/layout/root.html.heex:158
 msgid "Frequently Asked Questions"
 msgstr "常問的問題"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:124
-msgid "GCT Access Level"
-msgstr "GCT 訪問等級"
-
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:148
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:247
 msgid "GCT Dash"
 msgstr "GCT儀表板"
 
-#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:69
+#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.heex:107
 msgid "GCT Member"
 msgstr "GCT人員"
-
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:116
-msgid "GCT Settings"
-msgstr "GCT設置"
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:20
 msgid "GCT: %{value}"
 msgstr "GCT: %{value}"
 
-#: lib/glimesh_web/templates/layout/root.html.leex:99
+#: lib/glimesh_web/templates/layout/root.html.heex:148
 msgid "GLIMESH.TV"
 msgstr "GLIMESH.TV"
 
@@ -1462,21 +1449,13 @@ msgstr "GLIMESH.TV"
 msgid "General Settings"
 msgstr "常規設置"
 
-#: lib/glimesh_web/templates/gct/index.html.eex:2
-msgid "Glimesh Community Team Dashboard | Your access level is: %{level}"
-msgstr "《Discord》社區團隊儀表盤 | 你的訪問等級是: %{level}"
-
-#: lib/glimesh_web/templates/user_settings/stream.html.eex:57
-msgid "Glimesh is not yet launched, so this page is still missing some critical information you need for streaming. You can customize your stream, but check back once we've launched for more!"
-msgstr "《Glimesh》還沒有啓動的, 所以這個網頁還是缺少幾個重要信息你需要給直播的. 你可以定製你的直播, 但查回來檢查一旦我們啓動給更多的!"
-
 #: lib/glimesh_web/templates/gct/edit_channel.html.eex:4
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:9 lib/glimesh_web/templates/gct/edit_user_profile.html.eex:7
 #: lib/glimesh_web/templates/gct/invalid_user.html.eex:4
 msgid "Go Back"
 msgstr "回去"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:91
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:95
 msgid "Guilded"
 msgstr "公會的"
 
@@ -1484,11 +1463,11 @@ msgstr "公會的"
 msgid "Has Channel: %{value}"
 msgstr "有頻道: %{value}"
 
-#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:14
+#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.heex:14
 msgid "ID"
 msgstr "名分"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:42
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:49
 msgid "If enabled, we can send alerts whenever your favorite followed streams go live. To get live notifications you must be following the channel, with the bell checked, and \"Allow Live Subscriptions\" must be enabled below."
 msgstr "如果使能的, 我們可以送警報每當你的喜歡跟着的直播上線的. 爲得到實時通知你必須在跟隨頻道, 把哪個鈴圖標選擇了, 還有 \"允許實時通知\" 必須在下面啓用的上一頁的"
 
@@ -1504,33 +1483,29 @@ msgstr "信息給%{user}"
 msgid "Information for %{user}'s channel"
 msgstr "信息給%{user}頻道"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:84
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:88
 msgid "Instagram"
 msgstr "《Instagram》"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:119
-msgid "Is GCT"
-msgstr "是GCT"
-
-#: lib/glimesh_web/live/components/user_card.ex:17
+#: lib/glimesh_web/live/components/user_card.ex:28
 msgid "Joined:"
 msgstr "加入的:"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:128
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:44
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:198
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:54
 msgid "Light"
 msgstr "淺"
 
-#: lib/glimesh_web/live/components/user_card.ex:30
-#: lib/glimesh_web/live/user_live/components/social_buttons.ex:9
+#: lib/glimesh_web/live/components/user_card.ex:45
+#: lib/glimesh_web/live/user_live/components/social_buttons.ex:12
 msgid "Linked Twitter Account @%{username}"
 msgstr "連接的《Twitter》戶口 @%{username}"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:39
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:45
 msgid "Live Channel Notifications"
 msgstr "實時頻道通知"
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:33
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:43
 msgid "Look & Feel"
 msgstr "外觀和感覺"
 
@@ -1538,7 +1513,7 @@ msgstr "外觀和感覺"
 msgid "Lookup Channel"
 msgstr "查找頻道"
 
-#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:78
+#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.heex:116
 msgid "More Details"
 msgstr "多的細節"
 
@@ -1546,21 +1521,21 @@ msgstr "多的細節"
 msgid "More accessibility options are coming soon to make Glimesh more comfortable for everyone."
 msgstr "跟多輔助功能選項會快來了讓《Glimesh》更方便的給大家"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:8
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:7
 msgid "Newsletter Subscriptions"
 msgstr "通訊訂閱"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:16
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:20
 msgid "Newsletter emails are our general marketing, product updates, and new feature announcements. We'll\n"
 "                    send emails about upcoming events or new product launches or availability."
 msgstr "通訊電郵是我們的, 一般行銷, 產品更新, 還有新功能的公報. 我們會送電郵關於即將舉行的活動還是新的產品發佈會和可用性的"
 
 #: lib/glimesh_web/controllers/user_settings_controller.ex:51
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:2 lib/glimesh_web/templates/layout/user-sidebar.html.eex:15
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:2 lib/glimesh_web/templates/layout/user-sidebar.html.eex:15
 msgid "Notifications"
 msgstr "通知"
 
-#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:19
+#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.heex:19
 msgid "Options"
 msgstr "選項"
 
@@ -1582,7 +1557,7 @@ msgstr "優先更新成功的"
 msgid "Privacy & Cookie Policy"
 msgstr "隱私和Cookie政策"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:106
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:108
 msgid "Profile Content"
 msgstr "個人資料內容"
 
@@ -1599,8 +1574,8 @@ msgstr "省得通知首選項"
 msgid "Search"
 msgstr "搜索"
 
-#: lib/glimesh_web/live/streams_live/following.html.leex:74
-#: lib/glimesh_web/live/user_live/index.html.leex:9
+#: lib/glimesh_web/live/streams_live/following.html.heex:101
+#: lib/glimesh_web/live/user_live/index.html.heex:12
 msgid "Search for usernames"
 msgstr "搜索給用戶名"
 
@@ -1608,15 +1583,15 @@ msgstr "搜索給用戶名"
 msgid "Send Reset Email"
 msgstr "送重置電郵"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:86
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:110
 msgid "Sent At"
 msgstr "發送在"
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:55
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:65
 msgid "Show Chat Timestamps"
 msgstr "顯示聊天的時間戳記"
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:57
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:67
 msgid "Show the time a message was posted in chat."
 msgstr "顯示聊天中發佈的消息的時間"
 
@@ -1624,7 +1599,7 @@ msgstr "顯示聊天中發佈的消息的時間"
 msgid "Status: %{value}"
 msgstr "狀況: %{value}"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:10
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:17
 msgid "Stream Key"
 msgstr "直播流密鑰"
 
@@ -1632,7 +1607,7 @@ msgstr "直播流密鑰"
 msgid "Stripe Customer ID"
 msgstr "《Stripe》顧客名分"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:32
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:36
 msgid "Stripe Customer ID: %{value}"
 msgstr "《Stripe》顧客名分: %{value}"
 
@@ -1640,7 +1615,7 @@ msgstr "《Stripe》顧客名分: %{value}"
 msgid "Stripe Payment Method"
 msgstr "《Stripe》付款方法"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:36
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:40
 msgid "Stripe Payment Method: %{value}"
 msgstr "《Stripe》付款方法: %{value}"
 
@@ -1648,15 +1623,15 @@ msgstr "《Stripe》付款方法: %{value}"
 msgid "Stripe User ID"
 msgstr "《Stripe》用戶名分"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:35
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:39
 msgid "Stripe User ID: %{value}"
 msgstr "《Stripe》用戶名分: %{value}"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:29
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:33
 msgid "Sub Ready: %{value}"
 msgstr "訂閱準備了: %{value}"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:85
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:109
 msgid "Subject"
 msgstr "主題"
 
@@ -1664,13 +1639,13 @@ msgstr "主題"
 msgid "Successfully disconnected your social account."
 msgstr "斷開你的社交媒體帳戶成功"
 
-#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:17
-#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.leex:75
+#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.heex:17
+#: lib/glimesh_web/live/gct_live/components/audit_log_table.html.heex:113
 msgid "Target"
 msgstr "定位"
 
 #: lib/glimesh_web/controllers/about_controller.ex:65
-#: lib/glimesh_web/templates/about/alpha.html.eex:102 lib/glimesh_web/templates/layout/root.html.leex:113
+#: lib/glimesh_web/templates/about/alpha.html.eex:102 lib/glimesh_web/templates/layout/root.html.heex:179
 msgid "Terms of Service"
 msgstr "服務條款"
 
@@ -1686,7 +1661,7 @@ msgstr "有一個問題連接你社交媒體的戶口"
 msgid "There was a problem linking your account: "
 msgstr "有一個問題連接你社交媒體的戶口: "
 
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:78
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:99
 msgid "This is a list of all of the emails we have sent you and what triggered them. Only shows the last 50 sent\n"
 "                emails."
 msgstr "這是一個列表給每個電郵我們送給你跟什麼觸發他們的. 只顯示前無十個送的電郵"
@@ -1695,7 +1670,7 @@ msgstr "這是一個列表給每個電郵我們送給你跟什麼觸發他們的
 msgid "This social account has already been linked to another user."
 msgstr "這個社交媒體戶口早就被連接跟另外一個賬戶了"
 
-#: lib/glimesh_web/live/user_live/components/channel_title.html.leex:39
+#: lib/glimesh_web/live/user_live/components/channel_title.html.heex:73
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:35
 msgid "Title"
 msgstr "頭銜"
@@ -1704,11 +1679,11 @@ msgstr "頭銜"
 msgid "To be added"
 msgstr "要添加的"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:65
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:69
 msgid "Twitter"
 msgstr "《Twitter》"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:84
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:108
 msgid "Type of Email"
 msgstr "電郵類型"
 
@@ -1716,7 +1691,7 @@ msgstr "電郵類型"
 msgid "Unauthorized. This attempt has been logged."
 msgstr "擅自. 這個嘗試被記錄"
 
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:35
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:76
 msgid "Unban User"
 msgstr "解禁用戶"
 
@@ -1728,11 +1703,11 @@ msgstr "未驗證的戶口"
 msgid "Update Application"
 msgstr "更新申請"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:251
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:356
 msgid "Update Channel"
 msgstr "更新頻道"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:158
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:172
 msgid "Update User"
 msgstr "更新用戶"
 
@@ -1745,7 +1720,7 @@ msgstr "用戶名分: %{value}"
 msgid "User updated successfully"
 msgstr "用戶更新成功的"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:45
+#: lib/glimesh_web/live/user_live/components/report_button.ex:52
 #: lib/glimesh_web/templates/gct/edit_user.html.eex:22
 msgid "Username"
 msgstr "用戶名"
@@ -1754,7 +1729,7 @@ msgstr "用戶名"
 msgid "Verify Email"
 msgstr "驗證電郵"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:60
+#: lib/glimesh_web/live/user_live/profile.html.heex:97
 msgid "View on GCT"
 msgstr "在GCT上查看"
 
@@ -1770,11 +1745,11 @@ msgstr "警告你身在在編輯%{user}的頻道"
 msgid "WARNING YOU'RE CURRENTLY EDITING %{user}'s PROFILE SETTINGS"
 msgstr "警告你身在在編輯%{user}的個人資料設置"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:86
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:129
 msgid "We use Stripe as our payment provider."
 msgstr "我們用《Stripe》作爲我們的付款提供商"
 
-#: lib/glimesh_web/live/user_settings/notifications_live.html.leex:75
+#: lib/glimesh_web/live/user_settings/notifications_live.html.heex:95
 msgid "Your Email Log"
 msgstr "你的電郵記錄"
 
@@ -1786,23 +1761,19 @@ msgstr "你的戶口的電郵是已經確認"
 msgid "Your email has not be verified, in order to stream on Glimesh you need to verify your email."
 msgstr "你的電郵還沒有被確認的, 爲了直播在《Glimesh》上, 你需要驗證你的電郵"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:73
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:77
 msgid "Youtube"
 msgstr "《Youtube》"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:97
-msgid "Youtube Teaser URL"
-msgstr "《Youtube》預告片網址"
-
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:45
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:49
 msgid "username"
 msgstr "用戶名"
 
-#: lib/glimesh_web/live/user_live/components/viewer_count.ex:12
+#: lib/glimesh_web/live/user_live/components/viewer_count.ex:21
 msgid "%{count} "
 msgstr "%{count} "
 
-#: lib/glimesh_web/live/user_live/components/viewer_count.ex:12
+#: lib/glimesh_web/live/user_live/components/viewer_count.ex:18
 msgid "%{count} Viewers"
 msgstr "%{count}的觀衆人"
 
@@ -1842,7 +1813,7 @@ msgstr "定製你的頻道"
 msgid "DMCA"
 msgstr "數字千年版權法"
 
-#: lib/glimesh_web/templates/layout/root.html.leex:117
+#: lib/glimesh_web/templates/layout/root.html.heex:191
 msgid "DMCA Policy"
 msgstr "數字千年版權法政策"
 
@@ -1931,19 +1902,19 @@ msgstr "界面"
 msgid "Invalid e-mail / username or password"
 msgstr "無效的 / 用戶名還是密碼"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:82
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:116
 msgid "Invalid image. Max size is 100KB."
 msgstr "圖片無效. 最大尺寸是 100KB"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:64
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:95
 msgid "Invalid image. Must be either a PNG or JPG."
 msgstr "圖片無效. 它必須是PNG或者JPG"
 
-#: lib/glimesh_web/templates/about/team.html.eex:36
+#: lib/glimesh_web/templates/about/team.html.eex:35
 msgid "Join Us!"
 msgstr "加入我們!"
 
-#: lib/glimesh_web/templates/about/team.html.eex:44
+#: lib/glimesh_web/templates/about/team.html.eex:42
 msgid "Join our Discord"
 msgstr "加入我們 《Discord》"
 
@@ -1955,7 +1926,7 @@ msgstr "最後, 《Glimesh》正在努力將與音樂提供者和獨立藝術家
 msgid "Let's say you make an original drawing or an original piece of music. You as the creator have some basic copyrights being the first one to create that piece. But let's say someone online takes your music or your art and begins to distribute. You as the copyright owner have rights under the DMCA to go and request that that person stop doing that and get your permission first. Under the DMCA it is our responsibility as a platform to acknowledge that you own that art or music and take down any content that is redistributing your content without your permission. Without the DMCA and other copyright laws anyone could take your creation and use it for their own gains without you being able to do anything."
 msgstr "比如說你做了一個原畫還是一個原創的音樂. 你作爲創作者會有一些基本的版權作爲第一個人去創造它的. 但比如說某人在網上的把你的音樂或者藝術開始分發的. 你作爲版權擁有者擁有數字千年版權法的權利去要求要他們停止得到你的允許先. 根據數字千年版權法的規定這是我們的責任作爲平臺去承認你擁有那個圖畫或者那個音樂所以會取下來任何內容在未經您的許可分發內容. 萬一數字千年版權法沒有的, 任何人都可以拿和爲了自己的利益用和你無能爲力"
 
-#: lib/glimesh_web/live/admin/tag_live/index.html.leex:2
+#: lib/glimesh_web/live/admin/tag_live/index.html.heex:2
 msgid "Listing Tags"
 msgstr "列表的標籤"
 
@@ -1984,7 +1955,7 @@ msgid "Our History"
 msgstr "我們的歷史"
 
 #: lib/glimesh_web/controllers/about_controller.ex:24
-#: lib/glimesh_web/templates/about/mission.html.eex:3 lib/glimesh_web/templates/layout/about.html.eex:21
+#: lib/glimesh_web/templates/about/mission.html.eex:3 lib/glimesh_web/templates/layout/about.html.eex:18
 msgid "Our Mission"
 msgstr "我們的任務"
 
@@ -2041,7 +2012,7 @@ msgid "Start Now"
 msgstr "現在開始"
 
 #: lib/glimesh_web/controllers/about_controller.ex:11
-#: lib/glimesh_web/templates/about/alpha.html.eex:22 lib/glimesh_web/templates/layout/about.html.eex:15
+#: lib/glimesh_web/templates/about/alpha.html.eex:22 lib/glimesh_web/templates/layout/about.html.eex:12
 msgid "Streaming"
 msgstr "直播"
 
@@ -2055,9 +2026,9 @@ msgstr "流媒體在《Glimesh》上"
 msgid "Subscriptions"
 msgstr "訂閱"
 
-#: lib/glimesh_web/live/streams_live/list.html.leex:30
-#: lib/glimesh_web/live/user_live/components/channel_title.html.leex:67
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:101
+#: lib/glimesh_web/live/streams_live/list.html.heex:43
+#: lib/glimesh_web/live/user_live/components/channel_title.html.heex:108
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:138
 msgid "Tags"
 msgstr "標籤"
 
@@ -2065,7 +2036,7 @@ msgstr "標籤"
 msgid "Team Role"
 msgstr "團隊角色"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:24
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:28
 msgid "Team Role: %{value}"
 msgstr "團隊角色: %{value}"
 
@@ -2073,28 +2044,19 @@ msgstr "團隊角色: %{value}"
 msgid "The Glimesh Community Team is here with one goal in mind - to support the Glimesh community. We do this through global moderation, responding to tickets and reports, and by offering guidance. You'll find us dropping into channels to say hello or answer questions, as well as talking to the community in the Glimesh Discord! Our aim is to keep Glimesh a fun, welcoming, and most importantly a safe place for any content creator or viewer."
 msgstr "《Glimesh》社區團隊在這裏跟只一個目標 - 去支持《Glimesh》的社區. 我們通過全球適度, 迴應票和報告, 和提供得指導. 你可以找到我們通過進入我們的頻道打個招呼, 也與社區交談在《Glimesh》的《Discord》服務器! 我們的目標是保持《Glimesh》是一個有趣的, 歡迎的, 和最重要的是安全的地方給任何內容創建者或者觀看者."
 
-#: lib/glimesh_web/templates/about/team.html.eex:10
-msgid "The Glimesh Team is a core group responsible for our company and the platform we provide our users. We're a diverse group of individuals working together for a common cause and trying to leave the industry better than we found it. We run Glimesh as an open company with an unusually flat organizational hierarchy."
-msgstr "《Glimesh》的團隊是核心小組負責我們的公司和那個平臺我們提供給我們的用戶. 我們是一個多元化的一羣人來一起爲共同事業而工作的和試圖留這行業處於比發現它的時候更好的. 我們以開放的公司跟一個異常平坦的組織層次的身份經營《Glimesh》的"
-
 #: lib/glimesh_web/templates/about/dmca.html.eex:97
 msgid "The Steps"
 msgstr "步驟"
-
-#: lib/glimesh_web/controllers/about_controller.ex:18
-#: lib/glimesh_web/templates/about/team.html.eex:3 lib/glimesh_web/templates/layout/about.html.eex:18
-msgid "The Team"
-msgstr "團隊"
 
 #: lib/glimesh_web/templates/gct/index.html.eex:34
 msgid "Username/Channel ID"
 msgstr "用戶名/頻道名分"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:29
+#: lib/glimesh_web/live/user_live/profile.html.heex:44
 msgid "View Channel"
 msgstr "查看頻道"
 
-#: lib/glimesh_web/live/user_live/stream.html.leex:91
+#: lib/glimesh_web/live/user_live/stream.html.heex:224
 msgid "View Profile"
 msgstr "查看資料"
 
@@ -2182,7 +2144,7 @@ msgstr "2. 設置"
 msgid "3. Payouts"
 msgstr "3. 支付"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:40
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:52
 msgid "Additional Love & Thanks!"
 msgstr "額外的愛和感謝!"
 
@@ -2194,15 +2156,15 @@ msgstr "行政設定"
 msgid "After subscribing, funds can take time to settle in our account"
 msgstr "訂閱完了時候, 資金需要一些時間去入帳的"
 
-#: lib/glimesh_web/live/user_live/stream.html.leex:64
+#: lib/glimesh_web/live/user_live/stream.html.heex:167
 msgid "Agree & View Channel"
 msgstr "同意和觀看頻道"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:37
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:49
 msgid "All Supporter Perks"
 msgstr "全支持者獎勵"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:38
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:50
 msgid "Animated Gold Avatar Ring"
 msgstr "動畫金圖片邊框"
 
@@ -2210,11 +2172,11 @@ msgstr "動畫金圖片邊框"
 msgid "Automatically bypass our Mature Content warning by enabling this preference."
 msgstr "通過啓用這個偏好去自動繞過我們的成熟內容警告."
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:144
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:158
 msgid "Ban Settings"
 msgstr "銀行設定"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:69
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:107
 msgid "Blog"
 msgstr "博客"
 
@@ -2222,15 +2184,15 @@ msgstr "博客"
 msgid "Bypass Mature Content Warning"
 msgstr "繞過成熟內容警告"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:33
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:60
 msgid "Channel Primary Language"
 msgstr "頻道主要語言"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:44
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:71
 msgid "Channel contains mature content"
 msgstr "頻道具有成人內容"
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:52
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:62
 msgid "Chat Timestamp Visibility:"
 msgstr "聊天的時間戳記可見性:"
 
@@ -2238,16 +2200,16 @@ msgstr "聊天的時間戳記可見性:"
 msgid "Complete your setup process on Stripe"
 msgstr "完成你的設置過程在《Stripe》上"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:34
-#: lib/glimesh_web/live/homepage_live.html.heex:72
+#: lib/glimesh_web/live/homepage_live.ex:85
+#: lib/glimesh_web/live/homepage_live.ex:127
 msgid "Create Your Channel"
 msgstr "創造你的頻道"
 
-#: lib/glimesh_web/live/user_live/stream.html.leex:62
+#: lib/glimesh_web/live/user_live/stream.html.heex:164
 msgid "Do you wish to continue?"
 msgstr "你想不想要繼續?"
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:74
+#: lib/glimesh_web/live/user_live/profile.html.heex:118
 msgid "Follow Streamer"
 msgstr "關注直播人"
 
@@ -2267,11 +2229,11 @@ msgstr "GCT審覈日誌"
 msgid "Get subscribers!"
 msgstr "得到新的訂戶!"
 
-#: lib/glimesh/chat/effects.ex:70
+#: lib/glimesh/chat/effects.ex:79
 msgid "Glimesh Gold Supporter Subscriber"
 msgstr "《Glimesh》黃金支持者訂戶"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:178
+#: lib/glimesh_web/templates/user_payments/index.html.eex:188
 msgid "Glimesh Payouts"
 msgstr "《Glimesh》支付"
 
@@ -2283,11 +2245,11 @@ msgstr "《Glimesh》與稅務服務稱爲《Tax ID Pro》合作給你W-8BEN的�
 msgid "Glimesh will be paying you royalties based on the Copyright License you provided for us to use your content, per our Terms of Service. If you need help filling out your tax forms, please contact a local tax professional. Glimesh is not equipped, nor able to help you with support issues related to tax forms."
 msgstr "《Glimesh》將根據該你爲我們提供的版權許可向你支付特許權使用費, 每服務條款. 萬一你需要幫助填寫你的納稅表格, 請聯繫當地稅務專家. 《Glimesh》並沒有配備, 也無法幫助你解決與表格有關的支持問題."
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:16
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:20
 msgid "Gold Colored Avatar Ring"
 msgstr "金色圖片邊框"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:31
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:39
 msgid "Gold Supporter"
 msgstr "黃金支持者"
 
@@ -2299,7 +2261,7 @@ msgstr "黃金支持者"
 msgid "If non-US country:"
 msgstr "如果非美國的國家:"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:195
+#: lib/glimesh_web/templates/user_payments/index.html.eex:205
 msgid "If you want to deactivate your account or need help with something, please email support@glimesh.tv"
 msgstr "萬一你想要停用你的帳戶或者需要幫助某事, 請發電子郵件給support@glimesh.tv"
 
@@ -2307,8 +2269,8 @@ msgstr "萬一你想要停用你的帳戶或者需要幫助某事, 請發電子�
 msgid "In your bank on Friday"
 msgstr "在週五在你的銀行帳戶中"
 
-#: lib/glimesh_web/live/gct_live/components/channel_chat_log_table.html.leex:10
-#: lib/glimesh_web/live/gct_live/components/user_chat_log_table.html.leex:10
+#: lib/glimesh_web/live/gct_live/components/channel_chat_log_table.html.heex:9
+#: lib/glimesh_web/live/gct_live/components/user_chat_log_table.html.heex:9
 msgid "Inserted At"
 msgstr "插入在"
 
@@ -2324,11 +2286,11 @@ msgstr "是稅務驗證的"
 msgid "Language:"
 msgstr "語言:"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:193
+#: lib/glimesh_web/templates/user_payments/index.html.eex:203
 msgid "Manage Stripe Account"
 msgstr "管理《Stripe》戶口"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:40
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:67
 msgid "Mature Content"
 msgstr "成熟內容"
 
@@ -2336,20 +2298,20 @@ msgstr "成熟內容"
 msgid "Mature Content Visibility:"
 msgstr "成熟內容可見度:"
 
-#: lib/glimesh_web/live/user_live/stream.html.leex:59
+#: lib/glimesh_web/live/user_live/stream.html.heex:158
 msgid "Mature Content Warning"
 msgstr "成熟內容警告"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:73
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:111
 msgid "Merch"
 msgstr "商品"
 
-#: lib/glimesh_web/live/gct_live/components/channel_chat_log_table.html.leex:9
-#: lib/glimesh_web/live/gct_live/components/user_chat_log_table.html.leex:9
+#: lib/glimesh_web/live/gct_live/components/channel_chat_log_table.html.heex:8
+#: lib/glimesh_web/live/gct_live/components/user_chat_log_table.html.heex:8
 msgid "Message"
 msgstr "信息"
 
-#: lib/glimesh_web/live/gct_live/components/channel_chat_log_table.html.leex:8
+#: lib/glimesh_web/live/gct_live/components/channel_chat_log_table.html.heex:7
 msgid "Message Author"
 msgstr "信息筆者"
 
@@ -2361,7 +2323,7 @@ msgstr "你一旦完成完成表格, 它會自動的遞交去我們的. 我們�
 msgid "Other Countries:"
 msgstr "別的國家:"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:18
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:22
 msgid "Our Thanks!"
 msgstr "我們的感謝!"
 
@@ -2378,20 +2340,20 @@ msgid "Read this page carefully"
 msgstr "仔細閱讀這個頁"
 
 #: lib/glimesh_web/controllers/about_controller.ex:73
-#: lib/glimesh_web/templates/about/alpha.html.eex:109 lib/glimesh_web/templates/layout/root.html.leex:114
+#: lib/glimesh_web/templates/about/alpha.html.eex:109 lib/glimesh_web/templates/layout/root.html.heex:182
 msgid "Rules of Conduct"
 msgstr "行爲準則"
 
-#: lib/glimesh_web/live/streams_live/list.html.leex:37
+#: lib/glimesh_web/live/streams_live/list.html.heex:50
 msgid "Search for a stream by tags"
 msgstr "使用標籤搜索直播"
 
 #: lib/glimesh_web/controllers/user_payments_controller.ex:52
-#: lib/glimesh_web/templates/user_payments/index.html.eex:197 lib/glimesh_web/templates/user_payments/setup.html.eex:2
+#: lib/glimesh_web/templates/user_payments/index.html.eex:207 lib/glimesh_web/templates/user_payments/setup.html.eex:2
 msgid "Setup Glimesh Payouts"
 msgstr "設置《Glimesh》支付"
 
-#: lib/glimesh_web/live/streams_live/list.html.leex:45
+#: lib/glimesh_web/live/streams_live/list.html.heex:59
 msgid "Showing %{count_channels} of %{total_channels} Live Channels"
 msgstr "顯示%{total_channels}個直播頻道中的%{count_channels}個"
 
@@ -2399,11 +2361,11 @@ msgstr "顯示%{total_channels}個直播頻道中的%{count_channels}個"
 msgid "Site Content"
 msgstr "網站內容"
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:36
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:46
 msgid "Site Theme:"
 msgstr "網站主題:"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:206
+#: lib/glimesh_web/templates/user_payments/index.html.eex:216
 msgid "Start Process"
 msgstr "開始過程"
 
@@ -2411,16 +2373,16 @@ msgstr "開始過程"
 msgid "Stripe Deposit can take 24-48 hours, and can take additional time"
 msgstr "《Stripe》存款可能要花24-48個小時, 也可以需要更多時間"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:183
+#: lib/glimesh_web/templates/user_payments/index.html.eex:193
 msgid "Stripe Setup:"
 msgstr "《Stripe》設置:"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:26
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:30
 msgid "Stripe Setup: %{value}"
 msgstr "《Stripe》設置: %{value}"
 
 #: lib/glimesh_web/controllers/user_payments_controller.ex:85
-#: lib/glimesh_web/templates/user_payments/index.html.eex:189 lib/glimesh_web/templates/user_payments/taxes.html.eex:2
+#: lib/glimesh_web/templates/user_payments/index.html.eex:199 lib/glimesh_web/templates/user_payments/taxes.html.eex:2
 msgid "Submit Tax Forms"
 msgstr "遞交稅單"
 
@@ -2428,13 +2390,14 @@ msgstr "遞交稅單"
 msgid "Submit your W-8 form"
 msgstr "遞交你的W-8表格"
 
-#: lib/glimesh_web/live/channel_settings_live/addons.html.leex:6
-#: lib/glimesh_web/live/user_live/stream.html.leex:39 lib/glimesh_web/templates/layout/_navbar.html.leex:77
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:104 lib/glimesh_web/templates/layout/root.html.leex:106
+#: lib/glimesh_web/live/about/go_live_live.ex:239
+#: lib/glimesh_web/live/channel_settings_live/addons.html.heex:9 lib/glimesh_web/live/user_live/stream.html.heex:128
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:115 lib/glimesh_web/templates/layout/_navbar.html.heex:148
+#: lib/glimesh_web/templates/layout/root.html.heex:167
 msgid "Support"
 msgstr "支持"
 
-#: lib/glimesh_web/templates/gct/lookup_user.html.eex:27
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:31
 msgid "Tax Verified: %{value}"
 msgstr "稅務驗證的: %{value}"
 
@@ -2442,7 +2405,7 @@ msgstr "稅務驗證的: %{value}"
 msgid "Tax Withholding Percent"
 msgstr "稅務保留百分"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:184
+#: lib/glimesh_web/templates/user_payments/index.html.eex:194
 msgid "Taxes Verified:"
 msgstr "稅務驗證的:"
 
@@ -2450,7 +2413,7 @@ msgstr "稅務驗證的:"
 msgid "Thank you for setting up your account with our payments partner Stripe! Next up is to verify your tax withholding amount by uploading a W-8 form. This form is provided by the Internal Revenue Service of the United States, and is required to collect so we can properly withhold tax on your payouts."
 msgstr "感謝你設置你的戶口跟我們的付款夥伴《Stripe》! 接下來是去驗證你的稅務保留數量通過上載一個W-8單. 這是由國內稅收服務提供的也是需要的所以我們可以適當地保留稅在你的支付."
 
-#: lib/glimesh_web/live/user_live/stream.html.leex:61
+#: lib/glimesh_web/live/user_live/stream.html.heex:160
 msgid "The streamer has flagged this channel as only appropriate for Mature Audiences."
 msgstr "這個直播人標記了這個頻道標記爲只適合供成熟的觀衆."
 
@@ -2462,11 +2425,11 @@ msgstr "這頁不是法律或者稅務建議. 在接受《Glimesh》支付之前
 msgid "United States:"
 msgstr "美國:"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:65
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:103
 msgid "User List"
 msgstr "用戶清單"
 
-#: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:8
+#: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:11
 msgid "View Chat Log"
 msgstr "查看聊天記錄"
 
@@ -2474,15 +2437,15 @@ msgstr "查看聊天記錄"
 msgid "Wait for internal review process"
 msgstr "等待內部審查"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:202
+#: lib/glimesh_web/templates/user_payments/index.html.eex:212
 msgid "We only support payouts in the countries listed above, if you don't see your country then unfortunately we do not yet support payouts for you."
 msgstr "我們只支持支付在上面列出的國家, 萬一你沒看到你的國家 那麼不幸的是我們還不支持支付給你提供."
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:200
+#: lib/glimesh_web/templates/user_payments/index.html.eex:210
 msgid "Your Country"
 msgstr "你的國家"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:180
+#: lib/glimesh_web/templates/user_payments/index.html.eex:190
 msgid "Your account setup is still pending."
 msgstr "你的戶口設置還是在等待中."
 
@@ -2490,56 +2453,56 @@ msgstr "你的戶口設置還是在等待中."
 msgid "%{user}'s Chat Logs"
 msgstr "%{user}的聊天記錄"
 
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:17
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:28
 msgid "Are you sure you want to unsubscribe?"
 msgstr "你確定你想要退訂?"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:56
-#: lib/glimesh_web/templates/user_payments/index.html.eex:70
+#: lib/glimesh_web/templates/user_payments/index.html.eex:81
 msgid "Canceling on %{date}"
 msgstr "在%{date}取消"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:252
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:357
 msgid "Deactivate Channel"
 msgstr "停用頻道"
 
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:18
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:38
 msgid "Delete Stripe Account"
 msgstr "刪除《Stripe》帳戶"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:110
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:159
 msgid "Discord Invite Code"
 msgstr "《Discord》邀請碼"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:39
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:51
 msgid "Gold Username"
 msgstr "金色用戶名"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:212
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:308
 msgid "Hours"
 msgstr "小時"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:216
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:312
 msgid "How many hours should the account exist before they can chat? Set to zero to disable."
 msgstr "幾個小時戶口需要存在才能夠聊天的? 設置到零以禁用."
 
-#: lib/glimesh/accounts/user.ex:409
+#: lib/glimesh/accounts/user.ex:411
 msgid "Invalid Discord invite URL"
 msgstr "無效《Discord》邀請碼"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:46
+#: lib/glimesh_web/live/user_live/components/report_button.ex:53
 msgid "Not on Glimesh"
 msgstr "不在《Glimesh》上"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:82
+#: lib/glimesh_web/live/user_live/components/report_button.ex:121
 msgid "Other details you'd like to share"
 msgstr "別的細節你想要分享"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:48
+#: lib/glimesh_web/live/user_live/components/report_button.ex:56
 msgid "Please include relevant links in the notes section."
 msgstr "請包括相關的鏈接在筆記部分裏."
 
-#: lib/glimesh_web/live/chat_live/message_form.html.heex:36
+#: lib/glimesh_web/live/chat_live/message_form.html.heex:71
 msgid "Pop-out Chat"
 msgstr "彈出聊天"
 
@@ -2551,71 +2514,71 @@ msgstr "問題上傳頭像, 請稍後再試."
 msgid "Problem uploading stream images, please try again later."
 msgstr "問題上傳直播圖片, 請稍後再試."
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:44
+#: lib/glimesh_web/live/user_live/components/report_button.ex:51
 msgid "Profile Text or Avatar"
 msgstr "個人資料文字或者頭像照片"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:203
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:294
 msgid "Require confirmed email before chatting?"
 msgstr "需要確認的電郵在閒聊之前?"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:208
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:303
 msgid "Require minimum account length before chatting?"
 msgstr "需要確認的最短持續自創建以來的時間在閒聊之前?"
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:62
-#: lib/glimesh_web/live/support_modal/sub_form.ex:13 lib/glimesh_web/live/support_modal/sub_form.ex:23
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:15 lib/glimesh_web/live/user_live/components/subscribe_button.ex:71
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:87
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:84
+#: lib/glimesh_web/live/support_modal/sub_form.ex:13 lib/glimesh_web/live/support_modal/sub_form.ex:53
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:20 lib/glimesh_web/live/user_live/components/subscribe_button.ex:122
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:151
 msgid "Resubscribe"
 msgstr "重新訂閱"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:41
+#: lib/glimesh_web/live/user_live/components/report_button.ex:48
 msgid "Select One"
 msgstr "選擇一個"
 
-#: lib/glimesh_web/live/chat_live/message_form.html.heex:26
+#: lib/glimesh_web/live/chat_live/message_form.html.heex:40
 msgid "Send a message"
 msgstr "送一個信息"
 
-#: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:10
+#: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:22
 msgid "Shutdown Broadcast"
 msgstr "關掉直播"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:43
+#: lib/glimesh_web/live/user_live/components/report_button.ex:50
 msgid "Stream Chat"
 msgstr "直播聊天"
 
-#: lib/glimesh_web/live/user_live/components/channel_title.html.leex:30
+#: lib/glimesh_web/live/user_live/components/channel_title.html.heex:58
 msgid "Stream Info"
 msgstr "直播信息"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:42
+#: lib/glimesh_web/live/user_live/components/report_button.ex:49
 msgid "Stream Video Content"
 msgstr "直播視頻內容"
 
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:15
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:29
 msgid "Stripe Actions"
 msgstr "《Stripe》行動"
 
-#: lib/glimesh_web/live/gct_live/components/user_chat_log_table.html.leex:8
+#: lib/glimesh_web/live/gct_live/components/user_chat_log_table.html.heex:7
 msgid "Target Channel"
-msgstr "目標平道"
+msgstr "目標頻道"
 
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:27
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:55
 msgid "View Chat Logs"
 msgstr "查看聊天記錄"
 
-#: lib/glimesh_web/live/user_live/components/report_button.ex:39
+#: lib/glimesh_web/live/user_live/components/report_button.ex:41
 msgid "Where did this happen?"
 msgstr "這在那裏發生的?"
 
-#: lib/glimesh_web/live/support_modal/sub_form.ex:21
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:85
+#: lib/glimesh_web/live/support_modal/sub_form.ex:43
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:141
 msgid "You can resubscribe by clicking the button below, and your subscription will be renewed until you cancel it."
 msgstr "你可以通過點擊下面的按鈕重新訂閱, 進而你的訂閱會被更新直到你取消它."
 
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:23
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:49
 msgid "You cannot subscribe to this user."
 msgstr "你不能訂閱這個用戶."
 
@@ -2627,1028 +2590,1307 @@ msgstr "你必須要閒聊前先確認你的電子郵件."
 msgid "You must wait %{time_left} more minutes to chat."
 msgstr "你必須要再等%{time_left}分鐘去聊天."
 
-#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:84
+#: lib/glimesh_web/live/user_live/components/subscribe_button.ex:136
 msgid "Your subscription is currently set to automatically cancel at the end of your billing cycle."
 msgstr "你的訂閱目前已設置爲自動取消在你的結算週期結束時."
 
-#: lib/glimesh_web/live/platform_subscription_live/index.html.leex:58
+#: lib/glimesh_web/live/platform_subscription_live/index.html.heex:74
 msgid "Your subscription is set to be canceled automatically at the end of the billing cycle."
 msgstr "你的訂閱目前已設置爲自動取消在結算週期結束時."
 
 #: lib/glimesh_web/live/user_live/followers.ex:31
 msgid "%{username}'s Following"
-msgstr ""
+msgstr "%{username}的關注的用戶"
 
 #: lib/glimesh_web/templates/gct/lookup_user.html.eex:16
 msgid "2FA Enabled: %{value}"
-msgstr ""
+msgstr "雙重認證啓用: %{value}"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:117
 msgid "Additional Support"
-msgstr ""
+msgstr "額外支援"
 
-#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.leex:77
-msgid "After you submit your emotes they'll be reviewed by our Glimesh Community Team for compliance. If they are approved they will be automatically available on your channel. If they are rejected you'll see them below with a reason why. You can delete rejected emotes and reupload them if you want to try again."
-msgstr ""
-
-#: lib/glimesh_web/live/streams_live/following.html.leex:62
+#: lib/glimesh_web/live/streams_live/following.html.heex:86
 msgid "All Followed Streamers"
-msgstr ""
+msgstr "每個關注的直播人"
 
 #: lib/glimesh_web/controllers/about_controller.ex:28
-#: lib/glimesh_web/templates/about/alpha.html.eex:3 lib/glimesh_web/templates/layout/about.html.eex:12
+#: lib/glimesh_web/templates/about/alpha.html.eex:3
 msgid "Alpha"
-msgstr ""
+msgstr "alpha (初步)"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:49
 msgid "Alpha Roadmap"
-msgstr ""
+msgstr "Alpha (初步) 計劃"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:70
 msgid "As explained, we know there are going to be bugs and issues that users may experience within this Alpha version of our platform, but we are prepared! We have an amazing team that is ready to triage, fix, and help resolve any issues you may face. Our Discord is the main source of most of our questions, suggestions, and bug reports and you can find details on how to navigate it below!"
-msgstr ""
+msgstr "如解釋的, 我們知道會有用戶可能會經歷到錯誤和問題在在這個Alpha版本的平臺, 但我們準備了! 我們有一個很棒的團隊準備去評估, 修理, 和幫助解決什麼問題你可能會遇到的. 我們的《Discord》是主要的來源給我們的問題, 建議, 和錯誤報告還有你可以查出怎麼瀏覽的細節在下面的!"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:99
 msgid "Before you use the platform, you must review our Terms of Service to ensure your streams and content do not violate any of our conditions. The Terms of Service also includes information about your rights and usage of the website."
-msgstr ""
+msgstr "在你用之前, 你必須要閱讀我們的服務條款給確保你的廣播和內容什麼不違反我們的服務條款的. 服務條款也有信息給你的權利和網站用法."
 
 #: lib/glimesh_web/live/streams_live/index.ex:8
-#: lib/glimesh_web/live/streams_live/index.ex:57
+#: lib/glimesh_web/live/streams_live/index.ex:62
 msgid "Categories"
-msgstr ""
+msgstr "類別"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:108
+#: lib/glimesh_web/live/homepage_live.ex:161
 msgid "Categories Made Simpler"
-msgstr ""
+msgstr "更簡單變得類別"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:27
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:51
 msgid "Channel Customization"
-msgstr ""
+msgstr "頻道定製"
 
 #: lib/glimesh_web/live/channel_settings_live/channel_emotes.ex:20
-#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.leex:5
+#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.heex:5
 msgid "Channel Emotes"
-msgstr ""
+msgstr "頻道表情"
 
 #: lib/glimesh_web/controllers/user_settings_controller.ex:56
 msgid "Channel Statistics"
-msgstr ""
+msgstr "頻道統計"
 
-#: lib/glimesh_web/live/about/open_data_live.html.leex:19
-msgid "Channel and platform subscriptions totals by month."
-msgstr ""
-
-#: lib/glimesh_web/live/support_modal/support_modal.ex:146
+#: lib/glimesh_web/live/support_modal/support_modal.ex:217
 msgid "Channel sub badge"
-msgstr ""
+msgstr "頻道訂閱徽章"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:145
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:182
 msgid "Chat Customization"
-msgstr ""
+msgstr "聊天定製"
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:192
+#: lib/glimesh_web/live/support_modal/support_modal.ex:321
 msgid "Collect & Redeem Cards!"
-msgstr ""
+msgstr "蒐集和兌換卡!"
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:196
+#: lib/glimesh_web/live/support_modal/support_modal.ex:330
 msgid "Collect unique cards & earn achievements"
-msgstr ""
+msgstr "蒐集獨特的卡和賺取成就獎"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:28
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:53
 msgid "Create and design a channel custom to you by uploading unique images and identifying what type of content viewers can expect from your channel. You can customize the content that appears under your stream on your Profile page."
-msgstr ""
+msgstr "創造和設計一個對你獨特的頻道通過上傳獨特的圖片和確認什麼樣的內容觀衆人可以希望從你的頻道的. 你可以定製在直播出現的內容在你的個人資料頁."
 
-#: lib/glimesh_web/live/user_live/profile.html.leex:33
+#: lib/glimesh_web/live/user_live/profile.html.heex:55
 msgid "Create your channel"
-msgstr ""
+msgstr "創造你的頻道"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:232
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:334
 msgid "Current stream must be live for at least 15 minutes"
-msgstr ""
+msgstr "現在的直播必須要最少15分鐘現場的"
 
-#: lib/glimesh_web/live/about/open_data_live.html.leex:34
+#: lib/glimesh_web/live/about/open_data_live.ex:53
 msgid "Current week / month data updates daily."
-msgstr ""
+msgstr "當前 周/月 數據每天更新."
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:90
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:125
 msgid "Customize the information you want to show viewers based on the content you are doing right now. You can also access these options by clicking the edit button in the title of your channel page."
-msgstr ""
+msgstr "定製你想要給觀衆看的信息基於你現在在做的內容. 你也可以訪問這些選項在點擊編輯按鈕在你的頻道頁標題."
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:123
 msgid "Day One Streamer Guide"
-msgstr ""
+msgstr "第一天直播人的指南"
 
-#: lib/glimesh_web/live/user_live/stream.html.leex:124
+#: lib/glimesh_web/live/user_live/stream.html.heex:281
 msgid "Debug Information"
-msgstr ""
+msgstr "調試信息"
 
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:50
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:24
 msgid "Delete Message"
-msgstr ""
+msgstr "刪除信息"
 
-#: lib/glimesh_web/live/chat_live/index.html.leex:15
+#: lib/glimesh_web/live/chat_live/index.html.heex:39
 msgid "Delete message."
-msgstr ""
+msgstr "刪除信息."
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:46
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:59
 msgid "Display Pronoun:"
-msgstr ""
+msgstr "顯示代詞:"
 
-#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.leex:12
-msgid "During early testing we're limiting all channels to two emotes: either static, animated, or a combination."
-msgstr ""
-
-#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.leex:14
-#: lib/glimesh_web/live/user_settings/components/channel_statistics_live.html.leex:3
+#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.heex:17
+#: lib/glimesh_web/live/user_settings/components/channel_statistics_live.html.heex:3
 msgid "Early Feature Alert!"
-msgstr ""
+msgstr "初步的特徵警報!"
 
-#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.leex:67
+#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.heex:100
 msgid "Emote Settings"
-msgstr ""
+msgstr "表情設定"
 
 #: lib/glimesh_web/templates/layout/user-sidebar.html.eex:42
 msgid "Emotes"
-msgstr ""
+msgstr "表情"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:109
+#: lib/glimesh_web/live/homepage_live.ex:162
 msgid "Explore our categories and find your new home!"
-msgstr ""
+msgstr "探討我們的類別去找到你的新住所!"
 
 #: lib/glimesh_web/controllers/user_authorized_apps_controller.ex:25
 msgid "Failed to revoke token."
-msgstr ""
+msgstr "撤銷令牌失敗."
 
-#: lib/glimesh_web/live/streams_live/list.html.leex:7
+#: lib/glimesh_web/live/streams_live/list.html.heex:10
 msgid "Filters"
-msgstr ""
+msgstr "篩選條件"
 
-#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.leex:77
+#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.heex:126
 msgid "Five character emote prefix, cannot be changed if you have active emotes."
-msgstr ""
+msgstr "五表情前綴, 不能換萬一你有活躍的表情."
 
-#: lib/glimesh/channel_categories.ex:336
+#: lib/glimesh/channel_categories.ex:337
 msgid "Game"
-msgstr ""
+msgstr "遊戲"
 
-#: lib/glimesh/channel_categories.ex:370
+#: lib/glimesh/channel_categories.ex:371
 msgid "Game Database powered by %{link}"
-msgstr ""
+msgstr "遊戲資料庫被被%{link}供電的"
 
-#: lib/glimesh/channel_categories.ex:340
+#: lib/glimesh/channel_categories.ex:341
 msgid "Genre"
-msgstr ""
+msgstr "類型"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:98
 msgid "Get up to speed with our Terms of Service!"
-msgstr ""
+msgstr "瞭解情況我們的服務條款!"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:126
 msgid "Glimesh Support"
-msgstr ""
+msgstr "《Glimesh》支持服務"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:130
 msgid "Glimesh Support Portal"
-msgstr ""
+msgstr "《Glimesh》支持服務門戶網"
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:195
 msgid "Glimesh aims to be as fair as possible. While we cannot condone improper use of copyright material we know that not all DMCA claims are fair. We will be open to help in whatever ways possible to ensure you have the best opportunity to correct DMCA claims. While we are not lawyers and cannot offer legal advice we will do our best to help you get in the right direction for correcting any claims in a fair manner."
-msgstr ""
+msgstr "《Glimesh》旨在盡當最可能公平的. 雖然我們不能寬恕不當的用版權保護的材料我們知道不是每個數字千年版權法主張是公平的. 我們是會願意任何可能的方式幫助你改變數字千年版權法主張. 雖然我們不是律師所以不能給你法律諮詢我們會盡力而爲去幫助你正確開始改變什麼主張在一個公平的方式."
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:223
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:323
 msgid "Glimesh is now showing your channels on the homepage! It's a completely random process, however you must opt-in and you must have completed the following qualifications first."
-msgstr ""
+msgstr "《Glimesh》現在在顯示你的頻道在主頁上! 這是個完全地隨機的過程, 但是你必須要選擇加入還有你需要完成以下的資格標準先."
 
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:46
 msgid "Glimesh uses FTL technology for its sub-second live streams so it's not compatible with all streaming software. Check with your software provider for FTL support!"
-msgstr ""
+msgstr "《Glimesh》用超光速科技給它的次秒的直播所以它不跟每個直播軟件兼容的. 跟你的軟件供應商給超光速的支持!"
 
 #: lib/glimesh_web/templates/layout/gct-sidebar.html.eex:12
 msgid "Global Emotes"
-msgstr ""
+msgstr "全球的表情"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:66
 msgid "Help Us Improve"
-msgstr ""
+msgstr "幫助我們改善"
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:142
+#: lib/glimesh_web/live/support_modal/support_modal.ex:210
 msgid "Help support %{streamer} monthly by subscribing to their content."
-msgstr ""
+msgstr "幫助支持%{streamer}買個月經過去訂閱他們的內容."
 
-#: lib/glimesh_web/live/streams_live/list.html.leex:7
+#: lib/glimesh_web/live/streams_live/list.html.heex:10
 msgid "Hide"
-msgstr ""
+msgstr "躲藏"
 
-#: lib/glimesh_web/live/chat_live/message_form.html.heex:44
+#: lib/glimesh_web/live/chat_live/message_form.html.heex:94
 msgid "Hide Mod Icons"
-msgstr ""
+msgstr "躲藏主持圖標"
 
-#: lib/glimesh_web/live/chat_live/message_form.html.heex:39
-#: lib/glimesh_web/live/chat_live/message_form.html.heex:48
+#: lib/glimesh_web/live/chat_live/message_form.html.heex:82
+#: lib/glimesh_web/live/chat_live/message_form.html.heex:100
 msgid "Hide Timestamps"
-msgstr ""
+msgstr "躲藏時間戳記"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:227
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:329
 msgid "Homepage Qualifications"
-msgstr ""
+msgstr "主頁資格標準"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:75
 msgid "How can I make a suggestion?"
-msgstr ""
+msgstr "我真麼可以提個建議?"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:78
 msgid "How do I report a bug?"
-msgstr ""
+msgstr "我真麼可以報告錯誤?"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:189
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:271
 msgid "If yes, chat will only show 5 messages posted in the last 60 minutes when a new viewer joins."
-msgstr ""
+msgstr "萬一選擇了, 只會顯示5個發佈的信息從最後60分鐘以後的萬一新觀衆人加入的."
 
-#: lib/glimesh_web/live/homepage_live.html.heex:37
-#: lib/glimesh_web/live/homepage_live.html.heex:77
+#: lib/glimesh_web/live/homepage_live.ex:96
+#: lib/glimesh_web/live/homepage_live.ex:137
 msgid "Join %{user_count} others!"
-msgstr ""
+msgstr "加入跟%{user_count}個其他人!"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:86
 msgid "Join Our Discord"
-msgstr ""
+msgstr "加入我們的 《Discord》"
 
-#: lib/glimesh_web/live/support_modal/donate_form.ex:48
-#: lib/glimesh_web/live/support_modal/sub_form.ex:49
+#: lib/glimesh_web/live/support_modal/donate_form.ex:71
+#: lib/glimesh_web/live/support_modal/gift_sub_form.ex:69 lib/glimesh_web/live/support_modal/sub_form.ex:101
 msgid "Learn More"
-msgstr ""
+msgstr "瞭解更多"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:38
 msgid "Live Events"
-msgstr ""
+msgstr "現場活動"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:28
-#: lib/glimesh_web/live/homepage_live.html.heex:65
+#: lib/glimesh_web/live/homepage_live.ex:75
+#: lib/glimesh_web/live/homepage_live.ex:114
 msgid "Live Streaming!"
-msgstr ""
+msgstr "現場直播!"
 
-#: lib/glimesh_web/live/support_modal/donate_form.ex:51
-#: lib/glimesh_web/live/support_modal/sub_form.ex:52
+#: lib/glimesh_web/live/support_modal/donate_form.ex:79
+#: lib/glimesh_web/live/support_modal/gift_sub_form.ex:77 lib/glimesh_web/live/support_modal/sub_form.ex:109
 msgid "Log in"
-msgstr ""
+msgstr "登錄"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:58
 msgid "Manage Subscription"
-msgstr ""
+msgstr "管理訂閱"
 
-#: lib/glimesh_web/live/homepage_live.ex:113
-#: lib/glimesh_web/live/homepage_live.html.heex:50 lib/glimesh_web/live/streams_live/following.html.leex:46
-#: lib/glimesh_web/live/streams_live/list.html.leex:92 lib/glimesh_web/live/user_live/stream.html.leex:97
+#: lib/glimesh_web/live/channels/components/channel_preview.ex:66
+#: lib/glimesh_web/live/homepage_live.ex:58 lib/glimesh_web/live/streams_live/following.html.heex:70
+#: lib/glimesh_web/live/streams_live/list.html.heex:148 lib/glimesh_web/live/user_live/stream.html.heex:235
 msgid "Mature"
-msgstr ""
+msgstr "成人"
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:61
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:71
 msgid "Mod Icons Visibility:"
-msgstr ""
+msgstr "主持圖標可見性:"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:46
 msgid "More!"
-msgstr ""
+msgstr "跟多!"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:230
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:332
 msgid "Must have streamed for at least 10 hours total on Glimesh"
-msgstr ""
+msgstr "必須要至少10個小時在《Glimesh》上"
 
-#: lib/glimesh_web/live/chat_live/index.html.leex:59
+#: lib/glimesh_web/live/chat_live/index.html.heex:114
 msgid "New chat messages below!"
-msgstr ""
+msgstr "新的聊天信息以下!"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:27
-#: lib/glimesh_web/live/homepage_live.html.heex:64
+#: lib/glimesh_web/live/homepage_live.ex:74
+#: lib/glimesh_web/live/homepage_live.ex:113
 msgid "Next-Gen"
-msgstr ""
+msgstr "下一代"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:231
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:333
 msgid "No previous disciplinary actions"
-msgstr ""
+msgstr "沒有以前的紀律處分"
 
-#: lib/glimesh_web/live/streams_live/list.html.leex:119
+#: lib/glimesh_web/live/streams_live/list.html.heex:182
 msgid "No streams found for selected filter."
-msgstr ""
+msgstr "沒有直播找到給選擇的篩選條件."
 
-#: lib/glimesh_web/live/streams_live/following.html.leex:8
+#: lib/glimesh_web/live/streams_live/following.html.heex:8
 msgid "None of the streams you follow are live."
-msgstr ""
+msgstr "沒有任何一個關注的直播是在現場的."
 
-#: lib/glimesh_web/live/about/open_data_live.html.leex:26
+#: lib/glimesh_web/live/about/open_data_live.ex:38
 msgid "Number of unique streamers and peak viewers by week."
-msgstr ""
+msgstr "數值給獨特直播人和追多的觀衆人按周來的."
 
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:29
 msgid "OBS Studio Setup Guide"
-msgstr ""
+msgstr "OBS Studio 設置指南"
 
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:28
 msgid "OBS Studio is the recommended program for streaming to Glimesh, setting it up to stream is a simple as finding it in the services list and hitting Start Streaming."
-msgstr ""
+msgstr "OBS Studio 是推薦的程序給《Glimesh》上直播, 設置給直播是很簡單的就只需要找到在服務單上再按開始直播."
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:49
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:65
 msgid "On Channel"
-msgstr ""
+msgstr "在頻道上"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:55
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:76
 msgid "On Profile"
-msgstr ""
+msgstr "在個人資料上"
 
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:45
 msgid "Other Streaming Software"
-msgstr ""
+msgstr "別的直播軟件"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:40
 msgid "Our Glimesh Community Team will be hosting live events filled with content from all of our various categories. Keep an eye out on our Twitter, for now, to stay up to date with these."
-msgstr ""
+msgstr "我們的《Glimesh》社區團隊會主持現場活動將包括內容從每個我們的各種各樣的類別. 暫且密切關注我們的《Twitter》去保持最新的現場活動."
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:106
 msgid "Our Rules of Conduct is another required reading, especially for streamers! It includes rules and guidelines on the type of content that is appropriate for Glimesh, and violating its guidelines could lead to repercussions."
-msgstr ""
+msgstr "我們的行爲規範是另外一個必需要閱讀的, 特別對直播人的! 裏面有規則和準則給什麼樣子的內容是合適給《Glimesh》的, 準則違反可以導致反響的."
 
-#: lib/glimesh_web/live/user_settings/components/channel_statistics_live.html.leex:13
+#: lib/glimesh_web/live/user_settings/components/channel_statistics_live.html.heex:14
 msgid "Peak Viewers"
-msgstr ""
+msgstr "最多的觀衆人"
 
-#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.leex:92
+#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.heex:223
 msgid "Pending Review"
-msgstr ""
+msgstr "等待批准處理"
 
-#: lib/glimesh_web/live/support_modal/donate_form.ex:47
-#: lib/glimesh_web/live/support_modal/sub_form.ex:48
+#: lib/glimesh_web/live/support_modal/donate_form.ex:67
+#: lib/glimesh_web/live/support_modal/gift_sub_form.ex:65 lib/glimesh_web/live/support_modal/sub_form.ex:97
 msgid "People first streaming, with discoverability as a primary feature. Let's build the next\n"
 "        generation of streaming."
-msgstr ""
+msgstr "用戶人先的直播, 跟發現性給第一個特徵. 由此我們去建設下一代的直播."
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:41
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:54
 msgid "Preferred Pronoun"
-msgstr ""
+msgstr "首選代詞"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:14
 msgid "Profiles"
-msgstr ""
+msgstr "個人資料"
 
-#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.leex:39
+#: lib/glimesh_web/live/user_settings/components/profile_settings_live.html.heex:52
 msgid "Pronoun Settings"
-msgstr ""
+msgstr "代詞設置"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:73
 msgid "Really easy! You simply need to join our Discord and locate the channel named #questions. After you've fully written out your question, send it and we'll help you out as soon as possible."
-msgstr ""
+msgstr "很簡單的! 你就需要加入我們的《Discord》在查找頻道命名爲#questions. 之後你把你的問題全寫下來了, 就去發還有我們會盡早的幫助你."
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:197
+#: lib/glimesh_web/live/support_modal/support_modal.ex:331
 msgid "Redeem on stream for real-time interaction"
-msgstr ""
+msgstr "在直播上兌換給即時的互動"
 
-#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.leex:90
+#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.heex:221
 msgid "Rejected"
-msgstr ""
+msgstr "拒絕了"
 
-#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.leex:96
+#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.heex:227
 msgid "Rejected for:"
-msgstr ""
+msgstr "拒絕爲:"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:48
 msgid "Remember, this is just the Alpha! We are excited to continue to develop features you expect while still continuing to innovate on brand new ideas. You can check out our Alpha Roadmap for planned features."
-msgstr ""
+msgstr "記得, 這只是初步的建造! 我們很興奮地繼續去以便在發展你期望的特徵同時以便在進行中創新新的創意. 你可以查看我們的初步計劃給計劃的特徵."
 
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:29
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:66
 msgid "Remove 2FA"
-msgstr ""
+msgstr "取消雙重認證"
 
-#: lib/glimesh_web/live/streams_live/list.html.leex:49
+#: lib/glimesh_web/live/streams_live/list.html.heex:66
 msgid "Remove Filters"
-msgstr ""
+msgstr "去掉篩選條件"
 
 #: lib/glimesh_web/templates/layout/gct-sidebar.html.eex:17
 msgid "Review Emotes"
-msgstr ""
+msgstr "查閱表情"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:105
 msgid "Review our Rules of Conduct!"
-msgstr ""
-
-#: lib/glimesh/channel_categories.ex:358
-msgid "Search by Game"
-msgstr ""
-
-#: lib/glimesh/channel_categories.ex:362
-msgid "Search by Genre"
-msgstr ""
+msgstr "查閱我們的行爲規範!"
 
 #: lib/glimesh/channel_categories.ex:359
-msgid "Search by Style"
-msgstr ""
+msgid "Search by Game"
+msgstr "按遊戲找"
 
-#: lib/glimesh/channel_categories.ex:360 lib/glimesh/channel_categories.ex:361
 #: lib/glimesh/channel_categories.ex:363
+msgid "Search by Genre"
+msgstr "按類型找"
+
+#: lib/glimesh/channel_categories.ex:360
+msgid "Search by Style"
+msgstr "按樣式找"
+
+#: lib/glimesh/channel_categories.ex:361 lib/glimesh/channel_categories.ex:362
+#: lib/glimesh/channel_categories.ex:364
 msgid "Search by Topic"
-msgstr ""
+msgstr "按題目找"
 
-#: lib/glimesh_web/live/user_live/components/channel_title.html.leex:73
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:107
+#: lib/glimesh_web/live/user_live/components/channel_title.html.heex:115
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:145
 msgid "Search for tags to describe your stream"
-msgstr ""
+msgstr "搜索形容你直播的標籤"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:35
-#: lib/glimesh_web/live/homepage_live.html.heex:73
+#: lib/glimesh_web/live/homepage_live.ex:89
+#: lib/glimesh_web/live/homepage_live.ex:131
 msgid "Setup Payouts"
-msgstr ""
+msgstr "設置支付款"
 
-#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.leex:70
+#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.heex:104
 msgid "Setup your channel emote prefix before you can upload emotes. This will be a unique prefix that allows users to use your emotes."
-msgstr ""
+msgstr "在你可以上傳之前你先需要設置你的表情前綴. 這是會當個獨特的前綴給用戶人去利用你的表情."
 
-#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.leex:59
+#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.heex:91
 msgid "Setup your emote prefix on the right before you can upload emotes!"
-msgstr ""
+msgstr "在你可以上傳之前你先需要在右邊設置你的表情前綴!"
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:64
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:74
 msgid "Show Action Mod Icons"
-msgstr ""
+msgstr "顯示主持人權選擇圖標"
 
-#: lib/glimesh_web/live/chat_live/message_form.html.heex:44
+#: lib/glimesh_web/live/chat_live/message_form.html.heex:95
 msgid "Show Mod Icons"
-msgstr ""
+msgstr "顯示主持圖標"
 
-#: lib/glimesh_web/live/chat_live/message_form.html.heex:39
-#: lib/glimesh_web/live/chat_live/message_form.html.heex:48
+#: lib/glimesh_web/live/chat_live/message_form.html.heex:83
+#: lib/glimesh_web/live/chat_live/message_form.html.heex:101
 msgid "Show Timestamps"
-msgstr ""
+msgstr "顯示時間戳記"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:242
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:346
 msgid "Show channel on homepage randomly"
-msgstr ""
+msgstr "在主頁上隨機的顯示"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:238
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:342
 msgid "Show on Homepage"
-msgstr ""
+msgstr "在主頁上顯示"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:229
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:331
 msgid "Show on Homepage must be checked"
-msgstr ""
+msgstr "主頁上顯示必須要選擇複選"
 
 #: lib/glimesh_web/templates/gct/lookup_channel.html.eex:28
 msgid "Show on homepage: %{value}"
-msgstr ""
+msgstr "在主頁上顯示: %{value}"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:186
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:266
 msgid "Show recent chat messages only?"
-msgstr ""
+msgstr "只顯示最近的信息?"
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:193
+#: lib/glimesh_web/live/support_modal/support_modal.ex:323
 msgid "Show your support and participate in %{streamer}'s stream with card packs. Get cards, play them and create unique moments live on stream!"
-msgstr ""
+msgstr "表示你的支持用卡包去參加%{streamer}的直播. 獲和用卡去做獨特的瞬間在直播上!"
 
-#: lib/glimesh_web/templates/user_settings/preference.html.eex:66
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:76
 msgid "Shows the timeout / ban / etc icons on a chat message."
-msgstr ""
+msgstr "只顯 超時/禁止/等等的 圖標在信息上."
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:16
 msgid "Start right away with securing your profile and then make it yours! With loads of customizable features, you can really edit and bring your profiles to life to help show people who you are and what you are about!"
-msgstr ""
+msgstr "馬上開始去安全你的個人資料在讓它成爲你的! 更有很多定製的特徵可以編輯和設想你的個人資料去顯示給人家看你是誰和你的內容是什麼的!"
 
-#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.leex:24
+#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.heex:44
 msgid "Static Emotes"
-msgstr ""
-
-#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.leex:14
-msgid "Static emotes should be square SVG vector graphics, with a max file size of 256kB. Animated emotes should be square GIFs, with minimum dimensions of 128x128 and a maximum of 256x256, max file size of 1MB."
-msgstr ""
+msgstr "靜止表情"
 
 #: lib/glimesh_web/templates/layout/user-sidebar.html.eex:36
 msgid "Statistics"
-msgstr ""
+msgstr "統計"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:89
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:123
 msgid "Stream Information"
-msgstr ""
+msgstr "直播信息"
 
-#: lib/glimesh_web/live/user_settings/components/channel_statistics_live.html.leex:11
+#: lib/glimesh_web/live/user_settings/components/channel_statistics_live.html.heex:12
 msgid "Stream ended"
-msgstr ""
+msgstr "直播完成了"
 
-#: lib/glimesh_web/live/user_settings/components/channel_statistics_live.html.leex:10
+#: lib/glimesh_web/live/user_settings/components/channel_statistics_live.html.heex:11
 msgid "Stream started"
-msgstr ""
+msgstr "直播開始了"
 
-#: lib/glimesh_web/live/user_settings/components/channel_statistics_live.html.leex:9
+#: lib/glimesh_web/live/user_settings/components/channel_statistics_live.html.heex:10
 msgid "Stream title"
-msgstr ""
+msgstr "直播頭銜名"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:119
 msgid "Streaming on Glimesh Guide!"
-msgstr ""
+msgstr "在《Glimesh》上直播指南!"
 
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:38
 msgid "Streamlabs OBS Setup Guide"
-msgstr ""
+msgstr "Streamlabs OBS 設置指南"
 
-#: lib/glimesh_web/live/channel_settings_live/addons.html.leex:50
+#: lib/glimesh_web/live/channel_settings_live/addons.html.heex:79
 msgid "Streamloots is a marketplace to buy real-time interactions with live streamers via unique collectable cards, redeemable by your viewers during your stream."
-msgstr ""
+msgstr "Streamloots 是個買獨特的收藏品卡給根直播人實時的相互的商城, 卡可以被你的觀衆人兌換在你的直播的."
 
-#: lib/glimesh/channel_categories.ex:337
+#: lib/glimesh/channel_categories.ex:338
 msgid "Style"
-msgstr ""
+msgstr "樣式"
 
-#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.leex:74
+#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.heex:194
 msgid "Submitted Emotes"
-msgstr ""
+msgstr "提交的表情"
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:141
+#: lib/glimesh_web/live/support_modal/support_modal.ex:208
 msgid "Subscribe Monthly!"
-msgstr ""
+msgstr "每月的訂閱!"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:32
 msgid "Subscription buttons will be available, with payouts, and you will not need to meet any viewership requirements for them. During early phases, this will only be available to limited countries."
-msgstr ""
+msgstr "訂閱按鈕會有可用的, 跟支付一起的, 你也給那個不需要符合到什麼收視率要求的. 在早階段的時候, 這隻會給限定的國家可用的."
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:67
+#: lib/glimesh_web/live/support_modal/support_modal.ex:76
 msgid "Support %{streamer_username}"
-msgstr ""
+msgstr "支持%{streamer_username}"
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:198
+#: lib/glimesh_web/live/support_modal/support_modal.ex:332
 msgid "Support %{streamer} directly"
-msgstr ""
+msgstr "直接的支持%{streamer}"
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:145
+#: lib/glimesh_web/live/support_modal/support_modal.ex:216
 msgid "Support the streamer"
-msgstr ""
+msgstr "支持直播人"
 
-#: lib/glimesh_web/live/support_modal/sub_form.ex:26
+#: lib/glimesh_web/live/support_modal/sub_form.ex:59
 msgid "Thanks for supporting %{streamer}. Your genuine support is appreciated."
-msgstr ""
+msgstr "感謝你支持%{streamer}. 賞識你的真情的支持."
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:79
 msgid "The #bugs channel is the first place bugs should be reported. Our team will triage them, and file them to their appropriate places. When you are submitting a bug, it helps to provide any screenshots or clips you have, but please be sure not to leak your private information. If you have a issue with something sensitive, email support@glimesh and we'll try to reach back out to you when the bug is resolved."
-msgstr ""
+msgstr "#bugs頻道是第一個地方錯誤應該報告去的. 我們的團隊會評估和歸檔它們去合適的地方. 你提交錯誤的時候, 這很有幫助萬一你提供截屏和視頻剪輯, 但請你小心別泄露你的私人的信息. 萬一你有問題跟一個敏感的事情, 發郵件去support@glimesh我們會接着聯繫回到你在錯誤解決到了的時候."
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:81
 msgid "The DMCA is not just about copyrights though. The DMCA has some built-in protections for sites like Glimesh called %{a_start}Safe Harbor%{a_end}. Simply put, Safe Harbor provisions are rules in the DMCA that protect websites from being shut down or sued by copyright owners as long as the site remains compliant. As long as Glimesh remains compliant to the process these Safe Harbor provisions in the DMCA will keep us safe from lawsuits for copyright violations."
-msgstr ""
+msgstr "數字千年版權法不是就是關於著作權的. 數字千年版權法有內置保護給網站像《Glimesh》叫{a_start}安全港條款%{a_end}. 簡單的說就是, 安全港條款規定是規則在數字千年版權法裏面給防止網站關閉還是被著作權人起訴的只要網站保持合規的. 只要《Glimesh》是跟過程合規了安全港條款的規定在數字千年版權法裏面的會保證我們的安全從訴訟給侵犯版權的."
 
-#: lib/glimesh_web/live/homepage_live.html.heex:30
-#: lib/glimesh_web/live/homepage_live.html.heex:67
+#: lib/glimesh_web/live/homepage_live.ex:78
+#: lib/glimesh_web/live/homepage_live.ex:117
 msgid "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving."
-msgstr ""
+msgstr "第一個現場直播平臺在建於即時互動性周圍的. 我們的直播是神速的, 我們的聊天快如閃電, 和我們的社區蓬勃發展的"
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:21
 msgid "To start with Glimesh's policies on the DMCA we have to begin with a basic understanding of what the DMCA is. %{a_start}The Digital Millennium Copyright Act%{a_end} is not an organization that policies digital copyrights but it was an act passed back in 1998 that helped establish rules around copyright materials and their use on the internet. For us, the DMCA defines how we as a service provider responsibly and fairly handle copyrighted material."
-msgstr ""
+msgstr "首先開始去說《Glimesh》的方針在數字千年版權法上我們必須要先有一個基本的瞭解什麼數字千年版權法就是的. %{a_start}數字千年版權法%{a_end}不是一個組織給政策數字的版權但是一個法案在1998年通過的建立規矩關心版權的材料和材料用在網站上. 爲了我們, 數字千年版權法界定我們作爲服務提供者真麼負責的和公平的處理版權的材料."
 
-#: lib/glimesh/channel_categories.ex:338 lib/glimesh/channel_categories.ex:339
-#: lib/glimesh/channel_categories.ex:341
+#: lib/glimesh/channel_categories.ex:339 lib/glimesh/channel_categories.ex:340
+#: lib/glimesh/channel_categories.ex:342
 msgid "Topic"
-msgstr ""
+msgstr "主題"
 
-#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.leex:236
+#: lib/glimesh_web/live/user_settings/components/channel_settings_live.html.heex:339
 msgid "Total Channel Hours: %{channel_hours} hours"
-msgstr ""
+msgstr "全部的頻道小時: %{channel_hours}個小時"
 
 #: lib/glimesh_web/live/channel_settings_live/upload_emotes.ex:18
 msgid "Upload Channel Emotes"
-msgstr ""
+msgstr "上傳頻道"
 
-#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.leex:8
-#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.leex:5
+#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.heex:8
+#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.heex:5
 msgid "Upload Emotes"
-msgstr ""
+msgstr "上傳表情"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:96
 msgid "Useful Documents"
-msgstr ""
+msgstr "有用的文件"
 
-#: lib/glimesh_web/live/gct_live/components/button_array.ex:24
+#: lib/glimesh_web/live/gct_live/components/button_array.ex:52
 msgid "User Actions"
-msgstr ""
+msgstr "用戶動作"
 
 #: lib/glimesh_web/templates/user_settings/stream.html.eex:27
 msgid "Using OBS Studio"
-msgstr ""
+msgstr "在用OBS Studio"
 
-#: lib/glimesh_web/templates/user_settings/stream.html.eex:36
-msgid "Using Streamlabs OBS"
-msgstr ""
-
-#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.leex:22
+#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.heex:42
 msgid "View and manage your existing channel emotes all in one place."
-msgstr ""
+msgstr "查看和管理你每個現存的表情在一個地方里."
 
-#: lib/glimesh_web/live/user_live/components/channel_title.html.leex:86
+#: lib/glimesh_web/live/user_live/components/channel_title.html.heex:139
 msgid "View more settings "
-msgstr ""
+msgstr "看法跟多設定"
 
-#: lib/glimesh_web/live/homepage_live.html.heex:54
+#: lib/glimesh_web/live/homepage_live.ex:66
 msgid "Watch Live"
-msgstr ""
+msgstr "觀看直播"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:127
 msgid "We also have a support page that can provide you with further information such as FAQs, Account Support, Subscriptions & Payments, and a whole lot more!"
-msgstr ""
+msgstr "我們也有一個支持服務網頁來可以你跟更多信息想比如經常問的問題, 戶口支持, 訂閱和付款, 和跟多的!"
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:210
 msgid "We appreciate this document may leave you wondering what to do moving forward should you enjoy playing music in your stream. Thankfully there are several music platforms available to you that allow you the benefit of being able to play music whilst you stream without the concern or risk surrounding the above information. As such, please see below some sources that we’d suggest checking out:"
-msgstr ""
+msgstr "我們知道這個文件肯定會想知道向前進怎麼辦萬一你請享用玩音樂在你的直播上. 幸運的是有幾個音樂平臺可用的給你用不包含關心給還是風險關於以上的資料. 所以, 請參見下文幾個來源我們建議你查看:"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:76
 msgid "We are always looking to improve and our platform is built on your ideas! Our #suggestions channel gives you an easy place to post any ideas you have or suggestions on how we could do things differently."
-msgstr ""
+msgstr "我們在總是尋找真麼提升還有我們的平臺是建立在你的主意! 我們的#suggestions頻道給你一個容易地方去什麼你有的主意還是建議關於我們真麼可以去以不同的方式做事."
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:61
 msgid "We are very excited to be launching the Alpha version of Glimesh and we're proud to say that all of our alpha features will be available to everyone! During this very early phase, we want to set expectations correctly. You can expect that we'll have issues, bugs, and even downtime early on but we will continue to improve and strive for excellence. We invite everyone in early to help us find these issues, to help us create new products, and to continue growing Glimesh into the best platform it can be. We encourage everyone to try new things on the platform and to report issues when you see them! If you need any support or help along the way, we'll be there for you."
-msgstr ""
+msgstr "我們是很興奮的啓動《Glimesh》的Alpha版本還有我們很自豪的說每個Alpha版本的特徵會給每人可用的! 在這個早階段, 我們想要正確地設定期望. 你可以期望我們會有問題, 錯誤, 乃至停機時間在早早地階段. 我們請大家去幫助我們找到問題, 來幫助我們創造新的產品, 和繼續生長《Glimesh》到最儘可能好的性. 我們鼓勵大家去嘗試新的東西在平臺上還有報告問題當你看到的時候!萬一你需要支持還是幫助在一路上, 我們會提供給你的."
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:120
 msgid "We have created a useful guide to help get you underway with streaming on Glimesh, regardless of your streaming experience! Remember if you run into any issues, give us a shout and we will always do our best to help!"
-msgstr ""
+msgstr "我們創造一個有用的指南給幫助你開始直播在《Glimesh》上, 不管你的直播經驗! 記得萬一你見到什麼問題, 讓我們知道我們總會最大的努力幫助的!"
 
-#: lib/glimesh_web/live/user_live/stream.ex:176
+#: lib/glimesh_web/live/user_live/stream.ex:177
 msgid "We're detecting some networking problems between you and the streamer. You may experience video drops, jitter, or other issues! If this continues, the streamer is recommended to submit a ticket in #streaming-help in our Discord."
-msgstr ""
+msgstr "我們檢測到了聯網問題之間你和直播人. 你可能會經驗到視頻會掉, 發抖, 還是別的問題的! 萬一這繼續的, 直播人是推薦去提交票在#streaming-help在我們的《Discord》裏."
 
-#: lib/glimesh/channel_categories.ex:347
+#: lib/glimesh/channel_categories.ex:348
 msgid "What game are you playing?"
-msgstr ""
+msgstr "你在玩什麼遊戲?"
 
-#: lib/glimesh/channel_categories.ex:351
+#: lib/glimesh/channel_categories.ex:352
 msgid "What genre of music?"
-msgstr ""
+msgstr "什麼類型的音樂?"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:72
 msgid "What if I have a question?"
-msgstr ""
+msgstr "萬一我有一個問題?"
 
-#: lib/glimesh_web/live/support_modal/donate_form.ex:45
-#: lib/glimesh_web/live/support_modal/sub_form.ex:46
+#: lib/glimesh_web/live/support_modal/donate_form.ex:65
+#: lib/glimesh_web/live/support_modal/gift_sub_form.ex:63 lib/glimesh_web/live/support_modal/sub_form.ex:95
 msgid "What is Glimesh?"
-msgstr ""
+msgstr "什麼是《Glimesh》?"
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:59
 msgid "What to Expect"
-msgstr ""
+msgstr "有什麼期待的"
 
-#: lib/glimesh/channel_categories.ex:350 lib/glimesh/channel_categories.ex:352
+#: lib/glimesh/channel_categories.ex:351 lib/glimesh/channel_categories.ex:353
 msgid "What topic are you discussing?"
-msgstr ""
+msgstr "什麼主題你在討論的?"
+
+#: lib/glimesh/channel_categories.ex:350
+msgid "What topic are you teaching?"
+msgstr "什麼主題你在教的?"
 
 #: lib/glimesh/channel_categories.ex:349
-msgid "What topic are you teaching?"
-msgstr ""
-
-#: lib/glimesh/channel_categories.ex:348
 msgid "What type of art are you doing?"
-msgstr ""
+msgstr "什麼樣的藝術你在搞?"
 
-#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.leex:15
+#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.heex:32
 msgid "You can also drag and drop into this section to upload emotes."
-msgstr ""
+msgstr "你有可以拖放到這個部分給去上傳表情."
 
-#: lib/glimesh_web/templates/user_settings/stream.html.eex:37
-msgid "You can stream to Glimesh with Streamlabs OBS, however you will need to run a patcher provided by Glimesh to find it as a stream destination."
-msgstr ""
-
-#: lib/glimesh_web/live/support_modal/support_modal.ex:153
+#: lib/glimesh_web/live/support_modal/support_modal.ex:229
 msgid "You cannot subscribe to yourself, but others will see a payment dialog here :)!"
-msgstr ""
+msgstr "你不嫩去你自己訂閱, 但別人會看到一個付款對話框在這邊的 :)!"
 
-#: lib/glimesh_web/live/streams_live/following.html.leex:65
+#: lib/glimesh_web/live/streams_live/following.html.heex:89
 msgid "You do not follow anyone who is offline."
-msgstr ""
+msgstr "你沒有關注離線的人."
 
 #: lib/glimesh_web/templates/about/alpha.html.eex:24
 msgid "You'll be able to create your stream, go live, and begin growing your communities. Interacting with them will be a whole lot easier with the FTL streaming technology – they will be able to view your stream in real-time!"
-msgstr ""
+msgstr "你能夠會去創造你的直播, 去上線, 還有開始生長你的社區. 跟社區人相互作用會是更容易的因爲有超光速直播科技-他們會可以實時看到你的直播!"
 
 #: lib/glimesh_web/templates/user_settings/channel_statistics.html.eex:2
 msgid "Your Channel Statistics"
-msgstr ""
+msgstr "你的頻道統計"
 
-#: lib/glimesh_web/live/support_modal/sub_form.ex:37
+#: lib/glimesh_web/live/support_modal/sub_form.ex:78
 msgid "Your Payment Information"
-msgstr ""
+msgstr "你的付款信息"
 
-#: lib/glimesh_web/live/channel_settings_live/addons.html.leex:57
+#: lib/glimesh_web/live/channel_settings_live/addons.html.heex:93
 msgid "Your Streamloots URL. Format: https://www.streamloots.com/YOUR_USERNAME"
-msgstr ""
+msgstr "你的Streamloots地址格式: https://www.streamloots.com/你的_用戶名"
 
-#: lib/glimesh_web/live/support_modal/sub_form.ex:20
+#: lib/glimesh_web/live/support_modal/sub_form.ex:38
 msgid "Your subscription is currently set to automatically cancel on %{date}."
-msgstr ""
+msgstr "你的訂閱當前設置去制動取消在%{date}上."
 
-#: lib/glimesh_web/live/user_live/stream.html.leex:6
-#: lib/glimesh_web/live/user_live/stream.html.leex:17
+#: lib/glimesh_web/live/user_live/stream.html.heex:22
+#: lib/glimesh_web/live/user_live/stream.html.heex:76
 msgid "%{hostname} is hosting %{targetname}"
-msgstr ""
+msgstr "%{hostname}是在主機%{targetname}"
 
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:72
 msgid "Active Channel Bans"
-msgstr ""
+msgstr "活躍的頻道禁止"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:25
 msgid "Active Subscribers"
-msgstr ""
+msgstr "活躍的訂戶"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:20
 #: lib/glimesh_web/templates/user_payments/index.html.eex:37
 msgid "Active Subscriptions"
-msgstr ""
+msgstr "活躍的訂閱"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:55
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:88
 msgid "Add Channel"
-msgstr ""
+msgstr "加頻道"
 
 #: lib/glimesh_web/templates/user_payments/setup.html.eex:10
 msgid "After you finish your Stripe Connection Process, you will be redirected to a tax form submission page which will allow you to submit an United States Internal Revenue Service form, called the W-8, that we require before we can enable your sub and donation buttons. Submitted W-8 forms can take up to 14 days for review."
-msgstr ""
+msgstr "之後你把你的《Stripe》聯繫過程完成, 你會重定向去一個稅表哥提交頁讓你提交一個美國國稅局表格, 叫W-8, 我們需要的就可以啓用你的訂閱和捐按鈕. 提交的W-8表格可以需要到14個天給審查."
 
-#: lib/glimesh_web/live/events_team/events_admin_live.html.leex:8
+#: lib/glimesh_web/live/events/events_admin_live.ex:22
 msgid "All Events"
-msgstr ""
+msgstr "所有活動"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:15
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:26
 msgid "Being Hosted"
-msgstr ""
+msgstr "被主機的"
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:172
+#: lib/glimesh_web/live/support_modal/support_modal.ex:291
 msgid "Bi-weekly payouts for streamer"
-msgstr ""
+msgstr "雙週資金給直播人"
 
-#: lib/glimesh_web/templates/about/team.html.eex:39
+#: lib/glimesh_web/templates/about/team.html.eex:38
 msgid "Building Glimesh"
-msgstr ""
+msgstr "建設《Glimesh》"
 
 #: lib/glimesh_web/live/channel_settings_live/hosting.ex:92
 msgid "Channel added"
-msgstr ""
+msgstr "頻道加了"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:89
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:130
 msgid "Currently hosting"
-msgstr ""
+msgstr "現在在主機"
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:166
+#: lib/glimesh_web/live/support_modal/support_modal.ex:281
 msgid "Donate"
-msgstr ""
+msgstr "捐款"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:186
+#: lib/glimesh_web/templates/user_payments/index.html.eex:196
 msgid "Donate Button:"
-msgstr ""
+msgstr "捐款按鈕:"
 
-#: lib/glimesh_web/live/channel_settings_live/addons.html.leex:30
+#: lib/glimesh_web/live/channel_settings_live/addons.html.heex:45
 msgid "Donations are one time contributions to your channel from your viewers. Donations can currently be in any amount between $1 and $100. If you are raising money for a charity, do not use your donation button to facilitate donations."
-msgstr ""
+msgstr "捐款是個一次的捐助去你的頻道從你的觀衆人. 捐款可以是任何數量從$1到$100. 萬一你在給慈善別用你的捐款按鈕去促進捐款."
 
 #: lib/glimesh_web/templates/user_payments/setup.html.eex:9
 msgid "During your Stripe Connection Process you will provide the information required to fill out an electronic W-9 that will be submitted to Stripe. Once you have completed your Stripe Connection Process your sub and donation buttons will be available immediately."
-msgstr ""
+msgstr "在你的《Stripe》聯繫過程你會提供重要的資料給填寫一個電子W-9提交給《Stripe》. 之後你把你的《Stripe》聯繫過程你的訂閱和捐款按鈕是會馬上可用的."
 
-#: lib/glimesh_web/templates/events_team/events_team.html.eex:5
+#: lib/glimesh_web/live/events/events_live.ex:13
 msgid "Event Calendar"
-msgstr ""
+msgstr "活動日曆"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:133
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:147
 msgid "Event Team Settings"
-msgstr ""
+msgstr "活動團隊"
 
 #: lib/glimesh_web/controllers/events_team_controller.ex:8
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:96
+#: lib/glimesh_web/live/events/events_live.ex:52 lib/glimesh_web/templates/layout/_navbar.html.heex:134
 msgid "Events"
-msgstr ""
+msgstr "活動"
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:154
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:253
 msgid "Events Dash"
-msgstr ""
+msgstr "活動儀表板"
 
-#: lib/glimesh_web/live/events_team/events_admin_live.html.leex:2
+#: lib/glimesh_web/live/events/events_admin_live.ex:15
 msgid "Events Team Dashboard"
-msgstr ""
+msgstr "活動團隊儀表板"
 
-#: lib/glimesh_web/templates/events_team/events_team.html.eex:19
+#: lib/glimesh_web/live/events/events_live.ex:27
 msgid "Featured Events"
-msgstr ""
+msgstr "精選的活動"
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:171
+#: lib/glimesh_web/live/support_modal/support_modal.ex:290
 msgid "Glimesh Fees: None"
-msgstr ""
+msgstr "《Glimesh》使用費: 沒有的"
 
 #: lib/glimesh_web/templates/user_payments/setup.html.eex:32
 msgid "Glimesh payouts happen bi-weekly, but there is some delay in getting a new subscriber and seeing their money in your bank account. All subscriptions and payouts happen in USD, and will be converted."
-msgstr ""
+msgstr "《Glimesh》的付款付出每兩個周, 但有一些延遲獲到新的訂戶人和看到它們的錢在你的銀行戶口. 每個訂戶和付款時在美元處理的, 還有會兌換的."
 
-#: lib/glimesh_web/live/user_live/stream.html.leex:19
+#: lib/glimesh_web/live/user_live/stream.html.heex:102
 msgid "Go there"
-msgstr ""
+msgstr "去那裏"
 
-#: lib/glimesh_web/templates/events_team/events_team.html.eex:10
+#: lib/glimesh_web/live/events/events_live.ex:18
 msgid "Having an event?"
-msgstr ""
+msgstr "在主持活動?"
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:167
+#: lib/glimesh_web/live/support_modal/support_modal.ex:283
 msgid "Help support %{streamer} by donating to them directly through Glimesh."
-msgstr ""
+msgstr "幫助支持%{streamer}通過直接用《Glimesh》捐."
 
 #: lib/glimesh/streams/channel_hosts.ex:69
 msgid "Host channel does not meet hosting requirements"
-msgstr ""
+msgstr "主機頻道不符合到主機的要求"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:37
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:54
 msgid "Host other Glimesh channels when you are not live."
-msgstr ""
+msgstr "主機別的《Glimesh》頻道在你不在直播的時候."
 
-#: lib/glimesh_web/live/streams_live/following.html.leex:24
+#: lib/glimesh_web/live/streams_live/following.html.heex:30
 msgid "Hosted"
-msgstr ""
+msgstr "主機的"
 
 #: lib/glimesh_web/templates/layout/user-sidebar.html.eex:45
 msgid "Hosting"
-msgstr ""
+msgstr "先在主機"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:36
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:53
 msgid "Hosting Others"
-msgstr ""
+msgstr "主機別的用戶"
 
 #: lib/glimesh_web/live/channel_settings_live/hosting.ex:20
 msgid "Hosting Settings"
-msgstr ""
+msgstr "主機設置"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:28
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:42
 msgid "Hosting channels must still meet the following qualifications in order to host your channel:"
-msgstr ""
+msgstr "主機的頻道必須要符合以下的資格標準能夠可以主機你的頻道:"
 
 #: lib/glimesh_web/live/channel_settings_live/hosting.ex:128
 msgid "Hosting target removed"
-msgstr ""
+msgstr "選擇的主機取消了"
 
-#: lib/glimesh_web/templates/gct/edit_user.html.eex:136
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:150
 msgid "Is Event Team"
-msgstr ""
+msgstr "是活動團隊"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:69
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:102
 msgid "Last Hosted"
-msgstr ""
+msgstr "最後主機的"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:9
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:15
 msgid "Manage Hosting"
-msgstr ""
+msgstr "管理主機"
 
 #: lib/glimesh_web/templates/user_payments/index.html.eex:3
 msgid "Manage your ongoing subscriptions, see your transaction history, and setup your streamer payout information!"
-msgstr ""
+msgstr "管理你的正在進行的訂閱, 看到你的交易歷史, 和設置你的直播人付款信息!"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:173
+#: lib/glimesh_web/templates/user_payments/index.html.eex:183
 msgid "No additional payout information details available."
-msgstr ""
+msgstr "沒有額外的付款信息的細節可用的."
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:21
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:32
 msgid "Other streamers may host my channel"
-msgstr ""
+msgstr "別的直播人可以主機我的頻道"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:153
+#: lib/glimesh_web/templates/user_payments/index.html.eex:163
 msgid "Please note payouts may take several days to deposit into your bank account. The date shown below is the start of the transfer."
-msgstr ""
+msgstr "請注意付款可能需要幾個天存入進去你的銀行戶口. 如下顯示的日期是轉賬開始的時候."
 
-#: lib/glimesh_web/live/support_modal/donate_form.ex:42
+#: lib/glimesh_web/live/support_modal/donate_form.ex:61
+#: lib/glimesh_web/live/support_modal/gift_sub_form.ex:59
 msgid "Proceed to Checkout"
-msgstr ""
+msgstr "繼續去結帳"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:84
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:122
 msgid "Ready to host"
-msgstr ""
+msgstr "主機準備了"
 
-#: lib/glimesh_web/live/user_live/stream.html.leex:8
+#: lib/glimesh_web/live/user_live/stream.html.heex:48
 msgid "Return to host"
-msgstr ""
+msgstr "回去到主機人"
 
-#: lib/glimesh_web/live/channel_settings_live/addons.html.leex:67
+#: lib/glimesh_web/live/channel_settings_live/addons.html.heex:108
 msgid "Save Support Modal"
-msgstr ""
+msgstr "保存支持模態框"
 
 #: lib/glimesh_web/live/channel_settings_live/hosting.ex:50
 msgid "Saved Hosting Preference."
-msgstr ""
+msgstr "省主機的優先."
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:114
+#: lib/glimesh_web/templates/user_payments/index.html.eex:124
 msgid "Show Full Payment History"
-msgstr ""
+msgstr "展示全付款歷史"
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:170
+#: lib/glimesh_web/live/support_modal/support_modal.ex:289
 msgid "Stripe Fees: 2.9% + 30¢ USD"
-msgstr ""
+msgstr "《Stripe》用費: 2.9% + 30¢ 美元"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:185
+#: lib/glimesh_web/templates/user_payments/index.html.eex:195
 msgid "Subscribe Button:"
-msgstr ""
+msgstr "訂閱按鈕:"
 
-#: lib/glimesh_web/live/channel_settings_live/addons.html.leex:14
+#: lib/glimesh_web/live/channel_settings_live/addons.html.heex:22
 msgid "Subscriptions are recurring contributions to you from your viewers to help support you and your channel. You can toggle them on or off at any time here, however if you have any active subscriptions they will continue regardless of this option."
-msgstr ""
+msgstr "訂閱是再次發生的從你的觀衆人貢獻給你和你的頻道. 你可以這邊切換開還是關在什麼時候的, 但是萬一你有正在活躍的訂閱它們會繼續的不管你懸着的."
 
 #: lib/glimesh_web/live/channel_settings_live/addons.ex:16
-#: lib/glimesh_web/live/channel_settings_live/addons.html.leex:3 lib/glimesh_web/templates/layout/user-sidebar.html.eex:33
+#: lib/glimesh_web/live/channel_settings_live/addons.html.heex:3 lib/glimesh_web/templates/layout/user-sidebar.html.eex:33
 msgid "Support Modal"
-msgstr ""
+msgstr "支持模態框"
 
 #: lib/glimesh/streams/channel_hosts.ex:96
 msgid "Target channel does not qualify for hosting"
-msgstr ""
+msgstr "選擇的頻道不符合主機條件"
 
 #: lib/glimesh/streams/channel_hosts.ex:100
 msgid "Target channel id is required"
-msgstr ""
+msgstr "選擇的頻道ID需要的"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:31
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:48
 msgid "Their account must be more than 5 days old."
-msgstr ""
+msgstr "他們的戶口必須要最少5個天創建的."
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:32
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:49
 msgid "They must NOT be banned from your channel."
-msgstr ""
+msgstr "他們必須要不能是在你的頻道上禁止的."
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:30
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:47
 msgid "They must have a verified email address."
-msgstr ""
+msgstr "他們必須要有一個驗證電郵地址的."
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:33
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:50
 msgid "They must have streamed for at least 10 hours total on Glimesh."
-msgstr ""
+msgstr "他們必須要直播給10個小時在《Glimesh》上."
 
 #: lib/glimesh_web/live/channel_settings_live/hosting.ex:100
 msgid "Unable to add channel to hosting list"
-msgstr ""
+msgstr "無法加頻道去主機清單上"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:87
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:126
 msgid "Unable to host"
-msgstr ""
+msgstr "無法主機了"
 
 #: lib/glimesh_web/live/channel_settings_live/hosting.ex:134
 msgid "Unable to remove hosting target"
-msgstr ""
+msgstr "無法取消主機選擇"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:171
+#: lib/glimesh_web/templates/user_payments/index.html.eex:181
 msgid "View payout details on Stripe"
-msgstr ""
+msgstr "去看付款信息在《Stripe》上"
 
-#: lib/glimesh_web/templates/about/team.html.eex:39
+#: lib/glimesh_web/templates/about/team.html.eex:38
 msgid "We also encourage our community to become part of our team as we know there are many talented people out there who wish to be part of something new. If you feel that you can offer Glimesh and the community your talents, whether that’s web development, designing, or moderation, then we would love to hear from you. If this is of any interest, please reach out to us in our Discord or head to"
-msgstr ""
+msgstr "我們也鼓勵我們的社區去當團隊一部分因爲我們知道那有很多才華的人都想要跟新鮮玩意當一部分的. 萬一你覺得你可以提供給《Glimesh》還是社區你的才華, 無論是網站開發, 網頁設計, 還是主持, 我們想要你與聯繫我們. 萬一這給你很有趣的, 請聯繫我們在我們的《Discord》還是去"
 
 #: lib/glimesh_web/templates/about/streaming.html.eex:30
 msgid "We also offer a competitive 60/40 split in favor of the streamer for your subscriptions, with the fees taken out of our side. Included for free is our chargeback protection for your subscriptions."
-msgstr ""
+msgstr "我們也提供一個給直播人利於的60/40分期給你的訂閱, 和費用在從我們這邊扣除的. 在裏面免費包括的是我們的退款保護給你的訂閱."
 
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:56
 msgid "You can ban a user by entering their username below, optionally if a user is causing issues in your chat you can ban them in the chat message without leaving your stream."
-msgstr ""
+msgstr "你可以禁止用戶通過輸入他們的用戶名, 或者用戶人是在造麻煩在你的聊天室裏面你可以禁止它們在聊天室裏而就不需要離開你的直播高的."
 
-#: lib/glimesh_web/live/support_modal/support_modal.ex:179
+#: lib/glimesh_web/live/support_modal/support_modal.ex:303
 msgid "You cannot donate to yourself, but others will see a donation box here :)!"
-msgstr ""
+msgstr "你不能捐錢去你自己, 但別人會看到一個捐款框在這裏 :)!"
 
-#: lib/glimesh_web/live/channel_settings_live/hosting.html.leex:41
+#: lib/glimesh_web/live/channel_settings_live/hosting.html.heex:58
 msgid "You have not met the minimum qualifications to host others, see list above for details"
-msgstr ""
+msgstr "你沒有符合最低的資格標準給能個去主機別人, 請看上面的清單給詳細的內容"
 
-#: lib/glimesh_web/templates/user_payments/index.html.eex:216
+#: lib/glimesh_web/templates/user_payments/index.html.eex:226
 msgid "Your account does not currently have payments enabled."
-msgstr ""
+msgstr "你的戶口現在沒有啓用的."
 
-#: lib/glimesh_web/live/events_team/events_admin_live.html.leex:68
+#: lib/glimesh_web/live/events/events_admin_live.ex:99
 msgid "invalid image. Must be either a PNG or JPG."
-msgstr ""
+msgstr "無效的圖片. 必須要是要麼PNG還是JPG."
 
 #: lib/glimesh/oauth/scopes.ex:12
 msgid "scopefollow"
-msgstr ""
+msgstr "允許這個應用程序去在代表你追隨頻道."
 
-#: lib/glimesh_web/templates/about/team.html.eex:39
+#: lib/glimesh_web/templates/about/team.html.eex:38
 msgid "to get involved."
-msgstr ""
+msgstr "去參與其中."
 
-#: lib/glimesh_web/templates/layout/_navbar.html.leex:99
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:140
 msgid "App!"
-msgstr ""
+msgstr "移動應用!"
 
 #: lib/glimesh_web/controllers/about_controller.ex:80
-#: lib/glimesh_web/templates/layout/root.html.leex:116
+#: lib/glimesh_web/templates/layout/root.html.heex:188
 msgid "Cookie Policy"
-msgstr ""
+msgstr "Cookie政策"
 
-#: lib/glimesh_web/templates/layout/root.html.leex:150
+#: lib/glimesh_web/templates/layout/root.html.heex:277
 msgid "Copyright © 2022 Glimesh, Inc."
-msgstr ""
+msgstr "版權 © 2022 Glimesh, Inc."
 
-#: lib/glimesh_web/templates/layout/root.html.leex:111
+#: lib/glimesh_web/templates/layout/root.html.heex:176
 msgid "LEGALS"
-msgstr ""
+msgstr "法律"
 
-#: lib/glimesh_web/templates/layout/root.html.leex:101
+#: lib/glimesh_web/templates/layout/root.html.heex:151
 msgid "Mobile App!"
+msgstr "移動應用!"
+
+#: lib/glimesh_web/templates/layout/root.html.heex:128
+#: lib/glimesh_web/templates/layout/root.html.heex:185
+msgid "Privacy Policy"
+msgstr "私隱政策"
+
+#: lib/glimesh_web/live/about/open_data_live.ex:30
+msgid "Channel subscriptions totals by month."
+msgstr "按月排序全的頻道訂閱."
+
+#: lib/glimesh_web/controllers/about_controller.ex:18
+#: lib/glimesh_web/templates/about/team.html.eex:3 lib/glimesh_web/templates/layout/about.html.eex:15
+msgid "Contributors"
+msgstr "貢獻者"
+
+#: lib/glimesh_web/live/support_modal/support_modal.ex:248
+msgid "Gift Subscription"
+msgstr "禮物訂閱"
+
+#: lib/glimesh_web/templates/about/team.html.eex:10
+msgid "Glimesh is not quite like a traditional company! We invite everyone to help build the platform, from coders, to moderators, to everything in between. We're a diverse group of individuals working together for a common cause and trying to leave the industry better than we found it. This page recognizes some of the people who have helped build Glimesh."
+msgstr "《Glimesh》不太像一個典型的公司! 我們請大家來幫助建設平臺, 從程序員, 到程序員, 跟兩者之間的一切. 我們是個各種各樣的團體在一起工作給個常見的原因留下行業比找到的時候跟好的. 這個網頁認出一些幫助建造《Glimesh》的人."
+
+#: lib/glimesh_web/live/support_modal/support_modal.ex:250
+msgid "Help support %{streamer} by gifting a subscription to anyone you choose."
+msgstr "幫助支撐%{streamer}通過送禮一個訂閱給什麼選擇的人."
+
+#: lib/glimesh_web/templates/about/credits.html.eex:34
+msgid "Our Projects"
+msgstr "我們的計劃"
+
+#: lib/glimesh_web/live/support_modal/gift_sub_form.ex:19
+msgid "Recipient"
+msgstr "接受者"
+
+#: lib/glimesh_web/live/support_modal/support_modal.ex:255
+msgid "The recipient will immediately receive the benefits of a channel sub and will have the option to continue their sub before the end of the subscription."
+msgstr "接受者會馬上收到訂閱的益處還有會有選擇權去繼續他們的訂閱在訂閱結束的之前."
+
+#: lib/glimesh_web/templates/about/credits.html.eex:35
+msgid "We've created several large projects to help build Glimesh. You can find all of them on our GitHub, along with contribution records:"
+msgstr "我們創造了幾個大項目給幫助蓋《Glimesh》. 你可以找到全部的在我們的《Github》上沿着貢獻記錄:"
+
+#: lib/glimesh_web/live/support_modal/sub_form.ex:22
+msgid "Your gift subscription is currently set to automatically cancel on %{date}."
+msgstr "你的禮物訂閱現在設置去制動會取消在%{date}上."
+
+#: lib/glimesh_web/live/user_live/components/recent_tags.ex:20
+msgid "(%{num} Uses)"
 msgstr ""
 
-#: lib/glimesh_web/templates/layout/root.html.leex:81
-#: lib/glimesh_web/templates/layout/root.html.leex:115
-msgid "Privacy Policy"
+#: lib/glimesh_web/live/about/go_live_live.ex:251
+msgid "100% charge-back protection"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:261
+msgid "3rd Party Addons"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:249
+msgid "60% sub cut, we pay the fees"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:244
+msgid "80+ countries supported"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:149
+msgid "Advanced Settings for Other Streaming Software"
+msgstr ""
+
+#: lib/glimesh_web/live/channel_settings_live/channel_emotes.html.heex:198
+msgid "After you submit your emotes they'll be reviewed by our Core Team for compliance. If they are approved they will be automatically available on your channel. If they are rejected you'll see them below with a reason why. You can delete rejected emotes and reupload them if you want to try again."
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:99
+msgid "Aircast has native support for our super low latency FTL & RTMP technology and has worked collaboratively with Glimesh from the very beginning. With just one click you can enable integrations to stream to Glimesh, and many other platforms at the same time."
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:242
+msgid "All channels have access to Subscriptions, Gift Subs, and Donations."
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:181
+msgid "B-Frames"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:245
+msgid "Bi-weekly payouts"
+msgstr ""
+
+#: lib/glimesh_web/live/gct_live/components/channel_button_array.ex:16
+msgid "Bounce Broadcast"
+msgstr ""
+
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:40
+msgid "By turning this off you will no longer be able to receive gift subscriptions"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:266
+msgid "Chat Bots"
+msgstr ""
+
+#: lib/glimesh/chat/effects.ex:73
+msgid "Community Champion"
+msgstr ""
+
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:134
+msgid "Community Champion Settings"
+msgstr ""
+
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:21
+msgid "Community Champion: %{value}"
+msgstr ""
+
+#: lib/glimesh/chat/effects.ex:67
+msgid "Core Team"
+msgstr ""
+
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:124
+msgid "Core Team Access Level"
+msgstr ""
+
+#: lib/glimesh_web/templates/gct/index.html.eex:2
+msgid "Core Team Dashboard | Your access level is: %{level}"
+msgstr ""
+
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:116
+msgid "Core Team Settings"
+msgstr ""
+
+#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.heex:22
+msgid "During early testing we're limiting all channels to ten emotes: either static, animated, or a combination."
+msgstr ""
+
+#: lib/glimesh_web/templates/gct/lookup_user.html.eex:23
+msgid "Events Team: %{value}"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:193
+msgid "Frame Rate"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:37
+msgid "Full OBS Setup Guide"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:57
+msgid "Full Streamlabs Desktop Setup Guide"
+msgstr ""
+
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:33
+msgid "Gift Subscription Options:"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:8
+msgid "Go Live on Glimesh"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:164
+msgid "If using our dropdowns in OBS or Streamlabs Desktop, these changes will likely already be done for you!"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:77
+msgid "If you want to add Glimesh to your already existing arsenal of platforms, that's easy too! If you are using Aircast, just find Glimesh in the list. If you are using other providers, some custom configuration will be required."
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:200
+msgid "Ingest Locations"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:247
+msgid "Instant setup"
+msgstr ""
+
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:137
+msgid "Is Community Champion"
+msgstr ""
+
+#: lib/glimesh_web/templates/gct/edit_user.html.eex:119
+msgid "Is Core Team"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:185
+msgid "Keyframe Interval"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:262
+msgid "Many 3rd parties you are used to support Glimesh. We're also fortunate to have a very active developer community constantly building things for the Glimesh community!"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:287
+msgid "Many more 3rd parties are available, you can find a full list of them in our Discord server."
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:67
+msgid "Most software should support either FTL or RTMP. You'll need to find out which one, and then grab a streaming URL from a location close to you. Some changes to your video output settings will be required to get the best experience!"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:33
+msgid "Most users who are streaming to Glimesh directly should use the \"Glimesh\" dropdown, as it has the best technology. However if you are experiencing issues, you can try the \"Glimesh - RTMP\" option."
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:76
+msgid "Multi-Streaming"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:250
+msgid "No Glimesh cut on donations"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:248
+msgid "No number requirements"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:246
+msgid "No payout minimum"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:252
+msgid "No personal data stored on Glimesh"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:30
+msgid "OBS Studio is the recommended program for streaming to Glimesh as it has native support for our Low Latency FTL & RTMP protocols, setting it up to stream is as simple as finding it in the services list and hitting Start Streaming."
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:105
+msgid "Other Providers"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:66
+msgid "Other Software"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:273
+msgid "Overlays / Alerts"
+msgstr ""
+
+#: lib/glimesh_web/templates/user_settings/preference.html.eex:36
+msgid "Receive Gift Subscriptions"
+msgstr ""
+
+#: lib/glimesh_web/live/user_live/components/recent_tags.ex:10
+msgid "Recent:"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:172
+msgid "Recommendation"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:189
+msgid "Resolution"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:171
+msgid "Setting"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:201
+msgid "Since Glimesh focuses on low-latency, we have several ingest locations around the world that are available. Use whichever protocol your streaming software supports."
+msgstr ""
+
+#: lib/glimesh_web/live/channel_settings_live/upload_emotes.html.heex:27
+msgid "Static emotes should be square PNG graphics, with a max file size of 256kB. Animated emotes should be square GIFs, with minimum dimensions of 128x128 and a maximum of 256x256, max file size of 1MB."
+msgstr ""
+
+#: lib/glimesh_web/templates/layout/_navbar.html.heex:210
+msgid "Stream Setup"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:14
+msgid "Streaming Directly"
+msgstr ""
+
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:36
+msgid "Using Streamlabs Desktop"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:177
+msgid "Video Bitrate Cap"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:163
+msgid "Video Settings"
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:254
+msgid "We do not currently support Paypal or other payment providers."
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:15
+msgid "You can stream to Glimesh directly using most any of your favorite tools! Applications like OBS and Streamlabs support Glimesh out of the box, and other software can easily be configured to work with Glimesh by using the settings & ingest locations found below."
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:53
+#: lib/glimesh_web/templates/user_settings/stream.html.eex:37
+msgid "You can stream to Glimesh with Streamlabs Desktop, however only basic features like streaming are currently supported."
+msgstr ""
+
+#: lib/glimesh_web/live/about/go_live_live.ex:116
+msgid "Your Stream Key"
+msgstr ""
+
+#: lib/glimesh/oauth/scopes.ex:13
+msgid "scopestream_info"
 msgstr ""
 
