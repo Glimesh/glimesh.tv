@@ -226,36 +226,36 @@ defmodule GlimeshWeb.HomepageLive do
      |> assign(:current_user, maybe_user)}
   end
 
-  def list_categories do
+  defp list_categories do
     [
       {
         gettext("Gaming"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "gaming"),
+        Routes.streams_index_path(GlimeshWeb.Endpoint, :index, "gaming"),
         "fa-gamepad"
       },
       {
         gettext("Art"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "art"),
+        Routes.streams_index_path(GlimeshWeb.Endpoint, :index, "art"),
         "fa-palette"
       },
       {
         gettext("Music"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "music"),
+        Routes.streams_index_path(GlimeshWeb.Endpoint, :index, "music"),
         "fa-headphones"
       },
       {
         gettext("Tech"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "tech"),
+        Routes.streams_index_path(GlimeshWeb.Endpoint, :index, "tech"),
         "fa-microchip"
       },
       {
         gettext("IRL"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "irl"),
+        Routes.streams_index_path(GlimeshWeb.Endpoint, :index, "irl"),
         "fa-camera-retro"
       },
       {
         gettext("Education"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "education"),
+        Routes.streams_index_path(GlimeshWeb.Endpoint, :index, "education"),
         "fa-graduation-cap"
       }
     ]

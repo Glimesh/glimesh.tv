@@ -126,7 +126,7 @@ defmodule GlimeshWeb.StreamsLive.List do
     {:noreply,
      socket
      |> push_patch(
-       to: Routes.streams_list_path(socket, :index, socket.assigns.category.slug, params)
+       to: Routes.streams_index_path(socket, :index, socket.assigns.category.slug, params)
      )}
   end
 

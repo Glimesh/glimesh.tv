@@ -343,6 +343,8 @@ defmodule Glimesh.ChannelCategories do
     end
   end
 
+  def get_subcategory_label(nil), do: gettext("Subcategory")
+
   def get_subcategory_select_label_description(%Category{slug: slug}) do
     case slug do
       "gaming" -> gettext("What game are you playing?")
@@ -354,6 +356,8 @@ defmodule Glimesh.ChannelCategories do
     end
   end
 
+  def get_subcategory_select_label_description(nil), do: ""
+
   def get_subcategory_search_label_description(%Category{slug: slug}) do
     case slug do
       "gaming" -> gettext("Search by Game")
@@ -364,6 +368,8 @@ defmodule Glimesh.ChannelCategories do
       "tech" -> gettext("Search by Topic")
     end
   end
+
+  def get_subcategory_search_label_description(nil), do: gettext("Search by Subcategory")
 
   def get_subcategory_attribution(%Category{slug: slug}) do
     case slug do
@@ -377,6 +383,8 @@ defmodule Glimesh.ChannelCategories do
     end
     |> Phoenix.HTML.raw()
   end
+
+  def get_subcategory_attribution(nil), do: ""
 
   def get_subcategory_by_category_id_and_slug(category_id, slug) do
     Repo.one(from c in Subcategory, where: c.category_id == ^category_id and c.slug == ^slug)

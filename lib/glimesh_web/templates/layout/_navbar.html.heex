@@ -16,7 +16,7 @@
     <ul class="navbar-nav d-inline-block">
       <%= if assigns[:current_user] do %>
         <li class="nav-item d-inline mr-3">
-          <%= live_redirect to: Routes.streams_list_path(@conn, :index, "following") do %>
+          <%= live_redirect to: Routes.streams_following_path(@conn, :index) do %>
             <i class="fas fa-heart fa-fw"></i>
             <%= cond do %>
               <% count_live = count_live_following_channels(@conn) -> %>
@@ -51,74 +51,15 @@
   <div class="collapse navbar-collapse" id="primaryNav">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <%= live_redirect(gettext("Gaming"),
+        <%= live_redirect(gettext("Browse"),
           class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "gaming")
+          to: Routes.streams_index_path(@conn, :index)
         ) %>
       </li>
-      <li class="nav-item">
-        <%= live_redirect(gettext("Art"),
-          class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "art")
-        ) %>
-      </li>
-      <li class="nav-item">
-        <%= live_redirect(gettext("Music"),
-          class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "music")
-        ) %>
-      </li>
-      <li class="nav-item">
-        <%= live_redirect(gettext("Tech"),
-          class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "tech")
-        ) %>
-      </li>
-      <li class="nav-item">
-        <%= live_redirect(gettext("IRL"),
-          class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "irl")
-        ) %>
-      </li>
-      <li class="nav-item">
-        <%= live_redirect(gettext("Education"),
-          class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "education")
-        ) %>
-      </li>
-      <li class="nav-item dropdown user-profile-dropdown">
-        <a
-          href="javascript:void(0);"
-          class="nav-link dropdown-toggle user"
-          id="moreDropdown"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="true"
-        >
-          <span class="d-sm-inline"><%= gettext("More") %></span> <i class="fa fa-ellipsis-v"></i>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="moreDropdown">
-          <%= link class: "dropdown-item", to: Routes.user_index_path(@conn, :index) do %>
-            <i class="fas fa-user fa-fw"></i>
-            <%= gettext("User List") %>
-          <% end %>
-          <%= link class: "dropdown-item", to: "https://blog.glimesh.tv/" do %>
-            <i class="fas fa-newspaper fa-fw"></i>
-            <%= gettext("Blog") %>
-          <% end %>
-          <%= link class: "dropdown-item", to: "https://glim.shop/", target: "_blank" do %>
-            <i class="fas fa-tshirt fa-fw"></i>
-            <%= gettext("Merch") %>
-          <% end %>
-          <%= link class: "dropdown-item", to: "https://support.glimesh.tv/", target: "_blank" do %>
-            <i class="fas fa-question fa-fw"></i>
-            <%= gettext("Support") %>
-          <% end %>
-        </div>
-      </li>
+
       <%= if assigns[:current_user] do %>
         <li class="nav-item">
-          <%= live_redirect class: "nav-link", to: Routes.streams_list_path(@conn, :index, "following") do %>
+          <%= live_redirect class: "nav-link", to: Routes.streams_following_path(@conn, :index) do %>
             <%= gettext("Following") %>
             <%= cond do %>
               <% count_live = count_live_following_channels(@conn) -> %>
@@ -136,11 +77,40 @@
           to: Routes.events_path(@conn, :index)
         ) %>
       </li>
-      <li class="nav-item">
-        <%= live_redirect(gettext("App!"),
-          class: "nav-link text-warning",
-          to: Routes.app_path(@conn, :index)
-        ) %>
+
+      <li class="nav-item dropdown user-profile-dropdown">
+        <a
+          href="javascript:void(0);"
+          class="nav-link dropdown-toggle user"
+          id="moreDropdown"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="true"
+        >
+          <span class="d-sm-inline"><%= gettext("More") %></span> <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="moreDropdown">
+          <%= link class: "dropdown-item", to: Routes.app_path(@conn, :index) do %>
+            <i class="fas fa-mobile fa-fw"></i>
+            <%= gettext("Mobile App") %>
+          <% end %>
+          <%= link class: "dropdown-item", to: Routes.user_index_path(@conn, :index) do %>
+            <i class="fas fa-user fa-fw"></i>
+            <%= gettext("User List") %>
+          <% end %>
+          <%= link class: "dropdown-item", to: "https://blog.glimesh.tv/" do %>
+            <i class="fas fa-newspaper fa-fw"></i>
+            <%= gettext("Blog") %>
+          <% end %>
+          <%= link class: "dropdown-item", to: "https://glim.shop/", target: "_blank" do %>
+            <i class="fas fa-tshirt fa-fw"></i>
+            <%= gettext("Merch") %>
+          <% end %>
+          <%= link class: "dropdown-item", to: "https://support.glimesh.tv/", target: "_blank" do %>
+            <i class="fas fa-question fa-fw"></i>
+            <%= gettext("Support") %>
+          <% end %>
+        </div>
       </li>
     </ul>
     <ul class="navbar-nav d-lg-flex align-items-lg-center">
