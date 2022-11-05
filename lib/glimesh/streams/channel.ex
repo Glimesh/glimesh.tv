@@ -279,4 +279,17 @@ defmodule Glimesh.Streams.Channel do
     change_allow_hosting(channel, attrs)
     |> Glimesh.Repo.update()
   end
+
+  def edit_title_and_tags_changeset(channel, attrs \\ %{}) do
+    channel
+    |> cast(attrs, [
+      :title,
+      :category_id,
+      :subcategory_id
+    ])
+    |> validate_length(:title, max: 250)
+    |> maybe_put_tags(:tags, attrs)
+    |> maybe_put_subcategory(:subcategory, attrs)
+    |> unique_constraint([:user_id])
+  end
 end

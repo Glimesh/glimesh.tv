@@ -51,5 +51,13 @@
   <%= error_tag f, :can_delete %>
 </div>
 
-<%= submit gettext("Save"), class: "btn btn-primary", role: "button" %>
+<div class="custom-control custom-checkbox">
+  <%= checkbox f, :is_editor, class: "custom-control-input" %>
+  <%= label f, :is_editor, gettext("Can Edit Stream Title And Tags"), class: "custom-control-label" %>
+  <%= error_tag f, :is_editor %>
+</div>
+
+<div class="row mt-4">
+  <%= submit gettext("Save"), class: "btn btn-primary", role: "button" %>
+</div>
 <% end %>

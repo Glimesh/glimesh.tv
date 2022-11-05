@@ -38,6 +38,14 @@ defmodule Glimesh.Streams.Policy do
   def authorize(:update_channel_moderator, %User{is_gct: true}, _channel), do: true
   def authorize(:delete_channel_moderator, %User{is_gct: true}, _channel), do: true
 
+  # Editors
+  def authorize(:edit_channel_title_and_tags, %User{id: user_id}, [
+        %Channel{user_id: channel_user_id},
+        is_editor
+      ])
+      when user_id == channel_user_id or is_editor,
+      do: true
+
   # Streamers
   def authorize(:update_channel, %User{id: user_id}, %Channel{user_id: channel_user_id})
       when user_id == channel_user_id,

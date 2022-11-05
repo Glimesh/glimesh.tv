@@ -20,6 +20,6 @@ defmodule Glimesh.Streams.ChannelModerationLog do
   def changeset(channel_moderation_log, attrs) do
     channel_moderation_log
     |> cast(attrs, [:action])
-    |> validate_required([:channel, :moderator, :user, :action])
+    |> validate_required([:channel, :moderator, :action])
   end
 end
