@@ -362,4 +362,63 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       assert html =~ "stream-title-edit"
     end
   end
+
+  describe "Viewer count" do
+    setup do
+      streamer = streamer_fixture()
+
+      %{
+        channel: streamer.channel,
+        streamer: streamer
+      }
+    end
+
+    test "is shown by default", %{conn: conn, streamer: streamer} do
+      %{:conn => logged_in_conn} = register_and_log_in_user(%{conn: conn})
+
+      {:ok, _, html} =
+        live(logged_in_conn, Routes.user_stream_path(logged_in_conn, :index, streamer.username))
+
+      assert html =~ "Viewers"
+    end
+
+    test "is minimized if logged in user has set preference", %{conn: conn, streamer: streamer} do
+      user = user_fixture()
+      user_preferences = Glimesh.Accounts.get_user_preference!(user)
+
+      Glimesh.Accounts.update_user_preference(user_preferences, %{:maximize_viewer_count => false})
+
+      logged_in_conn = log_in_user(conn, user)
+
+      {:ok, _, html} =
+        live(logged_in_conn, Routes.user_stream_path(logged_in_conn, :index, streamer.username))
+
+      assert html =~ "fa-eye-slash"
+    end
+
+    test "is maximized if logged in user has set preference", %{conn: conn, streamer: streamer} do
+      user = user_fixture()
+      user_preferences = Glimesh.Accounts.get_user_preference!(user)
+      Glimesh.Accounts.update_user_preference(user_preferences, %{:maximize_viewer_count => true})
+      logged_in_conn = log_in_user(conn, user)
+
+      {:ok, _, html} =
+        live(logged_in_conn, Routes.user_stream_path(logged_in_conn, :index, streamer.username))
+
+      assert html =~ "Viewers"
+    end
+
+    test "is hidden if streamer has set preference", %{conn: conn, streamer: streamer} do
+      user = user_fixture()
+      user_preferences = Glimesh.Accounts.get_user_preference!(user)
+      Glimesh.Accounts.update_user_preference(user_preferences, %{:maximize_viewer_count => true})
+      Glimesh.Streams.update_channel(streamer, streamer.channel, %{:show_viewer_count => false})
+      logged_in_conn = log_in_user(conn, user)
+
+      {:ok, _, html} =
+        live(logged_in_conn, Routes.user_stream_path(logged_in_conn, :index, streamer.username))
+
+      refute html =~ "Viewers"
+    end
+  end
 end

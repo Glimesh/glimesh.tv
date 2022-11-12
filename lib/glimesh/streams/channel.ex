@@ -46,6 +46,8 @@ defmodule Glimesh.Streams.Channel do
     field :poster, Glimesh.ChannelPoster.Type
     field :chat_bg, Glimesh.ChatBackground.Type
 
+    field :show_viewer_count, :boolean, default: true
+
     # This is used when searching for live channels that are live or hosted
     field :match_type, :string, virtual: true
 
@@ -105,7 +107,8 @@ defmodule Glimesh.Streams.Channel do
       :require_confirmed_email,
       :minimum_account_age,
       :allow_hosting,
-      :backend
+      :backend,
+      :show_viewer_count
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)

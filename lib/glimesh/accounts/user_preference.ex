@@ -14,6 +14,7 @@ defmodule Glimesh.Accounts.UserPreference do
     field :show_mod_icons, :boolean, default: true
     field :show_mature_content, :boolean, default: false
     field :gift_subs_enabled, :boolean, default: true
+    field :maximize_viewer_count, :boolean, default: true
 
     timestamps()
   end
@@ -29,7 +30,8 @@ defmodule Glimesh.Accounts.UserPreference do
       :show_timestamps,
       :show_mature_content,
       :show_mod_icons,
-      :gift_subs_enabled
+      :gift_subs_enabled,
+      :maximize_viewer_count
     ])
     |> unique_constraint(:user_id)
   end

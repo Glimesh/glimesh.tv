@@ -14,6 +14,8 @@ defmodule GlimeshWeb.UserLive.Stream do
         maybe_user = Accounts.get_user_by_session_token(session["user_token"])
         streamer = Accounts.get_user!(channel.streamer_id)
 
+        viewer_count_state = get_viewer_count_state(maybe_user, channel)
+
         {:ok,
          %{
            :redirect_to_hosted_target => redirect_to_hosted_target,
@@ -64,7 +66,8 @@ defmodule GlimeshWeb.UserLive.Stream do
            |> assign(:player_error, nil)
            |> assign(:user, maybe_user)
            |> assign(:ultrawide, false)
-           |> assign(:webrtc_error, false)}
+           |> assign(:webrtc_error, false)
+           |> assign(:viewer_count_state, viewer_count_state)}
         end
 
       nil ->
@@ -236,4 +239,25 @@ defmodule GlimeshWeb.UserLive.Stream do
       image_url: avatar_url
     }
   end
+
+  defp get_viewer_count_state(
+         %Glimesh.Accounts.User{} = user,
+         %Glimesh.Streams.Channel{} = channel
+       ) do
+    %{:maximize_viewer_count => user_viewer_count_pref} =
+      Glimesh.Accounts.get_user_preference!(user)
+
+    cond do
+      channel.show_viewer_count == false ->
+        :hide
+
+      user_viewer_count_pref == false ->
+        :minimize
+
+      true ->
+        :visible
+    end
+  end
+
+  defp get_viewer_count_state(nil, _channel), do: :visible
 end

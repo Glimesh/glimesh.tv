@@ -54,14 +54,7 @@
       "Create and design a channel custom to you by uploading unique images and identifying what type of content viewers can expect from your channel. You can customize the content that appears under your stream on your Profile page."
     ) %>
   </p>
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="form-group">
-        <%= label(f, gettext("Channel Primary Language")) %>
-        <%= select(f, :language, Application.get_env(:glimesh, :locales), class: "form-control") %>
-        <%= error_tag(f, :language) %>
-      </div>
-    </div>
+  <div class="row pt-2 pb-4">
     <div class="col-sm-6">
       <div class="form-group">
         <%= label(f, gettext("Mature Content")) %>
@@ -72,6 +65,27 @@
           </label>
         </div>
         <%= error_tag(f, :mature_content) %>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, gettext("Show Viewer Count")) %>
+        <div class="custom-control custom-switch">
+          <%= checkbox(f, :show_viewer_count, class: "custom-control-input") %>
+          <label class="custom-control-label" for={input_id(f, :show_viewer_count)}>
+            <%= gettext("Show viewer count on channel page") %>
+          </label>
+        </div>
+        <%= error_tag(f, :mature_content) %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, gettext("Channel Primary Language")) %>
+        <%= select(f, :language, Application.get_env(:glimesh, :locales), class: "form-control") %>
+        <%= error_tag(f, :language) %>
       </div>
     </div>
   </div>

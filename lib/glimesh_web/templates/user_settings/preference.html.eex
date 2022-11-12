@@ -76,6 +76,15 @@
                 <small class="form-text text-muted"><%= gettext("Shows the timeout / ban / etc icons on a chat message.") %></small>
             </div>
 
+            <div class="form-group">
+                <%= label f, gettext("Viewer Count:") %>
+                <div class="custom-control custom-switch">
+                    <%= checkbox f, :maximize_viewer_count, class: "custom-control-input" %>
+                    <%= label f, :maximize_viewer_count, gettext("Expand the viewer count on channel pages"), class: "custom-control-label" %>
+                </div>
+                <small class="form-text text-muted"><%= gettext("Sets the default state of the viewer count on channel pages to be expanded/minimized.") %></small>
+            </div>
+
             <%= submit gettext("Update Settings"), class: "btn btn-primary mt-4" %>
 
             <% end %>

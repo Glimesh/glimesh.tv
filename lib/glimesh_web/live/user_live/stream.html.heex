@@ -142,7 +142,10 @@
                   <div class="btn-group" role="group" aria-label="Third group">
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount,
                       id: "viewer-count",
-                      session: %{"channel_id" => @channel.id}
+                      session: %{
+                        "channel_id" => @channel.id,
+                        "viewer_count_state" => @viewer_count_state
+                      }
                     ) %>
                   </div>
                 </div>

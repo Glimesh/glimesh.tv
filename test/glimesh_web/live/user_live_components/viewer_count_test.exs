@@ -15,13 +15,20 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCountTest do
     setup :create_channel
 
     test "shows no viewer without loading stream", %{conn: conn, channel: channel} do
-      {:ok, _, html} = live_isolated(conn, @component, session: %{"channel_id" => channel.id})
+      {:ok, _, html} =
+        live_isolated(conn, @component,
+          session: %{"channel_id" => channel.id, "viewer_count_state" => :visible}
+        )
 
       assert html =~ "0 Viewers"
     end
 
     test "shows one viewer by loading a stream", %{conn: conn, channel: channel} do
-      {:ok, view, _} = live_isolated(conn, @component, session: %{"channel_id" => channel.id})
+      {:ok, view, _} =
+        live_isolated(conn, @component,
+          session: %{"channel_id" => channel.id, "viewer_count_state" => :visible}
+        )
+
       streamer = Glimesh.Accounts.get_user!(channel.user_id)
 
       assert render(view) =~ "0 Viewers"
@@ -42,9 +49,39 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCountTest do
     end
 
     test "can hide the viewer count", %{conn: conn, channel: channel} do
-      {:ok, view, _} = live_isolated(conn, @component, session: %{"channel_id" => channel.id})
+      {:ok, view, _} =
+        live_isolated(conn, @component,
+          session: %{"channel_id" => channel.id, "viewer_count_state" => :visible}
+        )
 
       assert view |> element("button") |> render_click() =~ "far fa-eye-slash"
+    end
+
+    test "is minimized if preference set", %{conn: conn, channel: channel} do
+      {:ok, view, _} =
+        live_isolated(conn, @component,
+          session: %{"channel_id" => channel.id, "viewer_count_state" => :minimize}
+        )
+
+      assert render(view) =~ "far fa-eye-slash"
+    end
+
+    test "can be maximized if minimized", %{conn: conn, channel: channel} do
+      {:ok, view, _} =
+        live_isolated(conn, @component,
+          session: %{"channel_id" => channel.id, "viewer_count_state" => :minimize}
+        )
+
+      assert view |> element("button") |> render_click() =~ "Viewers"
+    end
+
+    test "is hidden if preference set", %{conn: conn, channel: channel} do
+      {:ok, view, _} =
+        live_isolated(conn, @component,
+          session: %{"channel_id" => channel.id, "viewer_count_state" => :hidden}
+        )
+
+      refute render(view) =~ "Viewers"
     end
   end
 end
