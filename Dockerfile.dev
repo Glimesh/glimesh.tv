@@ -11,7 +11,7 @@ RUN mix local.rebar --force
 # install node
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get install -y nodejs
-RUN npm install -g svgo
+RUN npm install -g svgo@2.8.0
 
 # prepare build dir
 WORKDIR /app

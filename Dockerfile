@@ -53,7 +53,7 @@ ENV LC_ALL en_US.UTF-8
 ENV ECTO_IPV6 true
 ENV ERL_AFLAGS "-proto_dist inet6_tcp"
 
-RUN npm install -g svgo
+RUN npm install -g svgo@2.8.0
 
 WORKDIR /app
 
