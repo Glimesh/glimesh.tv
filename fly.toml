@@ -10,8 +10,8 @@ processes = []
 
 [env]
   ENABLE_LIBCLUSTER = "true"
-  POOL_SIZE = 25
-  READ_POOL_SIZE = 25
+  POOL_SIZE = 20
+  READ_POOL_SIZE = 20
   PHX_HOST = "glimesh.tv"
   PORT = "8080"
   HTTP_PORT = "8080"

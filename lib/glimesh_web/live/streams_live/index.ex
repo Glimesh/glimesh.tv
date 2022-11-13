@@ -5,6 +5,8 @@ defmodule GlimeshWeb.StreamsLive.Index do
 
   alias GlimeshWeb.Channels.Components.ChannelPreview
 
+  alias GlimeshWeb.Components.Lookahead
+
   @impl true
   def render(assigns) do
     ~F"""
@@ -12,7 +14,7 @@ defmodule GlimeshWeb.StreamsLive.Index do
       <div class="container">
         <h1 class="text-center mt-4 mb-4">{gettext("Browse Live Streams")}</h1>
 
-        <div class="row mb-4">
+        <div class="row row-cols-3 row-cols-md-6 mb-4">
           {#for {name, category, icon} <- list_categories()}
             <div class="col">
               <LivePatch
@@ -33,20 +35,21 @@ defmodule GlimeshWeb.StreamsLive.Index do
         "container container-stream-filters mb-4",
         if(@show_filters, do: "d-block", else: "d-none d-lg-block")
       ]}>
-        <form phx-change="filter_change">
+        <form>
           <div class="row">
             <div class="col-md-6 col-lg-3 mb-2">
               <label for="validationCustom01">
                 {Glimesh.ChannelCategories.get_subcategory_label(@category)}
               </label>
-              <div id="subcategoryFilter" phx-update="ignore">
-                {text_input(:form, :subcategory_search,
+              <div id="subcategoryFilter">
+                <Lookahead id="subcategory-search" options={@subcategory_list} />
+                {!--text_input(:form, :subcategory_search,
                   value: @prefilled_subcategory,
                   class: "tagify",
                   "data-tags": @subcategory_list,
                   "phx-hook": "TagSearch",
                   placeholder: Glimesh.ChannelCategories.get_subcategory_search_label_description(@category)
-                )}
+                )--}
               </div>
               <p class="mb-0">
                 {Glimesh.ChannelCategories.get_subcategory_attribution(@category)}
@@ -55,13 +58,13 @@ defmodule GlimeshWeb.StreamsLive.Index do
             <div class="col-md-6 col-lg-3 mb-2">
               <label for="validationCustom01">{gettext("Tags")}</label>
               <div id="tagify" phx-update="ignore">
-                {text_input(:form, :tag_search,
+                {!--text_input(:form, :tag_search,
                   value: @prefilled_tags,
                   class: "tagify",
                   "data-tags": @tag_list,
                   "phx-hook": "TagSearch",
                   placeholder: gettext("Search for a stream by tags")
-                )}
+                )--}
               </div>
             </div>
             <div class="col-md-6 col-lg-3 mb-2">
@@ -85,10 +88,10 @@ defmodule GlimeshWeb.StreamsLive.Index do
         </form>
       </div>
 
-      <div class="container container-stream-list">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+      <div class="container container-stream-list px-lg-2">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 no-gutters mx-lg-n2">
           {#for channel <- @channels}
-            <div class="col">
+            <div class="col py-2 px-2">
               <ChannelPreview channel={channel} />
             </div>
           {/for}
@@ -108,6 +111,7 @@ defmodule GlimeshWeb.StreamsLive.Index do
      |> assign(show_filters: true)
      |> assign(
        prefilled_subcategory: nil,
+       category: nil,
        subcategory_list: [],
        prefilled_tags: nil,
        tag_list: [],
@@ -131,7 +135,20 @@ defmodule GlimeshWeb.StreamsLive.Index do
 
     channels = Glimesh.ChannelLookups.search_live_channels(params)
 
-    socket |> assign(channels: channels)
+    live_tags =
+      Glimesh.ChannelCategories.list_live_tags()
+      |> Enum.map(fn tag -> {tag.id, tag.name} end)
+
+    # |> Enum.into(%{})
+
+    subcategories =
+      Glimesh.ChannelCategories.list_live_subcategories()
+      |> Enum.map(fn subcategory -> {subcategory.id, subcategory.name} end)
+
+    # |> Enum.into(%{})
+
+    socket
+    |> assign(channels: channels, tag_list: live_tags, subcategory_list: subcategories)
   end
 
   defp list_categories do

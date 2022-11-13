@@ -148,6 +148,15 @@ defmodule Glimesh.ChannelCategories do
     )
   end
 
+  def list_live_subcategories() do
+    Repo.replica().all(
+      from sc in Subcategory,
+        join: c in Channel,
+        where: c.status == "live",
+        group_by: sc.id
+    )
+  end
+
   def list_live_subcategories(category_id) do
     Repo.replica().all(
       from sc in Subcategory,
@@ -155,6 +164,17 @@ defmodule Glimesh.ChannelCategories do
         on: sc.id == c.subcategory_id,
         where: c.status == "live" and sc.category_id == ^category_id,
         group_by: sc.id
+    )
+  end
+
+  def list_live_tags do
+    Repo.replica().all(
+      from t in Tag,
+        join: c in Channel,
+        join: ct in "channel_tags",
+        where: c.status == "live",
+        order_by: [desc: :count_usage],
+        group_by: t.id
     )
   end
 

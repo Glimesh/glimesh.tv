@@ -332,3 +332,12 @@ $fa-font-path: "/fa-fonts";
 .EventsTeam_Font {
     color: #288b8c
 }
+
+
+[data-dropdown] {
+    display: none;
+}
+
+[data-open="true"] [data-dropdown] {
+    display: block;
+}
