@@ -102,7 +102,7 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
     end
   end
 
-  describe "Witholding Payouts 30%" do
+  describe "Withholding Payouts 30%" do
     setup do
       {:ok, streamer} =
         Glimesh.Accounts.set_stripe_attrs(streamer_fixture(), %{
@@ -140,7 +140,7 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
     end
   end
 
-  describe "Witholding Payouts 5%" do
+  describe "Withholding Payouts 5%" do
     setup do
       {:ok, streamer} =
         Glimesh.Accounts.set_stripe_attrs(streamer_fixture(), %{
@@ -235,7 +235,7 @@ defmodule Glimesh.PaymentProviders.StripeProviderTest do
       assert url == new_url
     end
 
-    test "start_connect/4 wont allow you to change country", %{streamer: streamer} do
+    test "start_connect/4 won't allow you to change country", %{streamer: streamer} do
       assert {:ok, _} =
                StripeProvider.start_connect(
                  streamer,

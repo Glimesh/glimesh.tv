@@ -59,7 +59,7 @@ defmodule Glimesh.Homepage do
         :first_run
 
       NaiveDateTime.compare(now, slot_max_time) == :gt ->
-        # If somehow we missed the 15 minute windo
+        # If somehow we missed the 15 minute window
         push_new_homepage_batch(now)
         :late
 

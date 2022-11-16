@@ -2,7 +2,7 @@ defmodule Glimesh.PaymentProviders.StripeProvider.Transfers do
   @moduledoc """
   Stripe Transfers Logic
 
-  This module is responsible for packaging all of the viewer-paid, but streamer-unpaidout payables, and transfering them to the Streamer's connected account.
+  This module is responsible for packaging all of the viewer-paid, but streamer-unpaidout payables, and transferring them to the Streamer's connected account.
 
   Includes:
    * Subscriptions
