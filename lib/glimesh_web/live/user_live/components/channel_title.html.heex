@@ -9,21 +9,21 @@
   <h5 class="mb-0 d-flex">
     <%= render_badge(@channel) %>
     <div class="badge badge-primary"><%= @channel.category.name %></div>
-      <div class="pl-2 text-truncate" title={@channel.title}>
-        <%= @channel.title %>
-      </div>
-      <div class="pl-1">
-        <%= if @can_change do %>
-          <a
-            class="fas fa-edit"
-            id="stream-title-edit"
-            phx-click="toggle-edit"
-            href="#"
-            aria-label={gettext("Edit")}
-          >
-          </a>
-        <% end %>
-      </div>
+    <div class="pl-2 text-truncate" title={@channel.title}>
+      <%= @channel.title %>
+    </div>
+    <div class="pl-1">
+      <%= if @can_change do %>
+        <a
+          class="fas fa-edit"
+          id="stream-title-edit"
+          phx-click="toggle-edit"
+          href="#"
+          aria-label={gettext("Edit")}
+        >
+        </a>
+      <% end %>
+    </div>
   </h5>
   <%= if @channel.subcategory do %>
     <%= live_patch(@channel.subcategory.name,
