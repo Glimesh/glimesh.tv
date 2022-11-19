@@ -64,7 +64,11 @@ defmodule GlimeshWeb.UserLive.Stream do
            |> assign(:player_error, nil)
            |> assign(:user, maybe_user)
            |> assign(:ultrawide, false)
-           |> assign(:webrtc_error, false)}
+           |> assign(:webrtc_error, false)
+           |> assign(
+             :prompt_ready_for_homepage,
+             should_prompt_for_homepage_opt_in(maybe_user, channel)
+           )}
         end
 
       nil ->
@@ -105,6 +109,11 @@ defmodule GlimeshWeb.UserLive.Stream do
 
   defp check_host_params(params) do
     params["host"] == nil and params["follow_host"] != "false"
+  end
+
+  defp should_prompt_for_homepage_opt_in(user, channel) do
+    user != nil and channel.user_id == user.id and channel.show_on_homepage == false and
+      channel.prompt_for_homepage == :prompt
   end
 
   def handle_params(_unsigned_params, _uri, socket) do
@@ -196,6 +205,31 @@ defmodule GlimeshWeb.UserLive.Stream do
 
   def handle_event("ultrawide", %{"enabled" => enabled}, socket) do
     {:noreply, socket |> assign(:ultrawide, enabled)}
+  end
+
+  def handle_event("dismiss_homepage_prompt", _params, socket) do
+    channel = socket.assigns.channel
+    user = socket.assigns.user
+
+    case Bodyguard.permit(
+           Glimesh.Streams.Policy,
+           :dismiss_homepage_opt_in_notification,
+           user,
+           channel
+         ) do
+      :ok ->
+        case ChannelLookups.update_channel_ignore_prompt_for_homepage(user, channel.id) do
+          {:ok, _} ->
+            {:noreply, socket |> assign(:prompt_ready_for_homepage, false)}
+
+          {:error, _} ->
+            {:noreply,
+             socket |> put_flash(:error, gettext("There was a problem dismissing the prompt."))}
+        end
+
+      {:error, _} ->
+        {:noreply, socket |> put_flash(:error, gettext("Permission denied."))}
+    end
   end
 
   defp get_stream_thumbnail(channel) do

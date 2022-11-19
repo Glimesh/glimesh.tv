@@ -362,4 +362,71 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       assert html =~ "stream-title-edit"
     end
   end
+
+  describe "Opt-in to Homepage Notification" do
+    test "is only displayed to the channel owner", %{conn: conn} do
+      streamer = streamer_fixture(%{}, %{prompt_for_homepage: :prompt})
+      streamer_conn = log_in_user(conn, streamer)
+      viewer = user_fixture()
+      viewer_conn = log_in_user(conn, viewer)
+
+      {:ok, _, html} =
+        live(streamer_conn, Routes.user_stream_path(streamer_conn, :index, streamer.username))
+
+      assert html =~ "homepage-prompt-banner"
+
+      {:ok, _, html} =
+        live(viewer_conn, Routes.user_stream_path(viewer_conn, :index, streamer.username))
+
+      refute html =~ "homepage-prompt-banner"
+    end
+
+    test "is only displayed if the channel owner hasn't opted in", %{conn: conn} do
+      streamer = streamer_fixture(%{}, %{show_on_homepage: true, prompt_for_homepage: :prompt})
+      streamer_conn = log_in_user(conn, streamer)
+
+      {:ok, _, html} =
+        live(streamer_conn, Routes.user_stream_path(streamer_conn, :index, streamer.username))
+
+      refute html =~ "homepage-prompt-banner"
+    end
+
+    test "is only displayed if the prompt flag is set", %{conn: conn} do
+      streamer_one = streamer_fixture(%{}, %{prompt_for_homepage: :ignore})
+      streamer_one_conn = log_in_user(conn, streamer_one)
+      streamer_two = streamer_fixture(%{}, %{prompt_for_homepage: :ineligible})
+      streamer_two_conn = log_in_user(conn, streamer_two)
+
+      {:ok, _, html_one} =
+        live(
+          streamer_one_conn,
+          Routes.user_stream_path(streamer_one_conn, :index, streamer_one.username)
+        )
+
+      refute html_one =~ "homepage-prompt-banner"
+
+      {:ok, _, html_two} =
+        live(
+          streamer_two_conn,
+          Routes.user_stream_path(streamer_two_conn, :index, streamer_two.username)
+        )
+
+      refute html_two =~ "homepage-prompt-banner"
+    end
+
+    test "can be dismissed by the channel owner", %{conn: conn} do
+      streamer = streamer_fixture(%{}, %{prompt_for_homepage: :prompt})
+      streamer_conn = log_in_user(conn, streamer)
+
+      {:ok, view, html} =
+        live(streamer_conn, Routes.user_stream_path(streamer_conn, :index, streamer.username))
+
+      assert html =~ "homepage-prompt-banner"
+
+      refute render_click(view, "dismiss_homepage_prompt") =~ "homepage-prompt-banner"
+
+      updated_channel = Glimesh.Repo.get(Glimesh.Streams.Channel, streamer.channel.id)
+      assert updated_channel.prompt_for_homepage == :ignore
+    end
+  end
 end

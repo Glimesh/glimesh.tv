@@ -43,6 +43,10 @@ defmodule Glimesh.Streams.Channel do
     field :show_donate_button, :boolean, default: true
     field :show_streamloots_button, :boolean, default: true
 
+    field :prompt_for_homepage, Ecto.Enum,
+      values: [:ineligible, :prompt, :ignore],
+      default: :ineligible
+
     field :poster, Glimesh.ChannelPoster.Type
     field :chat_bg, Glimesh.ChatBackground.Type
 
@@ -105,7 +109,8 @@ defmodule Glimesh.Streams.Channel do
       :require_confirmed_email,
       :minimum_account_age,
       :allow_hosting,
-      :backend
+      :backend,
+      :prompt_for_homepage
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)

@@ -301,4 +301,44 @@ defmodule Glimesh.ChannelLookups do
       []
     end
   end
+
+  # This checks to see if a channel has met the criteria for showing on the homepage
+  # but the channel owner has not yet opted in.
+  def update_prompt_channel_opt_in_for_homepage do
+    ten_hour_query =
+      from s in Glimesh.Streams.Stream,
+        select: s.channel_id,
+        group_by: s.channel_id,
+        having: sum(s.ended_at - s.started_at) >= fragment("INTERVAL '10 hours'")
+
+    update_query =
+      from(c in Channel,
+        where: c.inaccessible == false,
+        where: c.show_on_homepage == false,
+        where: c.prompt_for_homepage == :ineligible,
+        where: c.id in subquery(ten_hour_query)
+      )
+
+    Repo.update_all(update_query, set: [prompt_for_homepage: :prompt])
+  end
+
+  def update_channels_opted_in_for_homepage do
+    query =
+      from(c in Channel,
+        where: c.inaccessible == false,
+        where: c.show_on_homepage == true,
+        where: c.prompt_for_homepage == :ineligible
+      )
+
+    Repo.update_all(query, set: [prompt_for_homepage: :ignore])
+  end
+
+  def update_channel_ignore_prompt_for_homepage(%User{} = user, channel_id) do
+    channel = Repo.get(Channel, channel_id)
+
+    with :ok <- Bodyguard.permit(Glimesh.Streams.Policy, :update_channel, user, channel) do
+      Channel.changeset(channel, %{prompt_for_homepage: :ignore})
+      |> Repo.update()
+    end
+  end
 end

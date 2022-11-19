@@ -1,4 +1,30 @@
+<%= if @prompt_ready_for_homepage == true do %>
+  <!-- **** Prompt Streamer they are eligible for homepage **** -->
+  <div id="homepage-prompt-banner" class="col-12 mb-0 alert alert-info collapse show">
+    <div class="float-right">
+      <button class="btn btn-close" data-toggle="collapse" data-target="#homepage-prompt-banner">
+        &times;
+      </button>
+    </div>
+    <div class="row">
+      <div class="col-9 text-center">
+        <h5>
+          <%= gettext("You are now eligible to be randomly featured on the homepage!") %>
+        </h5>
+      </div>
+      <div class="col-3 text-center">
+        <a class="btn btn-primary mr-1" href={Routes.user_settings_path(@socket, :stream)}>
+          <%= gettext("Settings") %>
+        </a>
+        <a class="btn btn-danger" phx-click="dismiss_homepage_prompt">
+          <%= gettext("Dismiss") %>
+        </a>
+      </div>
+    </div>
+  </div>
+<% end %>
 <%= if @hosting_channel != nil and @hosting_channel.target.id == @channel.id do %>
+  <!-- **** Being Hosted Banner **** -->
   <div id="hosted-banner" class="container bg-secondary collapse show">
     <div class="float-right">
       <button class="btn btn-close" data-toggle="collapse" data-target="#hosted-banner">
@@ -53,6 +79,7 @@
 <% end %>
 
 <%= if @hosting_channel != nil and @hosting_channel.host.id == @channel.id do %>
+  <!-- **** Hosting Someone Banner **** -->
   <div id="hosting-banner" class="container bg-secondary collapse show">
     <div class="float-right">
       <button class="btn btn-close" data-toggle="collapse" data-target="#hosting-banner">

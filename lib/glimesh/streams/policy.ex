@@ -21,6 +21,7 @@ defmodule Glimesh.Streams.Policy do
   # Admins
   def authorize(:update_channel, %User{is_admin: true}, _channel), do: true
   def authorize(:delete_channel, %User{is_admin: true}, _channel), do: true
+  def authorize(:dismiss_homepage_opt_in_notification, %User{is_admin: true}, _channel), do: true
 
   def authorize(:show_channel_moderator, %User{is_admin: true}, _channel), do: true
   def authorize(:create_channel_moderator, %User{is_admin: true}, _channel), do: true
@@ -33,6 +34,7 @@ defmodule Glimesh.Streams.Policy do
   # GCT
   def authorize(:update_channel, %User{is_gct: true}, _channel), do: true
   def authorize(:delete_channel, %User{is_gct: true}, _channel), do: true
+  def authorize(:dismiss_homepage_opt_in_notification, %User{is_gct: true}, _channel), do: true
 
   def authorize(:show_channel_moderator, %User{is_gct: true}, _channel), do: true
   def authorize(:create_channel_moderator, %User{is_gct: true}, _channel), do: true
@@ -54,6 +56,12 @@ defmodule Glimesh.Streams.Policy do
       do: true
 
   def authorize(:delete_channel, %User{id: user_id}, %Channel{user_id: channel_user_id})
+      when user_id == channel_user_id,
+      do: true
+
+  def authorize(:dismiss_homepage_opt_in_notification, %User{id: user_id}, %Channel{
+        user_id: channel_user_id
+      })
       when user_id == channel_user_id,
       do: true
 
