@@ -8,7 +8,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
   def render_badge(channel) do
     if channel.status == "live" do
       raw("""
-      <span class="badge badge-danger">Live!</span>
+      <div class="mr-2 badge badge-danger">Live!</div>
       """)
     else
       raw("")
