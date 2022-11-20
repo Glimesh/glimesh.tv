@@ -47,7 +47,7 @@
           <%= for log <- @moderation_log do %>
           <tr>
             <td><%= log.action %></td>
-            <td><%= log.user.displayname %></td>
+            <td><%= if log.user, do: log.user.displayname, else: "" %></td>
             <td><%= log.inserted_at %></td>
           </tr>
           <% end %>
