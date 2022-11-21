@@ -85,8 +85,15 @@ Examples of this include but are not limited to:
 - If you are in a game and someone starts using racial slurs you as a streamer are expected to mute them or request that they stop. If they will not stop, you are expected to leave the game or room and find a new one.
 - During AFK and 24/7 streams, you will be held responsible for the contents of the chat even if you are not there in the stream.
 
-#### Event Streaming
-Streaming live events without prior authorization from the event organizer is not allowed. Concerts, movies, or other public events are typically protected by copyright and live streams that stream these without permission are not allowed. If you have permission to stream an event please contact Glimesh prior to streaming the event to avoid confusion.
+#### Live & Recorded Media Use
+Streaming sports, pay-per-view content, concerts, or other similar live or recorded media without prior authorization from the organizer or copyright holder is a violation of our Terms of Service. This type of media includes, but is not limited to:
+
+- Concerts
+- Movies
+- Television Shows
+- Sports Matches
+
+Glimesh requires that streamers submit proof of licensing prior to streaming this type of content. If proof of licensing has not been submitted, the stream will be taken down without prior notice and appropriate action will be taken against the account. Proof can be submitted to Glimesh at support@glimesh.tv. 
 
 
 ## Special Types of Content
