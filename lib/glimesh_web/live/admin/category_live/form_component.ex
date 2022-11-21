@@ -8,12 +8,12 @@ defmodule GlimeshWeb.Admin.CategoryLive.FormComponent do
     ~H"""
     <div>
       <.form
-        let={f}
+        :let={f}
         for={@changeset}
         id="category-form"
         multipart={true}
         class="category-form"
-        phx_target={@myself}
+        phx-target={@myself}
         phx-change="validate"
         phx-submit="save"
       >

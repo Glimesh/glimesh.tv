@@ -1,13 +1,16 @@
 <h1><%= gettext("Show Category") %></h1>
 
 <%= if @live_action in [:edit] do %>
-  <%= live_modal(@socket, GlimeshWeb.Admin.CategoryLive.FormComponent,
-    id: @category.id,
-    title: @page_title,
-    action: @live_action,
-    category: @category,
-    return_to: Routes.category_show_path(@socket, :show, @category)
-  ) %>
+  <.modal return_to={Routes.category_show_path(@socket, :show, @category)}>
+    <.live_component
+      module={GlimeshWeb.Admin.CategoryLive.FormComponent}
+      id={@category.id}
+      title={@page_title}
+      action={@live_action}
+      category={@category}
+      return_to={Routes.category_show_path(@socket, :show, @category)}
+    />
+  </.modal>
 <% end %>
 
 <ul>

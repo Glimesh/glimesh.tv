@@ -1,8 +1,6 @@
 defmodule GlimeshWeb.UserAuthorizedAppsControllerTest do
   use GlimeshWeb.ConnCase
 
-  import Glimesh.AccountsFixtures
-
   setup :register_and_log_in_user
 
   describe "GET /users/settings/applications" do

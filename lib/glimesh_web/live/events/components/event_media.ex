@@ -39,7 +39,7 @@ defmodule GlimeshWeb.Events.Components.EventMedia do
           {/if}
           on <a href={event_link(@event)}>glimesh.tv/{@event.channel}</a>
         </p>
-        <#slot name="footer">
+        <#slot {@footer}>
           <a class="btn btn-primary" href={event_link(@event)}>Watch Channel</a>
         </#slot>
       </div>

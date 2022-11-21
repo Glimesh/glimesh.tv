@@ -4,13 +4,16 @@
   <div class="card">
     <div class="card-body">
       <%= if @live_action in [:new, :edit] do %>
-        <%= live_modal(@socket, GlimeshWeb.Admin.TagLive.FormComponent,
-          id: @tag.id || :new,
-          title: @page_title,
-          action: @live_action,
-          tag: @tag,
-          return_to: Routes.tag_index_path(@socket, :index)
-        ) %>
+        <.modal return_to={Routes.tag_index_path(@socket, :index)}>
+          <.live_component
+            module={GlimeshWeb.Admin.TagLive.FormComponent}
+            id={@tag.id || :new}
+            title={@page_title}
+            action={@live_action}
+            tag={@tag}
+            return_to={Routes.tag_index_path(@socket, :index)}
+          />
+        </.modal>
       <% end %>
 
       <table class="table">

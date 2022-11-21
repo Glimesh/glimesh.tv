@@ -63,7 +63,7 @@ defmodule GlimeshWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {GlimeshWeb.LayoutView, "live.html"}
+        layout: {GlimeshWeb.LayoutView, :live}
 
       import Glimesh.Formatters
 
@@ -74,7 +74,7 @@ defmodule GlimeshWeb do
   def surface_live_view do
     quote do
       use Surface.LiveView,
-        layout: {GlimeshWeb.LayoutView, "live.html"}
+        layout: {GlimeshWeb.LayoutView, :live}
 
       import Glimesh.Formatters
 
@@ -97,6 +97,14 @@ defmodule GlimeshWeb do
       use Surface.LiveComponent
 
       import Glimesh.Formatters
+
+      unquote(view_helpers())
+    end
+  end
+
+  def component do
+    quote do
+      use Phoenix.Component
 
       unquote(view_helpers())
     end
@@ -125,7 +133,7 @@ defmodule GlimeshWeb do
       use Phoenix.HTML
 
       # Import LiveView helpers (live_render, live_component, live_patch, etc)
-      import Phoenix.LiveView.Helpers
+      import Phoenix.Component
       import GlimeshWeb.LiveHelpers
 
       # Import basic rendering functionality (render, render_layout, etc)

@@ -7,6 +7,7 @@ database = [
   database: "glimesh_dev",
   hostname: System.get_env("DATABASE_URL") || "localhost",
   show_sensitive_data_on_connection_error: true,
+  stacktrace: true,
   pool_size: 10
 ]
 

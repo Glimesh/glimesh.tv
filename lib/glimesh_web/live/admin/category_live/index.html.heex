@@ -2,13 +2,16 @@
   <h1><%= gettext("Listing Categories") %></h1>
 
   <%= if @live_action in [:new, :edit] do %>
-    <%= live_modal(@socket, GlimeshWeb.Admin.CategoryLive.FormComponent,
-      id: @category.id || :new,
-      title: @page_title,
-      action: @live_action,
-      category: @category,
-      return_to: Routes.category_index_path(@socket, :index)
-    ) %>
+    <.modal return_to={Routes.category_index_path(@socket, :index)}>
+      <.live_component
+        module={GlimeshWeb.Admin.CategoryLive.FormComponent}
+        id={@category.id || :new}
+        title={@page_title}
+        action={@live_action}
+        category={@category}
+        return_to={Routes.category_index_path(@socket, :index)}
+      />
+    </.modal>
   <% end %>
 
   <table class="table">

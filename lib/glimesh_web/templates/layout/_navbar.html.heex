@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg sticky-top shadow-sm acrylic">
-  <%= live_redirect class: "navbar-brand", to: Routes.homepage_path(@conn, :index) do %>
+  <.link navigate={Routes.homepage_path(@conn, :index)} class="navbar-brand">
     <picture class="d-inline-block align-top" height="34">
       <source srcset="/images/logos/logo-sm-alpha.png" media="(max-width: 768px)" />
       <source srcset="/images/logos/logo-alpha.png" />
@@ -10,13 +10,13 @@
         height="34"
       />
     </picture>
-  <% end %>
+  </.link>
 
   <div class="d-lg-none">
     <ul class="navbar-nav d-inline-block">
       <%= if assigns[:current_user] do %>
         <li class="nav-item d-inline mr-3">
-          <%= live_redirect to: Routes.streams_list_path(@conn, :index, "following") do %>
+          <.link navigate={Routes.streams_list_path(@conn, :index, "following")}>
             <i class="fas fa-heart fa-fw"></i>
             <%= cond do %>
               <% count_live = count_live_following_channels(@conn) -> %>
@@ -25,13 +25,13 @@
                 <span class="badge badge-primary"><%= count_hosted %></span>
               <% true -> %>
             <% end %>
-          <% end %>
+          </.link>
         </li>
       <% end %>
       <li class="nav-item d-inline pr-2">
-        <%= live_redirect to: Routes.streams_index_path(@conn, :index) do %>
+        <.link navigate={Routes.streams_index_path(@conn, :index)}>
           <i class="fas fa-grip-horizontal fa-fw"></i>
-        <% end %>
+        </.link>
       </li>
     </ul>
 
@@ -51,40 +51,34 @@
   <div class="collapse navbar-collapse" id="primaryNav">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <%= live_redirect(gettext("Gaming"),
-          class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "gaming")
-        ) %>
+        <.link navigate={Routes.streams_list_path(@conn, :index, "gaming")} class="nav-link">
+          <%= gettext("Gaming") %>
+        </.link>
       </li>
       <li class="nav-item">
-        <%= live_redirect(gettext("Art"),
-          class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "art")
-        ) %>
+        <.link navigate={Routes.streams_list_path(@conn, :index, "art")} class="nav-link">
+          <%= gettext("Art") %>
+        </.link>
       </li>
       <li class="nav-item">
-        <%= live_redirect(gettext("Music"),
-          class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "music")
-        ) %>
+        <.link navigate={Routes.streams_list_path(@conn, :index, "music")} class="nav-link">
+          <%= gettext("Music") %>
+        </.link>
       </li>
       <li class="nav-item">
-        <%= live_redirect(gettext("Tech"),
-          class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "tech")
-        ) %>
+        <.link navigate={Routes.streams_list_path(@conn, :index, "tech")} class="nav-link">
+          <%= gettext("Tech") %>
+        </.link>
       </li>
       <li class="nav-item">
-        <%= live_redirect(gettext("IRL"),
-          class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "irl")
-        ) %>
+        <.link navigate={Routes.streams_list_path(@conn, :index, "irl")} class="nav-link">
+          <%= gettext("IRL") %>
+        </.link>
       </li>
       <li class="nav-item">
-        <%= live_redirect(gettext("Education"),
-          class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "education")
-        ) %>
+        <.link navigate={Routes.streams_list_path(@conn, :index, "education")} class="nav-link">
+          <%= gettext("Education") %>
+        </.link>
       </li>
       <li class="nav-item dropdown user-profile-dropdown">
         <a
@@ -118,7 +112,7 @@
       </li>
       <%= if assigns[:current_user] do %>
         <li class="nav-item">
-          <%= live_redirect class: "nav-link", to: Routes.streams_list_path(@conn, :index, "following") do %>
+          <.link navigate={Routes.streams_list_path(@conn, :index, "following")} class="nav-link">
             <%= gettext("Following") %>
             <%= cond do %>
               <% count_live = count_live_following_channels(@conn) -> %>
@@ -127,20 +121,18 @@
                 <span class="badge badge-primary align-top"><%= count_hosted %></span>
               <% true -> %>
             <% end %>
-          <% end %>
+          </.link>
         </li>
       <% end %>
       <li class="nav-item">
-        <%= live_redirect(gettext("Events"),
-          class: "nav-link",
-          to: Routes.events_path(@conn, :index)
-        ) %>
+        <.link navigate={Routes.events_path(@conn, :index)} class="nav-link">
+          <%= gettext("Events") %>
+        </.link>
       </li>
       <li class="nav-item">
-        <%= live_redirect(gettext("App!"),
-          class: "nav-link text-warning",
-          to: Routes.app_path(@conn, :index)
-        ) %>
+        <.link navigate={Routes.app_path(@conn, :index)} class="nav-link text-warning">
+          <%= gettext("App!") %>
+        </.link>
       </li>
     </ul>
     <ul class="navbar-nav d-lg-flex align-items-lg-center">
@@ -166,7 +158,7 @@
           aria-labelledby="settingsDropdown"
         >
           <.form
-            let={f}
+            :let={f}
             for={:user_preference}
             action={Routes.quick_preference_path(@conn, :update_preference)}
             class="px-4 py-3"
@@ -207,10 +199,12 @@
       </li>
       <%= if assigns[:current_user] do %>
         <li class="nav-item">
-          <%= live_redirect(gettext("Stream Setup"),
-            class: "btn btn-warning btn-sm text-dark",
-            to: Routes.go_live_path(@conn, :index)
-          ) %>
+          <.link
+            navigate={Routes.go_live_path(@conn, :index)}
+            class="btn btn-warning btn-sm text-dark"
+          >
+            <%= gettext("Stream Setup") %>
+          </.link>
         </li>
         <li class="nav-item dropdown user-profile-dropdown">
           <a
@@ -265,10 +259,13 @@
               <%= gettext("Profile") %>
             <% end %>
             <div class="dropdown-divider"></div>
-            <%= live_redirect class: "dropdown-item text-warning", to: Routes.platform_subscription_index_path(@conn, :index) do %>
+            <.link
+              navigate={Routes.platform_subscription_index_path(@conn, :index)}
+              class="dropdown-item text-warning"
+            >
               <i class="fas fa-cookie fa-fw"></i>
               <%= gettext("Upgrade!") %>
-            <% end %>
+            </.link>
             <%= link class: "dropdown-item", to: Routes.user_payments_path(@conn, :index) do %>
               <i class="fas fa-money-bill fa-fw"></i>
               <%= gettext("Payments") %>

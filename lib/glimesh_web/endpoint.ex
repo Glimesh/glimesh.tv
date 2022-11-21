@@ -39,19 +39,19 @@ defmodule GlimeshWeb.Endpoint do
   plug Plug.Static,
     at: "/",
     from: {:glimesh, "priv/public"},
-    gzip: Application.get_env(:glimesh, :environment) == :prod,
+    gzip: Application.compile_env(:glimesh, :environment) == :prod,
     only:
       ~w(emotes fa-fonts favicons fonts images css js browserconfig.xml cache_manifest.json favicon.ico robots.txt)
 
-  if Application.get_env(:waffle, :asset_host) do
+  if Application.compile_env(:waffle, :asset_host) do
     # If we're using an asset host, we just want to redirect requests
     plug GlimeshWeb.Plugs.Redirect,
       from: "/uploads",
-      to: Application.get_env(:waffle, :asset_host)
+      to: Application.compile_env(:waffle, :asset_host)
   else
     plug Plug.Static,
       at: "/uploads",
-      from: Application.get_env(:waffle, :storage_dir)
+      from: Application.compile_env(:waffle, :storage_dir)
   end
 
   # Code reloading can be explicitly enabled under the

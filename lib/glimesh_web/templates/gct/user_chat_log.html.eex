@@ -1,5 +1,0 @@
-<div class="container">
-    <h2 class="text-center mt-4"><%= gettext("%{user}'s Chat Logs", user: @user.displayname)%></h2>
-
-    <%= live_render(@conn, GlimeshWeb.GctLive.Components.UserChatLogTable, id: "chat-log-button", session: %{"admin" => @conn.assigns.current_user, "user" => @user})%>
-</div>

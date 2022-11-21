@@ -14,7 +14,7 @@
         style="min-height: 300px"
       >
         <div>
-          <%= live_file_input(@uploads.emote) %>
+          <.live_file_input upload={@uploads.emote} />
           <br />
 
           <p>Drag and Drop into this section</p>
@@ -45,7 +45,7 @@
               </div>
 
               <div class="text-center">
-                <%= live_img_preview(entry, height: "128px", width: "128px") %>
+                <.live_img_preview entry={entry} height="128" width="128" />
                 <figcaption><code><%= entry.client_name %></code></figcaption>
               </div>
               <div class="input-group">

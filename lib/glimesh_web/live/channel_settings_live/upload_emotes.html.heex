@@ -34,7 +34,7 @@
 
               <br />
 
-              <%= live_file_input(@uploads.emote) %>
+              <.live_file_input upload={@uploads.emote} />
               <br />
             </div>
             <div class="row">
@@ -54,8 +54,8 @@
                   </div>
 
                   <div class="text-center">
-                    <%= live_img_preview(entry, height: "128px", width: "128px") %>
-                    <%= live_img_preview(entry, height: "32px", width: "32px") %>
+                    <.live_img_preview entry={entry} height="128" width="128" />
+                    <.live_img_preview entry={entry} height="32" width="32" />
                     <figcaption><code><%= entry.client_name %></code></figcaption>
                   </div>
                   <div class="input-group">

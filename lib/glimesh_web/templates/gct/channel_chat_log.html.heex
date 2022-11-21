@@ -1,0 +1,10 @@
+<div class="container">
+  <h2 class="text-center mt-4">
+    <%= gettext("%{channel_name}'s Chat Logs", channel_name: @channel.user.displayname) %>
+  </h2>
+
+  <%= live_render(@conn, GlimeshWeb.GctLive.Components.ChannelChatLogTable,
+    id: "chat-log-button",
+    session: %{"admin" => @conn.assigns.current_user, "channel" => @channel}
+  ) %>
+</div>

@@ -23,6 +23,7 @@ defmodule GlimeshWeb.UserSettings.Components.ProfileSettingsLive do
      |> assign(:markdown_state, "edit")}
   end
 
+  @impl true
   def handle_event("edit_state", %{"state" => "edit"}, socket) do
     {:noreply, assign(socket, :markdown_state, "edit")}
   end

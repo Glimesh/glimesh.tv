@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="alert alert-danger mt-4 mb-1">
+    <h2 class="mb-0 text-center">
+      <%= gettext("WARNING YOU'RE CURRENTLY EDITING %{user}'s PROFILE SETTINGS",
+        user: @user.username
+      ) %>
+    </h2>
+  </div>
+
+  <.link
+    navigate={Routes.gct_path(@conn, :username_lookup, query: @user.username)}
+    class="btn btn-primary mb-"
+  >
+    <%= gettext("Go Back") %>
+  </.link>
+  <%= live_render(@conn, GlimeshWeb.UserSettings.Components.ProfileSettingsLive,
+    id: "profile-settings-form",
+    session: %{
+      "route" => Routes.gct_path(@conn, :update_user_profile, @user.username),
+      "profile_changeset" => @user_changeset,
+      "twitter_auth_url" => @twitter_auth_url,
+      "user" => @user
+    }
+  ) %>
+</div>

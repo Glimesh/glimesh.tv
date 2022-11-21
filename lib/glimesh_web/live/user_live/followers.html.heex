@@ -3,17 +3,21 @@
 
   <ul class="nav nav-pills mb-4">
     <li class="nav-item">
-      <%= live_redirect("Followers",
-        to: Routes.user_followers_path(@socket, :followers, @streamer.username),
-        class: "nav-link " <> if(@live_action == :followers, do: "active", else: "")
-      ) %>
+      <.link
+        navigate={Routes.user_followers_path(@socket, :followers, @streamer.username)}
+        class={"nav-link " <> if(@live_action == :followers, do: "active", else: "")}
+      >
+        <%= gettext("Followers") %>
+      </.link>
     </li>
 
     <li class="nav-item">
-      <%= live_redirect("Following",
-        to: Routes.user_followers_path(@socket, :following, @streamer.username),
-        class: "nav-link " <> if(@live_action == :following, do: "active", else: "")
-      ) %>
+      <.link
+        navigate={Routes.user_followers_path(@socket, :following, @streamer.username)}
+        class={"nav-link " <> if(@live_action == :following, do: "active", else: "")}
+      >
+        <%= gettext("Following") %>
+      </.link>
     </li>
   </ul>
 

@@ -8,10 +8,10 @@ defmodule GlimeshWeb.Admin.TagLive.FormComponent do
     ~H"""
     <div>
       <.form
-        let={f}
+        :let={f}
         for={@changeset}
         id="tag-form"
-        phx_target={@myself}
+        phx-target={@myself}
         phx-change="validate"
         phx-submit="save"
       >
