@@ -1,6 +1,6 @@
 Congratulations! 
 Your Sub Button is LIVE!
 
-Hi <%= @user.displayname %>! We're happy to let you know we have processed all of your infomation, and your Sub Button is now live on Glimesh. If you have any questions please reach out to us at support@glimesh.tv.
+Hi <%= @user.displayname %>! We're happy to let you know we have processed all of your information, and your Sub Button is now live on Glimesh. If you have any questions please reach out to us at support@glimesh.tv.
 
 You can check it out at: <%= @url %>

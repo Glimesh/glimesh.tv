@@ -195,7 +195,7 @@
                             <%= gettext("Glimesh aims to be as fair as possible. While we cannot condone improper use of copyright material we know that not all DMCA claims are fair. We will be open to help in whatever ways possible to ensure you have the best opportunity to correct DMCA claims. While we are not lawyers and cannot offer legal advice we will do our best to help you get in the right direction for correcting any claims in a fair manner.") %>
                         </li>
                         <li>
-                            <%= gettext("Lastly Glimesh is working to partner with music providers or independant artists who will provide proper music licenses for you to use.") %>
+                            <%= gettext("Lastly Glimesh is working to partner with music providers or independent artists who will provide proper music licenses for you to use.") %>
                         </li>
                     </ul>
 

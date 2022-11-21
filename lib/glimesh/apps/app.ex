@@ -86,7 +86,7 @@ defmodule Glimesh.Apps.App do
 
       _ ->
         {:error,
-         "If using unsecure http, you must be using a local loopback address like [localhost, 127.0.0.1, ::1]"}
+         "If using insecure http, you must be using a local loopback address like [localhost, 127.0.0.1, ::1]"}
     end
   end
 end

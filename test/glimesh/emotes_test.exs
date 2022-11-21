@@ -74,7 +74,7 @@ defmodule Glimesh.EmotesTest do
       assert emote.emote == "testgsomeemote"
     end
 
-    test "create_channel_emote/3 doesnt work if you dont have a prefix", %{} do
+    test "create_channel_emote/3 doesn't work if you dont have a prefix", %{} do
       streamer = streamer_fixture()
 
       assert {:error, changeset_error} =
@@ -213,7 +213,7 @@ defmodule Glimesh.EmotesTest do
 
       assert changeset_error.errors == [
                emote:
-                 {"Emote must be only contain alpha-numeric characters", [validation: :format]}
+                 {"Emote must be only contain alphanumeric characters", [validation: :format]}
              ]
     end
   end

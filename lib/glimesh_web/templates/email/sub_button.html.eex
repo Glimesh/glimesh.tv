@@ -11,7 +11,7 @@
                             </tr>
                             <tr>
                                 <td class="text-center pb25" style="color:#ebedf2; font-family:'Roboto', Arial,sans-serif; font-size:16px; line-height:30px; text-align:center; padding-bottom:25px;">
-                                    Hi <%= @user.displayname %>! We're happy to let you know we have processed all of your infomation, and your subscribe & donate buttons are now live on Glimesh. If you have any questions please reach out to us at <a href="mailto:support@glimesh.tv">support@glimesh.tv</a>.</td>
+                                    Hi <%= @user.displayname %>! We're happy to let you know we have processed all of your information, and your subscribe & donate buttons are now live on Glimesh. If you have any questions please reach out to us at <a href="mailto:support@glimesh.tv">support@glimesh.tv</a>.</td>
                             </tr>
                             <!-- Button -->
                             <tr>

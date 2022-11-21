@@ -13,7 +13,7 @@ export default {
         let saveVolumeChanges = false;
         let currentlyInUltrawide = false;
 
-        // Handle 21:9 aspect ratio monitors/browers
+        // Handle 21:9 aspect ratio monitors/browsers
         let containerParent = container.parentElement;
         // Get browser aspect ratio
         let size = {

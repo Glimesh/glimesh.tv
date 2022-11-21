@@ -9,7 +9,7 @@ defmodule Glimesh.Uploaders.StaticEmote do
   Image Tags - not vulnerable - The SVG is referenced through image tags which prevent scripts.
   Image Tags With CSP - not vulnerable - Image tags and the same CSP as above for double protection.
 
-  Since we cannot manually set CSP headers with most CDNs, we're utilizing both sanitizing the image with svgo, serving it through an img tag so js cannot run, and setting the content-disposition to attachment so the browser wont automatically run it.
+  Since we cannot manually set CSP headers with most CDNs, we're utilizing both sanitizing the image with svgo, serving it through an img tag so js cannot run, and setting the content-disposition to attachment so the browser won't automatically run it.
   """
 
   use Waffle.Definition

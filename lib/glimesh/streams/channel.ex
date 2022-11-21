@@ -124,7 +124,7 @@ defmodule Glimesh.Streams.Channel do
     |> cast(attrs, [:emote_prefix])
     |> validate_required(:emote_prefix)
     |> validate_format(:emote_prefix, ~r/^[a-zA-Z0-9]+$/i,
-      message: "Emote prefix must be only alpha-numeric characters"
+      message: "Emote prefix must be only alphanumeric characters"
     )
     |> validate_length(:emote_prefix, is: 5)
     |> validate_no_active_emotes()

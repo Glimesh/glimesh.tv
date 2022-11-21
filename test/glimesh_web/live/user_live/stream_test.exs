@@ -110,11 +110,11 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       }
     end
 
-    test "lost_packets doesnt crash", %{conn: conn, streamer: streamer} do
+    test "lost_packets doesn't crash", %{conn: conn, streamer: streamer} do
       {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
 
       params = %{
-        "uplink" => "doesnt matter",
+        "uplink" => "doesn't matter",
         "lostPackets" => 1
       }
 
@@ -129,7 +129,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
 
       params = %{
-        "uplink" => "doesnt matter",
+        "uplink" => "doesn't matter",
         "lostPackets" => nil
       }
 
@@ -144,7 +144,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
 
       params = %{
-        "uplink" => "doesnt matter",
+        "uplink" => "doesn't matter",
         "lostPackets" => <<123, 123, 123, 123, 123, 123>>
       }
 

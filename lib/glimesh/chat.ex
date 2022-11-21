@@ -332,7 +332,7 @@ defmodule Glimesh.Chat do
     message = if attrs["message"], do: attrs["message"], else: attrs.message
 
     # Dumb fast check to see if there's something that smells like a link
-    # If the channel has links disabled it still wont do anything
+    # If the channel has links disabled it still won't do anything
     if is_bitstring(message) and String.contains?(message, "http") and
          String.contains?(message, "://") do
       !channel.block_links
