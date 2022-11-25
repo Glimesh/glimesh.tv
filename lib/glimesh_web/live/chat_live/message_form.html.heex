@@ -25,6 +25,20 @@
         </div>
       <% end %>
 
+      <%= if @allow_reaction_gifs and not @disabled do %>
+        <div id="reaction-gif-selector" class="input-group-prepend">
+          <button
+            id="reaction-button"
+            type="button"
+            class={["input-group-text", if(@disabled, do: "", else: "reaction-gif-activator")]}
+            phx-hook="TenorSearch"
+            phx-target={@myself}
+          >
+            <i class="far fa-image"></i>
+          </button>
+        </div>
+      <% end %>
+
       <%= if @disabled do %>
         <div class="input-group-prepend input-group-mock-parent flex-grow-1">
           <span class="input-group-text input-group-mock-input d-inline-block flex-grow-1">

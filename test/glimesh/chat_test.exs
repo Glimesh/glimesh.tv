@@ -15,6 +15,13 @@ defmodule Glimesh.ChatTest do
     @valid_attrs %{message: "some message"}
     @link_containing_attrs %{message: "https://glimesh.tv is cool"}
     @invalid_attrs %{message: nil}
+    @tenor_message %{
+      message:
+        ":tenor:494949494949:https://media.tenor.com/somegif:https://media.tenor.com/smallgif"
+    }
+    @tenor_invalid_message %{
+      message: ":tenor:89898989898:https://example.com/booya:https://example.com/another"
+    }
 
     setup do
       streamer = streamer_fixture()
@@ -128,6 +135,62 @@ defmodule Glimesh.ChatTest do
     test "change_chat_message/1 returns a chat_message changeset" do
       chat_message = chat_message_fixture()
       assert %Ecto.Changeset{} = Chat.change_chat_message(chat_message)
+    end
+
+    test "can send tenor reaction gifs if they are enabled", %{
+      channel: channel,
+      streamer: streamer
+    } do
+      {:ok, updated_channel} =
+        Streams.update_channel(streamer, channel, %{allow_reaction_gifs: true})
+
+      assert {:ok, %ChatMessage{} = chat_message} =
+               Chat.create_tenor_message(user_fixture(), updated_channel, @tenor_message)
+
+      assert Enum.count(chat_message.tokens) == 1
+      assert Enum.at(chat_message.tokens, 0).type == "tenor"
+      assert Enum.at(chat_message.tokens, 0).src =~ "media.tenor.com"
+    end
+
+    test "can NOT send tenor reaction gifs if they are disabled by streamer", %{
+      channel: channel,
+      streamer: streamer
+    } do
+      {:ok, updated_channel} =
+        Streams.update_channel(streamer, channel, %{allow_reaction_gifs: false})
+
+      assert {:error, "Reaction gifs are not enabled either on this channel or site-wide."} =
+               Chat.create_tenor_message(user_fixture(), updated_channel, @tenor_message)
+    end
+
+    test "streamer can send tenor reaction gifs if they are disabled by streamer", %{
+      channel: channel,
+      streamer: streamer
+    } do
+      {:ok, updated_channel} =
+        Streams.update_channel(streamer, channel, %{allow_reaction_gifs: false})
+
+      assert {:ok, %ChatMessage{} = chat_message} =
+               Chat.create_tenor_message(streamer, updated_channel, @tenor_message)
+
+      assert Enum.count(chat_message.tokens) == 1
+      assert Enum.at(chat_message.tokens, 0).type == "tenor"
+      assert Enum.at(chat_message.tokens, 0).src =~ "media.tenor.com"
+    end
+
+    test "tenor messages can only point to media.tenor.com and not another site", %{
+      channel: channel,
+      streamer: streamer
+    } do
+      {:ok, updated_channel} =
+        Streams.update_channel(streamer, channel, %{allow_reaction_gifs: true})
+
+      assert {:ok, %ChatMessage{} = chat_message} =
+               Chat.create_tenor_message(user_fixture(), updated_channel, @tenor_invalid_message)
+
+      refute Enum.count(chat_message.tokens) == 1
+      assert Enum.at(chat_message.tokens, 0).type == "text"
+      assert chat_message.message == @tenor_invalid_message.message
     end
   end
 

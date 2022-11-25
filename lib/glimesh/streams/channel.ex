@@ -34,6 +34,8 @@ defmodule Glimesh.Streams.Channel do
 
     field :emote_prefix, :string
 
+    field :allow_reaction_gifs, :boolean, default: false
+
     field :allow_hosting, :boolean, default: false
 
     # This is here temporarily as we add additional schema to handle it.
@@ -105,7 +107,8 @@ defmodule Glimesh.Streams.Channel do
       :require_confirmed_email,
       :minimum_account_age,
       :allow_hosting,
-      :backend
+      :backend,
+      :allow_reaction_gifs
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)
@@ -293,5 +296,14 @@ defmodule Glimesh.Streams.Channel do
     |> maybe_put_tags(:tags, attrs)
     |> maybe_put_subcategory(:subcategory, attrs)
     |> unique_constraint([:user_id])
+  end
+
+  def allow_reaction_gifs?(channel) do
+    channel.allow_reaction_gifs and allow_reaction_gifs_site_wide?()
+  end
+
+  def allow_reaction_gifs_site_wide? do
+    Keyword.get(Application.get_env(:glimesh, :tenor_config), :allow_tenor, false) and
+      String.length(Keyword.get(Application.get_env(:glimesh, :tenor_config), :apikey, "")) > 2
   end
 end

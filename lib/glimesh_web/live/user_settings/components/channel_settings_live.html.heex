@@ -315,6 +315,15 @@
         </small>
         <%= error_tag(f, :minimum_account_age) %>
       </div>
+      <div class="form-group">
+        <%= label(
+          f,
+          :allow_reaction_gifs,
+          gettext("Allow reaction gifs in chat?")
+        ) %>
+        <%= select(f, :allow_reaction_gifs, [No: false, Yes: true], class: "form-control") %>
+        <%= error_tag(f, :allow_reaction_gifs) %>
+      </div>
     </div>
   </div>
 

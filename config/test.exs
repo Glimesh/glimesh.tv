@@ -57,3 +57,8 @@ config :glimesh, GlimeshWeb.Gettext,
 config :glimesh, alpha_api_enable: true
 
 config :glimesh, Glimesh.PromEx, disabled: true
+
+config :glimesh, :tenor_config,
+  allow_tenor: true,
+  content_filter: "medium",
+  apikey: "fake api key"
