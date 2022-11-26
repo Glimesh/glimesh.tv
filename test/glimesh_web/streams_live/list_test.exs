@@ -48,6 +48,28 @@ defmodule GlimeshWeb.StreamsLive.ListTest do
       assert html =~ channel.title
     end
 
+    test "lists some streams and shows new streamer badge", %{
+      conn: conn,
+      channel: channel,
+      streamer: streamer,
+      category: category
+    } do
+      random_stream =
+        streamer_fixture(%{}, %{
+          category_id: category.id,
+          is_new_streamer: true
+        })
+
+      Glimesh.Streams.start_stream(random_stream.channel)
+
+      {:ok, _, html} = live(conn, Routes.streams_list_path(conn, :index, category.slug))
+
+      assert html =~ "#{category.name} Streams"
+      assert html =~ streamer.displayname
+      assert html =~ channel.title
+      assert html =~ "new-streamer-badge"
+    end
+
     test "can filter streams by tags", %{
       conn: conn,
       category: category,
@@ -117,6 +139,42 @@ defmodule GlimeshWeb.StreamsLive.ListTest do
       assert html =~ "Showing 1 of 2 Live Channels"
       assert html =~ subcategory.name
       assert html =~ channel.title
+    end
+
+    test "can filter streams by new streamers", %{
+      conn: conn,
+      category: category,
+      subcategory: subcategory,
+      channel: channel
+    } do
+      random_stream =
+        streamer_fixture(%{}, %{
+          category_id: category.id,
+          is_new_streamer: true
+        })
+
+      Glimesh.Streams.start_stream(random_stream.channel)
+
+      {:ok, view, html} = live(conn, Routes.streams_list_path(conn, :index, category.slug))
+
+      assert html =~ "Showing 2 of 2 Live Channels"
+      assert html =~ "new-streamer-badge"
+
+      html =
+        render_change(view, "filter_change", %{
+          "form" => %{
+            "tag_search" => "",
+            "language" => "",
+            "subcategory_search" => "",
+            "is_new_streamer" => "true"
+          }
+        })
+
+      assert html =~ "#{category.name} Streams"
+      assert html =~ "Showing 1 of 2 Live Channels"
+      assert html =~ subcategory.name
+      assert html =~ channel.title
+      assert html =~ "new-streamer-badge"
     end
 
     test "can show more streams if necessary", %{

@@ -94,9 +94,9 @@ defmodule GlimeshWeb.StreamsLive.List do
 
     prefilled_language = Map.get(params, "language", "Any Language")
 
-    has_filters =
-      Map.has_key?(params, "subcategory") or Map.has_key?(params, "tags") or
-        Map.has_key?(params, "language")
+    prefilled_new_streamers_filter = Map.get(params, "is_new_streamer", false)
+
+    has_filters = has_filters?(params)
 
     {:noreply,
      socket
@@ -105,9 +105,15 @@ defmodule GlimeshWeb.StreamsLive.List do
      |> assign(:prefilled_tags, prefilled_tags)
      |> assign(:prefilled_subcategory, prefilled_subcategory)
      |> assign(:prefilled_language, prefilled_language)
+     |> assign(:prefilled_new_streamers, prefilled_new_streamers_filter)
      |> assign(:shown_channels, shown_channels)
      |> assign(:total_channels, total_channels)
      |> assign(:channels, channels)}
+  end
+
+  defp has_filters?(params) do
+    Map.has_key?(params, "subcategory") or Map.has_key?(params, "tags") or
+      Map.has_key?(params, "language") or Map.has_key?(params, "is_new_streamer")
   end
 
   @impl true
@@ -122,6 +128,7 @@ defmodule GlimeshWeb.StreamsLive.List do
       |> append_json_param(:tags, Map.get(form_data, "tag_search"))
       |> append_json_param(:subcategory, Map.get(form_data, "subcategory_search"))
       |> append_param(:language, Map.get(form_data, "language"))
+      |> append_param(:is_new_streamer, Map.get(form_data, "is_new_streamer"))
 
     {:noreply,
      socket

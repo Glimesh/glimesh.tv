@@ -1,9 +1,12 @@
 defmodule Glimesh.HomepageFixtures do
-  def create_viable_mock_stream(mock_time \\ nil) do
+  def create_viable_mock_stream(mock_time \\ nil, channel_attribs \\ %{}) do
     random_stream =
-      Glimesh.AccountsFixtures.streamer_fixture(%{}, %{
-        show_on_homepage: true
-      })
+      Glimesh.AccountsFixtures.streamer_fixture(
+        %{},
+        Map.merge(channel_attribs, %{
+          show_on_homepage: true
+        })
+      )
 
     start_time =
       if mock_time, do: mock_time, else: NaiveDateTime.add(NaiveDateTime.utc_now(), -(16 * 60))

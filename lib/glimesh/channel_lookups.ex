@@ -8,7 +8,7 @@ defmodule Glimesh.ChannelLookups do
   alias Glimesh.AccountFollows.Follower
   alias Glimesh.Accounts.User
   alias Glimesh.Repo
-  alias Glimesh.Streams.{Category, Channel, ChannelHosts}
+  alias Glimesh.Streams.{Category, Channel, ChannelHosts, Stream}
 
   ## Filtering
   @spec search_live_channels(map) :: list
@@ -20,6 +20,7 @@ defmodule Glimesh.ChannelLookups do
     |> apply_filter(:subcategory, params)
     |> apply_filter(:tags, params)
     |> apply_filter(:language, params)
+    |> apply_filter(:is_new_streamer, params)
     |> order_by(fragment("RANDOM()"))
     |> group_by([c], c.id)
     |> preload([:category, :subcategory, :user, :stream, :tags])
@@ -62,6 +63,15 @@ defmodule Glimesh.ChannelLookups do
 
   defp apply_filter(query, :language, %{"language" => languages}) when is_list(languages) do
     where(query, [c], c.language in ^languages)
+  end
+
+  defp apply_filter(query, :is_new_streamer, %{"is_new_streamer" => is_new_streamer})
+       when not is_nil(is_new_streamer) do
+    if is_new_streamer == "true" do
+      where(query, [c], c.is_new_streamer == ^is_new_streamer)
+    else
+      query
+    end
   end
 
   defp apply_filter(query, _field, _params) do
@@ -300,5 +310,55 @@ defmodule Glimesh.ChannelLookups do
     else
       []
     end
+  end
+
+  def set_new_channel_flags do
+    now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+
+    seven_days_since_first_stream =
+      from(s in Stream,
+        where:
+          s.started_at in fragment(
+            "select min(s.started_at) from streams s where s.started_at is not null"
+          ),
+        group_by: s.channel_id,
+        having: sum(^now - s.started_at) <= fragment("INTERVAL '7 days'"),
+        select: s.channel_id
+      )
+
+    from(c in Channel,
+      where: c.inaccessible == false,
+      where:
+        c.id in fragment(
+          "select s.channel_id from streams s where s.channel_id = ? group by s.channel_id having count(s.channel_id) < 6",
+          c.id
+        ) or
+          c.id in subquery(seven_days_since_first_stream),
+      update: [set: [is_new_streamer: true]]
+    )
+    |> Repo.update_all([])
+  end
+
+  def clear_new_channel_flags do
+    from(c in Channel,
+      where: c.is_new_streamer == true,
+      update: [set: [is_new_streamer: false]]
+    )
+    |> Repo.update_all([])
+  end
+
+  def clear_new_channel_flags_for_channels_with_fifty_hours_or_more do
+    fifty_hour_query =
+      from s in Glimesh.Streams.Stream,
+        select: s.channel_id,
+        group_by: s.channel_id,
+        having: sum(s.ended_at - s.started_at) >= fragment("INTERVAL '50 hours'")
+
+    from(c in Channel,
+      where: c.inaccessible == false,
+      where: c.id in subquery(fifty_hour_query),
+      update: [set: [is_new_streamer: false]]
+    )
+    |> Repo.update_all([])
   end
 end

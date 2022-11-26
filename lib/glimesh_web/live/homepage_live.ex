@@ -57,6 +57,11 @@ defmodule GlimeshWeb.HomepageLive do
                         {#if @random_channel.mature_content}
                           <span class="badge badge-warning ml-1">{gettext("Mature")}</span>
                         {/if}
+                        {#if @random_channel.is_new_streamer}
+                          <span class="badge badge-danger ml-1 new-streamer-badge">
+                            {gettext("New")}
+                          </span>
+                        {/if}
                       </p>
                     </div>
                     <LivePatch

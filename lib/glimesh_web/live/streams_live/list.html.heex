@@ -50,6 +50,15 @@
             placeholder: gettext("Search for a stream by tags")
           ) %>
         </div>
+        <div class="custom-control custom-switch">
+          <%= checkbox(:form, :is_new_streamer,
+            value: @prefilled_new_streamers,
+            class: "custom-control-input"
+          ) %>
+          <%= label(:form, :is_new_streamer, gettext("Show new streamers only"),
+            class: "custom-control-label"
+          ) %>
+        </div>
       </div>
       <div class="col-md-6 col-lg-3 mb-2">
         <label for="validationCustom02"><%= gettext("Language") %></label>
@@ -146,6 +155,11 @@
                             <%= if channel.mature_content do %>
                               <span class="badge badge-warning ml-1">
                                 <%= gettext("Mature") %>
+                              </span>
+                            <% end %>
+                            <%= if channel.is_new_streamer do %>
+                              <span class="badge badge-danger ml-1 new-streamer-badge">
+                                <%= gettext("New") %>
                               </span>
                             <% end %>
                           </p>

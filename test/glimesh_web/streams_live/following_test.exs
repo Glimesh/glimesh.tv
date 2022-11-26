@@ -43,6 +43,24 @@ defmodule GlimeshWeb.StreamsLive.FollowingTest do
       assert html =~ channel.title
     end
 
+    test "shows new streamer badge on followed streams", %{
+      conn: conn,
+      user: user
+    } do
+      streamer = streamer_fixture(%{}, %{is_new_streamer: true})
+      channel = streamer.channel
+      Glimesh.Streams.start_stream(channel)
+
+      Glimesh.AccountFollows.follow(streamer, user)
+
+      {:ok, _, html} = live(conn, Routes.streams_list_path(conn, :index, "following"))
+
+      assert html =~ "Followed Streams"
+      assert html =~ streamer.displayname
+      assert html =~ channel.title
+      assert html =~ "new-streamer-badge"
+    end
+
     test "lists users that are offline", %{
       conn: conn,
       user: user

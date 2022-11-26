@@ -69,6 +69,11 @@
                     <%= if channel.mature_content do %>
                       <span class="badge badge-warning"><%= gettext("Mature") %></span>
                     <% end %>
+                    <%= if channel.is_new_streamer do %>
+                      <span class="badge badge-danger ml-1 new-streamer-badge">
+                        <%= gettext("New") %>
+                      </span>
+                    <% end %>
                   </p>
                 </div>
               </div>

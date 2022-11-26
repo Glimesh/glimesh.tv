@@ -46,6 +46,8 @@ defmodule Glimesh.Streams.Channel do
     field :poster, Glimesh.ChannelPoster.Type
     field :chat_bg, Glimesh.ChatBackground.Type
 
+    field :is_new_streamer, :boolean, default: false
+
     # This is used when searching for live channels that are live or hosted
     field :match_type, :string, virtual: true
 
@@ -105,7 +107,8 @@ defmodule Glimesh.Streams.Channel do
       :require_confirmed_email,
       :minimum_account_age,
       :allow_hosting,
-      :backend
+      :backend,
+      :is_new_streamer
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)
@@ -293,5 +296,10 @@ defmodule Glimesh.Streams.Channel do
     |> maybe_put_tags(:tags, attrs)
     |> maybe_put_subcategory(:subcategory, attrs)
     |> unique_constraint([:user_id])
+  end
+
+  def update_is_new_streamer_changeset(channel, attrs \\ %{}) do
+    channel
+    |> cast(attrs, [:is_new_streamer])
   end
 end

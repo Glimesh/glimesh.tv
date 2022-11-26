@@ -256,7 +256,8 @@ config :glimesh, Oban,
        {"* * * * *", Glimesh.Jobs.StreamMetricsCron},
        {"*/10 * * * *", Glimesh.Jobs.AutoHostCron},
        {"*/5 * * * *", Glimesh.Jobs.HomepageCron},
-       {"*/5 * * * *", Glimesh.Jobs.StreamPrunerCron}
+       {"*/5 * * * *", Glimesh.Jobs.StreamPrunerCron},
+       {"*/60 * * * *", Glimesh.Jobs.IsNewStreamerFlagger}
      ]}
   ]
 

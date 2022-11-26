@@ -15,7 +15,7 @@ defmodule GlimeshWeb.HomepageLiveTest do
     test "general text", %{conn: conn} do
       user_fixture()
 
-      {:ok, _, html} = live(conn, Routes.homepage_path(conn, :index))
+      {:ok, _, _html} = live(conn, Routes.homepage_path(conn, :index))
 
       # Commented out for now
       # assert html =~ "Join 1 others!"
@@ -46,6 +46,20 @@ defmodule GlimeshWeb.HomepageLiveTest do
 
       {:ok, _, html} = live(conn, Routes.homepage_path(conn, :index))
       assert html =~ hd(streams).title
+    end
+
+    test "shows streams section with new streamer badges", %{conn: conn} do
+      streams =
+        Enum.map(1..6, fn _ ->
+          {:ok, stream} = create_viable_mock_stream(nil, %{is_new_streamer: true})
+          stream
+        end)
+
+      assert Glimesh.Homepage.update_homepage() == :first_run
+
+      {:ok, _, html} = live(conn, Routes.homepage_path(conn, :index))
+      assert html =~ hd(streams).title
+      assert html =~ "new-streamer-badge"
     end
   end
 end
