@@ -92,7 +92,7 @@
                   phx-update="ignore"
                 >
                   <%= if @twitter_account != nil do %>
-                    <%= link to: Routes.user_social_path(@socket, :disconnect,  "twitter"), class: "btn btn-danger btn-block", data: [confirm: gettext("Are you sure you want to disconnect your Twitter account?")], method: :delete do %>
+                    <%= link to: Routes.user_social_path(@socket, :disconnect,  "twitter"), class: "btn btn-danger btn-block btn-twitter-disconnect", data: [confirm: gettext("Are you sure you want to disconnect your Twitter account?")], method: :delete do %>
                       <i class="fab fa-twitter fa-fw"></i>
                       Disconnect @ <%= @twitter_account.username %>
                     <% end %>
@@ -100,7 +100,10 @@
                     <a
                       href={@twitter_auth_url}
                       class={
-                        ["btn btn-info btn-block", unless(@twitter_auth_url, do: "disabled")]
+                        [
+                          "btn btn-info btn-block btn-twitter-connect",
+                          unless(@twitter_auth_url, do: "disabled")
+                        ]
                       }
                     >
                       <i class="fab fa-twitter fa-fw"></i>
