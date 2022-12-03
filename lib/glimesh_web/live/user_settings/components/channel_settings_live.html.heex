@@ -119,6 +119,25 @@
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, :share_text, gettext("Stream Share Message")) %>
+        <p class="text-muted form-text">
+          <%= gettext(
+            "A default message to present to viewers when they click to share your channel on social media sites."
+          ) %>
+        </p>
+        <%= text_input(f, :share_text,
+          class: "form-control",
+          placeholder: gettext("Come and enjoy this #Glimesh stream with me!"),
+          minlength: "3",
+          maxlength: "100"
+        ) %>
+        <%= error_tag(f, :share_text) %>
+      </div>
+    </div>
+  </div>
 
   <h2 class="mt-4"><%= gettext("Stream Information") %></h2>
   <p>

@@ -362,4 +362,28 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       assert html =~ "stream-title-edit"
     end
   end
+
+  describe "Share stream button" do
+    setup do
+      streamer = streamer_fixture()
+
+      %{streamer: streamer}
+    end
+
+    test "is available to non-logged-in users", %{conn: conn, streamer: streamer} do
+      {:ok, _, html} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+
+      assert html =~ "share-stream-button"
+    end
+
+    test "is available to logged-in users", %{conn: conn, streamer: streamer} do
+      user = user_fixture()
+      user_conn = log_in_user(conn, user)
+
+      {:ok, _, html} =
+        live(user_conn, Routes.user_stream_path(user_conn, :index, streamer.username))
+
+      assert html =~ "share-stream-button"
+    end
+  end
 end
