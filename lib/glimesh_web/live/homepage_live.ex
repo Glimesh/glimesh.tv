@@ -14,22 +14,46 @@ defmodule GlimeshWeb.HomepageLive do
   def render(assigns) do
     ~F"""
     <div class="fancy-bg pt-4">
-      {#if @random_channel}
-        <div class="container">
-          {#if not is_nil(@live_featured_event_channel)}
-            <div class="card shadow rounded">
-              <div class="row">
-                <div class="col-md-7">
-                  <VideoPlayer id="homepage-video-player" muted channel={@live_featured_event_channel} />
-                </div>
-                <div class="col-md-5 py-4 pr-4">
-                  <EventMedia event={@live_featured_event} show_img={false} />
+      <!-- categories -->
+      <div class="container">
+        <div class="row mb-4">
+          {#for {name, link, icon, live_count} <- list_categories()}
+            <div class="col">
+              <LivePatch to={link} class="btn btn-outline-primary btn-lg btn-block py-2">
+                <i class={"fas fa-2x fa-fw", icon} />
+                <br>
+                <small class="text-color-link">{name}</small>
+                <br>
+                {#if not is_nil(live_count)}
+                  <small class={"text-warning font-weight-bold count-#{name}"}>{live_count} Streams Live!</small>
+                {#else}
+                  <small class={"text-warning font-weight-bold count-#{name}"}>&nbsp;</small>
+                {/if}
+              </LivePatch>
+            </div>
+          {/for}
+        </div>
+      </div>
+
+      <div class="col-12">
+        <!-- top line -->
+        <div class="row align-items-center">
+          {#if @random_channel}
+            {#if not is_nil(@live_featured_event_channel)}
+              <div class="col-md-6">
+                <div class="card shadow rounded">
+                  <div class="row">
+                    <div class="col-md-7 pl-0">
+                      <VideoPlayer id="homepage-video-player" muted channel={@live_featured_event_channel} />
+                    </div>
+                    <div class="col-md-5 pl-2">
+                      <EventMedia event={@live_featured_event} show_img={false} />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          {#else}
-            <div class="row">
-              <div class="col-md-7">
+            {#else}
+              <div class="col-md-6">
                 <div class="card shadow rounded">
                   <VideoPlayer id="homepage-video-player" muted channel={@random_channel} />
                   <div class="d-flex align-items-start p-2">
@@ -68,109 +92,56 @@ defmodule GlimeshWeb.HomepageLive do
                   </div>
                 </div>
               </div>
-              <div class="col-md-5 py-4 pr-4">
-                <div class="d-flex flex-column align-items-center justify-content-center h-100">
-                  <h2 class="font-weight-bold">
-                    <span class="text-color-alpha">{gettext("Next-Gen")}</span>
-                    {gettext("Live Streaming!")}
-                  </h2>
-                  <p class="lead">
-                    {gettext(
-                      "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving."
-                    )}
-                  </p>
+            {/if}
+          {#else}
+            <div class="position-relative overflow-hidden p-3 p-md-5">
+              <div class="col-md-12 p-lg-4 mx-auto">
+                <h1 class="display-3 font-weight-bold">
+                  <span class="text-color-alpha">{gettext("Next-Gen")}</span>
+                  {gettext("Live Streaming!")}
+                </h1>
+                <p class="lead" style="max-width: 550px;">
+                  {gettext(
+                    "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving."
+                  )}
+                </p>
 
-                  {#if @current_user}
-                    <div class="d-flex flex-row justify-content-around mt-3">
-                      {link(gettext("Create Your Channel"),
-                        to: Routes.user_settings_path(@socket, :stream),
-                        class: "btn btn-info mr-4"
-                      )}
-                      {link(gettext("Setup Payouts"),
-                        to: "/users/settings/profile",
-                        class: "btn btn-info"
-                      )}
-                    </div>
-                  {#else}
-                    <p class="lead">
-                      {gettext("Join %{user_count} others!", user_count: @user_count)}
-                    </p>
-                    {link(gettext("Register Your Account"),
-                      to: Routes.user_registration_path(@socket, :new),
-                      class: "btn btn-primary btn-lg"
-                    )}
-                  {/if}
-                </div>
+                {#if @current_user}
+                  {link(gettext("Customize Your Profile"),
+                    to: Routes.user_settings_path(@socket, :profile),
+                    class: "btn btn-info mt-3"
+                  )}
+                  {link(gettext("Create Your Channel"),
+                    to: Routes.user_settings_path(@socket, :stream),
+                    class: "btn btn-info mt-3"
+                  )}
+                  {link(gettext("Setup Payouts"),
+                    to: "/users/settings/profile",
+                    class: "btn btn-info mt-3"
+                  )}
+                {#else}
+                  <p class="lead">
+                    {gettext("Join %{user_count} others!", user_count: @user_count)}
+                  </p>
+                  {link(gettext("Register Your Account"),
+                    to: Routes.user_registration_path(@socket, :new),
+                    class: "btn btn-primary btn-lg mt-3"
+                  )}
+                {/if}
               </div>
             </div>
           {/if}
-        </div>
-      {#else}
-        <div class="container">
-          <div class="position-relative overflow-hidden p-3 p-md-5">
-            <div class="col-md-12 p-lg-4 mx-auto">
-              <h1 class="display-3 font-weight-bold">
-                <span class="text-color-alpha">{gettext("Next-Gen")}</span>
-                {gettext("Live Streaming!")}
-              </h1>
-              <p class="lead" style="max-width: 550px;">
-                {gettext(
-                  "The first live streaming platform built around truly real time interactivity. Our streams are warp speed, our chat is blazing, and our community is thriving."
-                )}
-              </p>
 
-              {#if @current_user}
-                {link(gettext("Customize Your Profile"),
-                  to: Routes.user_settings_path(@socket, :profile),
-                  class: "btn btn-info mt-3"
-                )}
-                {link(gettext("Create Your Channel"),
-                  to: Routes.user_settings_path(@socket, :stream),
-                  class: "btn btn-info mt-3"
-                )}
-                {link(gettext("Setup Payouts"),
-                  to: "/users/settings/profile",
-                  class: "btn btn-info mt-3"
-                )}
-              {#else}
-                <p class="lead">
-                  {gettext("Join %{user_count} others!", user_count: @user_count)}
-                </p>
-                {link(gettext("Register Your Account"),
-                  to: Routes.user_registration_path(@socket, :new),
-                  class: "btn btn-primary btn-lg mt-3"
-                )}
-              {/if}
+          <!-- Stream list -->
+          {#if length(@channels) > 0}
+            <div class="col-6 container-stream-list d-flex flex-wrap">
+              <div class="row">
+                {#for channel <- @channels}
+                  <ChannelPreview channel={channel} class="col-6" />
+                {/for}
+              </div>
             </div>
-          </div>
-        </div>
-      {/if}
-
-      {#if length(@channels) > 0}
-        <div class="container container-stream-list">
-          <div class="row">
-            {#for channel <- @channels}
-              <ChannelPreview channel={channel} class="col-sm-12 col-md-6 col-xl-4 mt-2 mt-md-4" />
-            {/for}
-          </div>
-        </div>
-      {/if}
-
-      <div class="container">
-        <div class="mt-4 px-4 px-lg-0">
-          <h2>{gettext("Categories Made Simpler")}</h2>
-          <p class="lead">{gettext("Explore our categories and find your new home!")}</p>
-        </div>
-        <div class="row mt-2 mb-4">
-          {#for {name, link, icon} <- list_categories()}
-            <div class="col">
-              <LivePatch to={link} class="btn btn-outline-primary btn-lg btn-block py-4">
-                <i class={"fas fa-2x fa-fw", icon} />
-                <br>
-                <small class="text-color-link">{name}</small>
-              </LivePatch>
-            </div>
-          {/for}
+          {/if}
         </div>
       </div>
     </div>
@@ -227,36 +198,44 @@ defmodule GlimeshWeb.HomepageLive do
   end
 
   def list_categories do
+    category_counts = Glimesh.ChannelLookups.count_live_channels_by_category()
+
     [
       {
         gettext("Gaming"),
         Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "gaming"),
-        "fa-gamepad"
+        "fa-gamepad",
+        Enum.find_value(category_counts, fn x -> if x[:category] == "Gaming", do: x[:count] end)
       },
       {
         gettext("Art"),
         Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "art"),
-        "fa-palette"
+        "fa-palette",
+        Enum.find_value(category_counts, fn x -> if x[:category] == "Art", do: x[:count] end)
       },
       {
         gettext("Music"),
         Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "music"),
-        "fa-headphones"
+        "fa-headphones",
+        Enum.find_value(category_counts, fn x -> if x[:category] == "Music", do: x[:count] end)
       },
       {
         gettext("Tech"),
         Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "tech"),
-        "fa-microchip"
+        "fa-microchip",
+        Enum.find_value(category_counts, fn x -> if x[:category] == "Tech", do: x[:count] end)
       },
       {
         gettext("IRL"),
         Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "irl"),
-        "fa-camera-retro"
+        "fa-camera-retro",
+        Enum.find_value(category_counts, fn x -> if x[:category] == "IRL", do: x[:count] end)
       },
       {
         gettext("Education"),
         Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "education"),
-        "fa-graduation-cap"
+        "fa-graduation-cap",
+        Enum.find_value(category_counts, fn x -> if x[:category] == "Education", do: x[:count] end)
       }
     ]
   end

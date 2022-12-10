@@ -4,6 +4,7 @@ defmodule Glimesh.ChannelLookupsTest do
 
   import Glimesh.AccountsFixtures
   import Glimesh.StreamsFixtures
+  import Glimesh.HomepageFixtures
   alias Glimesh.ChannelLookups
   alias Glimesh.ChannelCategories
   alias Glimesh.Streams
@@ -553,6 +554,34 @@ defmodule Glimesh.ChannelLookupsTest do
       Glimesh.AccountFollows.follow(live_hosted, host)
       results = ChannelLookups.list_live_followed_channels_and_hosts(host)
       assert length(results) == 1
+    end
+  end
+
+  describe "Live channel count by category" do
+    test "can get count of live channels by category" do
+      art_streams =
+        Enum.map(1..:rand.uniform(12), fn _ ->
+          {:ok, _stream} = create_viable_mock_stream(nil, %{category_id: 1})
+        end)
+
+      irl_streams =
+        Enum.map(1..:rand.uniform(12), fn _ ->
+          {:ok, _stream} = create_viable_mock_stream(nil, %{category_id: 4})
+        end)
+
+      category_counts = ChannelLookups.count_live_channels_by_category()
+
+      assert Enum.find_value(category_counts, fn x -> if x[:category] == "Art", do: x[:count] end) ==
+               Enum.count(art_streams)
+
+      assert Enum.find_value(category_counts, fn x -> if x[:category] == "IRL", do: x[:count] end) ==
+               Enum.count(irl_streams)
+
+      assert is_nil(
+               Enum.find_value(category_counts, fn x ->
+                 if x[:category] == "Gaming", do: x[:count]
+               end)
+             )
     end
   end
 end

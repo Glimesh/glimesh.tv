@@ -301,4 +301,16 @@ defmodule Glimesh.ChannelLookups do
       []
     end
   end
+
+  def count_live_channels_by_category do
+    Repo.replica().all(
+      from c in Channel,
+        join: cat in Category,
+        on: c.category_id == cat.id,
+        where: c.inaccessible == false,
+        where: c.status == "live",
+        select: %{category: cat.name, count: count()},
+        group_by: cat.name
+    )
+  end
 end
