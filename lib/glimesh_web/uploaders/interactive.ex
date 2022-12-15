@@ -89,7 +89,7 @@ defmodule Glimesh.Interactive do
   # Remove all of the zip files. See interactive_pruner_cron.ex
   # Once a project is uploaded and extracted the zip file is no longer needed.
   # When we get this to a CDN we probably won't need this.
-  def cleanup() do
+  def cleanup do
     files = File.ls("uploads/interactive")
     elem(files, 1) |> Enum.each(fn file ->
       case String.ends_with?(file, ".zip") do

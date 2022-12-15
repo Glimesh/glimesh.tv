@@ -196,7 +196,6 @@ defmodule GlimeshWeb.UserLive.Stream do
   end
 
   def handle_event("toggle_interactive", _value, socket) do
-    IO.inspect("Toggling interactive")
     {:noreply,
      socket
      |> assign(:interactive_toggle, !socket.assigns.interactive_toggle)}

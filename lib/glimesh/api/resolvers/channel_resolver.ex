@@ -8,6 +8,7 @@ defmodule Glimesh.Api.ChannelResolver do
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Homepage
   alias Glimesh.Streams
+  alias Absinthe.Subscription
 
   @error_not_found "Could not find resource"
   @error_access_denied "Access denied"
@@ -277,14 +278,11 @@ defmodule Glimesh.Api.ChannelResolver do
 
   # Sends a message over client id
   def send_interactive_message(_parent, args, %{context: %{access: %{access_type: "app"}}}) do
-    IO.inspect("Sending interactive packet via app")
-    IO.inspect(args)
-
     event_name = Map.get(args, :event_name)
     session = Map.get(args, :session_id)
     data = Map.get(args, :data)
 
-    Absinthe.Subscription.publish(
+    Subscription.publish(
       GlimeshWeb.Endpoint,
       %{data: data, event_name: event_name, authorized: false},
       Keyword.put([], :interactive, "streams:interactive:#{session}")
@@ -295,8 +293,6 @@ defmodule Glimesh.Api.ChannelResolver do
 
   # Sends a message with an access token
   def send_interactive_message(_parent, args, %{context: %{access: access}}) do
-    IO.inspect("Sending interactive packet via token")
-
     # Get the data from the message
     event_name = Map.get(args, :event_name)
     session = Map.get(args, :session_id)
@@ -308,7 +304,7 @@ defmodule Glimesh.Api.ChannelResolver do
          %Glimesh.Streams.Channel{} = channel <-
            ChannelLookups.get_channel_for_username(access.user.username),
          true <- channel.id == session do
-      Absinthe.Subscription.publish(
+      Subscription.publish(
         GlimeshWeb.Endpoint,
         %{data: data, event_name: event_name, authorized: true},
         Keyword.put([], :interactive, "streams:interactive:#{session}")
@@ -317,7 +313,7 @@ defmodule Glimesh.Api.ChannelResolver do
       {:ok, %{data: data, event_name: event_name, authorized: true}}
     else
       _ ->
-      Absinthe.Subscription.publish(
+      Subscription.publish(
         GlimeshWeb.Endpoint,
         %{data: data, event_name: event_name, authorized: false},
         Keyword.put([], :interactive, "streams:interactive:#{session}")

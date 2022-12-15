@@ -142,7 +142,6 @@ defmodule Glimesh.Api.ChannelTypes do
       arg :session, non_null(:integer), description: "The interactive session ID"
 
       config(fn args, _ ->
-        IO.inspect(args)
         case Map.get(args, :session) do
           session -> {:ok, topic: [Streams.get_subscribe_topic(:interactive, session)]}
         end
