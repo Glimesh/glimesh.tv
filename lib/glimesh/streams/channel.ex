@@ -128,7 +128,7 @@ defmodule Glimesh.Streams.Channel do
     |> cast(attrs, [:emote_prefix])
     |> validate_required(:emote_prefix)
     |> validate_format(:emote_prefix, ~r/^[a-zA-Z0-9]+$/i,
-      message: "Emote prefix must be only alpha-numeric characters"
+      message: "Emote prefix must be only alphanumeric characters"
     )
     |> validate_length(:emote_prefix, is: 5)
     |> validate_no_active_emotes()
@@ -136,7 +136,21 @@ defmodule Glimesh.Streams.Channel do
   end
 
   defp validate_no_active_emotes(changeset) do
-    changeset
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{emote_prefix: emote_prefix}} ->
+        if Glimesh.Emotes.count_all_emotes_for_channel(changeset.data) > 0 do
+          add_error(
+            changeset,
+            :emote_prefix,
+            "For now, you must delete all of your emotes to change your prefix."
+          )
+        else
+          changeset
+        end
+
+      _ ->
+        changeset
+    end
   end
 
   def addons_changest(channel, attrs \\ %{}) do
@@ -256,7 +270,7 @@ defmodule Glimesh.Streams.Channel do
   end
 
   defp generate_hmac_key do
-    :crypto.strong_rand_bytes(64) |> Base.encode64() |> binary_part(0, 64)
+    Glimesh.Streams.HmacKey.generate_key()
   end
 
   def change_allow_hosting(%Glimesh.Streams.Channel{} = channel, attrs \\ %{}) do
@@ -268,5 +282,18 @@ defmodule Glimesh.Streams.Channel do
   def update_allow_hosting(%Glimesh.Streams.Channel{} = channel, attrs \\ %{}) do
     change_allow_hosting(channel, attrs)
     |> Glimesh.Repo.update()
+  end
+
+  def edit_title_and_tags_changeset(channel, attrs \\ %{}) do
+    channel
+    |> cast(attrs, [
+      :title,
+      :category_id,
+      :subcategory_id
+    ])
+    |> validate_length(:title, max: 250)
+    |> maybe_put_tags(:tags, attrs)
+    |> maybe_put_subcategory(:subcategory, attrs)
+    |> unique_constraint([:user_id])
   end
 end

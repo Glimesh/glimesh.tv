@@ -9,8 +9,8 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
     changeset = Chat.change_chat_message(chat_message)
 
     include_animated = if user, do: Glimesh.Payments.is_platform_subscriber?(user), else: false
-    global_emotes = Emotes.list_emotes(include_animated)
-    channel_emotes = Emotes.list_emotes_for_channel(channel)
+    global_emotes = if user, do: Emotes.list_emotes(include_animated, user.id), else: []
+    channel_emotes = if user, do: Emotes.list_emotes_for_channel(channel, user.id), else: []
     emotes = Emotes.convert_for_json(channel_emotes ++ global_emotes)
 
     {:ok,

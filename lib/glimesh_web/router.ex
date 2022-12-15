@@ -225,6 +225,7 @@ defmodule GlimeshWeb.Router do
     # Editing channel scopes
     get "/edit/channel/:channel_id", GctController, :edit_channel
     post "/edit/channel/:channel_id/shutdown", GctController, :shutdown_channel
+    post "/edit/channel/:channel_id/bounce", GctController, :bounce_channel
     put "/edit/channel/:channel_id/update", GctController, :update_channel
     put "/edit/channel/:channel_id/delete", GctController, :delete_channel
 
@@ -265,6 +266,7 @@ defmodule GlimeshWeb.Router do
     live "/about/open-data/streams", About.OpenDataLive, :streams
 
     live "/about/app", About.AppLive, :index
+    live "/about/go-live", About.GoLiveLive, :index
 
     live "/events", EventsLive, :index
 

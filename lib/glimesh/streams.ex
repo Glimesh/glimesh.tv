@@ -10,7 +10,8 @@ defmodule Glimesh.Streams do
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
   alias Glimesh.Repo
-  alias Glimesh.Streams.{Channel, StreamMetadata}
+  alias Glimesh.StreamModeration
+  alias Glimesh.Streams.{Channel, ChannelModerationLog, StreamMetadata}
 
   defdelegate authorize(action, user, params), to: Glimesh.Streams.Policy
 
@@ -98,6 +99,37 @@ defmodule Glimesh.Streams do
   catch
     :exit, _ ->
       {:upload_exit, "Failed to upload channel images"}
+  end
+
+  def edit_channel_title_and_tags(%User{} = user, %Channel{} = channel, attrs) do
+    is_editor = StreamModeration.is_channel_editor?(user, channel)
+
+    with :ok <-
+           Bodyguard.permit(__MODULE__, :edit_channel_title_and_tags, user, [channel, is_editor]) do
+      new_channel =
+        channel
+        |> Channel.edit_title_and_tags_changeset(attrs)
+        |> Repo.update()
+
+      if is_editor do
+        %ChannelModerationLog{
+          channel: channel,
+          moderator: user,
+          user: nil
+        }
+        |> ChannelModerationLog.changeset(%{action: "edit_title_and_tags"})
+        |> Repo.insert()
+      end
+
+      case new_channel do
+        {:error, _changeset} ->
+          new_channel
+
+        {:ok, changeset} ->
+          broadcast_message = Repo.preload(changeset, :category, force: true)
+          broadcast({:ok, broadcast_message}, :channel)
+      end
+    end
   end
 
   def rotate_stream_key(%User{} = user, %Channel{} = channel) do
@@ -224,9 +256,8 @@ defmodule Glimesh.Streams do
       Glimesh.ChannelCategories.increment_tags_usage(tags)
 
       # 4. Send Notifications
-      Glimesh.Jobs.StartStreamNotifier.new(%{channel_id: channel.id}, schedule_in: :timer.minutes(2))
+      Glimesh.Jobs.StartStreamNotifier.new(%{channel_id: channel.id}, schedule_in: 2 * 60)
       |> Oban.insert()
-
 
       # 5. Broadcast to anyone who's listening
       broadcast_message = Repo.preload(channel, [:category, :stream], force: true)
@@ -376,6 +407,10 @@ defmodule Glimesh.Streams do
 
   def change_channel(%Channel{} = channel, attrs \\ %{}) do
     Channel.changeset(channel, attrs)
+  end
+
+  def change_title_and_tags(%Channel{} = channel, attrs \\ %{}) do
+    Channel.edit_title_and_tags_changeset(channel, attrs)
   end
 
   def get_channel_language(%Channel{language: locale}) do

@@ -62,8 +62,7 @@ defmodule GlimeshWeb.SupportModal.SubForm do
           </p>
           <div class="text-center mt-4">
             <h4>
-              Channel Subscription
-              <br />
+              Channel Subscription <br />
               <small>
                 <strong>$<%= format_price(@subscription.price) %></strong> / <%= gettext("monthly") %>
               </small>
@@ -107,8 +106,7 @@ defmodule GlimeshWeb.SupportModal.SubForm do
             target: "_blank"
           ) %>
           <p class="mt-2 text-center">
-            or
-            <%= link(gettext("Log in"),
+            or <%= link(gettext("Log in"),
               class: "",
               to: Routes.user_session_path(@socket, :new),
               target: "_blank"

@@ -14,7 +14,7 @@ The core inspiration of this project has been equality. At Glimesh our priority 
 ##### What makes Glimesh unique?
 
 We are an [Open Company](https://www.opencompany.org/) dedicated to putting true transparency and openness first. Come see for yourself by joining our [Discord](https://discord.gg/glimesh)!  
-We also are not locking features behind metrics which means that for example, everyone gets to upload both static and/or animated emotes and get the subscription button straight away. FTL also sets us apart, which means sub-second delay between the streamer and viewer.
+We also are not locking features behind metrics which means that for example, everyone gets to upload both static and/or animated emotes and get the subscription button straight away. FTL & our Low Latency RTMP also sets us apart, which means sub-second delay between the streamer and viewer.
 
 ##### When will the beta be released?
 
@@ -106,11 +106,7 @@ We are using the RAWG database. If you want to stream a game that is not a part 
 
 ##### What is the max bitrate supported?
 
-Glimesh currently has a maximum recommended bitrate of 6000 Kbps. Due to minimal compression with FTL, most streams end up looking extremely crisp even at this lower bitrate limit.
-
-##### Will you only be able to stream using FTL, or will there be also a way to do RTMP streams?
-
-Currently, you can only stream using clients that are compatible with the FTL streaming protocol, which includes OBS and SLOBS. Low-latency RTMP support is coming in Phase 2 of the Alpha.
+Glimesh currently has a maximum recommended bitrate of 6000 Kbps. Due to minimal compression with FTL & Low Latency RTMP, most streams end up looking extremely crisp even at this lower bitrate limit.
 
 ##### Will gift subs be available?
 

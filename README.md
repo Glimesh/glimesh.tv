@@ -80,7 +80,7 @@ On modern versions of Ubuntu, you can install these packages with the following 
 wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && sudo dpkg -i erlang-solutions_2.0_all.deb
 sudo apt update
 sudo apt install git esl-erlang elixir postgresql npm inotify-tools librsvg2-bin
-sudo npm -g install svgo
+sudo npm -g install svgo@2.8.0
 ```
 
 #### Configuring Postgres
@@ -133,7 +133,7 @@ Now let's install our other dependencies:
 brew install imagemagick node
 # Optional dependencies
 brew install librsvg 
-npm install -g svgo
+npm install -g svgo@2.8.0
 # Graphical Postgres, if you do not want a graphical Postgres, you are on your own!
 brew install --cask postgres-unofficial
 ```

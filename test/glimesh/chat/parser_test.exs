@@ -24,10 +24,14 @@ defmodule Glimesh.Chat.ParserTest do
     end
 
     test "lexes a simple message", %{static: static, animated: animated} do
-      assert Parser.parse("") == [%Token{type: "text", text: ""}]
-      assert Parser.parse("Hello world") == [%Token{type: "text", text: "Hello world"}]
+      default_config = %Parser.Config{user_id: 1}
+      assert Parser.parse("", default_config) == [%Token{type: "text", text: ""}]
 
-      assert Parser.parse(":glimchef:") == [
+      assert Parser.parse("Hello world", default_config) == [
+               %Token{type: "text", text: "Hello world"}
+             ]
+
+      assert Parser.parse(":glimchef:", default_config) == [
                %Token{
                  type: "emote",
                  text: ":glimchef:",
@@ -35,7 +39,7 @@ defmodule Glimesh.Chat.ParserTest do
                }
              ]
 
-      allow_animated_emotes = %Parser.Config{allow_animated_emotes: true}
+      allow_animated_emotes = %Parser.Config{allow_animated_emotes: true, user_id: 1}
 
       assert Parser.parse(":glimdance:", allow_animated_emotes) == [
                %Token{
@@ -45,26 +49,26 @@ defmodule Glimesh.Chat.ParserTest do
                }
              ]
 
-      assert Parser.parse("https://glimesh.tv") == [
+      assert Parser.parse("https://glimesh.tv", default_config) == [
                %Token{type: "url", text: "https://glimesh.tv", url: "https://glimesh.tv"}
              ]
 
-      assert Parser.parse("http://glimesh.tv") == [
+      assert Parser.parse("http://glimesh.tv", default_config) == [
                %Token{type: "url", text: "http://glimesh.tv", url: "http://glimesh.tv"}
              ]
 
-      assert Parser.parse("glimesh.tv") == [
+      assert Parser.parse("glimesh.tv", default_config) == [
                %Token{type: "text", text: "glimesh.tv"}
              ]
 
       # Make sure we're not confusing a dot at the end for a URL
-      assert Parser.parse("example.") == [%Token{type: "text", text: "example."}]
+      assert Parser.parse("example.", default_config) == [%Token{type: "text", text: "example."}]
     end
 
     test "respects the config", %{static: static} do
-      no_links = %Parser.Config{allow_links: false}
-      no_emotes = %Parser.Config{allow_emotes: false}
-      no_animated_emotes = %Parser.Config{allow_animated_emotes: false}
+      no_links = %Parser.Config{allow_links: false, user_id: 1}
+      no_emotes = %Parser.Config{allow_emotes: false, user_id: 1}
+      no_animated_emotes = %Parser.Config{allow_animated_emotes: false, user_id: 1}
 
       assert Parser.parse("https://example.com/", no_links) == [
                %Token{type: "text", text: "https://example.com/"}
@@ -105,7 +109,8 @@ defmodule Glimesh.Chat.ParserTest do
 
       no_animated_emotes = %Parser.Config{
         allow_animated_emotes: false,
-        channel_id: channel.id
+        channel_id: channel.id,
+        user_id: 1
       }
 
       assert Parser.parse(":glimdance: :testgdance:", no_animated_emotes) == [
@@ -120,7 +125,7 @@ defmodule Glimesh.Chat.ParserTest do
     end
 
     test "lexes a complex message", %{static: static, animated: animated} do
-      allow_animated_emotes = %Parser.Config{allow_animated_emotes: true}
+      allow_animated_emotes = %Parser.Config{allow_animated_emotes: true, user_id: 1}
 
       parsed =
         Parser.parse(

@@ -31,8 +31,7 @@ defmodule GlimeshWeb.Components.ChannelLookupTypeahead do
                 src={Glimesh.Avatar.url({match.user.avatar, match.user}, :original)}
                 width="50"
                 height="50"
-              />
-              &nbsp;<%= match.user.displayname %>
+              /> &nbsp;<%= match.user.displayname %>
             </div>
           <% end %>
         </div>

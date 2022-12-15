@@ -131,5 +131,12 @@ defmodule Glimesh.StreamModeration do
     ChannelModerator.changeset(mod, attrs)
   end
 
-  # Private Calls
+  def is_channel_editor?(%User{} = user, %Channel{} = channel) do
+    Repo.replica().exists?(
+      from cm in ChannelModerator,
+        where: cm.user_id == ^user.id,
+        where: cm.channel_id == ^channel.id,
+        where: cm.is_editor == true
+    )
+  end
 end

@@ -124,10 +124,9 @@
         <%= if !is_nil(assigns[:current_user]) and assigns.current_user.privacy_policy_version !== Glimesh.get_privacy_version() do %>
           <div class="container">
             <div class="alert alert-warning" style="line-height: 31px;">
-              <strong>Policy Updates:</strong> The
-              <%= link(gettext("Privacy Policy"), to: Routes.about_path(@conn, :privacy)) %>
-              has been updated to reflect new data processing rules and add in support for our Mobile App.
-              <%= button("Accept & Close",
+              <strong>Policy Updates:</strong>
+              The <%= link(gettext("Privacy Policy"), to: Routes.about_path(@conn, :privacy)) %> has been updated to reflect new data processing rules and add in support for our Mobile App. <%= button(
+                "Accept & Close",
                 to: Routes.about_path(@conn, :accept_privacy),
                 method: :post,
                 class: "btn btn-primary btn-sm mt-0 float-right"

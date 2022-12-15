@@ -7,7 +7,7 @@ defmodule Glimesh.Jobs.StreamMetricsCron do
   alias Glimesh.ChannelLookups
   alias Glimesh.Streams
 
-  @interval 60_000
+  @interval 1 * 60
 
   @impl Oban.Worker
   def perform(_) do
@@ -25,9 +25,6 @@ defmodule Glimesh.Jobs.StreamMetricsCron do
         peak_viewers: max(channel.stream.count_viewers, count_viewers)
       })
     end)
-
-    Glimesh.Jobs.StreamMetricsCron.new(%{}, schedule_in: @interval)
-    |> Oban.insert()
 
     :ok
   rescue

@@ -122,4 +122,13 @@ defmodule Glimesh.AccountsFixtures do
     [_, token, _] = String.split(captured.body, "[TOKEN]")
     token
   end
+
+  def moderator_fixture(streamer, channel, attrs \\ %{}) do
+    moderator = user_fixture()
+
+    channel_mod =
+      Glimesh.StreamModeration.create_channel_moderator(streamer, channel, moderator, attrs)
+
+    %{moderator: moderator, channel_mod: channel_mod}
+  end
 end

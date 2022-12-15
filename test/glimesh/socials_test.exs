@@ -44,7 +44,7 @@ defmodule Glimesh.SocialsTest do
       assert social.identifier == "1234"
     end
 
-    test "connect_user_social/4 doens't duplicate socials" do
+    test "connect_user_social/4 doesn't duplicate socials" do
       user = user_fixture()
 
       assert {:ok, %UserSocial{}} =

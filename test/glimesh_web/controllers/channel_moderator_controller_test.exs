@@ -3,20 +3,23 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
 
   import Glimesh.AccountsFixtures
   alias Glimesh.StreamModeration
+  alias Glimesh.Streams.ChannelModerationLog
 
   @create_attrs %{
     can_ban: true,
     can_long_timeout: true,
     can_short_timeout: true,
     can_un_timeout: true,
-    can_unban: true
+    can_unban: true,
+    is_editor: true
   }
   @update_attrs %{
     can_ban: false,
     can_long_timeout: false,
     can_short_timeout: false,
     can_un_timeout: false,
-    can_unban: false
+    can_unban: false,
+    is_editor: false
   }
   @invalid_attrs %{
     can_ban: nil,
@@ -24,6 +27,7 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
     can_short_timeout: nil,
     can_un_timeout: nil,
     can_unban: nil,
+    is_editor: nil,
     username: "fake user"
   }
 
@@ -92,6 +96,36 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
       conn = get(conn, Routes.channel_moderator_path(conn, :index))
       assert html_response(conn, 200) =~ "Channel Moderators"
     end
+
+    test "lists all moderation log entries", %{conn: conn, user: user, channel: channel} do
+      %{channel_moderator: channel_moderator} =
+        create_channel_moderator(%{channel: channel, user: user})
+
+      ChannelModerationLog.changeset(
+        %ChannelModerationLog{
+          channel: channel,
+          moderator: channel_moderator.user,
+          user: user_fixture()
+        },
+        %{action: "delete_message"}
+      )
+      |> Glimesh.Repo.insert()
+
+      ChannelModerationLog.changeset(
+        %ChannelModerationLog{
+          channel: channel,
+          moderator: channel_moderator.user,
+          user: nil
+        },
+        %{action: "edit_title_and_tags"}
+      )
+      |> Glimesh.Repo.insert()
+
+      conn = get(conn, Routes.channel_moderator_path(conn, :index))
+      response = assert html_response(conn, 200)
+      assert response =~ "delete_message"
+      assert response =~ "edit_title_and_tags"
+    end
   end
 
   describe "unban user" do
@@ -155,6 +189,37 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
     } do
       conn = get(conn, Routes.channel_moderator_path(conn, :show, channel_moderator))
       assert html_response(conn, 200) =~ "Edit"
+    end
+
+    test "renders form and moderation log", %{
+      conn: conn,
+      channel_moderator: channel_moderator,
+      channel: channel
+    } do
+      ChannelModerationLog.changeset(
+        %ChannelModerationLog{
+          channel: channel,
+          moderator: channel_moderator.user,
+          user: user_fixture()
+        },
+        %{action: "delete_message"}
+      )
+      |> Glimesh.Repo.insert()
+
+      ChannelModerationLog.changeset(
+        %ChannelModerationLog{
+          channel: channel,
+          moderator: channel_moderator.user,
+          user: nil
+        },
+        %{action: "edit_title_and_tags"}
+      )
+      |> Glimesh.Repo.insert()
+
+      conn = get(conn, Routes.channel_moderator_path(conn, :show, channel_moderator))
+      response = html_response(conn, 200)
+      assert response =~ "delete_message"
+      assert response =~ "edit_title_and_tags"
     end
   end
 

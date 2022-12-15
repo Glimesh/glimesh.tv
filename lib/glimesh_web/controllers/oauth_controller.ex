@@ -111,28 +111,36 @@ defmodule GlimeshWeb.OauthController do
         %AuthorizeResponse{
           type: type,
           redirect_uri: redirect_uri,
-          value: value,
           expires_in: expires_in,
           state: state
-        }
+        } = resp
       ) do
-    query_string =
-      case state do
-        nil ->
-          URI.encode_query(%{type => value, "expires_in" => expires_in})
-
-        state ->
-          URI.encode_query(%{type => value, "expires_in" => expires_in, "state" => state})
-      end
+    state = state_value(state)
 
     url =
       case type do
-        "access_token" -> "#{redirect_uri}##{query_string}"
-        "code" -> "#{redirect_uri}?#{query_string}"
+        :token ->
+          query_string =
+            %{"access_token" => resp.access_token, "expires_in" => expires_in}
+            |> Map.merge(state)
+            |> URI.encode_query()
+
+          "#{redirect_uri}##{query_string}"
+
+        :code ->
+          query_string =
+            %{"code" => resp.code, "expires_in" => expires_in}
+            |> Map.merge(state)
+            |> URI.encode_query()
+
+          "#{redirect_uri}?#{query_string}"
       end
 
     redirect(conn, external: url)
   end
+
+  defp state_value(nil), do: %{}
+  defp state_value(state), do: %{"state" => state}
 
   # @impl Boruta.Oauth.Application
   # def authorize_error(

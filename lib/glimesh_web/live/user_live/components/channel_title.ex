@@ -3,12 +3,13 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
 
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
+  alias Glimesh.StreamModeration
   alias Glimesh.Streams
 
   def render_badge(channel) do
     if channel.status == "live" do
       raw("""
-      <span class="badge badge-danger">Live!</span>
+      <div class="mr-2 badge badge-danger">Live!</div>
       """)
     else
       raw("")
@@ -35,6 +36,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
     if session["locale"], do: Gettext.put_locale(session["locale"])
     if connected?(socket), do: Streams.subscribe_to(:channel, channel_id)
     channel = ChannelLookups.get_channel!(channel_id)
+    is_editor = StreamModeration.is_channel_editor?(user, channel)
 
     {:ok,
      socket
@@ -52,7 +54,10 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
      |> assign(:recent_subcategories, "")
      |> assign(:recent_tags, "")
      |> assign(:category, channel.category)
-     |> assign(:can_change, Bodyguard.permit?(Glimesh.Streams, :update_channel, user, channel))
+     |> assign(
+       :can_change,
+       Bodyguard.permit?(Glimesh.Streams, :edit_channel_title_and_tags, user, [channel, is_editor])
+     )
      |> assign(:editing, false)}
   end
 
@@ -124,7 +129,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
 
   @impl true
   def handle_event("save", %{"channel" => channel}, socket) do
-    case Streams.update_channel(socket.assigns.user, socket.assigns.channel, channel) do
+    case Streams.edit_channel_title_and_tags(socket.assigns.user, socket.assigns.channel, channel) do
       {:ok, channel} ->
         {:noreply,
          socket
@@ -133,7 +138,7 @@ defmodule GlimeshWeb.UserLive.Components.ChannelTitle do
          |> assign_existing_tags(channel)
          |> assign(:editing, false)
          |> assign(:channel, channel)
-         |> assign(:changeset, Streams.change_channel(channel))}
+         |> assign(:changeset, Streams.change_title_and_tags(channel))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

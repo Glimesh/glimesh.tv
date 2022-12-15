@@ -39,7 +39,7 @@
                             <tr>
                                 <td class="text pb20"
                                     style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-top:20px; padding-bottom:20px;">
-                                    You are recieving this email because you have chosen to receive email notifications
+                                    You are receiving this email because you have chosen to receive email notifications
                                     when <%= @streamer_name %> goes live. To unsubscribe go to your <a
                                         href="<%= @unsubscribe_link %>">notification preferences</a> page.
 

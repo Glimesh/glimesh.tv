@@ -109,8 +109,7 @@ defmodule GlimeshWeb.SupportModal do
                     }
                   >
                     <i class="fas fa-gift fa-fw fa-2x"></i>
-                    <br />
-                    Gift a Sub
+                    <br /> Gift a Sub
                   </a>
                   <%= if "donate" in @tabs do %>
                     <a
@@ -120,8 +119,7 @@ defmodule GlimeshWeb.SupportModal do
                       class={["mt-2 nav-link text-color", if(@tab == "donate", do: "active")]}
                     >
                       <i class="fas fa-money-bill-wave fa-fw fa-2x"></i>
-                      <br />
-                      Donate
+                      <br /> Donate
                     </a>
                   <% end %>
                   <%= if "streamloots" in @tabs do %>
@@ -146,8 +144,7 @@ defmodule GlimeshWeb.SupportModal do
                           width="32"
                         />
                       <% end %>
-                      <br />
-                      Streamloots
+                      <br /> Streamloots
                     </a>
                   <% end %>
                 </div>

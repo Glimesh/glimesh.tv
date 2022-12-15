@@ -6,16 +6,17 @@ import Config
 
 # Node configuration
 if System.get_env("ENABLE_LIBCLUSTER") do
+  app_name = System.get_env("FLY_APP_NAME") || "glimesh"
+
   config :libcluster,
+    debug: true,
     topologies: [
-      example: [
-        strategy: Cluster.Strategy.Epmd,
+      fly6pn: [
+        strategy: Cluster.Strategy.DNSPoll,
         config: [
-          hosts: [
-            :"glimesh@do-nyc3-web1.us-east.web.glimesh.tv",
-            :"glimesh@do-nyc3-web2.us-east.web.glimesh.tv",
-            :"glimesh@do-nyc3-web3.us-east.web.glimesh.tv"
-          ]
+          polling_interval: 5_000,
+          query: "#{app_name}.internal",
+          node_basename: app_name
         ]
       ]
     ]
@@ -32,12 +33,14 @@ database_url =
 config :glimesh, Glimesh.Repo,
   # ssl: true,
   url: database_url,
+  socket_options: [:inet6],
   pool_size: String.to_integer(System.get_env("POOL_SIZE", "10"))
 
 config :glimesh, Glimesh.Repo.ReadReplica,
   # ssl: true,
   # Fallback to regular database if we don't want a read database
   url: System.get_env("READ_DATABASE_URL", database_url),
+  socket_options: [:inet6],
   pool_size: String.to_integer(System.get_env("READ_POOL_SIZE", "10"))
 
 # Endpoint Configuration
@@ -245,6 +248,17 @@ end
 if tiltify_access_token = System.get_env("GLIMESH_TILTIFY_ACCESS_TOKEN") do
   config :glimesh, tiltify_access_token: tiltify_access_token
 end
+
+config :glimesh, Oban,
+  plugins: [
+    {Oban.Plugins.Cron,
+     crontab: [
+       {"* * * * *", Glimesh.Jobs.StreamMetricsCron},
+       {"*/10 * * * *", Glimesh.Jobs.AutoHostCron},
+       {"*/5 * * * *", Glimesh.Jobs.HomepageCron},
+       {"*/5 * * * *", Glimesh.Jobs.StreamPrunerCron}
+     ]}
+  ]
 
 # Default App Config
 config :glimesh, :stripe_config,

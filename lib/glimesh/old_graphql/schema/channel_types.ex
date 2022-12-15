@@ -188,7 +188,7 @@ defmodule Glimesh.OldSchema.ChannelTypes do
   object :channel do
     field :id, :id, description: "Unique channel identifier"
 
-    field :status, :channel_status, description: "The current status of the channnel"
+    field :status, :channel_status, description: "The current status of the channel"
     field :title, :string, description: "The title of the current stream, live or offline."
 
     field :category, :category,

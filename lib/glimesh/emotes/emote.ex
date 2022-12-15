@@ -13,6 +13,7 @@ defmodule Glimesh.Emotes.Emote do
     field :svg, :boolean
 
     field :approved_at, :naive_datetime
+    field :approved_for_global_use, :boolean, default: false
     field :rejected_at, :naive_datetime
     field :rejected_reason, :string
     belongs_to :reviewed_by, Glimesh.Accounts.User
@@ -20,13 +21,24 @@ defmodule Glimesh.Emotes.Emote do
     field :static_file, Glimesh.Uploaders.StaticEmote.Type
     field :animated_file, Glimesh.Uploaders.AnimatedEmote.Type
 
+    field :require_channel_sub, :boolean, default: false
+    field :allow_global_usage, :boolean, default: false
+    field :emote_display_off, :boolean, default: false
+
     timestamps()
   end
 
   @doc false
   def changeset(emote, attrs) do
     emote
-    |> cast(attrs, [:emote, :animated, :approved_at])
+    |> cast(attrs, [
+      :emote,
+      :animated,
+      :approved_at,
+      :require_channel_sub,
+      :allow_global_usage,
+      :emote_display_off
+    ])
     |> validate_required([:emote, :animated])
     |> validate_length(:emote, min: 2, max: 15)
     |> validate_conditional_file(attrs)
@@ -42,12 +54,17 @@ defmodule Glimesh.Emotes.Emote do
     |> prefix_emote(channel.emote_prefix)
     |> validate_length(:emote, min: 2, max: 15)
     |> validate_format(:emote, ~r/^[a-zA-Z0-9]+$/i,
-      message: "Emote must be only contain alpha-numeric characters"
+      message: "Emote must be only contain alphanumeric characters"
     )
     |> validate_channel_max_emotes(channel)
     |> validate_channel_allow_animated()
     |> validate_conditional_file(attrs)
     |> unique_constraint(:emote)
+  end
+
+  def preference_changeset(emote, attrs) do
+    emote
+    |> cast(attrs, [:require_channel_sub, :allow_global_usage, :emote_display_off])
   end
 
   defp validate_channel_max_emotes(emote, channel) do
@@ -75,7 +92,7 @@ defmodule Glimesh.Emotes.Emote do
 
   def review_changeset(emote, reviewer, attrs) do
     emote
-    |> cast(attrs, [:approved_at, :rejected_at, :rejected_reason])
+    |> cast(attrs, [:approved_at, :rejected_at, :rejected_reason, :approved_for_global_use])
     |> put_assoc(:reviewed_by, reviewer)
   end
 

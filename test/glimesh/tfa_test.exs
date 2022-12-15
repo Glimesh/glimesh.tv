@@ -8,6 +8,12 @@ defmodule Glimesh.TfaTest do
       secret = Tfa.generate_secret("test")
       assert String.length(secret) <= 92
     end
+
+    test "tfa works" do
+      secret = Tfa.generate_secret("test")
+      pin = Tfa.generate_totp(secret)
+      assert Glimesh.Tfa.validate_pin(pin, secret)
+    end
   end
 
   describe "generate_tfa_img/4" do

@@ -1,5 +1,5 @@
 # Doesn't use alpine because we need dart-sass to work and it needs glibc
-FROM elixir:1.13.4 AS build
+FROM elixir:1.14 AS build
 
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
@@ -23,25 +23,37 @@ RUN mix do deps.get, deps.compile
 RUN git config --global url."https://github.com".insteadOf ssh://git@github.com
 
 # build assets
-COPY assets/package.json assets/package-lock.json ./assets/
+COPY assets assets
 RUN npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
 
 COPY priv priv
-COPY assets assets
-RUN mix assets.deploy
+COPY lib lib
+COPY rel rel
 
 # compile and build release
-COPY lib lib
-# uncomment COPY if rel/ exists
-# COPY rel rel
-RUN mix do compile, release
+RUN mix compile
+RUN mix assets.deploy
+RUN mix release
 
 # prepare release image
 FROM debian:bullseye-slim AS app
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends libssl-dev libncurses-dev ca-certificates imagemagick librsvg2-bin npm
+RUN apt-get update -y && apt-get install -y libssl-dev libncurses-dev ca-certificates imagemagick librsvg2-bin npm locales \
+  && apt-get clean && rm -f /var/lib/apt/lists/*_*/
 
-RUN npm install -g svgo
+# Set Locale
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+
+ENV HOME /app
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+# Required for fly.io
+ENV ECTO_IPV6 true
+ENV ERL_AFLAGS "-proto_dist inet6_tcp"
+
+RUN npm install -g svgo@2.8.0
 
 WORKDIR /app
 
@@ -50,7 +62,5 @@ RUN chown nobody:nogroup /app
 USER nobody:nogroup
 
 COPY --from=build --chown=nobody:nogroup /app/_build/prod/rel/glimesh ./
-
-ENV HOME=/app
 
 CMD ["bin/glimesh", "start"]

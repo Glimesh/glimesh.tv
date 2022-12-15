@@ -6,9 +6,6 @@ defmodule Glimesh.Jobs.AutoHostCron do
 
   alias Glimesh.ChannelHostsLookups
 
-  # 10 Minutes
-  @interval 600_000
-
   @impl Oban.Worker
   def perform(_) do
     Logger.info("Starting Auto-Host runner")
@@ -53,9 +50,6 @@ defmodule Glimesh.Jobs.AutoHostCron do
     complete = NaiveDateTime.utc_now()
     time = NaiveDateTime.diff(complete, start, :millisecond)
     Logger.info("Auto-Host runner finished in #{time} ms")
-
-    Glimesh.Jobs.AutoHostCron.new(%{}, schedule_in: @interval)
-    |> Oban.insert()
 
     :ok
   rescue

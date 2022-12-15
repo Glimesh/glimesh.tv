@@ -28,8 +28,10 @@
       <%= if @disabled do %>
         <div class="input-group-prepend input-group-mock-parent flex-grow-1">
           <span class="input-group-text input-group-mock-input d-inline-block flex-grow-1">
-            <%= link("Register", to: Routes.user_registration_path(@socket, :new)) %> or
-            <%= link("Login", to: Routes.user_session_path(@socket, :new)) %> to chat!
+            <%= link("Register", to: Routes.user_registration_path(@socket, :new)) %> or <%= link(
+              "Login",
+              to: Routes.user_session_path(@socket, :new)
+            ) %> to chat!
           </span>
         </div>
       <% else %>

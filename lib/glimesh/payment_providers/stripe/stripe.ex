@@ -35,8 +35,13 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
         create_subscription_invoice(subscription, invoice)
 
       nil ->
-        Logger.error("Unable to find a Glimesh Subscription for #{invoice.subscription}")
-        {:error, "Unable to find a Glimesh Subscription for #{invoice.subscription}"}
+        if invoice.paid do
+          Logger.error("Unable to find a Glimesh Subscription for #{invoice.subscription}")
+          {:error, "Unable to find a Glimesh Subscription for #{invoice.subscription}"}
+        else
+          # We get unpaid invoices when users start to subscribe, but don't finish.
+          :ok
+        end
     end
   end
 
@@ -49,7 +54,7 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
         # Create invoice for this subscription
 
         Payments.update_payable(payable, %{
-          stripe_status: "paid",
+          status: "paid",
           user_paid_at: NaiveDateTime.utc_now()
         })
 

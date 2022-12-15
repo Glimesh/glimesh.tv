@@ -40,8 +40,7 @@ defmodule GlimeshWeb.SupportModal.DonateForm do
           </div>
 
           <p>
-            The streamer will receive about $<%= float_to_binary(@streamer_amount) %>
-            after processing fees.
+            The streamer will receive about $<%= float_to_binary(@streamer_amount) %> after processing fees.
           </p>
 
           <p>You will be redirected to our payments provider Stripe to complete your donation.</p>
@@ -77,8 +76,7 @@ defmodule GlimeshWeb.SupportModal.DonateForm do
           target: "_blank"
         ) %>
         <p class="mt-2 text-center">
-          or
-          <%= link(gettext("Log in"),
+          or <%= link(gettext("Log in"),
             class: "",
             to: Routes.user_session_path(@socket, :new),
             target: "_blank"

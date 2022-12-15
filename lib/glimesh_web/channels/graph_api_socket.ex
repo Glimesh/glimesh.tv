@@ -11,7 +11,7 @@ defmodule GlimeshWeb.GraphApiSocket do
 
   @impl true
   def connect(%{"client_id" => client_id}, socket, _connect_info) do
-    with %Boruta.Oauth.Client{} = client <- Boruta.Config.clients().get_by(id: client_id),
+    with %Boruta.Oauth.Client{} = client <- Boruta.Ecto.Clients.get_client(client_id),
          {:ok, %Glimesh.Api.Access{} = access} <-
            Glimesh.Oauth.get_unprivileged_api_access_from_client(client) do
       {:ok,

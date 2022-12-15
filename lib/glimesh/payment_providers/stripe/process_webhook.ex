@@ -9,7 +9,18 @@ defmodule Glimesh.PaymentProviders.StripeProvider.ProcessWebhook do
   alias Glimesh.Payments
 
   @impl Oban.Worker
-  def perform(%Oban.Job{args: %{"type" => type, "data" => data}}) do
+  def perform(%Oban.Job{args: %{"id" => id}}) do
+    # Re-fetch the event for processing
+    case Stripe.Event.retrieve(id) do
+      {:ok, %Stripe.Event{type: type, data: data}} ->
+        process_event(type, data)
+
+      _ ->
+        {:ok, "Missing Stripe event #{id}"}
+    end
+  end
+
+  defp process_event(type, data) do
     case [type, data] do
       ["account.updated", %{object: %Stripe.Account{} = account}] ->
         case StripeProvider.check_account_capabilities_and_upgrade(account) do
@@ -30,8 +41,18 @@ defmodule Glimesh.PaymentProviders.StripeProvider.ProcessWebhook do
 
       ["invoice.created", %{object: %Stripe.Invoice{} = invoice}] ->
         case StripeProvider.create_invoice(invoice) do
-          {:error_unimplemented, _} -> :ok
-          other -> other
+          {:error_unimplemented, _} ->
+            :ok
+
+          {:error,
+           %Ecto.Changeset{
+             errors: [external_source_reference: {_, [constraint: :unique, constraint_name: _]}]
+           }} ->
+            # Invoice already exists
+            :ok
+
+          other ->
+            other
         end
 
       ["invoice.paid", %{object: %Stripe.Invoice{} = invoice}] ->
@@ -57,6 +78,16 @@ defmodule Glimesh.PaymentProviders.StripeProvider.ProcessWebhook do
             :ok
 
           "active" ->
+            :ok
+
+          "incomplete_expired" ->
+            # Payments.process_unsuccessful_renewal(subscription.id)
+            # If the first invoice is not paid within 23 hours, the subscription transitions to incomplete_expired. This is a terminal state, the open invoice will be voided and no further invoices will be generated.
+            # On our side, it's unlikely the subscription exists but we'll try anyway
+            Payments.process_unsuccessful_renewal(subscription.id)
+            :ok
+
+          _ ->
             :ok
         end
 

@@ -33,8 +33,8 @@
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h5 class=""><%= gettext("Using Streamlabs OBS") %></h5>
-                    <p><%= gettext("You can stream to Glimesh with Streamlabs OBS, however you will need to run a patcher provided by Glimesh to find it as a stream destination.") %></p>
+                    <h5 class=""><%= gettext("Using Streamlabs Desktop") %></h5>
+                    <p><%= gettext("You can stream to Glimesh with Streamlabs Desktop, however only basic features like streaming are currently supported.") %></p>
                     <a href="https://support.glimesh.tv/en-us/7-stream-settings/113-slobs-setup-guide" class="btn btn-info btn-sm"><%= gettext("Streamlabs OBS Setup Guide") %></a>
                 </div>
             </div>
@@ -52,11 +52,7 @@
     <h2 class="mt-4"><%= gettext("Channel Settings") %></h2>
     <div class="card">
         <div class="card-body">
-            <%= if not @launched do %>
-            <div class="alert alert-primary" role="alert">
-                <%= gettext("Glimesh is not yet launched, so this page is still missing some critical information you need for streaming. You can customize your stream, but check back once we've launched for more!") %>
-            </div>
-            <% end %>
+
             <%= live_render(@conn, GlimeshWeb.UserSettings.Components.ChannelSettingsLive, id: "channel-settings-form", session: %{"route" => Routes.user_settings_path(@conn, :update_channel), "channel_changeset" => @channel_changeset, "categories" => @categories, "channel" => @channel, "user" => @current_user, "delete_route" => Routes.user_settings_path(@conn, :delete_channel), "channel_delete_disabled" => false}) %>
 
         </div>

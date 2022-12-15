@@ -110,11 +110,11 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       }
     end
 
-    test "lost_packets doesnt crash", %{conn: conn, streamer: streamer} do
+    test "lost_packets doesn't crash", %{conn: conn, streamer: streamer} do
       {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
 
       params = %{
-        "uplink" => "doesnt matter",
+        "uplink" => "doesn't matter",
         "lostPackets" => 1
       }
 
@@ -129,7 +129,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
 
       params = %{
-        "uplink" => "doesnt matter",
+        "uplink" => "doesn't matter",
         "lostPackets" => nil
       }
 
@@ -144,7 +144,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
 
       params = %{
-        "uplink" => "doesnt matter",
+        "uplink" => "doesn't matter",
         "lostPackets" => <<123, 123, 123, 123, 123, 123>>
       }
 
@@ -283,6 +283,63 @@ defmodule GlimeshWeb.UserLive.StreamTest do
 
       assert view
              |> has_element?("#hosted-banner")
+    end
+  end
+
+  describe "Edit Stream Details Button" do
+    setup do
+      streamer = streamer_fixture()
+
+      %{
+        channel: streamer.channel,
+        streamer: streamer
+      }
+    end
+
+    test "is available to the channel owner", %{conn: conn, streamer: streamer} do
+      streamer_conn = log_in_user(conn, streamer)
+
+      {:ok, _, html} =
+        live(streamer_conn, Routes.user_stream_path(streamer_conn, :index, streamer.username))
+
+      assert html =~ "stream-title-edit"
+    end
+
+    test "is available to the moderators with edit permission", %{conn: conn, streamer: streamer} do
+      %{moderator: moderator, channel_mod: _channel_mod} =
+        moderator_fixture(streamer, streamer.channel, %{is_editor: true})
+
+      moderator_conn = log_in_user(conn, moderator)
+
+      {:ok, _, html} =
+        live(moderator_conn, Routes.user_stream_path(moderator_conn, :index, streamer.username))
+
+      assert html =~ "stream-title-edit"
+    end
+
+    test "is NOT available to the moderators without edit permission", %{
+      conn: conn,
+      streamer: streamer
+    } do
+      %{moderator: moderator, channel_mod: _channel_mod} =
+        moderator_fixture(streamer, streamer.channel)
+
+      moderator_conn = log_in_user(conn, moderator)
+
+      {:ok, _, html} =
+        live(moderator_conn, Routes.user_stream_path(moderator_conn, :index, streamer.username))
+
+      refute html =~ "stream-title-edit"
+    end
+
+    test "is NOT available to regular users", %{conn: conn, streamer: streamer} do
+      user = user_fixture()
+      user_conn = log_in_user(conn, user)
+
+      {:ok, _, html} =
+        live(user_conn, Routes.user_stream_path(user_conn, :index, streamer.username))
+
+      refute html =~ "stream-title-edit"
     end
   end
 end

@@ -13,7 +13,7 @@ defmodule GlimeshWeb.OldApiSocket do
     # Convert the Client ID if needed to the boruta ID
     client_id = Glimesh.OauthMigration.convert_client_id(original_client_id)
 
-    with %Boruta.Oauth.Client{} = client <- Boruta.Config.clients().get_by(id: client_id),
+    with %Boruta.Oauth.Client{} = client <- Boruta.Ecto.Clients.get_client(client_id),
          {:ok, %Glimesh.Api.Access{} = access} <-
            Glimesh.Oauth.get_unprivileged_api_access_from_client(client) do
       {:ok,

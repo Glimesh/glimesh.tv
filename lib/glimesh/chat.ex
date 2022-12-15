@@ -41,7 +41,8 @@ defmodule Glimesh.Chat do
         config =
           Glimesh.Chat.get_chat_parser_config(
             channel,
-            platform_subscriber
+            platform_subscriber,
+            user.id
           )
 
         %ChatMessage{
@@ -316,12 +317,13 @@ defmodule Glimesh.Chat do
     })
   end
 
-  def get_chat_parser_config(%Channel{} = channel, allow_animated_emotes \\ false) do
+  def get_chat_parser_config(%Channel{} = channel, allow_animated_emotes \\ false, userid) do
     %Glimesh.Chat.Parser.Config{
       allow_links: !channel.disable_hyperlinks,
       allow_emotes: true,
       allow_animated_emotes: allow_animated_emotes,
-      channel_id: channel.id
+      channel_id: channel.id,
+      user_id: userid
     }
   end
 
@@ -330,7 +332,7 @@ defmodule Glimesh.Chat do
     message = if attrs["message"], do: attrs["message"], else: attrs.message
 
     # Dumb fast check to see if there's something that smells like a link
-    # If the channel has links disabled it still wont do anything
+    # If the channel has links disabled it still won't do anything
     if is_bitstring(message) and String.contains?(message, "http") and
          String.contains?(message, "://") do
       !channel.block_links
