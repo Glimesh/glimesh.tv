@@ -8,7 +8,7 @@ defmodule Glimesh.ChannelLookups do
   alias Glimesh.AccountFollows.Follower
   alias Glimesh.Accounts.User
   alias Glimesh.Repo
-  alias Glimesh.Streams.{Category, Channel, ChannelHosts}
+  alias Glimesh.Streams.{Category, Channel, ChannelHosts, Subcategory, Tag}
 
   ## Filtering
   @spec search_live_channels(map) :: list
@@ -300,5 +300,47 @@ defmodule Glimesh.ChannelLookups do
     else
       []
     end
+  end
+
+  def list_live_homepage_tags do
+    subcat_query =
+      from sc in Subcategory,
+        join: c in Channel,
+        on: sc.id == c.subcategory_id,
+        join: cat in assoc(sc, :category),
+        where: c.status == "live" and c.inaccessible == false,
+        select: %{
+          type: "subcategory",
+          tag_slug: sc.slug,
+          tag_name: sc.name,
+          cat_slug: cat.slug,
+          cat_name: cat.name
+        }
+
+    tag_query =
+      from t in Tag,
+        join: cat in assoc(t, :category),
+        join: c in assoc(t, :channels),
+        where: c.status == "live" and c.inaccessible == false,
+        select: %{
+          type: "tags",
+          tag_slug: t.slug,
+          tag_name: t.name,
+          cat_slug: cat.slug,
+          cat_name: cat.name
+        },
+        order_by: [desc: t.count_usage]
+
+    union_query = union_all(subcat_query, ^tag_query)
+
+    remove_dups_query =
+      from s in subquery(union_query),
+        distinct: s.tag_slug
+
+    Repo.replica().all(
+      from s in subquery(remove_dups_query),
+        limit: 20,
+        order_by: fragment("RANDOM()")
+    )
   end
 end

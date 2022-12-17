@@ -555,4 +555,240 @@ defmodule Glimesh.ChannelLookupsTest do
       assert length(results) == 1
     end
   end
+
+  defp create_live_channels_with_tags(_) do
+    gaming_id = ChannelCategories.get_category("gaming").id
+    education_id = ChannelCategories.get_category("education").id
+
+    {:ok, gaming_subcat_1} =
+      ChannelCategories.create_subcategory(%{name: "testa", category_id: gaming_id})
+
+    {:ok, gaming_subcat_2} =
+      ChannelCategories.create_subcategory(%{name: "testb", category_id: gaming_id})
+
+    {:ok, gaming_subcat_3} =
+      ChannelCategories.create_subcategory(%{name: "testc", category_id: gaming_id})
+
+    {:ok, education_subcat_1} =
+      ChannelCategories.create_subcategory(%{name: "testa", category_id: education_id})
+
+    {:ok, education_subcat_2} =
+      ChannelCategories.create_subcategory(%{name: "testb", category_id: education_id})
+
+    {:ok, education_subcat_3} =
+      ChannelCategories.create_subcategory(%{name: "testc", category_id: education_id})
+
+    streamer_1 =
+      streamer_fixture(%{}, %{
+        category_id: gaming_id,
+        subcategory_id: gaming_subcat_1.id,
+        language: "en"
+      })
+
+    streamer_2 =
+      streamer_fixture(%{}, %{
+        category_id: gaming_id,
+        subcategory_id: gaming_subcat_2.id,
+        language: "en"
+      })
+
+    streamer_3 =
+      streamer_fixture(%{}, %{
+        category_id: gaming_id,
+        subcategory_id: gaming_subcat_3.id,
+        language: "en"
+      })
+
+    streamer_4 =
+      streamer_fixture(%{}, %{
+        category_id: education_id,
+        subcategory_id: education_subcat_1.id,
+        language: "en"
+      })
+
+    streamer_5 =
+      streamer_fixture(%{}, %{
+        category_id: education_id,
+        subcategory_id: education_subcat_2.id,
+        language: "en"
+      })
+
+    streamer_6 =
+      streamer_fixture(%{}, %{
+        category_id: education_id,
+        subcategory_id: education_subcat_3.id,
+        language: "en"
+      })
+
+    streamer_7 =
+      streamer_fixture(%{}, %{
+        category_id: education_id,
+        subcategory_id: education_subcat_2.id,
+        language: "en"
+      })
+
+    streamer_8 =
+      streamer_fixture(%{}, %{
+        category_id: education_id,
+        subcategory_id: education_subcat_1.id,
+        language: "en"
+      })
+
+    streamer_9 =
+      streamer_fixture(%{}, %{
+        category_id: gaming_id,
+        subcategory_id: gaming_subcat_2.id,
+        language: "en"
+      })
+
+    streamer_10 =
+      streamer_fixture(%{}, %{
+        category_id: gaming_id,
+        subcategory_id: gaming_subcat_1.id,
+        language: "en"
+      })
+
+    gaming_tag_1 = tag_fixture(%{name: "taga", category_id: gaming_id})
+    gaming_tag_2 = tag_fixture(%{name: "tagb", category_id: gaming_id})
+    gaming_tag_3 = tag_fixture(%{name: "tagc", category_id: gaming_id})
+    education_tag_1 = tag_fixture(%{name: "taga", category_id: education_id})
+    education_tag_2 = tag_fixture(%{name: "tagb", category_id: education_id})
+    education_tag_3 = tag_fixture(%{name: "tagc", category_id: education_id})
+
+    {:ok, gaming_channel_1} =
+      streamer_1.channel
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:tags, [gaming_tag_1, gaming_tag_2])
+      |> Glimesh.Repo.update()
+
+    {:ok, gaming_channel_2} =
+      streamer_2.channel
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:tags, [gaming_tag_3, gaming_tag_1])
+      |> Glimesh.Repo.update()
+
+    {:ok, gaming_channel_3} =
+      streamer_3.channel
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:tags, [gaming_tag_2, gaming_tag_3])
+      |> Glimesh.Repo.update()
+
+    {:ok, education_channel_4} =
+      streamer_4.channel
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:tags, [education_tag_1, education_tag_2])
+      |> Glimesh.Repo.update()
+
+    {:ok, education_channel_5} =
+      streamer_5.channel
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:tags, [education_tag_2, education_tag_3])
+      |> Glimesh.Repo.update()
+
+    {:ok, education_channel_6} =
+      streamer_6.channel
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:tags, [education_tag_1, education_tag_3])
+      |> Glimesh.Repo.update()
+
+    {:ok, education_channel_7} =
+      streamer_7.channel
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:tags, [education_tag_2, education_tag_3])
+      |> Glimesh.Repo.update()
+
+    {:ok, education_channel_8} =
+      streamer_8.channel
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:tags, [education_tag_1, education_tag_2])
+      |> Glimesh.Repo.update()
+
+    {:ok, gaming_channel_9} =
+      streamer_9.channel
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:tags, [gaming_tag_2, gaming_tag_3])
+      |> Glimesh.Repo.update()
+
+    {:ok, gaming_channel_10} =
+      streamer_10.channel
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:tags, [gaming_tag_3, gaming_tag_1])
+      |> Glimesh.Repo.update()
+
+    {:ok, _} = Glimesh.Streams.start_stream(gaming_channel_1)
+    {:ok, _} = Glimesh.Streams.start_stream(gaming_channel_2)
+    {:ok, _} = Glimesh.Streams.start_stream(gaming_channel_3)
+    {:ok, _} = Glimesh.Streams.start_stream(education_channel_4)
+    {:ok, _} = Glimesh.Streams.start_stream(education_channel_5)
+    {:ok, _} = Glimesh.Streams.start_stream(education_channel_6)
+    {:ok, _} = Glimesh.Streams.start_stream(education_channel_7)
+    {:ok, _} = Glimesh.Streams.start_stream(education_channel_8)
+    {:ok, _} = Glimesh.Streams.start_stream(gaming_channel_9)
+    {:ok, _} = Glimesh.Streams.start_stream(gaming_channel_10)
+
+    %{
+      gaming_subcategories: [gaming_subcat_1, gaming_subcat_2, gaming_subcat_3],
+      education_subcategories: [education_subcat_1, education_subcat_2, education_subcat_3],
+      gaming_tags: [gaming_tag_1, gaming_tag_2, gaming_tag_3],
+      education_tags: [education_tag_1, education_tag_2, education_tag_3],
+      gaming_channels: [
+        gaming_channel_1,
+        gaming_channel_2,
+        gaming_channel_3,
+        gaming_channel_9,
+        gaming_channel_10
+      ],
+      education_channels: [
+        education_channel_4,
+        education_channel_5,
+        education_channel_6,
+        education_channel_7,
+        education_channel_8
+      ],
+      streamers: [
+        streamer_1,
+        streamer_2,
+        streamer_3,
+        streamer_4,
+        streamer_5,
+        streamer_6,
+        streamer_7,
+        streamer_8,
+        streamer_9,
+        streamer_10
+      ]
+    }
+  end
+
+  describe "Homepage live tags cloud" do
+    setup :create_live_channels_with_tags
+
+    test "Shows mix of live channel subcategories and tags", %{
+      gaming_subcategories: gaming_subs,
+      education_subcategories: edu_subs,
+      gaming_tags: gaming_tags,
+      education_tags: edu_tags
+    } do
+      live_tags = ChannelLookups.list_live_homepage_tags()
+
+      assert Enum.count(live_tags) > 0
+
+      assert Enum.any?(live_tags, fn tags ->
+               Enum.any?(gaming_subs ++ edu_subs, fn subs ->
+                 tags[:tag_name] == subs.name
+               end) or
+                 Enum.any?(gaming_tags ++ edu_tags, fn item ->
+                   tags[:tag_name] == item.name
+                 end)
+             end)
+    end
+
+    test "Does not show duplicates" do
+      live_tags = ChannelLookups.list_live_homepage_tags()
+
+      unique_tags = Enum.uniq_by(live_tags, fn x -> x[:tag_name] end)
+
+      assert Enum.count(live_tags) == Enum.count(unique_tags)
+    end
+  end
 end

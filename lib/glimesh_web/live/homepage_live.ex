@@ -156,6 +156,23 @@ defmodule GlimeshWeb.HomepageLive do
         </div>
       {/if}
 
+      {#if length(@live_tag_cloud) > 0}
+        <div class="container my-5 position-relative">
+          <h2>{gettext("Search Live Streams")}</h2>
+          <h2>
+            {#for item <- @live_tag_cloud}
+              {link(item[:tag_name],
+                to:
+                  Routes.streams_list_path(@socket, :index, item[:cat_slug], %{
+                    "#{item[:type]}[]" => item[:tag_slug]
+                  }),
+                class: "badge badge-info subcat-badge-search"
+              )}
+            {/for}
+          </h2>
+        </div>
+      {/if}
+
       <div class="container">
         <div class="mt-4 px-4 px-lg-0">
           <h2>{gettext("Categories Made Simpler")}</h2>
@@ -193,6 +210,8 @@ defmodule GlimeshWeb.HomepageLive do
 
     user_count = Glimesh.Accounts.count_users()
 
+    live_tag_cloud = Glimesh.ChannelLookups.list_live_homepage_tags()
+
     if connected?(socket) do
       live_channel_id =
         cond do
@@ -219,6 +238,7 @@ defmodule GlimeshWeb.HomepageLive do
      |> assign(:upcoming_event, upcoming_event)
      |> assign(:live_featured_event, live_featured_event)
      |> assign(:live_featured_event_channel, live_featured_event_channel)
+     |> assign(:live_tag_cloud, live_tag_cloud)
      |> assign(:channels, channels)
      |> assign(:random_channel, random_channel)
      |> assign(:random_channel_thumbnail, get_stream_thumbnail(random_channel))
