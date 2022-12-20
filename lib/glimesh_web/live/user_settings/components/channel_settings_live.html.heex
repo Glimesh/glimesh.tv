@@ -339,12 +339,12 @@
         <%= label(f, :interactive_project, gettext("Interactive Project")) %>
         <p class="text-muted form-text">
           <%= gettext(
-            "An interactive project. It must be a zip folder with an index.html at the top level."
+            "An interactive project. It must containt at least an index.html file at the root level. Folder and multi uploads supported."
           ) %>
         </p>
 
         <div class="custom-file">
-          <%= file_input(f, :interactive_project, class: "custom-file-input", accept: ".zip") %>
+          <%= file_input(f, :interactive_project, class: "custom-file-input", webkitdirectory: true, multiple: true) %>
           <%= label(f, gettext("Choose file"), class: "custom-file-label") %>
         </div>
         <%= if f.errors[:interactive_project] do %>

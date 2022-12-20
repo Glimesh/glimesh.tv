@@ -3,7 +3,7 @@ defmodule Glimesh.Repo.Migrations.AddInteractive do
 
   def change do
     alter table(:channels) do
-      add :interactive_project, :string
+      add :interactive_project, {:array, :string}
       add :interactive_enabled, :boolean, default: false
     end
   end

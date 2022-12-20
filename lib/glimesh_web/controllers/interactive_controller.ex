@@ -1,24 +1,31 @@
 defmodule GlimeshWeb.InteractiveController do
   use GlimeshWeb, :controller
   alias Glimesh.ChannelLookups
+  alias Glimesh.Interactive
 
   def index(conn, %{"username" => username}) do
     # Get the channel, serve the project
     channel = ChannelLookups.get_channel_for_username(username, true)
-
-    # Check if the users project exists. If it does, send it, if not send the default project
-    # This is currently only local files. We will need to figure out the CDN later.
-    case File.exists?("./uploads/interactive/#{channel.id}/index.html") do
-      true -> conn |> redirect(to: "/uploads/interactive/#{channel.id}/index.html")
-      false ->
-        conn
-        |> put_resp_header("Content-Type", "text/html")
-        |> send_file( 200, "./priv/static/interactive/index.html")
+    if channel.interactive_project do
+      # Serve the project
+      conn |> redirect(to: Interactive.url({"index.html", channel}, :request))
+    else
+      not_found(conn, nil)
     end
   end
 
   def not_found(conn, _) do
-    # User requested incorrect path or the file doesn't exist
-   conn |> redirect(to: "/priv/static/interactive/index.html")
+    # The project doesn't exist :(
+    conn
+    |> put_resp_header("Content-Type", "text/html")
+    |> send_file( 200, "./priv/static/interactive/index.html")
+  end
+
+  def asset(conn, %{"id" => id, "asset" => asset}) do
+    #Get the channel
+    channel = ChannelLookups.get_channel_for_user_id(id, true)
+
+    #Serve the project asset
+    conn |> redirect(to: Interactive.url({Enum.join(asset, "/"), channel}, :request))
   end
 end

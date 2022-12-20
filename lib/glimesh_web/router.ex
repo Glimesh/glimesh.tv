@@ -45,10 +45,6 @@ defmodule GlimeshWeb.Router do
     plug Plug.Parsers, parsers: [:urlendoded]
   end
 
-  pipeline :interactive do
-    plug GlimeshWeb.Plugs.Interactive
-  end
-
   if Mix.env() in [:dev, :test] do
     scope "/" do
       pipe_through :browser
@@ -164,8 +160,7 @@ defmodule GlimeshWeb.Router do
   end
 
   scope "/interactive", GlimeshWeb do
-    pipe_through [:interactive]
-    get "/:id/*asset", InteractiveController, :not_found
+    get "/:id/*asset", InteractiveController, :asset
   end
 
   scope "/", GlimeshWeb do

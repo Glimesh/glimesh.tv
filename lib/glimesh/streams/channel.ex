@@ -36,7 +36,7 @@ defmodule Glimesh.Streams.Channel do
 
     field :allow_hosting, :boolean, default: false
 
-    field :interactive_project, Glimesh.Interactive.Type
+    field :interactive_project, {:array, Glimesh.Interactive.Type}
     field :interactive_enabled, :boolean, default: false
 
     # This is here temporarily as we add additional schema to handle it.
