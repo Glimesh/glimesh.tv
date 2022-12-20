@@ -341,7 +341,12 @@
         <%= label(f, :interactive_project, gettext("Interactive Project")) %>
         <p class="text-muted form-text">
           <%= gettext(
-            "An interactive project. It must containt at least an index.html file at the root level. Folder and multi uploads supported."
+            "An interactive project. It must contain at least an index.html file at the root level. Folder and multi uploads supported."
+          ) %>
+        </p>
+        <p class="text-muted form-text">
+          <%= gettext(
+            "Note that uploading a file will delete your current project even if you don't hit submit!"
           ) %>
         </p>
 
@@ -349,7 +354,8 @@
           <%= file_input(f, :interactive_project,
             class: "custom-file-input",
             webkitdirectory: true,
-            multiple: true
+            multiple: true,
+            phx_change: "replace_interactive"
           ) %>
           <%= label(f, gettext("Choose file"), class: "custom-file-label") %>
         </div>

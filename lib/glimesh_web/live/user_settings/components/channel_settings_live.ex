@@ -2,6 +2,7 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
   use GlimeshWeb, :live_view
 
   alias Glimesh.ChannelCategories
+  alias Glimesh.Interactive
   alias Glimesh.Streams
 
   @impl true
@@ -70,6 +71,15 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
   end
 
   def handle_event("change_channel", _params, socket) do
+    {:noreply, socket}
+  end
+
+  def handle_event("replace_interactive", _params, socket) do
+    #This has to run before a new project is uploaded. Removes the previous project
+    Enum.each(socket.assigns.channel.interactive_project, fn e ->
+      Interactive.delete({e.file_name, socket.assigns.channel})
+    end)
+
     {:noreply, socket}
   end
 
