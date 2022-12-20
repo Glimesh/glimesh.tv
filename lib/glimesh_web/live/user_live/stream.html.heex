@@ -145,11 +145,13 @@
                       session: %{"channel_id" => @channel.id}
                     ) %>
                   </div>
+                  <%= if @channel.interactive_enabled do %>
                   <div class="btn-group" role="group" aria-label="Fourth group">
                     <button class="btn btn-info btn-responsive ml-1"
                         title="Toggle Interactive" phx-click="toggle_interactive"
                         >Interactive</button>
                   </div>
+                  <% end %>
                 </div>
               </div>
             </div>
