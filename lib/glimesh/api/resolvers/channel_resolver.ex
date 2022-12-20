@@ -2,13 +2,13 @@ defmodule Glimesh.Api.ChannelResolver do
   @moduledoc false
   import Ecto.Query
 
+  alias Absinthe.Subscription
   alias Glimesh.Api
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Homepage
   alias Glimesh.Streams
-  alias Absinthe.Subscription
 
   @error_not_found "Could not find resource"
   @error_access_denied "Access denied"
@@ -313,13 +313,13 @@ defmodule Glimesh.Api.ChannelResolver do
       {:ok, %{data: data, event_name: event_name, authorized: true}}
     else
       _ ->
-      Subscription.publish(
-        GlimeshWeb.Endpoint,
-        %{data: data, event_name: event_name, authorized: false},
-        Keyword.put([], :interactive, "streams:interactive:#{session}")
-      )
+        Subscription.publish(
+          GlimeshWeb.Endpoint,
+          %{data: data, event_name: event_name, authorized: false},
+          Keyword.put([], :interactive, "streams:interactive:#{session}")
+        )
 
-      {:ok, %{data: data, event_name: event_name, authorized: false}}
+        {:ok, %{data: data, event_name: event_name, authorized: false}}
     end
   end
 

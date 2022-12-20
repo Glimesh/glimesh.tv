@@ -108,7 +108,7 @@ defmodule Glimesh.Streams.Channel do
       :require_confirmed_email,
       :minimum_account_age,
       :allow_hosting,
-      :interactive_enabled,
+      :interactive_enabled
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)

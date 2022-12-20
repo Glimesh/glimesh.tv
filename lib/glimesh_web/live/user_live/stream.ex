@@ -64,8 +64,7 @@ defmodule GlimeshWeb.UserLive.Stream do
            |> assign(:player_error, nil)
            |> assign(:user, maybe_user)
            |> assign(:ultrawide, false)
-           |> assign(:interactive_toggle, false)
-          }
+           |> assign(:interactive_toggle, false)}
         end
 
       nil ->

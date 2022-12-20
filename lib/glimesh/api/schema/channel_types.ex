@@ -139,7 +139,7 @@ defmodule Glimesh.Api.ChannelTypes do
     end
 
     field :interactive, :interactive do
-      arg :session, non_null(:integer), description: "The interactive session ID"
+      arg(:session, non_null(:integer), description: "The interactive session ID")
 
       config(fn args, _ ->
         case Map.get(args, :session) do
@@ -148,8 +148,6 @@ defmodule Glimesh.Api.ChannelTypes do
       end)
     end
   end
-
-
 
   @desc "Current channel status"
   enum :channel_status do
