@@ -337,3 +337,13 @@ $fa-font-path: "/fa-fonts";
 .EventsTeam_Font {
     color: #288b8c
 }
+
+.toast {
+    position: fixed;
+    right: 60px;
+    top: 60px;
+    background-color: var(--input-bg-color);
+    color: var(--input-color);
+    border: 2px solid var(--secondary-color);
+    box-shadow: 5px 5px 5px 5px black;
+}

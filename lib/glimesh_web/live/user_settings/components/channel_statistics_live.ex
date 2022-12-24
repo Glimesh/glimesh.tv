@@ -9,13 +9,24 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelStatisticsLive do
 
     case ChannelLookups.get_channel_for_user(streamer) do
       %Glimesh.Streams.Channel{} = channel ->
+        results_page = Glimesh.Streams.list_paged_streams(channel)
+
         {:ok,
          socket
-         |> assign(:streams, Glimesh.Streams.list_streams(channel))
+         |> put_page_title(gettext("Channel Statistics"))
+         |> assign(:streams, results_page)
          |> assign(:channel, channel)}
 
       nil ->
         {:ok, redirect(socket, to: "/")}
     end
+  end
+
+  def handle_event("load-more", _params, socket) do
+    streams = socket.assigns.streams
+    channel = socket.assigns.channel
+    results_page = Glimesh.Streams.list_paged_streams(channel, streams.page_number + 1)
+
+    {:noreply, socket |> assign(:streams, results_page)}
   end
 end

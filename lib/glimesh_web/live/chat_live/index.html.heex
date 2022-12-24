@@ -24,7 +24,8 @@
             else: "bubble you"
           ),
           if(chat_message.is_subscription_message, do: "bg-secondary text-white"),
-          if(chat_message.is_followed_message, do: "border border-info")
+          if(chat_message.is_followed_message, do: "border border-info"),
+          if(chat_message.is_raid_message, do: "border border-warning font-weight-bold")
         ]
       }
     >
@@ -75,7 +76,7 @@
           >
           </i>
         <% end %>
-        <%= unless chat_message.is_followed_message or chat_message.is_subscription_message do %>
+        <%= unless chat_message.is_followed_message or chat_message.is_subscription_message or chat_message.is_raid_message do %>
           <%= Glimesh.Chat.Effects.render_global_badge(chat_message.user) %>
           <%= if is_nil(chat_message.metadata) do %>
             <%= Glimesh.Chat.Effects.render_channel_badge(@channel, chat_message.user) %>
@@ -105,6 +106,7 @@
       <div class={["user-message", unless(@popped_out, do: "d-inline d-md-block")]}>
         <%= if chat_message.is_followed_message or chat_message.is_subscription_message,
           do: Glimesh.Chat.Effects.render_username_and_avatar(chat_message) %>
+        <%= if chat_message.is_raid_message, do: Glimesh.Chat.Effects.render_avatar(chat_message) %>
         <%= raw(Glimesh.Chat.Renderer.render(chat_message.tokens)) %>
       </div>
     </div>

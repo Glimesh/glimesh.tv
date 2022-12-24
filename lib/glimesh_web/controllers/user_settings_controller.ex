@@ -43,6 +43,11 @@ defmodule GlimeshWeb.UserSettingsController do
     |> Controller.live_render(ChannelSettingsLive.Hosting)
   end
 
+  def raiding(conn, _params) do
+    conn
+    |> Controller.live_render(ChannelSettingsLive.Raiding)
+  end
+
   def preference(conn, _params) do
     render(conn, "preference.html", page_title: format_page_title(gettext("Preferences")))
   end
@@ -52,9 +57,8 @@ defmodule GlimeshWeb.UserSettingsController do
   end
 
   def channel_statistics(conn, _params) do
-    render(conn, "channel_statistics.html",
-      page_title: format_page_title(gettext("Channel Statistics"))
-    )
+    conn
+    |> Controller.live_render(GlimeshWeb.UserSettings.Components.ChannelStatisticsLive)
   end
 
   def addons(conn, _params) do

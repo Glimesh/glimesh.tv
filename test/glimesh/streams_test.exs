@@ -3,6 +3,8 @@ defmodule Glimesh.StreamsTest do
   use Bamboo.Test
 
   import Glimesh.AccountsFixtures
+  import Glimesh.RaidingFixtures
+  alias Glimesh.Raids
   alias Glimesh.AccountFollows
   alias Glimesh.AccountFollows.Follower
   alias Glimesh.ChannelLookups
@@ -263,6 +265,214 @@ defmodule Glimesh.StreamsTest do
       }
 
       assert {:ok, %{}} = Streams.log_stream_metadata(stream, incoming_attrs)
+    end
+  end
+
+  describe "Raiding" do
+    setup do
+      target_channel = streamer_fixture(%{}, %{allow_raiding: true})
+      Glimesh.Streams.update_channel(target_channel, target_channel.channel, %{status: "live"})
+      viewer_one = user_fixture()
+      viewer_two = user_fixture()
+      raiding_channel = streamer_fixture()
+      Glimesh.Streams.update_channel(raiding_channel, raiding_channel.channel, %{status: "live"})
+
+      Glimesh.Presence.track_presence(
+        self(),
+        Streams.get_subscribe_topic(:raid, raiding_channel.channel.id),
+        viewer_one.id,
+        %{
+          logged_in_user_id: viewer_one.id
+        }
+      )
+
+      Glimesh.Presence.track_presence(
+        self(),
+        Streams.get_subscribe_topic(:raid, raiding_channel.channel.id),
+        viewer_two.id,
+        %{
+          logged_in_user_id: viewer_two.id
+        }
+      )
+
+      {:ok, topic} = Streams.subscribe_to(:raid, raiding_channel.channel.id)
+      present_users = Glimesh.Presence.list_presences(topic)
+
+      %{
+        target: target_channel,
+        viewer_one: viewer_one,
+        viewer_two: viewer_two,
+        raider: raiding_channel,
+        present_users: present_users
+      }
+    end
+
+    test "streamer can raid another channel", %{
+      target: target,
+      viewer_one: viewer_one,
+      viewer_two: viewer_two,
+      raider: raider,
+      present_users: present_users
+    } do
+      payload = Streams.start_raid_channel(raider, raider.channel, target.channel, present_users)
+      assert payload[:target] == target.channel
+      assert not is_nil(payload[:group_id])
+      assert not is_nil(payload[:time])
+      assert payload[:action] === "pending"
+
+      raid_definition = Glimesh.Raids.get_raid_definition(payload[:group_id])
+      raid_users = Glimesh.Raids.get_raid_users(payload[:group_id])
+
+      assert not is_nil(raid_definition) and raid_definition.status == :pending
+      assert Enum.count(raid_users) == 2
+      assert Enum.any?(raid_users, fn raider -> viewer_one.id == raider.user.id end)
+      assert Enum.any?(raid_users, fn raider -> viewer_two.id == raider.user.id end)
+    end
+
+    test "streamer can NOT raid a channel with raiding disabled", %{
+      raider: raider,
+      present_users: present_users
+    } do
+      target = streamer_fixture(%{}, %{allow_raiding: false})
+      Glimesh.Streams.update_channel(target, target.channel, %{status: "live"})
+
+      assert match?(
+               :error,
+               Streams.start_raid_channel(raider, raider.channel, target.channel, present_users)
+             )
+    end
+
+    test "streamer can NOT raid a channel with raiding restricted to followers only if they aren't following",
+         %{raider: raider, present_users: present_users} do
+      target = streamer_fixture(%{}, %{allow_raiding: true, only_followed_can_raid: true})
+      Glimesh.Streams.update_channel(target, target.channel, %{status: "live"})
+
+      assert match?(
+               :error,
+               Streams.start_raid_channel(raider, raider.channel, target.channel, present_users)
+             )
+    end
+
+    test "streamer can raid a channel with raiding restricted to followers only if they are following",
+         %{
+           viewer_one: viewer_one,
+           viewer_two: viewer_two,
+           raider: raider,
+           present_users: present_users
+         } do
+      target = streamer_fixture(%{}, %{allow_raiding: true, only_followed_can_raid: true})
+      Glimesh.Streams.update_channel(target, target.channel, %{status: "live"})
+      AccountFollows.follow(raider, target)
+
+      payload = Streams.start_raid_channel(raider, raider.channel, target.channel, present_users)
+      assert payload[:target] == target.channel
+      assert not is_nil(payload[:group_id])
+      assert not is_nil(payload[:time])
+      assert payload[:action] === "pending"
+
+      raid_definition = Glimesh.Raids.get_raid_definition(payload[:group_id])
+      raid_users = Glimesh.Raids.get_raid_users(payload[:group_id])
+
+      assert not is_nil(raid_definition) and raid_definition.status == :pending
+      assert Enum.count(raid_users) == 2
+      assert Enum.any?(raid_users, fn raider -> viewer_one.id == raider.user.id end)
+      assert Enum.any?(raid_users, fn raider -> viewer_two.id == raider.user.id end)
+    end
+
+    test "user can NOT raid a channel if they do not own the raiding channel", %{
+      raider: raider,
+      present_users: present_users
+    } do
+      target = streamer_fixture(%{}, %{allow_raiding: true})
+      Glimesh.Streams.update_channel(target, target.channel, %{status: "live"})
+      some_user = streamer_fixture()
+      Glimesh.Streams.update_channel(some_user, some_user.channel, %{status: "live"})
+
+      assert match?(
+               :error,
+               Streams.start_raid_channel(
+                 some_user,
+                 raider.channel,
+                 target.channel,
+                 present_users
+               )
+             )
+    end
+
+    test "streamer can cancel a raid they started", %{
+      target: target,
+      viewer_one: viewer_one,
+      viewer_two: viewer_two,
+      raider: raider
+    } do
+      {:ok, raid_definition} = create_raid_definition(raider, target.channel)
+      {:ok, raid_user_one} = create_raid_user(viewer_one, raid_definition)
+      {:ok, raid_user_two} = create_raid_user(viewer_two, raid_definition)
+
+      assert match?(
+               {:ok, _},
+               Streams.cancel_raid_channel(raider, raider.channel, raid_definition.group_id)
+             )
+
+      updated_raid_definition = Glimesh.Repo.get(Glimesh.Streams.ChannelRaids, raid_definition.id)
+      updated_raid_user_one = Glimesh.Repo.get(Glimesh.Streams.RaidUser, raid_user_one.id)
+      updated_raid_user_two = Glimesh.Repo.get(Glimesh.Streams.RaidUser, raid_user_two.id)
+      assert updated_raid_definition.status == :cancelled
+      assert updated_raid_user_one.status == :cancelled
+      assert updated_raid_user_two.status == :cancelled
+    end
+
+    test "streamer can't cancel a raid that completed", %{
+      target: target,
+      viewer_one: viewer_one,
+      viewer_two: viewer_two,
+      raider: raider
+    } do
+      {:ok, raid_definition} = create_raid_definition(raider, target.channel)
+      {:ok, raid_user_one} = create_raid_user(viewer_one, raid_definition)
+      {:ok, raid_user_two} = create_raid_user(viewer_two, raid_definition)
+      Raids.update_raid_status(raid_definition.group_id, :complete)
+
+      assert match?(
+               :error,
+               Streams.cancel_raid_channel(raider, raider.channel, raid_definition.group_id)
+             )
+
+      updated_raid_definition = Glimesh.Repo.get(Glimesh.Streams.ChannelRaids, raid_definition.id)
+      updated_raid_user_one = Glimesh.Repo.get(Glimesh.Streams.RaidUser, raid_user_one.id)
+      updated_raid_user_two = Glimesh.Repo.get(Glimesh.Streams.RaidUser, raid_user_two.id)
+      assert updated_raid_definition.status == :complete
+      assert updated_raid_user_one.status == :complete
+      assert updated_raid_user_two.status == :complete
+    end
+
+    test "user can't cancel a raid started by another channel", %{
+      target: target,
+      viewer_one: viewer_one,
+      viewer_two: viewer_two,
+      raider: raider
+    } do
+      {:ok, raid_definition} = create_raid_definition(raider, target.channel)
+      {:ok, raid_user_one} = create_raid_user(viewer_one, raid_definition)
+      {:ok, raid_user_two} = create_raid_user(viewer_two, raid_definition)
+      some_user = streamer_fixture()
+
+      assert match?(
+               :error,
+               Streams.cancel_raid_channel(some_user, raider.channel, raid_definition.group_id)
+             )
+
+      updated_raid_definition = Glimesh.Repo.get(Glimesh.Streams.ChannelRaids, raid_definition.id)
+      updated_raid_user_one = Glimesh.Repo.get(Glimesh.Streams.RaidUser, raid_user_one.id)
+      updated_raid_user_two = Glimesh.Repo.get(Glimesh.Streams.RaidUser, raid_user_two.id)
+      assert updated_raid_definition.status == :pending
+      assert updated_raid_user_one.status == :pending
+      assert updated_raid_user_two.status == :pending
+    end
+
+    test "can't cancel a raid that doesn't exist", %{raider: raider} do
+      random_uuid = Ecto.UUID.generate()
+      assert match?(:error, Streams.cancel_raid_channel(raider, raider.channel, random_uuid))
     end
   end
 end

@@ -1,3 +1,35 @@
+<%= if @raid_starting do %>
+  <div
+    id="raid-toast"
+    phx-hook="RaidToast"
+    role="alert"
+    data-raid-time={@raid_time}
+    data-raid-counter-id="raid-yes-counter"
+    data-autohide="false"
+    aria-live="assertive"
+    aria-atomic="true"
+    class="toast"
+    style="z-index: 990; position: fixed; top: 60; right: 60; min-width: 400px"
+  >
+    <div class="toast-body">
+      <div class="row m-auto d-flex justify-content-center">
+        <%= gettext("%{streamer} is raiding %{target}, do you want to join?",
+          streamer: @streamer.displayname,
+          target: @raid_target.user.displayname
+        ) %>
+      </div>
+      <div class="row m-auto d-flex justify-content-center">
+        <button id="raid-yes-button" class="btn btn-primary btn-sm mr-4" data-dismiss="toast">
+          <%= gettext("Yes") %>&nbsp;<span id="raid-yes-counter"></span>
+        </button>
+        <button id="raid-no-button" class="btn btn-primary btn-sm" data-dismiss="toast">
+          <%= gettext("No") %>
+        </button>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <%= if @hosting_channel != nil and @hosting_channel.target.id == @channel.id do %>
   <div id="hosted-banner" class="container bg-secondary collapse show">
     <div class="float-right">
@@ -122,6 +154,18 @@
               <div class="float-right">
                 <div class="stream-info btn-toolbar">
                   <div class="btn-group mr-1" role="group" aria-label="First group">
+                    <%= if @can_raid do %>
+                      <%= live_render(@socket, GlimeshWeb.UserLive.Components.RaidButton,
+                        id: "raid-button",
+                        session: %{
+                          "user" => @user,
+                          "streamer" => @streamer,
+                          "channel" => @channel
+                        }
+                      ) %>
+                    <% end %>
+                  </div>
+                  <div class="btn-group mr-1" role="group" aria-label="Second group">
                     <%= if @has_some_support_option do %>
                       <%= live_patch to: Routes.user_stream_path(@socket, :support, @channel.user.username), class: "btn btn-secondary btn-responsive" do %>
                         <span class="d-none d-lg-block">
@@ -133,13 +177,13 @@
                       <% end %>
                     <% end %>
                   </div>
-                  <div class="btn-group mr-1" role="group" aria-label="Second group">
+                  <div class="btn-group mr-1" role="group" aria-label="Third group">
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton,
                       id: "follow-button",
                       session: %{"user" => @user, "streamer" => @streamer}
                     ) %>
                   </div>
-                  <div class="btn-group" role="group" aria-label="Third group">
+                  <div class="btn-group" role="group" aria-label="Fourth group">
                     <%= live_render(@socket, GlimeshWeb.UserLive.Components.ViewerCount,
                       id: "viewer-count",
                       session: %{"channel_id" => @channel.id}

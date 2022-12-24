@@ -75,6 +75,10 @@ defmodule GlimeshWeb.LayoutView do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :hosting])
   end
 
+  def active_user_raiding_path(conn) do
+    truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :raiding])
+  end
+
   def active_channel_addons_path(conn) do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :addons])
   end

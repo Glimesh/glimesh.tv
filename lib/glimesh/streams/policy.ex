@@ -29,6 +29,9 @@ defmodule Glimesh.Streams.Policy do
   def authorize(:edit_channel_title_and_tags, %User{is_admin: true}, _channel), do: true
 
   def authorize(:delete_hosting_target, %User{is_admin: true}, _channel), do: true
+  def authorize(:unban_raiding_channel, %User{is_admin: true}, _channel), do: true
+  def authorize(:ban_raiding_channel, %User{is_admin: true}, _channel), do: true
+  def authorize(:raid_channel, %User{is_admin: true}, _channel), do: true
 
   # GCT
   def authorize(:update_channel, %User{is_gct: true}, _channel), do: true
@@ -39,6 +42,9 @@ defmodule Glimesh.Streams.Policy do
   def authorize(:update_channel_moderator, %User{is_gct: true}, _channel), do: true
   def authorize(:delete_channel_moderator, %User{is_gct: true}, _channel), do: true
   def authorize(:edit_channel_title_and_tags, %User{is_gct: true}, _channel), do: true
+  def authorize(:unban_raiding_channel, %User{is_gct: true}, _channel), do: true
+  def authorize(:ban_raiding_channel, %User{is_gct: true}, _channel), do: true
+  def authorize(:raid_channel, %User{is_gct: true}, _channel), do: true
 
   # Editors
   def authorize(:edit_channel_title_and_tags, %User{id: user_id}, [
@@ -78,6 +84,18 @@ defmodule Glimesh.Streams.Policy do
       do: true
 
   def authorize(:add_hosting_target, %User{id: user_id}, %Channel{user_id: channel_user_id})
+      when user_id == channel_user_id,
+      do: true
+
+  def authorize(:unban_raiding_channel, %User{id: user_id}, %Channel{user_id: channel_user_id})
+      when user_id == channel_user_id,
+      do: true
+
+  def authorize(:ban_raiding_channel, %User{id: user_id}, %Channel{user_id: channel_user_id})
+      when user_id == channel_user_id,
+      do: true
+
+  def authorize(:raid_channel, %User{id: user_id}, %Channel{user_id: channel_user_id})
       when user_id == channel_user_id,
       do: true
 

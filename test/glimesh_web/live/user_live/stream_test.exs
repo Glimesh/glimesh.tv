@@ -362,4 +362,417 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       assert html =~ "stream-title-edit"
     end
   end
+
+  describe "Raid functionality" do
+    setup do
+      all_raidable_streamer = streamer_fixture(%{}, %{allow_raiding: true})
+
+      follow_raidable_streamer =
+        streamer_fixture(%{}, %{allow_raiding: true, only_followed_can_raid: true})
+
+      not_raidable_streamer = streamer_fixture(%{}, %{allow_raiding: false})
+      live_raider = streamer_fixture()
+      live_followed_raider = streamer_fixture()
+      Glimesh.AccountFollows.follow(live_followed_raider, follow_raidable_streamer)
+      not_live_raider = streamer_fixture()
+      not_live_streamer = streamer_fixture(%{}, %{allow_raiding: true})
+
+      {:ok, _} = Glimesh.Streams.start_stream(all_raidable_streamer.channel)
+      {:ok, _} = Glimesh.Streams.start_stream(follow_raidable_streamer.channel)
+      {:ok, _} = Glimesh.Streams.start_stream(not_raidable_streamer.channel)
+      {:ok, _} = Glimesh.Streams.start_stream(live_raider.channel)
+      {:ok, _} = Glimesh.Streams.start_stream(live_followed_raider.channel)
+
+      %{
+        all_raidable_streamer: all_raidable_streamer,
+        follow_raidable_streamer: follow_raidable_streamer,
+        not_raidable_streamer: not_raidable_streamer,
+        live_raider: live_raider,
+        live_followed_raider: live_followed_raider,
+        not_live_raider: not_live_raider,
+        not_live_streamer: not_live_streamer
+      }
+    end
+
+    test "raid button should show on allow all raids",
+         %{
+           conn: conn,
+           all_raidable_streamer: all_raidable_streamer,
+           not_raidable_streamer: not_raidable_streamer,
+           live_raider: live_raider,
+           not_live_raider: not_live_raider
+         } do
+      # live raider can raid streamer with all raids turned on
+      live_raider_conn = log_in_user(conn, live_raider)
+
+      {:ok, _, html} =
+        live(
+          live_raider_conn,
+          Routes.user_stream_path(live_raider_conn, :index, all_raidable_streamer.username)
+        )
+
+      assert html =~ "raid-button"
+
+      # live raider cannot raid streamer with all raids turned off
+      {:ok, _, html} =
+        live(
+          live_raider_conn,
+          Routes.user_stream_path(live_raider_conn, :index, not_raidable_streamer.username)
+        )
+
+      refute html =~ "raid-button"
+
+      # non-live raider cannot raid anyone
+      not_live_raider_conn = log_in_user(conn, not_live_raider)
+
+      {:ok, _, html} =
+        live(
+          not_live_raider_conn,
+          Routes.user_stream_path(live_raider_conn, :index, all_raidable_streamer.username)
+        )
+
+      refute html =~ "raid-button"
+
+      {:ok, _, html} =
+        live(
+          not_live_raider_conn,
+          Routes.user_stream_path(live_raider_conn, :index, not_raidable_streamer.username)
+        )
+
+      refute html =~ "raid-button"
+    end
+
+    test "raid button should show on allow raids from followed channels when appropriate",
+         %{
+           conn: conn,
+           follow_raidable_streamer: follow_raidable_streamer,
+           not_raidable_streamer: not_raidable_streamer,
+           live_raider: live_not_followed_raider,
+           live_followed_raider: live_followed_raider,
+           not_live_raider: not_live_raider
+         } do
+      # live raider can raid streamer that follows the raider
+      live_followed_raider_conn = log_in_user(conn, live_followed_raider)
+
+      {:ok, _, html} =
+        live(
+          live_followed_raider_conn,
+          Routes.user_stream_path(
+            live_followed_raider_conn,
+            :index,
+            follow_raidable_streamer.username
+          )
+        )
+
+      assert html =~ "raid-button"
+
+      # live raider cannot raid streamer that doesn't follow the raider
+      live_not_followed_raider_conn = log_in_user(conn, live_not_followed_raider)
+
+      {:ok, _, html} =
+        live(
+          live_not_followed_raider_conn,
+          Routes.user_stream_path(
+            live_not_followed_raider_conn,
+            :index,
+            follow_raidable_streamer.username
+          )
+        )
+
+      refute html =~ "raid-button"
+
+      # non-live raider cannot raid anyone
+      not_live_raider_conn = log_in_user(conn, not_live_raider)
+
+      {:ok, _, html} =
+        live(
+          not_live_raider_conn,
+          Routes.user_stream_path(not_live_raider_conn, :index, follow_raidable_streamer.username)
+        )
+
+      refute html =~ "raid-button"
+
+      {:ok, _, html} =
+        live(
+          not_live_raider_conn,
+          Routes.user_stream_path(not_live_raider_conn, :index, not_raidable_streamer.username)
+        )
+
+      refute html =~ "raid-button"
+    end
+
+    test "raid button should not show on non-live channels",
+         %{
+           conn: conn,
+           not_live_streamer: not_live_streamer,
+           live_raider: live_raider,
+           not_live_raider: not_live_raider
+         } do
+      # live raider cannot raid streamer that isn't live
+      live_raider_conn = log_in_user(conn, live_raider)
+
+      {:ok, _, html} =
+        live(
+          live_raider_conn,
+          Routes.user_stream_path(live_raider_conn, :index, not_live_streamer.username)
+        )
+
+      refute html =~ "raid-button"
+
+      # non-live raider cannot raid anyone
+      not_live_raider_conn = log_in_user(conn, not_live_raider)
+
+      {:ok, _, html} =
+        live(
+          not_live_raider_conn,
+          Routes.user_stream_path(not_live_raider_conn, :index, not_live_streamer.username)
+        )
+
+      refute html =~ "raid-button"
+    end
+
+    test "raid button should not show for raiders not logged in",
+         %{conn: conn, all_raidable_streamer: all_raidable_streamer} do
+      # cannot raid anyone if raider isn't logged in
+      {:ok, _, html} =
+        live(conn, Routes.user_stream_path(conn, :index, all_raidable_streamer.username))
+
+      refute html =~ "raid-button"
+    end
+
+    test "raid button should not show for a streamer's own channel (cannot raid themselves)",
+         %{conn: conn, all_raidable_streamer: all_raidable_streamer} do
+      # cannot raid yourself
+      streamer_conn = log_in_user(conn, all_raidable_streamer)
+
+      {:ok, _, html} =
+        live(
+          streamer_conn,
+          Routes.user_stream_path(streamer_conn, :index, all_raidable_streamer.username)
+        )
+
+      refute html =~ "raid-button"
+    end
+
+    test "viewers participating in raid are redirected to target channel and non-participants are not redirected",
+         %{conn: conn, all_raidable_streamer: target_of_raid, live_raider: live_raider} do
+      participating_viewer = user_fixture()
+
+      participating_raid_user_viewer = %Glimesh.Streams.RaidUser{
+        status: :pending,
+        user_id: participating_viewer.id
+      }
+
+      second_participating_viewer = user_fixture()
+
+      second_participating_raid_user_viewer = %Glimesh.Streams.RaidUser{
+        status: :pending,
+        user_id: second_participating_viewer.id
+      }
+
+      non_participating_viewer = user_fixture()
+      raid_group_id = Ecto.UUID.generate()
+
+      potential_raiding_viewers = [
+        participating_raid_user_viewer,
+        second_participating_raid_user_viewer
+      ]
+
+      participating_viewer_conn = log_in_user(conn, participating_viewer)
+      second_participating_viewer_conn = log_in_user(conn, second_participating_viewer)
+      non_participating_viewer_conn = log_in_user(conn, non_participating_viewer)
+
+      {:ok, participating_viewer_view, _} =
+        live(
+          participating_viewer_conn,
+          Routes.user_stream_path(participating_viewer_conn, :index, live_raider.username)
+        )
+
+      {:ok, second_participating_viewer_view, _} =
+        live(
+          second_participating_viewer_conn,
+          Routes.user_stream_path(second_participating_viewer_conn, :index, live_raider.username)
+        )
+
+      {:ok, non_participating_viewer_view, _} =
+        live(
+          non_participating_viewer_conn,
+          Routes.user_stream_path(non_participating_viewer_conn, :index, live_raider.username)
+        )
+
+      {:ok, non_logged_in_viewer_view, _} =
+        live(conn, Routes.user_stream_path(conn, :index, live_raider.username))
+
+      payload =
+        {:raid,
+         %{
+           users: potential_raiding_viewers,
+           target: target_of_raid.username,
+           group_id: raid_group_id,
+           action: "active"
+         }}
+
+      send(participating_viewer_view.pid, payload)
+      send(second_participating_viewer_view.pid, payload)
+      send(non_participating_viewer_view.pid, payload)
+      send(non_logged_in_viewer_view.pid, payload)
+
+      assert_redirect(
+        participating_viewer_view,
+        Routes.user_stream_path(participating_viewer_conn, :index, target_of_raid.username),
+        5_000
+      )
+
+      assert_redirect(
+        second_participating_viewer_view,
+        Routes.user_stream_path(
+          second_participating_viewer_conn,
+          :index,
+          target_of_raid.username
+        ),
+        5_000
+      )
+
+      refute_redirected(
+        non_participating_viewer_view,
+        Routes.user_stream_path(non_participating_viewer_conn, :index, target_of_raid.username)
+      )
+
+      refute_redirected(
+        non_logged_in_viewer_view,
+        Routes.user_stream_path(conn, :index, target_of_raid.username)
+      )
+    end
+
+    test "viewers participating in raid are NOT redirected to target channel if the raid is cancelled",
+         %{conn: conn, all_raidable_streamer: target_of_raid, live_raider: live_raider} do
+      participating_viewer = user_fixture()
+
+      participating_raid_user_viewer = %Glimesh.Streams.RaidUser{
+        status: :pending,
+        user_id: participating_viewer.id
+      }
+
+      second_participating_viewer = user_fixture()
+
+      second_participating_raid_user_viewer = %Glimesh.Streams.RaidUser{
+        status: :pending,
+        user_id: second_participating_viewer.id
+      }
+
+      non_participating_viewer = user_fixture()
+      raid_group_id = Ecto.UUID.generate()
+
+      potential_raiding_viewers = [
+        participating_raid_user_viewer,
+        second_participating_raid_user_viewer
+      ]
+
+      participating_viewer_conn = log_in_user(conn, participating_viewer)
+      second_participating_viewer_conn = log_in_user(conn, second_participating_viewer)
+      non_participating_viewer_conn = log_in_user(conn, non_participating_viewer)
+
+      {:ok, participating_viewer_view, _} =
+        live(
+          participating_viewer_conn,
+          Routes.user_stream_path(participating_viewer_conn, :index, live_raider.username)
+        )
+
+      {:ok, second_participating_viewer_view, _} =
+        live(
+          second_participating_viewer_conn,
+          Routes.user_stream_path(second_participating_viewer_conn, :index, live_raider.username)
+        )
+
+      {:ok, non_participating_viewer_view, _} =
+        live(
+          non_participating_viewer_conn,
+          Routes.user_stream_path(non_participating_viewer_conn, :index, live_raider.username)
+        )
+
+      {:ok, non_logged_in_viewer_view, _} =
+        live(conn, Routes.user_stream_path(conn, :index, live_raider.username))
+
+      payload =
+        {:raid,
+         %{
+           users: potential_raiding_viewers,
+           target: target_of_raid.username,
+           group_id: raid_group_id,
+           action: "cancelled"
+         }}
+
+      send(participating_viewer_view.pid, payload)
+      send(second_participating_viewer_view.pid, payload)
+      send(non_participating_viewer_view.pid, payload)
+      send(non_logged_in_viewer_view.pid, payload)
+
+      refute_redirected(
+        participating_viewer_view,
+        Routes.user_stream_path(participating_viewer_conn, :index, target_of_raid.username)
+      )
+
+      assert render(participating_viewer_view) =~ "Streamer has cancelled pending raid."
+
+      refute_redirected(
+        second_participating_viewer_view,
+        Routes.user_stream_path(second_participating_viewer_conn, :index, target_of_raid.username)
+      )
+
+      assert render(second_participating_viewer_view) =~ "Streamer has cancelled pending raid."
+
+      refute_redirected(
+        non_participating_viewer_view,
+        Routes.user_stream_path(non_participating_viewer_conn, :index, target_of_raid.username)
+      )
+
+      assert render(non_participating_viewer_view) =~ "Streamer has cancelled pending raid."
+
+      refute_redirected(
+        non_logged_in_viewer_view,
+        Routes.user_stream_path(conn, :index, target_of_raid.username)
+      )
+
+      assert render(non_logged_in_viewer_view) =~ "Streamer has cancelled pending raid."
+    end
+
+    test "viewers should get a message when a raid is about to happen",
+         %{conn: conn, all_raidable_streamer: target_of_raid, live_raider: live_raider} do
+      participating_viewer = user_fixture()
+      second_participating_viewer = user_fixture()
+      raid_group_id = Ecto.UUID.generate()
+
+      participating_viewer_conn = log_in_user(conn, participating_viewer)
+      second_participating_viewer_conn = log_in_user(conn, second_participating_viewer)
+
+      {:ok, participating_viewer_view, _} =
+        live(
+          participating_viewer_conn,
+          Routes.user_stream_path(participating_viewer_conn, :index, live_raider.username)
+        )
+
+      {:ok, second_participating_viewer_view, _} =
+        live(
+          second_participating_viewer_conn,
+          Routes.user_stream_path(second_participating_viewer_conn, :index, live_raider.username)
+        )
+
+      {:ok, non_logged_in_viewer_view, _} =
+        live(conn, Routes.user_stream_path(conn, :index, live_raider.username))
+
+      time = NaiveDateTime.add(NaiveDateTime.utc_now(), 30, :second)
+
+      raid_target = Glimesh.ChannelLookups.get_channel_for_username(target_of_raid.username)
+
+      payload =
+        {:raid, %{target: raid_target, group_id: raid_group_id, time: time, action: "pending"}}
+
+      send(participating_viewer_view.pid, payload)
+      send(second_participating_viewer_view.pid, payload)
+
+      assert render(participating_viewer_view) =~ "raid-toast"
+      assert render(second_participating_viewer_view) =~ "raid-toast"
+      refute render(non_logged_in_viewer_view) =~ "raid-toast"
+    end
+  end
 end

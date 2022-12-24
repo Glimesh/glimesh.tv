@@ -4,6 +4,7 @@ defmodule Glimesh.ChannelLookupsTest do
 
   import Glimesh.AccountsFixtures
   import Glimesh.StreamsFixtures
+  alias Glimesh.AccountFollows
   alias Glimesh.ChannelLookups
   alias Glimesh.ChannelCategories
   alias Glimesh.Streams
@@ -553,6 +554,183 @@ defmodule Glimesh.ChannelLookupsTest do
       Glimesh.AccountFollows.follow(live_hosted, host)
       results = ChannelLookups.list_live_followed_channels_and_hosts(host)
       assert length(results) == 1
+    end
+  end
+
+  describe "Raiding functions" do
+    test "search_bannable_raiding_channels_by_name returns only channels that haven't already been raiding banned" do
+      streamer = streamer_fixture()
+      another_streamer_one = streamer_fixture(%{}, %{allow_raiding: true})
+      another_streamer_two = streamer_fixture(%{}, %{allow_raiding: true})
+
+      Glimesh.Streams.ChannelBannedRaid.insert_new_ban(
+        streamer.channel,
+        another_streamer_one.channel.id
+      )
+
+      results =
+        ChannelLookups.search_bannable_raiding_channels_by_name(
+          streamer.channel,
+          another_streamer_one.displayname
+        )
+
+      assert Enum.count(results) == 0
+
+      search_term = String.slice(another_streamer_two.displayname, 0, 4)
+
+      more_results =
+        ChannelLookups.search_bannable_raiding_channels_by_name(streamer.channel, search_term)
+
+      assert Enum.count(more_results) == 1
+
+      streamer_fixture()
+
+      even_more_results =
+        ChannelLookups.search_bannable_raiding_channels_by_name(streamer.channel, search_term)
+
+      assert Enum.count(even_more_results) == 2
+    end
+
+    test "can_viewer_raid_channel? returns true if the streamer can raid the channel" do
+      target_channel_one = streamer_fixture(%{}, %{allow_raiding: true})
+
+      target_channel_two =
+        streamer_fixture(%{}, %{allow_raiding: true, only_followed_can_raid: true})
+
+      target_channel_three = streamer_fixture()
+      raider = streamer_fixture(%{}, %{allow_raiding: true})
+
+      Glimesh.Streams.update_channel(target_channel_one, target_channel_one.channel, %{
+        status: "live"
+      })
+
+      Glimesh.Streams.update_channel(target_channel_two, target_channel_two.channel, %{
+        status: "live"
+      })
+
+      Glimesh.Streams.update_channel(target_channel_three, target_channel_three.channel, %{
+        status: "live"
+      })
+
+      Glimesh.Streams.update_channel(raider, raider.channel, %{status: "live"})
+
+      assert ChannelLookups.can_viewer_raid_channel?(raider, target_channel_one.channel)
+      refute ChannelLookups.can_viewer_raid_channel?(raider, target_channel_two.channel)
+
+      AccountFollows.follow(raider, target_channel_two)
+      assert ChannelLookups.can_viewer_raid_channel?(raider, target_channel_two.channel)
+
+      refute ChannelLookups.can_viewer_raid_channel?(raider, target_channel_three.channel)
+
+      # can not raid yourself
+      refute ChannelLookups.can_viewer_raid_channel?(raider, raider.channel)
+    end
+
+    test "search live channels lists channels conditionally for category and raidable" do
+      gaming_all_raidable_streamer =
+        streamer_fixture(%{}, %{
+          category_id: ChannelCategories.get_category("gaming").id,
+          allow_raiding: true
+        })
+
+      gaming_follow_raidable_streamer =
+        streamer_fixture(%{}, %{
+          category_id: ChannelCategories.get_category("gaming").id,
+          allow_raiding: true,
+          only_followed_can_raid: true
+        })
+
+      gaming_non_raidable_streamer =
+        streamer_fixture(%{}, %{
+          category_id: ChannelCategories.get_category("gaming").id,
+          allow_raiding: false
+        })
+
+      raider = streamer_fixture()
+
+      art_category_all_raidable_streamer =
+        streamer_fixture(%{}, %{
+          category_id: ChannelCategories.get_category("art").id,
+          allow_raiding: true
+        })
+
+      art_category_follow_raidable_streamer =
+        streamer_fixture(%{}, %{
+          category_id: ChannelCategories.get_category("art").id,
+          allow_raiding: true,
+          only_followed_can_raid: true
+        })
+
+      art_category_non_raidable_streamer =
+        streamer_fixture(%{}, %{
+          category_id: ChannelCategories.get_category("art").id,
+          allow_raiding: false
+        })
+
+      {:ok, _} = Glimesh.Streams.start_stream(gaming_all_raidable_streamer.channel)
+      {:ok, _} = Glimesh.Streams.start_stream(gaming_follow_raidable_streamer.channel)
+      {:ok, _} = Glimesh.Streams.start_stream(gaming_non_raidable_streamer.channel)
+      {:ok, _} = Glimesh.Streams.start_stream(art_category_all_raidable_streamer.channel)
+      {:ok, _} = Glimesh.Streams.start_stream(art_category_follow_raidable_streamer.channel)
+      {:ok, _} = Glimesh.Streams.start_stream(art_category_non_raidable_streamer.channel)
+
+      channels =
+        ChannelLookups.search_live_channels(
+          %{
+            "category" => "gaming",
+            "raidable" => "true"
+          },
+          raider
+        )
+
+      # raider not followed
+      assert length(channels) == 1
+      assert hd(channels).id == gaming_all_raidable_streamer.channel.id
+
+      # raider followed
+      AccountFollows.follow(raider, gaming_follow_raidable_streamer)
+
+      search_again_channels =
+        ChannelLookups.search_live_channels(
+          %{
+            "category" => "gaming",
+            "raidable" => "true"
+          },
+          raider
+        )
+
+      assert length(search_again_channels) == 2
+
+      assert Enum.any?(search_again_channels, fn channel ->
+               gaming_all_raidable_streamer.channel.id == channel.id
+             end)
+
+      assert Enum.any?(search_again_channels, fn channel ->
+               gaming_follow_raidable_streamer.channel.id == channel.id
+             end)
+
+      search_art_channels =
+        ChannelLookups.search_live_channels(
+          %{
+            "category" => "art",
+            "raidable" => "false"
+          },
+          raider
+        )
+
+      assert length(search_art_channels) == 3
+
+      assert Enum.any?(search_art_channels, fn channel ->
+               art_category_all_raidable_streamer.channel.id == channel.id
+             end)
+
+      assert Enum.any?(search_art_channels, fn channel ->
+               art_category_follow_raidable_streamer.channel.id == channel.id
+             end)
+
+      assert Enum.any?(search_art_channels, fn channel ->
+               art_category_non_raidable_streamer.channel.id == channel.id
+             end)
     end
   end
 end
