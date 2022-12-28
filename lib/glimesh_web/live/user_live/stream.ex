@@ -6,6 +6,12 @@ defmodule GlimeshWeb.UserLive.Stream do
   alias Glimesh.Presence
   alias Glimesh.Streams
 
+  alias GlimeshWeb.Channels.Components.ChannelTitle
+  alias GlimeshWeb.Components.UserEffects
+
+  alias GlimeshWeb.Channels.Components.VideoPlayer
+  alias GlimeshWeb.UserLive.Components.ViewerCount
+
   def mount(%{"username" => streamer_username} = params, session, socket) do
     case ChannelLookups.get_channel_for_username(streamer_username) do
       %Glimesh.Streams.Channel{} = channel ->
@@ -29,9 +35,17 @@ defmodule GlimeshWeb.UserLive.Stream do
            )}
         else
           if connected?(socket) do
-            # Wait until the socket connection is ready to load the stream
+            # Setup our subscriptions
             Process.send(self(), :load_stream, [])
+
             Streams.subscribe_to(:channel, channel.id)
+            Streams.subscribe_to(:chat, channel.id)
+            {:ok, viewers_topic} = Streams.subscribe_to(:viewers, channel.id)
+
+            send_update(ViewerCount,
+              id: "viewer-count",
+              viewer_count: Presence.list_presences(viewers_topic) |> Enum.count()
+            )
           end
 
           avatar_url = Glimesh.Avatar.url({streamer.avatar, streamer}, :original)
@@ -39,18 +53,15 @@ defmodule GlimeshWeb.UserLive.Stream do
           has_some_support_option =
             length(Glimesh.Streams.list_support_tabs(channel.user, channel)) > 0
 
+          initial_chat_messages = list_chat_messages(channel)
+
           {:ok,
            socket
            |> put_page_title(channel.title)
-           |> assign(:show_debug, false)
-           |> assign(:show_support_modal, socket.assigns.live_action == :support)
-           |> assign(:support_modal_tab, Map.get(params, "tab"))
-           |> assign(:stripe_session_id, Map.get(params, "stripe_session_id"))
            |> assign(:unique_user, Map.get(session, "unique_user"))
            |> assign(:country, Map.get(session, "country"))
            |> assign(:prompt_mature, Streams.prompt_mature_content(channel, maybe_user))
            |> assign(:streamer, channel.user)
-           |> assign(:can_receive_payments, Accounts.can_receive_payments?(channel.user))
            |> assign(:has_some_support_option, has_some_support_option)
            |> assign(:channel, channel)
            |> assign(:hosting_channel, hosting_channel)
@@ -63,12 +74,27 @@ defmodule GlimeshWeb.UserLive.Stream do
            |> assign(:stream_metadata, get_last_stream_metadata(channel.stream))
            |> assign(:player_error, nil)
            |> assign(:user, maybe_user)
-           |> assign(:ultrawide, false)}
+           # Support Modal
+           |> assign(:show_support_modal, socket.assigns.live_action == :support)
+           |> assign(:support_modal_tab, Map.get(params, "tab"))
+           |> assign(:stripe_session_id, Map.get(params, "stripe_session_id")),
+           temporary_assigns: [chat_messages: initial_chat_messages]}
         end
 
       nil ->
+        dbg(streamer_username)
         {:ok, redirect(socket, to: "/#{streamer_username}/profile")}
     end
+  end
+
+  defp list_chat_messages(
+         %Glimesh.Streams.Channel{show_recent_chat_messages_only: true} = channel
+       ) do
+    Glimesh.Chat.list_recent_chat_messages(channel)
+  end
+
+  defp list_chat_messages(channel) do
+    Glimesh.Chat.list_chat_messages(channel)
   end
 
   defp get_hosting_data(params, channel, maybe_user, streamer, user_agent) do
@@ -110,6 +136,8 @@ defmodule GlimeshWeb.UserLive.Stream do
     {:noreply, socket |> assign(:show_support_modal, socket.assigns.live_action == :support)}
   end
 
+  # Stream Event Handler
+  @impl true
   def handle_info(:load_stream, socket) do
     case Glimesh.Janus.get_closest_edge_location(socket.assigns.country) do
       %Glimesh.Janus.EdgeRoute{id: janus_edge_id, url: janus_url, hostname: janus_hostname} ->
@@ -122,16 +150,10 @@ defmodule GlimeshWeb.UserLive.Stream do
           }
         )
 
-        Process.send(self(), :remove_packet_warning, [])
+        # Tell the video player to play
+        send_update(VideoPlayer, id: "video-player", janus_url: janus_url, status: "ready")
 
-        {:noreply,
-         socket
-         |> push_event("load_video", %{
-           janus_url: janus_url,
-           channel_id: socket.assigns.channel.id
-         })
-         |> assign(:janus_url, janus_url)
-         |> assign(:janus_hostname, janus_hostname)}
+        {:noreply, socket}
 
       _ ->
         # In the event we can't find an edge, something is real wrong
@@ -141,56 +163,51 @@ defmodule GlimeshWeb.UserLive.Stream do
     end
   end
 
-  def handle_info(:remove_packet_warning, socket) do
-    Process.send_after(self(), :remove_packet_warning, 15_000)
-
-    {:noreply, socket |> assign(:player_error, nil)}
-  end
-
   def handle_info({:channel, channel}, socket) do
     {:noreply, socket |> assign(:stream, channel.stream)}
+  end
+
+  # Viewer List Event Handler
+  def handle_info(
+        %{
+          event: "presence_diff",
+          topic: "streams:viewers:" <> _streamer = topic
+        },
+        socket
+      ) do
+    send_update(ViewerCount,
+      id: "viewer-count",
+      viewer_count: Presence.list_presences(topic) |> Enum.count()
+    )
+
+    {:noreply, socket}
+  end
+
+  # Chat Event Handler
+  @impl true
+  def handle_info({:chat_message, message}, socket) do
+    {:noreply,
+     socket
+     |> push_event("new_chat_message", %{
+       message_id: message.id
+     })
+     |> update(:chat_messages, fn messages -> [message | messages] end)}
+  end
+
+  @impl true
+  def handle_info({:user_timedout, bad_user}, socket) do
+    {:noreply, push_event(socket, "remove_timed_out_user_messages", %{bad_user_id: bad_user.id})}
+  end
+
+  @impl true
+  def handle_info({:message_deleted, message_id}, socket) do
+    {:noreply, push_event(socket, "remove_deleted_message", %{message_id: message_id})}
   end
 
   def handle_event("show_mature", _value, socket) do
     Process.send(self(), :load_stream, [])
 
     {:noreply, assign(socket, :prompt_mature, false)}
-  end
-
-  def handle_event("toggle_debug", _value, socket) do
-    if socket.assigns.show_debug === false do
-      # Opening the window
-      {:noreply,
-       socket
-       |> assign(:stream_metadata, get_last_stream_metadata(socket.assigns.stream))
-       |> assign(:show_debug, true)}
-    else
-      {:noreply, assign(socket, :show_debug, false)}
-    end
-  end
-
-  def handle_event("lost_packets", %{"uplink" => _uplink, "lostPackets" => lost_packets}, socket)
-      when is_integer(lost_packets) do
-    message =
-      if lost_packets > 6,
-        do:
-          gettext(
-            "We're detecting some networking problems between you and the streamer. You may experience video drops, jitter, or other issues! If this continues, the streamer is recommended to submit a ticket in #streaming-help in our Discord."
-          ),
-        else: nil
-
-    {:noreply,
-     socket
-     |> update(:lost_packets, &(&1 + lost_packets))
-     |> assign(:player_error, message)}
-  end
-
-  def handle_event("lost_packets", _, socket) do
-    {:noreply, socket}
-  end
-
-  def handle_event("ultrawide", %{"enabled" => enabled}, socket) do
-    {:noreply, socket |> assign(:ultrawide, enabled)}
   end
 
   defp get_stream_thumbnail(channel) do

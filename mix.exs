@@ -38,6 +38,7 @@ defmodule Glimesh.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
       {:dart_sass, "~> 0.3", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:faker, "~> 0.17", only: [:dev, :test]},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:floki, ">= 0.0.0", only: :test},
@@ -126,8 +127,9 @@ defmodule Glimesh.MixProject do
       code_quality: ["format", "credo --strict"],
       "assets.deploy": [
         "cmd assets/copy-fonts.sh",
+        "sass default --no-source-map",
+        "tailwind default --minify",
         "esbuild default --minify",
-        "sass default --no-source-map --style=compressed",
         "phx.digest priv/static -o priv/public"
       ]
     ]

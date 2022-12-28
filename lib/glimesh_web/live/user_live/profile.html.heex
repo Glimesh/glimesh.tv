@@ -128,10 +128,12 @@
           <h5><%= gettext("Follow Streamer") %></h5>
         </div>
         <div class="card-body">
-          <%= live_render(@socket, GlimeshWeb.UserLive.Components.FollowButton,
-            id: "follow-button",
-            session: %{"user" => @user, "streamer" => @streamer}
-          ) %>
+          <.live_component
+            module={GlimeshWeb.UserLive.Components.FollowButton}
+            id="follow-button"
+            user={@user}
+            streamer={@streamer}
+          />
         </div>
       </div>
 

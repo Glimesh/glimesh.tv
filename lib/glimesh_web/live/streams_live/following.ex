@@ -4,6 +4,8 @@ defmodule GlimeshWeb.StreamsLive.Following do
   alias Glimesh.AccountFollows
   alias Glimesh.Accounts
 
+  alias GlimeshWeb.Channels.Components.ChannelPreview
+
   @impl true
   def mount(_params, session, socket) do
     case Accounts.get_user_by_session_token(session["user_token"]) do

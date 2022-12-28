@@ -267,7 +267,7 @@ defmodule GlimeshWeb.Router do
     live "/", HomepageLive, :index
     live "/streams", StreamsLive.Index, :index
     live "/streams/following", StreamsLive.Following, :index
-    live "/streams/:category", StreamsLive.List, :index
+    live "/streams/:category", StreamsLive.Index, :index
 
     live "/users", UserLive.Index, :index
 

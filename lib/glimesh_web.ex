@@ -142,6 +142,11 @@ defmodule GlimeshWeb do
       import GlimeshWeb.ErrorHelpers
       import GlimeshWeb.Gettext
       alias GlimeshWeb.Router.Helpers, as: Routes
+
+      alias GlimeshWeb.Components.Navbar, as: Navbar
+
+      alias GlimeshWeb.Components.Icons
+      alias GlimeshWeb.Components.Title
     end
   end
 

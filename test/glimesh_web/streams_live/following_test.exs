@@ -20,7 +20,7 @@ defmodule GlimeshWeb.StreamsLive.FollowingTest do
     test "lists no followed streams", %{
       conn: conn
     } do
-      {:ok, _, html} = live(conn, Routes.streams_list_path(conn, :index, "following"))
+      {:ok, _, html} = live(conn, Routes.streams_index_path(conn, :index, "following"))
 
       assert html =~ "Followed Streams"
       assert html =~ "None of the streams you follow are live"
@@ -36,7 +36,7 @@ defmodule GlimeshWeb.StreamsLive.FollowingTest do
     } do
       Glimesh.AccountFollows.follow(streamer, user)
 
-      {:ok, _, html} = live(conn, Routes.streams_list_path(conn, :index, "following"))
+      {:ok, _, html} = live(conn, Routes.streams_index_path(conn, :index, "following"))
 
       assert html =~ "Followed Streams"
       assert html =~ streamer.displayname
@@ -50,7 +50,7 @@ defmodule GlimeshWeb.StreamsLive.FollowingTest do
       streamer = streamer_fixture()
       Glimesh.AccountFollows.follow(streamer, user)
 
-      {:ok, _, html} = live(conn, Routes.streams_list_path(conn, :index, "following"))
+      {:ok, _, html} = live(conn, Routes.streams_index_path(conn, :index, "following"))
 
       assert html =~ "All Followed Streamers"
       assert html =~ streamer.displayname
@@ -76,7 +76,7 @@ defmodule GlimeshWeb.StreamsLive.FollowingTest do
 
       Glimesh.AccountFollows.follow(not_live_but_hosting_streamer, user)
 
-      {:ok, _, html} = live(conn, Routes.streams_list_path(conn, :index, "following"))
+      {:ok, _, html} = live(conn, Routes.streams_index_path(conn, :index, "following"))
 
       assert html =~ "Live being hosted"
       assert html =~ live_streamer_not_followed.displayname

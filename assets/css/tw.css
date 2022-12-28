@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+    .badge {
+        @apply rounded-md px-2 py-1 text-xs font-semibold bg-white text-black;
+    }
+    .badge-primary {
+        @apply rounded-md px-2 py-1 text-xs font-semibold bg-sky-400 text-sky-900;
+    }
+
+    .badge-danger {
+        @apply rounded-md px-2 py-1 text-xs font-semibold bg-rose-400 text-rose-900;
+    }
+
+    .btn-primary {
+        @apply py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+    }
+    .btn-secondary {
+        @apply py-2 px-4 bg-purple-500 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-75;
+    }
+    .btn-danger {
+        @apply py-2 px-4 bg-rose-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75;
+    }
+
+
+    .card-body {
+        @apply rounded-md bg-gray-800 p-4;
+    }
+
+    input[type="text"] {
+        @apply bg-gray-700 border-gray-700 text-white rounded shadow-md placeholder-gray-200;
+    }
+
+    .table {
+        @apply table-auto;
+    }
+
+    .row {
+        @apply bg-red-600;
+    }
+}
+
+.chat-message-background {
+    --chat-bg-image: url('/images/bg.png');
+    background-image: var(--chat-bg-image); 
+}

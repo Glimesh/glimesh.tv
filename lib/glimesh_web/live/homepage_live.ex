@@ -20,7 +20,7 @@ defmodule GlimeshWeb.HomepageLive do
             <div class="card shadow rounded">
               <div class="row">
                 <div class="col-md-7">
-                  <VideoPlayer id="homepage-video-player" muted channel={@live_featured_event_channel} />
+                  <video-player id="homepage-video-player" muted channel={@live_featured_event_channel} />
                 </div>
                 <div class="col-md-5 py-4 pr-4">
                   <EventMedia event={@live_featured_event} show_img={false} />
@@ -31,7 +31,7 @@ defmodule GlimeshWeb.HomepageLive do
             <div class="row">
               <div class="col-md-7">
                 <div class="card shadow rounded">
-                  <VideoPlayer id="homepage-video-player" muted channel={@random_channel} />
+                  <video-player id="homepage-video-player" muted channel={@random_channel} />
                   <div class="d-flex align-items-start p-2">
                     <img
                       src={Glimesh.Avatar.url({@random_channel.user.avatar, @random_channel.user}, :original)}
@@ -109,6 +109,9 @@ defmodule GlimeshWeb.HomepageLive do
         <div class="container">
           <div class="position-relative overflow-hidden p-3 p-md-5">
             <div class="col-md-12 p-lg-4 mx-auto">
+              <h1 class="text-3xl text-red-500 font-bold underline">
+                Hello world!
+              </h1>
               <h1 class="display-3 font-weight-bold">
                 <span class="text-color-alpha">{gettext("Next-Gen")}</span>
                 {gettext("Live Streaming!")}
@@ -150,7 +153,10 @@ defmodule GlimeshWeb.HomepageLive do
         <div class="container container-stream-list">
           <div class="row">
             {#for channel <- @channels}
-              <ChannelPreview channel={channel} class="col-sm-12 col-md-6 col-xl-4 mt-2 mt-md-4" />
+              <ChannelPreview.thumbnail_and_info
+                channel={channel}
+                class="col-sm-12 col-md-6 col-xl-4 mt-2 mt-md-4"
+              />
             {/for}
           </div>
         </div>
@@ -202,7 +208,7 @@ defmodule GlimeshWeb.HomepageLive do
         end
 
       if live_channel_id do
-        VideoPlayer.play("homepage-video-player", Map.get(session, "country"))
+        # VideoPlayer.play("homepage-video-player", Map.get(session, "country"))
 
         Glimesh.Presence.track_presence(
           self(),
@@ -226,36 +232,36 @@ defmodule GlimeshWeb.HomepageLive do
      |> assign(:current_user, maybe_user)}
   end
 
-  def list_categories do
+  defp list_categories do
     [
       {
         gettext("Gaming"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "gaming"),
+        Routes.streams_index_path(GlimeshWeb.Endpoint, :index, "gaming"),
         "fa-gamepad"
       },
       {
         gettext("Art"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "art"),
+        Routes.streams_index_path(GlimeshWeb.Endpoint, :index, "art"),
         "fa-palette"
       },
       {
         gettext("Music"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "music"),
+        Routes.streams_index_path(GlimeshWeb.Endpoint, :index, "music"),
         "fa-headphones"
       },
       {
         gettext("Tech"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "tech"),
+        Routes.streams_index_path(GlimeshWeb.Endpoint, :index, "tech"),
         "fa-microchip"
       },
       {
         gettext("IRL"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "irl"),
+        Routes.streams_index_path(GlimeshWeb.Endpoint, :index, "irl"),
         "fa-camera-retro"
       },
       {
         gettext("Education"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "education"),
+        Routes.streams_index_path(GlimeshWeb.Endpoint, :index, "education"),
         "fa-graduation-cap"
       }
     ]

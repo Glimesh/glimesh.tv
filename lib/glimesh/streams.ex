@@ -415,7 +415,7 @@ defmodule Glimesh.Streams do
   def get_channel_language(%Channel{language: locale}) do
     case Application.get_env(:glimesh, :locales) |> List.keyfind(locale, 1) do
       {name, _} -> Atom.to_string(name)
-      _ -> ""
+      _ -> nil
     end
   end
 

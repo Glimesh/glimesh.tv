@@ -1,76 +1,66 @@
 defmodule GlimeshWeb.Channels.Components.ChannelPreview do
-  use Surface.Component
+  use GlimeshWeb, :component
 
-  alias Glimesh.Accounts.User
-  alias Glimesh.Streams.Channel
   alias Glimesh.Streams.Stream
   alias GlimeshWeb.Router.Helpers, as: Routes
 
-  alias Surface.Components.LivePatch
+  alias GlimeshWeb.Components.UserEffects
 
   import GlimeshWeb.Gettext
 
-  prop channel, :struct
+  attr :channel, Glimesh.Streams.Channel, required: true
+  attr :class, :string, default: ""
 
-  prop class, :css_class
-
-  def render(%{channel: %Channel{user: %User{}, stream: %Stream{}}} = assigns) do
-    ~F"""
+  def thumbnail_and_info(assigns) do
+    ~H"""
     <div class={@class}>
-      <LivePatch
-        to={Routes.user_stream_path(GlimeshWeb.Endpoint, :index, @channel.user.username)}
-        class="text-color-link"
-      >
-        <div class="card card-stream">
-          <img
-            src={Glimesh.StreamThumbnail.url({@channel.stream.thumbnail, @channel.stream}, :original)}
-            alt={@channel.title}
-            class="card-img"
-            height="468"
-            width="832"
-          />
-          <div class="card-img-overlay h-100 d-flex flex-column justify-content-between">
-            <div>
-              <div class="card-stream-category">
-                <span class="badge badge-primary">{@channel.category.name}</span>
-              </div>
+      <.link navigate={Routes.user_stream_path(GlimeshWeb.Endpoint, :index, @channel.user.username)}>
+        <div class="flex flex-col justify-between bg-gray-800 rounded-md h-full transition duration-150 hover:scale-105">
+          <div class="relative">
+            <img
+              src={
+                Glimesh.StreamThumbnail.url({@channel.stream.thumbnail, @channel.stream}, :original)
+              }
+              alt={@channel.title}
+              class="rounded-t-md"
+              height="468"
+              width="832"
+            />
 
-              <div class="card-stream-tags">
-                {#if @channel.subcategory}
-                  <span class="badge badge-info">{@channel.subcategory.name}</span>
-                {/if}
+            <div class="absolute inset-0 m-2">
+              <div class="absolute top-0 left-0">
+                <span class="badge badge-primary text-gray-100"><%= @channel.category.name %></span>
               </div>
-            </div>
-
-            <div class="media card-stream-streamer">
-              <img
-                src={Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)}
-                alt={@channel.user.displayname}
-                width="48"
-                height="48"
-                class={[
-                  "img-avatar mr-2",
-                  if(Glimesh.Accounts.can_receive_payments?(@channel.user),
-                    do: "img-verified-streamer"
-                  )
-                ]}
-              />
-              <div class="media-body">
-                <h6 class="mb-0 mt-1 card-stream-title">{@channel.title}</h6>
-                <p class="mb-0 card-stream-username">
-                  {@channel.user.displayname}
-                  <span class="badge badge-info">
-                    {Glimesh.Streams.get_channel_language(@channel)}
-                  </span>
-                  {#if @channel.mature_content}
-                    <span class="badge badge-warning ml-1">{gettext("Mature")}</span>
-                  {/if}
-                </p>
+              <div class="absolute top-0 right-0">
+                <%= if @channel.subcategory do %>
+                  <span class="badge badge-info"><%= @channel.subcategory.name %></span>
+                <% end %>
+              </div>
+              <div class="absolute bottom-0 left-0 right-0 max-h-12 overflow-hidden">
+                <%= for tag <- @channel.tags do %>
+                  <span class="badge badge-info truncate"><%= tag.name %></span>
+                <% end %>
               </div>
             </div>
           </div>
+
+          <div class="flex-1 flex flex-col justify-around p-2">
+            <h6 class="mb-0 line-clamp-1"><%= @channel.title %></h6>
+            <p class="mt-1 mb-0">
+              <UserEffects.avatar user={@channel.user} class="h-8 w-8 inline" />
+              <UserEffects.displayname user={@channel.user} />
+              <%= if language = Glimesh.Streams.get_channel_language(@channel) || "English" do %>
+                <span class="badge badge-info">
+                  <%= language %>
+                </span>
+              <% end %>
+              <%= if true do %>
+                <span class="badge badge-warning ml-1"><%= gettext("Mature") %></span>
+              <% end %>
+            </p>
+          </div>
         </div>
-      </LivePatch>
+      </.link>
     </div>
     """
   end

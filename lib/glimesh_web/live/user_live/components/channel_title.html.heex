@@ -28,7 +28,7 @@
   <%= if @channel.subcategory do %>
     <%= live_patch(@channel.subcategory.name,
       to:
-        Routes.streams_list_path(@socket, :index, @channel.category.slug,
+        Routes.streams_index_path(@socket, :index, @channel.category.slug,
           subcategory: [@channel.subcategory.slug]
         ),
       class: "badge badge-pill badge-info"
@@ -37,7 +37,7 @@
   <!--Adding in color change for Community Pride Tag in Streams-->
   <%= for tag <- @channel.tags do %>
     <%= live_patch(tag.name,
-      to: Routes.streams_list_path(@socket, :index, @channel.category.slug, tags: [tag.slug]),
+      to: Routes.streams_index_path(@socket, :index, @channel.category.slug, tags: [tag.slug]),
       class: [
         "badge badge-pill",
         if(tag.name == "Community Pride", do: "bg-pride text-dark", else: "badge-primary")

@@ -64,7 +64,7 @@
         <br />
 
         <%= link(gettext("Remove Filters"),
-          to: Routes.streams_list_path(@socket, :index, @category.slug),
+          to: Routes.streams_index_path(@socket, :index, @category.slug),
           class: "btn btn-primary"
         ) %>
       </div>

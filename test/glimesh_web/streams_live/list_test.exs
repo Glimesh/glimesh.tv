@@ -41,7 +41,7 @@ defmodule GlimeshWeb.StreamsLive.ListTest do
     } do
       Glimesh.Streams.start_stream(channel)
 
-      {:ok, _, html} = live(conn, Routes.streams_list_path(conn, :index, category.slug))
+      {:ok, _, html} = live(conn, Routes.streams_index_path(conn, :index, category.slug))
 
       assert html =~ "#{category.name} Streams"
       assert html =~ streamer.displayname
@@ -68,7 +68,7 @@ defmodule GlimeshWeb.StreamsLive.ListTest do
         |> Ecto.Changeset.put_assoc(:tags, [tag])
         |> Glimesh.Repo.update()
 
-      {:ok, view, html} = live(conn, Routes.streams_list_path(conn, :index, category.slug))
+      {:ok, view, html} = live(conn, Routes.streams_index_path(conn, :index, category.slug))
 
       assert html =~ "Showing 2 of 2 Live Channels"
 
@@ -100,7 +100,7 @@ defmodule GlimeshWeb.StreamsLive.ListTest do
 
       Glimesh.Streams.start_stream(random_stream.channel)
 
-      {:ok, view, html} = live(conn, Routes.streams_list_path(conn, :index, category.slug))
+      {:ok, view, html} = live(conn, Routes.streams_index_path(conn, :index, category.slug))
 
       assert html =~ "Showing 2 of 2 Live Channels"
 
@@ -150,7 +150,7 @@ defmodule GlimeshWeb.StreamsLive.ListTest do
         Glimesh.Streams.start_stream(random_stream.channel)
       end)
 
-      {:ok, view, html} = live(conn, Routes.streams_list_path(conn, :index, category.slug))
+      {:ok, view, html} = live(conn, Routes.streams_index_path(conn, :index, category.slug))
       assert html =~ "Showing 27 of 27 Live Channels"
 
       html =

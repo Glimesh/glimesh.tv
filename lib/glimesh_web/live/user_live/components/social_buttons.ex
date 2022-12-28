@@ -4,7 +4,7 @@ defmodule GlimeshWeb.UserLive.Components.SocialButtons do
   @impl true
   def render(assigns) do
     ~H"""
-    <%= if @twitter_social  do %>
+    <%= if @twitter_social do %>
       <li
         rel="ugc"
         class="list-inline-item"

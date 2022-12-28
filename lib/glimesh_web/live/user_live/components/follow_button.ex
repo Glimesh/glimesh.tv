@@ -1,79 +1,71 @@
 defmodule GlimeshWeb.UserLive.Components.FollowButton do
-  use GlimeshWeb, :live_view
+  use GlimeshWeb, :live_component
 
   alias Glimesh.AccountFollows
 
-  @impl true
+  alias Glimesh.Accounts.User
+  alias Glimesh.AccountFollows.Follower
+
+  def preload(list_of_assigns) do
+    Enum.map(list_of_assigns, fn assigns ->
+      Map.put(assigns, :following, following_or_empty(assigns.streamer, assigns.user))
+    end)
+  end
+
   def render(assigns) do
     ~H"""
-    <%= if @user do %>
-      <%= if @following do %>
-        <div class="btn-group" role="group">
+    <div id={@id}>
+      <%= if @user do %>
+        <%= if @following do %>
+          <div class="btn-group" role="group">
+            <button
+              class="btn btn-primary follow-button btn-responsive"
+              phx-click="unfollow"
+              phx-target={@myself}
+              data-confirm={gettext("Are you sure?")}
+            >
+              <span class="d-none d-lg-block"><%= gettext("Unfollow") %></span>
+              <span class="d-lg-none"><i class="fas fa-user-minus fa-fw"></i></span>
+            </button>
+            <%= if @following.has_live_notifications do %>
+              <button
+                type="button"
+                class="btn btn-primary live-notifications-button btn-responsive"
+                phx-click="disable_live_notifications"
+                phx-target={@myself}
+              >
+                <i class="fas fa-bell fa-fw"></i>
+              </button>
+            <% else %>
+              <button
+                type="button"
+                class="btn btn-primary live-notifications-button btn-responsive"
+                phx-click="enable_live_notifications"
+                phx-target={@myself}
+              >
+                <i class="far fa-bell fa-fw"></i>
+              </button>
+            <% end %>
+          </div>
+        <% else %>
           <button
             class="btn btn-primary follow-button btn-responsive"
-            phx-click="unfollow"
-            data-confirm={gettext("Are you sure?")}
+            phx-click="follow"
+            phx-target={@myself}
+            phx-throttle="5000"
           >
-            <span class="d-none d-lg-block"><%= gettext("Unfollow") %></span>
-            <span class="d-lg-none"><i class="fas fa-user-minus fa-fw"></i></span>
+            <span class="d-none d-lg-block"><%= gettext("Follow") %></span>
+            <span class="d-lg-none"><i class="fas fa-user-plus fa-fw"></i></span>
           </button>
-          <%= if @following.has_live_notifications do %>
-            <button
-              type="button"
-              class="btn btn-primary live-notifications-button btn-responsive"
-              phx-click="disable_live_notifications"
-            >
-              <i class="fas fa-bell fa-fw"></i>
-            </button>
-          <% else %>
-            <button
-              type="button"
-              class="btn btn-primary live-notifications-button btn-responsive"
-              phx-click="enable_live_notifications"
-            >
-              <i class="far fa-bell fa-fw"></i>
-            </button>
-          <% end %>
-        </div>
+        <% end %>
       <% else %>
-        <button
-          class="btn btn-primary follow-button btn-responsive"
-          phx-click="follow"
-          phx-throttle="5000"
-        >
+        <%= link to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-responsive" do %>
           <span class="d-none d-lg-block"><%= gettext("Follow") %></span>
           <span class="d-lg-none"><i class="fas fa-user-plus fa-fw"></i></span>
-        </button>
+        <% end %>
       <% end %>
-    <% else %>
-      <%= link to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-responsive" do %>
-        <span class="d-none d-lg-block"><%= gettext("Follow") %></span>
-        <span class="d-lg-none"><i class="fas fa-user-plus fa-fw"></i></span>
-      <% end %>
-    <% end %>
+    </div>
     """
-  end
-
-  @impl true
-  def mount(_params, %{"streamer" => streamer, "user" => nil}, socket) do
-    {:ok,
-     socket
-     |> assign(:streamer, streamer)
-     |> assign(:user, nil)
-     |> assign(:following, false)}
-  end
-
-  @impl true
-  def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
-    Gettext.put_locale(Glimesh.Accounts.get_user_locale(user))
-
-    following = AccountFollows.get_following(streamer, user)
-
-    {:ok,
-     socket
-     |> assign(:streamer, streamer)
-     |> assign(:user, user)
-     |> assign(:following, following)}
   end
 
   @impl true
@@ -134,5 +126,13 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
     end
+  end
+
+  defp following_or_empty(%User{} = streamer, %User{} = user) do
+    AccountFollows.get_following(streamer, user)
+  end
+
+  defp following_or_empty(_, _) do
+    %Follower{}
   end
 end

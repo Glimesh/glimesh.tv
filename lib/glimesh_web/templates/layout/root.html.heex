@@ -17,7 +17,14 @@
         )
       }
     />
-    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/css/app.css")} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <%!-- <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/css/app.css")} /> --%>
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/css/tw.css")} />
 
     <link
       rel="apple-touch-icon"
@@ -103,7 +110,7 @@
     </script>
   </head>
 
-  <body>
+  <body class="bg-slate-900 text-gray-100">
     <%= if Application.get_env(:glimesh, :show_staging_warning) do %>
       <div class="alert alert-danger mb-0 rounded-0" role="alert">
         <strong>Danger!</strong>
@@ -114,7 +121,7 @@
 
     <div id="app">
       <%= if Map.get(assigns, :render_nav, true) do %>
-        <%= render("_navbar.html", assigns) %>
+        <Navbar.navbar conn={@conn} current_user={@current_user} />
 
         <%= if message = Glimesh.Configurations.get_configuration_value("system_message") do %>
           <div class="container">
@@ -140,11 +147,11 @@
     </div>
 
     <%= if Map.get(assigns, :render_footer, true) do %>
-      <footer>
-        <section class="footer-main pt-5 pb-5">
+      <footer class="mt-4 bg-slate-800">
+        <section class="footer-main py-4">
           <div class="container">
-            <div class="row">
-              <div class="col-6 col-md-4 order-1">
+            <div class="flex justify-around">
+              <div>
                 <h6><%= gettext("GLIMESH.TV") %></h6>
                 <ul class="list-unstyled text-small">
                   <li>
@@ -172,7 +179,7 @@
                 </ul>
               </div>
 
-              <div class="col-6 col-md-4 order-2 order-md-3">
+              <div>
                 <h6><%= gettext("LEGALS") %></h6>
                 <ul class="list-unstyled text-small">
                   <li>
@@ -193,7 +200,7 @@
                 </ul>
               </div>
 
-              <div class="col-12 col-md-4 order-3 order-md-2">
+              <div>
                 <h6>
                   <a href="https://blog.glimesh.tv" class="text-color-link">
                     <%= gettext("BLOG") %>

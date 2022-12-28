@@ -148,6 +148,15 @@ defmodule Glimesh.ChannelCategories do
     )
   end
 
+  def list_live_subcategories() do
+    Repo.replica().all(
+      from sc in Subcategory,
+        join: c in Channel,
+        where: c.status == "live",
+        group_by: sc.id
+    )
+  end
+
   def list_live_subcategories(category_id) do
     Repo.replica().all(
       from sc in Subcategory,
@@ -155,6 +164,17 @@ defmodule Glimesh.ChannelCategories do
         on: sc.id == c.subcategory_id,
         where: c.status == "live" and sc.category_id == ^category_id,
         group_by: sc.id
+    )
+  end
+
+  def list_live_tags do
+    Repo.replica().all(
+      from t in Tag,
+        join: c in Channel,
+        join: ct in "channel_tags",
+        where: c.status == "live",
+        order_by: [desc: :count_usage],
+        group_by: t.id
     )
   end
 
@@ -332,6 +352,21 @@ defmodule Glimesh.ChannelCategories do
     |> convert_subcategories_for_tagify()
   end
 
+  def get_subcategory_title(nil), do: gettext("Browse Live Streams")
+
+  def get_subcategory_title(%Category{slug: slug}) do
+    case slug do
+      "gaming" -> gettext("Browse Gaming Streams")
+      "art" -> gettext("Browse Art Streams")
+      "education" -> gettext("Browse Educational Streams")
+      "irl" -> gettext("Browse IRL Streams")
+      "music" -> gettext("Browse Music Streams")
+      "tech" -> gettext("Browse Tech Streams")
+    end
+  end
+
+  def get_subcategory_label(nil), do: gettext("Subcategory")
+
   def get_subcategory_label(%Category{slug: slug}) do
     case slug do
       "gaming" -> gettext("Game")
@@ -342,6 +377,8 @@ defmodule Glimesh.ChannelCategories do
       "tech" -> gettext("Topic")
     end
   end
+
+  def get_subcategory_select_label_description(nil), do: ""
 
   def get_subcategory_select_label_description(%Category{slug: slug}) do
     case slug do
@@ -354,6 +391,8 @@ defmodule Glimesh.ChannelCategories do
     end
   end
 
+  def get_subcategory_search_label_description(nil), do: gettext("Search by Subcategory")
+
   def get_subcategory_search_label_description(%Category{slug: slug}) do
     case slug do
       "gaming" -> gettext("Search by Game")
@@ -364,6 +403,8 @@ defmodule Glimesh.ChannelCategories do
       "tech" -> gettext("Search by Topic")
     end
   end
+
+  def get_subcategory_attribution(nil), do: ""
 
   def get_subcategory_attribution(%Category{slug: slug}) do
     case slug do

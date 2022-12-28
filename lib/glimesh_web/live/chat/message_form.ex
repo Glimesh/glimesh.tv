@@ -4,6 +4,10 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   alias Glimesh.Chat
   alias Glimesh.Emotes
 
+  alias GlimeshWeb.Components.Icons
+
+  alias Phoenix.LiveView.JS
+
   @impl true
   def update(%{chat_message: chat_message, user: user, channel: channel} = assigns, socket) do
     changeset = Chat.change_chat_message(chat_message)
@@ -54,5 +58,22 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
 
         {:noreply, assign(socket, changeset: error_changeset)}
     end
+  end
+
+  defp toggle_dropdown(js \\ %JS{}, to) do
+    js
+    |> JS.toggle(
+      in: {
+        "transition ease-out duration-100",
+        "transform opacity-0 scale-95",
+        "transform opacity-100 scale-100"
+      },
+      out: {
+        "transition ease-in duration-75",
+        "transform opacity-100 scale-100",
+        "transform opacity-0 scale-95"
+      },
+      to: to
+    )
   end
 end

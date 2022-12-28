@@ -31,6 +31,17 @@ config :dart_sass,
     cd: Path.expand("../assets", __DIR__)
   ]
 
+config :tailwind,
+  version: "3.2.4",
+  default: [
+    args: ~w(
+    --config=tailwind.config.js
+    --input=css/tw.css
+    --output=../priv/public/css/tw.css
+  ),
+    cd: Path.expand("../assets", __DIR__)
+  ]
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
@@ -51,7 +62,8 @@ config :glimesh, GlimeshWeb.Endpoint,
       DartSass,
       :install_and_run,
       [:default, ~w(--embed-source-map --source-map-urls=absolute --watch)]
-    }
+    },
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ],
   url: [host: "localhost", port: 4001],
   http: [port: 4000],

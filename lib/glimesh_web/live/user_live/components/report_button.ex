@@ -5,7 +5,7 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
   def render(assigns) do
     ~H"""
     <%= if @user do %>
-      <div class="text-center">
+      <div class="inline">
         <a href="#" phx-click="show_modal" class="text-danger">
           <%= gettext("Report User") %> <i class="fas fa-flag"></i>
         </a>

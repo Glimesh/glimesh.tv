@@ -1,9 +1,9 @@
-<div id="chat-form" phx-hook="Chat" data-emotes={@emotes} data-theme={@theme}>
+<div id="chat-form" phx-hook="Chat" data-emotes={@emotes}>
   <.form
     let={f}
     for={@changeset}
     id="chat_message-form"
-    class="chat-form"
+    class="bg-slate-800 rounded-bl-lg"
     phx-target={@myself}
     phx-submit="send"
   >
@@ -13,17 +13,12 @@
       </div>
     <% end %>
 
-    <div class="input-group">
-      <%= if not @disabled do %>
-        <div id="emoji-selector" class="input-group-prepend">
-          <button
-            type="button"
-            class={["input-group-text", if(@disabled, do: "", else: "emoji-activator")]}
-          >
-            <i class="far fa-smile-beam"></i>
-          </button>
-        </div>
-      <% end %>
+    <div class="flex text-white">
+      <div id="emoji-selector" class="input-group-prepend">
+        <button type="button" class="input-group-text emoji-activator p-2">
+          <Icons.emotes class="w-6 h-6" />
+        </button>
+      </div>
 
       <%= if @disabled do %>
         <div class="input-group-prepend input-group-mock-parent flex-grow-1">
@@ -36,7 +31,7 @@
         </div>
       <% else %>
         <%= text_input(f, :message,
-          class: "form-control",
+          class: "rounded-none",
           placeholder: gettext("Send a message"),
           autocomplete: "off",
           maxlength: "255",
@@ -44,19 +39,20 @@
         ) %>
       <% end %>
 
-      <div id="chat-settings" class="input-group-append dropup">
+      <div class="relative">
         <button
           type="button"
-          class="input-group-text dropdown-toggle"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
+          class="rounded-lg group-hover:bg-gray-700 group-hover:rounded-b-none p-2"
+          phx-click={toggle_dropdown("#chat-dropdown")}
         >
-          <i class="fas fa-cog"></i>
+          <Icons.cog class="w-6 h-6" />
         </button>
-        <div class="dropdown-menu dropdown-menu-right">
+
+        <div
+          id="chat-dropdown"
+          class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-slate-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        >
           <a
-            class="dropdown-item"
             href="#"
             onclick={
               "window.open('" <>
@@ -73,7 +69,6 @@
           <%= if @user do %>
             <a
               id="toggle-timestamps"
-              class="dropdown-item"
               href="#"
               phx-click="toggle_timestamps"
               phx-value-user={@user.username}
@@ -85,7 +80,6 @@
 
             <a
               id="toggle-mod-icons"
-              class="dropdown-item"
               href="#"
               phx-click="toggle_mod_icons"
               phx-value-user={@user.username}
@@ -95,7 +89,7 @@
                 else: gettext("Show Mod Icons") %>
             </a>
           <% else %>
-            <a id="toggle-timestamps" class="dropdown-item" href="#" phx-click="toggle_timestamps">
+            <a id="toggle-timestamps" href="#" phx-click="toggle_timestamps">
               <%= if @show_timestamps,
                 do: gettext("Hide Timestamps"),
                 else: gettext("Show Timestamps") %>
