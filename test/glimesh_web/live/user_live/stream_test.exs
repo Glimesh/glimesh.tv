@@ -341,5 +341,25 @@ defmodule GlimeshWeb.UserLive.StreamTest do
 
       refute html =~ "stream-title-edit"
     end
+
+    test "is available to the GCT members", %{conn: conn, streamer: streamer} do
+      gct_user = gct_fixture()
+      gct_conn = log_in_user(conn, gct_user)
+
+      {:ok, _, html} =
+        live(gct_conn, Routes.user_stream_path(gct_conn, :index, streamer.username))
+
+      assert html =~ "stream-title-edit"
+    end
+
+    test "is available to the admin members", %{conn: conn, streamer: streamer} do
+      admin_user = admin_fixture()
+      admin_conn = log_in_user(conn, admin_user)
+
+      {:ok, _, html} =
+        live(admin_conn, Routes.user_stream_path(admin_conn, :index, streamer.username))
+
+      assert html =~ "stream-title-edit"
+    end
   end
 end
