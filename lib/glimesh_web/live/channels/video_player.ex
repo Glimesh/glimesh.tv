@@ -16,6 +16,7 @@ defmodule GlimeshWeb.Channels.VideoPlayer do
         playsinline
         poster={@channel_poster}
         data-muted={@muted}
+        data-backend={@channel.backend}
       >
       </video>
       <div id="video-loading-container" class="">
