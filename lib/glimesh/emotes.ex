@@ -106,7 +106,7 @@ defmodule Glimesh.Emotes do
     )
   end
 
-  # credo:disable-for-lines:22
+  # credo:disable-for-lines:23
   def list_static_emotes(userid) do
     # Allow use of all emotes except for Glimesh animated (Platform Sub)
     Repo.replica().all(
@@ -123,6 +123,7 @@ defmodule Glimesh.Emotes do
                   (e.require_channel_sub == false or
                      (e.require_channel_sub == true and
                         (s.is_active == true or c.user_id == ^userid))))),
+        distinct: e.id,
         order_by: e.emote
       )
     )

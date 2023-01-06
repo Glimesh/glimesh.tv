@@ -13,7 +13,7 @@ The core inspiration of this project has been equality. At Glimesh our priority 
 
 ##### What makes Glimesh unique?
 
-We are an [Open Company](https://www.opencompany.org/) dedicated to putting true transparency and openness first. Come see for yourself by joining our [Discord](https://discord.gg/glimesh)!  
+We are an [Open Company](https://www.opencompany.org/) dedicated to putting true transparency and openness first. Come see for yourself by joining our [Discord](http://glimesh.tv/s/discord)!  
 We also are not locking features behind metrics which means that for example, everyone gets to upload both static and/or animated emotes and get the subscription button straight away. FTL & our Low Latency RTMP also sets us apart, which means sub-second delay between the streamer and viewer.
 
 ##### When will the beta be released?
@@ -36,7 +36,7 @@ From a feature perspective, we’re hyper focused on truly live streams and we a
 
 Our goal is to focus on having a live, diverse, and friendly platform where new users feel right at home after visiting your stream. We understand the need to continue to bring our user base back to the site, and make sure they know how they can find new content to watch. By showcasing all of our diverse streaming types directly in the nav bar, users can also immediately visit new types of streams they may be unaware exist.
 
-We also recognize that your growth as a streamer is our growth as a platform and we should do everything possible to make sure you are successful on Glimesh. We also recognize that your growth as a streamer is our growth as a platform and we should do everything possible to make sure you are successful on Glimesh. We want to ensure that we work closely with the community to help build the platform that you want to be a part of, and provide the tools you need to be successful.
+We also recognize that your growth as a streamer is our growth as a platform and we should do everything possible to make sure you are successful on Glimesh. We want to ensure that we work closely with the community to help build the platform that you want to be a part of, and provide the tools you need to be successful.
 
 ##### Will Glimesh use my content in advertising? If yes, how so?
 
