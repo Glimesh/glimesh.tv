@@ -131,18 +131,18 @@ class WHEPPlayer {
         this.endpoint = endpoint;
     }
     async init(channel_id) {
-        let pc = new RTCPeerConnection({});
+        this.pc = new RTCPeerConnection({});
         let parent = this;
 
-        pc.ontrack = function (event) {
+        this.pc.ontrack = function (event) {
             console.log("WHEP: ON TRACK", event);
             parent.container.srcObject = event.streams[0];
         }
 
-        pc.oniceconnectionstatechange = e => {
+        this.pc.oniceconnectionstatechange = e => {
             console.log("WHEP: oniceconnectionstatechange: " + pc.iceConnectionState);
         }
-        pc.onicecandidate = event => {
+        this.pc.onicecandidate = event => {
             console.log("WHEP: Got Ice Candidate", event);
         }
 
@@ -166,13 +166,13 @@ class WHEPPlayer {
 
         let body = await resp.text()
 
-        await pc.setRemoteDescription(new RTCSessionDescription({
+        await this.pc.setRemoteDescription(new RTCSessionDescription({
             type: "offer",
             sdp: body
         }));
 
-        pc.createAnswer().then(answer => {
-            pc.setLocalDescription(answer)
+        this.pc.createAnswer().then(answer => {
+            parent.pc.setLocalDescription(answer)
 
             console.log(resp);
 
@@ -190,5 +190,10 @@ class WHEPPlayer {
                 }
             })
         });
+    }
+    destroy() {
+        if (this.pc) {
+            this.pc.close();
+        }
     }
 }
