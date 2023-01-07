@@ -147,4 +147,22 @@
     .chat-form {
         flex: 0 0;
     }
+
+    .autocomplete-suggestions {
+        background-color: black;
+        border: 1px solid white;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    .autocomplete-suggestion-item {
+        display: flex;
+        justify-content: center;
+        font-weight: 600;
+        cursor: pointer;
+        color: white;
+    }
+
+    .autocomplete-suggestion-item.active {
+        background-color: blue;
+    }
 }

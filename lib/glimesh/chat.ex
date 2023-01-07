@@ -235,6 +235,34 @@ defmodule Glimesh.Chat do
     |> Enum.reverse()
   end
 
+  def list_recent_chatters(channel, hours \\ 2) do
+    timeframe = NaiveDateTime.add(NaiveDateTime.utc_now(), hours * -60 * 60, :second)
+
+    from(m in ChatMessage,
+      where: m.is_visible == true,
+      where: m.channel_id == ^channel.id,
+      where: m.inserted_at >= ^timeframe,
+      order_by: [desc: m.inserted_at],
+      distinct: m.user_id,
+      select: m.user_id,
+      limit: 5
+    )
+    |> Repo.replica().all()
+  end
+
+  def get_recent_chatters_username_autocomplete(channel, partial_usernames, hours \\ 2) do
+    possible_usernames = get_recent_chatters_that_are_present(channel, hours)
+
+    Enum.reject(
+      Enum.map(possible_usernames, fn user ->
+        if not is_nil(user) do
+          find_user_partial_match(user, partial_usernames)
+        end
+      end),
+      fn item -> is_nil(item) end
+    )
+  end
+
   @doc """
   Returns a list of all chat_messages in a channel
   """
@@ -487,5 +515,32 @@ defmodule Glimesh.Chat do
       :message_deleted,
       chat_message.id
     )
+  end
+
+  defp get_recent_chatters_that_are_present(channel, hours) do
+    suggestions = list_recent_chatters(channel, hours)
+
+    Enum.map(
+      Glimesh.Presence.list_presences(Glimesh.Streams.get_subscribe_topic(:chatters, channel.id)),
+      fn data ->
+        find_suggestion_match(suggestions, data)
+      end
+    )
+  end
+
+  defp find_user_partial_match(user, partial_usernames) do
+    working_partial_username =
+      Enum.find(partial_usernames, fn name ->
+        String.starts_with?(user, name) and user !== name
+      end)
+
+    if not is_nil(working_partial_username),
+      do: %{suggestion: user, partial: working_partial_username}
+  end
+
+  defp find_suggestion_match(suggestions, data) do
+    if Enum.any?(suggestions, fn item -> data[:user_id] == item end) do
+      data[:username]
+    end
   end
 end

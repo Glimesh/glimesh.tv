@@ -2,9 +2,11 @@ defmodule Glimesh.ChatTest do
   use Glimesh.DataCase
 
   import Glimesh.AccountsFixtures
+  import Ecto.Query
 
   alias Glimesh.Accounts
   alias Glimesh.Chat
+  alias Glimesh.Chat.ChatMessage
   alias Glimesh.Streams
   alias Glimesh.StreamModeration
   alias Glimesh.Streams.ChannelModerationLog
@@ -399,5 +401,134 @@ defmodule Glimesh.ChatTest do
       assert {:error, "You must confirm your email address before chatting."} =
                Chat.create_chat_message(user_fixture(), channel, "Hello world")
     end
+  end
+
+  describe "chat autocomplete users" do
+    test "can autocomplete active user" do
+      streamer = streamer_fixture()
+      channel = streamer.channel
+      %{active_user: active_user} = setup_chat_active_user(streamer)
+
+      partial_username = String.slice(active_user.username, 0, 3)
+      suggestions = Chat.get_recent_chatters_username_autocomplete(channel, [partial_username])
+      assert Enum.count(suggestions) == 1
+      assert suggestions == [%{partial: partial_username, suggestion: active_user.username}]
+    end
+
+    test "can NOT autocomplete lurker" do
+      streamer = streamer_fixture()
+      channel = streamer.channel
+      %{lurker: lurker} = setup_chat_lurker(streamer)
+
+      partial_username = String.slice(lurker.username, 0, 3)
+      suggestions = Chat.get_recent_chatters_username_autocomplete(channel, [partial_username])
+      assert Enum.count(suggestions) == 0
+      refute suggestions == [%{partial: partial_username, suggestion: lurker.username}]
+    end
+
+    test "will suggest active users only even when lurkers match" do
+      streamer = streamer_fixture()
+      channel = streamer.channel
+      %{active_user: active_user} = setup_chat_active_user(streamer)
+      %{lurker: _lurker} = setup_chat_lurker(streamer)
+
+      partial_username = String.slice(active_user.username, 0, 3)
+      suggestions = Chat.get_recent_chatters_username_autocomplete(channel, [partial_username])
+
+      assert Enum.count(suggestions) == 1
+      assert suggestions == [%{partial: partial_username, suggestion: active_user.username}]
+    end
+
+    test "will return empty enum if a full username is passed in" do
+      streamer = streamer_fixture()
+      channel = streamer.channel
+      %{active_user: active_user} = setup_chat_active_user(streamer)
+
+      suggestions =
+        Chat.get_recent_chatters_username_autocomplete(channel, [active_user.username])
+
+      assert Enum.count(suggestions) == 0
+      refute suggestions == [%{partial: active_user.username, suggestion: active_user.username}]
+    end
+
+    test "will suggest based on the first non-complete username passed in" do
+      streamer = streamer_fixture()
+      channel = streamer.channel
+      %{active_user: active_user} = setup_chat_active_user(streamer)
+      %{active_user: active_user_two} = setup_chat_active_user(streamer)
+      %{lurker: lurker} = setup_chat_lurker(streamer)
+
+      partial_username = String.slice(active_user_two.username, 0, 3)
+
+      suggestions =
+        Chat.get_recent_chatters_username_autocomplete(channel, [
+          active_user.username,
+          partial_username
+        ])
+
+      assert Enum.count(suggestions) == 2
+      refute Enum.any?(suggestions, fn item -> item[:partial] == active_user.username end)
+      assert Enum.all?(suggestions, fn item -> item[:partial] == partial_username end)
+      refute Enum.any?(suggestions, fn item -> item[:suggestion] == lurker.username end)
+    end
+  end
+
+  defp setup_chat_active_user(streamer) do
+    active_user = user_fixture()
+
+    Glimesh.Presence.track_presence(
+      self(),
+      Glimesh.Streams.get_subscribe_topic(:chatters, streamer.channel.id),
+      active_user.id,
+      %{
+        typing: false,
+        username: active_user.username,
+        avatar: Glimesh.Avatar.url({active_user.avatar, active_user}, :original),
+        user_id: active_user.id,
+        size: 48
+      }
+    )
+
+    create_chat_message_for_user(active_user, streamer.channel, "test message", 1)
+
+    %{
+      active_user: active_user
+    }
+  end
+
+  defp setup_chat_lurker(streamer) do
+    lurker = user_fixture()
+
+    Glimesh.Presence.track_presence(
+      self(),
+      Glimesh.Streams.get_subscribe_topic(:chatters, streamer.channel.id),
+      lurker.id,
+      %{
+        typing: false,
+        username: lurker.username,
+        avatar: Glimesh.Avatar.url({lurker.avatar, lurker}, :original),
+        user_id: lurker.id,
+        size: 48
+      }
+    )
+
+    create_chat_message_for_user(lurker, streamer.channel, "test message", 3)
+
+    %{
+      lurker: lurker
+    }
+  end
+
+  defp create_chat_message_for_user(user, channel, message, hours_past) do
+    {:ok, chat_message} = Chat.create_chat_message(user, channel, %{message: message})
+    updated_at = NaiveDateTime.add(chat_message.updated_at, hours_past * -1 * 60 * 60, :second)
+
+    from(m in ChatMessage,
+      where: m.id == ^chat_message.id,
+      update: [set: [inserted_at: ^updated_at, updated_at: ^updated_at]]
+    )
+    |> Glimesh.Repo.update_all([])
+
+    Glimesh.Repo.get(ChatMessage, chat_message.id)
   end
 end

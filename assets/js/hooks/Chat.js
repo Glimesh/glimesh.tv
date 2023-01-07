@@ -47,6 +47,28 @@ export default {
     reconnected() {
         this.scrollToBottom(document.getElementById('chat-messages'));
     },
+    manageAutoCompleteHighlight(autocompleteElement, up = true) {
+        let autocompleteElements = autocompleteElement.querySelectorAll('.autocomplete-suggestion-item');
+        let targetElement;
+        for(var i = 0; i < autocompleteElements.length; i++) {
+            if(autocompleteElements[i].classList.contains('active')) {
+                if(up) {
+                    if(i == 0) {
+                        targetElement = autocompleteElements[autocompleteElements.length - 1];
+                    } else {
+                        targetElement = autocompleteElements[i - 1];
+                    }    
+                } else {
+                    if(i == autocompleteElements.length - 1) {
+                        targetElement = autocompleteElements[0];
+                    } else {
+                        targetElement = autocompleteElements[i + 1];
+                    }
+                }
+            }
+        }
+        targetElement.dispatchEvent(new Event("autocompleteSuggestionHighlight", {bubbles: true}));
+    },
     mounted() {
         const parent = this;
         const glimeshEmojis = this.emotes();
@@ -151,7 +173,18 @@ export default {
         let currentMessage = ""; // The current message the user is typing. Reset when sent.
         let currentIndex = -1; // The position the user is in of the array that holds the messages.
 
+        let userAutocomplete = /@(?<user>\w+)/gm;
+        let userAutocompleteSuggestions = [];
+        let userAutocompleteOpen = false;
+        let autocompleteElement = document.getElementById('autocomplete-suggestions');
+
         chatForm.addEventListener("submit", function (e) {
+            if(userAutocompleteOpen) {
+                e.stopPropagation();
+                e.preventDefault();
+                return false;
+            }
+
             if (e.target[2].value !== "" && e.target[2].value.length <= 255) {
                 recentMessages.unshift(e.target[2].value); // Pushes the message to the array
                 currentIndex = -1; // Resets the position
@@ -164,8 +197,18 @@ export default {
         // Chat doesn't exist if they are not logged it, we check that before adding the listener
         if (chat) {
             chat.addEventListener("keyup", function(e) {
+                if(userAutocompleteOpen && e.key === 'Enter') {
+                    e.stopPropagation();
+                    let activeElement = autocompleteElement.querySelector('.autocomplete-suggestion-item.active');
+                    activeElement.click();
+                    return false;
+                }
                 if (e.code == "ArrowUp") {
                     e.stopPropagation();
+                    if(userAutocompleteOpen) {
+                        parent.manageAutoCompleteHighlight(autocompleteElement);
+                        return false;
+                    }
                     // If no message is being typed and currentMessage was not sent
                     if (e.target.value == "" && currentMessage) {
                         e.target.value = currentMessage;
@@ -177,6 +220,10 @@ export default {
                     return false;
                 } else if (e.code == "ArrowDown") {
                     e.stopPropagation();
+                    if(userAutocompleteOpen) {
+                        parent.manageAutoCompleteHighlight(autocompleteElement, false);
+                        return false;
+                    }
                     // If there are more recent messages we show them
                     if (recentMessages.length !== 0 && recentMessages[currentIndex - 1]) {
                         e.target.value = recentMessages[currentIndex - 1];
@@ -191,12 +238,94 @@ export default {
                     return false;
                 }
             });
+            document.body.addEventListener('keyup', function(e) {
+                if (e.key === "Escape") {
+                    userAutocompleteOpen = false;
+                    chatForm.dispatchEvent(new Event('userAutocompleteSuggestions'));
+                }
+                return true;
+            });
         }
+
         // On input we set the currentMessage to what is being typed. Not triggered when user puts previous messages in the input box
         chatForm.addEventListener("input", function (e) {
             if (currentIndex == -1) {
                 currentMessage = e.target.value;
             }
+
+            if (currentMessage.length > 1 && currentMessage.includes('@')) {
+                let userAutocompleteInterval = null;
+                clearInterval(userAutocompleteInterval);
+                userAutocompleteInterval = setInterval(function() {
+                    users = currentMessage.matchAll(userAutocomplete);
+                    let partialUsernames = [];
+                    for(const match of users) {
+                        partialUsernames.push(match.groups.user.toLowerCase());
+                    }
+
+                    parent.pushEventTo(parent.el, "user_autocomplete", {"partial_usernames": partialUsernames}, (reply, ref) => {
+                        console.log(" Suggested users: " + reply.suggestions);
+                        userAutocompleteSuggestions = [];
+                        reply.suggestions.forEach((item) => {
+                            if(item != null && item.suggestion != null) {
+                                userAutocompleteSuggestions.push({suggestion: item.suggestion, partial: item.partial});
+                            }
+                        });
+                        if(userAutocompleteSuggestions.length > 0) {
+                            userAutocompleteOpen = true;
+                        } else {
+                            userAutocompleteOpen = false;
+                        }
+                        chatForm.dispatchEvent(new Event('userAutocompleteSuggestions'));
+                    });
+                    clearInterval(userAutocompleteInterval);
+                }, 1500);
+            }
+        });
+
+        chatForm.addEventListener("userAutocompleteSuggestions", function(e) {
+            if(userAutocompleteOpen) {
+                var html = "";
+                userAutocompleteSuggestions.forEach((item, index) => {
+                    html += `<div class="autocomplete-suggestion-item ${index == userAutocompleteSuggestions.length - 1 ? 'active' : ''}" data-partial="${item.partial}" data-value="${item.suggestion}">${item.suggestion}</div>`;
+                });
+                autocompleteElement.innerHTML = html;
+                autocompleteElement.classList.remove('d-none');
+            } else {
+                autocompleteElement.classList.add('d-none');
+            }
+        });
+
+        chatForm.addEventListener("autocompleteSuggestionHighlight", function(e) {
+            e.stopPropagation();
+            let currentlyActive = autocompleteElement.querySelector('.autocomplete-suggestion-item.active');
+            currentlyActive.classList.remove('active');
+            e.target.classList.add('active');
+        });
+
+        autocompleteElement.addEventListener('click', function(e) {
+            const target = e.target.closest('.autocomplete-suggestion-item');
+
+            e.stopPropagation();
+            if(target) {
+                let replacementTargetRegEx = new RegExp('@' + target.dataset.partial + '\\b', 'i');
+                let newValue = '@' + target.dataset.value;
+                currentMessage = chat.value.replace(replacementTargetRegEx, newValue);
+                chat.value = currentMessage;
+                userAutocompleteOpen = false;
+                chatForm.dispatchEvent(new Event('userAutocompleteSuggestions'));
+                chat.focus();
+            }
+            return false;
+        });
+
+        autocompleteElement.addEventListener('mouseover', function(e) {
+            const target = e.target.closest('.autocomplete-suggestion-item');
+
+            if(target) {
+                target.dispatchEvent(new Event("autocompleteSuggestionHighlight", {bubbles: true}));
+            }
+            return true;
         });
     }
 };
