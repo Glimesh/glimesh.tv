@@ -118,6 +118,11 @@ $fa-font-path: "/fa-fonts";
     text-shadow: 0 0 10px var(--input-color);
 }
 
+.settings-field:disabled {
+    color: var(--text-muted-color);
+    opacity: 0.6;
+}
+
 .fancy-bg {
 
     position: relative;
