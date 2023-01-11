@@ -103,6 +103,10 @@ defmodule GlimeshWeb.Channels.VideoPlayer do
     {:noreply, socket}
   end
 
+  def handle_event("webrtc_error", _, socket) do
+    {:noreply, socket}
+  end
+
   def handle_event("lost_packets", _, socket) do
     {:noreply, socket}
   end

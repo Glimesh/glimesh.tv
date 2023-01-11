@@ -201,6 +201,11 @@
           <% end %>
         </div>
         <div class="card-footer p-1 d-none d-sm-block">
+          <%= if @webrtc_error do %>
+            <div class="alert alert-warning" role="alert">
+              There was an unexpected error loading the video: <%= @webrtc_error %>
+            </div>
+          <% end %>
           <div class="row">
             <div class="col-8 d-inline-flex align-items-center">
               <div id="streamer-avatar">

@@ -11,7 +11,7 @@ export default {
         let videoLoadingContainer = document.getElementById("video-loading-container");
         let forceMuted = container.dataset.muted;
         let backend = container.dataset.backend;
-        let saveVolumeChanges = false;
+        let saveVolumeChanges = false
         let currentlyInUltrawide = false;
 
         // Handle 21:9 aspect ratio monitors/browsers
@@ -28,7 +28,16 @@ export default {
             currentlyInUltrawide = true;
         }
 
+        // Check for WebRTC support
+        if (!window.RTCPeerConnection) {
+            // WebRTC is not enabled / supported in the browser
+            parent.pushEvent("webrtc_error", "WebRTC is not enabled in your browser.");
+            return;
+        }
+
         this.handleEvent("load_video", ({ janus_url, channel_id }) => {
+            videoLoadingContainer.classList.add("loading");
+
             if (backend == "ftl") {
                 player = new FtlPlayer(container, janus_url, {
                     hooks: {
@@ -43,15 +52,19 @@ export default {
                 });
 
                 console.debug(`FTL backend load_video event for janus_url=${janus_url} channel_id=${channel_id}`)
+
+                player.init(channel_id);
             } else if (backend == "whep") {
                 player = new WHEPPlayer(container, "https://rtrouter.fly.dev/v1/whep/endpoint/");
 
                 console.debug(`WHEP backend load_video event for endpoint=${janus_url} channel_id=${channel_id}`)
+
+                player.init(channel_id).catch(error => {
+                    console.error(error);
+                    parent.pushEvent("webrtc_error", error.message)
+                });
             }
 
-            player.init(channel_id);
-
-            // Ensure we only save volume changes after the stream has been loaded.
             saveVolumeChanges = true;
         });
 
@@ -131,20 +144,23 @@ class WHEPPlayer {
         this.endpoint = endpoint;
     }
     async init(channel_id) {
-        this.pc = new RTCPeerConnection({});
-        let parent = this;
+        this.log("Initializing player")
+        this.pc = new RTCPeerConnection({
+            iceServers: [
+                {
+                    urls: 'stun:stun.l.google.com:19302',
+                },
+            ],
+            bundlePolicy: 'max-bundle',
+        });
 
-        this.pc.ontrack = function (event) {
-            console.log("WHEP: ON TRACK", event);
-            parent.container.srcObject = event.streams[0];
-        }
-
-        this.pc.oniceconnectionstatechange = e => {
-            console.log("WHEP: oniceconnectionstatechange: " + pc.iceConnectionState);
-        }
-        this.pc.onicecandidate = event => {
-            console.log("WHEP: Got Ice Candidate", event);
-        }
+        this.pc.addEventListener("track", event => {
+            this.log("ON TRACK", event);
+            this.container.srcObject = event.streams[0];
+        });
+        this.pc.addEventListener("iceconnectionstatechange", ev => this.log(ev));
+        this.pc.addEventListener("icecandidate", ev => this.log(ev));
+        this.pc.addEventListener("negotiationneeded", ev => this.log(ev));
 
         // let url = this.endpoint + "/" + channel_id;
         let url = this.endpoint + channel_id;
@@ -159,41 +175,42 @@ class WHEPPlayer {
             body: ""
         });
         if (resp.status !== 201) {
-            console.error('WHEP: failed to negotiate initial empty post')
-            console.log(resp);
-            return;
+            throw new Error("WebRTC failed to negotiate offer from server.");
         }
 
-        let body = await resp.text()
+        let body = await resp.text();
 
-        await this.pc.setRemoteDescription(new RTCSessionDescription({
+        let sdp = new RTCSessionDescription({
             type: "offer",
             sdp: body
-        }));
-
-        this.pc.createAnswer().then(answer => {
-            parent.pc.setLocalDescription(answer)
-
-            console.log(resp);
-
-            fetch(resp.headers.get("location"), {
-                method: "PATCH",
-                headers: {
-                    'Accept': 'application/sdp'
-                },
-                body: answer.sdp
-            }).then((resp2) => {
-                if (resp2.status !== 204) {
-                    console.error('WHEP: failed to negotiate sdp patch')
-                    console.log(resp2);
-                    return;
-                }
-            })
         });
+        this.log("before remote description")
+        await this.pc.setRemoteDescription(sdp);
+        this.log("after remote description")
+
+        let answer = await this.pc.createAnswer();
+        this.log("after createAnswer");
+        await this.pc.setLocalDescription(answer);
+        this.log("after setLocalDescription");
+
+        let answerHandshake = await fetch(resp.headers.get("location"), {
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/sdp'
+            },
+            body: answer.sdp
+        });
+
+        if (answerHandshake.status !== 204) {
+            throw new Error("WebRTC failed to negotiate answer with server.");
+        }
     }
     destroy() {
         if (this.pc) {
             this.pc.close();
         }
+    }
+    log(...args) {
+        console.log("WHEP:", ...args)
     }
 }
