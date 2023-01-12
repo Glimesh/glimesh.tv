@@ -145,14 +145,7 @@ class WHEPPlayer {
     }
     async init(channel_id) {
         this.log("Initializing player")
-        this.pc = new RTCPeerConnection({
-            iceServers: [
-                {
-                    urls: 'stun:stun.l.google.com:19302',
-                },
-            ],
-            bundlePolicy: 'max-bundle',
-        });
+        this.pc = new RTCPeerConnection({});
 
         this.pc.addEventListener("track", event => {
             this.log("ON TRACK", event);
