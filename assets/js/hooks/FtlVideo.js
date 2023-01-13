@@ -55,7 +55,7 @@ export default {
 
                 player.init(channel_id);
             } else if (backend == "whep") {
-                player = new WHEPPlayer(container, "https://rtrouter.fly.dev/v1/whep/endpoint/");
+                player = new WHEPPlayer(container, "https://live.glimesh.tv/v1/whep/endpoint/");
 
                 console.debug(`WHEP backend load_video event for endpoint=${janus_url} channel_id=${channel_id}`)
 
