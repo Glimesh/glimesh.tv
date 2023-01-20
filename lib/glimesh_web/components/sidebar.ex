@@ -64,8 +64,6 @@ end
 defmodule GlimeshWeb.Components.UserSettingsSidebar do
   use GlimeshWeb, :component
 
-  alias GlimeshWeb.Components.Sidebar
-
   attr :active_path, :string
 
   def sidebar(assigns) do
@@ -82,7 +80,7 @@ defmodule GlimeshWeb.Components.UserSettingsSidebar do
         label: gettext("Settings"),
         links: [
           %GlimeshWeb.Components.Sidebar.Link{
-            to: Routes.user_settings_path(GlimeshWeb.Endpoint, :profile),
+            to: ~p"/users/settings/profile",
             icon: &Icons.user/1,
             label: gettext("Profile")
           },
@@ -92,12 +90,12 @@ defmodule GlimeshWeb.Components.UserSettingsSidebar do
             label: gettext("Payments")
           },
           %GlimeshWeb.Components.Sidebar.Link{
-            to: Routes.user_settings_path(GlimeshWeb.Endpoint, :preference),
+            to: ~p"/users/settings/preference",
             icon: &Icons.cog/1,
             label: gettext("Preferences")
           },
           %GlimeshWeb.Components.Sidebar.Link{
-            to: Routes.user_settings_path(GlimeshWeb.Endpoint, :notifications),
+            to: ~p"/users/settings/notifications",
             icon: &Icons.envelope/1,
             label: gettext("Notifications")
           },
@@ -107,7 +105,7 @@ defmodule GlimeshWeb.Components.UserSettingsSidebar do
             label: gettext("Security")
           },
           %GlimeshWeb.Components.Sidebar.Link{
-            to: Routes.user_authorized_apps_path(GlimeshWeb.Endpoint, :index),
+            to: ~p"/users/settings/authorizations",
             icon: &Icons.robot/1,
             label: gettext("Authorizations")
           }

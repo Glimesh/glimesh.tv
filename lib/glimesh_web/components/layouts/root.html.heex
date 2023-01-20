@@ -23,32 +23,13 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
       rel="stylesheet"
     />
-    <%!-- <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/css/app.css")} /> --%>
-    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/css/tw.css")} />
+    <link phx-track-static rel="stylesheet" href={~p"/css/tw.css"} />
 
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href={Routes.static_path(@conn, "/favicons/apple-touch-icon.png")}
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href={Routes.static_path(@conn, "/favicons/favicon-32x32.png")}
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href={Routes.static_path(@conn, "/favicons/favicon-16x16.png")}
-    />
-    <link rel="manifest" href={Routes.static_path(@conn, "/favicons/site.webmanifest")} />
-    <link
-      rel="mask-icon"
-      href={Routes.static_path(@conn, "/favicons/safari-pinned-tab.svg")}
-      color="#0e1726"
-    />
+    <link rel="apple-touch-icon" sizes="180x180" href={~p"/favicons/apple-touch-icon.png"} />
+    <link rel="icon" type="image/png" sizes="32x32" href={~p"/favicons/favicon-32x32.png"} />
+    <link rel="icon" type="image/png" sizes="16x16" href={~p"/favicons/favicon-16x16.png"} />
+    <link rel="manifest" href={~p"/favicons/site.webmanifest"} />
+    <link rel="mask-icon" href={~p"/favicons/safari-pinned-tab.svg"} color="#0e1726" />
     <meta name="msapplication-TileColor" content="#da532c" />
     <meta name="theme-color" content="#0E1726" />
 
@@ -89,12 +70,7 @@
       <meta name="twitter:image" content="https://glimesh.tv/images/og-image.jpg" />
     <% end %>
 
-    <script
-      defer
-      phx-track-static
-      type="text/javascript"
-      src={Routes.static_path(@conn, "/js/app.js")}
-    >
+    <script defer phx-track-static type="text/javascript" src={~p"/js/app.js"}>
     </script>
     <%= if Application.get_env(:glimesh, :environment) == :prod do %>
       <script
@@ -110,7 +86,7 @@
     </script>
   </head>
 
-  <body class="bg-slate-900 text-gray-100">
+  <body class="flex flex-col h-screen justify-between bg-slate-900 text-gray-100">
     <%= if Application.get_env(:glimesh, :show_staging_warning) do %>
       <div class="alert alert-danger mb-0 rounded-0" role="alert">
         <strong>Danger!</strong>

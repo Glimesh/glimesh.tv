@@ -30,7 +30,7 @@
         @apply rounded-md bg-gray-800 p-4;
     }
 
-    input[type="text"] {
+    input[type="text"], input[type="password"] {
         @apply bg-gray-700 border-gray-700 text-white rounded shadow-md placeholder-gray-200;
     }
 

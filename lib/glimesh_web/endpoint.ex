@@ -40,8 +40,7 @@ defmodule GlimeshWeb.Endpoint do
     at: "/",
     from: {:glimesh, "priv/public"},
     gzip: Application.compile_env(:glimesh, :environment) == :prod,
-    only:
-      ~w(emotes fa-fonts favicons fonts images css js browserconfig.xml cache_manifest.json favicon.ico robots.txt)
+    only: GlimeshWeb.static_paths()
 
   if Application.compile_env(:waffle, :asset_host) do
     # If we're using an asset host, we just want to redirect requests

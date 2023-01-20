@@ -6,7 +6,7 @@ defmodule GlimeshWeb do
   This can be used in your application as:
 
       use GlimeshWeb, :controller
-      use GlimeshWeb, :view
+      use GlimeshWeb, :html
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -17,14 +17,38 @@ defmodule GlimeshWeb do
   and import those modules here.
   """
 
+  def static_paths,
+    do:
+      ~w(emotes fa-fonts favicons fonts images css js browserconfig.xml cache_manifest.json favicon.ico robots.txt)
+
+  def router do
+    quote do
+      use Phoenix.Router
+
+      import Plug.Conn
+      import Phoenix.Controller
+      import Phoenix.LiveView.Router
+    end
+  end
+
+  def channel do
+    quote do
+      use Phoenix.Channel
+      import GlimeshWeb.Gettext
+    end
+  end
+
   def controller do
     quote do
-      use Phoenix.Controller, namespace: GlimeshWeb
+      use Phoenix.Controller,
+        namespace: GlimeshWeb,
+        formats: [:html, :json],
+        layouts: [html: GlimeshWeb.Layouts]
 
       import Plug.Conn
       import GlimeshWeb.Gettext
-      alias GlimeshWeb.Router.Helpers, as: Routes
 
+      alias GlimeshWeb.Router.Helpers, as: Routes
       import Glimesh.Formatters
 
       def unauthorized(conn) do
@@ -33,6 +57,8 @@ defmodule GlimeshWeb do
         |> send_resp(403, "Unauthorized")
         |> halt()
       end
+
+      unquote(verified_routes())
     end
   end
 
@@ -55,30 +81,44 @@ defmodule GlimeshWeb do
 
       import Glimesh.Formatters
 
-      # Include shared imports and aliases for views
-      unquote(view_helpers())
+      # Include general helpers for rendering HTML
+      unquote(html_helpers())
+    end
+  end
+
+  def user_settings_live_view do
+    quote do
+      use Phoenix.LiveView,
+        layout: {GlimeshWeb.Layouts, :user_sidebar}
+
+      import Glimesh.Formatters
+
+      # Include general helpers for rendering HTML
+      unquote(html_helpers())
     end
   end
 
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {GlimeshWeb.LayoutView, :live}
+        layout: {GlimeshWeb.Layouts, :app}
 
       import Glimesh.Formatters
 
-      unquote(view_helpers())
+      # Include general helpers for rendering HTML
+      unquote(html_helpers())
     end
   end
 
   def surface_live_view do
     quote do
       use Surface.LiveView,
-        layout: {GlimeshWeb.LayoutView, :live}
+        layout: {GlimeshWeb.Layouts, :app}
 
       import Glimesh.Formatters
 
-      unquote(view_helpers())
+      # Include general helpers for rendering HTML
+      unquote(html_helpers())
     end
   end
 
@@ -88,7 +128,8 @@ defmodule GlimeshWeb do
 
       import Glimesh.Formatters
 
-      unquote(view_helpers())
+      # Include general helpers for rendering HTML
+      unquote(html_helpers())
     end
   end
 
@@ -98,7 +139,8 @@ defmodule GlimeshWeb do
 
       import Glimesh.Formatters
 
-      unquote(view_helpers())
+      # Include general helpers for rendering HTML
+      unquote(html_helpers())
     end
   end
 
@@ -106,47 +148,59 @@ defmodule GlimeshWeb do
     quote do
       use Phoenix.Component
 
-      unquote(view_helpers())
+      # Include general helpers for rendering HTML
+      unquote(html_helpers())
     end
   end
 
-  def router do
+  def html do
     quote do
-      use Phoenix.Router
+      use Phoenix.Component
 
-      import Plug.Conn
-      import Phoenix.Controller
-      import Phoenix.LiveView.Router
+      # Import convenience functions from controllers
+      import Phoenix.Controller,
+        only: [get_csrf_token: 0, view_module: 1, view_template: 1]
+
+      # Include general helpers for rendering HTML
+      unquote(html_helpers())
     end
   end
 
-  def channel do
-    quote do
-      use Phoenix.Channel
-      import GlimeshWeb.Gettext
-    end
-  end
-
-  defp view_helpers do
+  defp html_helpers do
     quote do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
       # Import LiveView helpers (live_render, live_component, live_patch, etc)
       import Phoenix.Component
-      import GlimeshWeb.LiveHelpers
 
       # Import basic rendering functionality (render, render_layout, etc)
-      import Phoenix.View
-
+      # import Phoenix.View
+      import GlimeshWeb.CoreComponents
       import GlimeshWeb.ErrorHelpers
-      import GlimeshWeb.Gettext
-      alias GlimeshWeb.Router.Helpers, as: Routes
 
+      import GlimeshWeb.Gettext
+
+      # Shortcut for generating JS commands
+      alias Phoenix.LiveView.JS
+
+      alias GlimeshWeb.Router.Helpers, as: Routes
       alias GlimeshWeb.Components.Navbar, as: Navbar
 
       alias GlimeshWeb.Components.Icons
       alias GlimeshWeb.Components.Title
+
+      # Routes generation with the ~p sigil
+      unquote(verified_routes())
+    end
+  end
+
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+        endpoint: GlimeshWeb.Endpoint,
+        router: GlimeshWeb.Router,
+        statics: GlimeshWeb.static_paths()
     end
   end
 

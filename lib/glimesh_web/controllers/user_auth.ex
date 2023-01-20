@@ -1,4 +1,6 @@
 defmodule GlimeshWeb.UserAuth do
+  use GlimeshWeb, :verified_routes
+
   import Plug.Conn
   import Phoenix.Controller
 
@@ -12,6 +14,82 @@ defmodule GlimeshWeb.UserAuth do
   @max_age 60 * 60 * 24 * 60
   @remember_me_cookie "user_remember_me"
   @remember_me_options [sign: true, max_age: @max_age]
+
+  @doc """
+  Handles mounting and authenticating the current_user in LiveViews.
+
+  ## `on_mount` arguments
+
+    * `:mount_current_user` - Assigns current_user
+      to socket assigns based on user_token, or nil if
+      there's no user_token or no matching user.
+
+    * `:ensure_authenticated` - Authenticates the user from the session,
+      and assigns the current_user to socket assigns based
+      on user_token.
+      Redirects to login page if there's no logged user.
+
+    * `:redirect_if_user_is_authenticated` - Authenticates the user from the session.
+      Redirects to signed_in_path if there's a logged user.
+
+  ## Examples
+
+  Use the `on_mount` lifecycle macro in LiveViews to mount or authenticate
+  the current_user:
+
+      defmodule GlimeshWeb.PageLive do
+        use GlimeshWeb, :live_view
+
+        on_mount {GlimeshWeb.UserAuth, :mount_current_user}
+        ...
+      end
+
+  Or use the `live_session` of your router to invoke the on_mount callback:
+
+      live_session :authenticated, on_mount: [{GlimeshWeb.UserAuth, :ensure_authenticated}] do
+        live "/profile", ProfileLive, :index
+      end
+  """
+  def on_mount(:mount_current_user, _params, session, socket) do
+    {:cont, mount_current_user(session, socket)}
+  end
+
+  def on_mount(:ensure_authenticated, _params, session, socket) do
+    socket = mount_current_user(session, socket)
+
+    if socket.assigns.current_user do
+      {:cont, socket}
+    else
+      socket =
+        socket
+        |> Phoenix.LiveView.put_flash(:error, "You must log in to access this page.")
+        |> Phoenix.LiveView.redirect(to: ~p"/users/log_in")
+
+      {:halt, socket}
+    end
+  end
+
+  def on_mount(:redirect_if_user_is_authenticated, _params, session, socket) do
+    socket = mount_current_user(session, socket)
+
+    if socket.assigns.current_user do
+      {:halt, Phoenix.LiveView.redirect(socket, to: signed_in_path(socket))}
+    else
+      {:cont, socket}
+    end
+  end
+
+  defp mount_current_user(session, socket) do
+    case session do
+      %{"user_token" => user_token} ->
+        Phoenix.Component.assign_new(socket, :current_user, fn ->
+          Accounts.get_user_by_session_token(user_token)
+        end)
+
+      %{} ->
+        Phoenix.Component.assign_new(socket, :current_user, fn -> nil end)
+    end
+  end
 
   @doc """
   Logs the user in.

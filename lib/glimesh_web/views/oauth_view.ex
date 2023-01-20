@@ -1,5 +1,5 @@
 defmodule GlimeshWeb.OauthView do
-  use GlimeshWeb, :view
+  # use GlimeshWeb, :view
 
   require Ecto.Query
 

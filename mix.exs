@@ -7,7 +7,7 @@ defmodule Glimesh.MixProject do
       version: "0.1.0",
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers() ++ [:surface],
+      compilers: [:gettext] ++ Mix.compilers() ++ [:surface],
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
@@ -46,7 +46,7 @@ defmodule Glimesh.MixProject do
       {:ex_machina, "~> 2.7.0", only: :test},
       # Core
       {:bcrypt_elixir, "~> 2.0"},
-      {:phoenix, "~> 1.6.15"},
+      {:phoenix, "~> 1.7.0-rc.0", override: true},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.7"},
       {:postgrex, ">= 0.0.0"},

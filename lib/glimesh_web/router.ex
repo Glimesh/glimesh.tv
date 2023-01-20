@@ -7,7 +7,7 @@ defmodule GlimeshWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {GlimeshWeb.LayoutView, :root}
+    plug :put_root_layout, {GlimeshWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
@@ -95,15 +95,40 @@ defmodule GlimeshWeb.Router do
   scope "/", GlimeshWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
-    get "/users/register", UserRegistrationController, :new
-    post "/users/register", UserRegistrationController, :create
-    get "/users/log_in", UserSessionController, :new
+    live_session :redirect_if_user_is_authenticated,
+      on_mount: [{GlimeshWeb.UserAuth, :redirect_if_user_is_authenticated}] do
+      live "/users/register", Users.RegisterLive, :new
+      live "/users/log_in", USers.LoginLive, :new
+      live "/users/reset_password", UserForgotPasswordLive, :new
+      live "/users/reset_password/:token", UserForgotPasswordLive, :edit
+    end
+
     post "/users/log_in", UserSessionController, :create
-    post "/users/log_in_tfa", UserSessionController, :tfa
-    get "/users/reset_password", UserResetPasswordController, :new
-    post "/users/reset_password", UserResetPasswordController, :create
-    get "/users/reset_password/:token", UserResetPasswordController, :edit
-    put "/users/reset_password/:token", UserResetPasswordController, :update
+
+    # get "/users/register", UserRegistrationController, :new
+    # post "/users/register", UserRegistrationController, :create
+    # get "/users/log_in", UserSessionController, :new
+    # post "/users/log_in", UserSessionController, :create
+    # post "/users/log_in_tfa", UserSessionController, :tfa
+    # get "/users/reset_password", UserResetPasswordController, :new
+    # post "/users/reset_password", UserResetPasswordController, :create
+    # get "/users/reset_password/:token", UserResetPasswordController, :edit
+    # put "/users/reset_password/:token", UserResetPasswordController, :update
+  end
+
+  scope "/", GlimeshWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :require_authenticated_user,
+      on_mount: [{GlimeshWeb.UserAuth, :ensure_authenticated}] do
+      live "/users/settings", Users.SettingsLive, :edit
+      live "/users/settings/confirm_email/:token", Users.SettingsLive, :confirm_email
+
+      live "/users/settings/profile", Users.ProfileLive, :edit
+      live "/users/settings/preference", Users.PreferenceLive, :edit
+      live "/users/settings/notifications", Users.NotificationsLive, :edit
+      live "/users/settings/authorizations", Users.AuthorizationsLive, :edit
+    end
   end
 
   scope "/", GlimeshWeb do
@@ -123,7 +148,7 @@ defmodule GlimeshWeb.Router do
     get "/users/payments/connect", UserPaymentsController, :connect
     put "/users/payments/delete_default_payment", UserPaymentsController, :delete_default_payment
 
-    get "/users/settings/profile", UserSettingsController, :profile
+    # get "/users/settings/profile", UserSettingsController, :profile
     get "/users/settings/stream", UserSettingsController, :stream
 
     get "/users/settings/channel_statistics", UserSettingsController, :channel_statistics
@@ -134,11 +159,11 @@ defmodule GlimeshWeb.Router do
 
     put "/users/settings/create_channel", UserSettingsController, :create_channel
     put "/users/settings/delete_channel", UserSettingsController, :delete_channel
-    get "/users/settings/preference", UserSettingsController, :preference
-    put "/users/settings/preference", UserSettingsController, :update_preference
+    # get "/users/settings/preference", UserSettingsController, :preference
+    # put "/users/settings/preference", UserSettingsController, :update_preference
     put "/users/settings/update_profile", UserSettingsController, :update_profile
     put "/users/settings/update_channel", UserSettingsController, :update_channel
-    get "/users/settings/notifications", UserSettingsController, :notifications
+    # get "/users/settings/notifications", UserSettingsController, :notifications
 
     get "/users/settings/security", UserSecurityController, :index
     put "/users/settings/update_password", UserSecurityController, :update_password
@@ -151,9 +176,9 @@ defmodule GlimeshWeb.Router do
     put "/users/settings/applications/:id/rotate", UserApplicationsController, :rotate
     resources "/users/settings/applications", UserApplicationsController
 
-    resources "/users/settings/authorizations", UserAuthorizedAppsController,
-      only: [:index, :delete],
-      param: "id"
+    # resources "/users/settings/authorizations", UserAuthorizedAppsController,
+    #   only: [:index, :delete],
+    #   param: "id"
 
     get "/oauth/authorize", OauthController, :authorize
     post "/oauth/authorize", OauthController, :process_authorize

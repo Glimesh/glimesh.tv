@@ -1,5 +1,5 @@
 defmodule GlimeshWeb.ErrorView do
-  use GlimeshWeb, :view
+  # use GlimeshWeb, :view
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.

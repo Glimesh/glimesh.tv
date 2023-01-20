@@ -1,5 +1,5 @@
 defmodule GlimeshWeb.UserPaymentsView do
-  use GlimeshWeb, :view
+  # use GlimeshWeb, :view
 
   def truthy_checkbox(true) do
     Phoenix.HTML.raw("<i class=\"fas fa-check\"></i>")

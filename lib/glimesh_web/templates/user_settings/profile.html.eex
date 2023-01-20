@@ -1,4 +1,0 @@
-<div class="container">
-    <h2 class="mt-4"><%= gettext "Your Profile" %></h2>
-    <%= live_render(@conn, GlimeshWeb.UserSettings.Components.ProfileSettingsLive, id: "profile-settings-form", session: %{"route" => Routes.user_settings_path(@conn, :update_profile), "profile_changeset" => @profile_changeset, "twitter_auth_url" => @twitter_auth_url, "user" => @user}) %>
-</div>

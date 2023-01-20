@@ -135,12 +135,11 @@ defmodule Glimesh.Apps do
     # Todo: This needs to use the clients refresh token TTL duration
     seconds_in_month = 60 * 60 * 24 * 30
 
-    refresh_expiration =
-      DateTime.utc_now() |> DateTime.add(seconds_in_month, :second) |> DateTime.to_unix()
+    refresh_expiration = DateTime.utc_now() |> DateTime.add(seconds_in_month, :second)
 
     Repo.replica().all(
       from t in Boruta.Ecto.Token,
-      where:
+        where:
           t.sub == ^sub and
             is_nil(t.revoked_at) and
             t.expires_at > ^now and

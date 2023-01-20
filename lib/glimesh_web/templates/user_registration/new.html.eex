@@ -1,4 +1,4 @@
-<div class="container mt-4">
+
     <div class="row align-items-center justify-content-md-center">
         <div class="col-md-7 col-lg-5">
 
@@ -90,4 +90,3 @@
             <%= link "Log in", class: "btn btn-primary", to: Routes.user_session_path(@conn, :new) %>
         </div>
     </div>
-</div>
