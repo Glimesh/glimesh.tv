@@ -187,6 +187,8 @@
                 playsinline
                 poster={@channel_poster}
                 data-backend={@channel.backend}
+                data-debug={@show_debug}
+                data-rtrouter={Application.get_env(:glimesh, :rtrouter_url)}
               >
               </video>
               <div id="video-loading-container" class="">

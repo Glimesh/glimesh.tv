@@ -17,6 +17,7 @@ defmodule GlimeshWeb.Channels.VideoPlayer do
         poster={@channel_poster}
         data-muted={@muted}
         data-backend={@channel.backend}
+        data-rtrouter={Application.get_env(:glimesh, :rtrouter_url)}
       >
       </video>
       <div id="video-loading-container" class="">

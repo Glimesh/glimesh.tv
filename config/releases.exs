@@ -260,6 +260,8 @@ config :glimesh, Oban,
      ]}
   ]
 
+config :glimesh, rtrouter_url: "https://live.glimesh.tv/v1/whep/endpoint/"
+
 # Default App Config
 config :glimesh, :stripe_config,
   platform_sub_supporter_product_id: "prod_I60rR8YatfJpEV",

@@ -11,6 +11,7 @@ export default {
         let videoLoadingContainer = document.getElementById("video-loading-container");
         let forceMuted = container.dataset.muted;
         let backend = container.dataset.backend;
+        let rtrouterUrl = container.dataset.rtrouter || "";
         let saveVolumeChanges = false
         let currentlyInUltrawide = false;
 
@@ -55,9 +56,9 @@ export default {
 
                 player.init(channel_id);
             } else if (backend == "whep") {
-                player = new WHEPPlayer(container, "https://live.glimesh.tv/v1/whep/endpoint/");
+                player = new WHEPPlayer(container, rtrouterUrl);
 
-                console.debug(`WHEP backend load_video event for endpoint=${janus_url} channel_id=${channel_id}`)
+                console.debug(`WHEP backend load_video event for endpoint=${rtrouterUrl} channel_id=${channel_id}`)
 
                 player.init(channel_id).catch(error => {
                     console.error(error);
@@ -131,6 +132,16 @@ export default {
             }
         }
     },
+    updated() {
+        let container = this.el;
+        if (player && container.dataset.backend == "whep") {
+            if (container.dataset.debug == "") {
+                player.enableDebug();
+            } else {
+                player.disableDebug();
+            }
+        }
+    },
     destroyed() {
         if (player) {
             player.destroy();
@@ -142,6 +153,7 @@ class WHEPPlayer {
     constructor(container, endpoint) {
         this.container = container;
         this.endpoint = endpoint;
+        this.debug = false;
     }
     async init(channel_id) {
         this.log("Initializing player")
@@ -198,9 +210,27 @@ class WHEPPlayer {
             throw new Error("WebRTC failed to negotiate answer with server.");
         }
     }
+    enableDebug() {
+        this.log("Enabling debug")
+        this.debug = true;
+
+        this.debugChannel = this.pc.createDataChannel('debug');
+        this.debugChannel.addEventListener("open", (event) => this.log("Debug data channel open"));
+        this.debugChannel.addEventListener("close", (event) => this.log("Debug data channel closed"));
+        this.debugChannel.addEventListener("message", (event) => this.log(event.data));
+    }
+    disableDebug() {
+        this.log("Disabling debug")
+        this.debug = false;
+
+        if (this.debugChannel) {
+            this.debugChannel.close();
+        }
+    }
     destroy() {
         if (this.pc) {
             this.pc.close();
+            this.disableDebug()
         }
     }
     log(...args) {
