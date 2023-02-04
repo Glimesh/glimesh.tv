@@ -79,6 +79,98 @@
     }
 }
 
+.theater-mode {
+    #top-site-navigation{
+        @extend .collapse;
+    }
+
+    #outer-stream-container {
+        margin: 0;
+        padding: 0;
+    }
+
+    #outer-stream-container .row {
+        margin-top: 5px !important;
+    }
+
+    #stream-profile-content {
+        display: none;
+    }
+
+    #stream-title-header {
+        display: none;
+    }
+
+    #stream-footer {
+        display: none !important;
+    }
+
+    #site-footer {
+        display: none;
+    }
+
+    #video-column {
+        max-height: 100vh;
+        height: 100vh;
+        padding-left: 1em !important;
+        padding-right: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 1em !important;
+        @extend .col-lg-10;
+    }
+
+    #video-column:hover {
+        #stream-title-header {
+            animation: slide-in 1.5s forwards;
+            display: block;
+            position: absolute;
+            top:0;
+            left:0;
+            z-index: 300;
+
+            @extend .col-12;
+        }
+
+        #stream-footer {
+            animation: slide-up 1s forwards;
+            display: block !important;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            z-index: 300;
+
+            @extend .col-12;
+        }
+
+    }
+
+    @keyframes slide-in {
+        0% { top: -100px; }
+        100% { top: 5px; }
+    }
+
+    @keyframes slide-out {
+        0% { top:5px; }
+        100% { top:-100px; }
+    }
+
+    @keyframes slide-up {
+        0% { bottom: -200vh; }
+        100% { bottom: 8vh; }
+    }
+
+    #chat-column {
+        #chat {
+            max-height: 100vh;
+            height: calc(100vh - 20px);
+        }
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 1em !important;
+        @extend .col-lg-2;
+    }
+}
 
 // Initial sizing for mobile, quickly overwritten any time we have columns
 #chat-column {

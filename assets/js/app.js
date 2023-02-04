@@ -18,6 +18,7 @@ import Tagify from "./hooks/Tagify";
 import ChannelLookupTypeahead from "./hooks/ChannelLookupTypeahead";
 import RecentTags from "./hooks/RecentTags";
 import Bootstrapize from "./hooks/Bootstrapize";
+import TheaterMode from "./hooks/TheaterMode";
 
 // https://github.com/github/markdown-toolbar-element
 import "@github/markdown-toolbar-element";
@@ -42,6 +43,7 @@ Hooks.Tagify = Tagify;
 Hooks.ChannelLookupTypeahead = ChannelLookupTypeahead;
 Hooks.RecentTags = RecentTags;
 Hooks.Bootstrapize = Bootstrapize;
+Hooks.TheaterMode = TheaterMode;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {

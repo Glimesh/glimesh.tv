@@ -106,11 +106,11 @@
   </div>
 <% end %>
 
-<div class="container-fluid container-stream">
+<div id="outer-stream-container" class="container-fluid container-stream">
   <div class="row mt-lg-3">
     <div id="video-column" class="col-lg-9 layout-spacing">
       <div class="card">
-        <div class="card-header p-1">
+        <div id="stream-title-header" class="card-header p-1">
           <div class="row">
             <div class="col align-self-center d-block text-truncate">
               <%= live_render(@socket, GlimeshWeb.UserLive.Components.ChannelTitle,
@@ -202,7 +202,7 @@
             </div>
           <% end %>
         </div>
-        <div class="card-footer p-1 d-none d-sm-block">
+        <div id="stream-footer" class="card-footer p-1 d-none d-sm-block">
           <%= if @webrtc_error do %>
             <div class="alert alert-warning" role="alert">
               There was an unexpected error loading the video: <%= @webrtc_error %>
@@ -254,6 +254,17 @@
             </div>
             <div class="col-4 align-self-center">
               <div class="float-right mr-sm-2">
+                <div class="d-inline-block mr-sm-2">
+                  <a
+                    id="theater-mode-button"
+                    href="#"
+                    phx-hook="TheaterMode"
+                    class="text-color-link"
+                    title={gettext("Theater Mode")}
+                  >
+                    <i class="fas fa-expand-arrows-alt"></i>
+                  </a>
+                </div>
                 <div class="d-inline-block mr-sm-2">
                   <a
                     href="#"
@@ -358,7 +369,7 @@ updated_at: <%= @stream_metadata.updated_at %>
     </div>
   </div>
 
-  <div class="row">
+  <div id="stream-profile-content" class="row">
     <div class="col-lg-9 layout-spacing">
       <div class="card">
         <div class="card-header">
