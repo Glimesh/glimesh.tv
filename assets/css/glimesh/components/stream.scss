@@ -85,12 +85,15 @@
     }
 
     #outer-stream-container {
-        margin: 0;
-        padding: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
     }
 
     #outer-stream-container .row {
         margin-top: 5px !important;
+        margin-bottom: 5px !important;
     }
 
     #stream-profile-content {
@@ -110,12 +113,11 @@
     }
 
     #video-column {
-        max-height: 100vh;
-        height: 100vh;
-        padding-left: 1em !important;
-        padding-right: 0 !important;
-        padding-top: 0 !important;
-        padding-bottom: 1em !important;
+        max-height: calc(100vh - 10px);
+        height: calc(100vh - 10px);
+        padding-left: 15px !important;
+        padding-right: 2.5px !important;
+        padding-bottom: 0;
         @extend .col-lg-10;
     }
 
@@ -125,7 +127,9 @@
             display: block;
             position: absolute;
             top:0;
-            left:0;
+            left: 0;
+            padding-left: 15px !important;
+            padding-right: 15px !important;
             z-index: 300;
 
             @extend .col-12;
@@ -137,6 +141,8 @@
             position: absolute;
             bottom: 0;
             left: 0;
+            padding-left: 15px !important;
+            padding-right: 15px !important;
             z-index: 300;
 
             @extend .col-12;
@@ -161,13 +167,13 @@
 
     #chat-column {
         #chat {
-            max-height: 100vh;
-            height: calc(100vh - 20px);
+            max-height: calc(100vh - 10px);
+            height: calc(100vh - 10px);
         }
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        padding-top: 0 !important;
-        padding-bottom: 1em !important;
+        padding-left: 2.5px !important;
+        padding-right: 15px !important;
+        padding-bottom: 0;
+
         @extend .col-lg-2;
     }
 }
