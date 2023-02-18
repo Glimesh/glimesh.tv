@@ -5,6 +5,6 @@
     </div>
 
     <%= live_redirect gettext("Go Back"), class: "btn btn-primary mb-4", to: Routes.gct_path(@conn, :username_lookup, query: @user.username) %>
-    <%= live_render(@conn, GlimeshWeb.UserSettings.Components.ProfileSettingsLive, id: "profile-settings-form", session: %{"route" => Routes.gct_path(@conn, :update_user_profile, @user.username), "profile_changeset" => @user_changeset, "twitter_auth_url" => @twitter_auth_url, "user" => @user}) %>
+    <%= live_render(@conn, GlimeshWeb.UserSettings.Components.ProfileSettingsLive, id: "profile-settings-form", session: %{"route" => Routes.gct_path(@conn, :update_user_profile, @user.username), "profile_changeset" => @user_changeset, "user" => @user}) %>
 
 </div>

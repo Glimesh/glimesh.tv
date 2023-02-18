@@ -162,11 +162,9 @@ defmodule GlimeshWeb.UserSettingsController do
   defp assign_profile_changesets(conn, _opts) do
     user = conn.assigns.current_user
     user_preference = Accounts.get_user_preference!(user)
-    twitter_auth_url = Glimesh.Socials.Twitter.authorize_url(conn)
 
     conn
     |> assign(:user, user)
-    |> assign(:twitter_auth_url, twitter_auth_url)
     |> assign(:profile_changeset, Accounts.change_user_profile(user))
     |> assign(:preference_changeset, Accounts.change_user_preference(user_preference))
   end

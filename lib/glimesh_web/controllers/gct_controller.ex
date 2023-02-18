@@ -116,7 +116,6 @@ defmodule GlimeshWeb.GctController do
   def edit_user_profile(conn, %{"username" => username}) do
     current_user = conn.assigns.current_user
     user = Accounts.get_by_username(username, true)
-    twitter_auth_url = Glimesh.Socials.Twitter.authorize_url(conn)
 
     with :ok <- Bodyguard.permit(Glimesh.CommunityTeam, :edit_user_profile, current_user, user) do
       CommunityTeam.create_audit_entry(current_user, %{
@@ -133,7 +132,6 @@ defmodule GlimeshWeb.GctController do
           "edit_user_profile.html",
           user: user,
           user_changeset: user_changeset,
-          twitter_auth_url: twitter_auth_url,
           page_title: format_page_title("Editing Profile - #{user.displayname}")
         )
       else
@@ -163,8 +161,7 @@ defmodule GlimeshWeb.GctController do
         {:error, changeset} ->
           render(conn, "edit_user_profile.html",
             user_changeset: changeset,
-            user: user,
-            twitter_auth_url: Glimesh.Socials.Twitter.authorize_url(conn)
+            user: user
           )
       end
     end
