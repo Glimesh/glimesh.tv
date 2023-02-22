@@ -1,18 +1,31 @@
-defmodule GlimeshWeb.UserLive.Components.ReportButton do
-  use GlimeshWeb, :live_view
+defmodule GlimeshWeb.Channels.Components.ReportButton do
+  use GlimeshWeb, :component
 
-  @impl true
-  def render(assigns) do
+  alias Glimesh.Accounts.User
+
+  attr :streamer, User, required: true
+  attr :user, User
+
+  def small_button(assigns) do
+    assigns = Map.put_new(assigns, :success, false)
+    assigns = Map.put_new(assigns, :show_report, false)
+
     ~H"""
+    <.modal id="report-modal" on_confirm={JS.push("delete")}>
+      Are you sure you?
+      <:confirm>OK</:confirm>
+      <:cancel>Cancel</:cancel>
+    </.modal>
+
     <%= if @user do %>
       <div class="inline">
         <a href="#" phx-click="show_modal" class="text-danger">
           <%= gettext("Report User") %> <i class="fas fa-flag"></i>
         </a>
       </div>
-      <%= if live_flash(@flash, :info) do %>
-        <p class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info">
-          <%= live_flash(@flash, :info) %>
+      <%= if @success do %>
+        <p class="alert alert-info" role="alert">
+          <%= @success %>
         </p>
       <% end %>
 
@@ -136,26 +149,6 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
   end
 
   @impl true
-  def mount(_params, %{"streamer" => streamer, "user" => nil}, socket) do
-    {:ok,
-     socket
-     |> assign(:streamer, streamer)
-     |> assign(:user, nil)
-     |> assign(:show_report, false)}
-  end
-
-  @impl true
-  def mount(_params, %{"streamer" => streamer, "user" => user}, socket) do
-    Gettext.put_locale(Glimesh.Accounts.get_user_locale(user))
-
-    {:ok,
-     socket
-     |> assign(:streamer, streamer)
-     |> assign(:user, user)
-     |> assign(:show_report, false)}
-  end
-
-  @impl true
   def handle_event(
         "save",
         %{"report_reason" => report_reason, "location" => location, "notes" => notes},
@@ -171,7 +164,7 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
       )
 
     {:noreply,
-     socket |> assign(:show_report, false) |> put_flash(:info, "Report submitted, thank you!")}
+     socket |> assign(:show_report, false) |> assign(:success, "Report submitted, thank you!")}
   end
 
   @impl true

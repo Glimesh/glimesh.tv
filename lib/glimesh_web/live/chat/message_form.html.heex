@@ -1,9 +1,9 @@
 <div id="chat-form" phx-hook="Chat" data-emotes={@emotes}>
   <.form
-    let={f}
+    :let={f}
     for={@changeset}
     id="chat_message-form"
-    class="bg-slate-800 rounded-bl-lg"
+    class="bg-slate-800"
     phx-target={@myself}
     phx-submit="send"
   >
@@ -23,7 +23,7 @@
       <%= if @disabled do %>
         <div class="input-group-prepend input-group-mock-parent flex-grow-1">
           <span class="input-group-text input-group-mock-input d-inline-block flex-grow-1">
-            <%= link("Register", to: Routes.user_registration_path(@socket, :new)) %> or <%= link(
+            <%= link("Register", to: ~p"/users/register") %> or <%= link(
               "Login",
               to: Routes.user_session_path(@socket, :new)
             ) %> to chat!

@@ -14,6 +14,8 @@ defmodule GlimeshWeb.CoreComponents do
   alias Phoenix.LiveView.JS
   import GlimeshWeb.Gettext
 
+  alias GlimeshWeb.Components.Icons
+
   @doc """
   Renders a modal.
 
@@ -79,7 +81,7 @@ defmodule GlimeshWeb.CoreComponents do
                   class="-m-3 flex-none p-3 opacity-20 hover:opacity-40"
                   aria-label={gettext("close")}
                 >
-                  <Heroicons.x_mark solid class="h-5 w-5 stroke-current" />
+                  <Icons.close class="h-5 w-5 stroke-current" />
                 </button>
               </div>
               <div id={"#{@id}-content"}>

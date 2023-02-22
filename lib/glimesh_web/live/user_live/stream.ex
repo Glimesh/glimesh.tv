@@ -7,6 +7,7 @@ defmodule GlimeshWeb.UserLive.Stream do
   alias Glimesh.Streams
 
   alias GlimeshWeb.Channels.Components.ChannelTitle
+  alias GlimeshWeb.Channels.Components.ReportButton
   alias GlimeshWeb.Components.UserEffects
 
   alias GlimeshWeb.Channels.Components.VideoPlayer

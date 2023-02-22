@@ -106,7 +106,7 @@
   </div>
 <% end %>
 
-<div class="flex flex-col md:flex-row items-stretch h-content md:h-auto md:max-h-content border-b-4 border-red-400">
+<div class="flex flex-col md:flex-row items-stretch h-content md:h-auto md:max-h-content bg-black">
   <div id="stream-video" class="md:flex-1">
     <div class="flex justify-between items-center max-h-[68px] overflow-hidden p-2">
       <div class="flex-1">
@@ -215,10 +215,7 @@
             </a>
           </div>
           <div class="d-inline-block">
-            <%= live_render(@socket, GlimeshWeb.UserLive.Components.ReportButton,
-              id: "report-button",
-              session: %{"user" => @user, "streamer" => @streamer}
-            ) %>
+            <ReportButton.small_button streamer={@streamer} user={@user} />
           </div>
         </div>
       </div>

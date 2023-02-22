@@ -124,11 +124,11 @@ defmodule GlimeshWeb.HomepageLive do
 
               {#if @current_user}
                 {link(gettext("Customize Your Profile"),
-                  to: Routes.user_settings_path(@socket, :profile),
+                  to: ~p"/users/settings/profile",
                   class: "btn btn-info mt-3"
                 )}
                 {link(gettext("Create Your Channel"),
-                  to: Routes.user_settings_path(@socket, :stream),
+                  to: ~p"/users/settings/stream",
                   class: "btn btn-info mt-3"
                 )}
                 {link(gettext("Setup Payouts"),
