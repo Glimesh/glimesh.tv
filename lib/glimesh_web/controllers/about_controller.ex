@@ -1,7 +1,7 @@
 defmodule GlimeshWeb.AboutController do
   use GlimeshWeb, :controller
 
-  plug :put_layout, "about.html"
+  # plug :put_layout, "about.html"
 
   def index(conn, _param) do
     render(conn, "index.html", page_title: format_page_title(gettext("About Glimesh")))
@@ -32,8 +32,7 @@ defmodule GlimeshWeb.AboutController do
 
   def faq(conn, _param) do
     conn
-    |> put_layout("text.html")
-    |> render("faq.html", page_title: format_page_title(gettext("Frequently Asked Questions")))
+    |> render(page_title: format_page_title(gettext("Frequently Asked Questions")))
   end
 
   def privacy(conn, _param) do

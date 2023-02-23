@@ -189,7 +189,7 @@ defmodule GlimeshWeb.Components.Navbar do
                   }>
                     <%= gettext("Upgrade!") %>
                   </Navbar.dropdown_link>
-                  <Navbar.dropdown_link navigate={Routes.user_payments_path(@conn, :index)}>
+                  <Navbar.dropdown_link navigate={~p"/users/payments"}>
                     <%= gettext("Payments") %>
                   </Navbar.dropdown_link>
                   <Navbar.dropdown_link navigate={~p"/users/settings/profile"}>

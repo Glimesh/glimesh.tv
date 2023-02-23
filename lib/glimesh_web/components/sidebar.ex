@@ -85,7 +85,7 @@ defmodule GlimeshWeb.Components.UserSettingsSidebar do
             label: gettext("Profile")
           },
           %GlimeshWeb.Components.Sidebar.Link{
-            to: Routes.user_payments_path(GlimeshWeb.Endpoint, :index),
+            to: ~p"/users/payments",
             icon: &Icons.money_bill/1,
             label: gettext("Payments")
           },

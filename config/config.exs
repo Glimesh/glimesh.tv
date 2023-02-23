@@ -138,8 +138,6 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :phoenix, :template_engines, md: PhoenixMarkdown.Engine
-
 config :postgrex, :json_library, Jason
 
 config :stripity_stripe,

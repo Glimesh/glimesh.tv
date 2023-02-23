@@ -128,6 +128,13 @@ defmodule GlimeshWeb.Router do
       live "/users/settings/preference", Users.PreferenceLive, :edit
       live "/users/settings/notifications", Users.NotificationsLive, :edit
       live "/users/settings/authorizations", Users.AuthorizationsLive, :edit
+
+      live "/users/payments", Users.PaymentsLive, :index
+      # post "/users/payments/setup", UserPaymentsController, :setup
+      # get "/users/payments/taxes", UserPaymentsController, :taxes
+      # get "/users/payments/taxes_pending", UserPaymentsController, :taxes_pending
+      # get "/users/payments/connect", UserPaymentsController, :connect
+      # put "/users/payments/delete_default_payment", UserPaymentsController, :delete_default_payment
     end
   end
 
@@ -140,13 +147,6 @@ defmodule GlimeshWeb.Router do
 
     get "/users/social/twitter", UserSocialController, :twitter
     delete "/users/social/disconnect/:platform", UserSocialController, :disconnect
-
-    get "/users/payments", UserPaymentsController, :index
-    post "/users/payments/setup", UserPaymentsController, :setup
-    get "/users/payments/taxes", UserPaymentsController, :taxes
-    get "/users/payments/taxes_pending", UserPaymentsController, :taxes_pending
-    get "/users/payments/connect", UserPaymentsController, :connect
-    put "/users/payments/delete_default_payment", UserPaymentsController, :delete_default_payment
 
     # get "/users/settings/profile", UserSettingsController, :profile
     get "/users/settings/stream", UserSettingsController, :stream
