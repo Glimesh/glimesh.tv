@@ -8,7 +8,7 @@ defmodule GlimeshWeb.HomepageLive do
   alias GlimeshWeb.Channels.Components.VideoPlayer
   alias GlimeshWeb.Events.Components.EventMedia
 
-  alias Surface.Components.LivePatch
+  alias Surface.Components.LiveRedirect
 
   @impl true
   def render(assigns) do
@@ -59,12 +59,11 @@ defmodule GlimeshWeb.HomepageLive do
                         {/if}
                       </p>
                     </div>
-                    <LivePatch
+                    <LiveRedirect
                       to={Routes.user_stream_path(@socket, :index, @random_channel.user.username)}
-                      class="ml-auto text-md-nowrap mt-1"
-                    >
-                      <button type="button" class="btn btn-primary">{gettext("Watch Live")}</button>
-                    </LivePatch>
+                      class="ml-auto text-md-nowrap mt-1 btn btn-primary"
+                    >{gettext("Watch Live")}
+                    </LiveRedirect>
                   </div>
                 </div>
               </div>
@@ -164,11 +163,11 @@ defmodule GlimeshWeb.HomepageLive do
         <div class="row mt-2 mb-4">
           {#for {name, link, icon} <- list_categories()}
             <div class="col">
-              <LivePatch to={link} class="btn btn-outline-primary btn-lg btn-block py-4">
+              <LiveRedirect to={link} class="btn btn-outline-primary btn-lg btn-block py-4">
                 <i class={"fas fa-2x fa-fw", icon} />
                 <br>
                 <small class="text-color-link">{name}</small>
-              </LivePatch>
+              </LiveRedirect>
             </div>
           {/for}
         </div>

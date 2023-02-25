@@ -3,12 +3,11 @@ defmodule GlimeshWeb.Channels.Components.VideoPlayer do
 
   alias Glimesh.Streams.Channel
 
-  prop channel, :struct
-  prop country, :string
-  prop muted, :boolean, default: false
+  prop(channel, :struct)
+  prop(country, :string)
+  prop(muted, :boolean, default: false)
 
-  data status, :string, default: ""
-  data janus_url, :string, default: nil
+  data(status, :string, default: "")
 
   def render(%{channel: %Channel{}} = assigns) do
     ~F"""
@@ -21,9 +20,9 @@ defmodule GlimeshWeb.Channels.Components.VideoPlayer do
         playsinline
         poster={get_stream_thumbnail(@channel)}
         muted={@muted}
-        data-janus-url={@janus_url}
         data-channel-id={@channel.id}
         data-status={@status}
+        data-rtrouter={Application.get_env(:glimesh, :rtrouter_url)}
       >
       </video>
       <div id="video-loading-container" class="">
@@ -39,18 +38,7 @@ defmodule GlimeshWeb.Channels.Components.VideoPlayer do
   end
 
   def play(player_id, country) do
-    case Glimesh.Janus.get_closest_edge_location(country) do
-      %Glimesh.Janus.EdgeRoute{url: janus_url} ->
-        send_update(__MODULE__, id: player_id, status: "ready", janus_url: janus_url)
-
-      _ ->
-        # In the event we can't find an edge, something is real wrong
-        send_update(__MODULE__,
-          id: player_id,
-          loaded: true,
-          player_error: "Unable to find edge video location, we'll be back soon!"
-        )
-    end
+    send_update(__MODULE__, id: player_id, status: "ready")
   end
 
   defp get_stream_thumbnail(%Channel{} = channel) do
