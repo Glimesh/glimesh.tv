@@ -31,6 +31,7 @@ defmodule GlimeshWeb.UserRegistrationController do
       {:ok, _} ->
         case Accounts.register_user(user_params, existing_preferences) do
           {:ok, user} ->
+            # credo:disable-for-lines:4
             {:ok, _} =
               Accounts.deliver_user_confirmation_instructions(
                 user,
