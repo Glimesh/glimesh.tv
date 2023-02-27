@@ -31,15 +31,15 @@ defmodule GlimeshWeb.UserSettings.ProfileSettingsLiveTest do
           session: %{
             "user" => updated_user,
             "profile_changeset" => user_changeset,
-            "route" => Routes.user_settings_path(conn, :update_profile)
+            "route" => ~p"/users/settings/update_profile"
           }
         )
 
       assert html =~ "btn-twitter-disconnect"
       assert html =~ "@ testuser123"
 
-      conn = delete(conn, Routes.user_social_path(conn, :disconnect, "twitter"))
-      assert redirected_to(conn) == Routes.user_settings_path(conn, :profile)
+      conn = delete(conn, ~p"/users/social/disconnect/twitter")
+      assert redirected_to(conn) == ~p"/users/settings/profile"
       conn = recycle(conn)
 
       updated_user = Repo.get(User, user.id)
@@ -50,7 +50,7 @@ defmodule GlimeshWeb.UserSettings.ProfileSettingsLiveTest do
           session: %{
             "user" => updated_user,
             "profile_changeset" => user_changeset,
-            "route" => Routes.user_settings_path(conn, :update_profile)
+            "route" => ~p"/users/settings/update_profile"
           }
         )
 
