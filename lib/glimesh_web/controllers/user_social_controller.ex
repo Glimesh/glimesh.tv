@@ -54,7 +54,7 @@ defmodule GlimeshWeb.UserSocialController do
     if is_nil(auth_url) do
       conn
       |> put_flash(:error, gettext("There was a problem connecting your twitter account."))
-      |> redirect(to: Routes.user_settings_path(conn, :profile))
+      |> redirect(to: ~p"/users/settings/profile")
     else
       redirect(conn, external: auth_url)
     end

@@ -14,14 +14,14 @@ defmodule GlimeshWeb.UserSocialControllerTest do
       if is_nil(auth_url) do
         conn =
           conn
-          |> get(Routes.user_social_path(conn, :twitter_connect))
+          |> get(~p"/users/social/twitter/connect")
 
-        assert redirected_to(conn) == Routes.user_settings_path(conn, :profile)
+        assert redirected_to(conn) == ~p"/users/settings/profile"
         assert get_flash(conn, :error) =~ "There was a problem connecting your twitter account."
       else
         conn =
           conn
-          |> get(Routes.user_social_path(conn, :twitter_connect))
+          |> get(~p"/users/social/twitter/connect")
 
         assert redirected_to(conn) =~ "twitter.com"
       end
