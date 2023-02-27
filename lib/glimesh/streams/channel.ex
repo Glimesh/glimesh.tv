@@ -135,7 +135,7 @@ defmodule Glimesh.Streams.Channel do
 
   defp validate_no_active_emotes(changeset) do
     case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{emote_prefix: emote_prefix}} ->
+      %Ecto.Changeset{valid?: true, changes: %{emote_prefix: _}} ->
         if Glimesh.Emotes.count_all_emotes_for_channel(changeset.data) > 0 do
           add_error(
             changeset,

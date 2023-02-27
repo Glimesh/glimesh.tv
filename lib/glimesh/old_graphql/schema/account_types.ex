@@ -2,6 +2,8 @@ defmodule Glimesh.OldSchema.AccountTypes do
   @moduledoc false
   use Absinthe.Schema.Notation
 
+  use GlimeshWeb, :verified_routes
+
   import Absinthe.Resolution.Helpers
 
   alias Glimesh.AccountFollows
@@ -100,17 +102,7 @@ defmodule Glimesh.OldSchema.AccountTypes do
     @desc "URL to the user's avatar"
     field :avatar_url, :string do
       resolve(fn user, _, _ ->
-        avatar_url =
-          case Application.get_env(:waffle, :asset_host) do
-            nil ->
-              GlimeshWeb.Router.Helpers.static_url(
-                GlimeshWeb.Endpoint,
-                Avatar.url({user.avatar, user})
-              )
-
-            _ ->
-              Avatar.url({user.avatar, user})
-          end
+        avatar_url = Avatar.url({user.avatar, user})
 
         {:ok, avatar_url}
       end)

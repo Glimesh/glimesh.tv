@@ -4,7 +4,7 @@
       <h2><%= gettext("Edit %{username}", username: @channel_moderator.user.displayname) %></h2>
     </div>
     <div class="col-3">
-      <%= link gettext("Back to Moderator List"), to: Routes.channel_moderator_path(@conn, :index), class: "btn btn-primary btn-block" %>
+      <%= link gettext("Back to Moderator List"), to: ~p"/users/settings/channel/mods", class: "btn btn-primary btn-block" %>
     </div>
   </div>
 
@@ -19,12 +19,12 @@
             <div class="media-body">
               <h4 class="mt-0"><%= @channel_moderator.user.displayname %></h5>
                 <p><%= gettext("Moderator Since: %{date}", date: @channel_moderator.inserted_at) %></p>
-                <%= link "Remove", to: Routes.channel_moderator_path(@conn, :delete, @channel_moderator), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger", role: "button" %>
+                <%= link "Remove", to: ~p"/users/settings/channel/mods/#{@channel_moderator.id}", method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger", role: "button" %>
             </div>
           </div>
         </div>
         <div class="col-md-6">
-          <%= render "form.html", Map.put(assigns, :action, Routes.channel_moderator_path(@conn, :update, @channel_moderator)) %>
+          <%= render "form.html", Map.put(assigns, :action, ~p"/users/settings/channel/mods/#{@channel_moderator.id}") %>
         </div>
       </div>
 

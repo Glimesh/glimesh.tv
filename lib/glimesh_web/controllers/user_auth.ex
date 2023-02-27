@@ -2,9 +2,10 @@ defmodule GlimeshWeb.UserAuth do
   import Plug.Conn
   import Phoenix.Controller
 
+  use GlimeshWeb, :verified_routes
+
   alias Glimesh.Accounts
   alias GlimeshWeb.Endpoint
-  alias GlimeshWeb.Router.Helpers, as: Routes
 
   # Make the remember me cookie valid for 60 days.
   # If you want bump or reduce this value, also change
@@ -167,7 +168,7 @@ defmodule GlimeshWeb.UserAuth do
       conn
       |> put_flash(:error, "You must log in to access this page.")
       |> maybe_store_return_to()
-      |> redirect(to: Routes.user_session_path(conn, :new))
+      |> redirect(to: ~p"/users/log_in")
       |> halt()
     end
   end
@@ -182,7 +183,7 @@ defmodule GlimeshWeb.UserAuth do
     else
       conn
       |> put_flash(:error, "You must have a channel to access this page.")
-      |> redirect(to: Routes.user_settings_path(conn, :stream))
+      |> redirect(to: ~p"/users/settings/stream")
       |> halt()
     end
   end
@@ -196,7 +197,7 @@ defmodule GlimeshWeb.UserAuth do
     else
       conn
       |> put_flash(:error, "You must be an administrator to access this page.")
-      |> redirect(to: Routes.user_session_path(conn, :new))
+      |> redirect(to: ~p"/users/log_in")
       |> halt()
     end
   end
@@ -207,7 +208,7 @@ defmodule GlimeshWeb.UserAuth do
       conn
     else
       conn
-      |> redirect(to: Routes.user_session_path(conn, :new))
+      |> redirect(to: ~p"/users/log_in")
       |> halt()
     end
   end
@@ -220,7 +221,7 @@ defmodule GlimeshWeb.UserAuth do
       conn
     else
       conn
-      |> redirect(to: Routes.user_session_path(conn, :new))
+      |> redirect(to: ~p"/users/log_in")
       |> halt()
     end
   end

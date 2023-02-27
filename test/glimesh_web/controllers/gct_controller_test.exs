@@ -22,7 +22,7 @@ defmodule GlimeshWeb.GctControllerTest do
     setup :register_and_log_in_gct_user
 
     test "show index page", %{conn: conn} do
-      conn = get(conn, Routes.gct_path(conn, :index))
+      conn = get(conn, ~p"/gct")
       assert html_response(conn, 200) =~ "Core Team Dashboard"
     end
   end
@@ -31,7 +31,7 @@ defmodule GlimeshWeb.GctControllerTest do
     setup :register_and_log_in_gct_user
 
     test "shows the audit log", %{conn: conn} do
-      conn = get(conn, Routes.gct_path(conn, :audit_log))
+      conn = get(conn, ~p"/gct/audit-log")
       assert html_response(conn, 200) =~ "GCT Audit Log"
     end
   end
@@ -40,7 +40,7 @@ defmodule GlimeshWeb.GctControllerTest do
     setup :register_and_log_in_gct_user_without_perms
 
     test "shows the unauthorized page", %{conn: conn} do
-      conn = get(conn, Routes.gct_path(conn, :audit_log))
+      conn = get(conn, ~p"/gct/audit-log")
       assert html_response(conn, 200) =~ "You've tried to access something you cannot. "
     end
   end
@@ -49,14 +49,14 @@ defmodule GlimeshWeb.GctControllerTest do
     setup :register_and_log_in_gct_user
 
     test "shows the unauthorized page", %{conn: conn} do
-      conn = get(conn, Routes.gct_path(conn, :unauthorized))
+      conn = get(conn, ~p"/gct/unauthorized")
       assert html_response(conn, 200) =~ "You've tried to access something you cannot. "
     end
   end
 
   describe "GET /gct non-gct" do
     test "redirect user", %{conn: conn} do
-      conn = get(conn, Routes.gct_path(conn, :index))
+      conn = get(conn, ~p"/gct")
       assert html_response(conn, 302) =~ "You are being"
     end
   end
@@ -65,7 +65,7 @@ defmodule GlimeshWeb.GctControllerTest do
     setup :register_and_log_in_gct_user_without_tfa
 
     test "redirect user", %{conn: conn} do
-      conn = get(conn, Routes.gct_path(conn, :index))
+      conn = get(conn, ~p"/gct")
       assert html_response(conn, 302) =~ "You are being"
     end
   end
@@ -75,42 +75,42 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "valid user returns information", %{conn: conn} do
       lookup_user = user_fixture()
-      conn = get(conn, Routes.gct_path(conn, :username_lookup, query: lookup_user.username))
+      conn = get(conn, ~p"/gct/lookup/user?query=#{lookup_user.username}")
       assert html_response(conn, 200) =~ "Information for " <> lookup_user.displayname
     end
 
     test "valid email returns information", %{conn: conn} do
       lookup_user = user_fixture()
-      conn = get(conn, Routes.gct_path(conn, :username_lookup, query: lookup_user.email))
+      conn = get(conn, ~p"/gct/lookup/user?query=#{lookup_user.email}")
       assert html_response(conn, 200) =~ "Information for " <> lookup_user.displayname
     end
 
     test "valid ID returns information", %{conn: conn} do
       lookup_user = user_fixture()
-      conn = get(conn, Routes.gct_path(conn, :username_lookup, query: lookup_user.id))
+      conn = get(conn, ~p"/gct/lookup/user?query=#{lookup_user.id}")
       assert html_response(conn, 200) =~ "Information for " <> lookup_user.displayname
     end
 
     test "invalid user returns an invalid user page", %{conn: conn} do
-      conn = get(conn, Routes.gct_path(conn, :username_lookup, query: "invalid_user"))
+      conn = get(conn, ~p"/gct/lookup/user?query=invalid_user")
       assert html_response(conn, 200) =~ "Does not exist"
     end
 
     test "valid user returns page with ban button", %{conn: conn} do
       lookup_user = user_fixture()
-      conn = get(conn, Routes.gct_path(conn, :username_lookup, query: lookup_user.username))
+      conn = get(conn, ~p"/gct/lookup/user?query=#{lookup_user.username}")
       assert html_response(conn, 200) =~ "Ban User"
     end
 
     test "valid user returns page with unban button", %{conn: conn} do
       lookup_user = user_fixture(%{is_banned: true})
-      conn = get(conn, Routes.gct_path(conn, :username_lookup, query: lookup_user.username))
+      conn = get(conn, ~p"/gct/lookup/user?query=#{lookup_user.username}")
       assert html_response(conn, 200) =~ "Unban User"
     end
 
     test "valid user returns page with 2fa button", %{conn: conn} do
       lookup_user = user_fixture(%{tfa_token: "Fake tfa token here"})
-      conn = get(conn, Routes.gct_path(conn, :username_lookup, query: lookup_user.username))
+      conn = get(conn, ~p"/gct/lookup/user?query=#{lookup_user.username}")
       assert html_response(conn, 200) =~ "Remove 2FA"
     end
   end
@@ -121,19 +121,19 @@ defmodule GlimeshWeb.GctControllerTest do
     test "valid channel returns information", %{conn: conn} do
       streamer = streamer_fixture()
 
-      conn = get(conn, Routes.gct_path(conn, :channel_lookup, query: streamer.username))
+      conn = get(conn, ~p"/gct/lookup/channel?query=#{streamer.username}")
 
       assert html_response(conn, 200) =~ "Information for " <> streamer.displayname
     end
 
     test "valid channel ID returns information", %{conn: conn} do
       streamer = streamer_fixture()
-      conn = get(conn, Routes.gct_path(conn, :channel_lookup, query: streamer.channel.id))
+      conn = get(conn, ~p"/gct/lookup/channel?query=#{streamer.channel.id}")
       assert html_response(conn, 200) =~ "Information for " <> streamer.displayname
     end
 
     test "invalid channel returns an invalid channel page", %{conn: conn} do
-      conn = get(conn, Routes.gct_path(conn, :channel_lookup, query: "@"))
+      conn = get(conn, ~p"/gct/lookup/channel?query=foobar")
       assert html_response(conn, 200) =~ "Does not exist"
     end
   end
@@ -143,12 +143,12 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "valid user returns edit page", %{conn: conn} do
       valid_user = user_fixture()
-      conn = get(conn, Routes.gct_path(conn, :edit_user, valid_user.username))
+      conn = get(conn, ~p"/gct/edit/#{valid_user.username}")
       assert html_response(conn, 200) =~ valid_user.displayname
     end
 
     test "invalid user returns invalid user page", %{conn: conn} do
-      conn = get(conn, Routes.gct_path(conn, :edit_user, "invalid_user"))
+      conn = get(conn, ~p"/gct/edit/invalid_user")
       assert html_response(conn, 200) =~ "Does not exist"
     end
 
@@ -156,16 +156,16 @@ defmodule GlimeshWeb.GctControllerTest do
       user = user_fixture()
 
       user_conn =
-        put(conn, Routes.gct_path(conn, :update_user, user.username), %{
+        put(conn, ~p"/gct/edit/#{user.username}/update", %{
           "user" => %{
             "username" => "valid_username"
           }
         })
 
-      assert redirected_to(user_conn) == Routes.gct_path(conn, :edit_user, "valid_username")
-      assert get_flash(user_conn, :info) =~ "User updated successfully"
+      assert redirected_to(user_conn) == ~p"/gct/edit/valid_username"
+      assert Phoenix.Flash.get(user_conn.assigns.flash, :info) =~ "User updated successfully"
 
-      resp = html_response(get(conn, Routes.gct_path(conn, :edit_user, "valid_username")), 200)
+      resp = html_response(get(conn, ~p"/gct/edit/valid_username"), 200)
       assert resp =~ "valid_username"
     end
 
@@ -173,7 +173,7 @@ defmodule GlimeshWeb.GctControllerTest do
       user = user_fixture()
 
       user_conn =
-        put(conn, Routes.gct_path(conn, :update_user, user.username), %{
+        put(conn, ~p"/gct/edit/#{user.username}/update", %{
           "user" => %{
             "username" => "a"
           }
@@ -187,16 +187,16 @@ defmodule GlimeshWeb.GctControllerTest do
       user = user_fixture()
 
       user_conn =
-        put(conn, Routes.gct_path(conn, :update_user, user.username), %{
+        put(conn, ~p"/gct/edit/#{user.username}/update", %{
           "user" => %{
             "email" => "valid@email.com"
           }
         })
 
-      assert redirected_to(user_conn) == Routes.gct_path(conn, :edit_user, user.username)
-      assert get_flash(user_conn, :info) =~ "User updated successfully"
+      assert redirected_to(user_conn) == ~p"/gct/edit/#{user.username}"
+      assert Phoenix.Flash.get(user_conn.assigns.flash, :info) =~ "User updated successfully"
 
-      resp = html_response(get(conn, Routes.gct_path(conn, :edit_user, user.username)), 200)
+      resp = html_response(get(conn, ~p"/gct/edit/#{user.username}"), 200)
       assert resp =~ "valid@email.com"
     end
 
@@ -204,7 +204,7 @@ defmodule GlimeshWeb.GctControllerTest do
       user = user_fixture()
 
       user_conn =
-        put(conn, Routes.gct_path(conn, :update_user, user.username), %{
+        put(conn, ~p"/gct/edit/#{user.username}/update", %{
           "user" => %{
             "email" => "invalid email"
           }
@@ -220,12 +220,12 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "valid user returns edit profile page", %{conn: conn} do
       valid_user = user_fixture()
-      conn = get(conn, Routes.gct_path(conn, :edit_user_profile, valid_user.username))
+      conn = get(conn, ~p"/gct/edit/profile/#{valid_user.username}")
       assert html_response(conn, 200) =~ valid_user.username
     end
 
     test "invalid user returns invalid user page", %{conn: conn} do
-      conn = get(conn, Routes.gct_path(conn, :edit_user_profile, "invalid_user"))
+      conn = get(conn, ~p"/gct/edit/profile/invalid_user")
       assert html_response(conn, 200) =~ "Does not exist"
     end
 
@@ -233,7 +233,7 @@ defmodule GlimeshWeb.GctControllerTest do
       valid_user = user_fixture()
 
       profile_conn =
-        put(conn, Routes.gct_path(conn, :update_user_profile, valid_user.username), %{
+        put(conn, ~p"/gct/edit/profile/#{valid_user.username}/update", %{
           "user" => %{
             "social_twitter" => "some-fake-twitter-url",
             "social_discord" => "inviteurl",
@@ -243,13 +243,13 @@ defmodule GlimeshWeb.GctControllerTest do
         })
 
       assert redirected_to(profile_conn) ==
-               Routes.gct_path(conn, :edit_user_profile, valid_user.username)
+               ~p"/gct/edit/profile/#{valid_user.username}"
 
-      assert get_flash(profile_conn, :info) =~ "User updated successfully"
+      assert Phoenix.Flash.get(profile_conn.assigns.flash, :info) =~ "User updated successfully"
 
       response =
         html_response(
-          get(conn, Routes.gct_path(conn, :edit_user_profile, valid_user.username)),
+          get(conn, ~p"/gct/edit/profile/#{valid_user.username}"),
           200
         )
 
@@ -263,19 +263,18 @@ defmodule GlimeshWeb.GctControllerTest do
       user = user_fixture()
 
       profile_conn =
-        put(conn, Routes.gct_path(conn, :update_user_profile, user.username), %{
+        put(conn, ~p"/gct/edit/profile/#{user.username}/update", %{
           "user" => %{
             "displayname" => String.upcase(user.username)
           }
         })
 
       assert redirected_to(profile_conn) ==
-               Routes.gct_path(conn, :edit_user_profile, user.username)
+               ~p"/gct/edit/profile/#{user.username}"
 
-      assert get_flash(profile_conn, :info) =~ "User updated successfully"
+      assert Phoenix.Flash.get(profile_conn.assigns.flash, :info) =~ "User updated successfully"
 
-      response =
-        html_response(get(conn, Routes.gct_path(conn, :edit_user_profile, user.username)), 200)
+      response = html_response(get(conn, ~p"/gct/edit/profile/#{user.username}"), 200)
 
       assert response =~ String.upcase(user.username)
     end
@@ -284,7 +283,7 @@ defmodule GlimeshWeb.GctControllerTest do
       user = user_fixture()
 
       profile_conn =
-        put(conn, Routes.gct_path(conn, :update_user_profile, user.username), %{
+        put(conn, ~p"/gct/edit/profile/#{user.username}/update", %{
           "user" => %{
             "displayname" => user.username <> "f"
           }
@@ -300,12 +299,12 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "valid user returns edit page", %{conn: conn} do
       streamer = streamer_fixture()
-      conn = get(conn, Routes.gct_path(conn, :edit_channel, streamer.channel.id))
+      conn = get(conn, ~p"/gct/edit/channel/#{streamer.channel.id}")
       assert html_response(conn, 200) =~ streamer.username
     end
 
     test "invalid user returns invalid channel page", %{conn: conn} do
-      conn = get(conn, Routes.gct_path(conn, :edit_channel, 0))
+      conn = get(conn, ~p"/gct/edit/channel/0")
       assert html_response(conn, 200) =~ "Does not exist"
     end
 
@@ -313,16 +312,18 @@ defmodule GlimeshWeb.GctControllerTest do
       %{channel: channel} = streamer_fixture()
 
       channel_conn =
-        put(conn, Routes.gct_path(conn, :update_channel, channel.id), %{
+        put(conn, ~p"/gct/edit/channel/#{channel.id}/update", %{
           "channel" => %{
             "title" => "New title"
           }
         })
 
-      assert redirected_to(channel_conn) == Routes.gct_path(conn, :edit_channel, channel.id)
-      assert get_flash(channel_conn, :info) =~ "Channel updated successfully"
+      assert redirected_to(channel_conn) == ~p"/gct/edit/channel/#{channel.id}"
 
-      resp = html_response(get(conn, Routes.gct_path(conn, :edit_channel, channel.id)), 200)
+      assert Phoenix.Flash.get(channel_conn.assigns.flash, :info) =~
+               "Channel updated successfully"
+
+      resp = html_response(get(conn, ~p"/gct/edit/channel/#{channel.id}"), 200)
       assert resp =~ "New title"
     end
 
@@ -330,7 +331,7 @@ defmodule GlimeshWeb.GctControllerTest do
       %{channel: channel} = streamer_fixture()
 
       channel_conn =
-        put(conn, Routes.gct_path(conn, :update_channel, channel.id), %{
+        put(conn, ~p"/gct/edit/channel/#{channel.id}/update", %{
           "channel" => %{
             "title" => @invalid_title
           }
@@ -345,9 +346,11 @@ defmodule GlimeshWeb.GctControllerTest do
 
     test "channel successfully deletes when triggered", %{conn: conn} do
       %{channel: channel} = streamer_fixture()
-      channel_conn = put(conn, Routes.gct_path(conn, :delete_channel, channel.id))
-      assert redirected_to(channel_conn) == Routes.gct_path(conn, :index)
-      assert get_flash(channel_conn, :info) =~ "Channel deleted successfully"
+      channel_conn = put(conn, ~p"/gct/edit/channel/#{channel.id}/delete")
+      assert redirected_to(channel_conn) == ~p"/gct"
+
+      assert Phoenix.Flash.get(channel_conn.assigns.flash, :info) =~
+               "Channel deleted successfully"
     end
   end
 

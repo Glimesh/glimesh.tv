@@ -99,14 +99,14 @@
                     <p><%= gettext("Before you use the platform, you must review our Terms of Service to ensure your streams and content do not violate any of our conditions. The Terms of Service also includes information about your rights and usage of the website.") %></p>
 
                     <div class="text-center mt-4 mb-4">
-                        <%= link gettext("Terms of Service"), to: Routes.about_path(@conn, :terms), class: "btn btn-primary" %>
+                        <%= link gettext("Terms of Service"), to: ~p"/about/terms", class: "btn btn-primary" %>
                     </div>
 
                     <h4><%= gettext("Review our Rules of Conduct!") %></h4>
                     <p><%= gettext("Our Rules of Conduct is another required reading, especially for streamers! It includes rules and guidelines on the type of content that is appropriate for Glimesh, and violating its guidelines could lead to repercussions.") %></p>
 
                     <div class="text-center mt-4 mb-4">
-                        <%= link gettext("Rules of Conduct"), to: Routes.about_path(@conn, :conduct), class: "btn btn-primary" %>
+                        <%= link gettext("Rules of Conduct"), to: ~p"/about/conduct", class: "btn btn-primary" %>
                     </div>
 
                 </div>

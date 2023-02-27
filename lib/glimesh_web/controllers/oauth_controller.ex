@@ -142,15 +142,6 @@ defmodule GlimeshWeb.OauthController do
   defp state_value(nil), do: %{}
   defp state_value(state), do: %{"state" => state}
 
-  # @impl Boruta.Oauth.Application
-  # def authorize_error(
-  #       conn,
-  #       %Error{status: :unauthorized, error: :invalid_resource_owner}
-  #     ) do
-  #   # NOTE after siging in the user shall be redirected to `get_session(conn, :user_return_to)`
-  #   redirect(conn, to: Routes.user_session_path(:new))
-  # end
-
   @impl Boruta.Oauth.Application
   def authorize_error(
         conn,

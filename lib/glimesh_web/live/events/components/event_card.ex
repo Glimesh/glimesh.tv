@@ -1,8 +1,9 @@
 defmodule GlimeshWeb.Events.Components.EventCard do
   use Surface.Component
 
+  use GlimeshWeb, :verified_routes
+
   alias Glimesh.EventsTeam.Event
-  alias GlimeshWeb.Router.Helpers, as: Routes
 
   prop event, :struct
 
@@ -24,7 +25,7 @@ defmodule GlimeshWeb.Events.Components.EventCard do
         {#if Glimesh.EventsTeam.live_now(@event)}
           <span class="badge badge-pill badge-danger">Live now</span>
           {live_patch("Watch Event",
-            to: Routes.user_stream_path(GlimeshWeb.Endpoint, :index, @event.channel)
+            to: ~p"/#{@event.channel}"
           )}
         {#else}
           <p class="text-center">
@@ -40,7 +41,7 @@ defmodule GlimeshWeb.Events.Components.EventCard do
             <br>
 
             {live_patch("glimesh.tv/#{@event.channel}",
-              to: Routes.user_stream_path(GlimeshWeb.Endpoint, :index, @event.channel)
+              to: ~p"/#{@event.channel}"
             )}
           </p>
         {/if}

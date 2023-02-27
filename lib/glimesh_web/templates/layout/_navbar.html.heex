@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg sticky-top shadow-sm acrylic">
-  <%= live_redirect class: "navbar-brand", to: Routes.homepage_path(@conn, :index) do %>
+  <%= live_redirect class: "navbar-brand", to: ~p"/" do %>
     <picture class="d-inline-block align-top" height="34">
       <source srcset="/images/logos/logo-sm-alpha.png" media="(max-width: 768px)" />
       <source srcset="/images/logos/logo-alpha.png" />
@@ -16,7 +16,7 @@
     <ul class="navbar-nav d-inline-block">
       <%= if assigns[:current_user] do %>
         <li class="nav-item d-inline mr-3">
-          <%= live_redirect to: Routes.streams_list_path(@conn, :index, "following") do %>
+          <%= live_redirect to: ~p"/streams/following" do %>
             <i class="fas fa-heart fa-fw"></i>
             <%= cond do %>
               <% count_live = count_live_following_channels(@conn) -> %>
@@ -29,7 +29,7 @@
         </li>
       <% end %>
       <li class="nav-item d-inline pr-2">
-        <%= live_redirect to: Routes.streams_index_path(@conn, :index) do %>
+        <%= live_redirect to: ~p"/streams" do %>
           <i class="fas fa-grip-horizontal fa-fw"></i>
         <% end %>
       </li>
@@ -53,37 +53,37 @@
       <li class="nav-item">
         <%= live_redirect(gettext("Gaming"),
           class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "gaming")
+          to: ~p"/streams/gaming"
         ) %>
       </li>
       <li class="nav-item">
         <%= live_redirect(gettext("Art"),
           class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "art")
+          to: ~p"/streams/art"
         ) %>
       </li>
       <li class="nav-item">
         <%= live_redirect(gettext("Music"),
           class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "music")
+          to: ~p"/streams/music"
         ) %>
       </li>
       <li class="nav-item">
         <%= live_redirect(gettext("Tech"),
           class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "tech")
+          to: ~p"/streams/tech"
         ) %>
       </li>
       <li class="nav-item">
         <%= live_redirect(gettext("IRL"),
           class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "irl")
+          to: ~p"/streams/irl"
         ) %>
       </li>
       <li class="nav-item">
         <%= live_redirect(gettext("Education"),
           class: "nav-link",
-          to: Routes.streams_list_path(@conn, :index, "education")
+          to: ~p"/streams/education"
         ) %>
       </li>
       <li class="nav-item dropdown user-profile-dropdown">
@@ -98,7 +98,7 @@
           <span class="d-sm-inline"><%= gettext("More") %></span> <i class="fa fa-ellipsis-v"></i>
         </a>
         <div class="dropdown-menu" aria-labelledby="moreDropdown">
-          <%= link class: "dropdown-item", to: Routes.user_index_path(@conn, :index) do %>
+          <%= link class: "dropdown-item", to: ~p"/users" do %>
             <i class="fas fa-user fa-fw"></i>
             <%= gettext("User List") %>
           <% end %>
@@ -118,7 +118,7 @@
       </li>
       <%= if assigns[:current_user] do %>
         <li class="nav-item">
-          <%= live_redirect class: "nav-link", to: Routes.streams_list_path(@conn, :index, "following") do %>
+          <%= live_redirect class: "nav-link", to: ~p"/streams/following" do %>
             <%= gettext("Following") %>
             <%= cond do %>
               <% count_live = count_live_following_channels(@conn) -> %>
@@ -133,13 +133,13 @@
       <li class="nav-item">
         <%= live_redirect(gettext("Events"),
           class: "nav-link",
-          to: Routes.events_path(@conn, :index)
+          to: ~p"/events"
         ) %>
       </li>
       <li class="nav-item">
         <%= live_redirect(gettext("App!"),
           class: "nav-link text-warning",
-          to: Routes.app_path(@conn, :index)
+          to: ~p"/about/app"
         ) %>
       </li>
     </ul>
@@ -166,9 +166,10 @@
           aria-labelledby="settingsDropdown"
         >
           <.form
-            let={f}
-            for={:user_preference}
-            action={Routes.quick_preference_path(@conn, :update_preference)}
+            :let={f}
+            for={%{}}
+            as={:user_preference}
+            action={~p"/quick_preferences"}
             class="px-4 py-3"
           >
             <%= hidden_input(f, :user_return_to, value: @conn.request_path) %>
@@ -209,7 +210,7 @@
         <li class="nav-item">
           <%= live_redirect(gettext("Stream Setup"),
             class: "btn btn-warning btn-sm text-dark",
-            to: Routes.go_live_path(@conn, :index)
+            to: ~p"/about/go-live"
           ) %>
         </li>
         <li class="nav-item dropdown user-profile-dropdown">
@@ -227,14 +228,12 @@
               alt="avatar"
               width="34"
               height="34"
-              class={
-                [
-                  "img-avatar",
-                  if(Glimesh.Accounts.can_receive_payments?(@current_user),
-                    do: "img-verified-streamer"
-                  )
-                ]
-              }
+              class={[
+                "img-avatar",
+                if(Glimesh.Accounts.can_receive_payments?(@current_user),
+                  do: "img-verified-streamer"
+                )
+              ]}
             />
           </a>
           <div
@@ -242,42 +241,42 @@
             aria-labelledby="userProfileDropdown"
           >
             <%= if @current_user.is_gct do %>
-              <%= link class: "dropdown-item", to: Routes.gct_path(@conn, :index) do %>
+              <%= link class: "dropdown-item", to: ~p"/gct" do %>
                 <i class="fas fa-user fa-fw"></i>
                 <%= gettext("GCT Dash") %>
               <% end %>
             <% end %>
             <%= if @current_user.is_events_team do %>
-              <%= link class: "dropdown-item", to: Routes.events_admin_path(@conn, :index) do %>
+              <%= link class: "dropdown-item", to: ~p"/events/admin" do %>
                 <i class="fas fa-calendar fa-fw"></i>
                 <%= gettext("Events Dash") %>
               <% end %>
             <% end %>
             <!-- Check for a channel and display an option to go to it -->
             <%= if Glimesh.ChannelLookups.get_channel_for_user(@current_user) do %>
-              <%= link class: "dropdown-item", to: Routes.user_stream_path(@conn, :index, @current_user.username) do %>
+              <%= link class: "dropdown-item", to: ~p"/#{@current_user.username}" do %>
                 <i class="fas fa-tv fa-fw"></i>
                 <%= gettext("Channel") %>
               <% end %>
             <% end %>
-            <%= link class: "dropdown-item", to: Routes.user_profile_path(@conn, :index, @current_user.username) do %>
+            <%= link class: "dropdown-item", to: ~p"/#{@current_user.username}/profile" do %>
               <i class="fas fa-user fa-fw"></i>
               <%= gettext("Profile") %>
             <% end %>
             <div class="dropdown-divider"></div>
-            <%= live_redirect class: "dropdown-item text-warning", to: Routes.platform_subscription_index_path(@conn, :index) do %>
+            <%= live_redirect class: "dropdown-item text-warning", to: ~p"/platform_subscriptions" do %>
               <i class="fas fa-cookie fa-fw"></i>
               <%= gettext("Upgrade!") %>
             <% end %>
-            <%= link class: "dropdown-item", to: Routes.user_payments_path(@conn, :index) do %>
+            <%= link class: "dropdown-item", to: ~p"/users/payments" do %>
               <i class="fas fa-money-bill fa-fw"></i>
               <%= gettext("Payments") %>
             <% end %>
-            <%= link class: "dropdown-item", to: Routes.user_settings_path(@conn, :profile) do %>
+            <%= link class: "dropdown-item", to: ~p"/users/settings/profile" do %>
               <i class="fas fa-cog fa-fw"></i>
               <%= gettext("Settings") %>
             <% end %>
-            <%= link class: "dropdown-item", to: Routes.user_session_path(@conn, :delete), method: :delete do %>
+            <%= link class: "dropdown-item", to: ~p"/users/log_out", method: :delete do %>
               <i class="fas fa-door-closed fa-fw"></i>
               <%= gettext("Sign Out") %>
             <% end %>
@@ -286,13 +285,13 @@
       <% else %>
         <li>
           <%= link(gettext("Register"),
-            to: Routes.user_registration_path(@conn, :new),
+            to: ~p"/users/register",
             class: "nav-link"
           ) %>
         </li>
         <li>
           <%= link(gettext("Sign in"),
-            to: Routes.user_session_path(@conn, :new),
+            to: ~p"/users/log_in",
             class: "nav-link"
           ) %>
         </li>

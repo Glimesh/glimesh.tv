@@ -15,14 +15,14 @@ defmodule GlimeshWeb.HomepageLiveTest do
     test "general text", %{conn: conn} do
       user_fixture()
 
-      {:ok, _, html} = live(conn, Routes.homepage_path(conn, :index))
+      {:ok, _, _} = live(conn, ~p"/")
 
       # Commented out for now
       # assert html =~ "Join 1 others!"
     end
 
     test "does not show streams section if it's empty", %{conn: conn} do
-      {:ok, _, html} = live(conn, Routes.homepage_path(conn, :index))
+      {:ok, _, html} = live(conn, ~p"/")
 
       refute html =~ "Explore Live Streams"
     end
@@ -31,7 +31,7 @@ defmodule GlimeshWeb.HomepageLiveTest do
       Enum.each(1..6, fn _ -> create_viable_mock_stream() end)
       assert Glimesh.Homepage.update_homepage() == :first_run
 
-      {:ok, _, html} = live(conn, Routes.homepage_path(conn, :index))
+      {:ok, _, html} = live(conn, ~p"/")
       assert html =~ "<video "
     end
 
@@ -44,7 +44,7 @@ defmodule GlimeshWeb.HomepageLiveTest do
 
       assert Glimesh.Homepage.update_homepage() == :first_run
 
-      {:ok, _, html} = live(conn, Routes.homepage_path(conn, :index))
+      {:ok, _, html} = live(conn, ~p"/")
       assert html =~ hd(streams).title
     end
   end

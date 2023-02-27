@@ -39,11 +39,7 @@
       <div class="col-3 text-center pt-2">
         <a
           class="btn btn-primary"
-          href={
-            Routes.user_stream_path(@socket, :index, @hosting_channel.host.user.username, %{
-              "follow_host" => "false"
-            })
-          }
+          href={~p"/#{@hosting_channel.host.user.username}?follow_host=false"}
         >
           <%= gettext("Return to host") %>
         </a>
@@ -94,9 +90,7 @@
         <a
           class="btn btn-primary"
           href={
-            Routes.user_stream_path(@socket, :index, @hosting_channel.target.user.username, %{
-              "host" => @hosting_channel.host.user.username
-            })
+            ~p"/#{@hosting_channel.target.user.username}?host=#{@hosting_channel.host.user.username}"
           }
         >
           <%= gettext("Go there") %>
@@ -123,7 +117,7 @@
                 <div class="stream-info btn-toolbar">
                   <div class="btn-group mr-1" role="group" aria-label="First group">
                     <%= if @has_some_support_option do %>
-                      <%= live_patch to: Routes.user_stream_path(@socket, :support, @channel.user.username), class: "btn btn-secondary btn-responsive" do %>
+                      <%= live_patch to: ~p"/#{@channel.user.username}/support", class: "btn btn-secondary btn-responsive" do %>
                         <span class="d-none d-lg-block">
                           <i class="fas fa-hand-holding-usd fa-fw"></i> <%= gettext("Support") %>
                         </span>
@@ -172,12 +166,10 @@
           <% else %>
             <div
               id="video-container"
-              class={
-                [
-                  "embed-responsive",
-                  if(@ultrawide, do: "embed-responsive-21by9", else: "embed-responsive-16by9")
-                ]
-              }
+              class={[
+                "embed-responsive",
+                if(@ultrawide, do: "embed-responsive-21by9", else: "embed-responsive-16by9")
+              ]}
             >
               <video
                 id="video-player"
@@ -211,27 +203,25 @@
           <div class="row">
             <div class="col-8 d-inline-flex align-items-center">
               <div id="streamer-avatar">
-                <a href={Routes.user_profile_path(@socket, :index, @channel.user.username)}>
+                <a href={~p"/#{@channel.user.username}/profile"}>
                   <img
                     src={Glimesh.Avatar.url({@channel.user.avatar, @channel.user}, :original)}
                     alt={@channel.user.displayname}
                     width="48"
                     height="48"
-                    class={
-                      [
-                        "img-avatar mr-2 float-left",
-                        if(Glimesh.Accounts.can_receive_payments?(@channel.user),
-                          do: "img-verified-streamer"
-                        )
-                      ]
-                    }
+                    class={[
+                      "img-avatar mr-2 float-left",
+                      if(Glimesh.Accounts.can_receive_payments?(@channel.user),
+                        do: "img-verified-streamer"
+                      )
+                    ]}
                   />
                 </a>
               </div>
               <a
                 title={gettext("View Profile")}
                 class={Glimesh.Chat.Effects.get_username_color(@channel.user)}
-                href={Routes.user_profile_path(@socket, :index, @channel.user.username)}
+                href={~p"/#{@channel.user.username}/profile"}
               >
                 <h3 class="mb-0"><%= @channel.user.displayname %></h3>
               </a>

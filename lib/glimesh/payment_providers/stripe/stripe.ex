@@ -4,6 +4,8 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
   """
   require Logger
 
+  use GlimeshWeb, :verified_routes
+
   alias Glimesh.Accounts
   alias Glimesh.Accounts.User
   alias Glimesh.Chat
@@ -369,12 +371,7 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
           })
 
         if is_tax_verified do
-          channel_url =
-            GlimeshWeb.Router.Helpers.user_stream_url(
-              GlimeshWeb.Endpoint,
-              :index,
-              user.username
-            )
+          channel_url = url(~p"/#{user.username}")
 
           Glimesh.Accounts.UserNotifier.deliver_sub_button_enabled(
             user,
