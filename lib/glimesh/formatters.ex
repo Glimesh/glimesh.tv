@@ -31,7 +31,7 @@ defmodule Glimesh.Formatters do
   end
 
   def put_page_title(%Phoenix.LiveView.Socket{} = socket, title) do
-    Phoenix.LiveView.assign(
+    Phoenix.Component.assign(
       socket,
       :page_title,
       format_page_title(title)

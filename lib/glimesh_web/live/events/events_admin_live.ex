@@ -203,7 +203,7 @@ defmodule GlimeshWeb.Events.EventsAdminLive do
 
     {:noreply,
      socket
-     |> redirect(to: Routes.events_admin_path(socket, :index))}
+     |> redirect(to: ~p"/events/admin")}
   end
 
   @impl true
@@ -239,7 +239,7 @@ defmodule GlimeshWeb.Events.EventsAdminLive do
 
     {:noreply,
      socket
-     |> redirect(to: Routes.events_admin_path(socket, :index))}
+     |> redirect(to: ~p"/events/admin")}
   end
 
   defp save_event(%{} = event) do

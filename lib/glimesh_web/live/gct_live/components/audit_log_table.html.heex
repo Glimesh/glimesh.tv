@@ -26,7 +26,7 @@
             <td><%= log.user.displayname %></td>
             <td><%= log.action %></td>
             <td>
-              <%= link(log.target, to: Routes.gct_path(@conn, :username_lookup, query: log.target)) %>
+              <%= link(log.target, to: ~p"/gct/lookup/channel?query=#{log.target}") %>
             </td>
             <td><%= log.inserted_at %> UTC</td>
             <td>

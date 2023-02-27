@@ -34,7 +34,7 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCountTest do
         country_codes: []
       })
 
-      {:ok, stream_view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+      {:ok, stream_view, _} = live(conn, ~p"/#{streamer.username}")
       # Poke janus to ensure we show up as a viewer
       assert render(stream_view) =~ "1 Viewers"
 

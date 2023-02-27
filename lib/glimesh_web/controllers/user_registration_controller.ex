@@ -34,7 +34,7 @@ defmodule GlimeshWeb.UserRegistrationController do
             {:ok, _} =
               Accounts.deliver_user_confirmation_instructions(
                 user,
-                &Routes.user_confirmation_url(conn, :confirm, &1)
+                fn confirmation -> ~p"/users/confirm/#{confirmation}" end
               )
 
             conn
@@ -51,7 +51,7 @@ defmodule GlimeshWeb.UserRegistrationController do
           :error,
           gettext("Captcha validation failed, please try again.")
         )
-        |> redirect(to: Routes.user_registration_path(conn, :new))
+        |> redirect(to: ~p"/users/register")
     end
   end
 
@@ -61,6 +61,6 @@ defmodule GlimeshWeb.UserRegistrationController do
       :error,
       gettext("Captcha validation failed, please make sure you have JavaScript enabled.")
     )
-    |> redirect(to: Routes.user_registration_path(conn, :new))
+    |> redirect(to: ~p"/users/register")
   end
 end

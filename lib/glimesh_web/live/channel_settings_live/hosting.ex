@@ -90,7 +90,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.Hosting do
          |> assign(:add_channel, "")
          |> assign(:add_channel_selected_value, "")
          |> put_flash(:hosting_info, gettext("Channel added"))
-         |> redirect(to: Routes.user_settings_path(socket, :hosting))}
+         |> redirect(to: ~p"/users/settings/hosting")}
 
       {:error, _channel_hosts} ->
         {:noreply,
@@ -126,7 +126,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.Hosting do
         {:noreply,
          socket
          |> put_flash(:hosting_info, gettext("Hosting target removed"))
-         |> redirect(to: Routes.user_settings_path(socket, :hosting))}
+         |> redirect(to: ~p"/users/settings/hosting")}
 
       {:error, _} ->
         {:noreply,

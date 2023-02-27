@@ -46,7 +46,7 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
           @create_attrs
         )
 
-      conn = get(conn, Routes.channel_moderator_path(conn, :show, mod.id))
+      conn = get(conn, ~p"/users/settings/channel/mods/#{mod.id}")
       assert response(conn, 403)
     end
 
@@ -65,7 +65,7 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
       conn =
         patch(
           conn,
-          Routes.channel_moderator_path(conn, :update, mod.id),
+          ~p"/users/settings/channel/mods/#{mod.id}",
           channel_moderator: @update_attrs
         )
 
@@ -84,7 +84,7 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
           @create_attrs
         )
 
-      conn = delete(conn, Routes.channel_moderator_path(conn, :delete, mod.id))
+      conn = delete(conn, ~p"/users/settings/channel/mods/#{mod.id}")
       assert response(conn, 403)
     end
   end
@@ -93,7 +93,7 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
 
   describe "index" do
     test "lists all channel_moderators", %{conn: conn} do
-      conn = get(conn, Routes.channel_moderator_path(conn, :index))
+      conn = get(conn, ~p"/users/settings/channel/mods")
       assert html_response(conn, 200) =~ "Channel Moderators"
     end
 
@@ -121,7 +121,7 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
       )
       |> Glimesh.Repo.insert()
 
-      conn = get(conn, Routes.channel_moderator_path(conn, :index))
+      conn = get(conn, ~p"/users/settings/channel/mods")
       response = assert html_response(conn, 200)
       assert response =~ "delete_message"
       assert response =~ "edit_title_and_tags"
@@ -131,7 +131,7 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
   describe "unban user" do
     test "successfully unbans a valid user", %{conn: conn} do
       some_valid_user = user_fixture()
-      conn = get(conn, Routes.channel_moderator_path(conn, :index))
+      conn = get(conn, ~p"/users/settings/channel/mods")
 
       # Need to actually ban the user first
       channel = Glimesh.ChannelLookups.get_channel_for_user(conn.assigns.current_user)
@@ -139,19 +139,18 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
       assert result.action == "ban"
 
       # Now that we've confirmed they're banned we unban
-      conn =
-        delete(conn, Routes.channel_moderator_path(conn, :unban_user, some_valid_user.username))
+      conn = delete(conn, ~p"/users/settings/channel/mods/unban_user/#{some_valid_user.username}")
 
-      assert get_flash(conn, :info) =~ "User unbanned successfully"
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "User unbanned successfully"
 
-      response = html_response(get(conn, Routes.channel_moderator_path(conn, :index)), 200)
+      response = html_response(get(conn, ~p"/users/settings/channel/mods"), 200)
       refute response == some_valid_user.username
     end
   end
 
   describe "new channel_moderator" do
     test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.channel_moderator_path(conn, :new))
+      conn = get(conn, ~p"/users/settings/channel/mods/new")
       assert html_response(conn, 200) =~ "Add Moderator"
     end
   end
@@ -161,20 +160,19 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
       some_valid_user = user_fixture()
 
       conn =
-        post(conn, Routes.channel_moderator_path(conn, :create),
+        post(conn, ~p"/users/settings/channel/mods",
           channel_moderator: Map.put(@create_attrs, :username, some_valid_user.username)
         )
 
       assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.channel_moderator_path(conn, :show, id)
+      assert redirected_to(conn) == ~p"/users/settings/channel/mods/#{id}"
 
-      conn = get(conn, Routes.channel_moderator_path(conn, :show, id))
+      conn = get(conn, ~p"/users/settings/channel/mods/#{id}")
       assert html_response(conn, 200) =~ "Edit " <> some_valid_user.username
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn =
-        post(conn, Routes.channel_moderator_path(conn, :create), channel_moderator: @invalid_attrs)
+      conn = post(conn, ~p"/users/settings/channel/mods", channel_moderator: @invalid_attrs)
 
       assert html_response(conn, 200) =~ "Add Moderator"
     end
@@ -187,7 +185,7 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
       conn: conn,
       channel_moderator: channel_moderator
     } do
-      conn = get(conn, Routes.channel_moderator_path(conn, :show, channel_moderator))
+      conn = get(conn, ~p"/users/settings/channel/mods/#{channel_moderator.id}")
       assert html_response(conn, 200) =~ "Edit"
     end
 
@@ -216,7 +214,7 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
       )
       |> Glimesh.Repo.insert()
 
-      conn = get(conn, Routes.channel_moderator_path(conn, :show, channel_moderator))
+      conn = get(conn, ~p"/users/settings/channel/mods/#{channel_moderator.id}")
       response = html_response(conn, 200)
       assert response =~ "delete_message"
       assert response =~ "edit_title_and_tags"
@@ -228,13 +226,13 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
 
     test "redirects when data is valid", %{conn: conn, channel_moderator: channel_moderator} do
       conn =
-        put(conn, Routes.channel_moderator_path(conn, :update, channel_moderator),
+        put(conn, ~p"/users/settings/channel/mods/#{channel_moderator.id}",
           channel_moderator: @update_attrs
         )
 
-      assert redirected_to(conn) == Routes.channel_moderator_path(conn, :show, channel_moderator)
+      assert redirected_to(conn) == ~p"/users/settings/channel/mods/#{channel_moderator.id}"
 
-      conn = get(conn, Routes.channel_moderator_path(conn, :show, channel_moderator))
+      conn = get(conn, ~p"/users/settings/channel/mods/#{channel_moderator.id}")
       assert html_response(conn, 200) =~ "Edit"
     end
   end
@@ -243,10 +241,10 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
     setup [:create_channel_moderator]
 
     test "deletes chosen channel_moderator", %{conn: conn, channel_moderator: channel_moderator} do
-      conn = delete(conn, Routes.channel_moderator_path(conn, :delete, channel_moderator))
-      assert redirected_to(conn) == Routes.channel_moderator_path(conn, :index)
+      conn = delete(conn, ~p"/users/settings/channel/mods/#{channel_moderator.id}")
+      assert redirected_to(conn) == ~p"/users/settings/channel/mods"
 
-      conn = get(conn, Routes.channel_moderator_path(conn, :show, channel_moderator))
+      conn = get(conn, ~p"/users/settings/channel/mods/#{channel_moderator.id}")
       assert response(conn, 403)
     end
   end

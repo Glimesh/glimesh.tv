@@ -3,7 +3,7 @@
 
   <div class="card">
     <div class="card-body">
-      <%= render "form.html", Map.put(assigns, :action, Routes.user_applications_path(@conn, :update, @changeset.data)) %>
+      <%= render "form.html", Map.put(assigns, :action, ~p"/users/settings/applications/#{@changeset.data.id}") %>
     </div>
   </div>
 </div>

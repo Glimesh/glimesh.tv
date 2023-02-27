@@ -3,7 +3,7 @@ defmodule Glimesh.Jobs.StartStreamNotifier do
   use Oban.Worker
 
   @impl Oban.Worker
-  def perform(%Oban.Job{args: %{"channel_id" => channel_id} = args}) do
+  def perform(%Oban.Job{args: %{"channel_id" => channel_id}}) do
     channel = Glimesh.ChannelLookups.get_channel!(channel_id)
     users = Glimesh.ChannelLookups.list_live_subscribed_followers(channel)
     full_channel = Glimesh.Repo.preload(channel, [:user, :stream, :tags])

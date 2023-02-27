@@ -38,9 +38,6 @@ defmodule Glimesh.StreamThumbnail do
 
   # Provide a default URL if there hasn't been a file uploaded
   def default_url(_version, _scope) do
-    GlimeshWeb.Router.Helpers.static_url(
-      GlimeshWeb.Endpoint,
-      "/images/stream-not-started.jpg"
-    )
+    "/images/stream-not-started.jpg"
   end
 end

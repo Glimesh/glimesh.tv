@@ -6,7 +6,7 @@
       </div>
       <%= if @can_upload do %>
         <.form
-          let={f}
+          :let={f}
           for={:emotes}
           id="emote_upload"
           phx-change="validate_upload"
@@ -107,7 +107,7 @@
         </p>
 
         <.form
-          let={f}
+          :let={f}
           for={@emote_settings}
           id="emote_settings"
           phx-change="validate_emote_settings"

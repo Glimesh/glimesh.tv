@@ -179,17 +179,6 @@ defmodule GlimeshWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     live_dashboard "/phoenix/dashboard", metrics: GlimeshWeb.Telemetry, ecto_repos: [Glimesh.Repo]
-
-    live "/categories", Admin.CategoryLive.Index, :index
-    live "/categories/new", Admin.CategoryLive.Index, :new
-    live "/categories/:id/edit", Admin.CategoryLive.Index, :edit
-
-    live "/categories/:id", Admin.CategoryLive.Show, :show
-    live "/categories/:id/show/edit", Admin.CategoryLive.Show, :edit
-
-    live "/tags", Admin.TagLive.Index, :index
-    live "/tags/new", Admin.TagLive.Index, :new
-    live "/tags/:id/edit", Admin.TagLive.Index, :edit
   end
 
   scope "/gct", GlimeshWeb do
@@ -292,24 +281,24 @@ defmodule GlimeshWeb.Router do
     live "/:username/chat", ChatLive.PopOut, :index
   end
 
-  alias GlimeshWeb.Router.Helpers, as: Routes
+  use GlimeshWeb, :verified_routes
 
-  def graphiql_default_url(conn) do
-    Routes.url(conn) <> "/api"
+  def graphiql_default_url(_) do
+    url(~p"/api")
   end
 
-  def graphiql_socket_url(conn) do
-    (Routes.url(conn) <> "/api/socket")
+  def graphiql_socket_url(_) do
+    url(~p"/api/socket")
     |> String.replace("http", "ws")
     |> String.replace("https", "wss")
   end
 
-  def graph_default_url(conn) do
-    Routes.url(conn) <> "/api/graph"
+  def graph_default_url(_) do
+    url(~p"/api/graph")
   end
 
-  def graph_socket_url(conn) do
-    (Routes.url(conn) <> "/api/graph/socket")
+  def graph_socket_url(_) do
+    url(~p"/api/graph/socket")
     |> String.replace("http", "ws")
     |> String.replace("https", "wss")
   end

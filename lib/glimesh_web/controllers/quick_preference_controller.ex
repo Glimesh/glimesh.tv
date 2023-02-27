@@ -26,7 +26,7 @@ defmodule GlimeshWeb.QuickPreferenceController do
 
       {:error, _} ->
         # Redirect them to preferences page since they are logged in
-        conn |> redirect(to: Routes.user_settings_path(conn, :preference))
+        conn |> redirect(to: ~p"/users/settings/preference")
     end
   end
 
@@ -38,6 +38,6 @@ defmodule GlimeshWeb.QuickPreferenceController do
     |> put_flash(:info, gettext("Preferences updated successfully."))
     |> put_session(:locale, locale)
     |> put_session(:site_theme, site_theme)
-    |> redirect(to: user_return_to || Routes.homepage_path(conn, :index))
+    |> redirect(to: user_return_to || ~p"/")
   end
 end

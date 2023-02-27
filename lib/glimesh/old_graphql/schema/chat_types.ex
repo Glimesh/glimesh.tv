@@ -2,6 +2,8 @@ defmodule Glimesh.OldSchema.ChatTypes do
   @moduledoc false
   use Absinthe.Schema.Notation
 
+  use GlimeshWeb, :verified_routes
+
   import Absinthe.Resolution.Helpers
 
   alias Glimesh.OldResolvers.ChatResolver
@@ -116,7 +118,7 @@ defmodule Glimesh.OldSchema.ChatTypes do
         # This is important for our new emotes system which needs a full qualified URL.
         case token.src do
           "/" <> _ ->
-            {:ok, GlimeshWeb.Router.Helpers.static_url(GlimeshWeb.Endpoint, token.src)}
+            {:ok, url(~p"/#{token.src}")}
 
           _ ->
             {:ok, token.src}

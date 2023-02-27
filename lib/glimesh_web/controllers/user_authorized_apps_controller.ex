@@ -18,12 +18,12 @@ defmodule GlimeshWeb.UserAuthorizedAppsController do
       :ok ->
         conn
         |> put_flash(:info, gettext("Application revoked."))
-        |> redirect(to: Routes.user_authorized_apps_path(conn, :index))
+        |> redirect(to: ~p"/users/settings/authorizations")
 
       _ ->
         conn
         |> put_flash(:error, gettext("Failed to revoke token."))
-        |> redirect(to: Routes.user_authorized_apps_path(conn, :index))
+        |> redirect(to: ~p"/users/settings/authorizations")
     end
   end
 end

@@ -27,17 +27,14 @@
   </h5>
   <%= if @channel.subcategory do %>
     <%= live_patch(@channel.subcategory.name,
-      to:
-        Routes.streams_list_path(@socket, :index, @channel.category.slug,
-          subcategory: [@channel.subcategory.slug]
-        ),
+      to: ~p"/streams/#{@channel.category.slug}?subcategory[]=#{@channel.subcategory.slug}",
       class: "badge badge-pill badge-info"
     ) %>
   <% end %>
   <!--Adding in color change for Community Pride Tag in Streams-->
   <%= for tag <- @channel.tags do %>
     <%= live_patch(tag.name,
-      to: Routes.streams_list_path(@socket, :index, @channel.category.slug, tags: [tag.slug]),
+      to: ~p"/streams/#{@channel.category.slug}?tags[]=#{tag.slug}",
       class: [
         "badge badge-pill",
         if(tag.name == "Community Pride", do: "bg-pride text-dark", else: "badge-primary")
@@ -67,7 +64,7 @@
 
         <div class="modal-body">
           <.form
-            let={f}
+            :let={f}
             for={@changeset}
             id="channel-title-modal-form"
             phx-submit="save"
@@ -135,11 +132,7 @@
             <button type="submit" class="btn btn-primary btn-block btn-lg mt-3">
               <%= gettext("Save") %>
             </button>
-            <a
-              class="float-right mt-2"
-              href={Routes.user_settings_path(@socket, :stream)}
-              target="_blank"
-            >
+            <a class="float-right mt-2" href={~p"/users/settings/stream"} target="_blank">
               <%= gettext("View more settings ") %> <i class="fas fa-external-link-alt"></i>
             </a>
           </.form>

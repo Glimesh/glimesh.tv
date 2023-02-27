@@ -3,10 +3,11 @@ defmodule Glimesh.Chat.Effects do
   Chat effects for rendering badges, usernames, etc.
   """
 
+  use GlimeshWeb, :verified_routes
+
   import GlimeshWeb.Gettext
 
   alias Glimesh.Payments
-  alias GlimeshWeb.Router.Helpers, as: Routes
   alias Phoenix.HTML.Tag
 
   alias Glimesh.Chat.Effects.Badges.{
@@ -92,7 +93,7 @@ defmodule Glimesh.Chat.Effects do
     color_class = [class: get_username_color_for_message(message)]
 
     default_tags = [
-      to: Routes.user_profile_path(GlimeshWeb.Endpoint, :index, user.username),
+      to: ~p"/#{user.username}",
       target: "_blank"
     ]
 

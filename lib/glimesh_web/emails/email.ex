@@ -1,10 +1,11 @@
 defmodule GlimeshWeb.Emails.Email do
   use Bamboo.Phoenix, view: GlimeshWeb.EmailView
 
+  use GlimeshWeb, :verified_routes
+
   alias Glimesh.Accounts.User
   alias Glimesh.Streams.Channel
   alias Glimesh.Streams.Stream
-  alias GlimeshWeb.Router.Helpers, as: Routes
 
   import Bamboo.Email
 
@@ -112,12 +113,9 @@ defmodule GlimeshWeb.Emails.Email do
     |> assign(:stream_title, channel.title)
     |> assign(
       :stream_link,
-      Routes.user_stream_url(GlimeshWeb.Endpoint, :index, streamer.username,
-        utm_source: "follow_alert",
-        utm_medium: "email"
-      )
+      ~p"/#{streamer.username}?utm_source=follow_alert&utm_medium=email"
     )
-    |> assign(:unsubscribe_link, Routes.user_settings_url(GlimeshWeb.Endpoint, :notifications))
+    |> assign(:unsubscribe_link, ~p"/users/settings/notifications")
     |> assign(:streamer_name, streamer.displayname)
     |> render(:channel_live)
   end

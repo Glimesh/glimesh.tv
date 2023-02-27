@@ -55,7 +55,7 @@
                                     <%= if @platform_subscription.is_canceling do %>
                                     <%= gettext("Canceling on %{date}", date: format_datetime(@platform_subscription.ended_at)) %>
                                     <% else %>
-                                    <%= link gettext("Manage Subscription"), to: Routes.platform_subscription_index_path(@conn, :index), class: "" %>
+                                    <%= link gettext("Manage Subscription"), to: ~p"/platform_subscriptions", class: "" %>
                                     <% end %>
                                 </td>
                             </tr>
@@ -68,7 +68,7 @@
                                     <% else %>
                                     Gift Sub to
                                     <% end %>
-                                    <%= link sub.streamer.displayname, to: Routes.user_stream_path(@conn, :index, sub.streamer.displayname), class: "" %>
+                                    <%= link sub.streamer.displayname, to: ~p"/#{sub.streamer.displayname}", class: "" %>
                                     <%= if not is_nil(sub.from_user_id) do %>
                                     <br>
                                     Gifted from <%= sub.from_user.displayname %>
@@ -80,7 +80,7 @@
                                     <%= if sub.is_canceling do %>
                                     <%= gettext("Canceling on %{date}", date: format_datetime(sub.ended_at)) %><br>
                                     <% end %>
-                                    <%= link "Manage Subscription", to: Routes.user_stream_path(@conn, :support, sub.streamer.displayname), class: "" %>
+                                    <%= link "Manage Subscription", to: ~p"/#{sub.streamer.displayname}/support", class: "" %>
                                 </td>
                             </tr>
                             <% end %>
@@ -94,7 +94,7 @@
                     <p><%= gettext("You have an existing saved payment method. You can delete it by clicking the button below.") %>
                     </p>
 
-                    <%= form_for @default_payment_changeset, Routes.user_payments_path(@conn, :delete_default_payment), fn _ -> %>
+                    <%= form_for @default_payment_changeset, ~p"/users/payments/delete_default_payment", fn _ -> %>
                     <%= if @default_payment_changeset.action do %>
                     <div class="alert alert-danger">
                         <p><%= gettext("Oops, something went wrong! Please check the errors below.") %></p>
@@ -196,7 +196,7 @@
                         <li><%= gettext("Donate Button:") %> <%= truthy_checkbox(@can_receive_payments) %></li>
                     </ul>
                     <%= unless @user.is_tax_verified do %>
-                    <%= link gettext("Submit Tax Forms"), to: Routes.user_payments_path(@conn, :taxes), class: "btn btn-secondary btn-block mb-2" %>
+                    <%= link gettext("Submit Tax Forms"), to: ~p"/users/payments/taxes", class: "btn btn-secondary btn-block mb-2" %>
                     <% end %>
 
                     <%= if @stripe_dashboard_url do %>
@@ -205,7 +205,7 @@
                     <p><%= gettext("If you want to deactivate your account or need help with something, please email support@glimesh.tv") %></p>
                     <% else %>
                     <h5><%= gettext("Setup Glimesh Payouts") %></h5>
-                    <%= form_for @conn, Routes.user_payments_path(@conn, :setup), fn f -> %>
+                    <%= form_for @conn, ~p"/users/payments/setup", fn f -> %>
                     <div class="form-group">
                         <%= label f, gettext("Your Country") %>
                         <%= select f, :country, @stripe_countries, class: "form-control", required: true %>

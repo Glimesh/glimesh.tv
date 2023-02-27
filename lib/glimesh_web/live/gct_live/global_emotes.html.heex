@@ -1,7 +1,7 @@
 <div class="container">
   <h2>Global Emotes</h2>
 
-  <.form let={f} for={:emotes} id="emote_upload" phx-change="validate" phx-submit="save">
+  <.form :let={f} for={:emotes} id="emote_upload" phx-change="validate" phx-submit="save">
     <div class="card mt-4 mb-4">
       <div class="card-header">
         <h5 class="card-title">Upload New Emotes</h5>
@@ -89,7 +89,7 @@
               <figcaption><code>:<%= emote.emote %>:</code></figcaption>
             </div>
             <.form
-              let={f}
+              :let={f}
               for={:nothing}
               phx-id="save_emote_options"
               phx-change="save_emote_options"

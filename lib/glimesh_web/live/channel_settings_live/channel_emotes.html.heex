@@ -7,7 +7,7 @@
       <div class="col-2">
         <%= link(gettext("Upload Emotes"),
           class: "btn btn-primary btn-block",
-          to: Routes.user_settings_path(@socket, :upload_emotes)
+          to: ~p"/users/settings/upload_emotes"
         ) %>
       </div>
     </div>
@@ -62,7 +62,7 @@
           </div>
 
           <.form
-            let={f}
+            :let={f}
             for={:nothing}
             phx-id="save_emote_options"
             phx-change="save_emote_options"
@@ -135,7 +135,7 @@
           </div>
 
           <.form
-            let={f}
+            :let={f}
             for={:nothing}
             phx-id="save_emote_options"
             phx-change="save_emote_options"
