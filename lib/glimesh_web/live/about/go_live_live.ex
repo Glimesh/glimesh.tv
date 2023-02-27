@@ -30,7 +30,7 @@ defmodule GlimeshWeb.About.GoLiveLive do
                   "Most users who are streaming to Glimesh directly should use the \"Glimesh\" dropdown, as it has the best technology. However if you are experiencing issues, you can try the \"Glimesh - RTMP\" option."
                 )}</p>
 
-              <a href="https://support.glimesh.tv/en-us/7-stream-settings/26-obs-studio-setup-guide">{gettext("Full OBS Setup Guide")}</a>
+              <a href="https://support.glimesh.tv/en-us/75-streaming-software-station/268-obs-setup-guide">{gettext("Full OBS Setup Guide")}</a>
 
               <h3 class="mt-4">
                 <a
@@ -50,11 +50,11 @@ defmodule GlimeshWeb.About.GoLiveLive do
                   "You can stream to Glimesh with Streamlabs Desktop, however only basic features like streaming are currently supported."
                 )}</p>
 
-              <a href="https://support.glimesh.tv/en-us/7-stream-settings/113-slobs-setup-guide">{gettext("Full Streamlabs Desktop Setup Guide")}</a>
+              <a href="https://support.glimesh.tv/en-us/75-streaming-software-station/269-streamlabs-setup-guide">{gettext("Full Streamlabs Desktop Setup Guide")}</a>
 
               <div class="alert alert-primary mt-4" role="alert">
                 Looking for RTMP in OBS? Due to some delays with OBS & Streamlabs Desktop updating their services file, you may need to run the <a
-                  href="https://support.glimesh.tv/en-us/7-stream-settings/112-adding-glimesh-as-a-stream-service-in-obs-or-streamlabs-desktop"
+                  href="https://support.glimesh.tv/en-us/75-streaming-software-station/341-adding-glimesh-as-a-stream-service"
                   target="_blank"
                 >Glimesh Patcher</a> to see "Glimesh - RTMP" as an option.
               </div>
