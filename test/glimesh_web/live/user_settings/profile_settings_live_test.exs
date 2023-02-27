@@ -54,7 +54,7 @@ defmodule GlimeshWeb.UserSettings.ProfileSettingsLiveTest do
           }
         )
 
-      assert html =~ "btn-twitter-connect"
+      assert html =~ "twitter-button"
       assert html =~ "Connect Twitter Account"
       refute html =~ "@testuser123"
     end

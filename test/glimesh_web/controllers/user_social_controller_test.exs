@@ -17,7 +17,9 @@ defmodule GlimeshWeb.UserSocialControllerTest do
           |> get(~p"/users/social/twitter/connect")
 
         assert redirected_to(conn) == ~p"/users/settings/profile"
-        assert get_flash(conn, :error) =~ "There was a problem connecting your twitter account."
+
+        assert Phoenix.Flash.get(conn.assigns.flash, :error) =~
+                 "There was a problem connecting your twitter account."
       else
         conn =
           conn
