@@ -4,7 +4,7 @@
       <h2><%= gettext("Applications") %></h2>
     </div>
     <div class="col-3">
-      <%= link gettext("Create Application"), class: "btn btn-primary btn-block", to: Routes.user_applications_path(@conn, :new) %>
+      <%= link gettext("Create Application"), class: "btn btn-primary btn-block", to: ~p"/users/settings/applications/new" %>
     </div>
   </div>
 
@@ -12,7 +12,7 @@
     <div class="col-md-3">
       <div class="list-group">
         <%= for app <- @applications do %>
-        <%= link app.name, class: "list-group-item list-group-item-action", to: Routes.user_applications_path(@conn, :show, app) %>
+        <%= link app.name, class: "list-group-item list-group-item-action", to: ~p"/users/settings/applications/#{app.id}" %>
         <% end %>
       </div>
     </div>

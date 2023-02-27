@@ -37,7 +37,7 @@ defmodule GlimeshWeb.Channels.Components.VideoPlayer do
     """
   end
 
-  def play(player_id, country) do
+  def play(player_id, _country) do
     send_update(__MODULE__, id: player_id, status: "ready")
   end
 

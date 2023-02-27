@@ -18,7 +18,7 @@
   </div>
   <div class="card-body">
     <.form
-      let={f}
+      :let={f}
       for={@allow_changeset}
       class="form_allow_hosting"
       phx-change="toggle_allow_hosting"
@@ -61,7 +61,7 @@
         </div>
       </div>
     <% else %>
-      <.form for={:nothing} class="form_add_channel" phx-change="suggest">
+      <.form for={%{}} as={:nothing} class="form_add_channel" phx-change="suggest">
         <div class="row">
           <div class="col-12 col-lg-6">
             <div class="input-group">

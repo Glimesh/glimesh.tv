@@ -61,7 +61,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.HostingTest do
     end
 
     test "can host a channel", %{conn: conn, target_allowed_hosting: target_channel} do
-      {:ok, view, _html} = live(conn, Routes.user_settings_path(conn, :hosting))
+      {:ok, view, _html} = live(conn, ~p"/users/settings/hosting")
 
       render_hook(view, :add_channel_selection_made, %{
         user_id: target_channel.id,
@@ -73,7 +73,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.HostingTest do
                view
                |> element("#add-channel-button")
                |> render_click()
-               |> follow_redirect(conn, Routes.user_settings_path(conn, :hosting))
+               |> follow_redirect(conn, ~p"/users/settings/hosting")
 
       assert html_response(conn, 200) =~ "Channel added"
 
@@ -85,13 +85,13 @@ defmodule GlimeshWeb.ChannelSettingsLive.HostingTest do
       conn: conn,
       target_allowed_hosting: target_channel
     } do
-      {:ok, view, _html} = live(conn, Routes.user_settings_path(conn, :hosting))
+      {:ok, view, _html} = live(conn, ~p"/users/settings/hosting")
 
       assert {:ok, conn} =
                view
                |> element("#add-channel-button")
                |> render_click(%{"name" => target_channel.displayname, "selected" => ""})
-               |> follow_redirect(conn, Routes.user_settings_path(conn, :hosting))
+               |> follow_redirect(conn, ~p"/users/settings/hosting")
 
       assert html_response(conn, 200) =~ "Channel added"
 
@@ -181,13 +181,13 @@ defmodule GlimeshWeb.ChannelSettingsLive.HostingTest do
     end
 
     test "Can remove hosted channels", %{conn: conn, hosting_target_ready: target} do
-      {:ok, view, _html} = live(conn, Routes.user_settings_path(conn, :hosting))
+      {:ok, view, _html} = live(conn, ~p"/users/settings/hosting")
 
       assert {:ok, conn} =
                view
                |> element("#remove-channel-button-#{target.channel.id}")
                |> render_click()
-               |> follow_redirect(conn, Routes.user_settings_path(conn, :hosting))
+               |> follow_redirect(conn, ~p"/users/settings/hosting")
 
       assert html_response(conn, 200) =~ "Hosting target removed"
 
@@ -207,7 +207,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.HostingTest do
 
       conn = log_in_user(conn, user)
 
-      {:ok, view, _html} = live(conn, Routes.user_settings_path(conn, :hosting))
+      {:ok, view, _html} = live(conn, ~p"/users/settings/hosting")
 
       refute has_element?(view, "#add-channel-button")
       assert has_element?(view, "#not-qualified")
@@ -225,7 +225,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.HostingTest do
 
       conn = log_in_user(conn, user)
 
-      {:ok, view, _html} = live(conn, Routes.user_settings_path(conn, :hosting))
+      {:ok, view, _html} = live(conn, ~p"/users/settings/hosting")
 
       refute has_element?(view, "#add-channel-button")
       assert has_element?(view, "#not-qualified")
@@ -252,7 +252,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.HostingTest do
 
       conn = log_in_user(conn, user)
 
-      {:ok, view, _html} = live(conn, Routes.user_settings_path(conn, :hosting))
+      {:ok, view, _html} = live(conn, ~p"/users/settings/hosting")
 
       refute has_element?(view, "#add-channel-button")
       assert has_element?(view, "#not-qualified")

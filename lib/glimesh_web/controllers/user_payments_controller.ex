@@ -41,8 +41,8 @@ defmodule GlimeshWeb.UserPaymentsController do
   def setup(conn, %{"country" => country}) do
     user = conn.assigns.current_user
 
-    refresh_url = Routes.user_payments_url(conn, :index)
-    return_url = Routes.user_payments_url(conn, :connect)
+    refresh_url = ~p"/users/payments"
+    return_url = ~p"/users/payments/connect"
 
     stripe_url = StripeProvider.start_connect(user, country, return_url, refresh_url)
 
@@ -58,12 +58,12 @@ defmodule GlimeshWeb.UserPaymentsController do
       {:error, message} when is_bitstring(message) ->
         conn
         |> put_flash(:error, message)
-        |> redirect(to: Routes.user_payments_path(conn, :index))
+        |> redirect(to: ~p"/users/payments")
 
       {:error, %Stripe.Error{}} ->
         conn
         |> put_flash(:error, "There was an error accessing the Stripe API.")
-        |> redirect(to: Routes.user_payments_path(conn, :index))
+        |> redirect(to: ~p"/users/payments")
     end
   end
 
@@ -73,9 +73,9 @@ defmodule GlimeshWeb.UserPaymentsController do
     if user.is_tax_verified do
       conn
       |> put_flash(:info, "Your tax information has already been collected.")
-      |> redirect(to: Routes.user_payments_path(conn, :index))
+      |> redirect(to: ~p"/users/payments")
     else
-      return_url = Routes.user_payments_url(conn, :taxes_pending)
+      return_url = url(~p"/users/payments/taxes_pending")
 
       w8ben_url = Glimesh.PaymentProviders.TaxIDPro.request_w8ben(user, return_url)
 
@@ -93,7 +93,7 @@ defmodule GlimeshWeb.UserPaymentsController do
             :info,
             "There was a problem accessing our Tax Provider, please try again later."
           )
-          |> redirect(to: Routes.user_payments_path(conn, :index))
+          |> redirect(to: ~p"/users/payments")
       end
     end
   end
@@ -104,7 +104,7 @@ defmodule GlimeshWeb.UserPaymentsController do
       :info,
       "Your tax information has been collected and is currently being processed. Tax forms can take up to 14 days to process."
     )
-    |> redirect(to: Routes.user_payments_path(conn, :index))
+    |> redirect(to: ~p"/users/payments")
   end
 
   def connect(conn, _params) do
@@ -118,25 +118,25 @@ defmodule GlimeshWeb.UserPaymentsController do
             :info,
             "Your payments account is successfully linked. Your subscription button is now enabled."
           )
-          |> redirect(to: Routes.user_payments_path(conn, :index))
+          |> redirect(to: ~p"/users/payments")
 
         {:pending_taxes, message} ->
           # Should redirect to a taxes page
           conn
           |> put_flash(:info, message)
-          |> redirect(to: Routes.user_payments_path(conn, :taxes))
+          |> redirect(to: ~p"/users/payments/taxes")
 
         {:pending_stripe, message} ->
           conn
           |> put_flash(:info, message)
-          |> redirect(to: Routes.user_payments_path(conn, :index))
+          |> redirect(to: ~p"/users/payments")
       end
 
       conn
     else
       conn
       |> put_flash(:error, "There was a problem connecting your payouts account.")
-      |> redirect(to: Routes.user_payments_path(conn, :index))
+      |> redirect(to: ~p"/users/payments")
     end
   end
 
@@ -147,12 +147,12 @@ defmodule GlimeshWeb.UserPaymentsController do
       {:ok, _} ->
         conn
         |> put_flash(:info, gettext("Payment method deleted!"))
-        |> redirect(to: Routes.user_payments_path(conn, :index))
+        |> redirect(to: ~p"/users/payments")
 
       {:error, err} ->
         conn
         |> put_flash(:error, err)
-        |> redirect(to: Routes.user_payments_path(conn, :index))
+        |> redirect(to: ~p"/users/payments")
     end
   end
 end

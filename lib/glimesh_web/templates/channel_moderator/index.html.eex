@@ -4,7 +4,7 @@
       <h2><%= gettext("Channel Moderators") %></h2>
     </div>
     <div class="col-3">
-      <%= link gettext("Add Moderator"), to: Routes.channel_moderator_path(@conn, :new), class: "btn btn-primary btn-block" %>
+      <%= link gettext("Add Moderator"), to: ~p"//users/settings/channel/mods/new", class: "btn btn-primary btn-block" %>
     </div>
   </div>
 
@@ -39,7 +39,7 @@
             <td><%= yes_or_no(channel_moderator.is_editor) %></td>
 
             <td>
-              <%= link gettext("Show"), to: Routes.channel_moderator_path(@conn, :show, channel_moderator), class: "btn btn-info btn-sm" %>
+              <%= link gettext("Show"), to: ~p"/users/settings/channel/mods/#{channel_moderator.id}", class: "btn btn-info btn-sm" %>
             </td>
           </tr>
           <% end %>
@@ -57,7 +57,7 @@
       <p>
         <%= gettext("You can ban a user by entering their username below, optionally if a user is causing issues in your chat you can ban them in the chat message without leaving your stream.") %>
       </p>
-      <%= form_for :ban, Routes.channel_moderator_path(@conn, :ban_user), fn f -> %>
+      <%= form_for :ban, ~p"/users/settings/channel/mods/ban_user", fn f -> %>
 
       <%= label f, "Username to Ban" %>
       <div class="input-group mb-3" style="max-width: 400px;">
@@ -85,7 +85,7 @@
             <td><%= ban.user.displayname %></td>
             <td><%= ban.inserted_at %></td>
             <td>
-              <%= link gettext("Unban"), to: Routes.channel_moderator_path(@conn, :unban_user, ban.user.username), method: :delete, class: "btn btn-danger btn-sm" %>
+              <%= link gettext("Unban"), to: ~p"/users/settings/channel/mods/unban_user/#{ban.user.username}", method: :delete, class: "btn btn-danger btn-sm" %>
             </td>
           </tr>
           <% end %>

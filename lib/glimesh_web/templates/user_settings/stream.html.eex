@@ -6,7 +6,7 @@
         <strong><%= gettext("Unverified Account") %></strong>
         <%= gettext("Your email has not be verified, in order to stream on Glimesh you need to verify your email.") %>
 
-        <%= link gettext("Verify Email"), to: Routes.user_confirmation_path(@conn, :new), class: "btn btn-primary btn-sm" %>
+        <%= link gettext("Verify Email"), to: ~p"/users/confirm", class: "btn btn-primary btn-sm" %>
     </div>
     <% end %>
 
@@ -15,7 +15,7 @@
         <div class="card-body">
             <p><%= gettext("You currently don't have a channel setup. Press the button below if you'd like to setup your channel!") %>
             </p>
-            <%= button gettext("Create Channel"), class: "btn btn-primary", to: Routes.user_settings_path(@conn, :create_channel), method: "put"%>
+            <%= button gettext("Create Channel"), class: "btn btn-primary", to: ~p"/users/settings/create_channel", method: "put"%>
         </div>
     </div>
     <% else %>
@@ -53,7 +53,7 @@
     <div class="card">
         <div class="card-body">
 
-            <%= live_render(@conn, GlimeshWeb.UserSettings.Components.ChannelSettingsLive, id: "channel-settings-form", session: %{"route" => Routes.user_settings_path(@conn, :update_channel), "channel_changeset" => @channel_changeset, "categories" => @categories, "channel" => @channel, "user" => @current_user, "delete_route" => Routes.user_settings_path(@conn, :delete_channel), "channel_delete_disabled" => false}) %>
+            <%= live_render(@conn, GlimeshWeb.UserSettings.Components.ChannelSettingsLive, id: "channel-settings-form", session: %{"route" => ~p"/users/settings/update_channel", "channel_changeset" => @channel_changeset, "categories" => @categories, "channel" => @channel, "user" => @current_user, "delete_route" => ~p"/users/settings/delete_channel", "channel_delete_disabled" => false}) %>
 
         </div>
     </div>

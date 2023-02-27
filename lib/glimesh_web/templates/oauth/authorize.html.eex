@@ -21,7 +21,7 @@
           </ul>
         </div>
         <div class="card-footer">
-          <%= form_tag Routes.oauth_path(@conn, :process_authorize), get: :post do %>
+          <%= form_tag ~p"/oauth/authorize", get: :post do %>
           <div class="row">
             <div class="col-6">
               <%= submit gettext("Authorize"), name: "action", value: "authorize", class: "btn btn-primary btn-block" %>

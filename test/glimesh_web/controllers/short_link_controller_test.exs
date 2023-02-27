@@ -3,7 +3,7 @@ defmodule GlimeshWeb.ShortLinkControllerTest do
 
   describe "short links" do
     test "redirects to the event form", %{conn: conn} do
-      conn = get(conn, Routes.short_link_path(conn, :event_form))
+      conn = get(conn, ~p"/s/event-form")
       assert redirected_to(conn) == "https://forms.gle/6VpqMzc6i1XomaP86"
     end
   end

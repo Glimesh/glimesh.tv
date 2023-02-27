@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="text-center mb-4"><%= gettext("Enter your 2FA code!") %></h3>
-                    <%= form_for @conn, Routes.user_session_path(@conn, :tfa), [as: :user, class: "text-left"], fn f -> %>
+                    <%= form_for @conn, ~p"/users/log_in_tfa", [as: :user, class: "text-left"], fn f -> %>
                     <%= if @error_message do %>
                     <div class="alert alert-danger">
                         <p><%= @error_message %></p>

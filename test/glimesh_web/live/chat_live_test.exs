@@ -22,7 +22,7 @@ defmodule GlimeshWeb.ChatLiveTest do
     end
 
     defp generate_proper_conn(conn) do
-      get(conn, Routes.homepage_path(conn, :index))
+      get(conn, ~p"/")
     end
 
     test "old chat messages display", %{conn: conn} do
@@ -31,7 +31,7 @@ defmodule GlimeshWeb.ChatLiveTest do
       channel = ChannelLookups.get_channel_for_user(user)
       generate_message_for_channel(user, channel, @valid_chat_message)
 
-      {:ok, _view, html} = live(conn, Routes.user_stream_path(conn, :index, user.username))
+      {:ok, _view, html} = live(conn, ~p"/#{user.username}")
       assert html =~ "some message"
     end
   end

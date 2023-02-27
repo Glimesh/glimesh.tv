@@ -1,6 +1,6 @@
 <div id="chat-form" phx-hook="Chat" data-emotes={@emotes} data-theme={@theme}>
   <.form
-    let={f}
+    :let={f}
     for={@changeset}
     id="chat_message-form"
     class="chat-form"
@@ -28,9 +28,9 @@
       <%= if @disabled do %>
         <div class="input-group-prepend input-group-mock-parent flex-grow-1">
           <span class="input-group-text input-group-mock-input d-inline-block flex-grow-1">
-            <%= link("Register", to: Routes.user_registration_path(@socket, :new)) %> or <%= link(
+            <%= link("Register", to: ~p"/users/register") %> or <%= link(
               "Login",
-              to: Routes.user_session_path(@socket, :new)
+              to: ~p"/users/log_in"
             ) %> to chat!
           </span>
         </div>
@@ -59,12 +59,7 @@
             class="dropdown-item"
             href="#"
             onclick={
-              "window.open('" <>
-                Routes.chat_pop_out_url(
-                  @socket,
-                  :index,
-                  @channel_username
-                ) <> "', '_blank',
+              "window.open('" <> ~p"/#{@channel_username}/chat" <> "', '_blank',
                             'width=400,height=600,location=no,menubar=no,toolbar=no')"
             }
           >

@@ -19,34 +19,34 @@ defmodule GlimeshWeb.Api.OauthTest do
     end
 
     test "GET /oauth/authorize", %{conn: conn, oauth_app: app} do
-      conn =
-        get(
-          conn,
-          Routes.oauth_path(conn, :authorize,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            scopes: "public",
-            redirect_uri: URI.encode("http://localhost:8080/redirect"),
-            response_type: "token"
-          )
-        )
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        scopes: "public",
+        redirect_uri: URI.encode("http://localhost:8080/redirect"),
+        response_type: "token"
+      }
+
+      conn = get(conn, ~p"/oauth/authorize?#{params}")
 
       assert html_response(conn, 200) =~
                "Are you sure you wish to authorize Test Client to use your account? This application will be able to:"
     end
 
     test "POST /oauth/authorize deny", %{conn: conn, oauth_app: app} do
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        scopes: "public",
+        redirect_uri: URI.encode("http://localhost:8080/redirect"),
+        response_type: "token",
+        action: "deny"
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :process_authorize,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            scopes: "public",
-            redirect_uri: URI.encode("http://localhost:8080/redirect"),
-            response_type: "token",
-            action: "deny"
-          )
+          ~p"/oauth/authorize?#{params}"
         )
 
       html_resp = html_response(conn, 302)
@@ -59,17 +59,19 @@ defmodule GlimeshWeb.Api.OauthTest do
     end
 
     test "POST /oauth/authorize authorize token", %{conn: conn, oauth_app: app} do
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        scopes: "public",
+        redirect_uri: URI.encode("http://localhost:8080/redirect"),
+        response_type: "token",
+        action: "authorize"
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :process_authorize,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            scopes: "public",
-            redirect_uri: URI.encode("http://localhost:8080/redirect"),
-            response_type: "token",
-            action: "authorize"
-          )
+          ~p"/oauth/authorize?#{params}"
         )
 
       html_resp = html_response(conn, 302)
@@ -80,17 +82,19 @@ defmodule GlimeshWeb.Api.OauthTest do
     end
 
     test "POST /oauth/authorize authorize code", %{conn: conn, oauth_app: app} do
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        scopes: "public",
+        redirect_uri: URI.encode("http://localhost:8080/redirect"),
+        response_type: "code",
+        action: "authorize"
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :process_authorize,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            scopes: "public",
-            redirect_uri: URI.encode("http://localhost:8080/redirect"),
-            response_type: "code",
-            action: "authorize"
-          )
+          ~p"/oauth/authorize?#{params}"
         )
 
       html_resp = html_response(conn, 302)
@@ -100,31 +104,35 @@ defmodule GlimeshWeb.Api.OauthTest do
     end
 
     test "POST /api/oauth/token authorize code", %{conn: conn, oauth_app: app} do
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        scopes: "public",
+        redirect_uri: URI.encode("http://localhost:8080/redirect"),
+        response_type: "code",
+        action: "authorize"
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :process_authorize,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            scopes: "public",
-            redirect_uri: URI.encode("http://localhost:8080/redirect"),
-            response_type: "code",
-            action: "authorize"
-          )
+          ~p"/oauth/authorize?#{params}"
         )
 
       assert %{"code" => code} = decode_resp_params(redirected_to(conn, 302))
 
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        redirect_uri: URI.encode("http://localhost:8080/redirect"),
+        grant_type: "authorization_code",
+        code: code
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :token,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            redirect_uri: URI.encode("http://localhost:8080/redirect"),
-            grant_type: "authorization_code",
-            code: code
-          )
+          ~p"/api/oauth/token?#{params}"
         )
 
       json_resp = json_response(conn, 200)
@@ -132,31 +140,35 @@ defmodule GlimeshWeb.Api.OauthTest do
     end
 
     test "POST /api/oauth/token refresh authorize", %{conn: conn, oauth_app: app} do
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        scopes: "public",
+        redirect_uri: URI.encode("http://localhost:8080/redirect"),
+        response_type: "code",
+        action: "authorize"
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :process_authorize,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            scopes: "public",
-            redirect_uri: URI.encode("http://localhost:8080/redirect"),
-            response_type: "code",
-            action: "authorize"
-          )
+          ~p"/oauth/authorize?#{params}"
         )
 
       assert %{"code" => code} = decode_resp_params(redirected_to(conn, 302))
 
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        redirect_uri: URI.encode("http://localhost:8080/redirect"),
+        grant_type: "authorization_code",
+        code: code
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :token,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            redirect_uri: URI.encode("http://localhost:8080/redirect"),
-            grant_type: "authorization_code",
-            code: code
-          )
+          ~p"/api/oauth/token?#{params}"
         )
 
       assert %{
@@ -166,15 +178,17 @@ defmodule GlimeshWeb.Api.OauthTest do
                "token_type" => "bearer"
              } = json_response(conn, 200)
 
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        refresh_token: refresh_token_one,
+        grant_type: "refresh_token"
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :token,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            refresh_token: refresh_token_one,
-            grant_type: "refresh_token"
-          )
+          ~p"/api/oauth/token?#{params}"
         )
 
       assert %{
@@ -189,31 +203,35 @@ defmodule GlimeshWeb.Api.OauthTest do
     end
 
     test "POST /api/oauth/introspec inspect token", %{conn: conn, oauth_app: app, user: user} do
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        scopes: "public",
+        redirect_uri: URI.encode("http://localhost:8080/redirect"),
+        response_type: "code",
+        action: "authorize"
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :process_authorize,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            scopes: "public",
-            redirect_uri: URI.encode("http://localhost:8080/redirect"),
-            response_type: "code",
-            action: "authorize"
-          )
+          ~p"/oauth/authorize?#{params}"
         )
 
       assert %{"code" => code} = decode_resp_params(redirected_to(conn, 302))
 
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        redirect_uri: URI.encode("http://localhost:8080/redirect"),
+        grant_type: "authorization_code",
+        code: code
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :token,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            redirect_uri: URI.encode("http://localhost:8080/redirect"),
-            grant_type: "authorization_code",
-            code: code
-          )
+          ~p"/api/oauth/token?#{params}"
         )
 
       assert %{
@@ -222,14 +240,16 @@ defmodule GlimeshWeb.Api.OauthTest do
                "token_type" => "bearer"
              } = json_response(conn, 200)
 
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        token: access_token_one
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :introspect,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            token: access_token_one
-          )
+          ~p"/api/oauth/introspect?#{params}"
         )
 
       assert %{
@@ -243,31 +263,35 @@ defmodule GlimeshWeb.Api.OauthTest do
     end
 
     test "POST /api/oauth/revoke token", %{conn: conn, oauth_app: app} do
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        scopes: "public",
+        redirect_uri: URI.encode("http://localhost:8080/redirect"),
+        response_type: "code",
+        action: "authorize"
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :process_authorize,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            scopes: "public",
-            redirect_uri: URI.encode("http://localhost:8080/redirect"),
-            response_type: "code",
-            action: "authorize"
-          )
+          ~p"/oauth/authorize?#{params}"
         )
 
       assert %{"code" => code} = decode_resp_params(redirected_to(conn, 302))
 
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        redirect_uri: URI.encode("http://localhost:8080/redirect"),
+        grant_type: "authorization_code",
+        code: code
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :token,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            redirect_uri: URI.encode("http://localhost:8080/redirect"),
-            grant_type: "authorization_code",
-            code: code
-          )
+          ~p"/api/oauth/token?#{params}"
         )
 
       assert %{
@@ -277,14 +301,16 @@ defmodule GlimeshWeb.Api.OauthTest do
                "token_type" => "bearer"
              } = json_response(conn, 200)
 
+      params = %{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        token: access_token_one
+      }
+
       conn =
         post(
           conn,
-          Routes.oauth_path(conn, :revoke,
-            client_id: app.client.id,
-            client_secret: app.client.secret,
-            token: access_token_one
-          )
+          ~p"/api/oauth/revoke?#{params}"
         )
 
       assert response(conn, 200)

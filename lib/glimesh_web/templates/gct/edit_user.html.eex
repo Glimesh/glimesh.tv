@@ -6,9 +6,9 @@
             <%= gettext("If you're not authorized to edit this user you must return to the previous page.")%></p>
     </div>
 
-    <%= live_redirect gettext("Go Back"), class: "btn btn-primary mb-4", to: Routes.gct_path(@conn, :username_lookup, query: @user.username) %>
+    <%= live_redirect gettext("Go Back"), class: "btn btn-primary mb-4", to: ~p"/gct/lookup/user?query=#{@user.username}" %>
 
-    <%= form_for @user_changeset, Routes.gct_path(@conn, :update_user, @user.username), [multipart: true, class: "form", method: :put], fn f -> %>
+    <%= form_for @user_changeset, ~p"/gct/edit/#{@user.username}/update", [multipart: true, class: "form", method: :put], fn f -> %>
     <div class="card">
         <div class="card-body">
             <h5><%= gettext("General Settings") %></h5>

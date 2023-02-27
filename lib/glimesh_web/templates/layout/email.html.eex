@@ -31,9 +31,9 @@
             font-style: normal;
             font-weight: 300;
             src: local(''),
-                url('<%= Routes.static_url(GlimeshWeb.Endpoint, "/fonts/roboto-v20-latin-300.woff2") %>') format('woff2'),
-                url('<%= Routes.static_url(GlimeshWeb.Endpoint, "/fonts/roboto-v20-latin-300.woff") %>') format('woff'),
-                url('<%= Routes.static_url(GlimeshWeb.Endpoint, "/fonts/roboto-v20-latin-300.ttf") %>') format('truetype'),
+                url('<%= ~p"/fonts/roboto-v20-latin-300.woff2" %>') format('woff2'),
+                url('<%= ~p"/fonts/roboto-v20-latin-300.woff" %>') format('woff'),
+                url('<%= ~p"/fonts/roboto-v20-latin-300.ttf" %>') format('truetype'),
             ;
         }
 
@@ -169,7 +169,7 @@
                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                         <tr>
                                                             <td class="img m-center" style="font-size:0pt; line-height:0pt; text-align:left;">
-                                                                <img src="<%= Routes.static_url(GlimeshWeb.Endpoint, "/images/logos/logo-alpha.png") %>" width="279" height="38" border="0" alt="Glimesh Logo" /></td>
+                                                                <img src="<%= ~p"/images/logos/logo-alpha.png" %>" width="279" height="38" border="0" alt="Glimesh Logo" /></td>
                                                         </tr>
                                                     </table>
                                                 </th>
@@ -200,7 +200,7 @@
                             <!-- Footer -->
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td class="p30-15 bbrr" bgcolor="#0e1726" style="padding: 50px 30px; border-radius:0px 0px 6px 6px; background-image: url('<%= Routes.static_url(GlimeshWeb.Endpoint, "/images/glimheart.png") %>'); background-repeat: no-repeat; background-position: bottom right; background-size: 20%;">
+                                    <td class="p30-15 bbrr" bgcolor="#0e1726" style="padding: 50px 30px; border-radius:0px 0px 6px 6px; background-image: url('<%= ~p"/images/glimheart.png" %>'); background-repeat: no-repeat; background-position: bottom right; background-size: 20%;">
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <%#<tr>
 												<td align="center" style="padding-bottom: 30px;">

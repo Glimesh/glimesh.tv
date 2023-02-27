@@ -6,16 +6,16 @@
 
             <ul class="nav nav-fill nav-pagenav m-4">
                 <li class="nav-item <%= active_about_path(@conn, :index) %>">
-                    <%= link gettext("About Glimesh"), to: Routes.about_path(@conn, :index), class: "nav-link" %>
+                    <%= link gettext("About Glimesh"), to: ~p"/about", class: "nav-link" %>
                 </li>
                 <li class="nav-item <%= active_about_path(@conn, :streaming) %>">
-                    <%= link gettext("Streaming"), to: Routes.about_path(@conn, :streaming), class: "nav-link" %>
+                    <%= link gettext("Streaming"), to: ~p"/about/streaming", class: "nav-link" %>
                 </li>
                 <li class="nav-item <%= active_about_path(@conn, :team) %>">
-                    <%= link gettext("Contributors"), to: Routes.about_path(@conn, :team), class: "nav-link" %>
+                    <%= link gettext("Contributors"), to: ~p"/about/team", class: "nav-link" %>
                 </li>
                 <li class="nav-item <%= active_about_path(@conn, :mission) %>">
-                    <%= link gettext("Our Mission"), to: Routes.about_path(@conn, :mission), class: "nav-link" %>
+                    <%= link gettext("Our Mission"), to: ~p"/about/mission", class: "nav-link" %>
                 </li>
             </ul>
 

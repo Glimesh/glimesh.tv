@@ -1,12 +1,10 @@
 <div
   id="chat-messages"
-  class={
-    [
-      "chat-messages",
-      if(@show_mod_icons, do: "show-mod-icons"),
-      if(@show_timestamps, do: "show-timestamps")
-    ]
-  }
+  class={[
+    "chat-messages",
+    if(@show_mod_icons, do: "show-mod-icons"),
+    if(@show_timestamps, do: "show-timestamps")
+  ]}
   phx-update={@update_action}
   style={background_style(@channel)}
 >
@@ -17,16 +15,14 @@
     <div
       id={"chat-message-#{chat_message.id}"}
       data-user-id={chat_message.user.id}
-      class={
-        [
-          if(Glimesh.Chat.Effects.user_in_message(@user, chat_message),
-            do: "bubble mention",
-            else: "bubble you"
-          ),
-          if(chat_message.is_subscription_message, do: "bg-secondary text-white"),
-          if(chat_message.is_followed_message, do: "border border-info")
-        ]
-      }
+      class={[
+        if(Glimesh.Chat.Effects.user_in_message(@user, chat_message),
+          do: "bubble mention",
+          else: "bubble you"
+        ),
+        if(chat_message.is_subscription_message, do: "bg-secondary text-white"),
+        if(chat_message.is_followed_message, do: "border border-info")
+      ]}
     >
       <div class={["user-message-header", unless(@popped_out, do: "d-inline d-md-block")]}>
         <%= if Map.get(@permissions, :can_delete, false)  do %>
