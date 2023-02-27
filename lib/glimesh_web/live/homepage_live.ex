@@ -8,7 +8,7 @@ defmodule GlimeshWeb.HomepageLive do
   alias GlimeshWeb.Channels.Components.VideoPlayer
   alias GlimeshWeb.Events.Components.EventMedia
 
-  alias Surface.Components.LivePatch
+  alias Surface.Components.LiveRedirect
 
   @impl true
   def render(assigns) do
@@ -59,12 +59,11 @@ defmodule GlimeshWeb.HomepageLive do
                         {/if}
                       </p>
                     </div>
-                    <LivePatch
-                      to={Routes.user_stream_path(@socket, :index, @random_channel.user.username)}
-                      class="ml-auto text-md-nowrap mt-1"
-                    >
-                      <button type="button" class="btn btn-primary">{gettext("Watch Live")}</button>
-                    </LivePatch>
+                    <LiveRedirect
+                      to={~p"/#{@random_channel.user.username}"}
+                      class="ml-auto text-md-nowrap mt-1 btn btn-primary"
+                    >{gettext("Watch Live")}
+                    </LiveRedirect>
                   </div>
                 </div>
               </div>
@@ -83,11 +82,11 @@ defmodule GlimeshWeb.HomepageLive do
                   {#if @current_user}
                     <div class="d-flex flex-row justify-content-around mt-3">
                       {link(gettext("Create Your Channel"),
-                        to: Routes.user_settings_path(@socket, :stream),
+                        to: ~p"/users/settings/stream",
                         class: "btn btn-info mr-4"
                       )}
                       {link(gettext("Setup Payouts"),
-                        to: "/users/settings/profile",
+                        to: ~p"/users/settings/profile",
                         class: "btn btn-info"
                       )}
                     </div>
@@ -96,7 +95,7 @@ defmodule GlimeshWeb.HomepageLive do
                       {gettext("Join %{user_count} others!", user_count: @user_count)}
                     </p>
                     {link(gettext("Register Your Account"),
-                      to: Routes.user_registration_path(@socket, :new),
+                      to: ~p"/users/register",
                       class: "btn btn-primary btn-lg"
                     )}
                   {/if}
@@ -121,11 +120,11 @@ defmodule GlimeshWeb.HomepageLive do
 
               {#if @current_user}
                 {link(gettext("Customize Your Profile"),
-                  to: Routes.user_settings_path(@socket, :profile),
+                  to: ~p"/users/settings/profile",
                   class: "btn btn-info mt-3"
                 )}
                 {link(gettext("Create Your Channel"),
-                  to: Routes.user_settings_path(@socket, :stream),
+                  to: ~p"/users/settings/stream",
                   class: "btn btn-info mt-3"
                 )}
                 {link(gettext("Setup Payouts"),
@@ -137,7 +136,7 @@ defmodule GlimeshWeb.HomepageLive do
                   {gettext("Join %{user_count} others!", user_count: @user_count)}
                 </p>
                 {link(gettext("Register Your Account"),
-                  to: Routes.user_registration_path(@socket, :new),
+                  to: ~p"/users/register",
                   class: "btn btn-primary btn-lg mt-3"
                 )}
               {/if}
@@ -164,11 +163,11 @@ defmodule GlimeshWeb.HomepageLive do
         <div class="row mt-2 mb-4">
           {#for {name, link, icon} <- list_categories()}
             <div class="col">
-              <LivePatch to={link} class="btn btn-outline-primary btn-lg btn-block py-4">
+              <LiveRedirect to={link} class="btn btn-outline-primary btn-lg btn-block py-4">
                 <i class={"fas fa-2x fa-fw", icon} />
                 <br>
                 <small class="text-color-link">{name}</small>
-              </LivePatch>
+              </LiveRedirect>
             </div>
           {/for}
         </div>
@@ -230,32 +229,32 @@ defmodule GlimeshWeb.HomepageLive do
     [
       {
         gettext("Gaming"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "gaming"),
+        ~p"/streams/gaming",
         "fa-gamepad"
       },
       {
         gettext("Art"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "art"),
+        ~p"/streams/art",
         "fa-palette"
       },
       {
         gettext("Music"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "music"),
+        ~p"/streams/music",
         "fa-headphones"
       },
       {
         gettext("Tech"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "tech"),
+        ~p"/streams/tech",
         "fa-microchip"
       },
       {
         gettext("IRL"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "irl"),
+        ~p"/streams/irl",
         "fa-camera-retro"
       },
       {
         gettext("Education"),
-        Routes.streams_list_path(GlimeshWeb.Endpoint, :index, "education"),
+        ~p"/streams/education",
         "fa-graduation-cap"
       }
     ]

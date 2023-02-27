@@ -1,5 +1,5 @@
 <.form
-  let={f}
+  :let={f}
   for={@channel_changeset}
   action={@route}
   phx-change="change_channel"
@@ -275,17 +275,17 @@
         <%= error_tag(f, :show_recent_chat_messages_only) %>
       </div>
       <div class="form-group">
-        <%= label(f, :disable_hyperlinks, gettext("Should links automatically be clickable?")) %>
-        <%= select(f, :disable_hyperlinks, [Yes: false, No: true],
-          class: "form-control",
-          disabled: @channel.block_links
-        ) %>
-        <%= error_tag(f, :disable_hyperlinks) %>
-      </div>
-      <div class="form-group">
         <%= label(f, :block_links, gettext("Block viewers from posting links?")) %>
         <%= select(f, :block_links, [Yes: true, No: false], class: "form-control") %>
         <%= error_tag(f, :block_links) %>
+      </div>
+      <div class="form-group">
+        <%= label(f, :disable_hyperlinks, gettext("Should links automatically be clickable?")) %>
+        <%= select(f, :disable_hyperlinks, [Yes: false, No: true],
+          class: ["form-control", "settings-field"],
+          disabled: @channel.block_links
+        ) %>
+        <%= error_tag(f, :disable_hyperlinks) %>
       </div>
       <div class="form-group">
         <%= label(
@@ -347,6 +347,22 @@
           </label>
         </div>
         <%= error_tag(f, :show_on_homepage) %>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mt-4"><%= gettext("Advanced") %></h2>
+  <p>
+    Temporary advanced controls to help test features of Glimesh. It's likely that touching one of these settings without being in that test will break your stream.
+  </p>
+  <div class="row mb-4">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, :backend, gettext("Channel Video Backend")) %>
+        <%= select(f, :backend, [Normal: "ftl", Waveguide: "whep"],
+          class: ["form-control", "settings-field"]
+        ) %>
+        <%= error_tag(f, :backend) %>
       </div>
     </div>
   </div>

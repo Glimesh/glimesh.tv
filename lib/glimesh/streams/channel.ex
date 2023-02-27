@@ -104,7 +104,8 @@ defmodule Glimesh.Streams.Channel do
       :block_links,
       :require_confirmed_email,
       :minimum_account_age,
-      :allow_hosting
+      :allow_hosting,
+      :backend
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)
@@ -112,6 +113,7 @@ defmodule Glimesh.Streams.Channel do
       greater_than_or_equal_to: 0,
       less_than_or_equal_to: 720
     )
+    |> validate_inclusion(:backend, ["ftl", "whep"])
     |> set_chat_rules_content_html()
     |> cast_attachments(attrs, [:poster, :chat_bg])
     |> maybe_put_tags(:tags, attrs)
@@ -133,7 +135,7 @@ defmodule Glimesh.Streams.Channel do
 
   defp validate_no_active_emotes(changeset) do
     case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{emote_prefix: emote_prefix}} ->
+      %Ecto.Changeset{valid?: true, changes: %{emote_prefix: _}} ->
         if Glimesh.Emotes.count_all_emotes_for_channel(changeset.data) > 0 do
           add_error(
             changeset,

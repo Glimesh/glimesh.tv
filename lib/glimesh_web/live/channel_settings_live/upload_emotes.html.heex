@@ -6,8 +6,9 @@
       </div>
       <%= if @can_upload do %>
         <.form
-          let={f}
-          for={:emotes}
+          :let={f}
+          for={%{}}
+          as={:emotes}
           id="emote_upload"
           phx-change="validate_upload"
           phx-submit="save_upload"
@@ -34,7 +35,7 @@
 
               <br />
 
-              <%= live_file_input(@uploads.emote) %>
+              <.live_file_input upload={@uploads.emote} />
               <br />
             </div>
             <div class="row">
@@ -54,8 +55,8 @@
                   </div>
 
                   <div class="text-center">
-                    <%= live_img_preview(entry, height: "128px", width: "128px") %>
-                    <%= live_img_preview(entry, height: "32px", width: "32px") %>
+                    <.live_img_preview entry={entry} height="128px" width="128px" />
+                    <.live_img_preview entry={entry} height="32px" width="32px" />
                     <figcaption><code><%= entry.client_name %></code></figcaption>
                   </div>
                   <div class="input-group">
@@ -107,7 +108,7 @@
         </p>
 
         <.form
-          let={f}
+          :let={f}
           for={@emote_settings}
           id="emote_settings"
           phx-change="validate_emote_settings"

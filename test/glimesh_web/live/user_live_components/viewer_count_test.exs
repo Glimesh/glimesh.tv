@@ -21,6 +21,11 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCountTest do
     end
 
     test "shows one viewer by loading a stream", %{conn: conn, channel: channel} do
+      # Force live
+      Ecto.Changeset.change(channel)
+      |> Ecto.Changeset.force_change(:status, "live")
+      |> Glimesh.Repo.update()
+
       {:ok, view, _} = live_isolated(conn, @component, session: %{"channel_id" => channel.id})
       streamer = Glimesh.Accounts.get_user!(channel.user_id)
 
@@ -34,7 +39,7 @@ defmodule GlimeshWeb.UserLive.Components.ViewerCountTest do
         country_codes: []
       })
 
-      {:ok, stream_view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+      {:ok, stream_view, _} = live(conn, ~p"/#{streamer.username}")
       # Poke janus to ensure we show up as a viewer
       assert render(stream_view) =~ "1 Viewers"
 

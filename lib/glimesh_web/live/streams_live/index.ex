@@ -8,21 +8,21 @@ defmodule GlimeshWeb.StreamsLive.Index do
       <h1 class="text-center mt-4 mb-4"><%= gettext("Categories") %></h1>
       <div class="row">
         <div class="col-4">
-          <%= live_redirect class: "btn btn-primary btn-lg btn-block", to: Routes.streams_list_path(@socket, :index, "gaming") do %>
+          <%= live_redirect class: "btn btn-primary btn-lg btn-block", to: ~p"/streams/gaming" do %>
             <i class="fas fa-gamepad fa-2x fa-fw"></i>
             <br />
             <small><%= gettext("Gaming") %></small>
           <% end %>
         </div>
         <div class="col-4">
-          <%= live_redirect class: "btn btn-primary btn-lg btn-block", to: Routes.streams_list_path(@socket, :index, "art") do %>
+          <%= live_redirect class: "btn btn-primary btn-lg btn-block", to: ~p"/streams/art" do %>
             <i class="fas fa-palette fa-2x fa-fw"></i>
             <br />
             <small><%= gettext("Art") %></small>
           <% end %>
         </div>
         <div class="col-4">
-          <%= live_redirect class: "btn btn-primary btn-lg btn-block", to: Routes.streams_list_path(@socket, :index, "music") do %>
+          <%= live_redirect class: "btn btn-primary btn-lg btn-block", to: ~p"/streams/music" do %>
             <i class="fas fa-headphones fa-2x fa-fw"></i>
             <br />
             <small><%= gettext("Music") %></small>
@@ -30,21 +30,21 @@ defmodule GlimeshWeb.StreamsLive.Index do
         </div>
         <div class="w-100 mb-4"></div>
         <div class="col-4">
-          <%= live_redirect class: "btn btn-primary btn-lg btn-block", to: Routes.streams_list_path(@socket, :index, "tech") do %>
+          <%= live_redirect class: "btn btn-primary btn-lg btn-block", to: ~p"/streams/tech" do %>
             <i class="fas fa-microchip fa-2x fa-fw"></i>
             <br />
             <small><%= gettext("Tech") %></small>
           <% end %>
         </div>
         <div class="col-4">
-          <%= live_redirect class: "btn btn-primary btn-lg btn-block", to: Routes.streams_list_path(@socket, :index, "irl") do %>
+          <%= live_redirect class: "btn btn-primary btn-lg btn-block", to: ~p"/streams/irl" do %>
             <i class="fas fa-camera-retro fa-2x fa-fw"></i>
             <br />
             <small><%= gettext("IRL") %></small>
           <% end %>
         </div>
         <div class="col-4">
-          <%= live_redirect class: "btn btn-primary btn-lg btn-block", to: Routes.streams_list_path(@socket, :index, "education") do %>
+          <%= live_redirect class: "btn btn-primary btn-lg btn-block", to: ~p"/streams/education" do %>
             <i class="fas fa-graduation-cap fa-2x fa-fw"></i>
             <br />
             <small><%= gettext("Education") %></small>

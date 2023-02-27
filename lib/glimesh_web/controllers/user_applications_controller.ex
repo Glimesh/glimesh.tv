@@ -47,7 +47,7 @@ defmodule GlimeshWeb.UserApplicationsController do
       {:ok, application} ->
         conn
         |> put_flash(:info, gettext("Application created successfully."))
-        |> redirect(to: Routes.user_applications_path(conn, :show, application.id))
+        |> redirect(to: ~p"/users/settings/applications/#{application.id}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -74,7 +74,7 @@ defmodule GlimeshWeb.UserApplicationsController do
         {:ok, app} ->
           conn
           |> put_flash(:info, gettext("Application updated successfully."))
-          |> redirect(to: Routes.user_applications_path(conn, :show, app))
+          |> redirect(to: ~p"/users/settings/applications/#{app.id}")
 
         {:error, %Ecto.Changeset{} = changeset} ->
           render(conn, "edit.html", application: app, changeset: changeset)
@@ -82,7 +82,7 @@ defmodule GlimeshWeb.UserApplicationsController do
         {:error, :unauthorized} ->
           conn
           |> put_flash(:error, gettext("You do not have permission to update this app."))
-          |> redirect(to: Routes.user_applications_path(conn, :edit, app))
+          |> redirect(to: ~p"/users/settings/applications/#{app.id}/edit")
       end
     end
   end
@@ -95,12 +95,12 @@ defmodule GlimeshWeb.UserApplicationsController do
         {:ok, _oauth_app} ->
           conn
           |> put_flash(:info, gettext("OAuth Client ID & Client Secret rotated successfully."))
-          |> redirect(to: Routes.user_applications_path(conn, :show, app))
+          |> redirect(to: ~p"/users/settings/applications/#{app.id}")
 
         {:error, :unauthorized} ->
           conn
           |> put_flash(:error, gettext("You do not have permission to rotate this apps keys."))
-          |> redirect(to: Routes.user_applications_path(conn, :show, app))
+          |> redirect(to: ~p"/users/settings/applications/#{app.id}")
       end
     end
   end

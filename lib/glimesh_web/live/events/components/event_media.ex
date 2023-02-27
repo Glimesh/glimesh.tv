@@ -1,8 +1,8 @@
 defmodule GlimeshWeb.Events.Components.EventMedia do
   use Surface.Component
+  use GlimeshWeb, :verified_routes
 
   alias Glimesh.EventsTeam.Event
-  alias GlimeshWeb.Router.Helpers, as: Routes
 
   prop event, :struct
   prop show_img, :boolean, default: true
@@ -39,7 +39,7 @@ defmodule GlimeshWeb.Events.Components.EventMedia do
           {/if}
           on <a href={event_link(@event)}>glimesh.tv/{@event.channel}</a>
         </p>
-        <#slot name="footer">
+        <#slot {@footer}>
           <a class="btn btn-primary" href={event_link(@event)}>Watch Channel</a>
         </#slot>
       </div>
@@ -53,6 +53,6 @@ defmodule GlimeshWeb.Events.Components.EventMedia do
   end
 
   defp event_link(%Event{channel: channel}) do
-    Routes.user_stream_path(GlimeshWeb.Endpoint, :index, channel)
+    ~p"/#{channel}"
   end
 end

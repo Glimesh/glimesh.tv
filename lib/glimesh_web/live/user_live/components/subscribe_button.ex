@@ -55,7 +55,7 @@ defmodule GlimeshWeb.UserLive.Components.SubscribeButton do
       <% else %>
         <span class="d-none d-lg-block">
           <%= link(gettext("Subscribe"),
-            to: Routes.user_registration_path(@socket, :new),
+            to: ~p"/users/register",
             class: "btn btn-secondary btn-responsive"
           ) %>
         </span>

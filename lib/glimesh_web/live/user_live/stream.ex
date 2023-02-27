@@ -30,7 +30,10 @@ defmodule GlimeshWeb.UserLive.Stream do
         else
           if connected?(socket) do
             # Wait until the socket connection is ready to load the stream
-            Process.send(self(), :load_stream, [])
+            if Streams.is_live?(channel) do
+              Process.send(self(), :load_stream, [])
+            end
+
             Streams.subscribe_to(:channel, channel.id)
           end
 
@@ -63,7 +66,8 @@ defmodule GlimeshWeb.UserLive.Stream do
            |> assign(:stream_metadata, get_last_stream_metadata(channel.stream))
            |> assign(:player_error, nil)
            |> assign(:user, maybe_user)
-           |> assign(:ultrawide, false)}
+           |> assign(:ultrawide, false)
+           |> assign(:webrtc_error, false)}
         end
 
       nil ->
@@ -148,6 +152,11 @@ defmodule GlimeshWeb.UserLive.Stream do
   end
 
   def handle_info({:channel, channel}, socket) do
+    if socket.assigns.status == "offline" and channel.status == "live" and
+         socket.assigns.prompt_mature == false do
+      Process.send(self(), :load_stream, [])
+    end
+
     {:noreply, socket |> assign(:stream, channel.stream)}
   end
 
@@ -187,6 +196,10 @@ defmodule GlimeshWeb.UserLive.Stream do
 
   def handle_event("lost_packets", _, socket) do
     {:noreply, socket}
+  end
+
+  def handle_event("webrtc_error", message, socket) do
+    {:noreply, socket |> assign(:webrtc_error, message)}
   end
 
   def handle_event("ultrawide", %{"enabled" => enabled}, socket) do

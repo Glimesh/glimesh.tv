@@ -2,7 +2,9 @@ import {
     FtlPlayer
 } from "janus-ftl-player";
 
-let player; 
+import WHEPPlayer from "../WhepPlayer";
+
+let player;
 
 export default {
     mounted() {
@@ -10,7 +12,9 @@ export default {
         let container = this.el;
         let videoLoadingContainer = document.getElementById("video-loading-container");
         let forceMuted = container.dataset.muted;
-        let saveVolumeChanges = false;
+        let backend = container.dataset.backend;
+        let rtrouterUrl = container.dataset.rtrouter || "";
+        let saveVolumeChanges = false
         let currentlyInUltrawide = false;
 
         // Handle 21:9 aspect ratio monitors/browsers
@@ -23,30 +27,51 @@ export default {
         let currentAspectRatio = size.width / size.height;
         if (currentAspectRatio > 2.3) {
             // We assume this is an ultrawide of some sort
-            parent.pushEvent("ultrawide", {enabled: true});
+            parent.pushEvent("ultrawide", { enabled: true });
             currentlyInUltrawide = true;
         }
 
-        this.handleEvent("load_video", ({janus_url, channel_id}) => {
-            player = new FtlPlayer(container, janus_url, {
-                hooks: {
-                    janusSlowLink(uplink, lostPackets) {
-                        parent.pushEvent("lost_packets", {
-                            uplink: uplink,
-                            lostPackets: lostPackets
-                        });
-                        console.debug(`GLIMESH.TV LOST PACKETS uplink=${uplink} lostPackets=${lostPackets}`)
+        // Check for WebRTC support
+        if (!window.RTCPeerConnection) {
+            // WebRTC is not enabled / supported in the browser
+            parent.pushEvent("webrtc_error", "WebRTC is not enabled in your browser.");
+            return;
+        }
+
+        this.handleEvent("load_video", ({ janus_url, channel_id }) => {
+            videoLoadingContainer.classList.add("loading");
+
+            if (backend == "ftl") {
+                player = new FtlPlayer(container, janus_url, {
+                    hooks: {
+                        janusSlowLink(uplink, lostPackets) {
+                            parent.pushEvent("lost_packets", {
+                                uplink: uplink,
+                                lostPackets: lostPackets
+                            });
+                            console.debug(`GLIMESH.TV LOST PACKETS uplink=${uplink} lostPackets=${lostPackets}`)
+                        }
                     }
-                }
-            }); 
-            console.debug(`load_video event for janus_url=${janus_url} channel_id=${channel_id}`)
-            player.init(channel_id);
+                });
 
-            // Ensure we only save volume changes after the stream has been loaded.
+                console.debug(`FTL backend load_video event for janus_url=${janus_url} channel_id=${channel_id}`)
+
+                player.init(channel_id);
+            } else if (backend == "whep") {
+                player = new WHEPPlayer(container, rtrouterUrl);
+
+                console.debug(`WHEP backend load_video event for endpoint=${rtrouterUrl} channel_id=${channel_id}`)
+
+                player.init(channel_id).catch(error => {
+                    console.error(error);
+                    parent.pushEvent("webrtc_error", error.message)
+                });
+            }
+
             saveVolumeChanges = true;
-        }); 
+        });
 
-        if(forceMuted) {
+        if (forceMuted) {
             // If the parent player wants us to be muted, eg: homepage
             // container.volume = 0;
             container.muted = true;
@@ -59,37 +84,37 @@ export default {
         }
 
         container.addEventListener("volumechange", (event) => {
-            if (saveVolumeChanges && container.volume >=0) {
+            if (saveVolumeChanges && container.volume >= 0) {
                 localStorage.setItem("player-volume", container.volume);
             }
         });
-     
-        container.addEventListener("loadeddata", function() {
+
+        container.addEventListener("loadeddata", function () {
             let playPromise = container.play();
             if (playPromise !== undefined) {
                 playPromise.then(_ => {
-                  // Autoplay started!
+                    // Autoplay started!
                 }).catch(error => {
                     console.error(error);
                     container.muted = true;
                     container.play();
                 });
-              }
+            }
         });
 
-        container.addEventListener("waiting", function() {
-            videoLoadingContainer.classList.add("loading");
-        });
-        
-        container.addEventListener("abort", function() {
+        container.addEventListener("waiting", function () {
             videoLoadingContainer.classList.add("loading");
         });
 
-        container.addEventListener("playing", function() {
+        container.addEventListener("abort", function () {
+            videoLoadingContainer.classList.add("loading");
+        });
+
+        container.addEventListener("playing", function () {
             videoLoadingContainer.classList.remove("loading");
         });
 
-        window.onresize = function() {
+        window.onresize = function () {
             // Get current aspect ratio
             let size = {
                 width: window.innerWidth || document.body.clientWidth,
@@ -98,20 +123,31 @@ export default {
             let currentAspectRatio = size.width / size.height;
             if (currentAspectRatio > 2.3) {
                 if (!currentlyInUltrawide) {
-                    parent.pushEvent("ultrawide", {enabled: true});
+                    parent.pushEvent("ultrawide", { enabled: true });
                 }
                 currentlyInUltrawide = true;
             } else {
                 if (currentlyInUltrawide) {
-                    parent.pushEvent("ultrawide", {enabled: false});
+                    parent.pushEvent("ultrawide", { enabled: false });
                 }
                 currentlyInUltrawide = false;
             }
         }
     },
+    updated() {
+        let container = this.el;
+        if (player && container.dataset.backend == "whep") {
+            if (container.dataset.debug == "") {
+                player.enableDebug();
+            } else {
+                player.disableDebug();
+            }
+        }
+    },
     destroyed() {
-        if(player) {
+        if (player) {
             player.destroy();
         }
     }
 };
+

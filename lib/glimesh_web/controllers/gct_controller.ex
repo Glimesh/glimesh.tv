@@ -158,7 +158,7 @@ defmodule GlimeshWeb.GctController do
         {:ok, user} ->
           conn
           |> put_flash(:info, gettext("User updated successfully"))
-          |> redirect(to: Routes.gct_path(conn, :edit_user_profile, user.username))
+          |> redirect(to: ~p"/gct/edit/profile/#{user.username}")
 
         {:error, changeset} ->
           render(conn, "edit_user_profile.html",
@@ -222,7 +222,7 @@ defmodule GlimeshWeb.GctController do
         {:ok, user} ->
           conn
           |> put_flash(:info, gettext("User updated successfully"))
-          |> redirect(to: Routes.gct_path(conn, :edit_user, user.username))
+          |> redirect(to: ~p"/gct/edit/#{user.username}")
 
         {:error, changeset} ->
           view_billing =
@@ -356,7 +356,7 @@ defmodule GlimeshWeb.GctController do
 
           conn
           |> put_flash(:info, gettext("Channel updated successfully"))
-          |> redirect(to: Routes.gct_path(conn, :edit_channel, channel.id))
+          |> redirect(to: ~p"/gct/edit/channel/#{channel.id}")
 
         {:error, %Ecto.Changeset{} = changeset} ->
           render(conn, "edit_channel.html",
@@ -385,7 +385,7 @@ defmodule GlimeshWeb.GctController do
 
           conn
           |> put_flash(:error, gettext("Unauthorized. This attempt has been logged."))
-          |> redirect(to: Routes.gct_path(conn, :index))
+          |> redirect(to: ~p"/gct")
       end
     end
   end
@@ -407,12 +407,12 @@ defmodule GlimeshWeb.GctController do
 
           conn
           |> put_flash(:info, "Channel deleted successfully.")
-          |> redirect(to: Routes.gct_path(conn, :index))
+          |> redirect(to: ~p"/gct")
 
         {:error, _changeset} ->
           conn
           |> put_flash(:error, "An issue occurred when trying to delete the channel.")
-          |> redirect(to: Routes.gct_path(conn, :edit_channel, channel_id))
+          |> redirect(to: ~p"/gct/edit/channel/#{channel_id}")
       end
     end
   end
@@ -442,12 +442,12 @@ defmodule GlimeshWeb.GctController do
             :info,
             "Channel stream has been bounced. The user will be able to restart the stream."
           )
-          |> redirect(to: Routes.gct_path(conn, :index))
+          |> redirect(to: ~p"/gct")
 
         {:error, _changeset} ->
           conn
           |> put_flash(:error, "An issue occurred when trying to bounce the channel.")
-          |> redirect(to: Routes.gct_path(conn, :edit_channel, channel_id))
+          |> redirect(to: ~p"/gct/edit/channel/#{channel_id}")
       end
     end
   end
@@ -477,12 +477,12 @@ defmodule GlimeshWeb.GctController do
             :info,
             "Channel stream shutdown successfully and the user can no longer stream."
           )
-          |> redirect(to: Routes.gct_path(conn, :index))
+          |> redirect(to: ~p"/gct")
 
         {:error, _changeset} ->
           conn
           |> put_flash(:error, "An issue occurred when trying to shutdown the channel.")
-          |> redirect(to: Routes.gct_path(conn, :edit_channel, channel_id))
+          |> redirect(to: ~p"/gct/edit/channel/#{channel_id}")
       end
     end
   end

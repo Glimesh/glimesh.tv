@@ -41,7 +41,7 @@ defmodule GlimeshWeb.GraphApi.PrivilegedChannelsTest do
   """
 
   @log_stream_metadata_query """
-  mutation LogStreamMetadata($streamId: ID!, $metadata: ChannelMetadataInput!) {
+  mutation LogStreamMetadata($streamId: ID!, $metadata: StreamMetadataInput!) {
     logStreamMetadata(streamId: $streamId, metadata: $metadata) {
       id
     }
