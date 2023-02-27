@@ -100,20 +100,21 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
               </div>
 
               <div class="modal-body">
-                <%= form_for(:user, "#", phx_submit: :ban) %>
-                <div class="form-group ">
-                  <label for="banReason"><%= gettext("Ban Reason") %></label>
-                  <textarea
-                    rows="5"
-                    class="form-control"
-                    name="ban_reason"
-                    id="banReason"
-                    placeholder="A descriptive reason to why this user is being banned. This is required, if you don't provide one then the user will not be banned."
-                  >
+                <%= form_for :user, "#", [phx_submit: :ban], fn _ -> %>
+                  <div class="form-group ">
+                    <label for="banReason"><%= gettext("Ban Reason") %></label>
+                    <textarea
+                      rows="5"
+                      class="form-control"
+                      name="ban_reason"
+                      id="banReason"
+                      placeholder="A descriptive reason to why this user is being banned. This is required, if you don't provide one then the user will not be banned."
+                    >
                   </textarea>
-                </div>
+                  </div>
 
-                <button class="btn btn-danger btn-block mt-4"><%= gettext("Ban User") %></button>
+                  <button class="btn btn-danger btn-block mt-4"><%= gettext("Ban User") %></button>
+                <% end %>
               </div>
             </div>
           </div>

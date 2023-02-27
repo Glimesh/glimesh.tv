@@ -80,7 +80,7 @@ defmodule Glimesh.Api do
     if String.starts_with?(potentially_local_path, ["http://", "https://"]) do
       potentially_local_path
     else
-      ~p"/#{potentially_local_path}"
+      Phoenix.VerifiedRoutes.unverified_url(GlimeshWeb.Endpoint, potentially_local_path)
     end
   end
 

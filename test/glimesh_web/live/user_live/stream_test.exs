@@ -95,8 +95,6 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       html = render_click(view, "toggle_debug")
 
       assert html =~ "Debug Information"
-      assert html =~ "some-de-server"
-      assert html =~ "https://some-de-server/janus"
     end
   end
 

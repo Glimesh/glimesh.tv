@@ -28,19 +28,11 @@ defmodule GlimeshWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import GlimeshWeb.ConnCase
-
-      # The default endpoint for testing
-      @endpoint GlimeshWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Glimesh.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Glimesh.Repo, {:shared, self()})
-    end
-
+    Glimesh.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 

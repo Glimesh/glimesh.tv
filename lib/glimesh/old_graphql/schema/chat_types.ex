@@ -6,6 +6,7 @@ defmodule Glimesh.OldSchema.ChatTypes do
 
   import Absinthe.Resolution.Helpers
 
+  alias Glimesh.Api
   alias Glimesh.OldResolvers.ChatResolver
   alias Glimesh.Repo
   alias Glimesh.Streams
@@ -118,7 +119,7 @@ defmodule Glimesh.OldSchema.ChatTypes do
         # This is important for our new emotes system which needs a full qualified URL.
         case token.src do
           "/" <> _ ->
-            {:ok, url(~p"/#{token.src}")}
+            {:ok, Api.resolve_full_url(token.src)}
 
           _ ->
             {:ok, token.src}

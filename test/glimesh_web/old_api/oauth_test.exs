@@ -291,7 +291,7 @@ defmodule GlimeshWeb.Api.OauthTest do
       conn =
         post(
           conn,
-          ~p"/oauth/authorize?#{params}"
+          ~p"/api/oauth/token?#{params}"
         )
 
       assert %{

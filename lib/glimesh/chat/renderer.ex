@@ -67,7 +67,7 @@ defmodule Glimesh.Chat.Renderer do
   end
 
   defp append_local_path("/" <> _ = src) do
-    ~p"/#{src}"
+    src
   end
 
   defp append_local_path(src) do

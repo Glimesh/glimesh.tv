@@ -90,7 +90,7 @@ defmodule GlimeshWeb.Events.EventsAdminLive do
 
                   <div class="col-9">
                     <div class="custom-file">
-                      {live_file_input(@uploads.image)}
+                      <.live_file_input upload={@uploads.image} />
                     </div>
 
                     {#if @changeset.errors[:image]}

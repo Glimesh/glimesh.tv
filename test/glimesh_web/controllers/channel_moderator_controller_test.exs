@@ -32,7 +32,7 @@ defmodule GlimeshWeb.ChannelModeratorControllerTest do
   }
 
   describe "unauthorized user" do
-    setup [:register_and_log_in_user]
+    setup [:register_and_log_in_streamer]
 
     test "does not render edit form", %{conn: conn} do
       # Fixture for a different random user

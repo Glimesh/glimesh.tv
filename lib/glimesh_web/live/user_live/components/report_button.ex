@@ -36,7 +36,7 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
               </div>
 
               <div class="modal-body">
-                <.form for={:user} id="report-form" phx-submit="save">
+                <.form for={%{}} as={:user} id="report-form" phx-submit="save">
                   <div class="form-group">
                     <label for="reportLocation"><%= gettext("Where did this happen?") %></label>
                     <select

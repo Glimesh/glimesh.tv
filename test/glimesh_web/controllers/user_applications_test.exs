@@ -131,7 +131,7 @@ defmodule GlimeshWeb.UserApplicationsTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, app: app} do
-      conn = put(conn, ~p"/users/settings/applications/#{app.id}/update", app: @invalid_attrs)
+      conn = put(conn, ~p"/users/settings/applications/#{app.id}", app: @invalid_attrs)
 
       assert html_response(conn, 200) =~ "Edit Application"
     end
