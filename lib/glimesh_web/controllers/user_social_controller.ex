@@ -47,4 +47,16 @@ defmodule GlimeshWeb.UserSocialController do
         |> redirect(to: ~p"/users/settings/profile")
     end
   end
+
+  def twitter_connect(conn, _params) do
+    auth_url = Glimesh.Socials.Twitter.authorize_url(conn)
+
+    if is_nil(auth_url) do
+      conn
+      |> put_flash(:error, gettext("There was a problem connecting your twitter account."))
+      |> redirect(to: ~p"/users/settings/profile")
+    else
+      redirect(conn, external: auth_url)
+    end
+  end
 end

@@ -98,13 +98,8 @@
                     <% end %>
                   <% else %>
                     <a
-                      href={@twitter_auth_url}
-                      class={
-                        [
-                          "btn btn-info btn-block btn-twitter-connect",
-                          unless(@twitter_auth_url, do: "disabled")
-                        ]
-                      }
+                      href={~p"/users/social/twitter/connect"}
+                      class={["twitter-button btn btn-info btn-block"]}
                     >
                       <i class="fab fa-twitter fa-fw"></i>
                       <%= if f.data.social_twitter do %>

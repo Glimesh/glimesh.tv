@@ -13,7 +13,6 @@ defmodule GlimeshWeb.UserSettings.Components.ProfileSettingsLive do
      socket
      |> put_flash(:info, nil)
      |> assign(:profile_changeset, session["profile_changeset"])
-     |> assign(:twitter_auth_url, session["twitter_auth_url"])
      |> assign(:twitter_account, Glimesh.Socials.get_social(session["user"], "twitter"))
      |> assign(:user, session["user"])
      |> assign(:route, session["route"])
