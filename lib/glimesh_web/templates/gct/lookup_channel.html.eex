@@ -19,7 +19,7 @@
                         <% end %>
 
                         <p><%= gettext("Channel ID: %{value}", value: @channel.id ) %></p>
-                        <p><%= link(gettext("Belongs to: %{value}", value: @channel.user.username ), to: Routes.gct_path(@conn, :username_lookup, query: @channel.user.username)) %></p>
+                        <p><%= link(gettext("Belongs to: %{value}", value: @channel.user.username ), to: ~p"/gct/lookup/user?query=#{@channel.user.username}") %></p>
                         <p><%= gettext("Created At: %{value} UTC", value: @channel.inserted_at ) %></p>
                         <p><%= gettext("Status: %{value}", value: @channel.status ) %></p>
                         <p><%= gettext("Backend: %{value}", value: @channel.backend ) %></p>

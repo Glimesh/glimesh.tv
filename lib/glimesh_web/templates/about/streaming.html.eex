@@ -108,10 +108,10 @@
 
     <div class="mt-4 mb-4">
         <%= if @current_user do %>
-        <%= link gettext("Customize Your Channel"), to: Routes.user_settings_path(@conn, :stream), class: "btn btn-primary btn-lg mx-4" %>
+        <%= link gettext("Customize Your Channel"), to: ~p"/users/settings/stream", class: "btn btn-primary btn-lg mx-4" %>
         <% else %>
-        <%= link gettext("Register Your Account"), to: Routes.user_registration_path(@conn, :new), class: "btn btn-primary btn-lg mx-4" %>
-        <%= link gettext("Login"), to: Routes.user_session_path(@conn, :new), class: "btn btn-primary btn-lg mx-4" %>
+        <%= link gettext("Register Your Account"), to: ~p"/users/register", class: "btn btn-primary btn-lg mx-4" %>
+        <%= link gettext("Login"), to: ~p"/users/log_in", class: "btn btn-primary btn-lg mx-4" %>
         <% end %>
     </div>
 

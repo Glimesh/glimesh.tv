@@ -2,11 +2,18 @@ defmodule Glimesh.Chat.Renderer do
   @moduledoc """
   Converts a list of Glimesh.Chat.Token's into rendered HTML
   """
+  use GlimeshWeb, :verified_routes
+
   alias Glimesh.Chat.Token
 
   def render([%Token{type: "emote", text: text, src: src}]) do
     # If we're just an emote, render big boy!
     [render_emote(text, src, "128px")]
+    |> Enum.map(&map_to_safe(&1))
+  end
+
+  def render([%Token{type: "tenor", id: id, src: url, small_src: smallUrl}]) do
+    [render_tenor_gif(id, url, smallUrl)]
     |> Enum.map(&map_to_safe(&1))
   end
 
@@ -38,6 +45,10 @@ defmodule Glimesh.Chat.Renderer do
     render_link(text, url)
   end
 
+  def render_tenor_gif(%Token{type: "tenor", id: id, src: url, small_src: smallUrl}) do
+    render_tenor_gif(id, url, smallUrl)
+  end
+
   @doc """
   Renders a link into an anchor tag
   Safe?
@@ -64,8 +75,18 @@ defmodule Glimesh.Chat.Renderer do
     )
   end
 
+  def render_tenor_gif(id, url, smallUrl) do
+    Phoenix.HTML.Tag.tag(:img,
+      src: url,
+      style: "height: 55%; max-height: 220px; max-width:350px;",
+      draggable: "false",
+      "data-id": id,
+      "data-small-url": smallUrl
+    )
+  end
+
   defp append_local_path("/" <> _ = src) do
-    GlimeshWeb.Router.Helpers.static_path(GlimeshWeb.Endpoint, src)
+    src
   end
 
   defp append_local_path(src) do

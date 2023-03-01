@@ -19,6 +19,7 @@ import ChannelLookupTypeahead from "./hooks/ChannelLookupTypeahead";
 import RecentTags from "./hooks/RecentTags";
 import Bootstrapize from "./hooks/Bootstrapize";
 import MastodonShareButton from "./hooks/MastodonShareButton";
+import TenorSearch from "./hooks/TenorSearch";
 
 // https://github.com/github/markdown-toolbar-element
 import "@github/markdown-toolbar-element";
@@ -44,6 +45,7 @@ Hooks.ChannelLookupTypeahead = ChannelLookupTypeahead;
 Hooks.RecentTags = RecentTags;
 Hooks.Bootstrapize = Bootstrapize;
 Hooks.MastodonShareButton = MastodonShareButton;
+Hooks.TenorSearch = TenorSearch;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
@@ -56,8 +58,8 @@ liveSocket.enableDebug();
 
 // Make sure no dropdown form's are automatically closed on action
 function ignoreDropdownFormClosing() {
-    document.querySelectorAll('.dropdown-menu form').forEach(function(el) { 
-        el.onclick = function(e) { e.stopPropagation(); } 
+    document.querySelectorAll('.dropdown-menu form').forEach(function (el) {
+        el.onclick = function (e) { e.stopPropagation(); }
     });
 }
 
@@ -68,7 +70,7 @@ window.BSN = BSN;
 window.BSN.initCallback(document.body);
 
 // Show progress bar on live navigation and form submits
-window.addEventListener("phx:page-loading-start", () => {});
+window.addEventListener("phx:page-loading-start", () => { });
 window.addEventListener("phx:page-loading-stop", info => {
     if (info.detail && info.detail.kind && info.detail.kind === "initial") {
         // Only do a full reload of dom whenever the entire page changes 

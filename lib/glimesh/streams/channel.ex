@@ -34,6 +34,8 @@ defmodule Glimesh.Streams.Channel do
 
     field :emote_prefix, :string
 
+    field :allow_reaction_gifs, :boolean, default: false
+
     field :allow_hosting, :boolean, default: false
 
     # This is here temporarily as we add additional schema to handle it.
@@ -108,7 +110,8 @@ defmodule Glimesh.Streams.Channel do
       :minimum_account_age,
       :allow_hosting,
       :backend,
-      :share_text
+      :share_text,
+      :allow_reaction_gifs
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)
@@ -138,7 +141,7 @@ defmodule Glimesh.Streams.Channel do
 
   defp validate_no_active_emotes(changeset) do
     case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{emote_prefix: emote_prefix}} ->
+      %Ecto.Changeset{valid?: true, changes: %{emote_prefix: _}} ->
         if Glimesh.Emotes.count_all_emotes_for_channel(changeset.data) > 0 do
           add_error(
             changeset,
@@ -296,5 +299,14 @@ defmodule Glimesh.Streams.Channel do
     |> maybe_put_tags(:tags, attrs)
     |> maybe_put_subcategory(:subcategory, attrs)
     |> unique_constraint([:user_id])
+  end
+
+  def allow_reaction_gifs?(channel) do
+    channel.allow_reaction_gifs and allow_reaction_gifs_site_wide?()
+  end
+
+  def allow_reaction_gifs_site_wide? do
+    Keyword.get(Application.get_env(:glimesh, :tenor_config), :allow_tenor, false) and
+      String.length(Keyword.get(Application.get_env(:glimesh, :tenor_config), :apikey, "")) > 2
   end
 end

@@ -10,6 +10,7 @@ defmodule Glimesh.Chat.Parser do
     defstruct allow_links: true,
               allow_emotes: true,
               allow_animated_emotes: false,
+              allow_reaction_gifs: false,
               channel_id: nil,
               user_id: nil,
               emotes: []
@@ -20,6 +21,7 @@ defmodule Glimesh.Chat.Parser do
   @emote_regex ~r/(?::\w+:)/
   # credo:disable-for-next-line
   @hyperlink_regex ~r/((https?):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/
+  @tenor_regex ~r/:tenor:(?<id>[^:]+):(?<url>https:\/\/media\.tenor\.com\/.+):(?<smallurl>https:\/\/media\.tenor\.com\/.+)/
 
   # Older hyperlink regex
   # credo:disable-for-next-line
@@ -53,12 +55,25 @@ defmodule Glimesh.Chat.Parser do
     config = Map.put(config, :emotes, emotes)
 
     parsed =
-      [chat_message]
-      |> split_with_regex(@hyperlink_regex)
-      |> split_with_regex(@emote_regex)
-      |> map_to_tokens(config)
+      if check_if_tenor(chat_message, config) do
+        [parse_tenor(chat_message)]
+      else
+        [chat_message]
+        |> split_with_regex(@hyperlink_regex)
+        |> split_with_regex(@emote_regex)
+        |> map_to_tokens(config)
+      end
 
     parsed
+  end
+
+  defp check_if_tenor(message, %Config{} = config) do
+    config.allow_reaction_gifs and String.starts_with?(message, ":") and
+      Regex.match?(@tenor_regex, message)
+  end
+
+  defp parse_tenor(message) do
+    tenor_token(Regex.named_captures(@tenor_regex, message))
   end
 
   defp split_with_regex(items, regex) do
@@ -106,6 +121,15 @@ defmodule Glimesh.Chat.Parser do
       type: "emote",
       text: emote,
       src: src
+    }
+  end
+
+  defp tenor_token(%{"id" => id, "url" => src, "smallurl" => smallUrl}) do
+    %Token{
+      type: "tenor",
+      tenor_id: id,
+      src: src,
+      small_src: smallUrl
     }
   end
 end

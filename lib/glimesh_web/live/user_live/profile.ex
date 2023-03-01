@@ -14,7 +14,7 @@ defmodule GlimeshWeb.UserLive.Profile do
 
         video_id = Profile.youtube_video_id(streamer.youtube_intro_url)
 
-        profile_url = Routes.user_profile_url(socket, :index, streamer.username)
+        profile_url = url(~p"/#{streamer.username}/profile")
 
         avatar_url = Glimesh.Avatar.url({streamer.avatar, streamer}, :original)
 

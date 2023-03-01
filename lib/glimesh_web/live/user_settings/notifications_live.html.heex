@@ -1,7 +1,7 @@
 <div class="container">
   <h2 class="mt-4"><%= gettext("Notifications") %></h2>
 
-  <.form let={f} for={@changeset} id="notifications" phx-change="save">
+  <.form :let={f} for={@changeset} id="notifications" phx-change="save">
     <div class="card">
       <div class="card-header">
         <h4><%= gettext("Newsletter Subscriptions") %></h4>

@@ -37,7 +37,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
   """
 
   @user_query_number """
-  query getUser($id: Number!) {
+  query getUser($id: Int!) {
     user(id: $id) {
       username
     }
@@ -45,7 +45,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
   """
 
   @user_query_nodes """
-  query getUser($id: Number!) {
+  query getUser($id: Int!) {
     user(id: $id) {
       followingLiveChannels {
         count
@@ -99,7 +99,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
   """
 
   @follower_query_streamerid_list """
-  query getUser($user_id: Number!) {
+  query getUser($user_id: ID!) {
     followers(streamerId: $user_id, first: 200) {
       edges{
         node{
@@ -113,7 +113,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
   """
 
   @follower_query_userid_list """
-  query getUser($user_id: Number!) {
+  query getUser($user_id: ID!) {
     followers(userId: $user_id, first: 200) {
       edges{
         node{
@@ -284,9 +284,9 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
       streamer = streamer_fixture()
       AccountFollows.follow(streamer, streamer)
 
-      resp = run_query(conn, @follower_query_userid_list, %{user_id: streamer.id})["data"]
+      resp = run_query(conn, @follower_query_userid_list, %{user_id: streamer.id})
 
-      assert resp == %{
+      assert resp["data"] == %{
                "followers" => %{
                  "edges" => [%{"node" => %{"user" => %{"username" => streamer.username}}}]
                }
@@ -318,7 +318,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
   end
 
   @query_user_info """
-  query getUser($id: Number!) {
+  query getUser($id: Int!) {
     user(id: $id) {
       username
       email
@@ -352,7 +352,7 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
       resp = run_query(conn, @query_user_info, %{id: user.id})["data"]
 
       # Will not return the full path in testing
-      assert get_in(resp, ["user", "avatarUrl"]) =~ "/uploads/avatars/user"
+      assert get_in(resp, ["user", "avatarUrl"]) =~ "/uploads/avatars/#{user.username}.png"
     end
   end
 
@@ -538,7 +538,9 @@ defmodule GlimeshWeb.GraphApi.AccountsTest do
     setup :register_and_set_user_token
 
     test "you can get your own email but not someone elses", %{conn: conn, user: user} do
-      assert get_in(run_query(conn, @query_user_info, %{id: user.id}), ["data", "user", "email"]) ==
+      resp = run_query(conn, @query_user_info, %{id: user.id})
+
+      assert get_in(resp, ["data", "user", "email"]) ==
                user.email
 
       another_user = user_fixture()

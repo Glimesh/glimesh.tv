@@ -14,7 +14,7 @@ defmodule GlimeshWeb.About.OpenDataLive do
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="list-group">
-            <%= live_redirect to: Routes.open_data_path(@socket, :index), class: "list-group-item list-group-item-action" do %>
+            <%= live_redirect to: ~p"/about/open-data", class: "list-group-item list-group-item-action" do %>
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1"><%= gettext("Platform User Growth") %></h5>
               </div>
@@ -22,7 +22,7 @@ defmodule GlimeshWeb.About.OpenDataLive do
                 <%= gettext("Number of users on the platform over time, and net-new each week.") %>
               </p>
             <% end %>
-            <%= live_redirect to: Routes.open_data_path(@socket, :subscriptions), class: "list-group-item list-group-item-action" do %>
+            <%= live_redirect to: ~p"/about/open-data/subscriptions", class: "list-group-item list-group-item-action" do %>
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1"><%= gettext("Recurring Subscriptions") %></h5>
               </div>
@@ -30,7 +30,7 @@ defmodule GlimeshWeb.About.OpenDataLive do
                 <%= gettext("Channel subscriptions totals by month.") %>
               </p>
             <% end %>
-            <%= live_redirect to: Routes.open_data_path(@socket, :streams), class: "list-group-item list-group-item-action" do %>
+            <%= live_redirect to: ~p"/about/open-data/streams", class: "list-group-item list-group-item-action" do %>
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1"><%= gettext("Live Streams") %></h5>
               </div>

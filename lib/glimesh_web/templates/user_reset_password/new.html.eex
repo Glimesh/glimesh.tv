@@ -6,7 +6,7 @@
                 <div class="card-body">
                     <h3>Forgot your password?</h3>
                     <p>It happens! Enter your email below to reset it.</p>
-                    <%= form_for :user, Routes.user_reset_password_path(@conn, :create), [class: ""], fn f -> %>
+                    <%= form_for :user, ~p"/users/reset_password", [class: ""], fn f -> %>
                     <div cass="form-group">
                         <%= label f, gettext("Email") %>
                         <%= email_input f, :email, class: "form-control", placeholder: "Email", autofocus: "true", required: true %>
@@ -23,10 +23,10 @@
 
         <div class="col-md-5 col-lg-4">
             <h5 class="mt-4">Don't have an account?</h5>
-            <%= link "Register", class: "btn btn-primary", to: Routes.user_registration_path(@conn, :new) %>
+            <%= link "Register", class: "btn btn-primary", to: ~p"/users/register" %>
 
             <h5 class="mt-4">Remember your password?</h5>
-            <%= link "Login", class: "btn btn-primary", to: Routes.user_session_path(@conn, :new) %>
+            <%= link "Login", class: "btn btn-primary", to: ~p"/users/log_in" %>
         </div>
 
     </div>

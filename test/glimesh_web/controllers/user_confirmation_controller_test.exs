@@ -11,7 +11,7 @@ defmodule GlimeshWeb.UserConfirmationControllerTest do
 
   describe "GET /users/confirm" do
     test "renders the confirmation page", %{conn: conn} do
-      conn = get(conn, Routes.user_confirmation_path(conn, :new))
+      conn = get(conn, ~p"/users/confirm")
       response = html_response(conn, 200)
       assert response =~ "<h3>Resend Confirmation Email</h3>"
     end
@@ -21,13 +21,13 @@ defmodule GlimeshWeb.UserConfirmationControllerTest do
     @tag :capture_log
     test "sends a new confirmation token", %{conn: conn, user: user} do
       conn =
-        post(conn, Routes.user_confirmation_path(conn, :create), %{
+        post(conn, ~p"/users/confirm", %{
           "user" => %{"email" => user.email}
         })
 
       assert redirected_to(conn) == "/"
 
-      assert get_flash(conn, :info) =~
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
                "If your e-mail is in our system and it has not been confirmed yet, you will receive an e-mail with instructions shortly."
 
       assert Repo.get_by!(Accounts.UserToken, user_id: user.id).context == "confirm"
@@ -37,13 +37,13 @@ defmodule GlimeshWeb.UserConfirmationControllerTest do
       Repo.update!(Accounts.User.confirm_changeset(user))
 
       conn =
-        post(conn, Routes.user_confirmation_path(conn, :create), %{
+        post(conn, ~p"/users/confirm", %{
           "user" => %{"email" => user.email}
         })
 
       assert redirected_to(conn) == "/"
 
-      assert get_flash(conn, :info) =~
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
                "If your e-mail is in our system and it has not been confirmed yet, you will receive an e-mail with instructions shortly."
 
       refute Repo.get_by(Accounts.UserToken, user_id: user.id)
@@ -51,13 +51,13 @@ defmodule GlimeshWeb.UserConfirmationControllerTest do
 
     test "does not send confirmation token if email is invalid", %{conn: conn} do
       conn =
-        post(conn, Routes.user_confirmation_path(conn, :create), %{
+        post(conn, ~p"/users/confirm", %{
           "user" => %{"email" => "unknown@example.com"}
         })
 
       assert redirected_to(conn) == "/"
 
-      assert get_flash(conn, :info) =~
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
                "If your e-mail is in our system and it has not been confirmed yet, you will receive an e-mail with instructions shortly."
 
       assert Repo.all(Accounts.UserToken) == []
@@ -71,22 +71,27 @@ defmodule GlimeshWeb.UserConfirmationControllerTest do
           Accounts.deliver_user_confirmation_instructions(user, url)
         end)
 
-      conn = get(conn, Routes.user_confirmation_path(conn, :confirm, token))
+      conn = get(conn, ~p"/users/confirm/#{token}")
       assert redirected_to(conn) == "/"
-      assert get_flash(conn, :info) =~ "Account confirmed successfully"
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Account confirmed successfully"
       assert Accounts.get_user!(user.id).confirmed_at
       refute get_session(conn, :user_token)
       assert Repo.all(Accounts.UserToken) == []
 
-      conn = get(conn, Routes.user_confirmation_path(conn, :confirm, token))
+      conn = get(conn, ~p"/users/confirm/#{token}")
       assert redirected_to(conn) == "/"
-      assert get_flash(conn, :error) =~ "Confirmation link is invalid or it has expired"
+
+      assert Phoenix.Flash.get(conn.assigns.flash, :error) =~
+               "Confirmation link is invalid or it has expired"
     end
 
     test "does not confirm email with invalid token", %{conn: conn, user: user} do
-      conn = get(conn, Routes.user_confirmation_path(conn, :confirm, "oops"))
+      conn = get(conn, ~p"/users/confirm/oops")
       assert redirected_to(conn) == "/"
-      assert get_flash(conn, :error) =~ "Confirmation link is invalid or it has expired"
+
+      assert Phoenix.Flash.get(conn.assigns.flash, :error) =~
+               "Confirmation link is invalid or it has expired"
+
       refute Accounts.get_user!(user.id).confirmed_at
     end
   end

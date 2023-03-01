@@ -20,6 +20,8 @@ defmodule Glimesh.Api.Schema do
 
     import_fields(:streams_queries)
     import_fields(:streams_connection_queries)
+
+    import_fields(:chat_autocomplete)
   end
 
   mutation do

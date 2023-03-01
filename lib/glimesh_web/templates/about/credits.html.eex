@@ -9,7 +9,7 @@
     <%= for sub <- @founder_subscribers do %>
 
     <div class="col-4 col-md-3 mb-4">
-        <%= live_redirect to: Routes.user_profile_path(@conn, :index, sub.user.username) do %>
+        <%= live_redirect to: ~p"/#{sub.user.username}/profile" do %>
         <div class="text-md-center">
             <p><%= sub.user.displayname %></p>
             <img src="<%= Glimesh.Avatar.url({sub.user.avatar, sub.user}, :original) %>" alt="<%= sub.user.displayname %>" style="width: 80% !important;" class="img-fluid mb-2 img-avatar">
@@ -24,7 +24,7 @@
 
 <%= for sub <- @supporter_subscribers do %>
 
-<%= live_redirect to: Routes.user_profile_path(@conn, :index, sub.user.username), class: "text-white nowrap" do %>
+<%= live_redirect to: ~p"/#{sub.user.username}/profile", class: "text-white nowrap" do %>
 <img src="<%= Glimesh.Avatar.url({sub.user.avatar, sub.user}, :original) %>" alt="<%= sub.user.displayname %>" class="img-avatar" height="20" width="20"> <%= sub.user.displayname %>
 
 <% end %>

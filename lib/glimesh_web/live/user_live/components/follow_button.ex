@@ -46,7 +46,7 @@ defmodule GlimeshWeb.UserLive.Components.FollowButton do
         </button>
       <% end %>
     <% else %>
-      <%= link to: Routes.user_registration_path(@socket, :new), class: "btn btn-primary btn-responsive" do %>
+      <%= link to: ~p"/users/register", class: "btn btn-primary btn-responsive" do %>
         <span class="d-none d-lg-block"><%= gettext("Follow") %></span>
         <span class="d-lg-none"><i class="fas fa-user-plus fa-fw"></i></span>
       <% end %>
