@@ -7,6 +7,7 @@
     phx-target={@myself}
     phx-submit="send"
   >
+    <div id="autocomplete-suggestions" class="d-none autocomplete-suggestions"></div>
     <%= if message = f.errors[:message] do %>
       <div id="channel-footer" class="channel-footer">
         <span class="text-danger"><%= translate_error(message) %></span>

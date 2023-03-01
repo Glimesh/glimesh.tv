@@ -312,4 +312,14 @@ defmodule Glimesh.Api.ChatTypes do
       end
     end
   end
+
+  object :chat_autocomplete do
+    @desc "Autocomplete a partial user name"
+    field :autocomplete_recent_chat_users, list_of(:string) do
+      arg(:channel_id, non_null(:id))
+      arg(:partial_usernames, non_null(list_of(:string)))
+
+      resolve(&ChatResolver.autocomplete_recent_chat_users/3)
+    end
+  end
 end

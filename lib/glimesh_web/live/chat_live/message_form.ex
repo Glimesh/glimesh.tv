@@ -30,6 +30,13 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
     save_chat_message(socket, channel, user, chat_message_params)
   end
 
+  def handle_event("user_autocomplete", %{"partial_usernames" => partial_usernames}, socket) do
+    channel = Glimesh.ChannelLookups.get_channel!(socket.assigns.channel.id)
+    user_suggestions = Chat.get_recent_chatters_username_autocomplete(channel, partial_usernames)
+
+    {:reply, %{suggestions: user_suggestions}, socket}
+  end
+
   defp save_chat_message(socket, channel, user, chat_message_params) do
     case Chat.create_chat_message(user, channel, chat_message_params) do
       {:ok, _chat_message} ->

@@ -65,6 +65,24 @@ defmodule Glimesh.Api.ChatResolver do
     end
   end
 
+  def autocomplete_recent_chat_users(
+        _parent,
+        %{channel_id: channel_id, partial_usernames: partial_usernames},
+        %{context: %{access: access}}
+      ) do
+    with :ok <- Bodyguard.permit(Glimesh.Api.Scopes, :chat, access) do
+      channel = ChannelLookups.get_channel!(channel_id)
+      suggestions = Chat.get_recent_chatters_username_autocomplete(channel, partial_usernames)
+
+      suggested_usernames =
+        Enum.into(suggestions, [], fn item ->
+          item[:suggestion]
+        end)
+
+      {:ok, suggested_usernames}
+    end
+  end
+
   defp perform_channel_action(
          _parent,
          %{channel_id: channel_id, user_id: user_id},
