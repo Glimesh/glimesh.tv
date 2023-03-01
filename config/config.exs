@@ -298,6 +298,11 @@ config :sentry,
 
 config :phoenix_markdown, :server_tags, only: ["privacy.html", "cookies.html", "terms.html"]
 
+config :glimesh, :tenor_config,
+  allow_tenor: true,
+  content_filter: "medium",
+  apikey: ""
+
 import_config "badwords.exs"
 import_config "emotes.exs"
 # Import environment specific config. This must remain at the bottom

@@ -24,6 +24,25 @@ defmodule GlimeshWeb.GraphApi.ChatsTest do
     }
   }
   """
+  @create_tenor_message_mutation """
+  mutation CreateTenorMessage($channelId: ID!, $message: ChatMessageInput!) {
+    createTenorMessage(channelId: $channelId, message: $message) {
+      message
+      user {
+        username
+      }
+      tokens {
+        type
+        text
+        ... on TenorToken {
+          src
+          tenor_id
+          small_src
+        }
+      }
+    }
+  }
+  """
   @create_chat_message_with_metadata_mutation """
   mutation CreateChatMessage($channelId: ID!, $message: ChatMessageInput!) {
     createChatMessage(channelId: $channelId, message: $message) {
@@ -258,6 +277,41 @@ defmodule GlimeshWeb.GraphApi.ChatsTest do
                    "src" => expected_url
                  },
                  %{"type" => "text", "text" => " world!"}
+               ]
+             }
+    end
+
+    test "can send a tenor reaction gif based message", %{
+      conn: conn,
+      user: user,
+      channel: channel
+    } do
+      conn =
+        post(conn, "/api/graph", %{
+          "query" => @create_tenor_message_mutation,
+          "variables" => %{
+            channelId: "#{channel.id}",
+            message: %{
+              message:
+                ":tenor:23232323232:https://media.tenor.com/blahblah:https://media.tenor.com/anotherthing"
+            }
+          }
+        })
+
+      assert json_response(conn, 200)["data"]["createTenorMessage"] == %{
+               "message" =>
+                 ":tenor:23232323232:https://media.tenor.com/blahblah:https://media.tenor.com/anotherthing",
+               "user" => %{
+                 "username" => user.username
+               },
+               "tokens" => [
+                 %{
+                   "type" => "tenor",
+                   "text" => nil,
+                   "tenor_id" => "23232323232",
+                   "src" => "https://media.tenor.com/blahblah",
+                   "small_src" => "https://media.tenor.com/anotherthing"
+                 }
                ]
              }
     end

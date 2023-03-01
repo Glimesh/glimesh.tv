@@ -1,0 +1,46 @@
+.tenor-search-popup {
+    background-color: var(--body-bg-color); 
+    min-width: 400px; 
+    overflow-x: hidden;
+}
+
+.tenor-search-content {
+    overflow-y: auto;
+    height: 550px;    
+}
+
+.tenor-search-categoryitem {
+    background-repeat: no-repeat; 
+    background-position: center; 
+    background-size: cover; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 50px; 
+    border-radius: 15px;
+}
+
+.tenor-search-categoryitem:hover {
+    border: 5px solid;
+    border-color: var(--secondary-color);
+    cursor: pointer;
+}
+
+.tenor-search-categoryitem-overlay {
+    background-color: var(--body-bg-color); 
+    opacity: 0.6; 
+    width: 100%; 
+    height: 100%; 
+    border-radius: 15px;
+}
+
+.tenor-search-categoryitem-name {
+    color: var(--body-color); 
+    font-weight: 800;
+}
+
+.tenor-results-item:hover {
+    border: 5px solid;
+    border-color: var(--secondary-color);
+    cursor: pointer;
+}

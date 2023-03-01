@@ -263,4 +263,43 @@ defmodule GlimeshWeb.ChatLiveTest do
       assert render(view) =~ "Show Mod Icons"
     end
   end
+
+  describe "tenor reaction gif chat" do
+    test "reaction gif button appears to users if enabled on channel", %{conn: conn} do
+      user = user_fixture()
+      streamer = streamer_fixture(%{}, %{allow_reaction_gifs: true})
+
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => user, "channel_id" => streamer.channel.id}
+        )
+
+      assert render(view) =~ "reaction-button"
+    end
+
+    test "reaction gif button does NOT appear to users if disabled on channel", %{conn: conn} do
+      user = user_fixture()
+      streamer = streamer_fixture(%{}, %{allow_reaction_gifs: false})
+
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => user, "channel_id" => streamer.channel.id}
+        )
+
+      refute render(view) =~ "reaction-button"
+    end
+
+    test "reaction gif button appears to streamer even if disabled on their channel", %{
+      conn: conn
+    } do
+      streamer = streamer_fixture(%{}, %{allow_reaction_gifs: false})
+
+      {:ok, view, _html} =
+        live_isolated(conn, GlimeshWeb.ChatLive.Index,
+          session: %{"user" => streamer, "channel_id" => streamer.channel.id}
+        )
+
+      assert render(view) =~ "reaction-button"
+    end
+  end
 end

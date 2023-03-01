@@ -6,6 +6,7 @@ defmodule Glimesh.Chat do
   import Ecto.Query, warn: false
 
   alias Glimesh.Accounts.User
+  alias Glimesh.Chat
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Events
   alias Glimesh.Payments
@@ -39,7 +40,7 @@ defmodule Glimesh.Chat do
         platform_subscriber = Payments.is_platform_subscriber?(user)
 
         config =
-          Glimesh.Chat.get_chat_parser_config(
+          Chat.get_chat_parser_config(
             channel,
             platform_subscriber,
             user.id
@@ -64,6 +65,37 @@ defmodule Glimesh.Chat do
       else
         {:error, "This channel has links disabled!"}
       end
+    end
+  end
+
+  def create_tenor_message(%User{} = user, %Channel{} = channel, attrs \\ %{}) do
+    with :ok <- Bodyguard.permit(__MODULE__, :create_tenor_message, user, channel) do
+      channel_subscriber = Payments.is_subscribed?(channel, user)
+      platform_subscriber = Payments.is_platform_subscriber?(user)
+
+      config =
+        Chat.get_chat_parser_config(
+          channel,
+          platform_subscriber,
+          user.id
+        )
+
+      %ChatMessage{
+        channel: channel,
+        user: user,
+        metadata: %ChatMessage.Metadata{
+          subscriber: channel_subscriber,
+          streamer: channel.streamer_id == user.id,
+          moderator: Glimesh.Chat.is_moderator?(channel, user),
+          admin: user.is_admin,
+          platform_founder_subscriber: Payments.is_platform_founder_subscriber?(user),
+          platform_supporter_subscriber: Payments.is_platform_supporter_subscriber?(user)
+        }
+      }
+      |> ChatMessage.changeset(attrs)
+      |> ChatMessage.put_tokens(config)
+      |> Repo.insert()
+      |> broadcast(:chat_message)
     end
   end
 
@@ -368,10 +400,18 @@ defmodule Glimesh.Chat do
   end
 
   def get_chat_parser_config(%Channel{} = channel, allow_animated_emotes \\ false, userid) do
-    %Glimesh.Chat.Parser.Config{
+    allow_reaction_gifs =
+      if channel.user_id == userid do
+        Channel.allow_reaction_gifs_site_wide?()
+      else
+        Channel.allow_reaction_gifs?(channel)
+      end
+
+    %Chat.Parser.Config{
       allow_links: !channel.disable_hyperlinks,
       allow_emotes: true,
       allow_animated_emotes: allow_animated_emotes,
+      allow_reaction_gifs: allow_reaction_gifs,
       channel_id: channel.id,
       user_id: userid
     }
