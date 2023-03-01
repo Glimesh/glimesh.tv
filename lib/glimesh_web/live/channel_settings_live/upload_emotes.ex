@@ -64,7 +64,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
       {:noreply,
        socket
        |> put_flash(:emote_error, Enum.join(errors, ". "))
-       |> redirect(to: Routes.user_settings_path(socket, :emotes))}
+       |> redirect(to: ~p"/users/settings/emotes")}
     else
       {:noreply,
        socket
@@ -72,7 +72,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.UploadEmotes do
          :emote_info,
          "Successfully uploaded emotes, pending review by the Core Team"
        )
-       |> redirect(to: Routes.user_settings_path(socket, :emotes))}
+       |> redirect(to: ~p"/users/settings/emotes")}
     end
   end
 

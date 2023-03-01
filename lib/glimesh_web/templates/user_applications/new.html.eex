@@ -4,13 +4,13 @@
       <h2><%= gettext("Create Application") %></h2>
     </div>
     <div class="col-2">
-      <%= link gettext("Back"), class: "btn btn-primary btn-block", to: Routes.user_applications_path(@conn, :index) %>
+      <%= link gettext("Back"), class: "btn btn-primary btn-block", to: ~p"/users/settings/applications" %>
     </div>
   </div>
 
   <div class="card">
     <div class="card-body">
-      <%= render "form.html", Map.put(assigns, :action, Routes.user_applications_path(@conn, :create)) %>
+      <%= render "form.html", Map.put(assigns, :action, ~p"/users/settings/applications/create") %>
     </div>
   </div>
 </div>

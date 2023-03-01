@@ -19,11 +19,7 @@ defmodule GlimeshWeb.About.GoLiveLive do
 
               <h3>
                 <a href="https://obsproject.com/" targe="_blank" class="text-color-link text-color-link-no-hover">
-                  <img
-                    height="40"
-                    src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/obs-small-icon.png")}
-                    alt="OBS Studio Logo"
-                  /> OBS Studio
+                  <img height="40" src={~p"/images/about/go-live/obs-small-icon.png"} alt="OBS Studio Logo"> OBS Studio
                 </a>
               </h3>
 
@@ -34,7 +30,7 @@ defmodule GlimeshWeb.About.GoLiveLive do
                   "Most users who are streaming to Glimesh directly should use the \"Glimesh\" dropdown, as it has the best technology. However if you are experiencing issues, you can try the \"Glimesh - RTMP\" option."
                 )}</p>
 
-              <a href="https://support.glimesh.tv/en-us/7-stream-settings/26-obs-studio-setup-guide">{gettext("Full OBS Setup Guide")}</a>
+              <a href="https://support.glimesh.tv/en-us/75-streaming-software-station/268-obs-setup-guide">{gettext("Full OBS Setup Guide")}</a>
 
               <h3 class="mt-4">
                 <a
@@ -44,7 +40,7 @@ defmodule GlimeshWeb.About.GoLiveLive do
                 >
                   <img
                     height="40"
-                    src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/streamlabs-small-icon.png")}
+                    src={~p"/images/about/go-live/streamlabs-small-icon.png"}
                     alt="Streamlabs Logo"
                   /> Streamlabs Desktop
                 </a>
@@ -54,11 +50,11 @@ defmodule GlimeshWeb.About.GoLiveLive do
                   "You can stream to Glimesh with Streamlabs Desktop, however only basic features like streaming are currently supported."
                 )}</p>
 
-              <a href="https://support.glimesh.tv/en-us/7-stream-settings/113-slobs-setup-guide">{gettext("Full Streamlabs Desktop Setup Guide")}</a>
+              <a href="https://support.glimesh.tv/en-us/75-streaming-software-station/269-streamlabs-setup-guide">{gettext("Full Streamlabs Desktop Setup Guide")}</a>
 
               <div class="alert alert-primary mt-4" role="alert">
                 Looking for RTMP in OBS? Due to some delays with OBS & Streamlabs Desktop updating their services file, you may need to run the <a
-                  href="https://support.glimesh.tv/en-us/7-stream-settings/112-adding-glimesh-as-a-stream-service-in-obs-or-streamlabs-desktop"
+                  href="https://support.glimesh.tv/en-us/75-streaming-software-station/341-adding-glimesh-as-a-stream-service"
                   target="_blank"
                 >Glimesh Patcher</a> to see "Glimesh - RTMP" as an option.
               </div>
@@ -84,13 +80,13 @@ defmodule GlimeshWeb.About.GoLiveLive do
                   <img
                     :if={@site_theme == "dark"}
                     height="40"
-                    src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/aircast-small-logo-dark.png")}
+                    src={~p"/images/about/go-live/aircast-small-logo-dark.png"}
                     alt="aircast"
                   />
                   <img
                     :if={@site_theme == "light"}
                     height="40"
-                    src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/aircast-small-logo-light.png")}
+                    src={~p"/images/about/go-live/aircast-small-logo-light.png"}
                     alt="aircast"
                   />
                 </a>
@@ -307,8 +303,7 @@ defmodule GlimeshWeb.About.GoLiveLive do
        title: "Going Live on Glimesh.tv",
        description:
          "Learn how to configure your streaming client of choice and get started streaming on Glimesh instantly!",
-       image_url:
-         Routes.static_url(GlimeshWeb.Endpoint, "/images/about/go-live/social-media-preview.png"),
+       image_url: url(~p"/images/about/go-live/social-media-preview.png"),
        card_type: "summary_large_image"
      })
      |> assign(:stream_key, get_stream_key(session))}

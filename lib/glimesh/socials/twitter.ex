@@ -2,8 +2,7 @@ defmodule Glimesh.Socials.Twitter do
   @moduledoc """
   An OAuth1.1a strategy for Twitter.
   """
-
-  alias GlimeshWeb.Router.Helpers, as: Routes
+  use GlimeshWeb, :verified_routes
 
   # Public API
 
@@ -26,12 +25,12 @@ defmodule Glimesh.Socials.Twitter do
     end
   end
 
-  def authorize_url(conn) do
+  def authorize_url(_) do
     ExTwitter.configure(Application.get_env(:glimesh, Glimesh.Socials.Twitter))
 
     try do
       # Request twitter for a new token
-      token = ExTwitter.request_token(Routes.user_social_url(conn, :twitter))
+      token = ExTwitter.request_token(~p"/users/social/twitter")
 
       # Generate the url for "Sign-in with twitter".
       # For "3-legged authorization" use ExTwitter.authorize_url instead

@@ -27,8 +27,11 @@ config :glimesh, GlimeshWeb.Endpoint,
 
 config :glimesh, GlimeshWeb.Emails.Mailer, adapter: Bamboo.TestAdapter
 
+# Disable swoosh api client as it is only required for production adapters.
+config :swoosh, :api_client, false
+
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger, level: :warning
 
 config :stripity_stripe,
   api_key: "sk_test_thisisaboguskey",

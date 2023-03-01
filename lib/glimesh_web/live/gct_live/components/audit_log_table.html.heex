@@ -1,12 +1,4 @@
 <div class="card mt-4">
-  <div class="card-header">
-    <!--
-        <%= form_for(:user, "#", phx_submit: :search) %>
-        <div class="input-group">
-            <input type="text" class="form-control col-sm-6" name="search_param" id="searchParam"></input>
-            <button class="btn btn-primary">Search</button>
-        </div> -->
-  </div>
   <div class="card-body">
     <table class="table">
       <thead>
@@ -26,7 +18,7 @@
             <td><%= log.user.displayname %></td>
             <td><%= log.action %></td>
             <td>
-              <%= link(log.target, to: Routes.gct_path(@conn, :username_lookup, query: log.target)) %>
+              <%= link(log.target, to: ~p"/gct/lookup/channel?query=#{log.target}") %>
             </td>
             <td><%= log.inserted_at %> UTC</td>
             <td>

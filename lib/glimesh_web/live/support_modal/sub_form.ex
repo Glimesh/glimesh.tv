@@ -98,17 +98,17 @@ defmodule GlimeshWeb.SupportModal.SubForm do
               "People first streaming, with discoverability as a primary feature. Let's build the next
             generation of streaming."
             ) %>
-            <%= link(gettext("Learn More"), to: Routes.about_path(@socket, :faq), target: "_blank") %>
+            <%= link(gettext("Learn More"), to: ~p"/about/faq", target: "_blank") %>
           </p>
           <%= link(gettext("Register"),
             class: "btn btn-primary btn-block mt-4",
-            to: Routes.user_registration_path(@socket, :new),
+            to: ~p"/users/register",
             target: "_blank"
           ) %>
           <p class="mt-2 text-center">
             or <%= link(gettext("Log in"),
               class: "",
-              to: Routes.user_session_path(@socket, :new),
+              to: ~p"/users/log_in",
               target: "_blank"
             ) %>
           </p>

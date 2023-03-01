@@ -35,7 +35,7 @@ defmodule GlimeshWeb.UserApplicationsTest do
       # Fixture for a different random user
       {:ok, app} = Apps.create_app(user_fixture(), @create_attrs)
 
-      conn = get(conn, Routes.user_applications_path(conn, :show, app.id))
+      conn = get(conn, ~p"/users/settings/applications/#{app.id}")
       assert response(conn, 403)
     end
 
@@ -43,7 +43,7 @@ defmodule GlimeshWeb.UserApplicationsTest do
       # Fixture for a different random user
       {:ok, app} = Apps.create_app(user_fixture(), @create_attrs)
 
-      conn = get(conn, Routes.user_applications_path(conn, :edit, app.id))
+      conn = get(conn, ~p"/users/settings/applications/#{app.id}/edit")
       assert response(conn, 403)
     end
 
@@ -51,7 +51,7 @@ defmodule GlimeshWeb.UserApplicationsTest do
       # Fixture for a different random user
       {:ok, app} = Apps.create_app(user_fixture(), @create_attrs)
 
-      conn = put(conn, Routes.user_applications_path(conn, :update, app), app: @update_attrs)
+      conn = put(conn, ~p"/users/settings/applications/#{app.id}", app: @update_attrs)
       assert response(conn, 403)
     end
 
@@ -59,7 +59,7 @@ defmodule GlimeshWeb.UserApplicationsTest do
       # Fixture for a different random user
       {:ok, app} = Apps.create_app(user_fixture(), @create_attrs)
 
-      conn = put(conn, Routes.user_applications_path(conn, :rotate, app))
+      conn = put(conn, ~p"/users/settings/applications/#{app.id}/rotate")
       assert response(conn, 403)
     end
   end
@@ -68,32 +68,32 @@ defmodule GlimeshWeb.UserApplicationsTest do
 
   describe "index" do
     test "lists all apps", %{conn: conn} do
-      conn = get(conn, Routes.user_applications_path(conn, :index))
+      conn = get(conn, ~p"/users/settings/applications")
       assert html_response(conn, 200) =~ "Applications"
     end
   end
 
   describe "new app" do
     test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.user_applications_path(conn, :new))
+      conn = get(conn, ~p"/users/settings/applications/new")
       assert html_response(conn, 200) =~ "Create Application"
     end
   end
 
   describe "create app" do
     test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.user_applications_path(conn, :create), app: @create_attrs)
+      conn = post(conn, ~p"/users/settings/applications", app: @create_attrs)
 
       assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.user_applications_path(conn, :show, id)
+      assert redirected_to(conn) == ~p"/users/settings/applications/#{id}"
 
-      conn = get(conn, Routes.user_applications_path(conn, :show, id))
+      conn = get(conn, ~p"/users/settings/applications/#{id}")
       assert html_response(conn, 200) =~ "some name"
       assert html_response(conn, 200) =~ "https://glimesh.tv/something"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.user_applications_path(conn, :create), app: @invalid_attrs)
+      conn = post(conn, ~p"/users/settings/applications", app: @invalid_attrs)
       assert html_response(conn, 200) =~ "Create Application"
     end
   end
@@ -102,7 +102,7 @@ defmodule GlimeshWeb.UserApplicationsTest do
     setup [:create_app]
 
     test "renders form for editing chosen app", %{conn: conn, app: app} do
-      conn = get(conn, Routes.user_applications_path(conn, :edit, app.id))
+      conn = get(conn, ~p"/users/settings/applications/#{app.id}/edit")
       assert html_response(conn, 200) =~ "Edit Application"
     end
   end
@@ -111,27 +111,27 @@ defmodule GlimeshWeb.UserApplicationsTest do
     setup [:create_app]
 
     test "redirects when data is valid", %{conn: conn, app: app} do
-      conn = put(conn, Routes.user_applications_path(conn, :update, app), app: @update_attrs)
+      conn = put(conn, ~p"/users/settings/applications/#{app.id}", app: @update_attrs)
 
-      assert redirected_to(conn) == Routes.user_applications_path(conn, :show, app)
+      assert redirected_to(conn) == ~p"/users/settings/applications/#{app.id}"
 
-      conn = get(conn, Routes.user_applications_path(conn, :show, app))
+      conn = get(conn, ~p"/users/settings/applications/#{app.id}")
       assert html_response(conn, 200) =~ "some updated name"
       assert html_response(conn, 200) =~ app.client.secret
     end
 
     test "rotates the keys when user requests", %{conn: conn, user: user, app: app} do
-      conn = put(conn, Routes.user_applications_path(conn, :rotate, app))
-      assert redirected_to(conn) == Routes.user_applications_path(conn, :show, app)
+      conn = put(conn, ~p"/users/settings/applications/#{app.id}/rotate")
+      assert redirected_to(conn) == ~p"/users/settings/applications/#{app.id}"
 
       {:ok, new_app} = Glimesh.Apps.get_app(user, app.id)
-      conn = get(conn, Routes.user_applications_path(conn, :show, app))
+      conn = get(conn, ~p"/users/settings/applications/#{app.id}")
       refute html_response(conn, 200) =~ app.client.secret
       assert html_response(conn, 200) =~ new_app.client.secret
     end
 
     test "renders errors when data is invalid", %{conn: conn, app: app} do
-      conn = put(conn, Routes.user_applications_path(conn, :update, app), app: @invalid_attrs)
+      conn = put(conn, ~p"/users/settings/applications/#{app.id}", app: @invalid_attrs)
 
       assert html_response(conn, 200) =~ "Edit Application"
     end

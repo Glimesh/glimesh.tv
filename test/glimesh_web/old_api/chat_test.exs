@@ -115,11 +115,7 @@ defmodule GlimeshWeb.Api.ChatTest do
 
       expected_path = Glimesh.Emotes.full_url(emote)
 
-      expected_url =
-        GlimeshWeb.Router.Helpers.static_url(
-          GlimeshWeb.Endpoint,
-          expected_path
-        )
+      expected_url = Phoenix.VerifiedRoutes.unverified_url(GlimeshWeb.Endpoint, expected_path)
 
       assert json_response(conn, 200)["data"]["createChatMessage"] == %{
                "message" => "Hello :glimchef: world!",

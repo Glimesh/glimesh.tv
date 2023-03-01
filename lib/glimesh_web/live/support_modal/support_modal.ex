@@ -104,9 +104,7 @@ defmodule GlimeshWeb.SupportModal do
                     phx-click="change_tab"
                     phx-value-tab="gift_subscription"
                     href="#"
-                    class={
-                      ["mt-2 nav-link text-color", if(@tab == "gift_subscription", do: "active")]
-                    }
+                    class={["mt-2 nav-link text-color", if(@tab == "gift_subscription", do: "active")]}
                   >
                     <i class="fas fa-gift fa-fw fa-2x"></i>
                     <br /> Gift a Sub
@@ -349,7 +347,7 @@ defmodule GlimeshWeb.SupportModal do
   def handle_event("hide_modal", _value, socket) do
     {:noreply,
      socket
-     |> push_patch(to: Routes.user_stream_path(socket, :index, socket.assigns.streamer.username))
+     |> push_patch(to: ~p"/#{socket.assigns.streamer.username}")
      |> assign(:async_success_message, nil)}
   end
 

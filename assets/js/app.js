@@ -56,8 +56,8 @@ liveSocket.enableDebug();
 
 // Make sure no dropdown form's are automatically closed on action
 function ignoreDropdownFormClosing() {
-    document.querySelectorAll('.dropdown-menu form').forEach(function(el) { 
-        el.onclick = function(e) { e.stopPropagation(); } 
+    document.querySelectorAll('.dropdown-menu form').forEach(function (el) {
+        el.onclick = function (e) { e.stopPropagation(); }
     });
 }
 
@@ -68,7 +68,7 @@ window.BSN = BSN;
 window.BSN.initCallback(document.body);
 
 // Show progress bar on live navigation and form submits
-window.addEventListener("phx:page-loading-start", () => {});
+window.addEventListener("phx:page-loading-start", () => { });
 window.addEventListener("phx:page-loading-stop", info => {
     if (info.detail && info.detail.kind && info.detail.kind === "initial") {
         // Only do a full reload of dom whenever the entire page changes 

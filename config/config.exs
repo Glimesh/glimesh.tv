@@ -51,15 +51,16 @@ config :glimesh,
   privacy_policy_version: ~N[2022-03-21 11:55:00]
 
 config :esbuild,
-  version: "0.12.18",
+  version: "0.14.41",
   default: [
-    args: ~w(js/app.js --bundle --target=es2016 --outdir=../priv/static/js),
+    args:
+      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/js --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
 config :dart_sass,
-  version: "1.39.0",
+  version: "1.58.3",
   default: [
     args: ~w(--load-path=./node_modules css/app.scss ../priv/static/css/app.css),
     cd: Path.expand("../assets", __DIR__)
@@ -89,7 +90,7 @@ config :glimesh, GlimeshWeb.Emails.Mailer,
 config :glimesh, GlimeshWeb.Gettext,
   default_locale: "en",
   locales: Enum.map(locales, fn {_, x} -> x end),
-  one_module_per_locale: true
+  split_module_by: [:locale]
 
 config :boruta, Boruta.Oauth,
   repo: Glimesh.Repo,

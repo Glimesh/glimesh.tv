@@ -70,7 +70,7 @@ defmodule GlimeshWeb.UserSettingsController do
       {:ok, _} ->
         conn
         |> put_flash(:info, gettext("Preferences updated successfully."))
-        |> put_session(:user_return_to, Routes.user_settings_path(conn, :preference))
+        |> put_session(:user_return_to, ~p"/users/settings/preference")
         |> UserAuth.log_in_user(user)
 
       {:error, changeset} ->
@@ -85,7 +85,7 @@ defmodule GlimeshWeb.UserSettingsController do
       {:ok, user} ->
         conn
         |> put_flash(:info, gettext("Profile updated successfully."))
-        |> put_session(:user_return_to, Routes.user_settings_path(conn, :profile))
+        |> put_session(:user_return_to, ~p"/users/settings/profile")
         |> UserAuth.log_in_user(user)
 
       {:error, changeset} ->
@@ -94,7 +94,7 @@ defmodule GlimeshWeb.UserSettingsController do
       {:upload_exit, _} ->
         conn
         |> put_flash(:error, gettext("Problem uploading avatar, please try again later."))
-        |> redirect(to: Routes.user_settings_path(conn, :profile))
+        |> redirect(to: ~p"/users/settings/profile")
     end
   end
 
@@ -104,7 +104,7 @@ defmodule GlimeshWeb.UserSettingsController do
     case Streams.create_channel(user) do
       {:ok, _} ->
         conn
-        |> put_session(:user_return_to, Routes.user_settings_path(conn, :stream))
+        |> put_session(:user_return_to, ~p"/users/settings/stream")
         |> redirect(to: "/users/settings/stream")
 
       {:error, changeset} ->
@@ -122,7 +122,7 @@ defmodule GlimeshWeb.UserSettingsController do
     case Streams.delete_channel(user, channel) do
       {:ok, _} ->
         conn
-        |> put_session(:user_return_to, Routes.user_settings_path(conn, :stream))
+        |> put_session(:user_return_to, ~p"/users/settings/stream")
         |> UserAuth.log_in_user(user)
 
       {:error, changeset} ->
@@ -142,7 +142,7 @@ defmodule GlimeshWeb.UserSettingsController do
       {:ok, _} ->
         conn
         |> put_flash(:info, gettext("Stream settings updated successfully"))
-        |> put_session(:user_return_to, Routes.user_settings_path(conn, :stream))
+        |> put_session(:user_return_to, ~p"/users/settings/stream")
         |> UserAuth.log_in_user(conn.assigns.current_user)
 
       {:error, changeset} ->
@@ -155,18 +155,16 @@ defmodule GlimeshWeb.UserSettingsController do
       {:upload_exit, _} ->
         conn
         |> put_flash(:error, gettext("Problem uploading stream images, please try again later."))
-        |> redirect(to: Routes.user_settings_path(conn, :stream))
+        |> redirect(to: ~p"/users/settings/stream")
     end
   end
 
   defp assign_profile_changesets(conn, _opts) do
     user = conn.assigns.current_user
     user_preference = Accounts.get_user_preference!(user)
-    twitter_auth_url = Glimesh.Socials.Twitter.authorize_url(conn)
 
     conn
     |> assign(:user, user)
-    |> assign(:twitter_auth_url, twitter_auth_url)
     |> assign(:profile_changeset, Accounts.change_user_profile(user))
     |> assign(:preference_changeset, Accounts.change_user_preference(user_preference))
   end
