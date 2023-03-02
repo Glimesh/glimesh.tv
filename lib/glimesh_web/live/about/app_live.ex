@@ -8,10 +8,7 @@ defmodule GlimeshWeb.About.AppLive do
       <div style="background-color: #5271fd;">
         <div class="row mb-4">
           <div class="col d-none d-md-flex align-items-center">
-            <img
-              class="img-fluid"
-              src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/app-demo.gif")}
-            />
+            <img class="img-fluid" src={~p"/images/about/app/app-demo.gif"} />
           </div>
           <div class="col d-flex flex-column justify-content-center">
             <h1 class="display-3 text-center m-4" style="font-family: Roboto;">The app is here!</h1>
@@ -23,28 +20,12 @@ defmodule GlimeshWeb.About.AppLive do
             <div class="row mx-4 mt-0 text-center">
               <div class="col-12 col-sm-6 px-4">
                 <a href="https://apps.apple.com/us/app/glimesh/id1594860250" target="_blank">
-                  <img
-                    class="img-fluid"
-                    src={
-                      Routes.static_url(
-                        GlimeshWeb.Endpoint,
-                        "/images/about/app/download-on-the-app-store.png"
-                      )
-                    }
-                  />
+                  <img class="img-fluid" src={~p"/images/about/app/download-on-the-app-store.png"} />
                 </a>
               </div>
               <div class="col-12 col-sm-6 px-4">
                 <a href="https://play.google.com/store/apps/details?id=tv.glimesh.app" target="_blank">
-                  <img
-                    class="img-fluid"
-                    src={
-                      Routes.static_url(
-                        GlimeshWeb.Endpoint,
-                        "/images/about/app/get-it-on-google-play.png"
-                      )
-                    }
-                  />
+                  <img class="img-fluid" src={~p"/images/about/app/get-it-on-google-play.png"} />
                 </a>
               </div>
             </div>
@@ -53,40 +34,22 @@ defmodule GlimeshWeb.About.AppLive do
 
         <div class="row no-gutters">
           <div class="col-6 col-sm-4 col-xl-2">
-            <img
-              class="img-fluid"
-              src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/SC 1.jpg")}
-            />
+            <img class="img-fluid" src={~p"/images/about/app/SC 1.jpg"} />
           </div>
           <div class="col-6 col-sm-4 col-xl-2">
-            <img
-              class="img-fluid"
-              src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/SC 2.jpg")}
-            />
+            <img class="img-fluid" src={~p"/images/about/app/SC 2.jpg"} />
           </div>
           <div class="col-6 col-sm-4 col-xl-2">
-            <img
-              class="img-fluid"
-              src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/SC 3.jpg")}
-            />
+            <img class="img-fluid" src={~p"/images/about/app/SC 3.jpg"} />
           </div>
           <div class="col-6 col-sm-4 col-xl-2">
-            <img
-              class="img-fluid"
-              src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/SC 4.jpg")}
-            />
+            <img class="img-fluid" src={~p"/images/about/app/SC 4.jpg"} />
           </div>
           <div class="col-6 col-sm-4 col-xl-2">
-            <img
-              class="img-fluid"
-              src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/SC 5.jpg")}
-            />
+            <img class="img-fluid" src={~p"/images/about/app/SC 5.jpg"} />
           </div>
           <div class="col-6 col-sm-4 col-xl-2">
-            <img
-              class="img-fluid"
-              src={Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/SC 6.jpg")}
-            />
+            <img class="img-fluid" src={~p"/images/about/app/SC 6.jpg"} />
           </div>
         </div>
       </div>
@@ -105,8 +68,7 @@ defmodule GlimeshWeb.About.AppLive do
        title: "Glimesh Mobile App",
        description:
          "The future of Glimesh is in your hands. Check out our new mobile app for iOS and Android!",
-       image_url:
-         Routes.static_url(GlimeshWeb.Endpoint, "/images/about/app/app-social-preview.png"),
+       image_url: url(~p"/images/about/app/app-social-preview.png"),
        card_type: "summary_large_image"
      })}
   end

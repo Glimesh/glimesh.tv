@@ -249,6 +249,14 @@ if tiltify_access_token = System.get_env("GLIMESH_TILTIFY_ACCESS_TOKEN") do
   config :glimesh, tiltify_access_token: tiltify_access_token
 end
 
+if tenor_api_key = System.get_env("GLIMESH_TENOR_API_KEY") do
+  config :glimesh, :tenor_config, apikey: tenor_api_key
+end
+
+if tenor_enabled = System.get_env("GLIMESH_TENOR_ENABLED") do
+  config :glimesh, :tenor_config, allow_tenor: tenor_enabled == "true"
+end
+
 config :glimesh, Oban,
   plugins: [
     {Oban.Plugins.Cron,
@@ -259,6 +267,8 @@ config :glimesh, Oban,
        {"*/5 * * * *", Glimesh.Jobs.StreamPrunerCron}
      ]}
   ]
+
+config :glimesh, rtrouter_url: "https://live.glimesh.tv/v1/whep/endpoint/"
 
 # Default App Config
 config :glimesh, :stripe_config,

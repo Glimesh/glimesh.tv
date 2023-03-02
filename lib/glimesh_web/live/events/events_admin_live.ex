@@ -90,7 +90,7 @@ defmodule GlimeshWeb.Events.EventsAdminLive do
 
                   <div class="col-9">
                     <div class="custom-file">
-                      {live_file_input(@uploads.image)}
+                      <.live_file_input upload={@uploads.image} />
                     </div>
 
                     {#if @changeset.errors[:image]}
@@ -203,7 +203,7 @@ defmodule GlimeshWeb.Events.EventsAdminLive do
 
     {:noreply,
      socket
-     |> redirect(to: Routes.events_admin_path(socket, :index))}
+     |> redirect(to: ~p"/events/admin")}
   end
 
   @impl true
@@ -239,7 +239,7 @@ defmodule GlimeshWeb.Events.EventsAdminLive do
 
     {:noreply,
      socket
-     |> redirect(to: Routes.events_admin_path(socket, :index))}
+     |> redirect(to: ~p"/events/admin")}
   end
 
   defp save_event(%{} = event) do

@@ -190,6 +190,7 @@ defmodule Glimesh.OldSchema.ChannelTypes do
 
     field :status, :channel_status, description: "The current status of the channel"
     field :title, :string, description: "The title of the current stream, live or offline."
+    field :backend, :string, description: "The video backend of a channel."
 
     field :category, :category,
       resolve: dataloader(Repo),

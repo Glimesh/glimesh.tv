@@ -18,7 +18,7 @@
 
         <div class="card text-center h-100">
             <h4 class="text-color-link mt-3 mb-3">
-                <%= link user.displayname, to: Routes.user_profile_path(@conn, :index, user.username), class: "stretched-link text-color-link" %>
+                <%= link user.displayname, to: ~p"/#{user.username}/profile", class: "stretched-link text-color-link" %>
             </h4>
             <img src="<%= Glimesh.Avatar.url({user.avatar, user}, :original) %>" class="card-img-top img-avatar mx-auto mb-4" alt="<%= user.displayname %>">
             <div class="card-body <%= Glimesh.Accounts.Profile.user_role_color(user) %> rounded-bottom">

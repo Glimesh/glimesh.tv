@@ -6,6 +6,7 @@ defmodule Glimesh.Chat do
   import Ecto.Query, warn: false
 
   alias Glimesh.Accounts.User
+  alias Glimesh.Chat
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Events
   alias Glimesh.Payments
@@ -32,30 +33,32 @@ defmodule Glimesh.Chat do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_chat_message(%User{} = user, %Channel{} = channel, attrs \\ %{}) do
+  def create_chat_message(%User{} = user, %Channel{} = channel, attrs \\ %{}, metadata \\ %{}) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_chat_message, user, channel) do
       if allow_link_in_message(channel, attrs) do
         channel_subscriber = Payments.is_subscribed?(channel, user)
         platform_subscriber = Payments.is_platform_subscriber?(user)
 
         config =
-          Glimesh.Chat.get_chat_parser_config(
+          Chat.get_chat_parser_config(
             channel,
             platform_subscriber,
             user.id
           )
 
+        data = %ChatMessage.Metadata{
+          subscriber: channel_subscriber,
+          streamer: channel.streamer_id == user.id,
+          moderator: Glimesh.Chat.is_moderator?(channel, user),
+          admin: user.is_admin,
+          platform_founder_subscriber: Payments.is_platform_founder_subscriber?(user),
+          platform_supporter_subscriber: Payments.is_platform_supporter_subscriber?(user)
+        }
+
         %ChatMessage{
           channel: channel,
           user: user,
-          metadata: %ChatMessage.Metadata{
-            subscriber: channel_subscriber,
-            streamer: channel.streamer_id == user.id,
-            moderator: Glimesh.Chat.is_moderator?(channel, user),
-            admin: user.is_admin,
-            platform_founder_subscriber: Payments.is_platform_founder_subscriber?(user),
-            platform_supporter_subscriber: Payments.is_platform_supporter_subscriber?(user)
-          }
+          metadata: struct(data, metadata)
         }
         |> ChatMessage.changeset(attrs)
         |> ChatMessage.put_tokens(config)
@@ -64,6 +67,37 @@ defmodule Glimesh.Chat do
       else
         {:error, "This channel has links disabled!"}
       end
+    end
+  end
+
+  def create_tenor_message(%User{} = user, %Channel{} = channel, attrs \\ %{}) do
+    with :ok <- Bodyguard.permit(__MODULE__, :create_tenor_message, user, channel) do
+      channel_subscriber = Payments.is_subscribed?(channel, user)
+      platform_subscriber = Payments.is_platform_subscriber?(user)
+
+      config =
+        Chat.get_chat_parser_config(
+          channel,
+          platform_subscriber,
+          user.id
+        )
+
+      %ChatMessage{
+        channel: channel,
+        user: user,
+        metadata: %ChatMessage.Metadata{
+          subscriber: channel_subscriber,
+          streamer: channel.streamer_id == user.id,
+          moderator: Glimesh.Chat.is_moderator?(channel, user),
+          admin: user.is_admin,
+          platform_founder_subscriber: Payments.is_platform_founder_subscriber?(user),
+          platform_supporter_subscriber: Payments.is_platform_supporter_subscriber?(user)
+        }
+      }
+      |> ChatMessage.changeset(attrs)
+      |> ChatMessage.put_tokens(config)
+      |> Repo.insert()
+      |> broadcast(:chat_message)
     end
   end
 
@@ -235,6 +269,56 @@ defmodule Glimesh.Chat do
     |> Enum.reverse()
   end
 
+  def list_recent_chatters_with_partial_username(
+        channel,
+        partial_username,
+        present_user_ids,
+        hours \\ 2
+      ) do
+    if not is_nil(partial_username) and String.length(partial_username) < 25 do
+      timeframe = NaiveDateTime.add(NaiveDateTime.utc_now(), hours * -60 * 60, :second)
+      search_username = Regex.replace(~r/(\\\\|_|%)/, partial_username, "\\\\\\1") <> "%"
+
+      from(m in ChatMessage,
+        join: u in User,
+        on: m.user_id == u.id,
+        where: m.user_id in ^present_user_ids,
+        where: m.is_visible == true,
+        where: m.channel_id == ^channel.id,
+        where: m.inserted_at >= ^timeframe,
+        where: u.username != ^partial_username and ilike(u.username, ^search_username),
+        order_by: [desc: m.inserted_at],
+        distinct: u.username,
+        select: %{suggestion: u.username, partial: ^partial_username},
+        limit: 5
+      )
+      |> Repo.replica().all()
+    else
+      []
+    end
+  end
+
+  def get_recent_chatters_username_autocomplete(channel, partial_usernames, hours \\ 2) do
+    present_user_ids =
+      Enum.map(
+        Glimesh.Presence.list_presences(
+          Glimesh.Streams.get_subscribe_topic(:chatters, channel.id)
+        ),
+        fn data ->
+          data[:user_id]
+        end
+      )
+
+    Enum.flat_map(partial_usernames, fn partial_username ->
+      list_recent_chatters_with_partial_username(
+        channel,
+        partial_username,
+        present_user_ids,
+        hours
+      )
+    end)
+  end
+
   @doc """
   Returns a list of all chat_messages in a channel
   """
@@ -318,10 +402,18 @@ defmodule Glimesh.Chat do
   end
 
   def get_chat_parser_config(%Channel{} = channel, allow_animated_emotes \\ false, userid) do
-    %Glimesh.Chat.Parser.Config{
+    allow_reaction_gifs =
+      if channel.user_id == userid do
+        Channel.allow_reaction_gifs_site_wide?()
+      else
+        Channel.allow_reaction_gifs?(channel)
+      end
+
+    %Chat.Parser.Config{
       allow_links: !channel.disable_hyperlinks,
       allow_emotes: true,
       allow_animated_emotes: allow_animated_emotes,
+      allow_reaction_gifs: allow_reaction_gifs,
       channel_id: channel.id,
       user_id: userid
     }

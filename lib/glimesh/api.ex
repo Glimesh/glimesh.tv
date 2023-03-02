@@ -5,6 +5,8 @@ defmodule Glimesh.Api do
   alias Absinthe.Relay.Connection
   alias Glimesh.Repo
 
+  use GlimeshWeb, :verified_routes
+
   defmodule Access do
     @moduledoc """
     Common struct for ensuring API access
@@ -79,10 +81,7 @@ defmodule Glimesh.Api do
     if String.starts_with?(potentially_local_path, ["http://", "https://"]) do
       potentially_local_path
     else
-      GlimeshWeb.Router.Helpers.static_url(
-        GlimeshWeb.Endpoint,
-        potentially_local_path
-      )
+      Phoenix.VerifiedRoutes.unverified_url(GlimeshWeb.Endpoint, potentially_local_path)
     end
   end
 

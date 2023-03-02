@@ -10,11 +10,11 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
     <div id="gct-button-array" phx-hook="Bootstrapize">
       <%= live_redirect(gettext("Edit Profile"),
         class: if(@can_edit_profile, do: "btn btn-primary", else: "btn btn-primary disabled"),
-        to: Routes.gct_path(@socket, :edit_user_profile, @user.username)
+        to: ~p"/gct/edit/profile/#{@user.username}"
       ) %>
       <%= live_redirect(gettext("Edit User"),
         class: if(@can_edit_user, do: "btn btn-primary", else: "btn btn-primary disabled"),
-        to: Routes.gct_path(@socket, :edit_user, @user.username)
+        to: ~p"/gct/edit/#{@user.username}"
       ) %>
       <%= if @can_edit_payments do %>
         <div class="dropdown d-inline-block">
@@ -54,7 +54,7 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
         <div class="dropdown-menu" aria-labelledby="userActionsDropdown">
           <%= live_redirect(gettext("View Chat Logs"),
             class: if(@view_chat_logs, do: "dropdown-item", else: "btn btn-primary disabled"),
-            to: Routes.gct_path(@socket, :user_chat_log, @user.id)
+            to: ~p"/gct/lookup/user/#{@user.id}/chat"
           ) %>
           <%= if @user.tfa_token do %>
             <a
@@ -100,20 +100,21 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
               </div>
 
               <div class="modal-body">
-                <%= form_for(:user, "#", phx_submit: :ban) %>
-                <div class="form-group ">
-                  <label for="banReason"><%= gettext("Ban Reason") %></label>
-                  <textarea
-                    rows="5"
-                    class="form-control"
-                    name="ban_reason"
-                    id="banReason"
-                    placeholder="A descriptive reason to why this user is being banned. This is required, if you don't provide one then the user will not be banned."
-                  >
+                <%= form_for :user, "#", [phx_submit: :ban], fn _ -> %>
+                  <div class="form-group ">
+                    <label for="banReason"><%= gettext("Ban Reason") %></label>
+                    <textarea
+                      rows="5"
+                      class="form-control"
+                      name="ban_reason"
+                      id="banReason"
+                      placeholder="A descriptive reason to why this user is being banned. This is required, if you don't provide one then the user will not be banned."
+                    >
                   </textarea>
-                </div>
+                  </div>
 
-                <button class="btn btn-danger btn-block mt-4"><%= gettext("Ban User") %></button>
+                  <button class="btn btn-danger btn-block mt-4"><%= gettext("Ban User") %></button>
+                <% end %>
               </div>
             </div>
           </div>
@@ -166,13 +167,13 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
         {:noreply,
          socket
          |> assign(:show_ban, false)
-         |> redirect(to: Routes.gct_path(socket, :username_lookup, query: target_user.username))}
+         |> redirect(to: ~p"/gct/lookup/user?query=#{target_user.username}")}
 
       {:error, :unauthorized} ->
         {:noreply,
          socket
          |> assign(:show_ban, false)
-         |> redirect(to: Routes.gct_path(socket, :unauthorized))}
+         |> redirect(to: ~p"/gct/unauthorized")}
     end
   end
 
@@ -194,12 +195,12 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
         {:noreply,
          socket
          |> assign(user: user)
-         |> redirect(to: Routes.gct_path(socket, :username_lookup, query: target_user.username))}
+         |> redirect(to: ~p"/gct/lookup/user?query=#{target_user.username}")}
 
       {:error, :unauthorized} ->
         {:noreply,
          socket
-         |> redirect(to: Routes.gct_path(socket, :unauthorized))}
+         |> redirect(to: ~p"/gct/unauthorized")}
     end
   end
 
@@ -220,7 +221,7 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
       {:noreply,
        socket
        |> assign(user: user)
-       |> redirect(to: Routes.gct_path(socket, :username_lookup, query: target_user.username))}
+       |> redirect(to: ~p"/gct/lookup/user?query=#{target_user.username}")}
     else
       {:error, message} ->
         {:noreply, socket |> put_flash(:error, message)}
@@ -228,7 +229,7 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
       {:error, :unauthorized} ->
         {:noreply,
          socket
-         |> redirect(to: Routes.gct_path(socket, :unauthorized))}
+         |> redirect(to: ~p"/gct/unauthorized")}
     end
   end
 
@@ -248,7 +249,7 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
       {:noreply,
        socket
        |> assign(user: user)
-       |> redirect(to: Routes.gct_path(socket, :username_lookup, query: target_user.username))}
+       |> redirect(to: ~p"/gct/lookup/user?query=#{target_user.username}")}
     else
       {:error, message} ->
         {:noreply, socket |> put_flash(:error, message)}
@@ -256,7 +257,7 @@ defmodule GlimeshWeb.GctLive.Components.ButtonArray do
       {:error, :unauthorized} ->
         {:noreply,
          socket
-         |> redirect(to: Routes.gct_path(socket, :unauthorized))}
+         |> redirect(to: ~p"/gct/unauthorized")}
     end
   end
 

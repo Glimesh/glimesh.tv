@@ -3,27 +3,27 @@ defmodule GlimeshWeb.QuickPreferenceControllerTest do
 
   describe "quick preferences as anonymous user" do
     test "has sane preferences", %{conn: conn} do
-      conn = get(conn, Routes.homepage_path(conn, :index))
+      conn = get(conn, ~p"/")
       assert html_response(conn, 200) =~ "en 🌘"
       assert html_response(conn, 200) =~ "<html lang=\"en\" data-theme=\"dark\">"
     end
 
     test "updates preferences", %{conn: conn} do
       conn =
-        post(conn, Routes.quick_preference_path(conn, :update_preference),
+        post(conn, ~p"/quick_preferences",
           user_preference: %{
             "locale" => "de",
             "site_theme" => "light",
-            "user_return_to" => Routes.homepage_path(conn, :index)
+            "user_return_to" => ~p"/"
           }
         )
 
-      assert redirected_to(conn) == Routes.homepage_path(conn, :index)
+      assert redirected_to(conn) == ~p"/"
 
-      assert get_flash(conn, :info) =~
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
                "Preferences updated successfully."
 
-      conn = get(conn, Routes.homepage_path(conn, :index))
+      conn = get(conn, ~p"/")
       assert html_response(conn, 200) =~ "de ☀️"
       assert html_response(conn, 200) =~ "<html lang=\"de\" data-theme=\"light\">"
     end
@@ -33,27 +33,27 @@ defmodule GlimeshWeb.QuickPreferenceControllerTest do
     setup :register_and_log_in_user
 
     test "has sane preferences", %{conn: conn} do
-      conn = get(conn, Routes.homepage_path(conn, :index))
+      conn = get(conn, ~p"/")
       assert html_response(conn, 200) =~ "en 🌘"
       assert html_response(conn, 200) =~ "<html lang=\"en\" data-theme=\"dark\">"
     end
 
     test "updates preferences", %{conn: conn} do
       conn =
-        post(conn, Routes.quick_preference_path(conn, :update_preference),
+        post(conn, ~p"/quick_preferences",
           user_preference: %{
             "locale" => "de",
             "site_theme" => "light",
-            "user_return_to" => Routes.homepage_path(conn, :index)
+            "user_return_to" => ~p"/"
           }
         )
 
-      assert redirected_to(conn) == Routes.homepage_path(conn, :index)
+      assert redirected_to(conn) == ~p"/"
 
-      assert get_flash(conn, :info) =~
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
                "Preferences updated successfully."
 
-      conn = get(conn, Routes.homepage_path(conn, :index))
+      conn = get(conn, ~p"/")
       assert html_response(conn, 200) =~ "de ☀️"
       assert html_response(conn, 200) =~ "<html lang=\"de\" data-theme=\"light\">"
     end

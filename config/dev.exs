@@ -7,6 +7,7 @@ database = [
   database: "glimesh_dev",
   hostname: System.get_env("DATABASE_URL") || "localhost",
   show_sensitive_data_on_connection_error: true,
+  stacktrace: true,
   pool_size: 10
 ]
 
@@ -24,7 +25,7 @@ config :esbuild,
   ]
 
 config :dart_sass,
-  version: "1.39.0",
+  version: "1.58.3",
   default: [
     args: ~w(--load-path=./node_modules css/app.scss ../priv/public/css/app.css),
     cd: Path.expand("../assets", __DIR__)
@@ -94,11 +95,17 @@ config :glimesh, GlimeshWeb.Endpoint,
     patterns: [
       ~r"priv/public/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/glimesh_web/(live|views|components)/.*(ex|js)$",
+      ~r"lib/glimesh_web/(controllers|live|views|components)/.*(ex|heex|js)$",
       ~r"lib/glimesh_web/live/.*(sface)$",
       ~r"lib/glimesh_web/templates/.*(eex|md)$"
     ]
   ]
+
+# Enable dev routes for dashboard and mailbox
+config :glimesh, dev_routes: true
+
+# Disable swoosh api client as it is only required for production adapters.
+config :swoosh, :api_client, false
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"

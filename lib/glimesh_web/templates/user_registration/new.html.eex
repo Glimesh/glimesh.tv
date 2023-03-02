@@ -5,7 +5,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3>Register for our Alpha!</h3>
-                    <%= form_for @changeset, Routes.user_registration_path(@conn, :create), fn f -> %>
+                    <%= form_for @changeset, ~p"/users/register", fn f -> %>
                     <%= if @changeset.action do %>
                     <div class="alert alert-danger">
                         <p>Oops, something went wrong! Please check the errors below.</p>
@@ -21,8 +21,8 @@
                     <% end %>
 
                     <p>By creating an account you agree that you have read and acknowledged our
-                        <%= link "Terms of Service", to: Routes.about_path(@conn, :terms) %> and
-                        <%= link "Privacy Policy", to: Routes.about_path(@conn, :privacy) %>.<br></p>
+                        <%= link "Terms of Service", to: ~p"/about/terms" %> and
+                        <%= link "Privacy Policy", to: ~p"/about/privacy" %>.<br></p>
 
                     <div class="input-group mt-3 mb-3">
                         <div class="input-group-prepend">
@@ -64,7 +64,7 @@
                         <%= submit "Register", class: "btn btn-primary btn-lg mt-2" %>
 
                         <div class="mt-4">
-                            <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
+                            <%= link "Forgot your password?", to: ~p"/users/reset_password" %>
                         </div>
                     </div>
 
@@ -77,7 +77,7 @@
             <h4 class="mt-4">What is Glimesh?</h4>
             <p class="">
                 People first streaming, with discoverability as a primary feature. Let's build the next
-                generation of streaming. <%= link "Learn More", to: Routes.about_path(@conn, :faq) %>
+                generation of streaming. <%= link "Learn More", to: ~p"/about/faq" %>
             </p>
             <h4 class="mt-4">Why register an account?</h4>
             <p>Signing up for a Glimesh account gets you immediate access to engage with your favorite streamers, follow
@@ -87,7 +87,7 @@
             </p>
 
             <h5 class="mt-4">Have an account?</h5>
-            <%= link "Log in", class: "btn btn-primary", to: Routes.user_session_path(@conn, :new) %>
+            <%= link "Log in", class: "btn btn-primary", to: ~p"/users/log_in" %>
         </div>
     </div>
 </div>

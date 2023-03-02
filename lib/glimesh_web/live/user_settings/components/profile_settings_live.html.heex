@@ -1,4 +1,4 @@
-<.form let={f} for={@profile_changeset} action={@route} multipart class="form">
+<.form :let={f} for={@profile_changeset} action={@route} multipart class="form">
   <div class="card">
     <div class="card-body">
       <div class="row">
@@ -92,16 +92,14 @@
                   phx-update="ignore"
                 >
                   <%= if @twitter_account != nil do %>
-                    <%= link to: Routes.user_social_path(@socket, :disconnect,  "twitter"), class: "btn btn-danger btn-block", data: [confirm: gettext("Are you sure you want to disconnect your Twitter account?")], method: :delete do %>
+                    <%= link to: ~p"/users/social/disconnect/twitter", class: "btn btn-danger btn-block btn-twitter-disconnect", data: [confirm: gettext("Are you sure you want to disconnect your Twitter account?")], method: :delete do %>
                       <i class="fab fa-twitter fa-fw"></i>
                       Disconnect @ <%= @twitter_account.username %>
                     <% end %>
                   <% else %>
                     <a
-                      href={@twitter_auth_url}
-                      class={
-                        ["btn btn-info btn-block", unless(@twitter_auth_url, do: "disabled")]
-                      }
+                      href={~p"/users/social/twitter/connect"}
+                      class={["twitter-button btn btn-info btn-block"]}
                     >
                       <i class="fab fa-twitter fa-fw"></i>
                       <%= if f.data.social_twitter do %>

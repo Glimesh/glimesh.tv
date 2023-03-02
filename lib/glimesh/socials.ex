@@ -32,6 +32,16 @@ defmodule Glimesh.Socials do
     })
   end
 
+  def disconnect_user_social(%User{} = user, "twitter" = platform) do
+    social_changeset = get_social(user, platform)
+    user_changeset = User.profile_changeset(user, %{social_twitter: nil})
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.delete(:delete_social, social_changeset)
+    |> Ecto.Multi.update(:update_profile, user_changeset)
+    |> Repo.transaction()
+  end
+
   def disconnect_user_social(%User{} = user, platform) do
     get_social(user, platform)
     |> delete_user_social()

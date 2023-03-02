@@ -1,6 +1,7 @@
 defmodule GlimeshWeb.StreamsLive.List do
   use GlimeshWeb, :live_view
 
+  alias Glimesh.Accounts
   alias Glimesh.ChannelCategories
   alias Glimesh.Streams
   alias Glimesh.Streams.Organizer
@@ -8,6 +9,11 @@ defmodule GlimeshWeb.StreamsLive.List do
   @impl true
   def mount(params, session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
+
+    logged_in_user =
+      if session["user_token"],
+        do: Accounts.get_user_by_session_token(session["user_token"]),
+        else: nil
 
     case ChannelCategories.get_category(Map.get(params, "category", nil)) do
       %Streams.Category{} = category ->
@@ -45,7 +51,8 @@ defmodule GlimeshWeb.StreamsLive.List do
          |> assign(:tag_list, tag_list)
          |> assign(:subcategory_list, subcategory_list)
          |> assign(:tag_selected, Map.has_key?(params, "tag"))
-         |> assign(:category, category)}
+         |> assign(:category, category)
+         |> assign(:user, logged_in_user)}
 
       nil ->
         {:ok, redirect(socket, to: "/")}
@@ -54,7 +61,7 @@ defmodule GlimeshWeb.StreamsLive.List do
 
   @impl true
   def handle_params(params, _uri, socket) do
-    channels = Glimesh.ChannelLookups.search_live_channels(params)
+    channels = Glimesh.ChannelLookups.search_live_channels(params, socket.assigns.user)
 
     blocks =
       cond do
@@ -94,17 +101,16 @@ defmodule GlimeshWeb.StreamsLive.List do
 
     prefilled_language = Map.get(params, "language", "Any Language")
 
-    has_filters =
-      Map.has_key?(params, "subcategory") or Map.has_key?(params, "tags") or
-        Map.has_key?(params, "language")
+    prefilled_raidable = Map.get(params, "raidable", false)
 
     {:noreply,
      socket
      |> assign(:blocks, blocks)
-     |> assign(:show_filters, has_filters)
+     |> assign(:show_filters, has_filters?(params))
      |> assign(:prefilled_tags, prefilled_tags)
      |> assign(:prefilled_subcategory, prefilled_subcategory)
      |> assign(:prefilled_language, prefilled_language)
+     |> assign(:prefilled_raidable, prefilled_raidable)
      |> assign(:shown_channels, shown_channels)
      |> assign(:total_channels, total_channels)
      |> assign(:channels, channels)}
@@ -122,12 +128,11 @@ defmodule GlimeshWeb.StreamsLive.List do
       |> append_json_param(:tags, Map.get(form_data, "tag_search"))
       |> append_json_param(:subcategory, Map.get(form_data, "subcategory_search"))
       |> append_param(:language, Map.get(form_data, "language"))
+      |> append_param(:raidable, Map.get(form_data, "raidable"))
 
     {:noreply,
      socket
-     |> push_patch(
-       to: Routes.streams_list_path(socket, :index, socket.assigns.category.slug, params)
-     )}
+     |> push_patch(to: ~p"/streams/#{socket.assigns.category.slug}?#{params}")}
   end
 
   def handle_event("filter_tags", _params, socket) do
@@ -161,5 +166,10 @@ defmodule GlimeshWeb.StreamsLive.List do
     else
       list
     end
+  end
+
+  defp has_filters?(params) do
+    Map.has_key?(params, "subcategory") or Map.has_key?(params, "tags") or
+      Map.has_key?(params, "language") or Map.has_key?(params, "raidable")
   end
 end

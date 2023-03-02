@@ -13,12 +13,10 @@
   </div>
 </div>
 
-<div class={
-  [
-    "container container-stream-filters mb-4",
-    if(@show_filters, do: "d-block", else: "d-none d-lg-block")
-  ]
-}>
+<div class={[
+  "container container-stream-filters mb-4",
+  if(@show_filters, do: "d-block", else: "d-none d-lg-block")
+]}>
   <form phx-change="filter_change">
     <div class="row">
       <div class="col-md-6 col-lg-3 mb-2">
@@ -51,11 +49,17 @@
           ) %>
         </div>
       </div>
-      <div class="col-md-6 col-lg-3 mb-2">
+      <div class="col-md-6 col-lg-2 mb-2">
         <label for="validationCustom02"><%= gettext("Language") %></label>
         <%= select(:form, :language, @locales, value: @prefilled_language, class: "custom-select") %>
       </div>
-      <div class="col-md-6 col-lg-3 text-right">
+      <div class="col-md-6 col-lg-2 mb-2 mt-5">
+        <div class="custom-control custom-switch">
+          <%= checkbox(:form, :raidable, value: @prefilled_raidable, class: "custom-control-input") %>
+          <%= label(:form, :raidable, gettext("Can Raid?"), class: "custom-control-label") %>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-2 text-right">
         <%= gettext("Showing %{count_channels} of %{total_channels} Live Channels",
           count_channels: @shown_channels,
           total_channels: @total_channels
@@ -64,7 +68,7 @@
         <br />
 
         <%= link(gettext("Remove Filters"),
-          to: Routes.streams_list_path(@socket, :index, @category.slug),
+          to: ~p"/streams/#{@category.slug}",
           class: "btn btn-primary"
         ) %>
       </div>
@@ -91,7 +95,7 @@
           <div class="row">
             <%= for channel <- row.channels do %>
               <div class="col-sm-12 col-md-6 col-xl-4 mt-2 mt-md-4">
-                <%= link to: Routes.user_stream_path(@socket, :index, channel.user.username), class: "text-color-link" do %>
+                <%= link to: ~p"/#{channel.user.username}", class: "text-color-link" do %>
                   <div class="card card-stream">
                     <img
                       src={
@@ -127,14 +131,12 @@
                           alt={channel.user.displayname}
                           width="48"
                           height="48"
-                          class={
-                            [
-                              "img-avatar mr-2",
-                              if(Glimesh.Accounts.can_receive_payments?(channel.user),
-                                do: "img-verified-streamer"
-                              )
-                            ]
-                          }
+                          class={[
+                            "img-avatar mr-2",
+                            if(Glimesh.Accounts.can_receive_payments?(channel.user),
+                              do: "img-verified-streamer"
+                            )
+                          ]}
                         />
                         <div class="media-body">
                           <h6 class="mb-0 mt-1 card-stream-title"><%= channel.title %></h6>

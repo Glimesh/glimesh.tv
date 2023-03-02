@@ -5,15 +5,15 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
 
   describe "GET /users/settings" do
     test "renders settings page", %{conn: conn} do
-      conn = get(conn, Routes.user_settings_path(conn, :profile))
+      conn = get(conn, ~p"/users/settings/profile")
       response = html_response(conn, 200)
       assert response =~ "<h2 class=\"mt-4\">Your Profile</h2>"
     end
 
     test "redirects if user is not logged in" do
       conn = build_conn()
-      conn = get(conn, Routes.user_settings_path(conn, :profile))
-      assert redirected_to(conn) == Routes.user_session_path(conn, :new)
+      conn = get(conn, ~p"/users/settings/profile")
+      assert redirected_to(conn) == ~p"/users/log_in"
     end
   end
 
@@ -21,7 +21,7 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
     setup :register_and_log_in_streamer
 
     test "renders channel settings page when you have a channel", %{conn: conn} do
-      conn = get(conn, Routes.user_settings_path(conn, :stream))
+      conn = get(conn, ~p"/users/settings/stream")
       response = html_response(conn, 200)
       assert response =~ "Channel title"
     end
@@ -29,8 +29,8 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
 
   describe "PUT /user/settings/create_channel" do
     test "creates channel when user doesn't have one", %{conn: conn} do
-      conn = put(conn, Routes.user_settings_path(conn, :create_channel))
-      assert redirected_to(conn) == Routes.user_settings_path(conn, :stream)
+      conn = put(conn, ~p"/users/settings/create_channel")
+      assert redirected_to(conn) == ~p"/users/settings/stream"
     end
   end
 
@@ -38,8 +38,8 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
     setup :register_and_log_in_streamer
 
     test "deletes the channel if the user has one", %{conn: conn} do
-      conn = put(conn, Routes.user_settings_path(conn, :delete_channel))
-      assert redirected_to(conn) == Routes.user_settings_path(conn, :stream)
+      conn = put(conn, ~p"/users/settings/delete_channel")
+      assert redirected_to(conn) == ~p"/users/settings/stream"
     end
   end
 
@@ -48,22 +48,24 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
 
     test "updates the title", %{conn: conn} do
       channel_conn =
-        put(conn, Routes.user_settings_path(conn, :update_channel), %{
+        put(conn, ~p"/users/settings/update_channel", %{
           "channel" => %{
             "title" => "some new title"
           }
         })
 
-      assert redirected_to(channel_conn) == Routes.user_settings_path(conn, :stream)
-      assert get_flash(channel_conn, :info) =~ "Stream settings updated successfully"
+      assert redirected_to(channel_conn) == ~p"/users/settings/stream"
 
-      response = html_response(get(conn, Routes.user_settings_path(conn, :stream)), 200)
+      assert Phoenix.Flash.get(channel_conn.assigns.flash, :info) =~
+               "Stream settings updated successfully"
+
+      response = html_response(get(conn, ~p"/users/settings/stream"), 200)
       assert response =~ "some new title"
     end
 
     test "invalid title doesn't update", %{conn: conn} do
       channel_conn =
-        put(conn, Routes.user_settings_path(conn, :update_channel), %{
+        put(conn, ~p"/users/settings/update_channel", %{
           "channel" => %{
             "title" => """
             u06rnPOWfai1tyO79N9B2SF2sIxetMqkWbDHWeMCdcrHMtH5IorWQvZeF4F6ZGaHwx1ABn3UqFE4UkVlFZLgVjWodXZfRBEUE5bjehnnARY8M
@@ -80,16 +82,18 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
 
     test "handles no tags", %{conn: conn} do
       channel_conn =
-        put(conn, Routes.user_settings_path(conn, :update_channel), %{
+        put(conn, ~p"/users/settings/update_channel", %{
           "channel" => %{
             "tags" => ""
           }
         })
 
-      assert redirected_to(channel_conn) == Routes.user_settings_path(conn, :stream)
-      assert get_flash(channel_conn, :info) =~ "Stream settings updated successfully"
+      assert redirected_to(channel_conn) == ~p"/users/settings/stream"
 
-      response = html_response(get(conn, Routes.user_settings_path(conn, :stream)), 200)
+      assert Phoenix.Flash.get(channel_conn.assigns.flash, :info) =~
+               "Stream settings updated successfully"
+
+      response = html_response(get(conn, ~p"/users/settings/stream"), 200)
       refute response =~ "Digital Media"
     end
 
@@ -101,32 +105,36 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
         ])
 
       channel_conn =
-        put(conn, Routes.user_settings_path(conn, :update_channel), %{
+        put(conn, ~p"/users/settings/update_channel", %{
           "channel" => %{
             "tags" => tags_input
           }
         })
 
-      assert redirected_to(channel_conn) == Routes.user_settings_path(conn, :stream)
-      assert get_flash(channel_conn, :info) =~ "Stream settings updated successfully"
+      assert redirected_to(channel_conn) == ~p"/users/settings/stream"
 
-      response = html_response(get(conn, Routes.user_settings_path(conn, :stream)), 200)
+      assert Phoenix.Flash.get(channel_conn.assigns.flash, :info) =~
+               "Stream settings updated successfully"
+
+      response = html_response(get(conn, ~p"/users/settings/stream"), 200)
       assert response =~ "Digital Media"
       assert response =~ "some name"
     end
 
     test "handles no subcategory", %{conn: conn} do
       channel_conn =
-        put(conn, Routes.user_settings_path(conn, :update_channel), %{
+        put(conn, ~p"/users/settings/update_channel", %{
           "channel" => %{
             "subcategory" => ""
           }
         })
 
-      assert redirected_to(channel_conn) == Routes.user_settings_path(conn, :stream)
-      assert get_flash(channel_conn, :info) =~ "Stream settings updated successfully"
+      assert redirected_to(channel_conn) == ~p"/users/settings/stream"
 
-      response = html_response(get(conn, Routes.user_settings_path(conn, :stream)), 200)
+      assert Phoenix.Flash.get(channel_conn.assigns.flash, :info) =~
+               "Stream settings updated successfully"
+
+      response = html_response(get(conn, ~p"/users/settings/stream"), 200)
       refute response =~ "Some Subcategory"
     end
 
@@ -137,16 +145,18 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
         ])
 
       channel_conn =
-        put(conn, Routes.user_settings_path(conn, :update_channel), %{
+        put(conn, ~p"/users/settings/update_channel", %{
           "channel" => %{
             "subcategory" => input
           }
         })
 
-      assert redirected_to(channel_conn) == Routes.user_settings_path(conn, :stream)
-      assert get_flash(channel_conn, :info) =~ "Stream settings updated successfully"
+      assert redirected_to(channel_conn) == ~p"/users/settings/stream"
 
-      response = html_response(get(conn, Routes.user_settings_path(conn, :stream)), 200)
+      assert Phoenix.Flash.get(channel_conn.assigns.flash, :info) =~
+               "Stream settings updated successfully"
+
+      response = html_response(get(conn, ~p"/users/settings/stream"), 200)
       assert response =~ "Some Subcategory"
     end
 
@@ -163,16 +173,18 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
         ])
 
       channel_conn =
-        put(conn, Routes.user_settings_path(conn, :update_channel), %{
+        put(conn, ~p"/users/settings/update_channel", %{
           "channel" => %{
             "subcategory" => input
           }
         })
 
-      assert redirected_to(channel_conn) == Routes.user_settings_path(conn, :stream)
-      assert get_flash(channel_conn, :info) =~ "Stream settings updated successfully"
+      assert redirected_to(channel_conn) == ~p"/users/settings/stream"
 
-      response = html_response(get(conn, Routes.user_settings_path(conn, :stream)), 200)
+      assert Phoenix.Flash.get(channel_conn.assigns.flash, :info) =~
+               "Stream settings updated successfully"
+
+      response = html_response(get(conn, ~p"/users/settings/stream"), 200)
       assert response =~ "Some Subcategory"
 
       new_channel = Glimesh.ChannelLookups.get_channel(channel.id)
@@ -183,37 +195,41 @@ defmodule GlimeshWeb.UserSettingsControllerTest do
   describe "PUT /users/settings/update_profile" do
     test "updates the social media profiles", %{conn: conn} do
       profile_conn =
-        put(conn, Routes.user_settings_path(conn, :update_profile), %{
+        put(conn, ~p"/users/settings/update_profile", %{
           "user" => %{
             "social_discord" => "inviteurl"
           }
         })
 
-      assert redirected_to(profile_conn) == Routes.user_settings_path(conn, :profile)
-      assert get_flash(profile_conn, :info) =~ "Profile updated successfully"
+      assert redirected_to(profile_conn) == ~p"/users/settings/profile"
 
-      response = html_response(get(conn, Routes.user_settings_path(conn, :profile)), 200)
+      assert Phoenix.Flash.get(profile_conn.assigns.flash, :info) =~
+               "Profile updated successfully"
+
+      response = html_response(get(conn, ~p"/users/settings/profile"), 200)
       assert response =~ "inviteurl"
     end
 
     test "does update displayname if case changes", %{conn: conn, user: user} do
       profile_conn =
-        put(conn, Routes.user_settings_path(conn, :update_profile), %{
+        put(conn, ~p"/users/settings/update_profile", %{
           "user" => %{
             "displayname" => String.upcase(user.username)
           }
         })
 
-      assert redirected_to(profile_conn) == Routes.user_settings_path(conn, :profile)
-      assert get_flash(profile_conn, :info) =~ "Profile updated successfully"
+      assert redirected_to(profile_conn) == ~p"/users/settings/profile"
 
-      response = html_response(get(conn, Routes.user_settings_path(conn, :profile)), 200)
+      assert Phoenix.Flash.get(profile_conn.assigns.flash, :info) =~
+               "Profile updated successfully"
+
+      response = html_response(get(conn, ~p"/users/settings/profile"), 200)
       assert response =~ String.upcase(user.username)
     end
 
     test "does not update displayname if it does not match username", %{conn: conn, user: user} do
       profile_conn =
-        put(conn, Routes.user_settings_path(conn, :update_profile), %{
+        put(conn, ~p"/users/settings/update_profile", %{
           "user" => %{
             "displayname" => user.username <> "f"
           }

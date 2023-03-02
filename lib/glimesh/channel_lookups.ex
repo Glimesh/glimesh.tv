@@ -8,33 +8,34 @@ defmodule Glimesh.ChannelLookups do
   alias Glimesh.AccountFollows.Follower
   alias Glimesh.Accounts.User
   alias Glimesh.Repo
-  alias Glimesh.Streams.{Category, Channel, ChannelHosts}
+  alias Glimesh.Streams.{Category, Channel, ChannelBan, ChannelBannedRaid, ChannelHosts}
 
   ## Filtering
   @spec search_live_channels(map) :: list
-  def search_live_channels(params) do
-    Channel
-    |> where([c], c.status == "live")
+  def search_live_channels(params, user \\ nil) do
+    from(c in Channel, as: :channel)
+    |> where([channel: c], c.status == "live")
     |> apply_filter(:ids, params)
     |> apply_filter(:category, params)
     |> apply_filter(:subcategory, params)
     |> apply_filter(:tags, params)
     |> apply_filter(:language, params)
+    |> apply_filter(:raidable, params, user)
     |> order_by(fragment("RANDOM()"))
-    |> group_by([c], c.id)
+    |> group_by([channel: c], c.id)
     |> preload([:category, :subcategory, :user, :stream, :tags])
     |> Repo.replica().all()
   end
 
   defp apply_filter(query, :category, %{"ids" => ids}) when is_list(ids) do
-    where(query, [c], c.id in ^ids)
+    where(query, [channel: c], c.id in ^ids)
   end
 
   defp apply_filter(query, :category, %{"category" => category_slug})
        when is_binary(category_slug) do
     category = Glimesh.ChannelCategories.get_category(category_slug)
 
-    where(query, [c], c.category_id == ^category.id)
+    where(query, [channel: c], c.category_id == ^category.id)
   end
 
   defp apply_filter(query, :subcategory, %{
@@ -45,26 +46,78 @@ defmodule Glimesh.ChannelLookups do
     category = Glimesh.ChannelCategories.get_category(category_slug)
 
     query
-    |> join(:inner, [c], assoc(c, :subcategory), as: :subcategory)
+    |> join(:inner, [channel: c], assoc(c, :subcategory), as: :subcategory)
     |> where([subcategory: sc], sc.category_id == ^category.id)
     |> where([subcategory: sc], sc.slug in ^subcategories)
   end
 
   defp apply_filter(query, :tags, %{"tags" => tags}) when is_list(tags) do
     query
-    |> join(:inner, [c], assoc(c, :tags), as: :tags)
+    |> join(:inner, [channel: c], assoc(c, :tags), as: :tags)
     |> where([tags: t], t.slug in ^tags)
   end
 
   defp apply_filter(query, :language, %{"language" => language}) when is_binary(language) do
-    where(query, [c], c.language == ^language)
+    where(query, [channel: c], c.language == ^language)
   end
 
   defp apply_filter(query, :language, %{"language" => languages}) when is_list(languages) do
-    where(query, [c], c.language in ^languages)
+    where(query, [channel: c], c.language in ^languages)
   end
 
   defp apply_filter(query, _field, _params) do
+    query
+  end
+
+  defp apply_filter(query, :raidable, %{"raidable" => raidable}, %User{} = user) do
+    userid = user.id
+
+    follower_query =
+      from(f in Follower,
+        join: u in User,
+        on: f.user_id == u.id,
+        join: ch in Channel,
+        on: f.user_id == ch.user_id,
+        where:
+          parent_as(:channel).id == ch.id and
+            f.streamer_id == ^userid,
+        select: 1,
+        limit: 1
+      )
+
+    blocked_from_chat_query =
+      from(cb in ChannelBan,
+        where:
+          not is_nil(cb.expires_at) and
+            cb.channel_id == parent_as(:channel).id and
+            cb.user_id == ^userid,
+        select: 1,
+        limit: 1
+      )
+
+    blocked_from_raiding_query =
+      from(cbr in ChannelBannedRaid,
+        join: ch in Channel,
+        on: cbr.banned_channel_id == ch.id,
+        join: u in User,
+        on: ch.user_id == u.id,
+        where: cbr.channel_id == parent_as(:channel).id and u.id == ^userid,
+        select: 1,
+        limit: 1
+      )
+
+    if raidable == "false" do
+      query
+    else
+      query
+      |> where([channel: c], c.allow_raiding == ^raidable)
+      |> where([channel: c], c.only_followed_can_raid == false or exists(follower_query))
+      |> where([channel: c], not exists(blocked_from_chat_query))
+      |> where([channel: c], not exists(blocked_from_raiding_query))
+    end
+  end
+
+  defp apply_filter(query, _field, _params, _user) do
     query
   end
 
@@ -247,7 +300,7 @@ defmodule Glimesh.ChannelLookups do
     |> Repo.preload([:category, :user])
   end
 
-  def get_channel_for_user(user) do
+  def get_channel_for_user(user, preloads \\ [:category, :user]) do
     Repo.one(
       from c in Channel,
         join: u in User,
@@ -255,7 +308,7 @@ defmodule Glimesh.ChannelLookups do
         where: u.id == ^user.id,
         where: c.inaccessible == false
     )
-    |> Repo.preload([:category, :user])
+    |> Repo.preload(preloads)
   end
 
   @doc """
@@ -299,6 +352,45 @@ defmodule Glimesh.ChannelLookups do
       |> Repo.preload([:user])
     else
       []
+    end
+  end
+
+  def search_bannable_raiding_channels_by_name(%Channel{} = channel, target_name) do
+    if target_name != nil and String.length(target_name) < 25 do
+      search_term = Regex.replace(~r/(\\\\|_|%)/, target_name, "\\\\\\1") <> "%"
+
+      Repo.replica().all(
+        from c in Channel,
+          join: u in User,
+          on: c.user_id == u.id,
+          where: c.id != ^channel.id,
+          where: ilike(u.displayname, ^search_term),
+          where:
+            fragment(
+              "not exists(select 1 from channel_banned_raids where channel_id = ? and banned_channel_id = ?)",
+              ^channel.id,
+              c.id
+            ),
+          order_by: [asc: u.displayname],
+          limit: 10
+      )
+      |> Repo.preload([:user])
+    else
+      []
+    end
+  end
+
+  def can_viewer_raid_channel?(%User{} = raiding_user, %Channel{} = target_channel) do
+    raiding_channel = get_channel_for_user(raiding_user)
+
+    if not is_nil(raiding_channel) and raiding_channel.status == "live" do
+      from(c in Channel, as: :channel)
+      |> where([channel: c], c.id == ^target_channel.id and c.user_id != ^raiding_user.id)
+      |> where([channel: c], c.status == "live")
+      |> apply_filter(:raidable, %{"raidable" => "true"}, raiding_user)
+      |> Repo.exists?()
+    else
+      false
     end
   end
 end

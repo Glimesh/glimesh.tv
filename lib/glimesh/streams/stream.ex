@@ -24,6 +24,9 @@ defmodule Glimesh.Streams.Stream do
     field :new_subscribers, :integer
     field :resub_subscribers, :integer
 
+    field :count_raids, :integer
+    field :count_raid_viewers, :integer
+
     field :global_tags, {:array, :integer}
     field :category_tags, {:array, :integer}
 
@@ -51,7 +54,9 @@ defmodule Glimesh.Streams.Stream do
       :new_subscribers,
       :resub_subscribers,
       :global_tags,
-      :category_tags
+      :category_tags,
+      :count_raids,
+      :count_raid_viewers
     ])
     |> cast_attachments(attrs, [:thumbnail])
   end

@@ -1,5 +1,5 @@
 <.form
-  let={f}
+  :let={f}
   for={@channel_changeset}
   action={@route}
   phx-change="change_channel"
@@ -117,6 +117,25 @@
             <span class="text-danger"><%= gettext("Invalid image. Max size is 100KB.") %></span>
           </div>
         <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, :share_text, gettext("Stream Share Message")) %>
+        <p class="text-muted form-text">
+          <%= gettext(
+            "A default message to present to viewers when they click to share your channel on social media sites."
+          ) %>
+        </p>
+        <%= text_input(f, :share_text,
+          class: "form-control",
+          placeholder: gettext("Come and enjoy this #Glimesh stream with me!"),
+          minlength: "3",
+          maxlength: "100"
+        ) %>
+        <%= error_tag(f, :share_text) %>
       </div>
     </div>
   </div>
@@ -276,17 +295,17 @@
         <%= error_tag(f, :show_recent_chat_messages_only) %>
       </div>
       <div class="form-group">
-        <%= label(f, :disable_hyperlinks, gettext("Should links automatically be clickable?")) %>
-        <%= select(f, :disable_hyperlinks, [Yes: false, No: true],
-          class: "form-control",
-          disabled: @channel.block_links
-        ) %>
-        <%= error_tag(f, :disable_hyperlinks) %>
-      </div>
-      <div class="form-group">
         <%= label(f, :block_links, gettext("Block viewers from posting links?")) %>
         <%= select(f, :block_links, [Yes: true, No: false], class: "form-control") %>
         <%= error_tag(f, :block_links) %>
+      </div>
+      <div class="form-group">
+        <%= label(f, :disable_hyperlinks, gettext("Should links automatically be clickable?")) %>
+        <%= select(f, :disable_hyperlinks, [Yes: false, No: true],
+          class: ["form-control", "settings-field"],
+          disabled: @channel.block_links
+        ) %>
+        <%= error_tag(f, :disable_hyperlinks) %>
       </div>
       <div class="form-group">
         <%= label(
@@ -315,6 +334,15 @@
           ) %>
         </small>
         <%= error_tag(f, :minimum_account_age) %>
+      </div>
+      <div class="form-group">
+        <%= label(
+          f,
+          :allow_reaction_gifs,
+          gettext("Allow reaction gifs in chat?")
+        ) %>
+        <%= select(f, :allow_reaction_gifs, [No: false, Yes: true], class: "form-control") %>
+        <%= error_tag(f, :allow_reaction_gifs) %>
       </div>
     </div>
   </div>
@@ -398,6 +426,22 @@
           </label>
         </div>
         <%= error_tag(f, :show_on_homepage) %>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mt-4"><%= gettext("Advanced") %></h2>
+  <p>
+    Temporary advanced controls to help test features of Glimesh. It's likely that touching one of these settings without being in that test will break your stream.
+  </p>
+  <div class="row mb-4">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, :backend, gettext("Channel Video Backend")) %>
+        <%= select(f, :backend, [Normal: "ftl", Waveguide: "whep"],
+          class: ["form-control", "settings-field"]
+        ) %>
+        <%= error_tag(f, :backend) %>
       </div>
     </div>
   </div>

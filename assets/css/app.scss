@@ -61,6 +61,7 @@ $fa-font-path: "/fa-fonts";
 @import "glimesh/components/channel-lookup-typeahead";
 @import "glimesh/components/user-preference.scss";
 @import "glimesh/components/recent-tags.scss";
+@import "glimesh/components/tenorsearch.scss";
 
 @import "glimesh/pages/dmca";
 @import "glimesh/pages/hosting.scss";
@@ -116,6 +117,11 @@ $fa-font-path: "/fa-fonts";
 .stream-key:not(:focus) {
     color: transparent;
     text-shadow: 0 0 10px var(--input-color);
+}
+
+.settings-field:disabled {
+    color: var(--text-muted-color);
+    opacity: 0.6;
 }
 
 .fancy-bg {
@@ -331,4 +337,14 @@ $fa-font-path: "/fa-fonts";
 
 .EventsTeam_Font {
     color: #288b8c
+}
+
+.toast {
+    position: fixed;
+    right: 60px;
+    top: 60px;
+    background-color: var(--input-bg-color);
+    color: var(--input-color);
+    border: 2px solid var(--secondary-color);
+    box-shadow: 5px 5px 5px 5px black;
 }

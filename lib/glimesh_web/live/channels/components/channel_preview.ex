@@ -1,10 +1,11 @@
 defmodule GlimeshWeb.Channels.Components.ChannelPreview do
   use Surface.Component
 
+  use GlimeshWeb, :verified_routes
+
   alias Glimesh.Accounts.User
   alias Glimesh.Streams.Channel
   alias Glimesh.Streams.Stream
-  alias GlimeshWeb.Router.Helpers, as: Routes
 
   alias Surface.Components.LivePatch
 
@@ -17,10 +18,7 @@ defmodule GlimeshWeb.Channels.Components.ChannelPreview do
   def render(%{channel: %Channel{user: %User{}, stream: %Stream{}}} = assigns) do
     ~F"""
     <div class={@class}>
-      <LivePatch
-        to={Routes.user_stream_path(GlimeshWeb.Endpoint, :index, @channel.user.username)}
-        class="text-color-link"
-      >
+      <LivePatch to={~p"/#{@channel.user.username}"} class="text-color-link">
         <div class="card card-stream">
           <img
             src={Glimesh.StreamThumbnail.url({@channel.stream.thumbnail, @channel.stream}, :original)}

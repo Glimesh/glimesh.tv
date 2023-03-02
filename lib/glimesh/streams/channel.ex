@@ -5,6 +5,11 @@ defmodule Glimesh.Streams.Channel do
 
   import Ecto.Changeset
 
+  alias Glimesh.ChannelCategories
+  alias Glimesh.Repo
+  alias Glimesh.Streams.Channel
+  alias Glimesh.Streams.Tag
+
   schema "channels" do
     belongs_to :user, Glimesh.Accounts.User
     belongs_to :category, Glimesh.Streams.Category
@@ -34,7 +39,12 @@ defmodule Glimesh.Streams.Channel do
 
     field :emote_prefix, :string
 
+    field :allow_reaction_gifs, :boolean, default: false
+
     field :allow_hosting, :boolean, default: false
+    field :allow_raiding, :boolean, default: false
+    field :only_followed_can_raid, :boolean, default: false
+    field :raid_message, :string, default: "{streamer} is raiding you with {count} viewers!"
 
     field :interactive_project, {:array, Glimesh.Interactive.Type}
     field :interactive_enabled, :boolean, default: false
@@ -49,6 +59,8 @@ defmodule Glimesh.Streams.Channel do
     field :poster, Glimesh.ChannelPoster.Type
     field :chat_bg, Glimesh.ChatBackground.Type
 
+    field :share_text, :string, default: "Come and enjoy this #Glimesh stream with me!"
+
     # This is used when searching for live channels that are live or hosted
     field :match_type, :string, virtual: true
 
@@ -58,6 +70,7 @@ defmodule Glimesh.Streams.Channel do
     has_many :bans, Glimesh.Streams.ChannelBan
     has_many :moderators, Glimesh.Streams.ChannelModerator
     has_many :moderation_logs, Glimesh.Streams.ChannelModerationLog
+    has_many :banned_raid_channels, Glimesh.Streams.ChannelBannedRaid
 
     timestamps()
   end
@@ -108,7 +121,13 @@ defmodule Glimesh.Streams.Channel do
       :require_confirmed_email,
       :minimum_account_age,
       :allow_hosting,
-      :interactive_enabled
+      :interactive_enabled,
+      :backend,
+      :allow_raiding,
+      :only_followed_can_raid,
+      :raid_message,
+      :share_text,
+      :allow_reaction_gifs
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)
@@ -116,6 +135,7 @@ defmodule Glimesh.Streams.Channel do
       greater_than_or_equal_to: 0,
       less_than_or_equal_to: 720
     )
+    |> validate_inclusion(:backend, ["ftl", "whep"])
     |> set_chat_rules_content_html()
     |> cast_attachments(attrs, [:poster, :chat_bg, :interactive_project])
     |> maybe_put_tags(:tags, attrs)
@@ -137,7 +157,7 @@ defmodule Glimesh.Streams.Channel do
 
   defp validate_no_active_emotes(changeset) do
     case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{emote_prefix: emote_prefix}} ->
+      %Ecto.Changeset{valid?: true, changes: %{emote_prefix: _}} ->
         if Glimesh.Emotes.count_all_emotes_for_channel(changeset.data) > 0 do
           add_error(
             changeset,
@@ -163,9 +183,6 @@ defmodule Glimesh.Streams.Channel do
     ])
     |> validate_format(:streamloots_url, ~r/https:\/\/www\.streamloots\.com\/([a-zA-Z0-9._]+)/)
   end
-
-  alias Glimesh.ChannelCategories
-  alias Glimesh.Streams.Tag
 
   def tags_changeset(channel, tags) do
     channel
@@ -273,15 +290,48 @@ defmodule Glimesh.Streams.Channel do
     Glimesh.Streams.HmacKey.generate_key()
   end
 
-  def change_allow_hosting(%Glimesh.Streams.Channel{} = channel, attrs \\ %{}) do
+  def change_allow_hosting(%Channel{} = channel, attrs \\ %{}) do
     channel
     |> cast(attrs, [:allow_hosting])
     |> validate_required(:allow_hosting)
   end
 
-  def update_allow_hosting(%Glimesh.Streams.Channel{} = channel, attrs \\ %{}) do
+  def update_allow_hosting(%Channel{} = channel, attrs \\ %{}) do
     change_allow_hosting(channel, attrs)
     |> Glimesh.Repo.update()
+  end
+
+  def change_allow_raiding(%Channel{} = channel, attrs \\ %{}) do
+    channel
+    |> cast(attrs, [:allow_raiding])
+    |> validate_required(:allow_raiding)
+  end
+
+  def change_only_allow_followed_raiding(%Channel{} = channel, attrs \\ %{}) do
+    channel
+    |> cast(attrs, [:only_followed_can_raid])
+    |> validate_required(:only_followed_can_raid)
+  end
+
+  def change_raid_message(%Channel{} = channel, attrs \\ %{}) do
+    channel
+    |> cast(attrs, [:raid_message])
+    |> validate_required(:raid_message)
+  end
+
+  def update_raid_message(%Channel{} = channel, attrs \\ %{}) do
+    change_raid_message(channel, attrs)
+    |> Repo.update()
+  end
+
+  def update_allow_raiding(%Channel{} = channel, attrs \\ %{}) do
+    change_allow_raiding(channel, attrs)
+    |> Repo.update()
+  end
+
+  def update_only_allow_followed_raiding(%Channel{} = channel, attrs \\ %{}) do
+    change_only_allow_followed_raiding(channel, attrs)
+    |> Repo.update()
   end
 
   def edit_title_and_tags_changeset(channel, attrs \\ %{}) do
@@ -295,5 +345,14 @@ defmodule Glimesh.Streams.Channel do
     |> maybe_put_tags(:tags, attrs)
     |> maybe_put_subcategory(:subcategory, attrs)
     |> unique_constraint([:user_id])
+  end
+
+  def allow_reaction_gifs?(channel) do
+    channel.allow_reaction_gifs and allow_reaction_gifs_site_wide?()
+  end
+
+  def allow_reaction_gifs_site_wide? do
+    Keyword.get(Application.get_env(:glimesh, :tenor_config), :allow_tenor, false) and
+      String.length(Keyword.get(Application.get_env(:glimesh, :tenor_config), :apikey, "")) > 2
   end
 end

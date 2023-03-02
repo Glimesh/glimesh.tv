@@ -19,25 +19,20 @@ defmodule GlimeshWeb.ConnCase do
 
   using do
     quote do
+      # The default endpoint for testing
+      @endpoint GlimeshWeb.Endpoint
+
+      use GlimeshWeb, :verified_routes
+
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
       import GlimeshWeb.ConnCase
-
-      alias GlimeshWeb.Router.Helpers, as: Routes
-
-      # The default endpoint for testing
-      @endpoint GlimeshWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Glimesh.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Glimesh.Repo, {:shared, self()})
-    end
-
+    Glimesh.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 
@@ -89,6 +84,12 @@ defmodule GlimeshWeb.ConnCase do
       ended_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     })
 
+    %{conn: log_in_user(conn, user), user: user, channel: channel}
+  end
+
+  def register_and_log_in_streamer_that_can_be_raided(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.streamer_fixture(%{}, %{allow_raiding: true})
+    channel = Glimesh.ChannelLookups.get_channel_for_user(user)
     %{conn: log_in_user(conn, user), user: user, channel: channel}
   end
 

@@ -4,6 +4,7 @@ defmodule GlimeshWeb.UserLive.Stream do
   alias Glimesh.Accounts
   alias Glimesh.{ChannelHostsLookups, ChannelLookups}
   alias Glimesh.Presence
+  alias Glimesh.Raids
   alias Glimesh.Streams
 
   def mount(%{"username" => streamer_username} = params, session, socket) do
@@ -30,14 +31,27 @@ defmodule GlimeshWeb.UserLive.Stream do
         else
           if connected?(socket) do
             # Wait until the socket connection is ready to load the stream
-            Process.send(self(), :load_stream, [])
+            if Streams.is_live?(channel) do
+              Process.send(self(), :load_stream, [])
+            end
+
             Streams.subscribe_to(:channel, channel.id)
+
+            if not is_nil(maybe_user) do
+              Streams.subscribe_to(:raid, channel.id)
+              Process.send(self(), :track_raid_channel, [])
+            end
           end
 
           avatar_url = Glimesh.Avatar.url({streamer.avatar, streamer}, :original)
 
           has_some_support_option =
             length(Glimesh.Streams.list_support_tabs(channel.user, channel)) > 0
+
+          viewer_can_raid =
+            if is_nil(maybe_user),
+              do: false,
+              else: ChannelLookups.can_viewer_raid_channel?(maybe_user, channel)
 
           {:ok,
            socket
@@ -65,6 +79,12 @@ defmodule GlimeshWeb.UserLive.Stream do
            |> assign(:user, maybe_user)
            |> assign(:ultrawide, false)
            |> assign(:interactive_toggle, false)}
+           |> assign(:webrtc_error, false)
+           |> assign(:can_raid, viewer_can_raid)
+           |> assign(:raid_starting, false)
+           |> assign(:raid_group_id, "")
+           |> assign(:raid_target, nil)
+           |> assign(:raid_time, 0)}
         end
 
       nil ->
@@ -149,7 +169,91 @@ defmodule GlimeshWeb.UserLive.Stream do
   end
 
   def handle_info({:channel, channel}, socket) do
+    if socket.assigns.status == "offline" and channel.status == "live" and
+         socket.assigns.prompt_mature == false do
+      Process.send(self(), :load_stream, [])
+    end
+
     {:noreply, socket |> assign(:stream, channel.stream)}
+  end
+
+  def handle_info({:raid, %{:action => "pending"} = payload}, socket) do
+    seconds_till_raid = abs(NaiveDateTime.diff(payload[:time], NaiveDateTime.utc_now(), :second))
+
+    {:noreply,
+     socket
+     |> assign(:raid_starting, not is_nil(socket.assigns.user))
+     |> assign(:raid_group_id, payload[:group_id])
+     |> assign(:raid_target, payload[:target])
+     |> assign(:raid_time, seconds_till_raid)}
+  end
+
+  def handle_info({:raid, %{:action => "cancelled"}}, socket) do
+    {:noreply,
+     socket
+     |> assign(:raid_starting, false)
+     |> assign(:raid_group_id, "")
+     |> assign(:raid_target, nil)
+     |> assign(:raid_time, 0)
+     |> push_event("cancel_raid", %{})
+     |> put_flash(:info, gettext("Streamer has cancelled pending raid."))}
+  end
+
+  def handle_info(:track_raid_channel, socket) do
+    # only logged in users can participate in a raid
+    if not is_nil(socket.assigns.user) do
+      Presence.track_presence(
+        self(),
+        Streams.get_subscribe_topic(:raid, socket.assigns.channel.id),
+        socket.assigns.unique_user,
+        %{
+          logged_in_user_id: socket.assigns.user.id
+        }
+      )
+    end
+
+    {:noreply, socket}
+  end
+
+  def handle_info(
+        %{
+          event: "presence_diff",
+          topic: "streams:raid:" <> _streamer = _topic
+        },
+        socket
+      ) do
+    {:noreply, socket}
+  end
+
+  def handle_info({:raid, %{:action => "active"} = payload}, socket) do
+    target_channel_username = payload[:target]
+    raid_users = payload[:users]
+
+    if is_current_user_in_raid?(raid_users, socket.assigns.user) do
+      {:noreply,
+       socket
+       |> assign(:raid_starting, false)
+       |> assign(:raid_group_id, payload[:group_id])
+       |> push_redirect(to: Routes.user_stream_path(socket, :index, target_channel_username))}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("decline-raid", _value, socket) do
+    raid_group_id = socket.assigns.raid_group_id
+    user = socket.assigns.user
+
+    if not is_nil(user) do
+      Raids.remove_pending_raid_user(raid_group_id, user.id)
+    end
+
+    {:noreply,
+     socket
+     |> assign(:raid_starting, false)
+     |> assign(:raid_group_id, "")
+     |> assign(:raid_target, nil)
+     |> assign(:raid_time, 0)}
   end
 
   def handle_event("show_mature", _value, socket) do
@@ -188,6 +292,10 @@ defmodule GlimeshWeb.UserLive.Stream do
 
   def handle_event("lost_packets", _, socket) do
     {:noreply, socket}
+  end
+
+  def handle_event("webrtc_error", message, socket) do
+    {:noreply, socket |> assign(:webrtc_error, message)}
   end
 
   def handle_event("ultrawide", %{"enabled" => enabled}, socket) do
@@ -237,5 +345,9 @@ defmodule GlimeshWeb.UserLive.Stream do
         "#{channel.user.displayname}'s channel on Glimesh, the next-gen live streaming platform.",
       image_url: avatar_url
     }
+  end
+
+  defp is_current_user_in_raid?(raid_users, current_user) do
+    Enum.any?(raid_users, fn raid_user -> raid_user.user_id == current_user.id end)
   end
 end

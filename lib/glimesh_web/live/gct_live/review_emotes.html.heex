@@ -13,7 +13,7 @@
             <figcaption>
               <code>:<%= emote.emote %>:</code>
               on <%= link(emote.channel.user.username,
-                to: Routes.user_stream_path(@socket, :index, emote.channel.user.username)
+                to: ~p"/#{emote.channel.user.username}"
               ) %>
             </figcaption>
             <br />

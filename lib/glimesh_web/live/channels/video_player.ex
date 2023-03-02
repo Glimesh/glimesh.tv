@@ -16,6 +16,8 @@ defmodule GlimeshWeb.Channels.VideoPlayer do
         playsinline
         poster={@channel_poster}
         data-muted={@muted}
+        data-backend={@channel.backend}
+        data-rtrouter={Application.get_env(:glimesh, :rtrouter_url)}
       >
       </video>
       <div id="video-loading-container" class="">
@@ -99,6 +101,10 @@ defmodule GlimeshWeb.Channels.VideoPlayer do
   end
 
   def handle_event("ultrawide", _, socket) do
+    {:noreply, socket}
+  end
+
+  def handle_event("webrtc_error", _, socket) do
     {:noreply, socket}
   end
 

@@ -19,22 +19,17 @@ defmodule GlimeshWeb.ChannelCase do
 
   using do
     quote do
+      # The default endpoint for testing
+      @endpoint GlimeshWeb.Endpoint
+
       # Import conveniences for testing with channels
       import Phoenix.ChannelTest
       import GlimeshWeb.ChannelCase
-
-      # The default endpoint for testing
-      @endpoint GlimeshWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Glimesh.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Glimesh.Repo, {:shared, self()})
-    end
-
-    :ok
+    Glimesh.DataCase.setup_sandbox(tags)
+    {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end
