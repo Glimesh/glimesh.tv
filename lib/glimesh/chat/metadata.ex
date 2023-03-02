@@ -13,6 +13,7 @@ defmodule Glimesh.Chat.ChatMessage.Metadata do
     field :admin, :boolean
     field :platform_founder_subscriber, :boolean
     field :platform_supporter_subscriber, :boolean
+    field :raid_group, Ecto.UUID
   end
 
   def defaults do
@@ -22,7 +23,8 @@ defmodule Glimesh.Chat.ChatMessage.Metadata do
       moderator: false,
       admin: false,
       platform_founder_subscriber: false,
-      platform_supporter_subscriber: false
+      platform_supporter_subscriber: false,
+      raid_group: nil
     }
   end
 end

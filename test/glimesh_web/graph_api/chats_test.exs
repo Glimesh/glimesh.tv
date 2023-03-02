@@ -24,6 +24,19 @@ defmodule GlimeshWeb.GraphApi.ChatsTest do
     }
   }
   """
+
+  @create_chat_message_and_check_raid_flag_mutation """
+  mutation CreateChatMessage($channelId: ID!, $message: ChatMessageInput!) {
+    createChatMessage(channelId: $channelId, message: $message) {
+      ... on EmoteToken {
+          src
+        }
+      }
+      is_raid_message
+    }
+  }
+  """
+  
   @create_tenor_message_mutation """
   mutation CreateTenorMessage($channelId: ID!, $message: ChatMessageInput!) {
     createTenorMessage(channelId: $channelId, message: $message) {
@@ -34,7 +47,7 @@ defmodule GlimeshWeb.GraphApi.ChatsTest do
       tokens {
         type
         text
-        ... on TenorToken {
+      ... on TenorToken {
           src
           tenor_id
           small_src
@@ -43,6 +56,7 @@ defmodule GlimeshWeb.GraphApi.ChatsTest do
     }
   }
   """
+  
   @create_chat_message_with_metadata_mutation """
   mutation CreateChatMessage($channelId: ID!, $message: ChatMessageInput!) {
     createChatMessage(channelId: $channelId, message: $message) {
@@ -185,6 +199,34 @@ defmodule GlimeshWeb.GraphApi.ChatsTest do
                "tokens" => [
                  %{"type" => "text", "text" => "Hello world"}
                ]
+             }
+    end
+
+    test "can send a chat message and see raiding event flag", %{
+      conn: conn,
+      user: user,
+      channel: channel
+    } do
+      conn =
+        post(conn, "/api/graph", %{
+          "query" => @create_chat_message_and_check_raid_flag_mutation,
+          "variables" => %{
+            channelId: "#{channel.id}",
+            message: %{
+              message: "Hello world"
+            }
+          }
+        })
+
+      assert json_response(conn, 200)["data"]["createChatMessage"] == %{
+               "message" => "Hello world",
+               "user" => %{
+                 "username" => user.username
+               },
+               "tokens" => [
+                 %{"type" => "text", "text" => "Hello world"}
+               ],
+               "is_raid_message" => false
              }
     end
 

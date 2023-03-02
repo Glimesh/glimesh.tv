@@ -33,7 +33,7 @@ defmodule Glimesh.Chat do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_chat_message(%User{} = user, %Channel{} = channel, attrs \\ %{}) do
+  def create_chat_message(%User{} = user, %Channel{} = channel, attrs \\ %{}, metadata \\ %{}) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_chat_message, user, channel) do
       if allow_link_in_message(channel, attrs) do
         channel_subscriber = Payments.is_subscribed?(channel, user)
@@ -46,17 +46,19 @@ defmodule Glimesh.Chat do
             user.id
           )
 
+        data = %ChatMessage.Metadata{
+          subscriber: channel_subscriber,
+          streamer: channel.streamer_id == user.id,
+          moderator: Glimesh.Chat.is_moderator?(channel, user),
+          admin: user.is_admin,
+          platform_founder_subscriber: Payments.is_platform_founder_subscriber?(user),
+          platform_supporter_subscriber: Payments.is_platform_supporter_subscriber?(user)
+        }
+
         %ChatMessage{
           channel: channel,
           user: user,
-          metadata: %ChatMessage.Metadata{
-            subscriber: channel_subscriber,
-            streamer: channel.streamer_id == user.id,
-            moderator: Glimesh.Chat.is_moderator?(channel, user),
-            admin: user.is_admin,
-            platform_founder_subscriber: Payments.is_platform_founder_subscriber?(user),
-            platform_supporter_subscriber: Payments.is_platform_supporter_subscriber?(user)
-          }
+          metadata: struct(data, metadata)
         }
         |> ChatMessage.changeset(attrs)
         |> ChatMessage.put_tokens(config)

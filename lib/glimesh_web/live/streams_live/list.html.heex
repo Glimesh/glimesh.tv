@@ -49,11 +49,17 @@
           ) %>
         </div>
       </div>
-      <div class="col-md-6 col-lg-3 mb-2">
+      <div class="col-md-6 col-lg-2 mb-2">
         <label for="validationCustom02"><%= gettext("Language") %></label>
         <%= select(:form, :language, @locales, value: @prefilled_language, class: "custom-select") %>
       </div>
-      <div class="col-md-6 col-lg-3 text-right">
+      <div class="col-md-6 col-lg-2 mb-2 mt-5">
+        <div class="custom-control custom-switch">
+          <%= checkbox(:form, :raidable, value: @prefilled_raidable, class: "custom-control-input") %>
+          <%= label(:form, :raidable, gettext("Can Raid?"), class: "custom-control-label") %>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-2 text-right">
         <%= gettext("Showing %{count_channels} of %{total_channels} Live Channels",
           count_channels: @shown_channels,
           total_channels: @total_channels

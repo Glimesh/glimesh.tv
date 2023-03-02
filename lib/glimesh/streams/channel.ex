@@ -5,6 +5,11 @@ defmodule Glimesh.Streams.Channel do
 
   import Ecto.Changeset
 
+  alias Glimesh.ChannelCategories
+  alias Glimesh.Repo
+  alias Glimesh.Streams.Channel
+  alias Glimesh.Streams.Tag
+
   schema "channels" do
     belongs_to :user, Glimesh.Accounts.User
     belongs_to :category, Glimesh.Streams.Category
@@ -37,6 +42,9 @@ defmodule Glimesh.Streams.Channel do
     field :allow_reaction_gifs, :boolean, default: false
 
     field :allow_hosting, :boolean, default: false
+    field :allow_raiding, :boolean, default: false
+    field :only_followed_can_raid, :boolean, default: false
+    field :raid_message, :string, default: "{streamer} is raiding you with {count} viewers!"
 
     # This is here temporarily as we add additional schema to handle it.
     field :streamloots_url, :string, default: nil
@@ -59,6 +67,7 @@ defmodule Glimesh.Streams.Channel do
     has_many :bans, Glimesh.Streams.ChannelBan
     has_many :moderators, Glimesh.Streams.ChannelModerator
     has_many :moderation_logs, Glimesh.Streams.ChannelModerationLog
+    has_many :banned_raid_channels, Glimesh.Streams.ChannelBannedRaid
 
     timestamps()
   end
@@ -110,6 +119,9 @@ defmodule Glimesh.Streams.Channel do
       :minimum_account_age,
       :allow_hosting,
       :backend,
+      :allow_raiding,
+      :only_followed_can_raid,
+      :raid_message,
       :share_text,
       :allow_reaction_gifs
     ])
@@ -167,9 +179,6 @@ defmodule Glimesh.Streams.Channel do
     ])
     |> validate_format(:streamloots_url, ~r/https:\/\/www\.streamloots\.com\/([a-zA-Z0-9._]+)/)
   end
-
-  alias Glimesh.ChannelCategories
-  alias Glimesh.Streams.Tag
 
   def tags_changeset(channel, tags) do
     channel
@@ -277,15 +286,48 @@ defmodule Glimesh.Streams.Channel do
     Glimesh.Streams.HmacKey.generate_key()
   end
 
-  def change_allow_hosting(%Glimesh.Streams.Channel{} = channel, attrs \\ %{}) do
+  def change_allow_hosting(%Channel{} = channel, attrs \\ %{}) do
     channel
     |> cast(attrs, [:allow_hosting])
     |> validate_required(:allow_hosting)
   end
 
-  def update_allow_hosting(%Glimesh.Streams.Channel{} = channel, attrs \\ %{}) do
+  def update_allow_hosting(%Channel{} = channel, attrs \\ %{}) do
     change_allow_hosting(channel, attrs)
     |> Glimesh.Repo.update()
+  end
+
+  def change_allow_raiding(%Channel{} = channel, attrs \\ %{}) do
+    channel
+    |> cast(attrs, [:allow_raiding])
+    |> validate_required(:allow_raiding)
+  end
+
+  def change_only_allow_followed_raiding(%Channel{} = channel, attrs \\ %{}) do
+    channel
+    |> cast(attrs, [:only_followed_can_raid])
+    |> validate_required(:only_followed_can_raid)
+  end
+
+  def change_raid_message(%Channel{} = channel, attrs \\ %{}) do
+    channel
+    |> cast(attrs, [:raid_message])
+    |> validate_required(:raid_message)
+  end
+
+  def update_raid_message(%Channel{} = channel, attrs \\ %{}) do
+    change_raid_message(channel, attrs)
+    |> Repo.update()
+  end
+
+  def update_allow_raiding(%Channel{} = channel, attrs \\ %{}) do
+    change_allow_raiding(channel, attrs)
+    |> Repo.update()
+  end
+
+  def update_only_allow_followed_raiding(%Channel{} = channel, attrs \\ %{}) do
+    change_only_allow_followed_raiding(channel, attrs)
+    |> Repo.update()
   end
 
   def edit_title_and_tags_changeset(channel, attrs \\ %{}) do

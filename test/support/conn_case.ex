@@ -87,6 +87,12 @@ defmodule GlimeshWeb.ConnCase do
     %{conn: log_in_user(conn, user), user: user, channel: channel}
   end
 
+  def register_and_log_in_streamer_that_can_be_raided(%{conn: conn}) do
+    user = Glimesh.AccountsFixtures.streamer_fixture(%{}, %{allow_raiding: true})
+    channel = Glimesh.ChannelLookups.get_channel_for_user(user)
+    %{conn: log_in_user(conn, user), user: user, channel: channel}
+  end
+
   @doc """
   Setup helper that registers and logs in admin user.
 

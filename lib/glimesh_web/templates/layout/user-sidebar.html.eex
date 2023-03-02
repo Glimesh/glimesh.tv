@@ -44,6 +44,9 @@
                 <%= link class: "list-group-item list-group-item-action " <> active_user_hosting_path(@conn), to: ~p"/users/settings/hosting" do %>
                 <i class="fas fa-tv fa-fw"></i> <%= gettext("Hosting") %>
                 <% end %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_raiding_path(@conn), to: Routes.user_settings_path(@conn, :raiding) do %>
+                <i class="fas fa-bullhorn fa-fw"></i> <%= gettext("Raiding") %>
+                <% end %>
                 <% else %>
                 <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: ~p"/users/settings/stream" do %>
                 <i class="fas fa-video fa-fw"></i> <%= gettext("Create Channel") %>

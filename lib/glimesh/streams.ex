@@ -5,13 +5,18 @@ defmodule Glimesh.Streams do
   require Logger
 
   import Ecto.Query, warn: false
+  alias Ecto.UUID
   alias Glimesh.Accounts
   alias Glimesh.Accounts.User
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
+  alias Glimesh.Chat
+  alias Glimesh.Events
+  alias Glimesh.Jobs.RaidResolver
+  alias Glimesh.Raids
   alias Glimesh.Repo
   alias Glimesh.StreamModeration
-  alias Glimesh.Streams.{Channel, ChannelModerationLog, StreamMetadata}
+  alias Glimesh.Streams.{Channel, ChannelModerationLog, ChannelRaids, RaidUser, StreamMetadata}
 
   defdelegate authorize(action, user, params), to: Glimesh.Streams.Policy
 
@@ -22,11 +27,13 @@ defmodule Glimesh.Streams do
   def get_subscribe_topic(:chat), do: "streams:chat"
   def get_subscribe_topic(:chatters), do: "streams:chatters"
   def get_subscribe_topic(:viewers), do: "streams:viewers"
+  def get_subscribe_topic(:raid), do: "streams:raid"
   def get_subscribe_topic(:channel, channel_id), do: "streams:channel:#{channel_id}"
   def get_subscribe_topic(:stream, stream_id), do: "streams:stream:#{stream_id}"
   def get_subscribe_topic(:chat, channel_id), do: "streams:chat:#{channel_id}"
   def get_subscribe_topic(:chatters, channel_id), do: "streams:chatters:#{channel_id}"
   def get_subscribe_topic(:viewers, channel_id), do: "streams:viewers:#{channel_id}"
+  def get_subscribe_topic(:raid, channel_id), do: "streams:raid:#{channel_id}"
 
   def subscribe_to(topic_atom, channel_id),
     do: sub_and_return(get_subscribe_topic(topic_atom, channel_id))
@@ -36,7 +43,7 @@ defmodule Glimesh.Streams do
   defp broadcast({:error, _reason} = error, _event), do: error
 
   defp broadcast({:ok, %Channel{} = channel} = input, :channel = event) do
-    Glimesh.Events.broadcast(
+    Events.broadcast(
       get_subscribe_topic(:channel, channel.id),
       get_subscribe_topic(:channel),
       event,
@@ -47,11 +54,22 @@ defmodule Glimesh.Streams do
   end
 
   defp broadcast({:ok, %Glimesh.Streams.Stream{} = stream} = input, :stream = event) do
-    Glimesh.Events.broadcast(
+    Events.broadcast(
       get_subscribe_topic(:stream, stream.id),
       get_subscribe_topic(:stream),
       event,
       stream
+    )
+
+    input
+  end
+
+  defp broadcast({:ok, %Channel{} = channel} = input, :raid = event, payload) do
+    Events.broadcast(
+      get_subscribe_topic(:raid, channel.id),
+      get_subscribe_topic(:raid),
+      event,
+      payload
     )
 
     input
@@ -216,6 +234,17 @@ defmodule Glimesh.Streams do
         order_by: [desc: s.started_at]
     )
     |> Repo.preload(:category)
+  end
+
+  def list_paged_streams(channel, page_number \\ 1) do
+    params = %{page: page_number, page_size: 30}
+
+    from(s in Glimesh.Streams.Stream,
+      where: s.channel_id == ^channel.id,
+      order_by: [desc: s.started_at],
+      preload: [:category]
+    )
+    |> Repo.paginate(params)
   end
 
   @doc """
@@ -423,5 +452,141 @@ defmodule Glimesh.Streams do
     channel.status == "live"
   end
 
+  def start_raid_channel(
+        %User{} = user,
+        %Channel{} = source_channel,
+        %Channel{} = target_channel,
+        present_users
+      ) do
+    with :ok <- Bodyguard.permit(Glimesh.Streams.Policy, :raid_channel, user, source_channel),
+         true <- ChannelLookups.can_viewer_raid_channel?(user, target_channel) do
+      group_id = UUID.generate()
+      {:ok, binary_group_id} = UUID.cast(group_id)
+
+      ChannelRaids.changeset(%ChannelRaids{started_by: user, target_channel: target_channel}, %{
+        group_id: binary_group_id,
+        status: :pending
+      })
+      |> Repo.insert()
+
+      insert_initial_raiding_users(group_id, present_users)
+
+      {:ok, job} =
+        %{raiding_group_id: group_id}
+        |> RaidResolver.new(schedule_in: 30)
+        |> Oban.insert()
+
+      payload = %{
+        target: target_channel,
+        time: job.scheduled_at,
+        group_id: group_id,
+        action: "pending"
+      }
+
+      {:ok, source_channel}
+      |> broadcast(:raid, payload)
+
+      payload
+    else
+      {:error, _} ->
+        :error
+
+      false ->
+        :error
+    end
+  end
+
+  def cancel_raid_channel(%User{} = user, %Channel{} = source_channel, raid_group_id) do
+    with :ok <- Bodyguard.permit(Glimesh.Streams.Policy, :raid_channel, user, source_channel),
+         true <- Raids.is_raid_pending?(raid_group_id) do
+      Raids.update_raid_status(raid_group_id, :cancelled)
+
+      {:ok, source_channel}
+      |> broadcast(:raid, %{group_id: raid_group_id, action: "cancelled"})
+    else
+      {:error, _} ->
+        :error
+
+      false ->
+        :error
+    end
+  end
+
+  def perform_raid_channel(
+        raid_users,
+        %Channel{} = source_channel,
+        %Channel{} = target_channel,
+        raid_group_id
+      ) do
+    {:ok, source_channel}
+    |> broadcast(:raid, %{
+      users: raid_users,
+      target: target_channel.user.username,
+      group_id: raid_group_id,
+      action: "active"
+    })
+
+    Raids.update_raid_status(raid_group_id)
+    update_target_stream_raid_stats(raid_users, target_channel)
+    send_raid_message(raid_users, source_channel, target_channel, raid_group_id)
+    end_stream(source_channel)
+  end
+
   # Private Calls
+  defp insert_initial_raiding_users(group_id, present_users) do
+    raiders =
+      Enum.map(present_users, fn data ->
+        if not is_nil(data[:logged_in_user_id]) do
+          now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+
+          %{
+            user_id: data[:logged_in_user_id],
+            group_id: group_id,
+            status: :pending,
+            inserted_at: now,
+            updated_at: now
+          }
+        end
+      end)
+
+    Repo.insert_all(RaidUser, raiders, on_conflict: :nothing)
+  end
+
+  defp send_raid_message(
+         raid_users,
+         %Channel{} = source_channel,
+         %Channel{} = target_channel,
+         raid_group_id
+       ) do
+    replaced_raid_message =
+      target_channel.raid_message
+      |> String.replace("{streamer}", source_channel.user.displayname)
+      |> String.replace("{count}", "#{Enum.count(raid_users)}")
+
+    Chat.create_chat_message(
+      source_channel.user,
+      target_channel,
+      %{
+        message: replaced_raid_message,
+        is_raid_message: true
+      },
+      %{raid_group: raid_group_id}
+    )
+  end
+
+  defp update_target_stream_raid_stats(raid_users, %Channel{} = target_channel) do
+    raid_count = target_channel.stream.count_raids
+    raid_viewer_count = target_channel.stream.count_raid_viewers
+    current_raid_viewer_count = Enum.count(raid_users)
+
+    Glimesh.Streams.Stream.changeset(target_channel.stream, %{
+      count_raids: if(is_nil(raid_count), do: 1, else: raid_count + 1),
+      count_raid_viewers:
+        if(is_nil(raid_viewer_count),
+          do: current_raid_viewer_count,
+          else: raid_viewer_count + current_raid_viewer_count
+        )
+    })
+    |> Repo.update()
+  end
 end

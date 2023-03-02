@@ -1,4 +1,0 @@
-<div class="container">
-    <h2 class="mt-4"><%= gettext "Your Channel Statistics" %></h2>
-    <%= live_render(@conn, GlimeshWeb.UserSettings.Components.ChannelStatisticsLive)  %>
-</div>
