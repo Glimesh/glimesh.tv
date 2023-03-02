@@ -18,6 +18,7 @@ import Tagify from "./hooks/Tagify";
 import ChannelLookupTypeahead from "./hooks/ChannelLookupTypeahead";
 import RecentTags from "./hooks/RecentTags";
 import Bootstrapize from "./hooks/Bootstrapize";
+import MastodonShareButton from "./hooks/MastodonShareButton";
 import TenorSearch from "./hooks/TenorSearch";
 
 // https://github.com/github/markdown-toolbar-element
@@ -43,6 +44,7 @@ Hooks.Tagify = Tagify;
 Hooks.ChannelLookupTypeahead = ChannelLookupTypeahead;
 Hooks.RecentTags = RecentTags;
 Hooks.Bootstrapize = Bootstrapize;
+Hooks.MastodonShareButton = MastodonShareButton;
 Hooks.TenorSearch = TenorSearch;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");

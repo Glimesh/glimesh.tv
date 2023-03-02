@@ -48,6 +48,8 @@ defmodule Glimesh.Streams.Channel do
     field :poster, Glimesh.ChannelPoster.Type
     field :chat_bg, Glimesh.ChatBackground.Type
 
+    field :share_text, :string, default: "Come and enjoy this #Glimesh stream with me!"
+
     # This is used when searching for live channels that are live or hosted
     field :match_type, :string, virtual: true
 
@@ -108,6 +110,7 @@ defmodule Glimesh.Streams.Channel do
       :minimum_account_age,
       :allow_hosting,
       :backend,
+      :share_text,
       :allow_reaction_gifs
     ])
     |> validate_length(:chat_rules_md, max: 8192)
