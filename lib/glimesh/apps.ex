@@ -22,7 +22,7 @@ defmodule Glimesh.Apps do
 
   """
   def list_apps(%User{} = user) do
-    Repo.replica().all(from a in App, where: a.user_id == ^user.id)
+    Repo.replica().all(from(a in App, where: a.user_id == ^user.id))
     |> Repo.preload(:client)
   end
 
@@ -132,12 +132,19 @@ defmodule Glimesh.Apps do
     sub = Integer.to_string(user_id)
     now = DateTime.utc_now() |> DateTime.to_unix()
 
+    # This needs to use the clients refresh token TTL duration
+    seconds_in_month = 60 * 60 * 24 * 30
+
+    refresh_expiration = DateTime.utc_now() |> DateTime.add(seconds_in_month, :second)
+
     Repo.replica().all(
-      from t in Boruta.Ecto.Token,
+      from(t in Boruta.Ecto.Token,
         where:
           t.sub == ^sub and
             is_nil(t.revoked_at) and
-            t.expires_at > ^now
+            t.expires_at > ^now and
+            t.inserted_at < ^refresh_expiration
+      )
     )
     |> Repo.preload(:client)
   end
