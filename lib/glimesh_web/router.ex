@@ -161,6 +161,10 @@ defmodule GlimeshWeb.Router do
     post "/oauth/authorize", OauthController, :process_authorize
   end
 
+  scope "/interactive", GlimeshWeb do
+    get "/:id/*asset", InteractiveController, :asset
+  end
+
   scope "/", GlimeshWeb do
     pipe_through [:browser, :require_authenticated_user, :require_user_has_channel]
 
@@ -275,6 +279,7 @@ defmodule GlimeshWeb.Router do
 
     # This must be the last route
     live "/:username", UserLive.Stream, :index
+    get "/:username/interactive", InteractiveController, :index
     live "/:username/support", UserLive.Stream, :support
     live "/:username/support/:tab", UserLive.Stream, :support
     live "/:username/profile", UserLive.Profile, :index

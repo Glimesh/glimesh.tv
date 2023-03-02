@@ -2,6 +2,7 @@ defmodule Glimesh.Api.ChannelResolver do
   @moduledoc false
   import Ecto.Query
 
+  alias Absinthe.Subscription
   alias Glimesh.Api
   alias Glimesh.ChannelCategories
   alias Glimesh.ChannelLookups
@@ -273,6 +274,53 @@ defmodule Glimesh.Api.ChannelResolver do
     |> where(channel_id: ^channel.id)
     |> order_by(:id)
     |> Api.connection_from_query_with_count(args)
+  end
+
+  # Sends a message over client id
+  def send_interactive_message(_parent, args, %{context: %{access: %{access_type: "app"}}}) do
+    event_name = Map.get(args, :event_name)
+    session = Map.get(args, :session_id)
+    data = Map.get(args, :data)
+
+    Subscription.publish(
+      GlimeshWeb.Endpoint,
+      %{data: data, event_name: event_name, authorized: false},
+      Keyword.put([], :interactive, "streams:interactive:#{session}")
+    )
+
+    {:ok, %{data: data, event_name: event_name, authorized: false}}
+  end
+
+  # Sends a message with an access token
+  def send_interactive_message(_parent, args, %{context: %{access: access}}) do
+    # Get the data from the message
+    event_name = Map.get(args, :event_name)
+    session = Map.get(args, :session_id)
+    data = Map.get(args, :data)
+
+    # Check that it has interactive scope, channel matches sessionID
+    # If so it is an authorized message, if not it isn't
+    with true <- Map.get(access.scopes, :interactive),
+         %Glimesh.Streams.Channel{} = channel <-
+           ChannelLookups.get_channel_for_username(access.user.username),
+         true <- channel.id == session do
+      Subscription.publish(
+        GlimeshWeb.Endpoint,
+        %{data: data, event_name: event_name, authorized: true},
+        Keyword.put([], :interactive, "streams:interactive:#{session}")
+      )
+
+      {:ok, %{data: data, event_name: event_name, authorized: true}}
+    else
+      _ ->
+        Subscription.publish(
+          GlimeshWeb.Endpoint,
+          %{data: data, event_name: event_name, authorized: false},
+          Keyword.put([], :interactive, "streams:interactive:#{session}")
+        )
+
+        {:ok, %{data: data, event_name: event_name, authorized: false}}
+    end
   end
 
   def get_moderation_logs(args, %{source: channel}) do

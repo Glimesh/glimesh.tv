@@ -5,6 +5,7 @@ defmodule Glimesh.Api.ChannelTypes do
 
   import Absinthe.Resolution.Helpers
   import_types(Absinthe.Plug.Types)
+  import_types(Glimesh.Api.Schema.Types.Interactive)
 
   alias Glimesh.Api
   alias Glimesh.Api.ChannelResolver
@@ -107,6 +108,15 @@ defmodule Glimesh.Api.ChannelTypes do
       resolve(&ChannelResolver.upload_stream_thumbnail/3)
     end
 
+    @desc "Send a message over the interactive session"
+    field :send_interactive_message, type: :interactive do
+      arg(:session_id, non_null(:integer))
+      arg(:event_name, non_null(:string))
+      arg(:data, non_null(:json), description: "JSON data to send")
+
+      resolve(&ChannelResolver.send_interactive_message/3)
+    end
+
     @desc "Update a channel's stream info"
     field :update_stream_info, type: :channel do
       arg(:channel_id, non_null(:id))
@@ -127,12 +137,31 @@ defmodule Glimesh.Api.ChannelTypes do
         end
       end)
     end
+
+    field :interactive, :interactive do
+      arg(:session, non_null(:integer), description: "The interactive session ID")
+
+      config(fn args, _ ->
+        case Map.get(args, :session) do
+          session -> {:ok, topic: [Streams.get_subscribe_topic(:interactive, session)]}
+        end
+      end)
+    end
   end
 
   @desc "Current channel status"
   enum :channel_status do
     value(:live, as: "live")
     value(:offline, as: "offline")
+  end
+
+  @desc "An interactive packet"
+  object :interactive do
+    field :event_name, :string, description: "The name of the event"
+    field :data, :json, description: "The data sent across the connection"
+    field :authorized, :boolean, description: "Was this an authorized message?"
+    field :inserted_at, non_null(:naive_datetime), description: "Interactive creation date"
+    field :updated_at, non_null(:naive_datetime), description: "Interactive updated date"
   end
 
   @desc "Categories are the containers for live streaming content."

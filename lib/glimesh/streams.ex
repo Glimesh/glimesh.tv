@@ -29,6 +29,7 @@ defmodule Glimesh.Streams do
   def get_subscribe_topic(:viewers), do: "streams:viewers"
   def get_subscribe_topic(:raid), do: "streams:raid"
   def get_subscribe_topic(:channel, channel_id), do: "streams:channel:#{channel_id}"
+  def get_subscribe_topic(:interactive, channel_id), do: "streams:interactive:#{channel_id}"
   def get_subscribe_topic(:stream, stream_id), do: "streams:stream:#{stream_id}"
   def get_subscribe_topic(:chat, channel_id), do: "streams:chat:#{channel_id}"
   def get_subscribe_topic(:chatters, channel_id), do: "streams:chatters:#{channel_id}"

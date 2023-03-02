@@ -78,6 +78,7 @@ defmodule GlimeshWeb.UserLive.Stream do
            |> assign(:player_error, nil)
            |> assign(:user, maybe_user)
            |> assign(:ultrawide, false)
+           |> assign(:interactive_toggle, false)}
            |> assign(:webrtc_error, false)
            |> assign(:can_raid, viewer_can_raid)
            |> assign(:raid_starting, false)
@@ -299,6 +300,12 @@ defmodule GlimeshWeb.UserLive.Stream do
 
   def handle_event("ultrawide", %{"enabled" => enabled}, socket) do
     {:noreply, socket |> assign(:ultrawide, enabled)}
+  end
+
+  def handle_event("toggle_interactive", _value, socket) do
+    {:noreply,
+     socket
+     |> assign(:interactive_toggle, !socket.assigns.interactive_toggle)}
   end
 
   defp get_stream_thumbnail(channel) do

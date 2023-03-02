@@ -26,6 +26,7 @@
           value={@stream_key}
           class="form-control stream-key"
           readonly="readonly"
+          style="cursor: pointer"
         />
 
         <div class="input-group-append">
@@ -346,6 +347,56 @@
     </div>
   </div>
 
+  <h2 class="mt-4"><%= gettext("Interactive") %></h2>
+  <p>
+    Interacive lets you overlay a custom web page over your stream for next-gen interactivity! To use it, enable the feature and upload a project!
+  </p>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, :interactive_enabled, gettext("Interactive Enabled")) %>
+        <div class="custom-control custom-switch">
+          <%= checkbox(f, :interactive_enabled, class: "custom-control-input") %>
+          <label class="custom-control-label" for={input_id(f, :interactive_enabled)}>
+            <%= gettext("Enable your Interactive Project") %>
+          </label>
+        </div>
+        <%= error_tag(f, :interactive_enabled) %>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, :interactive_project, gettext("Interactive Project")) %>
+        <p class="text-muted form-text">
+          <%= gettext(
+            "An interactive project. It must contain at least an index.html file at the root level. Folder and multi uploads supported."
+          ) %>
+        </p>
+        <p class="text-muted form-text">
+          <%= gettext(
+            "Note that uploading a file will delete your current project even if you don't hit submit!"
+          ) %>
+        </p>
+
+        <div class="custom-file">
+          <%= file_input(f, :interactive_project,
+            class: "custom-file-input",
+            webkitdirectory: true,
+            multiple: true,
+            phx_change: "replace_interactive"
+          ) %>
+          <%= label(f, gettext("Choose file"), class: "custom-file-label") %>
+        </div>
+        <%= if f.errors[:interactive_project] do %>
+          <div>
+            <span class="text-danger">
+              <%= elem(f.errors[:interactive_project], 0) %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
   <h2 class="mt-4"><%= gettext("Homepage") %></h2>
   <p>
     <%= gettext(

@@ -46,6 +46,9 @@ defmodule Glimesh.Streams.Channel do
     field :only_followed_can_raid, :boolean, default: false
     field :raid_message, :string, default: "{streamer} is raiding you with {count} viewers!"
 
+    field :interactive_project, {:array, Glimesh.Interactive.Type}
+    field :interactive_enabled, :boolean, default: false
+
     # This is here temporarily as we add additional schema to handle it.
     field :streamloots_url, :string, default: nil
 
@@ -118,6 +121,7 @@ defmodule Glimesh.Streams.Channel do
       :require_confirmed_email,
       :minimum_account_age,
       :allow_hosting,
+      :interactive_enabled,
       :backend,
       :allow_raiding,
       :only_followed_can_raid,
@@ -133,7 +137,7 @@ defmodule Glimesh.Streams.Channel do
     )
     |> validate_inclusion(:backend, ["ftl", "whep"])
     |> set_chat_rules_content_html()
-    |> cast_attachments(attrs, [:poster, :chat_bg])
+    |> cast_attachments(attrs, [:poster, :chat_bg, :interactive_project])
     |> maybe_put_tags(:tags, attrs)
     |> maybe_put_subcategory(:subcategory, attrs)
     |> unique_constraint([:user_id])

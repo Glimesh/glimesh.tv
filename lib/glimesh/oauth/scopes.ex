@@ -11,6 +11,7 @@ defmodule Glimesh.Oauth.Scopes do
       "streamkey" -> gettext("scopestream")
       "follow" -> gettext("scopefollow")
       "stream_info" -> gettext("scopestream_info")
+      "interactive" -> gettext("scopeinteractive")
     end
   end
 end

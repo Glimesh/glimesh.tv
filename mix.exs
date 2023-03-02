@@ -86,7 +86,9 @@ defmodule Glimesh.MixProject do
       {:navigation_history, "~> 0.4"},
       # Uploads
       {:waffle, "~> 1.1"},
-      {:waffle_ecto, "~> 0.0.10"},
+      {:waffle_ecto,
+       git: "https://github.com/nash-io/waffle_ecto.git",
+       ref: "8fac195e2ee36a2383df0ee8e8787c2e88d86ff8"},
       {:ex_aws, "~> 2.2"},
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.17"},

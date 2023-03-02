@@ -183,6 +183,17 @@
                       session: %{"channel_id" => @channel.id}
                     ) %>
                   </div>
+                  <%= if @channel.interactive_enabled do %>
+                    <div class="btn-group" role="group" aria-label="Fourth group">
+                      <button
+                        class="btn btn-info btn-responsive ml-1"
+                        title="Toggle Interactive"
+                        phx-click="toggle_interactive"
+                      >
+                        Interactive
+                      </button>
+                    </div>
+                  <% end %>
                 </div>
               </div>
             </div>
@@ -227,6 +238,10 @@
                 data-rtrouter={Application.get_env(:glimesh, :rtrouter_url)}
               >
               </video>
+              <%= if @interactive_toggle do %>
+                <iframe sandbox="allow-scripts" src={"/#{@streamer.username}/interactive"}>
+                </iframe>
+              <% end %>
               <div id="video-loading-container" class="">
                 <div class="lds-ring">
                   <div></div>
