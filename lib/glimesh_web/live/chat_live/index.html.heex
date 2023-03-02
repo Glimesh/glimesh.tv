@@ -1,12 +1,10 @@
 <div
   id="chat-messages"
-  class={
-    [
-      "chat-messages",
-      if(@show_mod_icons, do: "show-mod-icons"),
-      if(@show_timestamps, do: "show-timestamps")
-    ]
-  }
+  class={[
+    "chat-messages",
+    if(@show_mod_icons, do: "show-mod-icons"),
+    if(@show_timestamps, do: "show-timestamps")
+  ]}
   phx-update={@update_action}
   style={background_style(@channel)}
 >

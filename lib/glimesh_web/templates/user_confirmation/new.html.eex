@@ -5,7 +5,7 @@
       <div class="card">
         <div class="card-body">
           <h3>Resend Confirmation Email</h3>
-          <%= form_for :user, Routes.user_confirmation_path(@conn, :create), fn f -> %>
+          <%= form_for :user, ~p"/users/confirm", fn f -> %>
           <div cass="form-group">
             <%= label f, gettext("email") %>
             <%= email_input f, :email, value: @existing_email, required: true, class: "form-control", autofocus: "autofocus" %>
@@ -23,7 +23,7 @@
     <div class="col-md-5 col-lg-4">
       <%= if is_nil(@existing_email) do %>
       <h5 class="mt-4">Don't have an account?</h5>
-      <%= link "Register", class: "btn btn-primary", to: Routes.user_registration_path(@conn, :new) %>
+      <%= link "Register", class: "btn btn-primary", to: ~p"/users/register" %>
       <% end %>
     </div>
 

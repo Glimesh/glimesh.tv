@@ -2,22 +2,22 @@
     <div class="row mt-3">
         <div class="col-lg-2 user-sidebar">
             <div class="list-group list-group-flush">
-                <%= link class: "list-group-item list-group-item-action " <> active_user_profile_path(@conn), to: Routes.user_settings_path(@conn, :profile) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_profile_path(@conn), to: ~p"/users/settings/profile" do %>
                 <i class="fas fa-user fa-fw"></i> <%= gettext("Profile") %>
                 <% end %>
-                <%= link class: "list-group-item list-group-item-action " <> active_user_payments_path(@conn), to: Routes.user_payments_path(@conn, :index) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_payments_path(@conn), to: ~p"/users/payments" do %>
                 <i class="fas fa-money-bill fa-fw"></i> <%= gettext("Payments") %>
                 <% end %>
-                <%= link class: "list-group-item list-group-item-action " <> active_user_settings_path(@conn), to: Routes.user_settings_path(@conn, :preference) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_settings_path(@conn), to: ~p"/users/settings/preference" do %>
                 <i class="fas fa-cog fa-fw"></i> <%= gettext("Preferences") %>
                 <% end %>
-                <%= link class: "list-group-item list-group-item-action " <> active_user_notifications_path(@conn), to: Routes.user_settings_path(@conn, :notifications) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_notifications_path(@conn), to: ~p"/users/settings/notifications" do %>
                 <i class="fas fa-envelope fa-fw"></i> <%= gettext("Notifications") %>
                 <% end %>
-                <%= link class: "list-group-item list-group-item-action " <> active_user_security_path(@conn), to: Routes.user_security_path(@conn, :index) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_security_path(@conn), to: ~p"/users/settings/security" do %>
                 <i class="fas fa-lock fa-fw"></i> <%= gettext("Security") %>
                 <% end %>
-                <%= link class: "list-group-item list-group-item-action " <> active_user_authorizations_path(@conn), to: Routes.user_authorized_apps_path(@conn, :index) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_authorizations_path(@conn), to: ~p"/users/settings/authorizations" do %>
                 <i class="fas fa-robot fa-fw"></i> <%= gettext("Authorizations") %>
                 <% end %>
             </div>
@@ -26,29 +26,29 @@
             <h4 class="text-center"><%= gettext("Channel") %></h4>
             <div class="list-group list-group-flush">
                 <%= if Glimesh.ChannelLookups.get_channel_for_user(@current_user) do %>
-                <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: Routes.user_settings_path(@conn, :stream) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: ~p"/users/settings/stream" do %>
                 <i class="fas fa-video fa-fw"></i> <%= gettext("Channel Settings") %>
                 <% end %>
-                <%= link class: "list-group-item list-group-item-action " <> active_channel_addons_path(@conn), to: Routes.user_settings_path(@conn, :addons) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_channel_addons_path(@conn), to: ~p"/users/settings/addons" do %>
                 <i class="fas fa-hand-holding-usd fa-fw"></i> <%= gettext("Support Modal") %>
                 <% end %>
-                <%= link class: "list-group-item list-group-item-action " <> active_channel_statistics_path(@conn), to: Routes.user_settings_path(@conn, :channel_statistics) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_channel_statistics_path(@conn), to: ~p"/users/settings/channel_statistics" do %>
                 <i class="fas fa-chart-bar fa-fw"></i> <%= gettext("Statistics") %>
                 <% end %>
-                <%= link class: "list-group-item list-group-item-action " <> active_channel_moderator_path(@conn), to: Routes.channel_moderator_path(@conn, :index) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_channel_moderator_path(@conn), to: ~p"/users/settings/channel/mods" do %>
                 <i class="fas fa-hammer fa-fw"></i> <%= gettext("Moderators") %>
                 <% end %>
-                <%= link class: "list-group-item list-group-item-action " <> active_user_emotes_path(@conn), to: Routes.user_settings_path(@conn, :emotes) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_emotes_path(@conn), to: ~p"/users/settings/emotes" do %>
                 <i class="fas fa-smile fa-fw"></i> <%= gettext("Emotes") %>
                 <% end %>
-                <%= link class: "list-group-item list-group-item-action " <> active_user_hosting_path(@conn), to: Routes.user_settings_path(@conn, :hosting) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_hosting_path(@conn), to: ~p"/users/settings/hosting" do %>
                 <i class="fas fa-tv fa-fw"></i> <%= gettext("Hosting") %>
                 <% end %>
                 <%= link class: "list-group-item list-group-item-action " <> active_user_raiding_path(@conn), to: Routes.user_settings_path(@conn, :raiding) do %>
                 <i class="fas fa-bullhorn fa-fw"></i> <%= gettext("Raiding") %>
                 <% end %>
                 <% else %>
-                <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: Routes.user_settings_path(@conn, :stream) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_stream_path(@conn), to: ~p"/users/settings/stream" do %>
                 <i class="fas fa-video fa-fw"></i> <%= gettext("Create Channel") %>
                 <% end %>
                 <% end %>
@@ -57,7 +57,7 @@
             <hr>
             <h4 class="text-center">Developers</h4>
             <div class="list-group list-group-flush">
-                <%= link class: "list-group-item list-group-item-action " <> active_user_applications_path(@conn), to: Routes.user_applications_path(@conn, :index) do %>
+                <%= link class: "list-group-item list-group-item-action " <> active_user_applications_path(@conn), to: ~p"/users/settings/applications" do %>
                 <i class="fas fa-code fa-fw"></i> <%= gettext("Applications") %>
                 <% end %>
             </div>
@@ -66,11 +66,11 @@
 
             <!-- user-sidebar.html.eex -->
             <%# BUG this section needs to be removed, it conflicts with app.html.eex and the few settings pages that rely on this need to be fixed %>
-            <%= if get_flash(@conn, :info) do %>
-            <p class="alert alert-info mt-4" role="alert"><%= get_flash(@conn, :info) %></p>
+            <%= if Phoenix.Flash.get(@flash, :info) do %>
+            <p class="alert alert-info mt-4" role="alert"><%= Phoenix.Flash.get(@flash, :info) %></p>
             <% end %>
-            <%= if get_flash(@conn, :error) do %>
-            <p class="alert alert-danger mt-4" role="alert"><%= get_flash(@conn, :error) %></p>
+            <%= if Phoenix.Flash.get(@flash, :error) do %>
+            <p class="alert alert-danger mt-4" role="alert"><%= Phoenix.Flash.get(@flash, :error) %></p>
             <% end %>
 
             <!-- user-sidebar.html.eex -->

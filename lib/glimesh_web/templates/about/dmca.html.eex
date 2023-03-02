@@ -24,7 +24,7 @@
             </div>
 
 
-            <img src="<%= Routes.static_path(@conn, "/images/about/dmca/1.png") %>" alt="Divider" class="img-fluid" />
+            <img src="<%= ~p"/images/about/dmca/1.png" %>" alt="Divider" class="img-fluid" />
 
             <h3><%= gettext("What are Copyrights?") %></h3>
             <div class="row justify-content-md-center mt-4">
@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            <img src="<%= Routes.static_path(@conn, "/images/about/dmca/2.png") %>" alt="Divider" class="img-fluid" />
+            <img src="<%= ~p"/images/about/dmca/2.png" %>" alt="Divider" class="img-fluid" />
 
             <h3><%= gettext("Our Responsibility to the DMCA") %></h3>
 
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <img src="<%= Routes.static_path(@conn, "/images/about/dmca/3.png") %>" alt="Divider" class="img-fluid" />
+            <img src="<%= ~p"/images/about/dmca/3.png" %>" alt="Divider" class="img-fluid" />
 
 
             <h3><%= gettext("Safe Harbors") %></h3>
@@ -83,7 +83,7 @@
                 </div>
             </div>
 
-            <img src="<%= Routes.static_path(@conn, "/images/about/dmca/4.png") %>" alt="Divider" class="img-fluid" />
+            <img src="<%= ~p"/images/about/dmca/4.png" %>" alt="Divider" class="img-fluid" />
 
             <h3><%= gettext("Glimesh's Process") %></h3>
 
@@ -135,7 +135,7 @@
                 </div>
             </div>
 
-            <img src="<%= Routes.static_path(@conn, "/images/about/dmca/5.png") %>" alt="Divider" class="img-fluid" />
+            <img src="<%= ~p"/images/about/dmca/5.png" %>" alt="Divider" class="img-fluid" />
 
             <h3><%= gettext("Counter Notice") %></h3>
 
@@ -173,7 +173,7 @@
                 </div>
             </div>
 
-            <img src="<%= Routes.static_path(@conn, "/images/about/dmca/6.png") %>" alt="Divider" class="img-fluid" />
+            <img src="<%= ~p"/images/about/dmca/6.png" %>" alt="Divider" class="img-fluid" />
 
             <h3><%= gettext("Why Is Glimesh Different?") %></h3>
 

@@ -20,6 +20,8 @@ import RecentTags from "./hooks/RecentTags";
 import Bootstrapize from "./hooks/Bootstrapize";
 import RaidToast from "./hooks/RaidToast";
 import RaidTimer from "./hooks/RaidTimer";
+import MastodonShareButton from "./hooks/MastodonShareButton";
+import TenorSearch from "./hooks/TenorSearch";
 
 // https://github.com/github/markdown-toolbar-element
 import "@github/markdown-toolbar-element";
@@ -46,6 +48,8 @@ Hooks.RecentTags = RecentTags;
 Hooks.Bootstrapize = Bootstrapize;
 Hooks.RaidToast = RaidToast;
 Hooks.RaidTimer = RaidTimer;
+Hooks.MastodonShareButton = MastodonShareButton;
+Hooks.TenorSearch = TenorSearch;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {

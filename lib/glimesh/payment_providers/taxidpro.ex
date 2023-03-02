@@ -5,6 +5,8 @@ defmodule Glimesh.PaymentProviders.TaxIDPro do
 
   require Logger
 
+  use GlimeshWeb, :verified_routes
+
   alias Glimesh.Accounts.User
 
   @doc """
@@ -75,12 +77,7 @@ defmodule Glimesh.PaymentProviders.TaxIDPro do
            tax_withholding_percent: determine_tax_percent(form)
          }) do
       {:ok, user} ->
-        channel_url =
-          GlimeshWeb.Router.Helpers.user_stream_url(
-            GlimeshWeb.Endpoint,
-            :index,
-            user.username
-          )
+        channel_url = url(~p"/#{user.username}")
 
         Glimesh.Accounts.UserNotifier.deliver_sub_button_enabled(
           user,

@@ -14,7 +14,7 @@
           <tr>
             <td>
               <%= link(log.channel.id,
-                to: Routes.gct_path(@conn, :channel_lookup, query: log.channel.id)
+                to: ~p"/gct/lookup/user?query=#{log.channel.id}"
               ) %>
             </td>
             <td><%= log.message %></td>

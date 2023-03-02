@@ -1,5 +1,5 @@
 <.form
-  let={f}
+  :let={f}
   for={@channel_changeset}
   action={@route}
   phx-change="change_channel"
@@ -116,6 +116,25 @@
             <span class="text-danger"><%= gettext("Invalid image. Max size is 100KB.") %></span>
           </div>
         <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= label(f, :share_text, gettext("Stream Share Message")) %>
+        <p class="text-muted form-text">
+          <%= gettext(
+            "A default message to present to viewers when they click to share your channel on social media sites."
+          ) %>
+        </p>
+        <%= text_input(f, :share_text,
+          class: "form-control",
+          placeholder: gettext("Come and enjoy this #Glimesh stream with me!"),
+          minlength: "3",
+          maxlength: "100"
+        ) %>
+        <%= error_tag(f, :share_text) %>
       </div>
     </div>
   </div>
@@ -314,6 +333,15 @@
           ) %>
         </small>
         <%= error_tag(f, :minimum_account_age) %>
+      </div>
+      <div class="form-group">
+        <%= label(
+          f,
+          :allow_reaction_gifs,
+          gettext("Allow reaction gifs in chat?")
+        ) %>
+        <%= select(f, :allow_reaction_gifs, [No: false, Yes: true], class: "form-control") %>
+        <%= error_tag(f, :allow_reaction_gifs) %>
       </div>
     </div>
   </div>

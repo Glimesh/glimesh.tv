@@ -8,7 +8,7 @@ defmodule GlimeshWeb.UserLiveTest do
     test "lists some users", %{conn: conn} do
       user = user_fixture()
 
-      {:ok, _, html} = live(conn, Routes.user_index_path(conn, :index))
+      {:ok, _, html} = live(conn, ~p"/users")
 
       assert html =~ "Our Users"
       assert html =~ user.displayname
@@ -19,7 +19,7 @@ defmodule GlimeshWeb.UserLiveTest do
       Enum.each(1..20, fn _ -> user_fixture() end)
       user = user_fixture()
 
-      {:ok, view, _} = live(conn, Routes.user_index_path(conn, :index))
+      {:ok, view, _} = live(conn, ~p"/users")
 
       assert render_submit(view, :search, %{q: user.username}) =~ user.displayname
     end

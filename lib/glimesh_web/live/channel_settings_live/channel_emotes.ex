@@ -24,7 +24,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotes do
        |> assign(:animated_emotes, animated_emotes)
        |> assign(:submitted_emotes, submitted_emotes)}
     else
-      {:ok, redirect(socket, to: Routes.user_settings_path(socket, :upload_emotes))}
+      {:ok, redirect(socket, to: ~p"/users/settings/upload_emotes")}
     end
   end
 
@@ -37,7 +37,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotes do
         {:noreply,
          socket
          |> put_flash(:emote_info, "Deleted #{emote.emote}")
-         |> redirect(to: Routes.user_settings_path(socket, :emotes))}
+         |> redirect(to: ~p"/users/settings/emotes")}
 
       {:error, _} ->
         {:noreply, socket |> put_flash(:emote_error, "Error deleting #{emote.emote}")}
@@ -57,7 +57,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotes do
         {:noreply,
          socket
          |> put_flash(:emote_info, "Changes made successfully")
-         |> redirect(to: Routes.user_settings_path(socket, :emotes))}
+         |> redirect(to: ~p"/users/settings/emotes")}
 
       {:error, _} ->
         {:noreply, socket |> put_flash(:emote_error, "Error updating #{emote.emote}")}

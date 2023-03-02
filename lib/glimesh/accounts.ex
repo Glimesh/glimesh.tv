@@ -3,6 +3,8 @@ defmodule Glimesh.Accounts do
   The Accounts context.
   """
 
+  use GlimeshWeb, :verified_routes
+
   import Ecto.Query, warn: false
 
   alias Glimesh.Avatar
@@ -602,14 +604,7 @@ defmodule Glimesh.Accounts do
   def can_stream?(user), do: user.can_stream
 
   def avatar_url(%User{} = user) when is_binary(user.avatar) do
-    if String.starts_with?(user.avatar, ["http://", "https://"]) do
-      Avatar.url({user.avatar, user})
-    else
-      GlimeshWeb.Router.Helpers.static_url(
-        GlimeshWeb.Endpoint,
-        Avatar.url({user.avatar, user})
-      )
-    end
+    Avatar.url({user.avatar, user})
   end
 
   def avatar_url(%User{} = user) do

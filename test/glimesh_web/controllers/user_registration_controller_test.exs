@@ -5,7 +5,7 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
 
   describe "GET /users/register" do
     test "renders registration page", %{conn: conn} do
-      conn = get(conn, Routes.user_registration_path(conn, :new))
+      conn = get(conn, ~p"/users/register")
       response = html_response(conn, 200)
       assert response =~ "<h3>Register for our Alpha!</h3>"
       assert response =~ "Log in</a>"
@@ -13,7 +13,7 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
     end
 
     test "redirects if already logged in", %{conn: conn} do
-      conn = conn |> log_in_user(user_fixture()) |> get(Routes.user_registration_path(conn, :new))
+      conn = conn |> log_in_user(user_fixture()) |> get(~p"/users/register")
       assert redirected_to(conn) == "/"
     end
   end
@@ -25,7 +25,7 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
       email = unique_user_email()
 
       conn =
-        post(conn, Routes.user_registration_path(conn, :create), %{
+        post(conn, ~p"/users/register", %{
           "h-captcha-response" => "valid_response",
           "user" => %{
             "username" => username,
@@ -54,7 +54,7 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
       email = unique_user_email()
 
       conn =
-        post(conn, Routes.user_registration_path(conn, :create), %{
+        post(conn, ~p"/users/register", %{
           "h-captcha-response" => "valid_response",
           "user" => %{
             "username" => username,
@@ -81,7 +81,7 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
 
     test "render errors for invalid data", %{conn: conn} do
       conn =
-        post(conn, Routes.user_registration_path(conn, :create), %{
+        post(conn, ~p"/users/register", %{
           "h-captcha-response" => "valid_response",
           "user" => %{"email" => "with spaces", "password" => "short"}
         })
@@ -94,26 +94,26 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
 
     test "render errors if hcaptcha is invalid", %{conn: conn} do
       conn =
-        post(conn, Routes.user_registration_path(conn, :create), %{
+        post(conn, ~p"/users/register", %{
           "h-captcha-response" => "invalid_response",
           "user" => %{"email" => "with spaces", "password" => "short"}
         })
 
-      assert redirected_to(conn) == Routes.user_registration_path(conn, :create)
+      assert redirected_to(conn) == ~p"/users/register"
 
-      assert get_flash(conn, :error) =~
+      assert Phoenix.Flash.get(conn.assigns.flash, :error) =~
                "Captcha validation failed, please try again."
     end
 
     test "render errors if hcaptcha does not load for some reason", %{conn: conn} do
       conn =
-        post(conn, Routes.user_registration_path(conn, :create), %{
+        post(conn, ~p"/users/register", %{
           "user" => %{"email" => "with spaces", "password" => "short"}
         })
 
-      assert redirected_to(conn) == Routes.user_registration_path(conn, :create)
+      assert redirected_to(conn) == ~p"/users/register"
 
-      assert get_flash(conn, :error) =~
+      assert Phoenix.Flash.get(conn.assigns.flash, :error) =~
                "Captcha validation failed, please make sure you have JavaScript enabled."
     end
 
@@ -122,7 +122,7 @@ defmodule GlimeshWeb.UserRegistrationControllerTest do
       email = unique_user_email()
 
       conn =
-        post(conn, Routes.user_registration_path(conn, :create), %{
+        post(conn, ~p"/users/register", %{
           "h-captcha-response" => "valid_response",
           "user" => %{
             "username" => username,

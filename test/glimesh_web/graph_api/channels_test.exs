@@ -57,7 +57,7 @@ defmodule GlimeshWeb.GraphApi.ChannelsTest do
   """
 
   @channel_all_children_query """
-  query getChannel($streamerId: Number!) {
+  query getChannel($streamerId: Int!) {
     channel(streamerId: $streamerId) {
       chatMessages(first: 200) {
         count
@@ -110,7 +110,7 @@ defmodule GlimeshWeb.GraphApi.ChannelsTest do
   }
   """
   @channel_stream_children_query """
-  query getChannel($streamerId: Number!) {
+  query getChannel($streamerId: Int!) {
     channel(streamerId: $streamerId) {
       stream {
         title
@@ -128,7 +128,7 @@ defmodule GlimeshWeb.GraphApi.ChannelsTest do
   """
 
   @channel_userid_query """
-  query getChannel($streamerId: Number!) {
+  query getChannel($streamerId: Int!) {
     channel(streamerId: $streamerId) {
       title
       streamer { username }

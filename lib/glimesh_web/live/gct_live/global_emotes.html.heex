@@ -1,7 +1,7 @@
 <div class="container">
   <h2>Global Emotes</h2>
 
-  <.form let={f} for={:emotes} id="emote_upload" phx-change="validate" phx-submit="save">
+  <.form :let={f} for={%{}} as={:emotes} id="emote_upload" phx-change="validate" phx-submit="save">
     <div class="card mt-4 mb-4">
       <div class="card-header">
         <h5 class="card-title">Upload New Emotes</h5>
@@ -14,7 +14,7 @@
         style="min-height: 300px"
       >
         <div>
-          <%= live_file_input(@uploads.emote) %>
+          <.live_file_input upload={@uploads.emote} />
           <br />
 
           <p>Drag and Drop into this section</p>
@@ -45,7 +45,7 @@
               </div>
 
               <div class="text-center">
-                <%= live_img_preview(entry, height: "128px", width: "128px") %>
+                <.live_img_preview entry={entry} height="128px" width="128px" />
                 <figcaption><code><%= entry.client_name %></code></figcaption>
               </div>
               <div class="input-group">
@@ -89,8 +89,9 @@
               <figcaption><code>:<%= emote.emote %>:</code></figcaption>
             </div>
             <.form
-              let={f}
-              for={:nothing}
+              :let={f}
+              for={%{}}
+              as={:nothing}
               phx-id="save_emote_options"
               phx-change="save_emote_options"
             >

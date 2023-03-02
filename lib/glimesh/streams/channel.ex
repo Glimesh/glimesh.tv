@@ -39,6 +39,8 @@ defmodule Glimesh.Streams.Channel do
 
     field :emote_prefix, :string
 
+    field :allow_reaction_gifs, :boolean, default: false
+
     field :allow_hosting, :boolean, default: false
     field :allow_raiding, :boolean, default: false
     field :only_followed_can_raid, :boolean, default: false
@@ -53,6 +55,8 @@ defmodule Glimesh.Streams.Channel do
 
     field :poster, Glimesh.ChannelPoster.Type
     field :chat_bg, Glimesh.ChatBackground.Type
+
+    field :share_text, :string, default: "Come and enjoy this #Glimesh stream with me!"
 
     # This is used when searching for live channels that are live or hosted
     field :match_type, :string, virtual: true
@@ -117,7 +121,9 @@ defmodule Glimesh.Streams.Channel do
       :backend,
       :allow_raiding,
       :only_followed_can_raid,
-      :raid_message
+      :raid_message,
+      :share_text,
+      :allow_reaction_gifs
     ])
     |> validate_length(:chat_rules_md, max: 8192)
     |> validate_length(:title, max: 250)
@@ -147,7 +153,7 @@ defmodule Glimesh.Streams.Channel do
 
   defp validate_no_active_emotes(changeset) do
     case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{emote_prefix: emote_prefix}} ->
+      %Ecto.Changeset{valid?: true, changes: %{emote_prefix: _}} ->
         if Glimesh.Emotes.count_all_emotes_for_channel(changeset.data) > 0 do
           add_error(
             changeset,
@@ -335,5 +341,14 @@ defmodule Glimesh.Streams.Channel do
     |> maybe_put_tags(:tags, attrs)
     |> maybe_put_subcategory(:subcategory, attrs)
     |> unique_constraint([:user_id])
+  end
+
+  def allow_reaction_gifs?(channel) do
+    channel.allow_reaction_gifs and allow_reaction_gifs_site_wide?()
+  end
+
+  def allow_reaction_gifs_site_wide? do
+    Keyword.get(Application.get_env(:glimesh, :tenor_config), :allow_tenor, false) and
+      String.length(Keyword.get(Application.get_env(:glimesh, :tenor_config), :apikey, "")) > 2
   end
 end

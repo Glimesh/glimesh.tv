@@ -132,9 +132,7 @@ defmodule GlimeshWeb.StreamsLive.List do
 
     {:noreply,
      socket
-     |> push_patch(
-       to: Routes.streams_list_path(socket, :index, socket.assigns.category.slug, params)
-     )}
+     |> push_patch(to: ~p"/streams/#{socket.assigns.category.slug}?#{params}")}
   end
 
   def handle_event("filter_tags", _params, socket) do

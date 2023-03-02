@@ -5,7 +5,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3>Login to our Alpha!</h3>
-                    <%= form_for @conn, Routes.user_session_path(@conn, :create), [as: :user], fn f -> %>
+                    <%= form_for @conn, ~p"/users/register", [as: :user], fn f -> %>
                     <%= if @error_message do %>
                     <div class="alert alert-danger">
                         <p><%= @error_message %></p>
@@ -47,7 +47,7 @@
                         <%= submit "Login", class: "btn btn-primary btn-lg mt-2" %>
 
                         <div class="mt-4">
-                            <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
+                            <%= link "Forgot your password?", to: ~p"/users/reset_password" %>
                         </div>
                     </div>
 
@@ -60,11 +60,11 @@
             <h4 class="mt-4">What is Glimesh?</h4>
             <p class="">
                 People first streaming, with discoverability as a primary feature. Let's build the next
-                generation of streaming. <%= link "Learn More", to: Routes.about_path(@conn, :faq) %>
+                generation of streaming. <%= link "Learn More", to: ~p"/about/faq" %>
             </p>
 
             <h5 class="mt-4">Don't have an account?</h5>
-            <%= link "Register", class: "btn btn-primary", to: Routes.user_registration_path(@conn, :new) %>
+            <%= link "Register", class: "btn btn-primary", to: ~p"/users/register" %>
         </div>
     </div>
 </div>

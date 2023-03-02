@@ -13,7 +13,6 @@ defmodule GlimeshWeb.UserSettings.Components.ProfileSettingsLive do
      socket
      |> put_flash(:info, nil)
      |> assign(:profile_changeset, session["profile_changeset"])
-     |> assign(:twitter_auth_url, session["twitter_auth_url"])
      |> assign(:twitter_account, Glimesh.Socials.get_social(session["user"], "twitter"))
      |> assign(:user, session["user"])
      |> assign(:route, session["route"])
@@ -23,6 +22,7 @@ defmodule GlimeshWeb.UserSettings.Components.ProfileSettingsLive do
      |> assign(:markdown_state, "edit")}
   end
 
+  @impl true
   def handle_event("edit_state", %{"state" => "edit"}, socket) do
     {:noreply, assign(socket, :markdown_state, "edit")}
   end

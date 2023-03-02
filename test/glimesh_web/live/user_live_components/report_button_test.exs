@@ -34,7 +34,6 @@ defmodule GlimeshWeb.UserLive.Components.ReportButtonTest do
         live_isolated(conn, @component, session: %{"user" => user, "streamer" => streamer})
 
       assert html =~ "Report User"
-      assert html =~ "class=\"text-danger\""
     end
 
     test "can report another user", %{

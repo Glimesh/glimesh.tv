@@ -34,17 +34,17 @@ defmodule GlimeshWeb.ChannelModeratorController do
          {:ok, _} <- Glimesh.Chat.ban_user(user, channel, ban_user) do
       conn
       |> put_flash(:info, "User banned successfully.")
-      |> redirect(to: Routes.channel_moderator_path(conn, :index))
+      |> redirect(to: ~p"/users/settings/channel/mods")
     else
       nil ->
         conn
         |> put_flash(:error, "Username not found.")
-        |> redirect(to: Routes.channel_moderator_path(conn, :index))
+        |> redirect(to: ~p"/users/settings/channel/mods")
 
       {:error, _} ->
         conn
         |> put_flash(:error, "Unable to ban user.")
-        |> redirect(to: Routes.channel_moderator_path(conn, :index))
+        |> redirect(to: ~p"/users/settings/channel/mods")
     end
   end
 
@@ -57,12 +57,12 @@ defmodule GlimeshWeb.ChannelModeratorController do
       {:ok, _} ->
         conn
         |> put_flash(:info, "User unbanned successfully.")
-        |> redirect(to: Routes.channel_moderator_path(conn, :index))
+        |> redirect(to: ~p"/users/settings/channel/mods")
 
       {:error, _} ->
         conn
         |> put_flash(:error, "Unable to unban user.")
-        |> redirect(to: Routes.channel_moderator_path(conn, :index))
+        |> redirect(to: ~p"/users/settings/channel/mods")
     end
   end
 
@@ -89,7 +89,7 @@ defmodule GlimeshWeb.ChannelModeratorController do
       {:ok, channel_moderator} ->
         conn
         |> put_flash(:info, "Channel moderator created successfully.")
-        |> redirect(to: Routes.channel_moderator_path(conn, :show, channel_moderator))
+        |> redirect(to: ~p"/users/settings/channel/mods/#{channel_moderator.id}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -128,7 +128,7 @@ defmodule GlimeshWeb.ChannelModeratorController do
         {:ok, channel_moderator} ->
           conn
           |> put_flash(:info, "Channel moderator updated successfully.")
-          |> redirect(to: Routes.channel_moderator_path(conn, :show, channel_moderator))
+          |> redirect(to: ~p"/users/settings/channel/mods/#{channel_moderator.id}")
 
         {:error, %Ecto.Changeset{} = changeset} ->
           render(conn, "edit.html", channel_moderator: channel_moderator, changeset: changeset)
@@ -144,7 +144,7 @@ defmodule GlimeshWeb.ChannelModeratorController do
         {:ok, _} ->
           conn
           |> put_flash(:info, "Channel moderator deleted successfully.")
-          |> redirect(to: Routes.channel_moderator_path(conn, :index))
+          |> redirect(to: ~p"/users/settings/channel/mods")
       end
     end
   end

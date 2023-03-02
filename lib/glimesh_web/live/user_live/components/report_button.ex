@@ -5,11 +5,9 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
   def render(assigns) do
     ~H"""
     <%= if @user do %>
-      <div class="text-center">
-        <a href="#" phx-click="show_modal" class="text-danger">
-          <%= gettext("Report User") %> <i class="fas fa-flag"></i>
-        </a>
-      </div>
+      <a href="#" phx-click="show_modal" class="btn btn-sm btn-danger">
+        <%= gettext("Report User") %> <i class="fas fa-flag"></i>
+      </a>
       <%= if live_flash(@flash, :info) do %>
         <p class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info">
           <%= live_flash(@flash, :info) %>
@@ -36,7 +34,7 @@ defmodule GlimeshWeb.UserLive.Components.ReportButton do
               </div>
 
               <div class="modal-body">
-                <.form for={:user} id="report-form" phx-submit="save" %>
+                <.form for={%{}} as={:user} id="report-form" phx-submit="save">
                   <div class="form-group">
                     <label for="reportLocation"><%= gettext("Where did this happen?") %></label>
                     <select

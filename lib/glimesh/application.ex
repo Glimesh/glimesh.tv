@@ -9,18 +9,20 @@ defmodule Glimesh.Application do
     topologies = Application.get_env(:libcluster, :topologies)
 
     children = [
+      # Start the Telemetry supervisor
+      GlimeshWeb.Telemetry,
       Glimesh.PromEx,
       {Cluster.Supervisor, [topologies, [name: Glimesh.ClusterSupervisor]]},
       # Start the Ecto repository
       Glimesh.Repo,
       Glimesh.Repo.ReadReplica,
       {Oban, Application.fetch_env!(:glimesh, Oban)},
-      # Start the Telemetry supervisor
-      GlimeshWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Glimesh.PubSub},
       # Who and where are you?
       Glimesh.Presence,
+      # Start Finch
+      {Finch, name: Glimesh.Finch},
       # Start the Endpoint (http/https)
       GlimeshWeb.Endpoint,
       {ConCache,

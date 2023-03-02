@@ -22,6 +22,14 @@ defmodule Glimesh.Api.ChatTypes do
       resolve(&ChatResolver.create_chat_message/3)
     end
 
+    @desc "Create a tenor reaction gif chat message"
+    field :create_tenor_message, type: :chat_message do
+      arg(:channel_id, non_null(:id))
+      arg(:message, non_null(:chat_message_input))
+
+      resolve(&ChatResolver.create_tenor_message/3)
+    end
+
     @desc "Short timeout (5 minutes) a user from a chat channel."
     field :short_timeout_user, type: :channel_moderation_log do
       arg(:channel_id, non_null(:id))
@@ -85,6 +93,7 @@ defmodule Glimesh.Api.ChatTypes do
       %{type: "text"}, _ -> :text_token
       %{type: "url"}, _ -> :url_token
       %{type: "emote"}, _ -> :emote_token
+      %{type: "tenor"}, _ -> :tenor_token
       _, _ -> nil
     end)
   end
@@ -114,6 +123,17 @@ defmodule Glimesh.Api.ChatTypes do
     # URL is no longer necessary, src will return the full URL.
     # field :url, :string
     field :src, :string, description: "Token src URL"
+
+    interface(:chat_message_token)
+  end
+
+  @desc "Tenor Reaction Gif Chat Message Token"
+  object :tenor_token do
+    field :type, :string, description: "Token type"
+    field :text, :string, description: "Token text"
+    field :src, :string, description: "Gif src URL"
+    field :tenor_id, :string, description: "Tenor Gif ID"
+    field :small_src, :string, description: "Tenor small Gif URL"
 
     interface(:chat_message_token)
   end
@@ -313,6 +333,16 @@ defmodule Glimesh.Api.ChatTypes do
           {:ok, message}
         end)
       end
+    end
+  end
+
+  object :chat_autocomplete do
+    @desc "Autocomplete a partial user name"
+    field :autocomplete_recent_chat_users, list_of(:string) do
+      arg(:channel_id, non_null(:id))
+      arg(:partial_usernames, non_null(list_of(:string)))
+
+      resolve(&ChatResolver.autocomplete_recent_chat_users/3)
     end
   end
 end

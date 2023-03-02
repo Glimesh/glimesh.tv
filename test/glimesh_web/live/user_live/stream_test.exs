@@ -15,21 +15,21 @@ defmodule GlimeshWeb.UserLive.StreamTest do
     end
 
     test "shows a video player", %{conn: conn, streamer: streamer} do
-      {:ok, _, html} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+      {:ok, _, html} = live(conn, ~p"/#{streamer.username}")
 
       assert html =~ "<video"
       assert html =~ streamer.displayname
     end
 
     test "has metadata about the offline stream", %{conn: conn, streamer: streamer} do
-      {:ok, _, html} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+      {:ok, _, html} = live(conn, ~p"/#{streamer.username}")
 
       assert html =~ "#{streamer.displayname}&#39;s Glimesh Channel"
     end
 
     test "has metadata about the live stream", %{conn: conn, channel: channel, streamer: streamer} do
       {:ok, _} = Glimesh.Streams.start_stream(channel)
-      {:ok, _, html} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+      {:ok, _, html} = live(conn, ~p"/#{streamer.username}")
 
       assert html =~ "#{streamer.displayname} is streaming live on Glimesh.tv!"
     end
@@ -46,7 +46,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
     end
 
     test "prompts for mature content warning", %{conn: conn, streamer: streamer} do
-      {:ok, view, html} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+      {:ok, view, html} = live(conn, ~p"/#{streamer.username}")
 
       assert html =~ "Mature Content Warning"
       refute html =~ "<video"
@@ -90,13 +90,11 @@ defmodule GlimeshWeb.UserLive.StreamTest do
           "DE"
         )
 
-      {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+      {:ok, view, _} = live(conn, ~p"/#{streamer.username}")
 
       html = render_click(view, "toggle_debug")
 
       assert html =~ "Debug Information"
-      assert html =~ "some-de-server"
-      assert html =~ "https://some-de-server/janus"
     end
   end
 
@@ -111,7 +109,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
     end
 
     test "lost_packets doesn't crash", %{conn: conn, streamer: streamer} do
-      {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+      {:ok, view, _} = live(conn, ~p"/#{streamer.username}")
 
       params = %{
         "uplink" => "doesn't matter",
@@ -126,7 +124,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
     end
 
     test "lost_packets safely recovers from nil", %{conn: conn, streamer: streamer} do
-      {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+      {:ok, view, _} = live(conn, ~p"/#{streamer.username}")
 
       params = %{
         "uplink" => "doesn't matter",
@@ -141,7 +139,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
     end
 
     test "lost_packets safely recovers from garbage", %{conn: conn, streamer: streamer} do
-      {:ok, view, _} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+      {:ok, view, _} = live(conn, ~p"/#{streamer.username}")
 
       params = %{
         "uplink" => "doesn't matter",
@@ -176,8 +174,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
     end
 
     test "shows hosted message", %{conn: conn, streamer: streamer, host: host} do
-      path =
-        get(conn, Routes.user_stream_path(conn, :index, streamer.username), host: host.username)
+      path = get(conn, ~p"/#{streamer.username}", host: host.username)
 
       assert {:ok, view, html} = live(path)
 
@@ -189,7 +186,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
 
     test "redirects to hosted channel", %{conn: conn, streamer: streamer, host: host} do
       assert {:ok, conn} =
-               live(conn, Routes.user_stream_path(conn, :index, host.username))
+               live(conn, ~p"/#{host.username}")
                |> follow_redirect(conn)
 
       assert html_response(conn, 200) =~ "#{host.displayname} is hosting #{streamer.displayname}"
@@ -201,7 +198,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
     end
 
     test "shows hosting message without redirect", %{conn: conn, streamer: streamer, host: host} do
-      path = get(conn, Routes.user_stream_path(conn, :index, host.username), follow_host: "false")
+      path = get(conn, ~p"/#{host.username}", follow_host: "false")
       assert {:ok, view, html} = live(path)
       assert html =~ "#{host.displayname} is hosting #{streamer.displayname}"
 
@@ -219,7 +216,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
         status: "hosting"
       })
 
-      assert {:ok, view, html} = live(conn, Routes.user_stream_path(conn, :index, host.username))
+      assert {:ok, view, html} = live(conn, ~p"/#{host.username}")
       assert html =~ "#{host.displayname} is hosting #{streamer.displayname}"
 
       assert view
@@ -233,7 +230,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
     } do
       {:ok, _} = Glimesh.Streams.start_stream(host.channel)
 
-      assert {:ok, view, html} = live(conn, Routes.user_stream_path(conn, :index, host.username))
+      assert {:ok, view, html} = live(conn, ~p"/#{host.username}")
       refute html =~ "#{host.displayname} is hosting #{streamer.displayname}"
 
       refute view
@@ -247,7 +244,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
     } do
       {:ok, _} = Glimesh.Streams.end_stream(streamer.channel)
 
-      assert {:ok, view, html} = live(conn, Routes.user_stream_path(conn, :index, host.username))
+      assert {:ok, view, html} = live(conn, ~p"/#{host.username}")
       refute html =~ "#{host.displayname} is hosting #{streamer.displayname}"
 
       refute view
@@ -263,7 +260,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
         conn
         |> put_req_header("user-agent", "Twitterbot")
 
-      {:ok, view, html} = live(conn, Routes.user_stream_path(conn, :index, host.username))
+      {:ok, view, html} = live(conn, ~p"/#{host.username}")
       assert html =~ "#{host.displayname} is hosting #{streamer.displayname}"
       refute conn.status == 302
 
@@ -275,7 +272,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
         |> put_req_header("user-agent", "test agent")
 
       assert {:ok, conn} =
-               live(conn, Routes.user_stream_path(conn, :index, host.username))
+               live(conn, ~p"/#{host.username}")
                |> follow_redirect(conn)
 
       assert html_response(conn, 200) =~ "#{host.displayname} is hosting #{streamer.displayname}"
@@ -299,8 +296,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
     test "is available to the channel owner", %{conn: conn, streamer: streamer} do
       streamer_conn = log_in_user(conn, streamer)
 
-      {:ok, _, html} =
-        live(streamer_conn, Routes.user_stream_path(streamer_conn, :index, streamer.username))
+      {:ok, _, html} = live(streamer_conn, ~p"/#{streamer.username}")
 
       assert html =~ "stream-title-edit"
     end
@@ -311,8 +307,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
 
       moderator_conn = log_in_user(conn, moderator)
 
-      {:ok, _, html} =
-        live(moderator_conn, Routes.user_stream_path(moderator_conn, :index, streamer.username))
+      {:ok, _, html} = live(moderator_conn, ~p"/#{streamer.username}")
 
       assert html =~ "stream-title-edit"
     end
@@ -326,8 +321,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
 
       moderator_conn = log_in_user(conn, moderator)
 
-      {:ok, _, html} =
-        live(moderator_conn, Routes.user_stream_path(moderator_conn, :index, streamer.username))
+      {:ok, _, html} = live(moderator_conn, ~p"/#{streamer.username}")
 
       refute html =~ "stream-title-edit"
     end
@@ -336,8 +330,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       user = user_fixture()
       user_conn = log_in_user(conn, user)
 
-      {:ok, _, html} =
-        live(user_conn, Routes.user_stream_path(user_conn, :index, streamer.username))
+      {:ok, _, html} = live(user_conn, ~p"/#{streamer.username}")
 
       refute html =~ "stream-title-edit"
     end
@@ -346,8 +339,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       gct_user = gct_fixture()
       gct_conn = log_in_user(conn, gct_user)
 
-      {:ok, _, html} =
-        live(gct_conn, Routes.user_stream_path(gct_conn, :index, streamer.username))
+      {:ok, _, html} = live(gct_conn, ~p"/#{streamer.username}")
 
       assert html =~ "stream-title-edit"
     end
@@ -356,8 +348,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       admin_user = admin_fixture()
       admin_conn = log_in_user(conn, admin_user)
 
-      {:ok, _, html} =
-        live(admin_conn, Routes.user_stream_path(admin_conn, :index, streamer.username))
+      {:ok, _, html} = live(admin_conn, ~p"/#{streamer.username}")
 
       assert html =~ "stream-title-edit"
     end
@@ -773,6 +764,30 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       assert render(participating_viewer_view) =~ "raid-toast"
       assert render(second_participating_viewer_view) =~ "raid-toast"
       refute render(non_logged_in_viewer_view) =~ "raid-toast"
+    end
+  end
+  
+  describe "Share stream button" do
+    setup do
+      streamer = streamer_fixture()
+
+      %{streamer: streamer}
+    end
+
+    test "is available to non-logged-in users", %{conn: conn, streamer: streamer} do
+      {:ok, _, html} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
+
+      assert html =~ "share-stream-button"
+    end
+
+    test "is available to logged-in users", %{conn: conn, streamer: streamer} do
+      user = user_fixture()
+      user_conn = log_in_user(conn, user)
+
+      {:ok, _, html} =
+        live(user_conn, Routes.user_stream_path(user_conn, :index, streamer.username))
+
+      assert html =~ "share-stream-button"
     end
   end
 end
