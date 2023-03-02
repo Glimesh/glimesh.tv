@@ -18,7 +18,8 @@ defmodule GlimeshWeb.InteractiveController do
   def not_found(conn, _) do
     # The project doesn't exist :(
     conn
-    |> put_resp_header("Content-Type", "text/html")
+    |> put_resp_header("content-type", "text/html")
+    |> put_resp_header("cache-control", "no-cache")
     |> send_file(200, "./priv/static/interactive/index.html")
   end
 

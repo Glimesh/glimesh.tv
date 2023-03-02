@@ -382,8 +382,8 @@
           <%= file_input(f, :interactive_project,
             class: "custom-file-input",
             webkitdirectory: true,
-            multiple: true,
-            phx_change: "replace_interactive"
+            directory: true,
+            multiple: true
           ) %>
           <%= label(f, gettext("Choose file"), class: "custom-file-label") %>
         </div>

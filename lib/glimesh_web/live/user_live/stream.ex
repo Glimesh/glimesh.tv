@@ -78,7 +78,7 @@ defmodule GlimeshWeb.UserLive.Stream do
            |> assign(:player_error, nil)
            |> assign(:user, maybe_user)
            |> assign(:ultrawide, false)
-           |> assign(:interactive_toggle, false)}
+           |> assign(:interactive_toggle, false)
            |> assign(:webrtc_error, false)
            |> assign(:can_raid, viewer_can_raid)
            |> assign(:raid_starting, false)
@@ -234,7 +234,7 @@ defmodule GlimeshWeb.UserLive.Stream do
        socket
        |> assign(:raid_starting, false)
        |> assign(:raid_group_id, payload[:group_id])
-       |> push_redirect(to: Routes.user_stream_path(socket, :index, target_channel_username))}
+       |> push_redirect(to: ~p"/#{target_channel_username}")}
     else
       {:noreply, socket}
     end

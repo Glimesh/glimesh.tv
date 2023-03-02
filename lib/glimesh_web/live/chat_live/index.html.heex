@@ -15,17 +15,15 @@
     <div
       id={"chat-message-#{chat_message.id}"}
       data-user-id={chat_message.user.id}
-      class={
-        [
-          if(Glimesh.Chat.Effects.user_in_message(@user, chat_message),
-            do: "bubble mention",
-            else: "bubble you"
-          ),
-          if(chat_message.is_subscription_message, do: "bg-secondary text-white"),
-          if(chat_message.is_followed_message, do: "border border-info"),
-          if(chat_message.is_raid_message, do: "border border-warning font-weight-bold")
-        ]
-      }
+      class={[
+        if(Glimesh.Chat.Effects.user_in_message(@user, chat_message),
+          do: "bubble mention",
+          else: "bubble you"
+        ),
+        if(chat_message.is_subscription_message, do: "bg-secondary text-white"),
+        if(chat_message.is_followed_message, do: "border border-info"),
+        if(chat_message.is_raid_message, do: "border border-warning font-weight-bold")
+      ]}
     >
       <div class={["user-message-header", unless(@popped_out, do: "d-inline d-md-block")]}>
         <%= if Map.get(@permissions, :can_delete, false)  do %>

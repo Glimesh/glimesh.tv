@@ -114,9 +114,7 @@ defmodule GlimeshWeb.UserLive.Components.ShareButtons do
         },
         socket
       ) do
-    share_url =
-      "https://glimesh.tv" <>
-        Routes.user_stream_path(socket, :index, username) <> "?follow_host=false"
+    share_url = url(~p"/#{username}?follow_host=false")
 
     share_encoded_url = URI.encode_www_form(share_url)
 

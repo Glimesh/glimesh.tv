@@ -115,7 +115,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.RaidingTest do
 
     test "can ban a channel", %{conn: conn} do
       streamer_one = streamer_fixture()
-      {:ok, view, _html} = live(conn, Routes.user_settings_path(conn, :raiding))
+      {:ok, view, _html} = live(conn, ~p"/users/settings/raiding")
 
       render_hook(view, :ban_channel_selection_made, %{
         user_id: streamer_one.id,
@@ -127,7 +127,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.RaidingTest do
                view
                |> element("#ban-channel-button")
                |> render_click()
-               |> follow_redirect(conn, Routes.user_settings_path(conn, :raiding))
+               |> follow_redirect(conn, ~p"/users/settings/raiding")
 
       assert html_response(conn, 200) =~ "Channel banned from raiding"
 
@@ -137,13 +137,13 @@ defmodule GlimeshWeb.ChannelSettingsLive.RaidingTest do
 
     test "can ban a channel without using the picker", %{conn: conn} do
       streamer_one = streamer_fixture()
-      {:ok, view, _html} = live(conn, Routes.user_settings_path(conn, :raiding))
+      {:ok, view, _html} = live(conn, ~p"/users/settings/raiding")
 
       assert {:ok, conn} =
                view
                |> element("#ban-channel-button")
                |> render_click(%{"name" => streamer_one.displayname, "selected" => ""})
-               |> follow_redirect(conn, Routes.user_settings_path(conn, :raiding))
+               |> follow_redirect(conn, ~p"/users/settings/raiding")
 
       assert html_response(conn, 200) =~ "Channel banned from raiding"
 

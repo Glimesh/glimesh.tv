@@ -18,7 +18,7 @@
   </div>
   <div class="card-body">
     <.form
-      let={f}
+      :let={f}
       for={@allow_changeset}
       class="form_allow_raiding"
       phx-change="toggle_allow_raiding"
@@ -39,7 +39,7 @@
       </div>
     </.form>
     <.form
-      let={g}
+      :let={g}
       for={@only_allow_followed_changeset}
       class="form_only_allow_followed"
       phx-change="toggle_only_allow_followed"
@@ -65,7 +65,7 @@
       </div>
     </.form>
     <.form
-      let={h}
+      :let={h}
       for={@raid_message_changeset}
       class="form_raid_message"
       phx-submit="save_raid_message"
@@ -105,7 +105,7 @@
   </div>
   <div class="card">
     <div class="card-body">
-      <.form for={:nothing} class="form_ban_channel" phx-change="suggest">
+      <.form :let={:nothing} for={%{}} class="form_ban_channel" phx-change="suggest">
         <div class="row">
           <div class="col-12 col-lg-6">
             <div class="input-group">

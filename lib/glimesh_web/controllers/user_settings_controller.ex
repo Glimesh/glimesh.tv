@@ -140,6 +140,7 @@ defmodule GlimeshWeb.UserSettingsController do
   def update_channel(conn, %{"channel" => channel_params}) do
     channel = conn.assigns.channel
     user = conn.assigns.current_user
+
     launched = Glimesh.has_launched?()
 
     case Streams.update_channel(user, channel, channel_params) do

@@ -123,7 +123,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.Raiding do
            |> assign(:ban_channel, "")
            |> assign(:ban_channel_selected_value, "")
            |> put_flash(:raiding_info, gettext("Channel banned from raiding"))
-           |> redirect(to: Routes.user_settings_path(socket, :raiding))}
+           |> redirect(to: ~p"/users/settings/raiding")}
 
         {:error, _channel_ban} ->
           {:noreply,
@@ -165,7 +165,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.Raiding do
           {:noreply,
            socket
            |> put_flash(:raiding_info, gettext("Channel unbanned for raiding"))
-           |> redirect(to: Routes.user_settings_path(socket, :raiding))}
+           |> redirect(to: ~p"/users/settings/raiding")}
 
         {:error, _} ->
           {:noreply,

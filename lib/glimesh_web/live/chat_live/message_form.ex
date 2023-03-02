@@ -1,6 +1,7 @@
 defmodule GlimeshWeb.ChatLive.MessageForm do
   use GlimeshWeb, :live_component
 
+  alias Glimesh.ChannelLookups
   alias Glimesh.Chat
   alias Glimesh.Emotes
 
@@ -34,7 +35,7 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   def handle_event("send", %{"chat_message" => chat_message_params}, socket) do
     # Pull a fresh user and channel from the database in case something has changed
     user = Glimesh.Accounts.get_user!(socket.assigns.user.id)
-    channel = Glimesh.ChannelLookups.get_channel!(socket.assigns.channel.id)
+    channel = ChannelLookups.get_channel!(socket.assigns.channel.id)
     save_chat_message(socket, channel, user, chat_message_params)
   end
 
@@ -46,12 +47,12 @@ defmodule GlimeshWeb.ChatLive.MessageForm do
   def handle_event("sendtenormessage", %{"chat_params" => chat_message_params}, socket) do
     # Pull a fresh user and channel from the database in case something has changed
     user = Glimesh.Accounts.get_user!(socket.assigns.user.id)
-    channel = Glimesh.ChannelLookups.get_channel!(socket.assigns.channel.id)
+    channel = ChannelLookups.get_channel!(socket.assigns.channel.id)
     save_tenor_chat_message(socket, channel, user, chat_message_params)
-  end 
-  
+  end
+
   def handle_event("user_autocomplete", %{"partial_usernames" => partial_usernames}, socket) do
-    channel = Glimesh.ChannelLookups.get_channel!(socket.assigns.channel.id)
+    channel = ChannelLookups.get_channel!(socket.assigns.channel.id)
     user_suggestions = Chat.get_recent_chatters_username_autocomplete(channel, partial_usernames)
 
     {:reply, %{suggestions: user_suggestions}, socket}

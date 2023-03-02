@@ -75,8 +75,8 @@ defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
   end
 
   def handle_event("replace_interactive", _params, socket) do
-    #This has to run before a new project is uploaded. Removes the previous project
-    Enum.each(socket.assigns.channel.interactive_project, fn e ->
+    # This has to run before a new project is uploaded. Removes the previous project
+    Enum.each(socket.assigns.channel.interactive_project || [], fn e ->
       Interactive.delete({e.file_name, socket.assigns.channel})
     end)
 

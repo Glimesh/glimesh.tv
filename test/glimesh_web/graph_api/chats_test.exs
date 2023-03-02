@@ -28,15 +28,19 @@ defmodule GlimeshWeb.GraphApi.ChatsTest do
   @create_chat_message_and_check_raid_flag_mutation """
   mutation CreateChatMessage($channelId: ID!, $message: ChatMessageInput!) {
     createChatMessage(channelId: $channelId, message: $message) {
-      ... on EmoteToken {
-          src
-        }
-      }
       is_raid_message
+      message
+      tokens {
+        type
+        text
+      }
+      user {
+        username
+      }
     }
   }
   """
-  
+
   @create_tenor_message_mutation """
   mutation CreateTenorMessage($channelId: ID!, $message: ChatMessageInput!) {
     createTenorMessage(channelId: $channelId, message: $message) {
@@ -56,7 +60,7 @@ defmodule GlimeshWeb.GraphApi.ChatsTest do
     }
   }
   """
-  
+
   @create_chat_message_with_metadata_mutation """
   mutation CreateChatMessage($channelId: ID!, $message: ChatMessageInput!) {
     createChatMessage(channelId: $channelId, message: $message) {

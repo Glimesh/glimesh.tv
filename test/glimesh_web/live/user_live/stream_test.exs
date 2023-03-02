@@ -399,7 +399,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, _, html} =
         live(
           live_raider_conn,
-          Routes.user_stream_path(live_raider_conn, :index, all_raidable_streamer.username)
+          ~p"/#{all_raidable_streamer.username}"
         )
 
       assert html =~ "raid-button"
@@ -408,7 +408,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, _, html} =
         live(
           live_raider_conn,
-          Routes.user_stream_path(live_raider_conn, :index, not_raidable_streamer.username)
+          ~p"/#{not_raidable_streamer.username}"
         )
 
       refute html =~ "raid-button"
@@ -419,7 +419,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, _, html} =
         live(
           not_live_raider_conn,
-          Routes.user_stream_path(live_raider_conn, :index, all_raidable_streamer.username)
+          ~p"/#{all_raidable_streamer.username}"
         )
 
       refute html =~ "raid-button"
@@ -427,7 +427,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, _, html} =
         live(
           not_live_raider_conn,
-          Routes.user_stream_path(live_raider_conn, :index, not_raidable_streamer.username)
+          ~p"/#{not_raidable_streamer.username}"
         )
 
       refute html =~ "raid-button"
@@ -448,11 +448,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, _, html} =
         live(
           live_followed_raider_conn,
-          Routes.user_stream_path(
-            live_followed_raider_conn,
-            :index,
-            follow_raidable_streamer.username
-          )
+          ~p"/#{follow_raidable_streamer.username}"
         )
 
       assert html =~ "raid-button"
@@ -463,11 +459,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, _, html} =
         live(
           live_not_followed_raider_conn,
-          Routes.user_stream_path(
-            live_not_followed_raider_conn,
-            :index,
-            follow_raidable_streamer.username
-          )
+          ~p"/#{follow_raidable_streamer.username}"
         )
 
       refute html =~ "raid-button"
@@ -478,7 +470,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, _, html} =
         live(
           not_live_raider_conn,
-          Routes.user_stream_path(not_live_raider_conn, :index, follow_raidable_streamer.username)
+          ~p"/#{follow_raidable_streamer.username}"
         )
 
       refute html =~ "raid-button"
@@ -486,7 +478,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, _, html} =
         live(
           not_live_raider_conn,
-          Routes.user_stream_path(not_live_raider_conn, :index, not_raidable_streamer.username)
+          ~p"/#{not_raidable_streamer.username}"
         )
 
       refute html =~ "raid-button"
@@ -505,7 +497,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, _, html} =
         live(
           live_raider_conn,
-          Routes.user_stream_path(live_raider_conn, :index, not_live_streamer.username)
+          ~p"/#{not_live_streamer.username}"
         )
 
       refute html =~ "raid-button"
@@ -516,7 +508,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, _, html} =
         live(
           not_live_raider_conn,
-          Routes.user_stream_path(not_live_raider_conn, :index, not_live_streamer.username)
+          ~p"/#{not_live_streamer.username}"
         )
 
       refute html =~ "raid-button"
@@ -525,9 +517,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
     test "raid button should not show for raiders not logged in",
          %{conn: conn, all_raidable_streamer: all_raidable_streamer} do
       # cannot raid anyone if raider isn't logged in
-      {:ok, _, html} =
-        live(conn, Routes.user_stream_path(conn, :index, all_raidable_streamer.username))
-
+      {:ok, _, html} = live(conn, ~p"/#{all_raidable_streamer.username}")
       refute html =~ "raid-button"
     end
 
@@ -539,7 +529,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, _, html} =
         live(
           streamer_conn,
-          Routes.user_stream_path(streamer_conn, :index, all_raidable_streamer.username)
+          ~p"/#{all_raidable_streamer.username}"
         )
 
       refute html =~ "raid-button"
@@ -576,23 +566,22 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, participating_viewer_view, _} =
         live(
           participating_viewer_conn,
-          Routes.user_stream_path(participating_viewer_conn, :index, live_raider.username)
+          ~p"/#{live_raider.username}"
         )
 
       {:ok, second_participating_viewer_view, _} =
         live(
           second_participating_viewer_conn,
-          Routes.user_stream_path(second_participating_viewer_conn, :index, live_raider.username)
+          ~p"/#{live_raider.username}"
         )
 
       {:ok, non_participating_viewer_view, _} =
         live(
           non_participating_viewer_conn,
-          Routes.user_stream_path(non_participating_viewer_conn, :index, live_raider.username)
+          ~p"/#{live_raider.username}"
         )
 
-      {:ok, non_logged_in_viewer_view, _} =
-        live(conn, Routes.user_stream_path(conn, :index, live_raider.username))
+      {:ok, non_logged_in_viewer_view, _} = live(conn, ~p"/#{live_raider.username}")
 
       payload =
         {:raid,
@@ -610,28 +599,24 @@ defmodule GlimeshWeb.UserLive.StreamTest do
 
       assert_redirect(
         participating_viewer_view,
-        Routes.user_stream_path(participating_viewer_conn, :index, target_of_raid.username),
+        ~p"/#{target_of_raid.username}",
         5_000
       )
 
       assert_redirect(
         second_participating_viewer_view,
-        Routes.user_stream_path(
-          second_participating_viewer_conn,
-          :index,
-          target_of_raid.username
-        ),
+        ~p"/#{target_of_raid.username}",
         5_000
       )
 
       refute_redirected(
         non_participating_viewer_view,
-        Routes.user_stream_path(non_participating_viewer_conn, :index, target_of_raid.username)
+        ~p"/#{target_of_raid.username}"
       )
 
       refute_redirected(
         non_logged_in_viewer_view,
-        Routes.user_stream_path(conn, :index, target_of_raid.username)
+        ~p"/#{target_of_raid.username}"
       )
     end
 
@@ -666,23 +651,22 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, participating_viewer_view, _} =
         live(
           participating_viewer_conn,
-          Routes.user_stream_path(participating_viewer_conn, :index, live_raider.username)
+          ~p"/#{live_raider.username}"
         )
 
       {:ok, second_participating_viewer_view, _} =
         live(
           second_participating_viewer_conn,
-          Routes.user_stream_path(second_participating_viewer_conn, :index, live_raider.username)
+          ~p"/#{live_raider.username}"
         )
 
       {:ok, non_participating_viewer_view, _} =
         live(
           non_participating_viewer_conn,
-          Routes.user_stream_path(non_participating_viewer_conn, :index, live_raider.username)
+          ~p"/#{live_raider.username}"
         )
 
-      {:ok, non_logged_in_viewer_view, _} =
-        live(conn, Routes.user_stream_path(conn, :index, live_raider.username))
+      {:ok, non_logged_in_viewer_view, _} = live(conn, ~p"/#{live_raider.username}")
 
       payload =
         {:raid,
@@ -700,28 +684,28 @@ defmodule GlimeshWeb.UserLive.StreamTest do
 
       refute_redirected(
         participating_viewer_view,
-        Routes.user_stream_path(participating_viewer_conn, :index, target_of_raid.username)
+        ~p"/#{target_of_raid.username}"
       )
 
       assert render(participating_viewer_view) =~ "Streamer has cancelled pending raid."
 
       refute_redirected(
         second_participating_viewer_view,
-        Routes.user_stream_path(second_participating_viewer_conn, :index, target_of_raid.username)
+        ~p"/#{target_of_raid.username}"
       )
 
       assert render(second_participating_viewer_view) =~ "Streamer has cancelled pending raid."
 
       refute_redirected(
         non_participating_viewer_view,
-        Routes.user_stream_path(non_participating_viewer_conn, :index, target_of_raid.username)
+        ~p"/#{target_of_raid.username}"
       )
 
       assert render(non_participating_viewer_view) =~ "Streamer has cancelled pending raid."
 
       refute_redirected(
         non_logged_in_viewer_view,
-        Routes.user_stream_path(conn, :index, target_of_raid.username)
+        ~p"/#{target_of_raid.username}"
       )
 
       assert render(non_logged_in_viewer_view) =~ "Streamer has cancelled pending raid."
@@ -739,18 +723,16 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       {:ok, participating_viewer_view, _} =
         live(
           participating_viewer_conn,
-          Routes.user_stream_path(participating_viewer_conn, :index, live_raider.username)
+          ~p"/#{live_raider.username}"
         )
 
       {:ok, second_participating_viewer_view, _} =
         live(
           second_participating_viewer_conn,
-          Routes.user_stream_path(second_participating_viewer_conn, :index, live_raider.username)
+          ~p"/#{live_raider.username}"
         )
 
-      {:ok, non_logged_in_viewer_view, _} =
-        live(conn, Routes.user_stream_path(conn, :index, live_raider.username))
-
+      {:ok, non_logged_in_viewer_view, _} = live(conn, ~p"/#{live_raider.username}")
       time = NaiveDateTime.add(NaiveDateTime.utc_now(), 30, :second)
 
       raid_target = Glimesh.ChannelLookups.get_channel_for_username(target_of_raid.username)
@@ -766,7 +748,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       refute render(non_logged_in_viewer_view) =~ "raid-toast"
     end
   end
-  
+
   describe "Share stream button" do
     setup do
       streamer = streamer_fixture()
@@ -775,8 +757,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
     end
 
     test "is available to non-logged-in users", %{conn: conn, streamer: streamer} do
-      {:ok, _, html} = live(conn, Routes.user_stream_path(conn, :index, streamer.username))
-
+      {:ok, _, html} = live(conn, ~p"/#{streamer.username}")
       assert html =~ "share-stream-button"
     end
 
@@ -784,9 +765,7 @@ defmodule GlimeshWeb.UserLive.StreamTest do
       user = user_fixture()
       user_conn = log_in_user(conn, user)
 
-      {:ok, _, html} =
-        live(user_conn, Routes.user_stream_path(user_conn, :index, streamer.username))
-
+      {:ok, _, html} = live(user_conn, ~p"/#{streamer.username}")
       assert html =~ "share-stream-button"
     end
   end
