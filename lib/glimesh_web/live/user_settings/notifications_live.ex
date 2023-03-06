@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.NotificationsLive do
+defmodule GlimeshWeb.UserSettings.NotificationsLive do
   use GlimeshWeb, :live_view
 
   alias Glimesh.Accounts

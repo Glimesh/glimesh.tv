@@ -19,7 +19,7 @@ defmodule GlimeshWeb do
 
   def static_paths,
     do:
-      ~w(emotes fa-fonts favicons fonts images css js browserconfig.xml cache_manifest.json favicon.ico robots.txt)
+      ~w(assets emotes fa-fonts favicons fonts images css js browserconfig.xml cache_manifest.json favicon.ico robots.txt)
 
   def controller do
     quote do
@@ -67,9 +67,33 @@ defmodule GlimeshWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {GlimeshWeb.LayoutView, :live}
+        layout: {GlimeshWeb.Layouts, :app}
+
+      alias GlimeshWeb.Components.Navbar
 
       import Glimesh.Formatters
+
+      unquote(html_helpers())
+    end
+  end
+
+  def settings_live_view do
+    quote do
+      use Phoenix.LiveView,
+        layout: {GlimeshWeb.Layouts, :user_sidebar},
+        container: {:div, class: "h-full"}
+
+      alias GlimeshWeb.Components.Navbar
+
+      import Glimesh.Formatters
+
+      unquote(html_helpers())
+    end
+  end
+
+  def component do
+    quote do
+      use Phoenix.Component
 
       unquote(html_helpers())
     end
@@ -123,6 +147,19 @@ defmodule GlimeshWeb do
     end
   end
 
+  def html do
+    quote do
+      use Phoenix.Component
+
+      # Import convenience functions from controllers
+      import Phoenix.Controller,
+        only: [get_csrf_token: 0, view_module: 1, view_template: 1]
+
+      # Include general helpers for rendering HTML
+      unquote(html_helpers())
+    end
+  end
+
   defp html_helpers do
     quote do
       # Use all HTML functionality (forms, tags, etc)
@@ -131,6 +168,12 @@ defmodule GlimeshWeb do
       # Import LiveView helpers (live_render, live_component, live_patch, etc)
       import Phoenix.LiveView.Helpers
       import GlimeshWeb.LiveHelpers
+      import GlimeshWeb.CoreComponents
+
+      alias GlimeshWeb.Components.Navbar
+      alias GlimeshWeb.Components.Icons
+
+      alias Phoenix.LiveView.JS
 
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View

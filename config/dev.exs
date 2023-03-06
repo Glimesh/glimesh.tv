@@ -19,15 +19,20 @@ config :glimesh, Glimesh.Repo.ReadReplica, database
 config :esbuild,
   version: "0.12.18",
   default: [
-    args: ~w(js/app.js --bundle --target=es2016 --outdir=../priv/public/js),
+    args:
+      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
-config :dart_sass,
-  version: "1.58.3",
+config :tailwind,
+  version: "3.2.4",
   default: [
-    args: ~w(--load-path=./node_modules css/app.scss ../priv/public/css/app.css),
+    args: ~w(
+      --config=tailwind.config.js
+      --input=css/app.css
+      --output=../priv/static/assets/app.css
+    ),
     cd: Path.expand("../assets", __DIR__)
   ]
 
@@ -47,11 +52,7 @@ config :glimesh, GlimeshWeb.Endpoint,
       :install_and_run,
       [:default, ~w(--sourcemap=inline --watch)]
     },
-    sass: {
-      DartSass,
-      :install_and_run,
-      [:default, ~w(--embed-source-map --source-map-urls=absolute --watch)]
-    }
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ],
   url: [host: "localhost", port: 4001],
   http: [port: 4000],

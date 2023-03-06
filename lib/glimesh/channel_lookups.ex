@@ -10,6 +10,24 @@ defmodule Glimesh.ChannelLookups do
   alias Glimesh.Repo
   alias Glimesh.Streams.{Category, Channel, ChannelBan, ChannelBannedRaid, ChannelHosts}
 
+  ## Basic Selects
+  @doc """
+  Method for fetching a user and their channel for the /username page.
+  Includes banned users so we can show a message.
+  """
+  def get_user_for_channel(username) do
+    User
+    |> Repo.get_by(username: username)
+    |> Repo.preload(channel: [:category, :subcategory, :tags])
+  end
+
+  def has_channel_for_user(nil), do: false
+
+  def has_channel_for_user(%User{} = user) do
+    from(c in Channel, where: c.user_id == ^user.id)
+    |> Repo.exists?()
+  end
+
   ## Filtering
   @spec search_live_channels(map) :: list
   def search_live_channels(params, user \\ nil) do

@@ -1,6 +1,6 @@
 import tippy, { roundArrow } from 'tippy.js';
-import 'tippy.js/dist/svg-arrow.css';
-import 'tippy.js/animations/scale-subtle.css';
+// import 'tippy.js/dist/svg-arrow.css';
+// import 'tippy.js/animations/scale-subtle.css';
 
 export default {
     apiKey: "",
@@ -13,7 +13,7 @@ export default {
 
     mounted() {
         let storedRecentSelections = localStorage.getItem('tenor-recent-selections');
-        if(storedRecentSelections != null) {
+        if (storedRecentSelections != null) {
             this.recentSelections = storedRecentSelections.split(',');
         } else {
             this.recentSelections = [];
@@ -37,21 +37,21 @@ export default {
             zIndex: 600,
             animation: "scale",
             maxWidth: 400,
-            onShown(instance) {         
+            onShown(instance) {
                 parent.popoverVisible = true;
                 return true;
             },
-            onHidden(instance) { 
+            onHidden(instance) {
                 parent.popoverVisible = false;
                 return true;
             }
         });
 
-        this.el.addEventListener("click", (e) => {  
-            if(parent.popoverVisible) {
+        this.el.addEventListener("click", (e) => {
+            if (parent.popoverVisible) {
                 popover.hide();
             } else {
-                switch(parent.currentSection) {
+                switch (parent.currentSection) {
                     case 'trending':
                         this.showTrending(10);
                         break;
@@ -70,7 +70,7 @@ export default {
         var reactionGifParent = document.getElementById('reaction-gif-selector');
         reactionGifParent.addEventListener('click', (e) => {
             var dispatched = false;
-            switch(e.target.id) {
+            switch (e.target.id) {
                 case 'reactiongifs-trending-section':
                     this.showTrending(10);
                     dispatched = true;
@@ -84,7 +84,7 @@ export default {
                     dispatched = true;
                     break;
                 case 'reactiongifs-category-back-button':
-                    if(currentSection == 'featured') {
+                    if (currentSection == 'featured') {
                         this.showFeatured(10);
                     } else if (currentSection == 'trending') {
                         this.showTrending(10);
@@ -93,7 +93,7 @@ export default {
                     break;
                 case 'reactiongifs-search-button':
                 case 'reactiongifs-search-button-icon':
-                    var searchField = document.getElementById('reactiongifs-search-input');                    
+                    var searchField = document.getElementById('reactiongifs-search-input');
                     this.showSearch(searchField.value, 20);
                     dispatched = true;
                     break;
@@ -108,27 +108,27 @@ export default {
                 default: break;
             }
 
-            if(!dispatched) {
+            if (!dispatched) {
                 var categoryDiv = e.target.closest('.reactiongifs-category-div');
                 var itemSelectionDiv = e.target.closest('.reactiongifs-item-select-div');
-                if(categoryDiv != null) {
+                if (categoryDiv != null) {
                     this.showCategorySearch(categoryDiv.dataset.path, 20);
-                } else if(itemSelectionDiv != null) {
-                    if(!itemSelectionDiv.dataset.noRecentTrack) {
+                } else if (itemSelectionDiv != null) {
+                    if (!itemSelectionDiv.dataset.noRecentTrack) {
                         this.addRecentSelection(itemSelectionDiv);
                     }
                     this.sendChatMessage(itemSelectionDiv.dataset.id, itemSelectionDiv.dataset.url, itemSelectionDiv.dataset.smallUrl);
                     popover.hide();
                 }
             }
-            
+
             return false;
         });
 
         reactionGifParent.addEventListener("keypress", (e) => {
-            switch(e.target.id) {
+            switch (e.target.id) {
                 case 'reactiongifs-search-input':
-                    if(e.key === "Enter") {
+                    if (e.key === "Enter") {
                         this.showSearch(e.target.value, 20);
                         e.preventDefault();
                     }
@@ -138,18 +138,18 @@ export default {
         });
     },
     addRecentSelection(itemElement) {
-        if(this.recentSelections.length > this.maxRecentSelections) {
-            this.recentSelections.splice(0,1);
+        if (this.recentSelections.length > this.maxRecentSelections) {
+            this.recentSelections.splice(0, 1);
         }
         this.recentSelections.push(itemElement.dataset.id);
         localStorage.setItem('tenor-recent-selections', this.recentSelections);
     },
     showFeatured(limit = null) {
         currentSection = 'featured';
-        tenorSearch.showFeaturedCategories().then(results => { 
+        tenorSearch.showFeaturedCategories().then(results => {
             let content = "";
             let categories = results["tags"];
-            if(limit) {
+            if (limit) {
                 categories.splice(limit);
             }
             content = this.buildCategoryItems(categories);
@@ -158,10 +158,10 @@ export default {
     },
     showTrending(limit = null) {
         currentSection = 'trending';
-        tenorSearch.showTrendingCategories().then(results => { 
+        tenorSearch.showTrendingCategories().then(results => {
             let content = "";
             let categories = results["tags"];
-            if(limit) {
+            if (limit) {
                 categories.splice(limit);
             }
             content = this.buildCategoryItems(categories);
@@ -195,7 +195,7 @@ export default {
     },
     sendChatMessage(id, url, smallImgUrl) {
         let chatMessage = `:tenor:${id}:${url}:${smallImgUrl}`;
-        this.pushEventTo(this.el, "sendtenormessage", {chat_params: {message: chatMessage}});
+        this.pushEventTo(this.el, "sendtenormessage", { chat_params: { message: chatMessage } });
         tenorSearch.trackShare(id);  // let tenor know someone shared a gif
     },
     buildCategoryItems(items) {
@@ -221,7 +221,7 @@ export default {
                 </button>
             </div>
         `;
-        if(items.length > 0) {
+        if (items.length > 0) {
             items.forEach(item => {
                 html += `
                 <div class="row col-12 my-2 reactiongifs-item-select-div" data-id="${item.id}" data-url="${item.media_formats.gif.url}" data-small-url="${item.media_formats.tinygif.url}">
@@ -230,7 +230,7 @@ export default {
                     </div>
                 </div>
                 `;
-            });    
+            });
         } else {
             html += `
             <div class="row col-12 my-2">
@@ -255,7 +255,7 @@ export default {
                 </button>
             </div>
         `;
-        if(items.length > 0) {
+        if (items.length > 0) {
             items.forEach(item => {
                 html += `
                 <div class="row col-12 my-2 reactiongifs-item-select-div" data-id="${item.id}" data-url="${item.media_formats.gif.url}" data-small-url="${item.media_formats.tinygif.url}">
@@ -264,7 +264,7 @@ export default {
                     </div>
                 </div>
                 `;
-            });    
+            });
         } else {
             html += `
             <div class="row col-12 my-2">
@@ -283,7 +283,7 @@ export default {
     },
     buildRecentSearchResults(items) {
         let html = "";
-        for(var i = items.length - 1; i >= 0; i--) {
+        for (var i = items.length - 1; i >= 0; i--) {
             html += `
             <div class="row col-12 my-2 reactiongifs-item-select-div" data-id="${items[i].id}" data-url="${items[i].media_formats.gif.url}" data-small-url="${items[i].media_formats.tinygif.url}" data-no-recent-track="true">
                 <div class="d-flex justify-content-center m-auto tenor-results-item">
@@ -292,7 +292,7 @@ export default {
             </div>
             `;
         }
-        if(items.length <= 0) {
+        if (items.length <= 0) {
             html += `
             <div class="row col-12 my-2">
                 <div class="d-flex justify-content-center m-auto">
@@ -335,7 +335,7 @@ export default {
     }
 }
 
-class Tenor{
+class Tenor {
     baseEndpoint = "https://tenor.googleapis.com";
     searchEndpoint = `${this.baseEndpoint}/v2/search?`;
     featuredEndpoint = `${this.baseEndpoint}/v2/featured?`;
@@ -360,14 +360,14 @@ class Tenor{
         let resultLimit = limit || 10;
         let url = encodeURI(`${this.searchEndpoint}q=${term}&key=${this.key}&locale=${this.locale}&contentfilter=${this.filter}&media_filter=${this.mediaFilter}&limit=${resultLimit}`);
         let parent = this;
-        if(next != null) {
+        if (next != null) {
             url += encodeURI(`&pos=${next}`);
         }
 
         return new Promise((resolve, reject) => {
             parent.call(url, (ret) => {
                 let data = JSON.parse(ret);
-                resolve({data: data["results"], next: data["next"]});
+                resolve({ data: data["results"], next: data["next"] });
             });
         });
     }
@@ -377,7 +377,7 @@ class Tenor{
         let resultLimit = limit || 10;
         let url = encodeURI(`${this.autocompleteEndpoint}q=${term}&key=${this.key}&locale=${this.locale}&limit=${resultLimit}`);
         let parent = this;
-        if(next != null) {
+        if (next != null) {
             url += encodeURI(`&pos=${next}`);
         }
 
@@ -394,14 +394,14 @@ class Tenor{
         let resultLimit = limit || 20;
         let url = encodeURI(`${this.baseEndpoint}${path}&media_filter=${this.mediaFilter}&limit=${resultLimit}&key=${apiKey}`);
         let parent = this;
-        if(next != null) {
+        if (next != null) {
             url += encodeURI(`&pos=${next}`);
         }
 
         return new Promise((resolve, reject) => {
             parent.call(url, (ret) => {
                 let data = JSON.parse(ret);
-                resolve({data: data["results"], next: data["next"]});
+                resolve({ data: data["results"], next: data["next"] });
             });
         });
     }
@@ -431,7 +431,7 @@ class Tenor{
     get(ids) {
         this.lastSearchTerm = null;
         let parent = this;
-        if(ids == null || ids.length < 1) {
+        if (ids == null || ids.length < 1) {
             return;
         }
         let url = encodeURI(`${this.postsEndpoint}ids=${ids.join()}&key=${this.key}&media_filter=${this.mediaFilter}`);
@@ -439,17 +439,17 @@ class Tenor{
         return new Promise((resolve, reject) => {
             parent.call(url, (ret) => {
                 let data = JSON.parse(ret);
-                resolve({data: data["results"], next: data["next"]});
+                resolve({ data: data["results"], next: data["next"] });
             });
         });
     }
 
     trackShare(id) {
         let url = encodeURI(`${this.registerShareEndpoint}id=${id}&key=${this.key}&locale=${this.locale}`);
-        if(this.lastSearchTerm != null) {
+        if (this.lastSearchTerm != null) {
             url += encodeURI(`&q=${this.lastSearchTerm}`);
         }
-        this.call(url, (ret) => {});
+        this.call(url, (ret) => { });
     }
 
     call(theUrl, callback) {
@@ -457,10 +457,8 @@ class Tenor{
         var xmlHttp = new XMLHttpRequest();
 
         // set the state change callback to capture when the response comes in
-        xmlHttp.onreadystatechange = function()
-        {
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            {
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                 callback(xmlHttp.responseText);
             }
         }
@@ -472,5 +470,5 @@ class Tenor{
         xmlHttp.send(null);
 
         return;
-    }    
+    }
 }

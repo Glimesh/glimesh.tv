@@ -37,7 +37,7 @@ defmodule Glimesh.MixProject do
       # Dev & Test Libs
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
-      {:dart_sass, "~> 0.5.1", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.1.8", runtime: Mix.env() == :dev},
       {:faker, "~> 0.17", only: [:dev, :test]},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:floki, ">= 0.0.0", only: :test},
@@ -95,6 +95,7 @@ defmodule Glimesh.MixProject do
       {:sweet_xml, "~> 0.6"},
       {:ex_image_info, "~> 0.2.4"},
       # Other
+      {:heroicons, "~> 0.5"},
       {:sentry, "~> 8.0"},
       {:prom_ex, "~> 1.3"},
       {:hcaptcha, "~> 0.0.1"},
@@ -116,7 +117,7 @@ defmodule Glimesh.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup", "cmd npm install --prefix=./assets"],
+      setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
       "ecto.seed": ["run priv/repo/seeds.#{Mix.env()}.exs"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
@@ -128,10 +129,11 @@ defmodule Glimesh.MixProject do
         "test"
       ],
       code_quality: ["format", "credo --strict"],
+      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
+      "assets.build": ["tailwind default", "esbuild default"],
       "assets.deploy": [
-        "cmd assets/copy-fonts.sh",
+        "tailwind default --minify",
         "esbuild default --minify",
-        "sass default --no-source-map --style=compressed",
         "phx.digest priv/static -o priv/public"
       ]
     ]

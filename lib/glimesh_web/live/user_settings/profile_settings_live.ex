@@ -1,4 +1,4 @@
-defmodule GlimeshWeb.UserSettings.Components.ProfileSettingsLive do
+defmodule GlimeshWeb.UserSettings.ProfileSettingsLive do
   use GlimeshWeb, :live_view
   alias Glimesh.Accounts.Profile
   alias Phoenix.LiveView.JS

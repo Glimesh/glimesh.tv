@@ -225,6 +225,18 @@ defmodule Glimesh.Chat do
   # System API Calls
 
   @doc """
+  List some initial chat messages for the channel.
+  Respects the show_recent_chat_messages_only flag
+  """
+  def list_initial_chat_messages(%Glimesh.Streams.Channel{} = channel) do
+    if channel.show_recent_chat_messages_only do
+      list_recent_chat_messages(channel)
+    else
+      list_chat_messages(channel)
+    end
+  end
+
+  @doc """
   Returns the list of chat_messages.
 
   ## Examples

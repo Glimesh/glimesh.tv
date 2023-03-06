@@ -1,5 +1,5 @@
-defmodule GlimeshWeb.ChannelSettingsLive.Raiding do
-  use GlimeshWeb, :live_view
+defmodule GlimeshWeb.ChannelSettings.RaidingLive do
+  use GlimeshWeb, :settings_live_view
 
   alias Glimesh.ChannelLookups
   alias Glimesh.Streams.Channel
@@ -7,12 +7,8 @@ defmodule GlimeshWeb.ChannelSettingsLive.Raiding do
 
   @impl true
   def mount(_, session, socket) do
-    if session["locale"], do: Gettext.put_locale(session["locale"])
-
-    user = Glimesh.Accounts.get_user_by_session_token(session["user_token"])
-
     channel =
-      ChannelLookups.get_channel_for_user(user, [
+      ChannelLookups.get_channel_for_user(socket.assigns.current_user, [
         :category,
         :user,
         banned_raid_channels: [banned_channel: [:user]]
@@ -25,7 +21,6 @@ defmodule GlimeshWeb.ChannelSettingsLive.Raiding do
     {:ok,
      socket
      |> put_page_title(gettext("Raiding Settings"))
-     |> assign(:user, user)
      |> assign(:channel, channel)
      |> assign(:allow_changeset, allow_raiding_changeset)
      |> assign(:only_allow_followed_changeset, only_allow_followed_changeset)
@@ -43,7 +38,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.Raiding do
            Bodyguard.permit(
              Glimesh.Streams.Policy,
              :update_channel,
-             socket.assigns.user,
+             socket.assigns.current_user,
              socket.assigns.channel
            ) do
       case Channel.update_allow_raiding(socket.assigns.channel, channel_params) do
@@ -65,7 +60,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.Raiding do
            Bodyguard.permit(
              Glimesh.Streams.Policy,
              :update_channel,
-             socket.assigns.user,
+             socket.assigns.current_user,
              socket.assigns.channel
            ) do
       case Channel.update_only_allow_followed_raiding(socket.assigns.channel, channel_params) do
@@ -112,7 +107,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.Raiding do
            Bodyguard.permit(
              Glimesh.Streams.Policy,
              :ban_raiding_channel,
-             socket.assigns.user,
+             socket.assigns.current_user,
              socket.assigns.channel
            ) do
       case ChannelBannedRaid.insert_new_ban(socket.assigns.channel, selected_value) do
@@ -157,7 +152,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.Raiding do
            Bodyguard.permit(
              Glimesh.Streams.Policy,
              :unban_raiding_channel,
-             socket.assigns.user,
+             socket.assigns.current_user,
              banned_raider.channel
            ) do
       case ChannelBannedRaid.remove_ban(banned_raider) do
@@ -180,7 +175,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.Raiding do
            Bodyguard.permit(
              Glimesh.Streams.Policy,
              :update_channel,
-             socket.assigns.user,
+             socket.assigns.current_user,
              socket.assigns.channel
            ) do
       case Channel.update_raid_message(socket.assigns.channel, channel_params) do

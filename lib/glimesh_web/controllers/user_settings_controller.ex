@@ -19,51 +19,8 @@ defmodule GlimeshWeb.UserSettingsController do
     render(conn, "profile.html", page_title: format_page_title(gettext("Your Profile")))
   end
 
-  def stream(conn, _params) do
-    launched = Glimesh.has_launched?()
-
-    render(conn, "stream.html",
-      page_title: format_page_title(gettext("Channel Settings")),
-      launched: launched
-    )
-  end
-
-  def emotes(conn, _params) do
-    conn
-    |> Controller.live_render(ChannelSettingsLive.ChannelEmotes)
-  end
-
-  def upload_emotes(conn, _params) do
-    conn
-    |> Controller.live_render(ChannelSettingsLive.UploadEmotes)
-  end
-
-  def hosting(conn, _params) do
-    conn
-    |> Controller.live_render(ChannelSettingsLive.Hosting)
-  end
-
-  def raiding(conn, _params) do
-    conn
-    |> Controller.live_render(ChannelSettingsLive.Raiding)
-  end
-
   def preference(conn, _params) do
     render(conn, "preference.html", page_title: format_page_title(gettext("Preferences")))
-  end
-
-  def notifications(conn, _params) do
-    render(conn, "notifications.html", page_title: format_page_title(gettext("Notifications")))
-  end
-
-  def channel_statistics(conn, _params) do
-    conn
-    |> Controller.live_render(GlimeshWeb.UserSettings.Components.ChannelStatisticsLive)
-  end
-
-  def addons(conn, _params) do
-    conn
-    |> Controller.live_render(ChannelSettingsLive.Addons)
   end
 
   def update_preference(conn, %{"user_preference" => params}) do

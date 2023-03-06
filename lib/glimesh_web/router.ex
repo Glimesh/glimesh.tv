@@ -7,7 +7,7 @@ defmodule GlimeshWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {GlimeshWeb.LayoutView, :root}
+    plug :put_root_layout, {GlimeshWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
@@ -113,50 +113,6 @@ defmodule GlimeshWeb.Router do
 
     live "/platform_subscriptions", PlatformSubscriptionLive.Index, :index
 
-    get "/users/social/twitter", UserSocialController, :twitter
-    get "/users/social/twitter/connect", UserSocialController, :twitter_connect
-    delete "/users/social/disconnect/:platform", UserSocialController, :disconnect
-
-    get "/users/payments", UserPaymentsController, :index
-    post "/users/payments/setup", UserPaymentsController, :setup
-    get "/users/payments/taxes", UserPaymentsController, :taxes
-    get "/users/payments/taxes_pending", UserPaymentsController, :taxes_pending
-    get "/users/payments/connect", UserPaymentsController, :connect
-    put "/users/payments/delete_default_payment", UserPaymentsController, :delete_default_payment
-
-    get "/users/settings/profile", UserSettingsController, :profile
-    get "/users/settings/stream", UserSettingsController, :stream
-
-    get "/users/settings/channel_statistics", UserSettingsController, :channel_statistics
-    get "/users/settings/addons", UserSettingsController, :addons
-    get "/users/settings/emotes", UserSettingsController, :emotes
-    get "/users/settings/upload_emotes", UserSettingsController, :upload_emotes
-    get "/users/settings/hosting", UserSettingsController, :hosting
-    get "/users/settings/raiding", UserSettingsController, :raiding
-
-    put "/users/settings/create_channel", UserSettingsController, :create_channel
-    put "/users/settings/delete_channel", UserSettingsController, :delete_channel
-    get "/users/settings/preference", UserSettingsController, :preference
-    put "/users/settings/preference", UserSettingsController, :update_preference
-    put "/users/settings/update_profile", UserSettingsController, :update_profile
-    put "/users/settings/update_channel", UserSettingsController, :update_channel
-    get "/users/settings/notifications", UserSettingsController, :notifications
-
-    get "/users/settings/security", UserSecurityController, :index
-    put "/users/settings/update_password", UserSecurityController, :update_password
-    put "/users/settings/update_email", UserSecurityController, :update_email
-    get "/users/settings/confirm_email/:token", UserSecurityController, :confirm_email
-    put "/users/settings/update_tfa", UserSecurityController, :update_tfa
-    get "/users/settings/get_tfa", UserSecurityController, :get_tfa
-    get "/users/settings/tfa_registered", UserSecurityController, :tfa_registered
-
-    put "/users/settings/applications/:id/rotate", UserApplicationsController, :rotate
-    resources "/users/settings/applications", UserApplicationsController
-
-    resources "/users/settings/authorizations", UserAuthorizedAppsController,
-      only: [:index, :delete],
-      param: "id"
-
     get "/oauth/authorize", OauthController, :authorize
     post "/oauth/authorize", OauthController, :process_authorize
   end
@@ -165,18 +121,75 @@ defmodule GlimeshWeb.Router do
     get "/:id/*asset", InteractiveController, :asset
   end
 
-  scope "/", GlimeshWeb do
-    pipe_through [:browser, :require_authenticated_user, :require_user_has_channel]
+  # User Pages
+  live_session :user, on_mount: {GlimeshWeb.UserLiveAuth, :user} do
+    scope "/", GlimeshWeb do
+      pipe_through [:browser, :require_authenticated_user]
 
-    post "/users/settings/channel/mods/ban_user",
-         ChannelModeratorController,
-         :ban_user
+      get "/users/social/twitter", UserSocialController, :twitter
+      get "/users/social/twitter/connect", UserSocialController, :twitter_connect
+      delete "/users/social/disconnect/:platform", UserSocialController, :disconnect
 
-    delete "/users/settings/channel/mods/unban_user/:username",
+      get "/users/payments", UserPaymentsController, :index
+      post "/users/payments/setup", UserPaymentsController, :setup
+      get "/users/payments/taxes", UserPaymentsController, :taxes
+      get "/users/payments/taxes_pending", UserPaymentsController, :taxes_pending
+      get "/users/payments/connect", UserPaymentsController, :connect
+
+      put "/users/payments/delete_default_payment",
+          UserPaymentsController,
+          :delete_default_payment
+
+      get "/users/settings/profile", UserSettingsController, :profile
+
+      put "/users/settings/create_channel", UserSettingsController, :create_channel
+      put "/users/settings/delete_channel", UserSettingsController, :delete_channel
+      get "/users/settings/preference", UserSettingsController, :preference
+      put "/users/settings/preference", UserSettingsController, :update_preference
+      put "/users/settings/update_profile", UserSettingsController, :update_profile
+      put "/users/settings/update_channel", UserSettingsController, :update_channel
+      get "/users/settings/notifications", UserSettingsController, :notifications
+
+      get "/users/settings/security", UserSecurityController, :index
+      put "/users/settings/update_password", UserSecurityController, :update_password
+      put "/users/settings/update_email", UserSecurityController, :update_email
+      get "/users/settings/confirm_email/:token", UserSecurityController, :confirm_email
+      put "/users/settings/update_tfa", UserSecurityController, :update_tfa
+      get "/users/settings/get_tfa", UserSecurityController, :get_tfa
+      get "/users/settings/tfa_registered", UserSecurityController, :tfa_registered
+
+      put "/users/settings/applications/:id/rotate", UserApplicationsController, :rotate
+      resources "/users/settings/applications", UserApplicationsController
+
+      resources "/users/settings/authorizations", UserAuthorizedAppsController,
+        only: [:index, :delete],
+        param: "id"
+    end
+  end
+
+  # User with a channel pages
+  live_session :streamer, on_mount: {GlimeshWeb.UserLiveAuth, :streamer} do
+    scope "/", GlimeshWeb do
+      pipe_through [:browser, :require_authenticated_user, :require_user_has_channel]
+
+      live "/users/settings/stream", ChannelSettings.ChannelSettingsLive
+      live "/users/settings/channel_statistics", ChannelSettings.ChannelStatisticsLive
+      live "/users/settings/addons", ChannelSettings.AddonsLive
+      live "/users/settings/emotes", ChannelSettings.EmotesLive
+      live "/users/settings/upload_emotes", ChannelSettings.UploadEmotesLive
+      live "/users/settings/hosting", ChannelSettings.HostingLive
+      live "/users/settings/raiding", ChannelSettings.RaidingLive
+
+      post "/users/settings/channel/mods/ban_user",
            ChannelModeratorController,
-           :unban_user
+           :ban_user
 
-    resources "/users/settings/channel/mods", ChannelModeratorController
+      delete "/users/settings/channel/mods/unban_user/:username",
+             ChannelModeratorController,
+             :unban_user
+
+      resources "/users/settings/channel/mods", ChannelModeratorController
+    end
   end
 
   scope "/admin", GlimeshWeb do
@@ -262,7 +275,7 @@ defmodule GlimeshWeb.Router do
     live "/", HomepageLive, :index
     live "/streams", StreamsLive.Index, :index
     live "/streams/following", StreamsLive.Following, :index
-    live "/streams/:category", StreamsLive.List, :index
+    live "/streams/:category", StreamsLive.Index, :index
 
     live "/users", UserLive.Index, :index
 
@@ -278,7 +291,7 @@ defmodule GlimeshWeb.Router do
     get "/s/discord", ShortLinkController, :community_discord
 
     # This must be the last route
-    live "/:username", UserLive.Stream, :index
+    live "/:username", Channel.ChannelLive
     get "/:username/interactive", InteractiveController, :index
     live "/:username/support", UserLive.Stream, :support
     live "/:username/support/:tab", UserLive.Stream, :support

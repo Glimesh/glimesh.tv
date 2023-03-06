@@ -1,25 +1,18 @@
-defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotes do
-  use GlimeshWeb, :live_view
+defmodule GlimeshWeb.ChannelSettings.EmotesLive do
+  use GlimeshWeb, :settings_live_view
 
   alias Glimesh.Emotes
 
   @impl Phoenix.LiveView
-  def mount(_, session, socket) do
-    if session["locale"], do: Gettext.put_locale(session["locale"])
-
-    user = Glimesh.Accounts.get_user_by_session_token(session["user_token"])
-    channel = Glimesh.ChannelLookups.get_channel_for_user(user)
-
-    static_emotes = Emotes.list_static_emotes_for_channel(channel)
-    animated_emotes = Emotes.list_animated_emotes_for_channel(channel)
-    submitted_emotes = Emotes.list_submitted_emotes_for_channel(channel)
+  def mount(_params, _session, socket) do
+    static_emotes = Emotes.list_static_emotes_for_channel(socket.assigns.channel)
+    animated_emotes = Emotes.list_animated_emotes_for_channel(socket.assigns.channel)
+    submitted_emotes = Emotes.list_submitted_emotes_for_channel(socket.assigns.channel)
 
     if length(static_emotes ++ animated_emotes ++ submitted_emotes) > 0 do
       {:ok,
        socket
        |> put_page_title(gettext("Channel Emotes"))
-       |> assign(:user, user)
-       |> assign(:channel, channel)
        |> assign(:static_emotes, static_emotes)
        |> assign(:animated_emotes, animated_emotes)
        |> assign(:submitted_emotes, submitted_emotes)}
@@ -32,7 +25,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotes do
   def handle_event("delete_emote", %{"id" => id}, socket) do
     emote = Emotes.get_emote_by_id(id)
 
-    case Emotes.delete_emote(socket.assigns.user, emote) do
+    case Emotes.delete_emote(socket.assigns.current_user, emote) do
       {:ok, _emote} ->
         {:noreply,
          socket
@@ -49,10 +42,10 @@ defmodule GlimeshWeb.ChannelSettingsLive.ChannelEmotes do
     emote = Emotes.get_emote_by_id(params["emote_id"])
 
     if params["allow_global_usage"] == "true" do
-      Emotes.clear_global_emotes(socket.assigns.user, emote)
+      Emotes.clear_global_emotes(socket.assigns.current_user, emote)
     end
 
-    case Emotes.save_emote_options(socket.assigns.user, emote, params) do
+    case Emotes.save_emote_options(socket.assigns.current_user, emote, params) do
       {:ok, _emote} ->
         {:noreply,
          socket

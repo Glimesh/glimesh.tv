@@ -11,6 +11,9 @@
     "bs-custom-file-input": "^1.3.4",
     "choices.js": "^9.0.1",
     "janus-ftl-player": "^0.0.13-alpha",
-    "tippy.js": "^6.3.7"
+    "tippy.js": "^6.3.7",
+    "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/line-clamp": "^0.4.2",
+    "@tailwindcss/typography": "^0.5.8"
   }
 }

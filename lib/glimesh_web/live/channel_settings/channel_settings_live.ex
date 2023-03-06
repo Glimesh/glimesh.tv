@@ -1,45 +1,57 @@
-defmodule GlimeshWeb.UserSettings.Components.ChannelSettingsLive do
-  use GlimeshWeb, :live_view
+defmodule GlimeshWeb.ChannelSettings.ChannelSettingsLive do
+  use GlimeshWeb, :settings_live_view
 
   alias Glimesh.ChannelCategories
   alias Glimesh.Interactive
   alias Glimesh.Streams
 
   @impl true
-  def mount(_params, %{"channel" => channel} = session, socket) do
+  def mount(_params, session, socket) do
     if session["locale"], do: Gettext.put_locale(session["locale"])
 
-    {:ok,
-     socket
-     |> put_flash(:info, nil)
-     |> put_flash(:error, nil)
-     |> assign(:stream_key, Streams.get_stream_key(channel))
-     |> assign(:channel_hours, Streams.get_channel_hours(channel))
-     |> assign(:channel_changeset, session["channel_changeset"])
-     |> assign(:categories, session["categories"])
-     |> assign(:channel, channel)
-     |> assign(:category, channel.category)
-     |> assign(
-       :subcategory_label,
-       ChannelCategories.get_subcategory_label(channel.category)
-     )
-     |> assign(
-       :subcategory_placeholder,
-       ChannelCategories.get_subcategory_select_label_description(channel.category)
-     )
-     |> assign(
-       :subcategory_attribution,
-       Glimesh.ChannelCategories.get_subcategory_attribution(channel.category)
-     )
-     |> assign(
-       :existing_subcategory,
-       if(channel.subcategory, do: channel.subcategory.name, else: "")
-     )
-     |> assign(:existing_tags, Enum.map_join(channel.tags, ", ", fn tag -> tag.name end))
-     |> assign(:route, session["route"])
-     |> assign(:user, session["user"])
-     |> assign(:delete_route, session["delete_route"])
-     |> assign(:channel_delete_disabled, session["channel_delete_disabled"])}
+    streamer = Glimesh.Accounts.get_user_by_session_token(session["user_token"])
+
+    # TODO: We already have a channel, optimize these preloads
+
+    case Glimesh.ChannelLookups.get_channel_for_user(streamer, [
+           :user,
+           :category,
+           :subcategory,
+           :tags
+         ]) do
+      %Glimesh.Streams.Channel{} = channel ->
+        {:ok,
+         socket
+         |> assign(:stream_key, Streams.get_stream_key(channel))
+         |> assign(:channel_hours, Streams.get_channel_hours(channel))
+         |> assign(:channel_changeset, Streams.change_channel(channel, %{}))
+         |> assign(:categories, session["categories"])
+         |> assign(:channel, channel)
+         |> assign(:category, channel.category)
+         |> assign(
+           :subcategory_label,
+           ChannelCategories.get_subcategory_label(channel.category)
+         )
+         |> assign(
+           :subcategory_placeholder,
+           ChannelCategories.get_subcategory_select_label_description(channel.category)
+         )
+         |> assign(
+           :subcategory_attribution,
+           Glimesh.ChannelCategories.get_subcategory_attribution(channel.category)
+         )
+         |> assign(
+           :existing_subcategory,
+           if(channel.subcategory, do: channel.subcategory.name, else: "")
+         )
+         |> assign(:existing_tags, Enum.map_join(channel.tags, ", ", fn tag -> tag.name end))
+         |> assign(:user, session["user"])
+         |> assign(:delete_route, session["delete_route"])
+         |> assign(:channel_delete_disabled, session["channel_delete_disabled"])}
+
+      nil ->
+        {:ok, redirect(socket, to: "/")}
+    end
   end
 
   @impl true

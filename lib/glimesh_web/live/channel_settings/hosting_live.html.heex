@@ -67,7 +67,7 @@
             <div class="input-group">
               <%= live_component(GlimeshWeb.Components.ChannelLookupTypeahead,
                 id: "channel_lookup",
-                user: @user,
+                user: @current_user,
                 field: "add_channel",
                 value: @add_channel,
                 class: "form-control pl-0 channel-typeahead-input",

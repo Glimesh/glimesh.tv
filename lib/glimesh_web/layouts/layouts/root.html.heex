@@ -4,10 +4,8 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="csrf-token" content={Phoenix.Controller.get_csrf_token()} />
-    <.live_title>
-      <%= Map.get(assigns, :page_title, "Glimesh") %>
-    </.live_title>
+    <meta name="csrf-token" content={csrf_token_value()} />
+    <.live_title><%= Map.get(assigns, :page_title, "Glimesh") %></.live_title>
 
     <meta
       name="description"
@@ -18,6 +16,12 @@
           "Glimesh is a live streaming platform focused on discoverability & community. Our mission is to build a platform where everyone can have the chance to flourish."
         )
       }
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
+      rel="stylesheet"
     />
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
 
@@ -82,7 +86,7 @@
     </script>
   </head>
 
-  <body class="flex flex-col h-screen justify-between bg-slate-900 text-gray-100">
+  <body class="flex flex-col min-h-screen justify-between bg-slate-900 text-gray-100 bg-abstract bg-no-repeat bg-left-bottom bg-[length:33%] bg-fixed">
     <%= if Application.get_env(:glimesh, :show_staging_warning) do %>
       <div class="alert alert-danger mb-0 rounded-0" role="alert">
         <strong>Danger!</strong>
@@ -91,7 +95,7 @@
       </div>
     <% end %>
 
-    <div id="app">
+    <div id="app" class="h-full">
       <%= if Map.get(assigns, :render_nav, true) do %>
         <Navbar.navbar conn={@conn} current_user={@current_user} />
 
@@ -119,9 +123,9 @@
     </div>
 
     <%= if Map.get(assigns, :render_footer, true) do %>
-      <footer class="mt-4 bg-slate-800">
-        <section class="footer-main py-4">
-          <div class="container">
+      <footer class="mt-4 bg-slate-800/75">
+        <div class="container mx-auto">
+          <section class="footer-main py-4">
             <div class="flex justify-around">
               <div>
                 <h6><%= gettext("GLIMESH.TV") %></h6>
@@ -185,11 +189,9 @@
                 </ul>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section class="footer-social pt-2 pb-1">
-          <div class="container">
+          <section class="footer-social pt-2 pb-1">
             <div class="btn-group btn-block" role="group" aria-label="Glimesh Socials">
               <a
                 href="https://twitter.com/Glimesh"
@@ -248,18 +250,18 @@
                 <i class="fab fa-github"></i>
               </a>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section class="footer-end pt-5 pb-4">
-          <p class="text-center mb-0">
-            <%= gettext("Copyright © 2022 Glimesh, Inc.") %>
-            <%= gettext("All rights reserved.") %>
-          </p>
-          <p class="text-center">
-            <small>Build Version: <%= Glimesh.get_version() %></small>
-          </p>
-        </section>
+          <section class="footer-end pt-5 pb-4">
+            <p class="text-center mb-0">
+              <%= gettext("Copyright © 2022 Glimesh, Inc.") %>
+              <%= gettext("All rights reserved.") %>
+            </p>
+            <p class="text-center">
+              <small>Build Version: <%= Glimesh.get_version() %></small>
+            </p>
+          </section>
+        </div>
       </footer>
     <% end %>
   </body>

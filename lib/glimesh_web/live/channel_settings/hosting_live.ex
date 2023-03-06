@@ -1,5 +1,5 @@
-defmodule GlimeshWeb.ChannelSettingsLive.Hosting do
-  use GlimeshWeb, :live_view
+defmodule GlimeshWeb.ChannelSettings.HostingLive do
+  use GlimeshWeb, :settings_live_view
 
   alias Glimesh.ChannelHostsLookups
   alias Glimesh.ChannelLookups
@@ -7,20 +7,17 @@ defmodule GlimeshWeb.ChannelSettingsLive.Hosting do
   alias Glimesh.Streams.ChannelHosts
 
   @impl true
-  def mount(_, session, socket) do
-    if session["locale"], do: Gettext.put_locale(session["locale"])
-
-    user = Glimesh.Accounts.get_user_by_session_token(session["user_token"])
-    channel = ChannelLookups.get_channel_for_user(user)
-    allow_hosting_changeset = Channel.change_allow_hosting(channel)
-    hosted_channels = ChannelHostsLookups.get_channel_hosting_list(channel.id)
+  def mount(_params, _session, socket) do
+    allow_hosting_changeset = Channel.change_allow_hosting(socket.assigns.channel)
+    hosted_channels = ChannelHostsLookups.get_channel_hosting_list(socket.assigns.channel.id)
 
     {:ok,
      socket
      |> put_page_title(gettext("Hosting Settings"))
-     |> assign(:user, user)
-     |> assign(:channel, channel)
-     |> assign(:hosting_qualified, hosting_qualified?(user, channel))
+     |> assign(
+       :hosting_qualified,
+       hosting_qualified?(socket.assigns.current_user, socket.assigns.channel)
+     )
      |> assign(:allow_changeset, allow_hosting_changeset)
      |> assign(:matches, [])
      |> assign(:add_channel, "")
@@ -56,7 +53,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.Hosting do
 
   @impl true
   def handle_event("suggest", %{"add_channel" => add_channel}, socket) do
-    matches = search_for_channels(socket.assigns.user, add_channel)
+    matches = search_for_channels(socket.assigns.current_user, add_channel)
 
     {:noreply,
      assign(socket, matches: matches, add_channel: add_channel, add_channel_selected_value: "")}
@@ -71,14 +68,14 @@ defmodule GlimeshWeb.ChannelSettingsLive.Hosting do
     # if the user copy/pastes or completely enters a channel name without using the picker, try to handle that scenario
     selected_value =
       if selected == "" and channel_name != "" do
-        matches = search_for_channels(socket.assigns.user, channel_name)
+        matches = search_for_channels(socket.assigns.current_user, channel_name)
         if length(matches) == 1, do: Enum.at(matches, 0).id, else: ""
       else
         selected
       end
 
     case ChannelHosts.add_new_host(
-           socket.assigns.user,
+           socket.assigns.current_user,
            socket.assigns.channel,
            %ChannelHosts{hosting_channel_id: socket.assigns.channel.id},
            %{target_channel_id: selected_value}
@@ -118,7 +115,7 @@ defmodule GlimeshWeb.ChannelSettingsLive.Hosting do
     channel_host = ChannelHosts.get_by_id(target_id)
 
     case ChannelHosts.delete_hosting_target(
-           socket.assigns.user,
+           socket.assigns.current_user,
            socket.assigns.channel,
            channel_host
          ) do
