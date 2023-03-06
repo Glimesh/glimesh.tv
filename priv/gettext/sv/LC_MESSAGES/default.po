@@ -628,7 +628,6 @@ msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
 msgstr[0] "Måste vara %{count} -tecken"
 msgstr[1] "Måste vara %{count} -tecken\n"
-""
 
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
