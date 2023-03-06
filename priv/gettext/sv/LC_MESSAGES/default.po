@@ -73,7 +73,6 @@ msgstr "E-mailen är densamma"
 #: lib/glimesh_web/live/platform_subscription_live/index.html.heex:15
 msgid "Help us fund the platform & grow!"
 msgstr "Hjälp oss att finansiera plattformen och växa!\n"
-""
 
 #, elixir-format
 #: lib/glimesh/accounts/user.ex:369
@@ -144,7 +143,6 @@ msgstr "Snigel"
 #: lib/glimesh_web/live/platform_subscription_live/index.html.heex:41
 msgid "Support Glimesh's future with your wallet! Get special perks to show off."
 msgstr "Stöd Glimeshs framtid med din plånbok! Få specialförmåner att visa upp.\n"
-""
 
 #, elixir-format
 #: lib/glimesh_web/live/platform_subscription_live/index.html.heex:70
@@ -366,7 +364,6 @@ msgstr "Betalningsinformation"
 #: lib/glimesh_web/templates/user_payments/index.html.eex:120
 msgid "Payment History"
 msgstr "Betalhistorik\n"
-""
 
 #, elixir-format
 #: lib/glimesh_web/live/subscription_component.ex:19
@@ -426,13 +423,11 @@ msgstr "Inställning av betalningsmetod"
 #: lib/glimesh_web/live/user_live/profile.html.heex:82
 msgid "Share my profile on Twitter"
 msgstr "Dela min profil på Twitter\n"
-""
 
 #, elixir-format
 #: lib/glimesh_web/live/user_live/profile.html.heex:91
 msgid "Share on Twitter"
 msgstr "Dela på Twitter\n"
-""
 
 #, elixir-format
 #: lib/glimesh_web/templates/layout/_navbar.html.heex:282

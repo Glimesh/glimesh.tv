@@ -76,7 +76,6 @@ msgstr[1] "Debería tener al menos %{count} elementos"
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
 msgstr[0] "Debería tener como máximo %{count} caracter\n"
-""
 msgstr[1] "Debería tener como máximo %{count} caracteres"
 
 #: 

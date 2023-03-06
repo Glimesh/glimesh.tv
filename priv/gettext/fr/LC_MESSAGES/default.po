@@ -1165,7 +1165,6 @@ msgstr "Sauvegarder"
 #: lib/glimesh_web/templates/user_payments/index.html.eex:121
 msgid "See something you don't expect? Need a refund? Please email us at %{email} and we'll be happy to help!"
 msgstr "Voyez quelque chose que vous n’attendez pas? Besoin d’un remboursement? S’il vous plaît envoyez-nous un courriel à %{email} et nous serons heureux de vous aider!\n"
-""
 
 #: lib/glimesh_web/templates/channel_moderator/form.html.eex:20
 #: lib/glimesh_web/templates/channel_moderator/index.html.eex:19
@@ -1888,7 +1887,6 @@ msgstr "Glimesh est la plateforme de streaming nouvelle génération construite 
 #: lib/glimesh_web/templates/about/dmca.html.eex:192
 msgid "Glimesh will be clear as to how the rules work. There will be no guessing as to how to counter notice or how the process works. Also Glimesh will require that takedown notices include very specifically where the copyright content is so that you are not guessing what you may have a strike for."
 msgstr "Glimesh sera claire quant à la façon dont les règles fonctionnent. Il n’y aura aucune conjecture quant à la façon de contester ou sur comment le processus fonctionne. De plus, Glimesh exigera que les avis de retrait précisent très clairement où se trouve le contenu protégé par le droit d’auteur afin que vous n'ayez pas à deviner pourquoi votre contenu a été retiré.\n"
-""
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:189
 msgid "Glimesh will be fully transparent about DMCA Takedown requests. We will be posting DMCA requests on our Github with private information removed. This way the community as a whole can see who is issuing takedown notices and can help aide those who have the requests if the request is false."
@@ -1994,7 +1992,6 @@ msgstr "Notre mission chez Glimesh est de créer une plateforme durable, où cha
 #: lib/glimesh_web/templates/about/streaming.html.eex:63
 msgid "Our platform is designed to be accessible, user friendly, and blazing fast to make your streaming or viewing experience amazing! We are constantly building, tweaking, and iterating on our platform to continue to strive for perfection."
 msgstr "Notre plateforme est conçue pour être accessible, conviviale et rapide pour rendre votre expérience de streaming ou de visionnement incroyable ! Nous construisons, peaufinons et itérons constamment sur notre plateforme pour continuer à viser la perfection.\n"
-""
 
 #: lib/glimesh_web/templates/about/streaming.html.eex:53
 msgid "Our streaming technology is built on open standards and gives your streams unimaginable levels of interactivity. We're continually pushing the boundaries of live video, and of course, it's open source. Our Mixer-derived FTL protocol has sub-second latency, and under good network conditions, you can expect as low as 250ms of delay."
@@ -2015,7 +2012,6 @@ msgstr "Partie 3a. Glimesh vous contactera en vous indiquant pourquoi votre cont
 #: lib/glimesh_web/templates/about/dmca.html.eex:129
 msgid "Part 3b. We will then post the takedown request on our Github page with private information removed. These requests will be public and anyone can comment on them. "
 msgstr "Partie 3b. Nous afficherons ensuite la demande de retrait sur notre page GitHub, les données personnelles ayant été supprimées. Ces demandes seront publiques et n’importe qui pourra les commenter.\n"
-""
 
 #: lib/glimesh_web/templates/about/dmca.html.eex:132
 msgid "Part 4. You at this time have options. You may counter notice if you feel that you have a viable reason that you may use that content (i.e. you have a license, you feel its fair use). You may also reach out to the copyright owner and see about getting the proper licensing to use the content. You may also comply with the takedown and have the content removed. "

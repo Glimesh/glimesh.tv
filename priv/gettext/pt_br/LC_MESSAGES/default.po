@@ -3278,7 +3278,6 @@ msgstr "Suas informações de pagamento"
 msgid "Your Streamloots URL. Format: https://www.streamloots.com/YOUR_USERNAME"
 msgstr "\n"
 "Seu URL do Streamloots. Formato: https://www.streamloots.com/SEU_NOME_DE_USUARIO\n"
-""
 
 #: lib/glimesh_web/live/support_modal/sub_form.ex:38
 msgid "Your subscription is currently set to automatically cancel on %{date}."
