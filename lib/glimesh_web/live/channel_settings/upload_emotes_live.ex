@@ -1,5 +1,5 @@
 defmodule GlimeshWeb.ChannelSettings.UploadEmotesLive do
-  use GlimeshWeb, :settings_live_view
+  use GlimeshWeb, :live_view
 
   alias Glimesh.Emotes
   alias Glimesh.Streams

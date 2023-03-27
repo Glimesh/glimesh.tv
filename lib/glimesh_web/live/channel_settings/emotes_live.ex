@@ -1,5 +1,5 @@
 defmodule GlimeshWeb.ChannelSettings.EmotesLive do
-  use GlimeshWeb, :settings_live_view
+  use GlimeshWeb, :live_view
 
   alias Glimesh.Emotes
 
@@ -12,7 +12,7 @@ defmodule GlimeshWeb.ChannelSettings.EmotesLive do
     if length(static_emotes ++ animated_emotes ++ submitted_emotes) > 0 do
       {:ok,
        socket
-       |> put_page_title(gettext("Channel Emotes"))
+       |> put_page_title(gettext("Emotes"))
        |> assign(:static_emotes, static_emotes)
        |> assign(:animated_emotes, animated_emotes)
        |> assign(:submitted_emotes, submitted_emotes)}

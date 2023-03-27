@@ -1,3 +1,367 @@
+<Settings.page>
+  <:title>Hosting</:title>
+
+  <:nav>
+    <Settings.tab_nav>
+      <:item to={~p"/users/settings/hosting"} active={@live_action == :settings}>
+        <%= gettext("Hosting Settings") %>
+      </:item>
+      <:item to={~p"/users/settings/hosting/channels"} active={@live_action == :channels}>
+        <%= gettext("Hosted Channels") %>
+      </:item>
+    </Settings.tab_nav>
+  </:nav>
+
+  <%= if @live_action == :settings do %>
+    <Settings.page_form for={@form} phx-change="validate" phx-submit="save">
+      <Settings.toggle_block field={@form[:allow_hosting]} label={gettext("Hosting")}>
+        <p>
+          <%= gettext(
+            "Other channels who want to host you must meet the following critera in order to host you:"
+          ) %>
+        </p>
+        <ul class="list-disc pl-4">
+          <li><%= gettext("They must have a verified email address.") %></li>
+          <li><%= gettext("Their account must be more than 5 days old.") %></li>
+          <li><%= gettext("They must NOT be banned from your channel.") %></li>
+          <li>
+            <%= gettext("They must have streamed for at least 10 hours total on Glimesh.") %>
+          </li>
+        </ul>
+      </Settings.toggle_block>
+      <:actions>
+        <.button type="submit">Save</.button>
+      </:actions>
+    </Settings.page_form>
+  <% end %>
+  <%= if @live_action == :channels do %>
+    <.card_form for={@form} phx-change="validate" phx-submit="save">
+      <:title><%= gettext("Hosted Channels") %></:title>
+
+      <%!-- <:header_actions>
+      <button
+        type="button"
+        class="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 py-2 px-3 text-base font-normal text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      >
+        <Heroicons.plus class="h-5 w-5 stroke-current" /> Add Channel
+      </button>
+    </:header_actions> --%>
+
+      <%= if length(@hosted_channels) > 0 do %>
+        <.table id="hosting-history" rows={@hosted_channels}>
+          <:col :let={host} label={gettext("Channel")}>
+            <img
+              class="img-avatar"
+              src={Glimesh.Avatar.url({host.target.user.avatar, host.target.user}, :original)}
+              width="50"
+              height="50"
+            /> &nbsp;<%= host.target.user.displayname %>
+          </:col>
+          <:col :let={host} label={gettext("Status")}>
+            <%= case host.status do %>
+              <% "ready" -> %>
+                <i class="fas fa-check text-success" title={gettext("Ready to host")}></i>
+              <% "error" -> %>
+                <i class="fas fa-times-circle text-danger" title={gettext("Unable to host")}></i>
+              <% "hosting" -> %>
+                <i class="fas fa-tv text-info" title={gettext("Currently hosting")}></i>
+              <% _ -> %>
+                gettext(host.status)
+            <% end %>
+          </:col>
+          <:col :let={host} label={gettext("Last Hosted")}>
+            <%= if host.last_hosted_date do %>
+              <local-time
+                id="last-hosted-date"
+                phx-update="ignore"
+                datetime={"#{host.last_hosted_date}Z"}
+              >
+                <%= host.last_hosted_date %>
+              </local-time>
+            <% else %>
+              -
+            <% end %>
+          </:col>
+          <:action :let={host}>
+            <button
+              type="button"
+              id={"remove-channel-button-#{host.target_channel_id}"}
+              class="close close-delete"
+              phx-click="remove_host"
+              phx-value-id={host.id}
+            >
+              &times;
+            </button>
+          </:action>
+        </.table>
+      <% else %>
+        <div class="text-center">
+          <svg
+            class="mx-auto h-12 w-12 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              vector-effect="non-scaling-stroke"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+            />
+          </svg>
+          <h3 class="mt-2 text-sm font-semibold">No Hosted Channels</h3>
+          <p class="mt-1 text-sm text-gray-300">Get started by adding one.</p>
+          <div class="mt-6">
+            <button
+              type="button"
+              class="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 py-2 px-3 text-base font-normal text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              <Heroicons.plus class="h-5 w-5 stroke-current" /> Add Channel
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </.card_form>
+  <% end %>
+</Settings.page>
+
+<%!-- 
+<.card_form for={@form} phx-change="validate" phx-submit="save">
+  <:title><%= gettext("Hosted Channels") %></:title>
+  
+  <:header_actions>
+     <button
+        type="button"
+        class="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 py-2 px-3 text-base font-normal text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      >
+        <Heroicons.plus class="h-5 w-5 stroke-current" /> Add Channel
+      </button> 
+  </:header_actions> 
+
+  <%= if length(@hosted_channels) > 0 do %>
+    <.table id="hosting-history" rows={@hosted_channels}>
+      <:col :let={host} label={gettext("Channel")}>
+        <img
+          class="img-avatar"
+          src={Glimesh.Avatar.url({host.target.user.avatar, host.target.user}, :original)}
+          width="50"
+          height="50"
+        /> &nbsp;<%= host.target.user.displayname %>
+      </:col>
+      <:col :let={host} label={gettext("Status")}>
+        <%= case host.status do %>
+          <% "ready" -> %>
+            <i class="fas fa-check text-success" title={gettext("Ready to host")}></i>
+          <% "error" -> %>
+            <i class="fas fa-times-circle text-danger" title={gettext("Unable to host")}></i>
+          <% "hosting" -> %>
+            <i class="fas fa-tv text-info" title={gettext("Currently hosting")}></i>
+          <% _ -> %>
+            gettext(host.status)
+        <% end %>
+      </:col>
+      <:col :let={host} label={gettext("Last Hosted")}>
+        <%= if host.last_hosted_date do %>
+          <local-time
+            id="last-hosted-date"
+            phx-update="ignore"
+            datetime={"#{host.last_hosted_date}Z"}
+          >
+            <%= host.last_hosted_date %>
+          </local-time>
+        <% else %>
+          -
+        <% end %>
+      </:col>
+      <:action :let={host}>
+        <button
+          type="button"
+          id={"remove-channel-button-#{host.target_channel_id}"}
+          class="close close-delete"
+          phx-click="remove_host"
+          phx-value-id={host.id}
+        >
+          &times;
+        </button>
+      </:action>
+    </.table>
+  <% else %>
+    <div class="text-center">
+      <svg
+        class="mx-auto h-12 w-12 text-gray-400"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          vector-effect="non-scaling-stroke"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+        />
+      </svg>
+      <h3 class="mt-2 text-sm font-semibold">No Hosted Channels</h3>
+      <p class="mt-1 text-sm text-gray-300">Get started by adding one.</p>
+      <div class="mt-6">
+        <button
+          type="button"
+          class="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 py-2 px-3 text-base font-normal text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          <Heroicons.plus class="h-5 w-5 stroke-current" /> Add Channel
+        </button>
+      </div>
+    </div>
+  <% end %>
+</.card_form>
+
+<.modal id="add-channel-modal">
+  Are you sure?
+  <:confirm>OK</:confirm>
+  <:cancel>Cancel</:cancel>
+</.modal> --%>
+
+<%!-- 
+<.card_form for={@form} phx-change="validate" phx-submit="save">
+  <:title><%= gettext("Hosting Configuration") %></:title>
+
+  <div class="col-span-4 sm:col-span-2">
+    <p>
+      <%= gettext(
+        "Hosting channels must still meet the following qualifications in order to host your channel:"
+      ) %>
+    </p>
+    <ul>
+      <li><%= gettext("They must have a verified email address.") %></li>
+      <li><%= gettext("Their account must be more than 5 days old.") %></li>
+      <li><%= gettext("They must NOT be banned from your channel.") %></li>
+      <li><%= gettext("They must have streamed for at least 10 hours total on Glimesh.") %></li>
+    </ul>
+  </div>
+  <div class="col-span-4 sm:col-span-2">
+    <.input
+      type="checkbox"
+      field={@form[:allow_hosting]}
+      label="Other streamers may host my channel"
+    />
+
+    <ul role="list" class="mt-2 divide-y divide-gray-200">
+      <li class="flex items-center justify-between py-4">
+        <div class="flex flex-col">
+          <p class="text-sm font-medium leading-6 text-gray-900" id="privacy-option-1-label">
+            Available to hire
+          </p>
+          <p class="text-sm text-gray-500" id="privacy-option-1-description">
+            Nulla amet tempus sit accumsan. Aliquet turpis sed sit lacinia.
+          </p>
+        </div>
+        <!-- Enabled: "bg-teal-500", Not Enabled: "bg-gray-200" -->
+        <button
+          type="button"
+          class="bg-gray-200 relative ml-4 inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+          role="switch"
+          aria-checked="true"
+          aria-labelledby="privacy-option-1-label"
+          aria-describedby="privacy-option-1-description"
+        >
+          <!-- Enabled: "translate-x-5", Not Enabled: "translate-x-0" -->
+          <span
+            aria-hidden="true"
+            class="translate-x-0 inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+          >
+          </span>
+        </button>
+      </li>
+      <li class="flex items-center justify-between py-4">
+        <div class="flex flex-col">
+          <p class="text-sm font-medium leading-6 text-gray-900" id="privacy-option-2-label">
+            Make account private
+          </p>
+          <p class="text-sm text-gray-500" id="privacy-option-2-description">
+            Pharetra morbi dui mi mattis tellus sollicitudin cursus pharetra.
+          </p>
+        </div>
+        <!-- Enabled: "bg-teal-500", Not Enabled: "bg-gray-200" -->
+        <button
+          type="button"
+          class="bg-gray-200 relative ml-4 inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+          role="switch"
+          aria-checked="false"
+          aria-labelledby="privacy-option-2-label"
+          aria-describedby="privacy-option-2-description"
+        >
+          <!-- Enabled: "translate-x-5", Not Enabled: "translate-x-0" -->
+          <span
+            aria-hidden="true"
+            class="translate-x-0 inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+          >
+          </span>
+        </button>
+      </li>
+      <li class="flex items-center justify-between py-4">
+        <div class="flex flex-col">
+          <p class="text-sm font-medium leading-6 text-gray-900" id="privacy-option-3-label">
+            Allow commenting
+          </p>
+          <p class="text-sm text-gray-500" id="privacy-option-3-description">
+            Integer amet, nunc hendrerit adipiscing nam. Elementum ame
+          </p>
+        </div>
+        <!-- Enabled: "bg-teal-500", Not Enabled: "bg-gray-200" -->
+        <button
+          type="button"
+          class="bg-gray-200 relative ml-4 inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+          role="switch"
+          aria-checked="true"
+          aria-labelledby="privacy-option-3-label"
+          aria-describedby="privacy-option-3-description"
+        >
+          <!-- Enabled: "translate-x-5", Not Enabled: "translate-x-0" -->
+          <span
+            aria-hidden="true"
+            class="translate-x-0 inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+          >
+          </span>
+        </button>
+      </li>
+      <li class="flex items-center justify-between py-4">
+        <div class="flex flex-col">
+          <p class="text-sm font-medium leading-6 text-gray-900" id="privacy-option-4-label">
+            Allow mentions
+          </p>
+          <p class="text-sm text-gray-500" id="privacy-option-4-description">
+            Adipiscing est venenatis enim molestie commodo eu gravid
+          </p>
+        </div>
+        <!-- Enabled: "bg-teal-500", Not Enabled: "bg-gray-200" -->
+        <button
+          type="button"
+          class="bg-gray-200 relative ml-4 inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+          role="switch"
+          aria-checked="true"
+          aria-labelledby="privacy-option-4-label"
+          aria-describedby="privacy-option-4-description"
+        >
+          <!-- Enabled: "translate-x-5", Not Enabled: "translate-x-0" -->
+          <span
+            aria-hidden="true"
+            class="translate-x-0 inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+          >
+          </span>
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <:actions>
+    <.button>Save</.button>
+  </:actions>
+</.card_form> --%>
+
+<%!-- 
 <%= if live_flash(@flash, :hosting_info) do %>
   <p
     class="alert alert-success"
@@ -164,4 +528,4 @@
       </div>
     <% end %>
   </div>
-</div>
+</div> --%>

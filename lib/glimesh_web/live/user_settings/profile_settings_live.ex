@@ -1,25 +1,33 @@
 defmodule GlimeshWeb.UserSettings.ProfileSettingsLive do
   use GlimeshWeb, :live_view
+
   alias Glimesh.Accounts.Profile
   alias Phoenix.LiveView.JS
 
   @impl true
   def mount(_params, session, socket) do
-    if session["locale"], do: Gettext.put_locale(session["locale"])
-
     pronouns_list = Profile.list_pronouns()
 
     {:ok,
      socket
-     |> put_flash(:info, nil)
-     |> assign(:profile_changeset, session["profile_changeset"])
-     |> assign(:twitter_account, Glimesh.Socials.get_social(session["user"], "twitter"))
-     |> assign(:user, session["user"])
-     |> assign(:route, session["route"])
+     |> put_page_title(gettext("Profile"))
+     |> assign(
+       :form,
+       to_form(Glimesh.Accounts.change_user_profile(socket.assigns.current_user, %{}))
+     )
+     |> assign(
+       :twitter_account,
+       Glimesh.Socials.get_social(socket.assigns.current_user, "twitter")
+     )
      |> assign(:pronouns, pronouns_list)
-     |> assign(:raw_markdown, session["user"].profile_content_md)
-     |> assign(:formatted_markdown, session["user"].profile_content_html)
+     |> assign(:raw_markdown, socket.assigns.current_user.profile_content_md)
+     |> assign(:formatted_markdown, socket.assigns.current_user.profile_content_html)
      |> assign(:markdown_state, "edit")}
+  end
+
+  @impl true
+  def handle_params(_, _, socket) do
+    {:noreply, socket}
   end
 
   @impl true

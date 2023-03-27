@@ -1,5 +1,5 @@
 defmodule GlimeshWeb.ChannelSettings.RaidingLive do
-  use GlimeshWeb, :settings_live_view
+  use GlimeshWeb, :live_view
 
   alias Glimesh.ChannelLookups
   alias Glimesh.Streams.Channel
@@ -20,7 +20,7 @@ defmodule GlimeshWeb.ChannelSettings.RaidingLive do
 
     {:ok,
      socket
-     |> put_page_title(gettext("Raiding Settings"))
+     |> put_page_title(gettext("Raiding"))
      |> assign(:channel, channel)
      |> assign(:allow_changeset, allow_raiding_changeset)
      |> assign(:only_allow_followed_changeset, only_allow_followed_changeset)

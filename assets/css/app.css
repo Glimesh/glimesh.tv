@@ -2,3 +2,10 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+@import "@yaireo/tagify/dist/tagify.css";
+
+input:checked ~ .dot {
+    transform: translateX(100%);
+    background-color: #63efd6;
+}

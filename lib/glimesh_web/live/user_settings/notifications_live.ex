@@ -6,10 +6,7 @@ defmodule GlimeshWeb.UserSettings.NotificationsLive do
 
   @impl true
   def mount(_params, session, socket) do
-    if session["locale"], do: Gettext.put_locale(session["locale"])
-
-    user = Accounts.get_user_by_session_token(session["user_token"])
-
+    user = socket.assigns.current_user
     changeset = Accounts.change_user_notifications(user)
 
     channel_live_subscriptions = ChannelLookups.list_followed_live_notification_channels(user)
@@ -21,8 +18,14 @@ defmodule GlimeshWeb.UserSettings.NotificationsLive do
      |> put_page_title("Notifications")
      |> assign(:email_log, email_log)
      |> assign(:changeset, changeset)
+     |> assign(:form, to_form(changeset))
      |> assign(:channel_live_subscriptions, channel_live_subscriptions)
      |> assign(:current_user, user)}
+  end
+
+  @impl true
+  def handle_params(_, _, socket) do
+    {:noreply, socket}
   end
 
   @impl true
@@ -53,17 +56,17 @@ defmodule GlimeshWeb.UserSettings.NotificationsLive do
   end
 
   @impl true
-  def handle_event("save", %{"user" => user_params}, socket) do
+  def handle_event("save_notifications", %{"user" => user_params}, socket) do
     case Glimesh.Accounts.update_user_notifications(socket.assigns.current_user, user_params) do
       {:ok, user} ->
         {:noreply,
          socket
-         |> assign(:changeset, Accounts.change_user_notifications(user))
+         |> assign(:form, to_form(Accounts.change_user_notifications(user)))
          |> assign(:current_user, user)
          |> put_flash(:info, gettext("Saved notification preferences."))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, :changeset, changeset)}
+        {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end
 end

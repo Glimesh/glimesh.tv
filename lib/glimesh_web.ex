@@ -70,20 +70,7 @@ defmodule GlimeshWeb do
         layout: {GlimeshWeb.Layouts, :app}
 
       alias GlimeshWeb.Components.Navbar
-
-      import Glimesh.Formatters
-
-      unquote(html_helpers())
-    end
-  end
-
-  def settings_live_view do
-    quote do
-      use Phoenix.LiveView,
-        layout: {GlimeshWeb.Layouts, :user_sidebar},
-        container: {:div, class: "h-full"}
-
-      alias GlimeshWeb.Components.Navbar
+      alias GlimeshWeb.Components.Settings
 
       import Glimesh.Formatters
 
@@ -169,6 +156,7 @@ defmodule GlimeshWeb do
       import Phoenix.LiveView.Helpers
       import GlimeshWeb.LiveHelpers
       import GlimeshWeb.CoreComponents
+      alias GlimeshWeb.Components.Title
 
       alias GlimeshWeb.Components.Navbar
       alias GlimeshWeb.Components.Icons

@@ -1,3 +1,49 @@
+<Settings.page page={~p"/users/settings/profile"}>
+  <:title><%= gettext("Profile") %></:title>
+
+  <:nav>
+    <Settings.tab_nav>
+      <:item to={~p"/users/settings/profile"} active={@live_action == :profile}>
+        <%= gettext("Your Information") %>
+      </:item>
+      <:item to={~p"/users/settings/profile/socials"} active={@live_action == :socials}>
+        <%= gettext("Socials") %>
+      </:item>
+    </Settings.tab_nav>
+  </:nav>
+
+  <%= if @live_action == :profile do %>
+    <.card_form for={@form} phx-change="validate" phx-submit="save">
+      <:title><%= gettext("Your Information") %></:title>
+      <:subtitle><%= gettext("Basic user account information") %></:subtitle>
+      <div class="col-span-4 sm:col-span-2">
+        <.input field={@form[:displayname]} label="Display Name" />
+      </div>
+      <.input type="select" field={@form[:pronoun]} options={@pronouns} label="Pronoun" />
+      <.input type="checkbox" field={@form[:show_pronoun_stream]} label="Show Pronoun Stream" />
+      <.input type="checkbox" field={@form[:show_pronoun_profile]} label="Show Pronoun Profile" />
+      <:actions>
+        <.button>Save</.button>
+      </:actions>
+    </.card_form>
+  <% end %>
+  <%= if @live_action == :socials do %>
+    <.card_form for={@form} phx-change="validate" phx-submit="save">
+      <:title><%= gettext("Socials") %></:title>
+      <:subtitle><%= gettext("Links to your other social media accounts.") %></:subtitle>
+      <.input field={@form[:social_twitter]} label="Twitter" />
+      <.input field={@form[:social_youtube]} label="YouTube" />
+      <.input field={@form[:social_instagram]} label="Instagram" />
+      <.input field={@form[:social_discord]} label="Discord" />
+      <.input field={@form[:social_guilded]} label="Guilded" />
+      <:actions>
+        <.button>Save</.button>
+      </:actions>
+    </.card_form>
+  <% end %>
+</Settings.page>
+
+<%!-- 
 <.form :let={f} for={@profile_changeset} action={@route} multipart class="form">
   <div class="card">
     <div class="card-body">
@@ -6,7 +52,7 @@
           <div class="text-center">
             <h5 class="mt-4"><%= gettext("Settings") %></h5>
             <img
-              src={Glimesh.Avatar.url({@user.avatar, @user}, :original)}
+              src={Glimesh.Avatar.url({@current_user.avatar, @current_user}, :original)}
               alt="Your Profile Picture"
               class="img-fluid mb-4 img-avatar"
             />
@@ -31,14 +77,6 @@
           </div>
         </div>
         <div class="col-md-8">
-          <%= if @profile_changeset.action do %>
-            <div class="alert alert-danger">
-              <p style="margin-bottom: 0px;">
-                <%= gettext("Oops, something went wrong! Please check the errors below.") %>
-              </p>
-            </div>
-          <% end %>
-
           <div class="row">
             <div class="col-sm-6">
               <h5 class=""><%= gettext("Settings") %></h5>
@@ -328,4 +366,4 @@
       </div>
     </div>
   </div>
-</.form>
+</.form> --%>

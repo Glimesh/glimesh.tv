@@ -21,7 +21,10 @@ module.exports = {
                 'content': 'calc(100vh - 64px)',
                 // navbar - stream title - user info
                 'video': 'calc(100vh - 64px - 68px - 68px)',
-            }
+            },
+            colors: {
+                'seafoam': '#63efd6'
+            },
         },
         fontFamily: {
             // sans: ['Roboto', 'sans-serif']

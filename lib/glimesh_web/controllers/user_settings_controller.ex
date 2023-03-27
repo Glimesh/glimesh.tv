@@ -31,7 +31,7 @@ defmodule GlimeshWeb.UserSettingsController do
       {:ok, _} ->
         conn
         |> put_flash(:info, gettext("Preferences updated successfully."))
-        |> put_session(:user_return_to, ~p"/users/settings/preference")
+        |> put_session(:user_return_to, ~p"/users/settings/preferences")
         |> UserAuth.log_in_user(user)
 
       {:error, changeset} ->

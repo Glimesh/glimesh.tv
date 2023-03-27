@@ -126,11 +126,23 @@ defmodule GlimeshWeb.Router do
     scope "/", GlimeshWeb do
       pipe_through [:browser, :require_authenticated_user]
 
+      live "/users/settings/profile", UserSettings.ProfileSettingsLive, :profile
+      live "/users/settings/profile/socials", UserSettings.ProfileSettingsLive, :socials
+      live "/users/payments", UserSettings.PaymentsLive
+      live "/users/settings/preferences", UserSettings.PreferencesLive
+      live "/users/settings/notifications", UserSettings.NotificationsLive, :settings
+      live "/users/settings/notifications/channels", UserSettings.NotificationsLive, :channels
+      live "/users/settings/notifications/history", UserSettings.NotificationsLive, :history
+      live "/users/settings/security", UserSettings.SecurityLive
+      live "/users/settings/authorizations", UserSettings.AuthorizationsLive
+
+      live "/users/settings/applications", DeveloperSettings.ApplicationsLive
+
       get "/users/social/twitter", UserSocialController, :twitter
       get "/users/social/twitter/connect", UserSocialController, :twitter_connect
       delete "/users/social/disconnect/:platform", UserSocialController, :disconnect
 
-      get "/users/payments", UserPaymentsController, :index
+      # get "/users/payments", UserPaymentsController, :index
       post "/users/payments/setup", UserPaymentsController, :setup
       get "/users/payments/taxes", UserPaymentsController, :taxes
       get "/users/payments/taxes_pending", UserPaymentsController, :taxes_pending
@@ -140,7 +152,7 @@ defmodule GlimeshWeb.Router do
           UserPaymentsController,
           :delete_default_payment
 
-      get "/users/settings/profile", UserSettingsController, :profile
+      # get "/users/settings/profile", UserSettingsController, :profile
 
       put "/users/settings/create_channel", UserSettingsController, :create_channel
       put "/users/settings/delete_channel", UserSettingsController, :delete_channel
@@ -148,9 +160,9 @@ defmodule GlimeshWeb.Router do
       put "/users/settings/preference", UserSettingsController, :update_preference
       put "/users/settings/update_profile", UserSettingsController, :update_profile
       put "/users/settings/update_channel", UserSettingsController, :update_channel
-      get "/users/settings/notifications", UserSettingsController, :notifications
+      # get "/users/settings/notifications", UserSettingsController, :notifications
 
-      get "/users/settings/security", UserSecurityController, :index
+      # get "/users/settings/security", UserSecurityController, :index
       put "/users/settings/update_password", UserSecurityController, :update_password
       put "/users/settings/update_email", UserSecurityController, :update_email
       get "/users/settings/confirm_email/:token", UserSecurityController, :confirm_email
@@ -172,23 +184,31 @@ defmodule GlimeshWeb.Router do
     scope "/", GlimeshWeb do
       pipe_through [:browser, :require_authenticated_user, :require_user_has_channel]
 
-      live "/users/settings/stream", ChannelSettings.ChannelSettingsLive
+      live "/users/settings/stream", ChannelSettings.ChannelSettingsLive, :stream
+
+      live "/users/settings/stream/customization",
+           ChannelSettings.ChannelSettingsLive,
+           :customization
+
+      live "/users/settings/stream/chat", ChannelSettings.ChannelSettingsLive, :chat
       live "/users/settings/channel_statistics", ChannelSettings.ChannelStatisticsLive
       live "/users/settings/addons", ChannelSettings.AddonsLive
       live "/users/settings/emotes", ChannelSettings.EmotesLive
       live "/users/settings/upload_emotes", ChannelSettings.UploadEmotesLive
-      live "/users/settings/hosting", ChannelSettings.HostingLive
+      live "/users/settings/hosting", ChannelSettings.HostingLive, :settings
+      live "/users/settings/hosting/channels", ChannelSettings.HostingLive, :channels
       live "/users/settings/raiding", ChannelSettings.RaidingLive
+      live "/users/settings/channel/mods", ChannelSettings.ModsLive
 
-      post "/users/settings/channel/mods/ban_user",
-           ChannelModeratorController,
-           :ban_user
+      # post "/users/settings/channel/mods/ban_user",
+      #      ChannelModeratorController,
+      #      :ban_user
 
-      delete "/users/settings/channel/mods/unban_user/:username",
-             ChannelModeratorController,
-             :unban_user
+      # delete "/users/settings/channel/mods/unban_user/:username",
+      #        ChannelModeratorController,
+      #        :unban_user
 
-      resources "/users/settings/channel/mods", ChannelModeratorController
+      # resources "/users/settings/channel/mods", ChannelModeratorController
     end
   end
 
@@ -254,7 +274,7 @@ defmodule GlimeshWeb.Router do
     get "/about/alpha", AboutController, :alpha
     get "/about/faq", AboutController, :faq
     get "/about/privacy", AboutController, :privacy
-    get "/about/terms", AboutController, :terms
+    live "/about/terms", About.TermsLive
     get "/about/conduct", AboutController, :conduct
     get "/about/credits", AboutController, :credits
     get "/about/cookies", AboutController, :cookies

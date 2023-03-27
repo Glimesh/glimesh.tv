@@ -1,15 +1,4 @@
-<div class="mx-auto max-w-screen-xl px-4 pb-6 sm:px-6 lg:px-8 lg:pb-16 mt-6">
-  <div class="overflow-hidden rounded-lg shadow">
-    <div class="divide-y divide-slate-700 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
-      <GlimeshWeb.Components.UserSettingsSidebar.sidebar active_path="" />
-
-      <%= @inner_content %>
-    </div>
-  </div>
-</div>
-
-<%!-- 
-<div class="flex h-full">
+<%!-- <div class="flex h-full">
   <div class="h-full">
     <GlimeshWeb.Components.UserSettingsSidebar.sidebar active_path="" />
   </div>
@@ -23,7 +12,7 @@
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi hic eveniet, omnis aspernatur atque assumenda est! Consequatur, eligendi quibusdam facilis esse nihil blanditiis magni distinctio alias eos saepe dolor minus.
             </p>
           </div>
-          <div class="mt-4 flex flex-shrink-0 md:mt-0 md:ml-4">
+           <div class="mt-4 flex flex-shrink-0 md:mt-0 md:ml-4">
             <button
               type="button"
               class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
@@ -36,7 +25,7 @@
             >
               Publish
             </button>
-          </div>
+          </div> 
         </div>
       </div>
     </div>
@@ -64,7 +53,7 @@
     </div>
   </div>
 </div> --%>
-<%!-- 
+
 <div class="container mt-4 mx-auto">
   <div class="bg-slate-700 md:flex md:items-center md:justify-between rounded-t-lg p-4">
     <div class="min-w-0 flex-1">
@@ -167,9 +156,85 @@
       </p>
     <% end %>
 
-    <%= @inner_content %>
+    <div class="grid grid-cols-3 gap-4 my-16 space-y-6">
+      <div class="col-span-2">
+        <Title.h3>Subscriptions</Title.h3>
+        <p>
+          <%= gettext(
+            "Subscriptions are recurring contributions to you from your viewers to help support you and your channel. You can toggle them on or off at any time here, however if you have any active subscriptions they will continue regardless of this option."
+          ) %>
+        </p>
+      </div>
+      <div class="border-l border-slate-400 pl-4">
+        <ul role="list" class="mt-2 divide-y divide-gray-200">
+          <li class="flex items-center justify-between py-4">
+            <div class="flex flex-col">
+              <p class="text-sm font-medium leading-6" id="privacy-option-1-label">
+                Show Subscribe Button
+              </p>
+              <p class="text-sm" id="privacy-option-1-description">
+                Lorem ipsum something else to describe.
+              </p>
+            </div>
+            <!-- Enabled: "bg-indigo-600", Not Enabled: "bg-gray-200" -->
+            <button
+              type="button"
+              class="bg-gray-200 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+              role="switch"
+              aria-checked="false"
+            >
+              <span class="sr-only">Use setting</span>
+              <!-- Enabled: "translate-x-5", Not Enabled: "translate-x-0" -->
+              <span
+                aria-hidden="true"
+                class="translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+              >
+              </span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-span-2">
+        <Title.h3>Donations</Title.h3>
+        <p>
+          <%= gettext(
+            "Donations are one time contributions to your channel from your viewers. Donations can currently be in any amount between $1 and $100. If you are raising money for a charity, do not use your donation button to facilitate donations."
+          ) %>
+        </p>
+      </div>
+      <div class="border-l border-slate-400 pl-4">
+        <ul role="list" class="mt-2 divide-y divide-gray-200">
+          <li class="flex items-center justify-between py-4">
+            <div class="flex flex-col">
+              <p class="text-sm font-medium leading-6" id="privacy-option-1-label">
+                Show Donate Button
+              </p>
+              <p class="text-sm" id="privacy-option-1-description">
+                Lorem ipsum something else to describe.
+              </p>
+            </div>
+            <!-- Enabled: "bg-indigo-600", Not Enabled: "bg-gray-200" -->
+            <button
+              type="button"
+              class="bg-gray-200 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+              role="switch"
+              aria-checked="false"
+            >
+              <span class="sr-only">Use setting</span>
+              <!-- Enabled: "translate-x-5", Not Enabled: "translate-x-0" -->
+              <span
+                aria-hidden="true"
+                class="translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+              >
+              </span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
   <div class="bg-slate-700 p-4 text-right sm:px-6 rounded-b-lg">
     <.button>Save</.button>
   </div>
-</div> --%>
+</div>

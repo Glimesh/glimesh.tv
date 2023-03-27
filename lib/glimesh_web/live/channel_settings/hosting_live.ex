@@ -1,10 +1,12 @@
 defmodule GlimeshWeb.ChannelSettings.HostingLive do
-  use GlimeshWeb, :settings_live_view
+  use GlimeshWeb, :live_view
 
   alias Glimesh.ChannelHostsLookups
   alias Glimesh.ChannelLookups
   alias Glimesh.Streams.Channel
   alias Glimesh.Streams.ChannelHosts
+
+  alias GlimeshWeb.Components.Settings
 
   @impl true
   def mount(_params, _session, socket) do
@@ -13,7 +15,8 @@ defmodule GlimeshWeb.ChannelSettings.HostingLive do
 
     {:ok,
      socket
-     |> put_page_title(gettext("Hosting Settings"))
+     |> put_page_title(gettext("Hosting"))
+     |> assign(form: to_form(allow_hosting_changeset))
      |> assign(
        :hosting_qualified,
        hosting_qualified?(socket.assigns.current_user, socket.assigns.channel)
@@ -25,6 +28,11 @@ defmodule GlimeshWeb.ChannelSettings.HostingLive do
      |> assign(:hosted_channels, hosted_channels)}
   end
 
+  @impl true
+  def handle_params(_params, _uri, socket) do
+    {:noreply, socket}
+  end
+
   defp hosting_qualified?(user, channel) do
     account_age = Glimesh.Accounts.get_account_age_in_days(user)
     total_streamed_hours = Glimesh.Streams.get_channel_hours(channel)
@@ -34,6 +42,31 @@ defmodule GlimeshWeb.ChannelSettings.HostingLive do
 
   defp search_for_channels(user, term) do
     ChannelLookups.search_hostable_channels_by_name(user, term)
+  end
+
+  @impl Phoenix.LiveView
+  def handle_event("validate", %{"channel" => attrs}, socket) do
+    form =
+      socket.assigns.channel
+      |> Channel.change_allow_hosting(attrs)
+      |> Map.put(:action, :update)
+      |> to_form()
+
+    {:noreply, assign(socket, form: form)}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_event("save", %{"channel" => attrs}, socket) do
+    case Channel.update_allow_hosting(socket.assigns.channel, attrs) do
+      {:ok, channel} ->
+        {:noreply,
+         socket
+         |> assign(channel: channel)
+         |> put_flash(:info, "Saved hosting preferences.")}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, form: to_form(changeset))}
+    end
   end
 
   @impl true

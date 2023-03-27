@@ -26,7 +26,7 @@ defmodule GlimeshWeb.QuickPreferenceController do
 
       {:error, _} ->
         # Redirect them to preferences page since they are logged in
-        conn |> redirect(to: ~p"/users/settings/preference")
+        conn |> redirect(to: ~p"/users/settings/preferences")
     end
   end
 

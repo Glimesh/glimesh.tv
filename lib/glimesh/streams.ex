@@ -238,7 +238,7 @@ defmodule Glimesh.Streams do
   end
 
   def list_paged_streams(channel, page_number \\ 1) do
-    params = %{page: page_number, page_size: 30}
+    params = %{page: page_number, page_size: 10}
 
     from(s in Glimesh.Streams.Stream,
       where: s.channel_id == ^channel.id,

@@ -1,209 +1,53 @@
-<div class="card">
-  <div class="card-header">
-    <div class="row">
-      <div class="col-10">
-        <h4><%= gettext("Channel Emotes") %></h4>
-      </div>
-      <div class="col-2">
-        <%= link(gettext("Upload Emotes"),
-          class: "btn btn-primary btn-block",
-          to: ~p"/users/settings/upload_emotes"
-        ) %>
-      </div>
-    </div>
-  </div>
-  <div class="card-body">
-    <div class="alert alert-info" role="alert">
-      <strong><%= gettext("Early Feature Alert!") %></strong>
-      Hey there! Channel Emotes are still under heavy development, while we are working through how to make the best emote system we can,
-      <strong>you are limited to uploading only 10 emotes and 1 globally usable emote.</strong>
-      For now we've disabled vector based SVG emotes, however we'll be bringing them back soon. Emotes can be either static PNG's or animated GIF file types. We're continually building this new feature, and we'd love your opinion on how we should do it. Thank you!
-    </div>
-    <%= if live_flash(@flash, :emote_info) do %>
-      <p
-        class="alert alert-success"
-        role="alert"
-        phx-click="lv:clear-flash"
-        phx-value-key="emote_info"
-      >
-        <%= live_flash(@flash, :emote_info) %>
-      </p>
-    <% end %>
-    <%= if live_flash(@flash, :emote_error) do %>
-      <p
-        class="alert alert-danger"
-        role="alert"
-        phx-click="lv:clear-flash"
-        phx-value-key="emote_error"
-      >
-        <%= live_flash(@flash, :emote_error) %>
-      </p>
-    <% end %>
-    <p><%= gettext("View and manage your existing channel emotes all in one place.") %></p>
+<Settings.page page={~p"/users/settings/emotes"}>
+  <:title><%= gettext("Emotes") %></:title>
 
-    <h5><%= gettext("Static Emotes") %></h5>
-    <div class="row">
-      <%= for emote <- @static_emotes do %>
-        <div class="col-md-3 mb-4">
-          <button
-            phx-click="delete_emote"
-            phx-value-id={emote.id}
-            data-confirm="Are you sure you wish to delete this emote? It is nonreversible."
-            type="button"
-            class="close close-delete"
-            aria-label="Delete Emote"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <div class="text-center">
-            <img src={Glimesh.Emotes.full_url(emote)} height="128px" width="128px" />
-            <img src={Glimesh.Emotes.full_url(emote)} height="32px" width="32px" />
-            <figcaption><code>:<%= emote.emote %>:</code></figcaption>
-          </div>
-
-          <.form
-            :let={f}
-            for={%{}}
-            as={:nothing}
-            phx-id="save_emote_options"
-            phx-change="save_emote_options"
-          >
-            <%= hidden_input(f, :emote_id, value: emote.id) %>
-            <div class="form group">
-              <div class="text-center">
-                <div class="custom-control custom-switch">
-                  <%= checkbox(f, :require_channel_sub,
-                    class: "custom-control-input",
-                    id: "require_channel_sub#{emote.id}",
-                    value: emote.require_channel_sub
-                  ) %>
-                  <%= label(f, :require_channel_sub, "Require Channel Subscription",
-                    for: "require_channel_sub#{emote.id}",
-                    class: "custom-control-label"
-                  ) %>
-                </div>
-                <%= if (emote.approved_for_global_use) do %>
-                  <div class="custom-control custom-switch">
-                    <%= checkbox(f, :allow_global_usage,
-                      class: "custom-control-input",
-                      id: "allow_global_usage#{emote.id}",
-                      value: emote.allow_global_usage
-                    ) %>
-                    <%= label(f, :allow_global_usage, "Allow Platform use",
-                      for: "allow_global_usage#{emote.id}",
-                      class: "custom-control-label"
-                    ) %>
-                  </div>
-                <% end %>
-                <div class="custom-control custom-switch">
-                  <%= checkbox(f, :emote_display_off,
-                    class: "custom-control-input",
-                    id: "emote_display_off#{emote.id}",
-                    value: emote.emote_display_off
-                  ) %>
-                  <%= label(f, :emote_display_off, "Hide Emote",
-                    for: "emote_display_off#{emote.id}",
-                    class: "custom-control-label"
-                  ) %>
-                </div>
-                <%= if (not emote.approved_for_global_use) do %>
-                  <p><%= emote.rejected_reason %></p>
-                <% end %>
-              </div>
-            </div>
-          </.form>
-        </div>
-      <% end %>
-    </div>
-
-    <h5><%= gettext("Animated Emotes") %></h5>
-    <div class="row">
-      <%= for emote <- @animated_emotes do %>
-        <div class="col-md-3 mb-4 mt-4">
-          <button
-            phx-click="delete_emote"
-            phx-value-id={emote.id}
-            data-confirm="Are you sure you wish to delete this emote? It is nonreversible."
-            type="button"
-            class="close close-delete"
-            aria-label="Delete Emote"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <div class="text-center">
-            <img src={Glimesh.Emotes.full_url(emote)} height="128px" width="128px" />
-            <figcaption><code>:<%= emote.emote %>:</code></figcaption>
-          </div>
-
-          <.form
-            :let={f}
-            for={%{}}
-            as={:nothing}
-            phx-id="save_emote_options"
-            phx-change="save_emote_options"
-          >
-            <%= hidden_input(f, :emote_id, value: emote.id) %>
-            <div class="form group">
-              <div class="text-center">
-                <div class="custom-control custom-switch">
-                  <%= checkbox(f, :require_channel_sub,
-                    class: "custom-control-input",
-                    id: "require_channel_sub#{emote.id}",
-                    value: emote.require_channel_sub
-                  ) %>
-                  <%= label(f, :require_channel_sub, "Require Channel Subscription",
-                    for: "require_channel_sub#{emote.id}",
-                    class: "custom-control-label"
-                  ) %>
-                </div>
-                <%= if (emote.approved_for_global_use) do %>
-                  <div class="custom-control custom-switch">
-                    <%= checkbox(f, :allow_global_usage,
-                      class: "custom-control-input",
-                      id: "allow_global_usage#{emote.id}",
-                      value: emote.allow_global_usage
-                    ) %>
-                    <%= label(f, :allow_global_usage, "Allow Platform use",
-                      for: "allow_global_usage#{emote.id}",
-                      class: "custom-control-label"
-                    ) %>
-                  </div>
-                <% end %>
-                <div class="custom-control custom-switch">
-                  <%= checkbox(f, :emote_display_off,
-                    class: "custom-control-input",
-                    id: "emote_display_off#{emote.id}",
-                    value: emote.emote_display_off
-                  ) %>
-                  <%= label(f, :emote_display_off, "Hide Emote",
-                    for: "emote_display_off#{emote.id}",
-                    class: "custom-control-label"
-                  ) %>
-                </div>
-                <%= if (not emote.approved_for_global_use) do %>
-                  <p><%= emote.rejected_reason %></p>
-                <% end %>
-              </div>
-            </div>
-          </.form>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="card mt-4">
+  <div class="card p-6">
     <div class="card-header">
-      <h4><%= gettext("Submitted Emotes") %></h4>
+      <div class="row">
+        <div class="col-10">
+          <h4><%= gettext("Channel Emotes") %></h4>
+        </div>
+        <div class="col-2">
+          <%= link(gettext("Upload Emotes"),
+            class: "btn btn-primary btn-block",
+            to: ~p"/users/settings/upload_emotes"
+          ) %>
+        </div>
+      </div>
     </div>
     <div class="card-body">
-      <p>
-        <%= gettext(
-          "After you submit your emotes they'll be reviewed by our Core Team for compliance. If they are approved they will be automatically available on your channel. If they are rejected you'll see them below with a reason why. You can delete rejected emotes and reupload them if you want to try again."
-        ) %>
-      </p>
+      <div class="alert alert-info" role="alert">
+        <strong><%= gettext("Early Feature Alert!") %></strong>
+        Hey there! Channel Emotes are still under heavy development, while we are working through how to make the best emote system we can,
+        <strong>you are limited to uploading only 10 emotes and 1 globally usable emote.</strong>
+        For now we've disabled vector based SVG emotes, however we'll be bringing them back soon. Emotes can be either static PNG's or animated GIF file types. We're continually building this new feature, and we'd love your opinion on how we should do it. Thank you!
+      </div>
+      <%= if live_flash(@flash, :emote_info) do %>
+        <p
+          class="alert alert-success"
+          role="alert"
+          phx-click="lv:clear-flash"
+          phx-value-key="emote_info"
+        >
+          <%= live_flash(@flash, :emote_info) %>
+        </p>
+      <% end %>
+      <%= if live_flash(@flash, :emote_error) do %>
+        <p
+          class="alert alert-danger"
+          role="alert"
+          phx-click="lv:clear-flash"
+          phx-value-key="emote_error"
+        >
+          <%= live_flash(@flash, :emote_error) %>
+        </p>
+      <% end %>
+      <p><%= gettext("View and manage your existing channel emotes all in one place.") %></p>
+
+      <h5><%= gettext("Static Emotes") %></h5>
       <div class="row">
-        <%= for emote <- @submitted_emotes do %>
-          <div class="col-md-3 mb-4 mt-4">
+        <%= for emote <- @static_emotes do %>
+          <div class="col-md-3 mb-4">
             <button
               phx-click="delete_emote"
               phx-value-id={emote.id}
@@ -218,19 +62,179 @@
               <img src={Glimesh.Emotes.full_url(emote)} height="128px" width="128px" />
               <img src={Glimesh.Emotes.full_url(emote)} height="32px" width="32px" />
               <figcaption><code>:<%= emote.emote %>:</code></figcaption>
-
-              <%= if emote.rejected_at do %>
-                <span class="badge badge-danger"><%= gettext("Rejected") %></span>
-              <% else %>
-                <span class="badge badge-info"><%= gettext("Pending Review") %></span>
-              <% end %>
             </div>
-            <%= if emote.rejected_at do %>
-              <p><%= gettext("Rejected for:") %> <%= emote.rejected_reason %></p>
-            <% end %>
+
+            <.form
+              :let={f}
+              for={%{}}
+              as={:nothing}
+              phx-id="save_emote_options"
+              phx-change="save_emote_options"
+            >
+              <%= hidden_input(f, :emote_id, value: emote.id) %>
+              <div class="form group">
+                <div class="text-center">
+                  <div class="custom-control custom-switch">
+                    <%= checkbox(f, :require_channel_sub,
+                      class: "custom-control-input",
+                      id: "require_channel_sub#{emote.id}",
+                      value: emote.require_channel_sub
+                    ) %>
+                    <%= label(f, :require_channel_sub, "Require Channel Subscription",
+                      for: "require_channel_sub#{emote.id}",
+                      class: "custom-control-label"
+                    ) %>
+                  </div>
+                  <%= if (emote.approved_for_global_use) do %>
+                    <div class="custom-control custom-switch">
+                      <%= checkbox(f, :allow_global_usage,
+                        class: "custom-control-input",
+                        id: "allow_global_usage#{emote.id}",
+                        value: emote.allow_global_usage
+                      ) %>
+                      <%= label(f, :allow_global_usage, "Allow Platform use",
+                        for: "allow_global_usage#{emote.id}",
+                        class: "custom-control-label"
+                      ) %>
+                    </div>
+                  <% end %>
+                  <div class="custom-control custom-switch">
+                    <%= checkbox(f, :emote_display_off,
+                      class: "custom-control-input",
+                      id: "emote_display_off#{emote.id}",
+                      value: emote.emote_display_off
+                    ) %>
+                    <%= label(f, :emote_display_off, "Hide Emote",
+                      for: "emote_display_off#{emote.id}",
+                      class: "custom-control-label"
+                    ) %>
+                  </div>
+                  <%= if (not emote.approved_for_global_use) do %>
+                    <p><%= emote.rejected_reason %></p>
+                  <% end %>
+                </div>
+              </div>
+            </.form>
+          </div>
+        <% end %>
+      </div>
+
+      <h5><%= gettext("Animated Emotes") %></h5>
+      <div class="row">
+        <%= for emote <- @animated_emotes do %>
+          <div class="col-md-3 mb-4 mt-4">
+            <button
+              phx-click="delete_emote"
+              phx-value-id={emote.id}
+              data-confirm="Are you sure you wish to delete this emote? It is nonreversible."
+              type="button"
+              class="close close-delete"
+              aria-label="Delete Emote"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="text-center">
+              <img src={Glimesh.Emotes.full_url(emote)} height="128px" width="128px" />
+              <figcaption><code>:<%= emote.emote %>:</code></figcaption>
+            </div>
+
+            <.form
+              :let={f}
+              for={%{}}
+              as={:nothing}
+              phx-id="save_emote_options"
+              phx-change="save_emote_options"
+            >
+              <%= hidden_input(f, :emote_id, value: emote.id) %>
+              <div class="form group">
+                <div class="text-center">
+                  <div class="custom-control custom-switch">
+                    <%= checkbox(f, :require_channel_sub,
+                      class: "custom-control-input",
+                      id: "require_channel_sub#{emote.id}",
+                      value: emote.require_channel_sub
+                    ) %>
+                    <%= label(f, :require_channel_sub, "Require Channel Subscription",
+                      for: "require_channel_sub#{emote.id}",
+                      class: "custom-control-label"
+                    ) %>
+                  </div>
+                  <%= if (emote.approved_for_global_use) do %>
+                    <div class="custom-control custom-switch">
+                      <%= checkbox(f, :allow_global_usage,
+                        class: "custom-control-input",
+                        id: "allow_global_usage#{emote.id}",
+                        value: emote.allow_global_usage
+                      ) %>
+                      <%= label(f, :allow_global_usage, "Allow Platform use",
+                        for: "allow_global_usage#{emote.id}",
+                        class: "custom-control-label"
+                      ) %>
+                    </div>
+                  <% end %>
+                  <div class="custom-control custom-switch">
+                    <%= checkbox(f, :emote_display_off,
+                      class: "custom-control-input",
+                      id: "emote_display_off#{emote.id}",
+                      value: emote.emote_display_off
+                    ) %>
+                    <%= label(f, :emote_display_off, "Hide Emote",
+                      for: "emote_display_off#{emote.id}",
+                      class: "custom-control-label"
+                    ) %>
+                  </div>
+                  <%= if (not emote.approved_for_global_use) do %>
+                    <p><%= emote.rejected_reason %></p>
+                  <% end %>
+                </div>
+              </div>
+            </.form>
           </div>
         <% end %>
       </div>
     </div>
+
+    <div class="card mt-4">
+      <div class="card-header">
+        <h4><%= gettext("Submitted Emotes") %></h4>
+      </div>
+      <div class="card-body">
+        <p>
+          <%= gettext(
+            "After you submit your emotes they'll be reviewed by our Core Team for compliance. If they are approved they will be automatically available on your channel. If they are rejected you'll see them below with a reason why. You can delete rejected emotes and reupload them if you want to try again."
+          ) %>
+        </p>
+        <div class="row">
+          <%= for emote <- @submitted_emotes do %>
+            <div class="col-md-3 mb-4 mt-4">
+              <button
+                phx-click="delete_emote"
+                phx-value-id={emote.id}
+                data-confirm="Are you sure you wish to delete this emote? It is nonreversible."
+                type="button"
+                class="close close-delete"
+                aria-label="Delete Emote"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="text-center">
+                <img src={Glimesh.Emotes.full_url(emote)} height="128px" width="128px" />
+                <img src={Glimesh.Emotes.full_url(emote)} height="32px" width="32px" />
+                <figcaption><code>:<%= emote.emote %>:</code></figcaption>
+
+                <%= if emote.rejected_at do %>
+                  <span class="badge badge-danger"><%= gettext("Rejected") %></span>
+                <% else %>
+                  <span class="badge badge-info"><%= gettext("Pending Review") %></span>
+                <% end %>
+              </div>
+              <%= if emote.rejected_at do %>
+                <p><%= gettext("Rejected for:") %> <%= emote.rejected_reason %></p>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</Settings.page>

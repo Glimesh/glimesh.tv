@@ -261,7 +261,7 @@ defmodule GlimeshWeb.Components.Navbar do
 
   def dropdown_link(assigns) do
     assigns = assign(assigns, :class, "block px-4 py-2 text-sm text-gray-700")
-    dbg(assigns)
+
     Phoenix.Component.link(assigns)
   end
 

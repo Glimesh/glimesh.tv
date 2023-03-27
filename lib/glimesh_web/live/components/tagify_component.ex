@@ -15,7 +15,7 @@ defmodule GlimeshWeb.TagifyComponent do
         "data-max-options": @max_options,
         "phx-target": @myself,
         "phx-hook": "Tagify",
-        placeholder: assigns.placeholder
+        placeholder: @placeholder
       ) %>
     </div>
     """

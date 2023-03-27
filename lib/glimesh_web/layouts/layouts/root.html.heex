@@ -46,12 +46,22 @@
       <meta property="og:url" content="https://glimesh.tv/" />
       <meta property="og:title" content={assigns.custom_meta.title} />
       <meta property="og:description" content={assigns.custom_meta.description} />
-      <meta property="og:image" content={assigns.custom_meta.image_url} />
+      <meta
+        property="og:image"
+        content={
+          Map.get(assigns.custom_meta, :image_url, "https://glimesh.tv/images/og-image.jpg")
+        }
+      />
       <meta name="twitter:card" content={Map.get(assigns.custom_meta, :card_type, "summary")} />
       <meta name="twitter:site" content="@Glimesh" />
       <meta name="twitter:title" content={assigns.custom_meta.title} />
       <meta name="twitter:description" content={assigns.custom_meta.description} />
-      <meta name="twitter:image" content={assigns.custom_meta.image_url} />
+      <meta
+        name="twitter:image"
+        content={
+          Map.get(assigns.custom_meta, :image_url, "https://glimesh.tv/images/og-image.jpg")
+        }
+      />
     <% else %>
       <meta property="og:url" content="https://glimesh.tv/" />
       <meta property="og:title" content="Glimesh - Next-Gen Live Streaming" />

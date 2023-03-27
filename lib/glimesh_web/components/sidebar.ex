@@ -14,12 +14,10 @@ defmodule GlimeshWeb.Components.Sidebar do
 
   def sidebar(assigns) do
     ~H"""
-    <aside class="w-64 h-full" aria-label="Sidebar">
-      <div class="overflow-y-auto py-4 px-3 bg-gray-800 h-full">
-        <%= for group <- @groups do %>
-          <.sidebar_group group={group} active_path={@active_path} />
-        <% end %>
-      </div>
+    <aside class="lg:col-span-3 bg-slate-800/75 space-y-4 py-4" aria-label="Sidebar">
+      <%= for group <- @groups do %>
+        <.sidebar_group group={group} active_path={@active_path} />
+      <% end %>
     </aside>
     """
   end
@@ -29,12 +27,14 @@ defmodule GlimeshWeb.Components.Sidebar do
 
   def sidebar_group(assigns) do
     ~H"""
-    <div class="p-2 text-lg font-normal"><%= @group.label %></div>
-    <ul class="space-y-2 mb-4">
-      <%= for link <- @group.links do %>
-        <.sidebar_link link={link} active_path={@active_path} />
-      <% end %>
-    </ul>
+    <div>
+      <div class="p-2 pl-4 text-lg font-normal"><%= @group.label %></div>
+      <ul class="">
+        <%= for link <- @group.links do %>
+          <.sidebar_link link={link} active_path={@active_path} />
+        <% end %>
+      </ul>
+    </div>
     """
   end
 
@@ -42,14 +42,11 @@ defmodule GlimeshWeb.Components.Sidebar do
   attr :active_path, :string
 
   def sidebar_link(assigns) do
-    classes = "text-white"
-    active = if assigns.link.to == assigns.active_path, do: "text-red-800", else: ""
-
     ~H"""
-    <li>
+    <li class={[if(@link.to == @active_path, do: "bg-slate-700/75"), "cursor-pointer"]}>
       <.link
         navigate={@link.to}
-        class="flex items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700"
+        class="flex items-center px-4 p-2 text-base font-normal text-white hover:bg-slate-700/75"
       >
         <%= @link.icon.(%{
           class: "flex-shrink-0 w-6 h-6 transition duration-75 text-gray-400 group-hover:text-white"
@@ -90,7 +87,7 @@ defmodule GlimeshWeb.Components.UserSettingsSidebar do
             label: gettext("Payments")
           },
           %GlimeshWeb.Components.Sidebar.Link{
-            to: ~p"/users/settings/preference",
+            to: ~p"/users/settings/preferences",
             icon: &Icons.cog/1,
             label: gettext("Preferences")
           },

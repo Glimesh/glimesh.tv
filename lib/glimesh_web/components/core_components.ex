@@ -14,6 +14,8 @@ defmodule GlimeshWeb.CoreComponents do
   alias Phoenix.LiveView.JS
   import GlimeshWeb.Gettext
 
+  alias GlimeshWeb.Components.Title
+
   @doc """
   Renders a modal.
 
@@ -202,6 +204,122 @@ defmodule GlimeshWeb.CoreComponents do
   end
 
   @doc """
+  Renders a card.
+
+  ## Examples
+
+      <.card>
+        <:title></:title>
+
+        Some content
+
+        <:actions>
+          <.button>Save</.button>
+        </:actions>
+      </.card_form>
+  """
+  attr :rest, :global,
+    include: ~w(autocomplete name rel action enctype method novalidate target),
+    doc: "the arbitrary HTML attributes to apply to the form tag"
+
+  slot :inner_block, required: true
+  slot :title, doc: "The title for the card form"
+  slot :subtitle, doc: "The subtitle for the card form"
+  slot :header_actions, doc: "the slot for headers actions"
+  slot :footer_actions, doc: "the slot for footer actions"
+
+  def card(assigns) do
+    ~H"""
+    <div>
+      <div class={[
+        "bg-slate-800 rounded-t-lg py-6 px-4 sm:p-6",
+        if(length(@footer_actions) > 0, do: "rounded-t-lg", else: "rounded-lg")
+      ]}>
+        <div class="md:flex md:items-center md:justify-between">
+          <div class="min-w-0 flex-1">
+            <Title.h2><%= render_slot(@title) %></Title.h2>
+            <p>
+              <%= render_slot(@subtitle) %>
+            </p>
+          </div>
+          <div class="mt-4 flex flex-shrink-0 md:mt-0 md:ml-4">
+            <div :for={action <- @header_actions}>
+              <%= render_slot(action) %>
+            </div>
+          </div>
+        </div>
+
+        <div class="">
+          <%= render_slot(@inner_block) %>
+        </div>
+      </div>
+      <%= if length(@footer_actions) > 0 do %>
+        <div class="bg-slate-700 px-4 py-3 text-right sm:px-6 rounded-b-lg">
+          <div :for={action <- @footer_actions}>
+            <%= render_slot(action) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders a card form.
+
+  ## Examples
+
+      <.card_form for={@form} phx-change="validate" phx-submit="save">
+        <.input field={@form[:email]} label="Email"/>
+        <.input field={@form[:username]} label="Username" />
+        <:actions>
+          <.button>Save</.button>
+        </:actions>
+      </.card_form>
+  """
+  attr :for, :any, required: true, doc: "the datastructure for the form"
+  attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
+
+  attr :rest, :global,
+    include: ~w(autocomplete name rel action enctype method novalidate target multipart),
+    doc: "the arbitrary HTML attributes to apply to the form tag"
+
+  slot :inner_block, required: true
+  slot :title, doc: "The title for the card form"
+  slot :subtitle, doc: "The subtitle for the card form"
+  slot :actions, doc: "the slot for form actions, such as a submit button"
+
+  def card_form(assigns) do
+    ~H"""
+    <.form
+      :let={f}
+      class="h-full flex flex-col items-stretch justify-between"
+      for={@for}
+      as={@as}
+      {@rest}
+    >
+      <div class="flex-1 py-6 sm:p-6">
+        <div>
+          <Title.h2><%= render_slot(@title, f) %></Title.h2>
+          <p class="text-sm">
+            <%= render_slot(@subtitle, f) %>
+          </p>
+        </div>
+
+        <div class="">
+          <%= render_slot(@inner_block, f) %>
+        </div>
+      </div>
+      <div class="bg-slate-800/75 px-4 py-3 text-right sm:px-6 rounded-br-lg">
+        <div :for={action <- @actions}>
+          <%= render_slot(action, f) %>
+        </div>
+      </div>
+    </.form>
+    """
+  end
+
+  @doc """
   Renders a simple form.
 
   ## Examples
@@ -227,7 +345,7 @@ defmodule GlimeshWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="space-y-8 bg-white mt-10">
+      <div class="space-y-8 mt-10">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -256,8 +374,7 @@ defmodule GlimeshWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
+        "phx-submit-loading:opacity-75 inline-flex items-center gap-x-1.5 rounded-lg bg-seafoam py-2 px-3 text-base font-normal text-gray-800 shadow-sm hover:bg-teal-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-teal-400",
         @class
       ]}
       {@rest}
@@ -316,7 +433,7 @@ defmodule GlimeshWeb.CoreComponents do
 
     ~H"""
     <div phx-feedback-for={@name}>
-      <label class="flex items-center gap-4 text-sm leading-6 text-zinc-600">
+      <label class="flex items-center gap-4 text-sm leading-6 text-white">
         <input type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
@@ -405,7 +522,7 @@ defmodule GlimeshWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label for={@for} class="block text-sm leading-6 text-white">
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -483,8 +600,8 @@ defmodule GlimeshWeb.CoreComponents do
 
     ~H"""
     <div class="overflow-y-auto px-4 sm:overflow-visible sm:px-0">
-      <table class="mt-11 w-[40rem] sm:w-full">
-        <thead class="text-left text-[0.8125rem] leading-6 text-zinc-500">
+      <table class="min-w-full divide-y divide-gray-700">
+        <thead class="text-left text-base leading-6 text-white">
           <tr>
             <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal"><%= col[:label] %></th>
             <th class="relative p-0 pb-4"><span class="sr-only"><%= gettext("Actions") %></span></th>
@@ -503,7 +620,7 @@ defmodule GlimeshWeb.CoreComponents do
             >
               <div class="block py-4 pr-6">
                 <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
-                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
+                <span class={["relative", i == 0 && "font-semibold text-white"]}>
                   <%= render_slot(col, @row_item.(row)) %>
                 </span>
               </div>
@@ -513,7 +630,7 @@ defmodule GlimeshWeb.CoreComponents do
                 <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
                 <span
                   :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+                  class="relative ml-4 font-semibold leading-6 text-gray-300 hover:text-zinc-700"
                 >
                   <%= render_slot(action, @row_item.(row)) %>
                 </span>

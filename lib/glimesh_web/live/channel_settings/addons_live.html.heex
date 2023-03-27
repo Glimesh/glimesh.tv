@@ -1,111 +1,153 @@
-<div class="card">
-  <div class="card-header">
-    <h4><%= gettext("Support Modal") %></h4>
-  </div>
-  <div class="card-body">
-    <p class="mb-4">
-      Payment addons will add additional options to support your stream under the new
-      <button class="btn btn-secondary btn-sm">
-        <i class="fas fa-hand-holding-usd fa-fw"></i> <%= gettext("Support") %>
-      </button>
-      button available on your channel.
-    </p>
-    <.form :let={f} for={@addons} id="addons" phx-change="validate" phx-submit="save">
-      <div class="row">
-        <div class="col-lg-1 text-center">
-          <i class="fas fa-star fa-fw fa-4x"></i>
-          <br />
-        </div>
-        <div class="col-lg-7">
-          <h5 class="mt-0">Subscriptions</h5>
-          <p>
-            <%= gettext(
-              "Subscriptions are recurring contributions to you from your viewers to help support you and your channel. You can toggle them on or off at any time here, however if you have any active subscriptions they will continue regardless of this option."
-            ) %>
-          </p>
-        </div>
-        <div class="col-lg-4">
-          <div class="custom-control custom-switch">
-            <%= checkbox(f, :show_subscribe_button, class: "custom-control-input") %>
-            <%= label(f, :show_subscribe_button, "Show Subscribe Button",
-              class: "custom-control-label"
-            ) %>
-            <%= error_tag(f, :show_subscribe_button) %>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-1 text-center">
-          <i class="fas fa-money-bill-wave fa-fw fa-4x"></i>
-          <br />
-        </div>
-        <div class="col-lg-7">
-          <h5 class="mt-0">Donations</h5>
-          <p>
-            <%= gettext(
-              "Donations are one time contributions to your channel from your viewers. Donations can currently be in any amount between $1 and $100. If you are raising money for a charity, do not use your donation button to facilitate donations."
-            ) %>
-          </p>
-        </div>
-        <div class="col-lg-4">
-          <div class="custom-control custom-switch">
-            <%= checkbox(f, :show_donate_button, class: "custom-control-input") %>
-            <%= label(f, :show_donate_button, "Show Donate Button", class: "custom-control-label") %>
-            <%= error_tag(f, :show_donate_button) %>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-1 text-center">
-          <%= if @site_theme == "light" do %>
-            <img
-              src="/images/support-modal/streamloots-logo-black.svg"
-              alt="Streamloots"
-              height="60"
-              width="60"
-            />
-          <% else %>
-            <img
-              src="/images/support-modal/streamloots-logo.svg"
-              alt="Streamloots"
-              height="60"
-              width="60"
-            />
-          <% end %>
-        </div>
-        <div class="col-lg-7">
-          <h5 class="mt-0">Streamloots</h5>
-          <p>
-            <%= gettext(
-              "Streamloots is a marketplace to buy real-time interactions with live streamers via unique collectable cards, redeemable by your viewers during your stream."
-            ) %>
-          </p>
-        </div>
-        <div class="col-lg-4">
-          <div class="form-group">
-            <%= label(f, :streamloots_url, "Streamloots URL") %>
-            <%= text_input(f, :streamloots_url,
-              class: "form-control",
-              "aria-describedby": "streamlootsHelp"
-            ) %>
-            <%= error_tag(f, :streamloots_url) %>
-            <small id="streamlootsHelp" class="form-text text-muted">
-              <%= gettext(
-                "Your Streamloots URL. Format: https://www.streamloots.com/YOUR_USERNAME"
-              ) %>
-            </small>
-          </div>
-          <div class="custom-control custom-switch">
-            <%= checkbox(f, :show_streamloots_button, class: "custom-control-input") %>
-            <%= label(f, :show_streamloots_button, "Show Streamloots Button",
-              class: "custom-control-label"
-            ) %>
-            <%= error_tag(f, :show_streamloots_button) %>
-          </div>
-        </div>
-      </div>
+<Settings.page page={~p"/users/settings/addons"}>
+  <:title><%= gettext("Support Modal") %></:title>
 
-      <button type="submit" class="btn btn-primary"><%= gettext("Save Support Modal") %></button>
-    </.form>
+  <Settings.page_form for={@form} phx-change="validate" phx-submit="save">
+    <div class="space-y-6">
+      <Settings.toggle_block
+        field={@form[:show_subscribe_button]}
+        label={gettext("Subscriptions")}
+      >
+        <p>
+          <%= gettext(
+            "Subscriptions are recurring contributions to you from your viewers to help support you and your channel. You can toggle them on or off at any time here, however if you have any active subscriptions they will continue regardless of this option."
+          ) %>
+        </p>
+      </Settings.toggle_block>
+      <Settings.toggle_block field={@form[:show_donate_button]} label={gettext("Donations")}>
+        <p>
+          <%= gettext(
+            "Donations are one time contributions to your channel from your viewers. Donations can currently be in any amount between $1 and $100. If you are raising money for a charity, do not use your donation button to facilitate donations."
+          ) %>
+        </p>
+      </Settings.toggle_block>
+      <Settings.toggle_block
+        field={@form[:show_streamloots_button]}
+        label={gettext("Streamloots")}
+      >
+        <p>
+          <%= gettext(
+            "Streamloots is a marketplace to buy real-time interactions with live streamers via unique collectable cards, redeemable by your viewers during your stream."
+          ) %>
+        </p>
+
+        <:fields>
+          <%= if @form[:show_streamloots_button].value do %>
+            <div class="mt-4">
+              <.input
+                type="text"
+                field={@form[:streamloots_url]}
+                label={gettext("Streamloots URL")}
+              />
+              <small id="streamlootsHelp" class="form-text text-muted">
+                <%= gettext(
+                  "Your Streamloots URL. Format: https://www.streamloots.com/YOUR_USERNAME"
+                ) %>
+              </small>
+            </div>
+          <% end %>
+        </:fields>
+      </Settings.toggle_block>
+    </div>
+
+    <:actions>
+      <.button type="submit">Save</.button>
+    </:actions>
+  </Settings.page_form>
+</Settings.page>
+
+<%!-- 
+<.form :let={f} for={@addons} id="addons" phx-change="validate" phx-submit="save">
+  <div class="row">
+    <div class="col-lg-1 text-center">
+      <i class="fas fa-star fa-fw fa-4x"></i>
+      <br />
+    </div>
+    <div class="col-lg-7">
+      <h5 class="mt-0">Subscriptions</h5>
+      <p>
+        <%= gettext(
+          "Subscriptions are recurring contributions to you from your viewers to help support you and your channel. You can toggle them on or off at any time here, however if you have any active subscriptions they will continue regardless of this option."
+        ) %>
+      </p>
+    </div>
+    <div class="col-lg-4">
+      <div class="custom-control custom-switch">
+        <%= checkbox(f, :show_subscribe_button, class: "custom-control-input") %>
+        <%= label(f, :show_subscribe_button, "Show Subscribe Button",
+          class: "custom-control-label"
+        ) %>
+        <%= error_tag(f, :show_subscribe_button) %>
+      </div>
+    </div>
   </div>
-</div>
+  <div class="row">
+    <div class="col-lg-1 text-center">
+      <i class="fas fa-money-bill-wave fa-fw fa-4x"></i>
+      <br />
+    </div>
+    <div class="col-lg-7">
+      <h5 class="mt-0">Donations</h5>
+      <p>
+        <%= gettext(
+          "Donations are one time contributions to your channel from your viewers. Donations can currently be in any amount between $1 and $100. If you are raising money for a charity, do not use your donation button to facilitate donations."
+        ) %>
+      </p>
+    </div>
+    <div class="col-lg-4">
+      <div class="custom-control custom-switch">
+        <%= checkbox(f, :show_donate_button, class: "custom-control-input") %>
+        <%= label(f, :show_donate_button, "Show Donate Button", class: "custom-control-label") %>
+        <%= error_tag(f, :show_donate_button) %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-1 text-center">
+      <%= if @site_theme == "light" do %>
+        <img
+          src="/images/support-modal/streamloots-logo-black.svg"
+          alt="Streamloots"
+          height="60"
+          width="60"
+        />
+      <% else %>
+        <img
+          src="/images/support-modal/streamloots-logo.svg"
+          alt="Streamloots"
+          height="60"
+          width="60"
+        />
+      <% end %>
+    </div>
+    <div class="col-lg-7">
+      <h5 class="mt-0">Streamloots</h5>
+      <p>
+        <%= gettext(
+          "Streamloots is a marketplace to buy real-time interactions with live streamers via unique collectable cards, redeemable by your viewers during your stream."
+        ) %>
+      </p>
+    </div>
+    <div class="col-lg-4">
+      <div class="form-group">
+        <%= label(f, :streamloots_url, "Streamloots URL") %>
+        <%= text_input(f, :streamloots_url,
+          class: "form-control",
+          "aria-describedby": "streamlootsHelp"
+        ) %>
+        <%= error_tag(f, :streamloots_url) %>
+        <small id="streamlootsHelp" class="form-text text-muted">
+          <%= gettext("Your Streamloots URL. Format: https://www.streamloots.com/YOUR_USERNAME") %>
+        </small>
+      </div>
+      <div class="custom-control custom-switch">
+        <%= checkbox(f, :show_streamloots_button, class: "custom-control-input") %>
+        <%= label(f, :show_streamloots_button, "Show Streamloots Button",
+          class: "custom-control-label"
+        ) %>
+        <%= error_tag(f, :show_streamloots_button) %>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary"><%= gettext("Save Support Modal") %></button>
+</.form> --%>

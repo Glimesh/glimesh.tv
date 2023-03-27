@@ -1,184 +1,188 @@
-<%= if live_flash(@flash, :raiding_info) do %>
-  <p
-    class="alert alert-success"
-    role="alert"
-    phx-click="lv:clear-flash"
-    phx-value-key="raiding_info"
-  >
-    <%= live_flash(@flash, :raiding_info) %>
-  </p>
-<% end %>
-<div class="card">
-  <div class="card-header">
-    <div class="row">
-      <div class="col-10">
-        <h4><%= gettext("Manage Raiding") %></h4>
+<Settings.page>
+  <:title><%= gettext("Raiding") %></:title>
+
+  <%= if live_flash(@flash, :raiding_info) do %>
+    <p
+      class="alert alert-success"
+      role="alert"
+      phx-click="lv:clear-flash"
+      phx-value-key="raiding_info"
+    >
+      <%= live_flash(@flash, :raiding_info) %>
+    </p>
+  <% end %>
+  <div class="card p-6">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-10">
+          <h4><%= gettext("Manage Raiding") %></h4>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="card-body">
-    <.form
-      :let={f}
-      for={@allow_changeset}
-      class="form_allow_raiding"
-      phx-change="toggle_allow_raiding"
-    >
-      <h5><%= gettext("Being Raided") %></h5>
-      <div class="row">
-        <div class="col-6">
-          <div class="form-group">
-            <div class="custom-control custom-switch">
-              <%= checkbox(f, :allow_raiding, class: "custom-control-input") %>
-              <%= label(f, :allow_raiding, gettext("Allow raids from other channels"),
-                class: "custom-control-label"
-              ) %>
-              <%= error_tag(f, :allow_raiding) %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </.form>
-    <.form
-      :let={g}
-      for={@only_allow_followed_changeset}
-      class="form_only_allow_followed"
-      phx-change="toggle_only_allow_followed"
-    >
-      <div class="row">
-        <div class="col-6">
-          <div class="form-group">
-            <div class="custom-control custom-switch">
-              <%= checkbox(g, :only_followed_can_raid,
-                class: "custom-control-input",
-                disabled: !@allow_changeset.data.allow_raiding
-              ) %>
-              <%= label(
-                g,
-                :only_followed_can_raid,
-                gettext("Only streamers I follow may raid me"),
-                class: "custom-control-label"
-              ) %>
-              <%= error_tag(g, :only_followed_can_raid) %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </.form>
-    <.form
-      :let={h}
-      for={@raid_message_changeset}
-      class="form_raid_message"
-      phx-submit="save_raid_message"
-    >
-      <div class="row">
-        <div class="col-6">
-          <div class="input-group">
-            <%= label(h, :raid_message, gettext("Incoming Raid Message")) %>
-            <p class="text-muted form-text">
-              <%= gettext("This is the message that will be displayed in chat when you are being
-              raided.  Use {streamer} and {count} as placeholders to show the name of the raiding
-              streamer and the number of viewers they are raiding with.") %>
-            </p>
-            <%= text_input(h, :raid_message,
-              maxlength: 250,
-              value: @raid_message,
-              class: "form-control"
-            ) %>
-            <%= error_tag(h, :raid_message) %>
-            <div class="input-group-append">
-              <%= submit(gettext("Save"), class: "btn btn-primary") %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </.form>
-    <p class="mt-2">
-      <%= gettext(
-        "Raiding channels must still meet the following qualifications in order to raid your channel:"
-      ) %>
-    </p>
-    <ul>
-      <li><%= gettext("They must have a verified email address.") %></li>
-      <li><%= gettext("Their account must be more than 5 days old.") %></li>
-      <li><%= gettext("They must NOT be banned from your channel.") %></li>
-    </ul>
-  </div>
-  <div class="card">
     <div class="card-body">
-      <.form :let={:nothing} for={%{}} class="form_ban_channel" phx-change="suggest">
+      <.form
+        :let={f}
+        for={@allow_changeset}
+        class="form_allow_raiding"
+        phx-change="toggle_allow_raiding"
+      >
+        <h5><%= gettext("Being Raided") %></h5>
         <div class="row">
-          <div class="col-12 col-lg-6">
-            <div class="input-group">
-              <%= live_component(GlimeshWeb.Components.ChannelLookupTypeahead,
-                id: "channel_lookup",
-                user: @user,
-                field: "ban_channel",
-                value: @ban_channel,
-                class: "form-control pl-0 channel-typeahead-input",
-                matches: @matches,
-                timeout: 700,
-                extra_params: %{"maxlength" => "24"}
-              ) %>
-              <div class="input-group-append">
-                <button
-                  id="ban-channel-button"
-                  type="button"
-                  class="btn btn-primary btn-block"
-                  aria-label="Ban Channel"
-                  phx-click="ban_raiding_channel"
-                  phx-value-name={@ban_channel}
-                  phx-value-selected={@ban_channel_selected_value}
-                >
-                  <span aria-hidden="true"><%= gettext("Ban Channel from Raiding me") %></span>
-                </button>
+          <div class="col-6">
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <%= checkbox(f, :allow_raiding, class: "custom-control-input") %>
+                <%= label(f, :allow_raiding, gettext("Allow raids from other channels"),
+                  class: "custom-control-label"
+                ) %>
+                <%= error_tag(f, :allow_raiding) %>
               </div>
             </div>
           </div>
         </div>
       </.form>
-      <div class="row">
-        <div class="col-6 pt-3">
-          <table class="table">
-            <thead style="background-color: var(--input-bg-color);">
-              <tr>
-                <th><%= gettext("Channel") %></th>
-                <th>&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <%= for ban <- @banned_channels do %>
-                <tr id={"banned-row-#{ban.banned_channel_id}"}>
-                  <td>
-                    <img
-                      class="img-avatar"
-                      src={
-                        Glimesh.Avatar.url(
-                          {ban.banned_channel.user.avatar, ban.banned_channel.user},
-                          :original
-                        )
-                      }
-                      width="50"
-                      height="50"
-                    /> &nbsp;<%= ban.banned_channel.user.displayname %>
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      id={"unban-channel-button-#{ban.banned_channel_id}"}
-                      class="close close-delete"
-                      title={gettext("Unban Channel")}
-                      phx-click="unban_channel"
-                      phx-value-id={ban.id}
-                    >
-                      &times;
-                    </button>
-                  </td>
+      <.form
+        :let={g}
+        for={@only_allow_followed_changeset}
+        class="form_only_allow_followed"
+        phx-change="toggle_only_allow_followed"
+      >
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <%= checkbox(g, :only_followed_can_raid,
+                  class: "custom-control-input",
+                  disabled: !@allow_changeset.data.allow_raiding
+                ) %>
+                <%= label(
+                  g,
+                  :only_followed_can_raid,
+                  gettext("Only streamers I follow may raid me"),
+                  class: "custom-control-label"
+                ) %>
+                <%= error_tag(g, :only_followed_can_raid) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </.form>
+      <.form
+        :let={h}
+        for={@raid_message_changeset}
+        class="form_raid_message"
+        phx-submit="save_raid_message"
+      >
+        <div class="row">
+          <div class="col-6">
+            <div class="input-group">
+              <%= label(h, :raid_message, gettext("Incoming Raid Message")) %>
+              <p class="text-muted form-text">
+                <%= gettext("This is the message that will be displayed in chat when you are being
+              raided.  Use {streamer} and {count} as placeholders to show the name of the raiding
+              streamer and the number of viewers they are raiding with.") %>
+              </p>
+              <%= text_input(h, :raid_message,
+                maxlength: 250,
+                value: @raid_message,
+                class: "form-control"
+              ) %>
+              <%= error_tag(h, :raid_message) %>
+              <div class="input-group-append">
+                <%= submit(gettext("Save"), class: "btn btn-primary") %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </.form>
+      <p class="mt-2">
+        <%= gettext(
+          "Raiding channels must still meet the following qualifications in order to raid your channel:"
+        ) %>
+      </p>
+      <ul>
+        <li><%= gettext("They must have a verified email address.") %></li>
+        <li><%= gettext("Their account must be more than 5 days old.") %></li>
+        <li><%= gettext("They must NOT be banned from your channel.") %></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <.form for={%{}} class="form_ban_channel" phx-change="suggest">
+          <div class="row">
+            <div class="col-12 col-lg-6">
+              <div class="input-group">
+                <%= live_component(GlimeshWeb.Components.ChannelLookupTypeahead,
+                  id: "channel_lookup",
+                  user: @current_user,
+                  field: "ban_channel",
+                  value: @ban_channel,
+                  class: "form-control pl-0 channel-typeahead-input",
+                  matches: @matches,
+                  timeout: 700,
+                  extra_params: %{"maxlength" => "24"}
+                ) %>
+                <div class="input-group-append">
+                  <button
+                    id="ban-channel-button"
+                    type="button"
+                    class="btn btn-primary btn-block"
+                    aria-label="Ban Channel"
+                    phx-click="ban_raiding_channel"
+                    phx-value-name={@ban_channel}
+                    phx-value-selected={@ban_channel_selected_value}
+                  >
+                    <span aria-hidden="true"><%= gettext("Ban Channel from Raiding me") %></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </.form>
+        <div class="row">
+          <div class="col-6 pt-3">
+            <table class="table">
+              <thead style="background-color: var(--input-bg-color);">
+                <tr>
+                  <th><%= gettext("Channel") %></th>
+                  <th>&nbsp;</th>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <%= for ban <- @banned_channels do %>
+                  <tr id={"banned-row-#{ban.banned_channel_id}"}>
+                    <td>
+                      <img
+                        class="img-avatar"
+                        src={
+                          Glimesh.Avatar.url(
+                            {ban.banned_channel.user.avatar, ban.banned_channel.user},
+                            :original
+                          )
+                        }
+                        width="50"
+                        height="50"
+                      /> &nbsp;<%= ban.banned_channel.user.displayname %>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        id={"unban-channel-button-#{ban.banned_channel_id}"}
+                        class="close close-delete"
+                        title={gettext("Unban Channel")}
+                        phx-click="unban_channel"
+                        phx-value-id={ban.id}
+                      >
+                        &times;
+                      </button>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</Settings.page>

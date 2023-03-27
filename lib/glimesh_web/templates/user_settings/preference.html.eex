@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-body">
 
-            <%= form_for @preference_changeset, ~p"/users/settings/preference", [class: "form"], fn f -> %>
+            <%= form_for @preference_changeset, ~p"/users/settings/preferences", [class: "form"], fn f -> %>
 
             <h3><%= gettext("Accessibility") %></h3>
             <p><%= gettext("More accessibility options are coming soon to make Glimesh more comfortable for everyone.") %>

@@ -1,5 +1,5 @@
 defmodule GlimeshWeb.ChannelSettings.ChannelSettingsLive do
-  use GlimeshWeb, :settings_live_view
+  use GlimeshWeb, :live_view
 
   alias Glimesh.ChannelCategories
   alias Glimesh.Interactive
@@ -22,10 +22,12 @@ defmodule GlimeshWeb.ChannelSettings.ChannelSettingsLive do
       %Glimesh.Streams.Channel{} = channel ->
         {:ok,
          socket
+         |> put_page_title(gettext("Channel Settings"))
+         |> assign(form: to_form(Streams.change_channel(channel, %{})))
          |> assign(:stream_key, Streams.get_stream_key(channel))
          |> assign(:channel_hours, Streams.get_channel_hours(channel))
          |> assign(:channel_changeset, Streams.change_channel(channel, %{}))
-         |> assign(:categories, session["categories"])
+         |> assign(:categories, Glimesh.ChannelCategories.list_categories_for_select())
          |> assign(:channel, channel)
          |> assign(:category, channel.category)
          |> assign(
@@ -52,6 +54,10 @@ defmodule GlimeshWeb.ChannelSettings.ChannelSettingsLive do
       nil ->
         {:ok, redirect(socket, to: "/")}
     end
+  end
+
+  def handle_params(_, _, socket) do
+    {:noreply, socket}
   end
 
   @impl true
