@@ -152,7 +152,7 @@ defmodule GlimeshWeb.UserLive.Stream do
   end
 
   def handle_info({:channel, channel}, socket) do
-    if socket.assigns.status == "offline" and channel.status == "live" and
+    if socket.assigns.status == "offline" and Map.get(channel, :status) == "live" and
          socket.assigns.prompt_mature == false do
       Process.send(self(), :load_stream, [])
     end
