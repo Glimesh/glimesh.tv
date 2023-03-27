@@ -42,16 +42,7 @@ defmodule GlimeshWeb.Endpoint do
     gzip: Application.compile_env(:glimesh, :environment) == :prod,
     only: GlimeshWeb.static_paths()
 
-  if Application.compile_env(:waffle, :asset_host) do
-    # If we're using an asset host, we just want to redirect requests
-    plug GlimeshWeb.Plugs.Redirect,
-      from: "/uploads",
-      to: Application.compile_env(:waffle, :asset_host)
-  else
-    plug Plug.Static,
-      at: "/uploads",
-      from: Application.compile_env(:waffle, :storage_dir)
-  end
+  plug :uploads_path
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -87,6 +78,21 @@ defmodule GlimeshWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug GlimeshWeb.Router
+
+  defp uploads_path(conn, _opts) do
+    if Application.get_env(:waffle, :asset_host) do
+      # If we're using an asset host, we just want to redirect requests
+      GlimeshWeb.Plugs.Redirect.call(conn,
+        from: "/uploads",
+        to: Application.get_env(:waffle, :asset_host)
+      )
+    else
+      Plug.Static.call(conn,
+        at: "/uploads",
+        from: Application.get_env(:waffle, :storage_dir)
+      )
+    end
+  end
 
   defp canonical_host(conn, _opts) do
     case Application.get_env(:glimesh, GlimeshWeb.Endpoint)[:canonical_host] do
