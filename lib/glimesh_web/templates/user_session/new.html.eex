@@ -5,7 +5,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3>Login to our Alpha!</h3>
-                    <%= form_for @conn, ~p"/users/register", [as: :user], fn f -> %>
+                    <%= form_for @conn, ~p"/users/log_in", [as: :user], fn f -> %>
                     <%= if @error_message do %>
                     <div class="alert alert-danger">
                         <p><%= @error_message %></p>
