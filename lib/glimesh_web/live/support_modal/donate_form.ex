@@ -92,7 +92,7 @@ defmodule GlimeshWeb.SupportModal.DonateForm do
     user = socket.assigns.user
     streamer = socket.assigns.streamer
 
-    return_url = ~p"/#{streamer.username}/support/donate"
+    return_url = url(~p"/#{streamer.username}/support/donate")
 
     case Float.parse(amount) do
       {amount, _rem} ->
