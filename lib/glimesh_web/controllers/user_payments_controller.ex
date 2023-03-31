@@ -61,8 +61,6 @@ defmodule GlimeshWeb.UserPaymentsController do
         |> redirect(to: ~p"/users/payments")
 
       {:error, %Stripe.Error{} = err} ->
-        dbg(err)
-
         conn
         |> put_flash(:error, "There was an error accessing the Stripe API.")
         |> redirect(to: ~p"/users/payments")
