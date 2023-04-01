@@ -1,3 +1,5 @@
+// Disable Tracking for any libraries we may use
+window.HELP_IMPROVE_VIDEOJS = false;
 
 import "phoenix_html";
 import { Socket } from "phoenix";

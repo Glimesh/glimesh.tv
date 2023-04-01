@@ -1,5 +1,7 @@
 import WHEPPlayer from "../WhepPlayer";
 
+import videojs from "video.js";
+
 let player;
 
 export default {
@@ -18,6 +20,13 @@ export default {
             // WebRTC is not enabled / supported in the browser
             parent.pushEvent("webrtc_error", "WebRTC is not enabled in your browser.");
             return;
+        }
+
+        let video = videojs(container, {
+            fluid: true
+        });
+        video.play = () => {
+            container.play();
         }
 
         // this.handleEvent("load_video", ({ janus_url, channel_id }) => {

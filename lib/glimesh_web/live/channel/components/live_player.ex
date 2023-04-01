@@ -11,7 +11,7 @@ defmodule GlimeshWeb.Channel.Components.LivePlayer do
     ~H"""
     <video
       id={@id}
-      class="h-full mx-auto"
+      class="h-full mx-auto video-js vjs-theme-city"
       phx-hook="LivePlayer"
       controls
       playsinline
