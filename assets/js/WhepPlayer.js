@@ -17,7 +17,8 @@ export default class WHEPPlayer {
         this.pc.addEventListener("negotiationneeded", ev => this.log(ev));
 
         // let url = this.endpoint + "/" + channel_id;
-        let url = this.endpoint + channel_id;
+        // let url = this.endpoint + channel_id;
+        let url = "https://live.glimesh.tv/v1/whep/endpoint/16791"
         const resp = await fetch(url, {
             method: 'POST',
             redirect: 'follow',

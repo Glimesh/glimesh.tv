@@ -105,10 +105,14 @@ defmodule GlimeshWeb.Chat do
         <div id="channel-header" class="self-center bg-gray-800 m-2 p-2 rounded-lg text-center">
           <%= gettext("Welcome to chat! Follow the rules.") %>
         </div>
-        <div id="chat-messages" phx-update="append">
-          <%= for chat_message <- @chat_messages do %>
-            <MessageComponent.message message={chat_message} permissions={@permissions} user={@user} />
-          <% end %>
+        <div id="chat-messages">
+          <MessageComponent.message
+            :for={{dom_id, chat_message} <- @chat_messages}
+            id={dom_id}
+            message={chat_message}
+            permissions={@permissions}
+            user={@user}
+          />
         </div>
         <div
           id="more-chat-messages"

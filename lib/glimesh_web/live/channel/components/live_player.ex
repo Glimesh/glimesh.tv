@@ -1,7 +1,5 @@
-defmodule GlimeshWeb.Channel.Components.VideoPlayer do
+defmodule GlimeshWeb.Channel.Components.LivePlayer do
   use GlimeshWeb, :live_component
-
-  alias Glimesh.Streams.Channel
 
   attr :channel_id, :integer, required: true
   attr :janus_url, :string, default: ""
@@ -14,7 +12,7 @@ defmodule GlimeshWeb.Channel.Components.VideoPlayer do
     <video
       id={@id}
       class="h-full mx-auto"
-      phx-hook="FtlVideo"
+      phx-hook="LivePlayer"
       controls
       playsinline
       poster={@poster}

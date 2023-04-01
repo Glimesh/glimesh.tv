@@ -7,6 +7,7 @@ defmodule GlimeshWeb.Chat.Components.ChatMessage do
 
   alias GlimeshWeb.Components.UserEffects
 
+  attr :id, :string, required: true
   attr :message, ChatMessage, required: true
 
   attr :permissions, :map,
@@ -23,7 +24,7 @@ defmodule GlimeshWeb.Chat.Components.ChatMessage do
   def message(assigns) do
     ~H"""
     <div
-      id={"chat-message-#{@message.id}"}
+      id={@id}
       data-user-id={@message.user.id}
       class={[
         "bg-slate-800 m-2 rounded-lg p-2",

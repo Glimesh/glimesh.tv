@@ -5,7 +5,7 @@ defmodule GlimeshWeb.Channel.ChannelLive do
     ChannelPreview,
     ChannelTitle,
     ReportButton,
-    VideoPlayer
+    LivePlayer
   }
 
   alias GlimeshWeb.Components.UserEffects
@@ -49,7 +49,8 @@ defmodule GlimeshWeb.Channel.ChannelLive do
        |> assign(streamer: streamer)
        |> assign(user: maybe_user)
        |> assign(prompt_mature: false)
-       |> assign(player_error: false), temporary_assigns: [chat_messages: some_chat_messages]}
+       |> assign(player_error: false)
+       |> stream(:chat_messages, some_chat_messages)}
     end
   end
 end

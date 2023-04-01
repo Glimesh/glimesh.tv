@@ -5,7 +5,7 @@ defmodule GlimeshWeb.HomepageLive do
   alias Glimesh.QueryCache
 
   alias GlimeshWeb.Channels.Components.ChannelPreview
-  alias GlimeshWeb.Channels.Components.VideoPlayer
+  # alias GlimeshWeb.Channels.Components.VideoPlayer
   alias GlimeshWeb.Events.Components.EventMedia
 
   alias Surface.Components.LiveRedirect
@@ -20,7 +20,7 @@ defmodule GlimeshWeb.HomepageLive do
             <div class="card shadow rounded">
               <div class="row">
                 <div class="col-md-7">
-                  <VideoPlayer id="homepage-video-player" muted channel={@live_featured_event_channel} />
+                  VideoPlayer Here
                 </div>
                 <div class="col-md-5 py-4 pr-4">
                   <EventMedia event={@live_featured_event} show_img={false} />
@@ -31,7 +31,7 @@ defmodule GlimeshWeb.HomepageLive do
             <div class="row">
               <div class="col-md-7">
                 <div class="card shadow rounded">
-                  <VideoPlayer id="homepage-video-player" muted channel={@random_channel} />
+                  VideoPlayer Here
                   <div class="d-flex align-items-start p-2">
                     <img
                       src={Glimesh.Avatar.url({@random_channel.user.avatar, @random_channel.user}, :original)}
@@ -149,7 +149,7 @@ defmodule GlimeshWeb.HomepageLive do
         <div class="container container-stream-list">
           <div class="row">
             {#for channel <- @channels}
-              <ChannelPreview channel={channel} class="col-sm-12 col-md-6 col-xl-4 mt-2 mt-md-4" />
+              ChannelPreview Here
             {/for}
           </div>
         </div>

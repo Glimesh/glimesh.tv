@@ -10,7 +10,7 @@ defmodule GlimeshWeb.Chat.MessageForm do
 
   def render(assigns) do
     ~H"""
-    <div id="chat-form" phx-hook="Chat" data-emotes={@emotes}>
+    <div id="chat-form" data-emotes={@emotes}>
       <.form
         :let={f}
         for={@changeset}

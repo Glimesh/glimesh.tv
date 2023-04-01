@@ -8,6 +8,8 @@ topbar.config({ barColors: { 0: "#63efd6" }, shadowColor: "rgba(0, 0, 0, .3)" })
 window.addEventListener("phx:page-loading-start", info => topbar.show(300))
 window.addEventListener("phx:page-loading-stop", info => topbar.hide())
 
+import LivePlayer from "./hooks/LivePlayer";
+
 // import BSN from "bootstrap.native";
 // import bsCustomFileInput from "bs-custom-file-input";
 
@@ -57,12 +59,15 @@ window.addEventListener("phx:page-loading-stop", info => topbar.hide())
 // Hooks.MastodonShareButton = MastodonShareButton;
 // Hooks.TenorSearch = TenorSearch;
 
+let Hooks = {};
+Hooks.LivePlayer = LivePlayer;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
     params: {
         _csrf_token: csrfToken
-    }
+    },
+    hooks: Hooks
 });
 liveSocket.enableDebug();
 
