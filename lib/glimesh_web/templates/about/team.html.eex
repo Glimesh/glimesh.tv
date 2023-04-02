@@ -15,13 +15,22 @@
 <div class="row mt-4 mb-4">
     <%= for user <- @users do %>
     <div class="col-md-3 mb-4">
-
-        <div class="card text-center h-100">
+        <div class="card text-center h-100 d-flex flex-column justify-content-between">
             <h4 class="text-color-link mt-3 mb-3">
                 <%= link user.displayname, to: ~p"/#{user.username}/profile", class: "stretched-link text-color-link" %>
             </h4>
             <img src="<%= Glimesh.Avatar.url({user.avatar, user}, :original) %>" class="card-img-top img-avatar mx-auto mb-4" alt="<%= user.displayname %>">
-            <div class="card-body <%= Glimesh.Accounts.Profile.user_role_color(user) %> rounded-bottom">
+            <%= if user.is_community_champion and user.team_role != "Community Champion" do %>
+            <div class="card-foot bg-champion py-2">
+                <h5 class="card-title text-white mb-0">Community Champion</h5>
+            </div>
+            <% end %>
+            <%= if user.is_gct and user.team_role != "Core Team" do %>
+            <div class="card-foot bg-primary py-2">
+                <h5 class="card-title text-white mb-0">Core Team</h5>
+            </div>
+            <% end %>
+            <div class="card-foot <%= Glimesh.Accounts.Profile.user_role_color(user) %> rounded-bottom py-2">
                 <h5 class="card-title text-white mb-0"><%= user.team_role %></h5>
             </div>
         </div>
@@ -35,11 +44,11 @@
         <h2 class="text-center"><%= gettext("Join Us!") %></h2>
 
         <p>
-            <%= gettext("We also encourage our community to become part of our team as we know there are many talented people out there who wish to be part of something new. If you feel that you can offer Glimesh and the community your talents, whether that’s web development, designing, or moderation, then we would love to hear from you. If this is of any interest, please reach out to us in our Discord or head to") %><a href="https://build.glimesh.tv"> <%= gettext("Building Glimesh") %></a> <%= gettext("to get involved.") %>
+            We also encourage our community to become part of our team as we know there are many talented people out there who wish to be part of something new. If you feel that you can offer Glimesh and the community your talents, whether that’s web development, designing, or moderation, then we would love to hear from you. If this is of any interest, please reach out to us via the <a href="https://docs.google.com/forms/d/e/1FAIpQLSeu3bcQtVaQN8Jx-H-ft01LltbDcfVOJ-nlQTSi7pXJ2yhK7Q/viewform" target="_blank">Glimesh Contributor Form</a> to get started.
         </p>
 
         <div class="mt-4 mb-1 text-center">
-            <a href="https://glimesh.tv/s/discord" class="btn btn-primary btn-lg mx-4"><%= gettext("Join our Discord") %></a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeu3bcQtVaQN8Jx-H-ft01LltbDcfVOJ-nlQTSi7pXJ2yhK7Q/viewform" class="btn btn-primary btn-lg mx-4" target="_blank"><%= gettext("Glimesh Contributor Form") %></a>
         </div>
 
     </div>

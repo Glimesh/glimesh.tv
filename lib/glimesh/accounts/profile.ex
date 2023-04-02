@@ -12,13 +12,19 @@ defmodule Glimesh.Accounts.Profile do
         "bg-primary"
 
       "Community Champion" ->
-        "bg-success"
+        "bg-champion"
 
-      "Design Team" ->
-        "bg-info"
+      "Marketing" ->
+        "bg-marketing"
 
-      "Product Dev Team" ->
-        "bg-secondary"
+      "Design" ->
+        "bg-design"
+
+      "Development" ->
+        "bg-development"
+
+      "Business" ->
+        "bg-business"
 
       "Events Team" ->
         "bg-EventsTeam"
