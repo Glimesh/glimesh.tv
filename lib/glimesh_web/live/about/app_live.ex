@@ -6,7 +6,7 @@ defmodule GlimeshWeb.About.AppLive do
     ~H"""
     <div class="container" style="max-width: 2200px; padding-left: 0; padding-right: 0;">
       <div style="background-color: #5271fd;">
-        <div class="row mb-4">
+        <div class="flex">
           <div class="col d-none d-md-flex align-items-center">
             <img class="img-fluid" src={~p"/images/about/app/app-demo.gif"} />
           </div>
@@ -32,25 +32,13 @@ defmodule GlimeshWeb.About.AppLive do
           </div>
         </div>
 
-        <div class="row no-gutters">
-          <div class="col-6 col-sm-4 col-xl-2">
-            <img class="img-fluid" src={~p"/images/about/app/SC 1.jpg"} />
-          </div>
-          <div class="col-6 col-sm-4 col-xl-2">
-            <img class="img-fluid" src={~p"/images/about/app/SC 2.jpg"} />
-          </div>
-          <div class="col-6 col-sm-4 col-xl-2">
-            <img class="img-fluid" src={~p"/images/about/app/SC 3.jpg"} />
-          </div>
-          <div class="col-6 col-sm-4 col-xl-2">
-            <img class="img-fluid" src={~p"/images/about/app/SC 4.jpg"} />
-          </div>
-          <div class="col-6 col-sm-4 col-xl-2">
-            <img class="img-fluid" src={~p"/images/about/app/SC 5.jpg"} />
-          </div>
-          <div class="col-6 col-sm-4 col-xl-2">
-            <img class="img-fluid" src={~p"/images/about/app/SC 6.jpg"} />
-          </div>
+        <div class="flex">
+          <div><img src={~p"/images/about/app/SC 1.jpg"} /></div>
+          <div><img src={~p"/images/about/app/SC 2.jpg"} /></div>
+          <div><img src={~p"/images/about/app/SC 3.jpg"} /></div>
+          <div><img src={~p"/images/about/app/SC 4.jpg"} /></div>
+          <div><img src={~p"/images/about/app/SC 5.jpg"} /></div>
+          <div><img src={~p"/images/about/app/SC 6.jpg"} /></div>
         </div>
       </div>
     </div>
