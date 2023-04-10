@@ -311,14 +311,28 @@ defmodule GlimeshWeb.Router do
     get "/s/discord", ShortLinkController, :community_discord
 
     # This must be the last route
-    live "/:username", Channel.ChannelLive
+    # live "/:username", Channel.ChannelLive
     get "/:username/interactive", InteractiveController, :index
-    live "/:username/support", UserLive.Stream, :support
-    live "/:username/support/:tab", UserLive.Stream, :support
-    live "/:username/profile", UserLive.Profile, :index
-    live "/:username/profile/followers", UserLive.Followers, :followers
-    live "/:username/profile/following", UserLive.Followers, :following
-    live "/:username/chat", ChatLive.PopOut, :index
+    # live "/:username/support", Channel.ChannelLive, :support
+    # live "/:username/support/:tab", Channel.ChannelLive, :support
+    # live "/:username/profile", UserLive.Profile, :index
+    # live "/:username/profile/followers", UserLive.Followers, :followers
+    # live "/:username/profile/following", UserLive.Followers, :following
+    # live "/:username/chat", ChatLive.PopOut, :index
+  end
+
+  live_session :default, on_mount: {GlimeshWeb.UserLiveAuth, :default} do
+    scope "/", GlimeshWeb do
+      pipe_through [:browser]
+
+      live "/:username", Channel.ChannelLive, :index
+      live "/:username/support", Channel.ChannelLive, :support
+      live "/:username/support/:tab", Channel.ChannelLive, :support
+      live "/:username/profile", UserLive.Profile, :index
+      live "/:username/profile/followers", UserLive.Followers, :followers
+      live "/:username/profile/following", UserLive.Followers, :following
+      live "/:username/chat", ChatLive.PopOut, :index
+    end
   end
 
   use GlimeshWeb, :verified_routes

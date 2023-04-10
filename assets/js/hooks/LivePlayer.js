@@ -22,12 +22,12 @@ export default {
             return;
         }
 
-        let video = videojs(container, {
-            fluid: true
-        });
-        video.play = () => {
-            container.play();
-        }
+        // let video = videojs(container, {
+        //     fluid: true
+        // });
+        // video.play = () => {
+        //     container.play();
+        // }
 
         // this.handleEvent("load_video", ({ janus_url, channel_id }) => {
         if (true) {

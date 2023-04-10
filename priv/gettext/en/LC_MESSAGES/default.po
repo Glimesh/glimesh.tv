@@ -3606,7 +3606,7 @@ msgstr "Contributors"
 
 #: lib/glimesh_web/live/support_modal/support_modal.ex:248
 msgid "Gift Subscription"
-msgstr "Gift Subscriptions"
+msgstr "Gift Subscription"
 
 #: lib/glimesh_web/templates/about/team.html.eex:10
 msgid "Glimesh is not quite like a traditional company! We invite everyone to help build the platform, from coders, to moderators, to everything in between. We're a diverse group of individuals working together for a common cause and trying to leave the industry better than we found it. This page recognizes some of the people who have helped build Glimesh."

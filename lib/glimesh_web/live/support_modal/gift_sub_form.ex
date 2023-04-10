@@ -55,9 +55,7 @@ defmodule GlimeshWeb.SupportModal.GiftSubForm do
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary btn-block btn-lg">
-            <%= gettext("Proceed to Checkout") %>
-          </button>
+          <.button type="submit"><%= gettext("Proceed to Checkout") %></.button>
         </form>
       <% else %>
         <h4 class="mt-4"><%= gettext("What is Glimesh?") %></h4>

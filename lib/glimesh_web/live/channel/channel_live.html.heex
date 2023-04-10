@@ -6,14 +6,14 @@
       </div>
       <div class="">
         <div class="flex flex-row space-x-1">
-          <%!-- <%= if @has_some_support_option do %>
+          <%= if @has_some_support_option do %>
             <.link
-              navigate={~p"/#{@streamer.username}/support"}
+              patch={~p"/#{@streamer.username}/support"}
               class="btn-secondary flex items-center"
             >
               <Icons.support class="flex-shrink-0 w-6 h-6 mr-2" /> <%= gettext("Support") %>
             </.link>
-          <% end %> --%>
+          <% end %>
           <%!-- <.live_component
             module={GlimeshWeb.UserLive.Components.FollowButton}
             id="follow-button"
@@ -192,7 +192,17 @@
   </.card>
 </div>
 
-<%!-- <%= if @has_some_support_option and @show_support_modal do %>
+<%= if @live_action == :support do %>
+  <.live_component
+    module={GlimeshWeb.SupportModal}
+    id="support-modal"
+    streamer={@streamer}
+    tabs={@support_tabs}
+    tab={@support_modal_tab}
+    success_message={@support_success_message}
+    user={@current_user}
+  />
+  <%!--  
   <%= live_render(@socket, GlimeshWeb.SupportModal,
     id: "support-modal",
     session: %{
@@ -201,5 +211,5 @@
       "tab" => @support_modal_tab,
       "stripe_session_id" => @stripe_session_id
     }
-  ) %>
-<% end %> --%>
+  ) %> --%>
+<% end %>

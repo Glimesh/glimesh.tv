@@ -1,202 +1,257 @@
 defmodule GlimeshWeb.SupportModal do
-  use GlimeshWeb, :live_view
+  use GlimeshWeb, :live_component
 
-  @impl true
-  def mount(_params, %{"streamer" => streamer, "user" => nil} = session, socket) do
-    if session["locale"], do: Gettext.put_locale(session["locale"])
+  attr :streamer, Glimesh.Accounts.User, required: true
+  attr :user, Glimesh.Accounts.User
+  attr :tab, :string
+  attr :success_message, :string
 
-    channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
-
-    tabs = Glimesh.Streams.list_support_tabs(streamer, channel)
-    open_tab = user_input_tab(tabs, session["tab"])
-
-    {:ok,
-     socket
-     |> assign(:async_success_message, nil)
-     |> assign(:show_modal, Map.get(session, "shown", false))
-     |> assign(:site_theme, session["site_theme"])
-     |> assign(:streamer, streamer)
-     |> assign(:channel, channel)
-     |> assign(:is_the_streamer, false)
-     |> assign(:tabs, tabs)
-     |> assign(:tab, open_tab)
-     |> assign(:user, nil)}
-  end
-
-  @impl true
-  def mount(_params, %{"streamer" => streamer, "user" => user} = session, socket) do
-    if session["locale"], do: Gettext.put_locale(session["locale"])
-
-    channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
-
-    tabs = Glimesh.Streams.list_support_tabs(streamer, channel)
-
-    open_tab = user_input_tab(tabs, session["tab"])
-
-    async_success_message =
-      if session_id = Map.get(session, "stripe_session_id") do
-        case Stripe.Session.retrieve(session_id) do
-          {:ok, %Stripe.Session{payment_status: "paid"}} ->
-            "Your purchase has completed successfully! You can close this window to get back to the stream."
-
-          _ ->
-            nil
-        end
-      end
-
-    {:ok,
-     socket
-     |> assign(:async_success_message, async_success_message)
-     |> assign(:show_modal, Map.get(session, "shown", false))
-     |> assign(:site_theme, session["site_theme"])
-     |> assign(:is_the_streamer, streamer.id == user.id)
-     |> assign(:tabs, tabs)
-     |> assign(:tab, open_tab)
-     |> assign(:streamer, streamer)
-     |> assign(:channel, channel)
-     |> assign(:user, user)}
-  end
-
-  @impl true
   def render(assigns) do
+    assigns = Map.put(assigns, :is_the_streamer, false)
+
     ~H"""
-    <div
-      id="supportModal"
-      class="live-modal"
-      phx-capture-click="hide_modal"
-      phx-window-keydown="hide_modal"
-      phx-key="escape"
-      phx-target="#supportModal"
-      phx-page-loading
-    >
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
-              <%= gettext("Support %{streamer_username}", streamer_username: @streamer.username) %>
-            </h5>
-            <button type="button" class="close" phx-click="hide_modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-lg-2">
-                <div
-                  class="nav nav-pills flex-row flex-lg-column text-center"
-                  role="tablist"
-                  aria-orientation="vertical"
-                >
-                  <%= if "subscribe" in @tabs do %>
-                    <a
-                      phx-click="change_tab"
-                      phx-value-tab="subscribe"
-                      href="#"
-                      class={["nav-link text-color", if(@tab == "subscribe", do: "active")]}
-                    >
-                      <i class="fas fa-star fa-fw fa-2x"></i>
-                      <br />
-                      <%= gettext("Subscribe") %>
-                    </a>
-                  <% end %>
-                  <a
-                    phx-click="change_tab"
-                    phx-value-tab="gift_subscription"
-                    href="#"
-                    class={["mt-2 nav-link text-color", if(@tab == "gift_subscription", do: "active")]}
+    <div>
+      <div class="relative z-50">
+        <div class="fixed inset-0 bg-slate-700/50 transition-opacity" />
+        <div class="fixed inset-0 overflow-y-auto" role="dialog" aria-modal="true" tabindex="0">
+          <div class="flex min-h-full items-center justify-center">
+            <div class="w-full max-w-3xl">
+              <.focus_wrap
+                id="support-modal-focus-wrap"
+                phx-window-keydown={JS.patch(~p"/#{@streamer.username}")}
+                phx-key="escape"
+                phx-click-away={JS.patch(~p"/#{@streamer.username}")}
+                class="relative rounded-lg bg-gray-800 shadow-lg shadow-zinc-700/10 ring-1 ring-zinc-700/10 transition"
+              >
+                <div class="absolute top-5 right-5">
+                  <button
+                    phx-click={JS.patch(~p"/#{@streamer.username}")}
+                    type="button"
+                    class="-m-3 flex-none p-3 opacity-20 hover:opacity-40"
+                    aria-label={gettext("close")}
                   >
-                    <i class="fas fa-gift fa-fw fa-2x"></i>
-                    <br /> Gift a Sub
-                  </a>
-                  <%= if "donate" in @tabs do %>
-                    <a
-                      phx-click="change_tab"
-                      phx-value-tab="donate"
-                      href="#"
-                      class={["mt-2 nav-link text-color", if(@tab == "donate", do: "active")]}
-                    >
-                      <i class="fas fa-money-bill-wave fa-fw fa-2x"></i>
-                      <br /> Donate
-                    </a>
-                  <% end %>
-                  <%= if "streamloots" in @tabs do %>
-                    <a
-                      phx-click="change_tab"
-                      phx-value-tab="streamloots"
-                      href="#"
-                      class={["mt-lg-2 nav-link text-color", if(@tab == "streamloots", do: "active")]}
-                    >
-                      <%= if @site_theme == "light" do %>
-                        <img
-                          src="/images/support-modal/streamloots-logo-black.svg"
-                          alt=""
-                          height="40"
-                          width="32"
-                        />
-                      <% else %>
-                        <img
-                          src="/images/support-modal/streamloots-logo.svg"
-                          alt=""
-                          height="40"
-                          width="32"
-                        />
-                      <% end %>
-                      <br /> Streamloots
-                    </a>
-                  <% end %>
+                    <Heroicons.x_mark solid class="h-5 w-5 stroke-current" />
+                  </button>
                 </div>
-              </div>
-              <div class="col-lg-10">
-                <div class="tab-content" id="v-pills-tabContent">
-                  <div class="tab-pane fade show active mt-4 mb-4" role="tabpanel">
-                    <%= if @async_success_message do %>
-                      <p class="alert alert-success" role="alert"><%= @async_success_message %></p>
-                    <% end %>
+                <div>
+                  <div class="divide-y divide-slate-700 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
+                    <aside
+                      class="lg:col-span-3 rounded-tl-lg rounded-bl-lg bg-slate-800/75 space-y-4 py-4"
+                      aria-label="Sidebar"
+                    >
+                      <ul class="">
+                        <%= for link <- sidebar_items(@streamer, @tabs) do %>
+                          <li>
+                            <.link
+                              patch={link.to}
+                              replace
+                              class={[
+                                if(link.tab == @tab, do: "bg-slate-700/75"),
+                                "flex items-center px-4 p-2 text-base font-normal text-white cursor-pointer hover:bg-slate-700/75"
+                              ]}
+                            >
+                              <%= link.icon.(%{
+                                class:
+                                  "flex-shrink-0 w-6 h-6 transition duration-75 text-gray-400 group-hover:text-white"
+                              }) %>
+                              <span class="ml-3"><%= link.label %></span>
+                            </.link>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </aside>
 
-                    <%= if "subscribe" in @tabs and @tab == "subscribe" do %>
-                      <.subscribe_contents
-                        socket={@socket}
-                        is_the_streamer={@is_the_streamer}
-                        streamer={@streamer}
-                        user={@user}
-                      />
-                    <% end %>
+                    <div class="flex flex-col items-stretch justify-between bg-slate-800/75 lg:col-span-9">
+                      <div class="p-4 md:flex md:items-center md:justify-between">
+                        <div class="min-w-0 flex-1">
+                          <Title.h1>
+                            <%= gettext("Support %{streamer_username}",
+                              streamer_username: @streamer.username
+                            ) %>
+                          </Title.h1>
+                        </div>
+                      </div>
 
-                    <%= if "gift_subscription" in @tabs and @tab == "gift_subscription" do %>
-                      <.gift_subscription_contents
-                        socket={@socket}
-                        is_the_streamer={@is_the_streamer}
-                        streamer={@streamer}
-                        user={@user}
-                      />
-                    <% end %>
+                      <div class="flex-1 bg-slate-800 mt-[-1px] border-t border-slate-700">
+                        <div class="p-4">
+                          <%= if @success_message do %>
+                            <p class="alert alert-success" role="alert">
+                              <%= @success_message %>
+                            </p>
+                          <% end %>
 
-                    <%= if "donate" in @tabs and @tab == "donate" do %>
-                      <.donate_contents
-                        socket={@socket}
-                        is_the_streamer={@is_the_streamer}
-                        user={@user}
-                        streamer={@streamer}
-                      />
-                    <% end %>
+                          <%= if "subscribe" in @tabs and @tab == "subscribe" do %>
+                            <.subscribe_contents
+                              socket={@socket}
+                              is_the_streamer={@is_the_streamer}
+                              streamer={@streamer}
+                              user={@user}
+                            />
+                          <% end %>
 
-                    <%= if "streamloots" in @tabs and @tab == "streamloots" do %>
-                      <.streamloots_contents
-                        is_the_streamer={@is_the_streamer}
-                        streamer={@streamer}
-                        channel={@channel}
-                      />
-                    <% end %>
+                          <%= if "gift_subscription" in @tabs and @tab == "gift_subscription" do %>
+                            <.gift_subscription_contents
+                              socket={@socket}
+                              is_the_streamer={@is_the_streamer}
+                              streamer={@streamer}
+                              user={@user}
+                            />
+                          <% end %>
+
+                          <%= if "donate" in @tabs and @tab == "donate" do %>
+                            <.donate_contents
+                              socket={@socket}
+                              is_the_streamer={@is_the_streamer}
+                              user={@user}
+                              streamer={@streamer}
+                            />
+                          <% end %>
+
+                          <%= if "streamloots" in @tabs and @tab == "streamloots" do %>
+                            <.streamloots_contents
+                              is_the_streamer={@is_the_streamer}
+                              streamer={@streamer}
+                              channel={@streamer.channel}
+                            />
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </.focus_wrap>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <%!--
+        <div class="flex">
+          <div class="">
+            <div class="flex flex-col text-center" role="tablist" aria-orientation="vertical">
+              <%= if "subscribe" in @tabs do %>
+                <.link
+                  patch={~p"/#{@streamer.username}/support?tab=subscribe"}
+                  class={["rounded-lg", if(@tab == "subscribe", do: "bg-slate-700")]}
+                >
+                  <Heroicons.plus class="h-5 w-5 stroke-current" />
+                  <br />
+                  <%= gettext("Subscribe") %>
+                </.link>
+              <% end %>
+              <.link
+                patch={~p"/#{@streamer.username}/support?tab=gift_subscription"}
+                class={[
+                  "mt-2 nav-link text-color",
+                  if(@tab == "gift_subscription", do: "bg-slate-700")
+                ]}
+              >
+                <Heroicons.plus class="h-5 w-5 stroke-current" />
+                <br /> Gift a Sub
+              </.link>
+              <%= if "donate" in @tabs do %>
+                <.link
+                  patch={~p"/#{@streamer.username}/support?tab=donate"}
+                  class={["mt-2 nav-link text-color", if(@tab == "donate", do: "bg-slate-700")]}
+                >
+                  <Heroicons.plus class="h-5 w-5 stroke-current" />
+                  <br /> Donate
+                </.link>
+              <% end %>
+              <%= if "streamloots" in @tabs do %>
+                <.link
+                  patch={~p"/#{@streamer.username}/support?tab=streamloots"}
+                  class={[
+                    "mt-lg-2 nav-link text-color",
+                    if(@tab == "streamloots", do: "bg-slate-700")
+                  ]}
+                >
+                  <img src="/images/support-modal/streamloots-logo.svg" alt="" height="40" width="32" />
+                  <br /> Streamloots
+                </.link>
+              <% end %>
+            </div>
+          </div>
+          <div class="flex-1">
+            <div class="tab-content" id="v-pills-tabContent">
+              <div class="tab-pane fade show active mt-4 mb-4" role="tabpanel">
+                <%= if @success_message do %>
+                  <p class="alert alert-success" role="alert"><%= @success_message %></p>
+                <% end %>
+
+                <%= if "subscribe" in @tabs and @tab == "subscribe" do %>
+                  <.subscribe_contents
+                    socket={@socket}
+                    is_the_streamer={@is_the_streamer}
+                    streamer={@streamer}
+                    user={@user}
+                  />
+                <% end %>
+
+                <%= if "gift_subscription" in @tabs and @tab == "gift_subscription" do %>
+                  <.gift_subscription_contents
+                    socket={@socket}
+                    is_the_streamer={@is_the_streamer}
+                    streamer={@streamer}
+                    user={@user}
+                  />
+                <% end %>
+
+                <%= if "donate" in @tabs and @tab == "donate" do %>
+                  <.donate_contents
+                    socket={@socket}
+                    is_the_streamer={@is_the_streamer}
+                    user={@user}
+                    streamer={@streamer}
+                  />
+                <% end %>
+
+                <%= if "streamloots" in @tabs and @tab == "streamloots" do %>
+                  <.streamloots_contents
+                    is_the_streamer={@is_the_streamer}
+                    streamer={@streamer}
+                    channel={@channel}
+                  />
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </.modal>
+    </div> --%>
     """
+  end
+
+  defp sidebar_items(streamer, tabs) do
+    allowed_tabs = [
+      %{
+        to: ~p"/#{streamer.username}/support?tab=subscribe",
+        tab: "subscribe",
+        icon: &Icons.user/1,
+        label: gettext("Subscription")
+      },
+      %{
+        to: ~p"/#{streamer.username}/support?tab=gift_subscription",
+        tab: "gift_subscription",
+        icon: &Icons.user/1,
+        label: gettext("Gift Subscription")
+      },
+      %{
+        to: ~p"/#{streamer.username}/support?tab=donate",
+        tab: "donate",
+        icon: &Icons.user/1,
+        label: gettext("Donate")
+      },
+      %{
+        to: ~p"/#{streamer.username}/support?tab=streamloots",
+        tab: "streamloots",
+        icon: &Icons.user/1,
+        label: gettext("Streamloots")
+      }
+    ]
+
+    Enum.reject(allowed_tabs, fn x -> x.tab not in tabs end)
   end
 
   def subscribe_contents(assigns) do
@@ -341,26 +396,5 @@ defmodule GlimeshWeb.SupportModal do
       </div>
     </div>
     """
-  end
-
-  @impl true
-  def handle_event("hide_modal", _value, socket) do
-    {:noreply,
-     socket
-     |> push_patch(to: ~p"/#{socket.assigns.streamer.username}")
-     |> assign(:async_success_message, nil)}
-  end
-
-  @impl true
-  def handle_event("change_tab", %{"tab" => tab}, socket) do
-    {:noreply, socket |> assign(:tab, tab)}
-  end
-
-  defp user_input_tab(tabs, input) do
-    if input in tabs do
-      input
-    else
-      if length(tabs) > 0, do: hd(tabs), else: nil
-    end
   end
 end
