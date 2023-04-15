@@ -64,7 +64,7 @@ defmodule GlimeshWeb.Router do
   scope "/api/webhook", GlimeshWeb do
     pipe_through :api
 
-    # post "/stripe", WebhookController, :stripe
+    # Stripe Webhook lives in GlimeshWeb.Endpoint
     post "/taxidpro", WebhookController, :taxidpro
   end
 

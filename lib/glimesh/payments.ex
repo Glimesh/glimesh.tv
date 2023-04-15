@@ -38,24 +38,27 @@ defmodule Glimesh.Payments do
 
   def list_all_subscriptions do
     Repo.replica().all(
-      from s in Subscription,
+      from(s in Subscription,
         where: s.is_active == true
+      )
     )
     |> Repo.preload([:user, :streamer])
   end
 
   def list_streamer_subscribers(streamer) do
     Repo.replica().all(
-      from s in Subscription,
+      from(s in Subscription,
         where: s.streamer_id == ^streamer.id and s.is_active == true
+      )
     )
     |> Repo.preload([:user, :streamer])
   end
 
   def list_user_subscriptions(user) do
     Repo.replica().all(
-      from s in Subscription,
+      from(s in Subscription,
         where: s.user_id == ^user.id and s.is_active == true and not is_nil(s.streamer_id)
+      )
     )
     |> Repo.preload([:user, :streamer])
   end
@@ -109,75 +112,6 @@ defmodule Glimesh.Payments do
     |> handle_stripe_subscription_create(user, sub_attrs)
   end
 
-  def subscribe_to_channel(user, streamer, product_id, price_id) do
-    case get_channel_subscription(user, streamer) do
-      %Subscription{} = sub ->
-        if is_nil(sub.stripe_subscription_id) and not is_nil(sub.from_user_id) do
-          convert_gift_to_subscription(user, streamer, price_id)
-        else
-          # Is this right?
-          new_subscription_to_channel(user, streamer, product_id, price_id)
-        end
-
-      _ ->
-        new_subscription_to_channel(user, streamer, product_id, price_id)
-    end
-  end
-
-  def new_subscription_to_channel(user, streamer, product_id, price_id) do
-    if user.id == streamer.id do
-      raise ArgumentError, "You cannot subscribe to yourself."
-    end
-
-    if has_channel_subscription?(user, streamer) do
-      raise ArgumentError, "You already have an active subscription to this streamer."
-    end
-
-    customer_id = Accounts.get_stripe_customer_id(user)
-
-    {:ok, product} = Stripe.Product.retrieve(product_id)
-    {:ok, price} = Stripe.Price.retrieve(price_id)
-
-    stripe_input = %{
-      customer: customer_id,
-      items: [%{price: price_id}]
-    }
-
-    glimesh_cut_percent = 50
-
-    sub_attrs = %{
-      user: user,
-      streamer: streamer,
-      stripe_product_id: product_id,
-      stripe_price_id: price_id,
-      price: price.unit_amount,
-      fee: trunc(glimesh_cut_percent / 100 * price.unit_amount),
-      payout: trunc(price.unit_amount - glimesh_cut_percent / 100 * price.unit_amount),
-      product_name: product.name
-    }
-
-    results =
-      Stripe.Subscription.create(stripe_input, expand: ["latest_invoice.payment_intent"])
-      |> handle_stripe_subscription_create(user, sub_attrs)
-
-    case results do
-      {:ok, %Subscription{}} ->
-        channel = Glimesh.ChannelLookups.get_channel_for_user(streamer)
-
-        if !is_nil(channel) and Glimesh.Chat.can_create_chat_message?(channel, user) do
-          Glimesh.Chat.create_chat_message(user, channel, %{
-            message: " just subscribed!",
-            is_subscription_message: true
-          })
-        end
-
-        results
-
-      _ ->
-        results
-    end
-  end
-
   def convert_gift_to_subscription(user, streamer, price_id) do
     if user.id == streamer.id do
       raise ArgumentError, "You cannot subscribe to yourself."
@@ -213,6 +147,76 @@ defmodule Glimesh.Payments do
     end
   end
 
+  @stripe_payment_methods [
+    "card",
+    "bancontact",
+    "eps",
+    "giropay",
+    "ideal",
+    "p24",
+    "sepa_debit",
+    "sofort"
+  ]
+
+  @doc """
+  Starts a subscription for a user.
+  This method is bundled with a webhook from Stripe to finalize the subscription.
+
+  Currently no state is saved unless the webhook comes back through the API.
+  If a checkout session is abandoned, Stripe will automatically delete it in a day.
+  We should make sure our system deletes the record too.
+  """
+  def start_subscription(
+        %User{} = user,
+        %User{} = streamer,
+        amount_in_cents,
+        return_url
+      )
+      when is_integer(amount_in_cents) do
+    possible_channel_sub = get_channel_subscription(user, streamer)
+
+    cond do
+      not is_nil(possible_channel_sub) ->
+        {:validation, "The recipient already has a subscription for this channel."}
+
+      user.id == streamer.id ->
+        {:validation, "You cannot subscribe to yourself."}
+
+      amount_in_cents < 100 or amount_in_cents > 10_000 ->
+        {:validation, "Amount must be more than 1.00 and less than 100.00."}
+
+      true ->
+        description = "Subscription to #{streamer.displayname}"
+
+        stripe_input = %{
+          "cancel_url" => return_url,
+          "success_url" => return_url <> "?stripe_session_id={CHECKOUT_SESSION_ID}",
+          "mode" => "subscription",
+          "payment_method_types" => @stripe_payment_methods,
+          "customer" => Accounts.get_stripe_customer_id(user),
+          "subscription_data" => %{
+            "description" => description
+          },
+          "line_items" => [
+            %{
+              "price" => get_channel_sub_base_price_id(),
+              "quantity" => 1
+            }
+          ],
+          "metadata" => %{
+            "type" => "subscription",
+            "product_id" => get_channel_sub_base_product_id(),
+            "price_id" => get_channel_sub_base_price_id(),
+            "user_id" => user.id,
+            "streamer_id" => streamer.id,
+            "amount" => amount_in_cents
+          }
+        }
+
+        Stripe.Session.create(stripe_input)
+    end
+  end
+
   @doc """
   Start a channel donation by creating a Stripe Checkout Session, and returning a URL that the user can finish the payment on. This method is bundled with a webhook from Stripe to finalize the donation.
 
@@ -235,9 +239,7 @@ defmodule Glimesh.Payments do
           "cancel_url" => return_url,
           "success_url" => return_url <> "?stripe_session_id={CHECKOUT_SESSION_ID}",
           "mode" => "payment",
-          "payment_method_types" => [
-            "card"
-          ],
+          "payment_method_types" => @stripe_payment_methods,
           "submit_type" => "donate",
           "customer" => Accounts.get_stripe_customer_id(user),
           "payment_intent_data" => %{
@@ -312,9 +314,7 @@ defmodule Glimesh.Payments do
           "cancel_url" => return_url,
           "success_url" => return_url <> "?stripe_session_id={CHECKOUT_SESSION_ID}",
           "mode" => "payment",
-          "payment_method_types" => [
-            "card"
-          ],
+          "payment_method_types" => @stripe_payment_methods,
           "submit_type" => "pay",
           "customer" => Accounts.get_stripe_customer_id(user_doing_gifting),
           "payment_intent_data" => %{
@@ -499,7 +499,7 @@ defmodule Glimesh.Payments do
   Does the user have payout history we should not be deleting from Stripe?
   """
   def has_payout_history?(%User{} = user) do
-    Repo.exists?(from s in Subscription, where: s.streamer_id == ^user.id)
+    Repo.exists?(from(s in Subscription, where: s.streamer_id == ^user.id))
   end
 
   @doc """
@@ -527,8 +527,9 @@ defmodule Glimesh.Payments do
 
   def get_subscription_by_stripe_id(subscription_id) when is_binary(subscription_id) do
     Repo.one(
-      from s in Subscription,
+      from(s in Subscription,
         where: s.stripe_subscription_id == ^subscription_id
+      )
     )
   end
 
@@ -536,45 +537,50 @@ defmodule Glimesh.Payments do
 
   def get_platform_subscription(user) do
     Repo.one(
-      from s in Subscription,
+      from(s in Subscription,
         where: s.user_id == ^user.id and s.is_active == true and is_nil(s.streamer_id)
+      )
     )
     |> Repo.preload(:user)
   end
 
   def is_platform_subscriber?(user) do
     Repo.exists?(
-      from s in Subscription,
+      from(s in Subscription,
         where: s.user_id == ^user.id and s.is_active == true and is_nil(s.streamer_id)
+      )
     )
   end
 
   def is_platform_supporter_subscriber?(user) do
     Repo.exists?(
-      from s in Subscription,
+      from(s in Subscription,
         where:
           s.user_id == ^user.id and
             s.is_active == true and
             is_nil(s.streamer_id) and
             s.stripe_product_id == ^get_platform_sub_supporter_product_id()
+      )
     )
   end
 
   def is_platform_founder_subscriber?(user) do
     Repo.exists?(
-      from s in Subscription,
+      from(s in Subscription,
         where:
           s.user_id == ^user.id and
             s.is_active == true and
             is_nil(s.streamer_id) and
             s.stripe_product_id == ^get_platform_sub_founder_product_id()
+      )
     )
   end
 
   def get_channel_subscriptions(user) do
     Repo.replica().all(
-      from s in Subscription,
+      from(s in Subscription,
         where: s.user_id == ^user.id and s.is_active == true and not is_nil(s.streamer_id)
+      )
     )
     |> Repo.preload([:user, :streamer, :from_user])
   end
@@ -605,18 +611,20 @@ defmodule Glimesh.Payments do
 
   def has_channel_subscription?(user, streamer) do
     Repo.exists?(
-      from s in Subscription,
+      from(s in Subscription,
         where:
           s.user_id == ^user.id and
             s.is_active == true and
             s.streamer_id == ^streamer.id
+      )
     )
   end
 
   def is_subscribed?(%Channel{} = channel, %User{} = user) do
     Repo.exists?(
-      from s in Subscription,
+      from(s in Subscription,
         where: s.user_id == ^user.id and s.is_active == true and s.streamer_id == ^channel.user_id
+      )
     )
   end
 
@@ -626,10 +634,11 @@ defmodule Glimesh.Payments do
       fn ->
         {:ok,
          Repo.replica().all(
-           from s in Subscription,
+           from(s in Subscription,
              where:
                s.is_active == true and is_nil(s.streamer_id) and
                  s.stripe_product_id == ^get_platform_sub_founder_product_id()
+           )
          )
          |> Repo.preload(:user)}
       end
@@ -642,10 +651,11 @@ defmodule Glimesh.Payments do
       fn ->
         {:ok,
          Repo.replica().all(
-           from s in Subscription,
+           from(s in Subscription,
              where:
                s.is_active == true and is_nil(s.streamer_id) and
                  s.stripe_product_id == ^get_platform_sub_supporter_product_id()
+           )
          )
          |> Repo.preload(:user)}
       end
@@ -663,33 +673,37 @@ defmodule Glimesh.Payments do
 
   def sum_incoming(user) do
     Repo.one(
-      from s in Subscription,
+      from(s in Subscription,
         select: sum(s.payout),
         where: s.streamer_id == ^user.id and s.is_active == true
+      )
     )
   end
 
   def sum_outgoing(user) do
     Repo.one(
-      from s in Subscription,
+      from(s in Subscription,
         select: sum(s.price),
         where: s.user_id == ^user.id and s.is_active == true
+      )
     )
   end
 
   def count_incoming(user) do
     Repo.one(
-      from s in Subscription,
+      from(s in Subscription,
         select: count(s.id),
         where: s.streamer_id == ^user.id and s.is_active == true
+      )
     )
   end
 
   def count_outgoing(user) do
     Repo.one(
-      from s in Subscription,
+      from(s in Subscription,
         select: count(s.id),
         where: s.user_id == ^user.id and s.is_active == true
+      )
     )
   end
 
@@ -703,11 +717,12 @@ defmodule Glimesh.Payments do
 
   def list_payables_history(%User{} = user) do
     Repo.replica().all(
-      from p in Payable,
+      from(p in Payable,
         select: struct(p, [:streamer_payout_at, :streamer_payout_amount, :stripe_transfer_id]),
         where: p.streamer_id == ^user.id and not is_nil(p.streamer_payout_at),
         group_by: [p.streamer_payout_at, p.streamer_payout_amount, p.stripe_transfer_id],
         order_by: [desc: p.streamer_payout_at]
+      )
     )
   end
 
@@ -805,25 +820,28 @@ defmodule Glimesh.Payments do
 
   def get_subscription_invoice_by_stripe_id(invoice_id) when is_binary(invoice_id) do
     Repo.one(
-      from s in SubscriptionInvoice,
+      from(s in SubscriptionInvoice,
         where: s.stripe_invoice_id == ^invoice_id
+      )
     )
   end
 
   def list_unpaidout_invoices do
     Repo.replica().all(
-      from si in SubscriptionInvoice,
+      from(si in SubscriptionInvoice,
         where:
           not is_nil(si.streamer_id) and si.user_paid == true and si.streamer_paidout == false
+      )
     )
   end
 
   def list_unpaidout_payables do
     Repo.replica().all(
-      from pb in Payable,
+      from(pb in Payable,
         where:
           not is_nil(pb.streamer_id) and not is_nil(pb.user_paid_at) and
             is_nil(pb.streamer_payout_at)
+      )
     )
   end
 
@@ -907,8 +925,9 @@ defmodule Glimesh.Payments do
 
   def get_payable_by_source(source, reference) when is_binary(source) and is_binary(reference) do
     Repo.one(
-      from pb in Payable,
+      from(pb in Payable,
         where: pb.external_source == ^source and pb.external_reference == ^reference
+      )
     )
   end
 
@@ -967,8 +986,9 @@ defmodule Glimesh.Payments do
   def convert_subscription_invoices_to_payables do
     subscription_invoices =
       Repo.replica().all(
-        from si in SubscriptionInvoice,
+        from(si in SubscriptionInvoice,
           where: not is_nil(si.streamer_id)
+        )
       )
 
     Enum.each(subscription_invoices, fn %SubscriptionInvoice{} = invoice ->

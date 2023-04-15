@@ -74,7 +74,7 @@ defmodule GlimeshWeb.Channel.ChannelLive do
   def apply_action(:support, params, socket) do
     support_success_message =
       if session_id = Map.get(params, "stripe_session_id") do
-        case Stripe.Session.retrieve(session_id) do
+        case Stripe.Session.retrieve(session_id) |> dbg() do
           {:ok, %Stripe.Session{payment_status: "paid"}} ->
             "Your purchase has completed successfully! You can close this window to get back to the stream."
 

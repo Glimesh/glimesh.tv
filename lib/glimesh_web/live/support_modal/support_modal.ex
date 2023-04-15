@@ -1,10 +1,10 @@
 defmodule GlimeshWeb.SupportModal do
   use GlimeshWeb, :live_component
 
-  attr :streamer, Glimesh.Accounts.User, required: true
-  attr :user, Glimesh.Accounts.User
-  attr :tab, :string
-  attr :success_message, :string
+  attr(:streamer, Glimesh.Accounts.User, required: true)
+  attr(:user, Glimesh.Accounts.User)
+  attr(:tab, :string)
+  attr(:success_message, :string)
 
   def render(assigns) do
     assigns = Map.put(assigns, :is_the_streamer, false)
@@ -226,25 +226,25 @@ defmodule GlimeshWeb.SupportModal do
   defp sidebar_items(streamer, tabs) do
     allowed_tabs = [
       %{
-        to: ~p"/#{streamer.username}/support?tab=subscribe",
+        to: ~p"/#{streamer.username}/support/subscribe",
         tab: "subscribe",
         icon: &Icons.user/1,
         label: gettext("Subscription")
       },
       %{
-        to: ~p"/#{streamer.username}/support?tab=gift_subscription",
+        to: ~p"/#{streamer.username}/support/gift_subscription",
         tab: "gift_subscription",
         icon: &Icons.user/1,
         label: gettext("Gift Subscription")
       },
       %{
-        to: ~p"/#{streamer.username}/support?tab=donate",
+        to: ~p"/#{streamer.username}/support/donate",
         tab: "donate",
         icon: &Icons.user/1,
         label: gettext("Donate")
       },
       %{
-        to: ~p"/#{streamer.username}/support?tab=streamloots",
+        to: ~p"/#{streamer.username}/support/streamloots",
         tab: "streamloots",
         icon: &Icons.user/1,
         label: gettext("Streamloots")
@@ -270,11 +270,6 @@ defmodule GlimeshWeb.SupportModal do
           <li><%= gettext("Channel sub badge") %></li>
         </ul>
 
-        <img
-          src="/images/stripe-badge-white.png"
-          alt="We use Stripe as our payment provider."
-          class="img-fluid mt-4 mx-auto d-block"
-        />
       </div>
       <div class="col-sm">
         <%= if @is_the_streamer do %>
@@ -284,10 +279,11 @@ defmodule GlimeshWeb.SupportModal do
             ) %>
           </p>
         <% else %>
-          <%= live_render(@socket, GlimeshWeb.SupportModal.SubForm,
-            id: "sub-form",
-            session: %{"user" => @user, "streamer" => @streamer}
-          ) %>
+        <%= live_component(GlimeshWeb.SupportModal.SubForm,
+          id: "subscription-form",
+          user: @user,
+          streamer: @streamer
+        ) %>
         <% end %>
       </div>
     </div>

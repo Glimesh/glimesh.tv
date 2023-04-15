@@ -79,7 +79,7 @@ defmodule GlimeshWeb.Chat do
   end
 
   defp user_preferences_or_empty(user) do
-    Accounts.get_user_preference!(user)
+    Accounts.get_user_preference(user)
   end
 
   defp user_preferences_or_empty(_) do

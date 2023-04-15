@@ -195,6 +195,14 @@ defmodule Glimesh.Accounts do
   Get the user preference.
   Due to a possible race condition, we must query the write server for this information.
   """
+  def get_user_preference(nil) do
+    %UserPreference{}
+  end
+
+  def get_user_preference(%User{} = user) do
+    Repo.get_by(UserPreference, user_id: user.id)
+  end
+
   def get_user_preference!(%User{} = user) do
     Repo.get_by!(UserPreference, user_id: user.id)
   end
