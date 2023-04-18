@@ -25,6 +25,15 @@ module.exports = {
             colors: {
                 'seafoam': '#63efd6'
             },
+            keyframes: {
+                'swing': {
+                    '0%,100%': { transform: 'rotate(10deg)' },
+                    '50%': { transform: 'rotate(-10deg)' }
+                }
+            },
+            animation: {
+                'swing': 'swing 1s infinite'
+            }
         },
         fontFamily: {
             // sans: ['Roboto', 'sans-serif']

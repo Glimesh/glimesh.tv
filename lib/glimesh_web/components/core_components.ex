@@ -370,15 +370,23 @@ defmodule GlimeshWeb.CoreComponents do
   attr :type, :string, default: nil
   attr :class, :string, default: nil
   attr :rest, :global, include: ~w(disabled form name value)
+  attr :size, :string, default: "base", values: ["sm", "base", "lg"]
 
   slot :inner_block, required: true
 
   def button(assigns) do
+    size_css = %{
+      "sm" => "text-sm font-medium py-1 px-2",
+      "base" => "text-base font-normal py-2 px-3",
+      "lg" => "text-lg font-normal py-2 px-3"
+    }
+
     ~H"""
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 inline-flex items-center gap-x-1.5 rounded-lg bg-seafoam py-2 px-3 text-base font-normal text-gray-800 shadow-sm hover:bg-teal-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-teal-400",
+        "phx-submit-loading:opacity-75 inline-flex items-center gap-x-1.5 rounded-lg bg-seafoam text-gray-800 shadow-sm hover:bg-teal-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-teal-400",
+        Map.get(size_css, @size),
         @class
       ]}
       {@rest}
