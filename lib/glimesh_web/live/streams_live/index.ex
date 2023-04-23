@@ -10,33 +10,12 @@ defmodule GlimeshWeb.StreamsLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <div>
-      <div class="flex justify-between bg-gray-800 sm:hidden px-4 pb-2">
-        <%= for {name, category, icon} <- list_categories() do %>
-          <.link
-            navigate={
-              if(@category && @category.slug == category,
-                do: ~p"/streams",
-                else: ~p"/streams/#{category}"
-              )
-            }
-            class={[
-              " hover:text-white text-center flex flex-col items-center",
-              if(@category && @category.slug == category, do: "text-white", else: "text-slate-300")
-            ]}
-          >
-            <%= icon.(%{class: "h-8 text-center"}) %>
-            <small class="text-center"><%= name %></small>
-          </.link>
-        <% end %>
-      </div>
-
-      <div class="container mx-auto">
-        <Title.h1><%= @title %></Title.h1>
-
-        <div class="hidden sm:flex justify-between w-96 mx-auto">
-          <%= for {name, category, icon} <- list_categories() do %>
-            <div>
+    <div class="overflow-hidden rounded-lg shadow">
+      <div class="m-4 divide-y divide-slate-700 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
+        <aside class="lg:col-span-2 bg-slate-800/75 space-y-4 py-4">
+          <!-- Mobile -->
+          <div class="flex justify-between bg-gray-800 sm:hidden px-4 pb-2">
+            <%= for {name, category, icon} <- list_categories() do %>
               <.link
                 navigate={
                   if(@category && @category.slug == category,
@@ -45,66 +24,233 @@ defmodule GlimeshWeb.StreamsLive.Index do
                   )
                 }
                 class={[
-                  "text-center flex flex-col items-center",
+                  " hover:text-white text-center flex flex-col items-center",
+                  if(@category && @category.slug == category, do: "text-white", else: "text-slate-300")
+                ]}
+              >
+                <%= icon.(%{class: "h-8 text-center"}) %>
+                <small class="text-center"><%= name %></small>
+              </.link>
+            <% end %>
+          </div>
+
+          <div class="flex flex-col justify-between mx-auto space-y-2">
+            <%= for {name, category, icon} <- list_categories() do %>
+              <.link
+                navigate={
+                  if(@category && @category.slug == category,
+                    do: ~p"/streams",
+                    else: ~p"/streams/#{category}"
+                  )
+                }
+                class={[
+                  "text-center flex flex-row items-center",
                   if(@category && @category.slug == category, do: "text-white")
                 ]}
               >
-                <%= icon.(%{class: "h-12"}) %>
-                <small class="text-color-link"><%= name %></small>
+                <%= icon.(%{class: "w-6"}) %>
+                <span class="pl-4 text-color-link"><%= name %></span>
               </.link>
-            </div>
-          <% end %>
-        </div>
-      </div>
-
-      <div class={[
-        "my-4",
-        if(@show_filters, do: "d-block", else: "d-none d-lg-block")
-      ]}>
-        <form>
-          <div class="flex justify-between">
-            <div class="">
-              <label for="validationCustom01">
-                <%= Glimesh.ChannelCategories.get_subcategory_label(@category) %>
-              </label>
-              <div id="subcategoryFilter"></div>
-              <p class="mb-0">
-                <%= Glimesh.ChannelCategories.get_subcategory_attribution(@category) %>
-              </p>
-            </div>
-            <div class="">
-              <label for="validationCustom01"><%= gettext("Tags") %></label>
-              <div id="tagify" phx-update="ignore"></div>
-            </div>
-            <div class="">
-              <label for="validationCustom02"><%= gettext("Language") %></label>
-              <%= select(:form, :language, @locales,
-                value: @prefilled_language,
-                class: "custom-select"
-              ) %>
-            </div>
-            <div class="">
-              <%= gettext("Showing %{count_channels} of %{total_channels} Live Channels",
-                count_channels: length(@channels),
-                total_channels: length(@channels)
-              ) %>
-
-              <br />
-
-              <%= link(gettext("Remove Filters"),
-                to: ~p"/streams",
-                class: "btn btn-primary"
-              ) %>
-            </div>
+            <% end %>
           </div>
-        </form>
-      </div>
 
-      <div class="mx-auto max-w-[2000px] px-2">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-          <%= for channel <- @channels do %>
-            <ChannelPreview.thumbnail_and_info channel={channel} />
-          <% end %>
+          <div class="my-4">
+            <%!--
+          <fieldset>
+            <legend class="w-full px-2">
+              <!-- Expand/collapse section button -->
+              <button
+                type="button"
+                class="flex w-full items-center justify-between p-2 "
+                aria-controls="filter-section-0"
+                aria-expanded="false"
+              >
+                <span class="text-sm font-medium">Category</span>
+                <span class="ml-6 flex h-7 items-center">
+                  <!--
+                        Expand/collapse icon, toggle classes based on section open state.
+
+                        Open: "-rotate-180", Closed: "rotate-0"
+                      -->
+                  <svg
+                    class="rotate-0 h-5 w-5 transform"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </legend>
+            <div class="px-4 pb-2 pt-4" id="filter-section-0">
+              <div class="space-y-2">
+                <div
+                  :for={category <- @live_subcategories}
+                  class="flex items-center p-4 bg-center bg-cover rounded-lg bg-slate-600"
+                  style={[
+                    "background-image: url('#{category.background_image}'); text-shadow: 0.07em 0 black, 0 0.07em black, -0.07em 0 black, 0 -0.07em black;"
+                  ]}
+                >
+                  <input
+                    id="color-0-mobile"
+                    name="color[]"
+                    value="white"
+                    type="checkbox"
+                    class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <label for="color-0-mobile" class="ml-3 text-sm"><%= category.name %></label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          --%>
+
+            <fieldset>
+              <legend class="w-full px-2">
+                <!-- Expand/collapse section button -->
+                <button
+                  type="button"
+                  class="flex w-full items-center justify-between p-2 "
+                  aria-controls="filter-section-0"
+                  aria-expanded="false"
+                >
+                  <span class="text-sm font-medium">Tag</span>
+                  <span class="ml-6 flex h-7 items-center">
+                    <!--
+                        Expand/collapse icon, toggle classes based on section open state.
+
+                        Open: "-rotate-180", Closed: "rotate-0"
+                      -->
+                    <svg
+                      class="rotate-0 h-5 w-5 transform"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </legend>
+              <div class="px-4 pb-2 pt-4" id="filter-section-0">
+                <div class="space-y-4">
+                  <div :for={category <- @live_subcategories} class="flex items-center">
+                    <input
+                      id="color-0-mobile"
+                      name="color[]"
+                      value="white"
+                      type="checkbox"
+                      class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <label for="color-0-mobile" class="ml-3 text-sm"><%= category.name %></label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend class="w-full px-2">
+                <!-- Expand/collapse section button -->
+                <button
+                  type="button"
+                  class="flex w-full items-center justify-between p-2 "
+                  aria-controls="filter-section-0"
+                  aria-expanded="false"
+                >
+                  <span class="text-sm font-medium">Tag</span>
+                  <span class="ml-6 flex h-7 items-center">
+                    <!--
+                        Expand/collapse icon, toggle classes based on section open state.
+
+                        Open: "-rotate-180", Closed: "rotate-0"
+                      -->
+                    <svg
+                      class="rotate-0 h-5 w-5 transform"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </legend>
+              <div class="px-4 pb-2 pt-4" id="filter-section-0">
+                <div class="space-y-4">
+                  <div :for={tag <- @live_tags} class="flex items-center">
+                    <input
+                      id="color-0-mobile"
+                      name="color[]"
+                      value="white"
+                      type="checkbox"
+                      class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <label for="color-0-mobile" class="ml-3 text-sm"><%= tag.name %></label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <form>
+              <div class="flex flex-col justify-between">
+                <div class="">
+                  <label for="validationCustom01">
+                    <%= Glimesh.ChannelCategories.get_subcategory_label(@category) %>
+                  </label>
+                  <div id="subcategoryFilter"></div>
+                  <p class="mb-0">
+                    <%= Glimesh.ChannelCategories.get_subcategory_attribution(@category) %>
+                  </p>
+                </div>
+                <div class="">
+                  <label for="validationCustom01"><%= gettext("Tags") %></label>
+                  <div id="tagify" phx-update="ignore"></div>
+                </div>
+                <div class="">
+                  <label for="validationCustom02"><%= gettext("Language") %></label>
+                  <%= select(:form, :language, @locales,
+                    value: @prefilled_language,
+                    class: "custom-select"
+                  ) %>
+                </div>
+                <div class="">
+                  <%= gettext("Showing %{count_channels} of %{total_channels} Live Channels",
+                    count_channels: length(@channels),
+                    total_channels: length(@channels)
+                  ) %>
+
+                  <br />
+
+                  <%= link(gettext("Remove Filters"),
+                    to: ~p"/streams",
+                    class: "btn btn-primary"
+                  ) %>
+                </div>
+              </div>
+            </form>
+          </div>
+        </aside>
+
+        <div class="bg-slate-800 lg:col-span-10 p-4">
+          <Title.h1><%= @title %></Title.h1>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+            <%= for channel <- @channels do %>
+              <ChannelPreview.thumbnail_and_info channel={channel} />
+            <% end %>
+          </div>
         </div>
       </div>
     </div>
@@ -156,20 +302,16 @@ defmodule GlimeshWeb.StreamsLive.Index do
 
     channels = Glimesh.ChannelLookups.search_live_channels(params)
 
-    live_tags =
-      Glimesh.ChannelCategories.list_live_tags()
-      |> Enum.map(fn tag -> {tag.id, tag.name} end)
+    live_tags = Glimesh.ChannelCategories.list_live_tags()
 
     # |> Enum.into(%{})
 
-    subcategories =
-      Glimesh.ChannelCategories.list_live_subcategories()
-      |> Enum.map(fn subcategory -> {subcategory.id, subcategory.name} end)
+    live_subcategories = Glimesh.ChannelCategories.list_live_subcategories()
 
     # |> Enum.into(%{})
 
     socket
-    |> assign(channels: channels, tag_list: live_tags, subcategory_list: subcategories)
+    |> assign(channels: channels, live_tags: live_tags, live_subcategories: live_subcategories)
   end
 
   defp list_categories do

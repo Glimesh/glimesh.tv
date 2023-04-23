@@ -48,7 +48,8 @@ config :glimesh,
   email_physical_address: "1234 Fake St.<br>Pittsburgh, PA 15217",
   alpha_api_enable: true,
   locales: locales,
-  privacy_policy_version: ~N[2022-03-21 11:55:00]
+  privacy_policy_version: ~N[2022-03-21 11:55:00],
+  random_thumbnails: []
 
 config :esbuild,
   version: "0.14.41",

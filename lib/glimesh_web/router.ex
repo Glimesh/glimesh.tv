@@ -292,11 +292,6 @@ defmodule GlimeshWeb.Router do
     get "/blog", BlogMigrationController, :redirect_blog
     get "/blog/:slug", BlogMigrationController, :redirect_post
 
-    live "/", HomepageLive, :index
-    live "/streams", StreamsLive.Index, :index
-    live "/streams/following", StreamsLive.Following, :index
-    live "/streams/:category", StreamsLive.Index, :index
-
     live "/users", UserLive.Index, :index
 
     delete "/users/log_out", UserSessionController, :delete
@@ -324,6 +319,11 @@ defmodule GlimeshWeb.Router do
   live_session :default, on_mount: {GlimeshWeb.UserLiveAuth, :default} do
     scope "/", GlimeshWeb do
       pipe_through [:browser]
+
+      live "/", HomepageLive, :index
+      live "/streams", StreamsLive.Index, :index
+      live "/streams/following", StreamsLive.Following, :index
+      live "/streams/:category", StreamsLive.Index, :index
 
       live "/:username", Channel.ChannelLive, :index
       live "/:username/support", Channel.ChannelLive, :support

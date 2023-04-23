@@ -36,8 +36,18 @@ defmodule Glimesh.StreamThumbnail do
     ]
   end
 
-  # Provide a default URL if there hasn't been a file uploaded
-  def default_url(_version, _scope) do
+  # Allow for random thumbnails in dev
+  if Mix.env() == :dev do
+    def default_url(_version, _scope) do
+      Enum.random(Application.get_env(:glimesh, :random_thumbnails))
+    end
+  else
+    def default_url(_version, _scope) do
+      fallback_url()
+    end
+  end
+
+  defp fallback_url do
     "/images/stream-not-started.jpg"
   end
 end
