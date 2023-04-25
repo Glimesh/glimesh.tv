@@ -96,19 +96,22 @@
     </script>
   </head>
 
-  <body class="flex flex-col min-h-screen justify-between bg-slate-900 text-gray-100 bg-abstract bg-no-repeat bg-left-bottom bg-[length:33%] bg-fixed">
-    <%= if Application.get_env(:glimesh, :show_staging_warning) do %>
-      <div class="alert alert-danger mb-0 rounded-0" role="alert">
-        <strong>Danger!</strong>
-        This is our public TESTING website, all data & streams are FAKE. You can find the real
-        Glimesh at <a href="https://glimesh.tv/">https://glimesh.tv/</a>.
-      </div>
-    <% end %>
-
-    <div id="app" class="h-full">
+  <body class="flex flex-col min-h-screen justify-between items-stretch bg-slate-900 text-gray-100 bg-abstract bg-no-repeat bg-left-bottom bg-[length:33%] bg-fixed">
+    <div>
       <%= if Map.get(assigns, :render_nav, true) do %>
         <Navbar.navbar conn={@conn} current_user={@current_user} />
+      <% end %>
+    </div>
 
+    <div>
+      <%= if Application.get_env(:glimesh, :show_staging_warning) do %>
+        <div class="alert alert-danger mb-0 rounded-0" role="alert">
+          <strong>Danger!</strong>
+          This is our public TESTING website, all data & streams are FAKE. You can find the real
+          Glimesh at <a href="https://glimesh.tv/">https://glimesh.tv/</a>.
+        </div>
+      <% end %>
+      <%= if Map.get(assigns, :render_nav, true) do %>
         <%= if message = Glimesh.Configurations.get_configuration_value("system_message") do %>
           <div class="container">
             <p class="alert alert-warning"><strong>System Message:</strong> <%= message %></p>
@@ -128,12 +131,11 @@
           </div>
         <% end %>
       <% end %>
-
-      <%= @inner_content %>
     </div>
+    <%= @inner_content %>
 
     <%= if Map.get(assigns, :render_footer, true) do %>
-      <footer class="mt-4 bg-slate-800/75">
+      <footer class="bg-slate-800/75">
         <div class="container mx-auto">
           <section class="footer-main py-4">
             <div class="flex justify-around">

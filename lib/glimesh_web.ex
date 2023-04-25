@@ -67,7 +67,8 @@ defmodule GlimeshWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {GlimeshWeb.Layouts, :app}
+        layout: {GlimeshWeb.Layouts, :app},
+        container: {:div, class: "flex-1"}
 
       alias GlimeshWeb.Components.Navbar
       alias GlimeshWeb.Components.Settings

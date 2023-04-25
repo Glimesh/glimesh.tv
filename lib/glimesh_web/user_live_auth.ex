@@ -7,6 +7,16 @@ defmodule GlimeshWeb.UserLiveAuth do
     {:cont, socket |> common_assigns(session)}
   end
 
+  def on_mount(:redirect_if_user_is_authenticated, _params, session, socket) do
+    socket = socket |> common_assigns(session)
+
+    if socket.assigns.current_user do
+      {:halt, Phoenix.LiveView.redirect(socket, to: signed_in_path(socket))}
+    else
+      {:cont, socket}
+    end
+  end
+
   def on_mount(:user, _params, session, socket) do
     socket = socket |> common_assigns(session)
 
@@ -53,4 +63,6 @@ defmodule GlimeshWeb.UserLiveAuth do
       Glimesh.Accounts.get_user_by_session_token(Map.get(session, "user_token"))
     end)
   end
+
+  defp signed_in_path(_socket), do: ~p"/"
 end

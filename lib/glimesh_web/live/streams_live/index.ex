@@ -10,9 +10,9 @@ defmodule GlimeshWeb.StreamsLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="overflow-hidden rounded-lg shadow">
+    <div class="overflow-hidden">
       <div class="m-4 divide-y divide-slate-700 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
-        <aside class="lg:col-span-2 bg-slate-800/75 space-y-4 py-4">
+        <aside class="lg:col-span-2 bg-slate-800/75 space-y-4 py-4 rounded-l-lg">
           <!-- Mobile -->
           <div class="flex justify-between bg-gray-800 sm:hidden px-4 pb-2">
             <%= for {name, category, icon} <- list_categories() do %>
@@ -24,7 +24,7 @@ defmodule GlimeshWeb.StreamsLive.Index do
                   )
                 }
                 class={[
-                  " hover:text-white text-center flex flex-col items-center",
+                  "text-center flex flex-col items-center",
                   if(@category && @category.slug == category, do: "text-white", else: "text-slate-300")
                 ]}
               >
@@ -34,7 +34,7 @@ defmodule GlimeshWeb.StreamsLive.Index do
             <% end %>
           </div>
 
-          <div class="flex flex-col justify-between mx-auto space-y-2">
+          <div class="flex flex-col justify-between mx-auto text-lg">
             <%= for {name, category, icon} <- list_categories() do %>
               <.link
                 navigate={
@@ -44,12 +44,15 @@ defmodule GlimeshWeb.StreamsLive.Index do
                   )
                 }
                 class={[
-                  "text-center flex flex-row items-center",
-                  if(@category && @category.slug == category, do: "text-white")
+                  "p-2 px-4 flex flex-row items-center text-left hover:bg-gray-700",
+                  if(@category && @category.slug == category, do: "text-white bg-gray-700")
                 ]}
               >
                 <%= icon.(%{class: "w-6"}) %>
-                <span class="pl-4 text-color-link"><%= name %></span>
+                <span class="flex-1 pl-4 text-color-link"><%= name %></span>
+                <%= if @category && @category.slug == category do %>
+                  <Heroicons.x_mark class="h-6" />
+                <% end %>
               </.link>
             <% end %>
           </div>
@@ -244,7 +247,7 @@ defmodule GlimeshWeb.StreamsLive.Index do
           </div>
         </aside>
 
-        <div class="bg-slate-800 lg:col-span-10 p-4">
+        <div class="bg-slate-800 rounded-r-lg lg:col-span-10 p-4">
           <Title.h1><%= @title %></Title.h1>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             <%= for channel <- @channels do %>
