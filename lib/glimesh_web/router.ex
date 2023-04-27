@@ -98,6 +98,7 @@ defmodule GlimeshWeb.Router do
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{GlimeshWeb.UserLiveAuth, :redirect_if_user_is_authenticated}] do
       live "/users/register", Auth.RegisterLive, :new
+      live "/users/log_in", Auth.LoginLive, :new
       # live "/users/log_in", UserLoginLive, :new
       # live "/users/reset_password", UserForgotPasswordLive, :new
       # live "/users/reset_password/:token", UserResetPasswordLive, :edit
@@ -107,9 +108,9 @@ defmodule GlimeshWeb.Router do
 
     # get "/users/register", UserRegistrationController, :new
     # post "/users/register", UserRegistrationController, :create
-    get "/users/log_in", UserSessionController, :new
-    post "/users/log_in", UserSessionController, :create
-    post "/users/log_in_tfa", UserSessionController, :tfa
+    # get "/users/log_in", UserSessionController, :new
+    # post "/users/log_in", UserSessionController, :create
+    # post "/users/log_in_tfa", UserSessionController, :tfa
     get "/users/reset_password", UserResetPasswordController, :new
     post "/users/reset_password", UserResetPasswordController, :create
     get "/users/reset_password/:token", UserResetPasswordController, :edit

@@ -44,9 +44,10 @@ defmodule GlimeshWeb.Auth.RegisterLive do
           />
           <p>We'll send emails about product launches, upcoming events, or new availability.</p>
 
-          <script src="https://js.hcaptcha.com/1/api.js" async defer>
+          <script src="https://js.hcaptcha.com/1/api.js?render=explicit" async defer>
           </script>
           <div
+            phx-hook="HCaptcha"
             id="hcaptcha"
             phx-update="ignore"
             class="h-captcha"

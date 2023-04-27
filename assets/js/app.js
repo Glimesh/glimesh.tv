@@ -11,6 +11,7 @@ window.addEventListener("phx:page-loading-start", info => topbar.show(300))
 window.addEventListener("phx:page-loading-stop", info => topbar.hide())
 
 import LivePlayer from "./hooks/LivePlayer";
+import HCaptcha from "./hooks/HCaptcha";
 
 // import BSN from "bootstrap.native";
 // import bsCustomFileInput from "bs-custom-file-input";
@@ -63,6 +64,7 @@ import LivePlayer from "./hooks/LivePlayer";
 
 let Hooks = {};
 Hooks.LivePlayer = LivePlayer;
+Hooks.HCaptcha = HCaptcha;
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
