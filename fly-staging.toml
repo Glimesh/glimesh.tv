@@ -1,0 +1,50 @@
+# fly.toml file generated for glimesh on 2022-09-17T13:37:32-04:00
+
+app = "glimesh-staging"
+kill_signal = "SIGTERM"
+kill_timeout = 5
+processes = []
+
+[deploy]
+  # release_command = "/app/bin/glimesh eval Glimesh.Release.migrate"
+
+[env]
+  ENABLE_LIBCLUSTER = "false"
+  POOL_SIZE = 25
+  READ_POOL_SIZE = 25
+  PHX_HOST = "glimesh-staging.fly.dev"
+  PORT = "8080"
+  HTTP_PORT = "8080"
+  URL_SCHEME = "https"
+  URL_HOST = "glimesh-staging.fly.dev"
+  URL_PORT = "443"
+
+[experimental]
+  allowed_public_ports = []
+  auto_rollback = true
+
+[[services]]
+  http_checks = []
+  internal_port = 8080
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+  [services.concurrency]
+    hard_limit = 1000
+    soft_limit = 500
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"
