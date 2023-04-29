@@ -18,6 +18,14 @@ processes = []
   URL_SCHEME = "https"
   URL_HOST = "glimesh-staging.fly.dev"
   URL_PORT = "443"
+  # Fake variables
+  MAILGUN_DOMAIN = ""
+  MAILGUN_API_KEY = ""
+  STRIPE_PUBLIC_API_KEY = ""
+  STRIPE_API_KEY = ""
+  STRIPE_CONNECT_CLIENT_ID = ""
+  STRIPE_WEBHOOK_SECRET = ""
+  GLIMESH_SHOW_STAGING_WARNING = "true"
 
 [experimental]
   allowed_public_ports = []

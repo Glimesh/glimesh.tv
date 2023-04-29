@@ -38,7 +38,7 @@ defmodule GlimeshWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :glimesh,
+    from: {:glimesh, "priv/public"},
     gzip: Application.compile_env(:glimesh, :environment) == :prod,
     only: GlimeshWeb.static_paths()
 

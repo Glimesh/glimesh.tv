@@ -19,9 +19,6 @@ COPY mix.exs mix.lock ./
 COPY config config
 RUN mix do deps.get, deps.compile
 
-# workaround for janus npm install
-RUN git config --global url."https://github.com".insteadOf ssh://git@github.com
-
 # build assets
 COPY assets assets
 RUN npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
