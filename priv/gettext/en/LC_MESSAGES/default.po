@@ -3627,7 +3627,6 @@ msgstr "Recipient"
 #: lib/glimesh_web/live/support_modal/support_modal.ex:255
 msgid "The recipient will immediately receive the benefits of a channel sub and will have the option to continue their sub before the end of the subscription."
 msgstr "The recipient will immediately receive the benefits of a channel sub and will have the option to continue their sub before the end of the subscription.\n"
-""
 
 #: lib/glimesh_web/templates/about/credits.html.eex:35
 msgid "We've created several large projects to help build Glimesh. You can find all of them on our GitHub, along with contribution records:"

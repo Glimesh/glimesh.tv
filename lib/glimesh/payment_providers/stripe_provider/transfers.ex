@@ -120,4 +120,46 @@ defmodule Glimesh.PaymentProviders.StripeProvider.Transfers do
   def check_for_unpaidout_invoices do
     raise "Not implemented"
   end
+
+  alias Glimesh.PaymentProviders.StripeProvider
+
+  import Ecto.Query
+
+  # credo:disable-for-lines:35
+  def audit_unpaid_payables do
+    # Check all of our payables against Stripe to ensure they are in the right place
+    Glimesh.Repo.all(
+      from(pb in Glimesh.Payments.Payable,
+        where: is_nil(pb.streamer_payout_at)
+      )
+    )
+    |> Enum.map(fn
+      payable ->
+        cond do
+          String.starts_with?(payable.external_reference, "in_") ->
+            # Invoice
+            {:ok, invoice} = Stripe.Invoice.retrieve(payable.external_reference)
+
+            case [invoice.status, payable.status] do
+              ["paid", "created"] ->
+                # IO.puts(
+                #   "#{payable.external_reference} has #{invoice.status} in Stripe, #{payable.status} locally."
+                # )
+                # ignore for now
+                {:ok, _} = StripeProvider.pay_invoice(invoice)
+
+              _ ->
+                # Anything else is fine
+                nil
+            end
+
+          String.starts_with?(payable.external_reference, "cs_live_") ->
+            {:ok, session} = Stripe.Session.retrieve(payable.external_reference)
+            # Donation, should be infrequent
+            IO.puts(
+              "#{payable.external_reference} is a donation with status #{session.payment_status}, #{payable.status} locally."
+            )
+        end
+    end)
+  end
 end

@@ -2586,7 +2586,6 @@ msgstr "채팅하기 전에 이메일을 확인해야 합니다."
 #: lib/glimesh/chat/policy.ex:65
 msgid "You must wait %{time_left} more minutes to chat."
 msgstr "채팅하려면 %{time_left}분 더 기다려야 합니다.\n"
-""
 
 #: lib/glimesh_web/live/user_live/components/subscribe_button.ex:136
 msgid "Your subscription is currently set to automatically cancel at the end of your billing cycle."

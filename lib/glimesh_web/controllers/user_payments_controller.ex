@@ -41,8 +41,8 @@ defmodule GlimeshWeb.UserPaymentsController do
   def setup(conn, %{"country" => country}) do
     user = conn.assigns.current_user
 
-    refresh_url = ~p"/users/payments"
-    return_url = ~p"/users/payments/connect"
+    refresh_url = url(~p"/users/payments")
+    return_url = url(~p"/users/payments/connect")
 
     stripe_url = StripeProvider.start_connect(user, country, return_url, refresh_url)
 
@@ -60,7 +60,7 @@ defmodule GlimeshWeb.UserPaymentsController do
         |> put_flash(:error, message)
         |> redirect(to: ~p"/users/payments")
 
-      {:error, %Stripe.Error{}} ->
+      {:error, %Stripe.Error{} = err} ->
         conn
         |> put_flash(:error, "There was an error accessing the Stripe API.")
         |> redirect(to: ~p"/users/payments")
