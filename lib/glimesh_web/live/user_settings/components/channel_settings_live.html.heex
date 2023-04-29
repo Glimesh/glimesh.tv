@@ -430,22 +430,6 @@
     </div>
   </div>
 
-  <h2 class="mt-4"><%= gettext("Advanced") %></h2>
-  <p>
-    Temporary advanced controls to help test features of Glimesh. It's likely that touching one of these settings without being in that test will break your stream.
-  </p>
-  <div class="row mb-4">
-    <div class="col-sm-6">
-      <div class="form-group">
-        <%= label(f, :backend, gettext("Channel Video Backend")) %>
-        <%= select(f, :backend, [Normal: "ftl", Waveguide: "whep"],
-          class: ["form-control", "settings-field"]
-        ) %>
-        <%= error_tag(f, :backend) %>
-      </div>
-    </div>
-  </div>
-
   <div class="row">
     <div class="col-sm-6">
       <%= submit(gettext("Update Channel"), class: "btn btn-primary") %>

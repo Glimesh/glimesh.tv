@@ -35,7 +35,7 @@ defmodule GlimeshWeb.UserRegistrationController do
             {:ok, _} =
               Accounts.deliver_user_confirmation_instructions(
                 user,
-                fn confirmation -> ~p"/users/confirm/#{confirmation}" end
+                fn confirmation -> url(~p"/users/confirm/#{confirmation}") end
               )
 
             conn

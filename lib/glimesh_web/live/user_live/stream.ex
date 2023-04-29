@@ -168,9 +168,9 @@ defmodule GlimeshWeb.UserLive.Stream do
     {:noreply, socket |> assign(:player_error, nil)}
   end
 
-  def handle_info({:channel, channel}, socket) do
-    if socket.assigns.status == "offline" and channel.status == "live" and
-         socket.assigns.prompt_mature == false do
+  def handle_info({:channel, channel}, %{assigns: assigns} = socket) do
+    if assigns.channel.status == "offline" and channel.status == "live" and
+         assigns.prompt_mature == false do
       Process.send(self(), :load_stream, [])
     end
 

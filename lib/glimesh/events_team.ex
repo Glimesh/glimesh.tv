@@ -109,9 +109,8 @@ defmodule Glimesh.EventsTeam do
   end
 
   def delete_event(eventid) do
-    %Event{id: String.to_integer(eventid)}
-    |> Event.changeset()
-    |> Repo.delete(eventid)
+    Repo.get_by!(Glimesh.EventsTeam.Event, id: eventid)
+    |> Repo.delete()
   end
 
   def list_types do

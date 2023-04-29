@@ -4,7 +4,7 @@
       <h2><%= gettext("Channel Moderators") %></h2>
     </div>
     <div class="col-3">
-      <%= link gettext("Add Moderator"), to: ~p"//users/settings/channel/mods/new", class: "btn btn-primary btn-block" %>
+      <%= link gettext("Add Moderator"), to: ~p"/users/settings/channel/mods/new", class: "btn btn-primary btn-block" %>
     </div>
   </div>
 

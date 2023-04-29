@@ -3,29 +3,19 @@ defmodule Glimesh.Accounts.Profile do
 
   alias Glimesh.Accounts.User
 
+  @role_colors %{
+    "Glimesh Staff" => "bg-danger",
+    "Core Team" => "bg-primary",
+    "Community Champion" => "bg-champion",
+    "Marketing" => "bg-marketing",
+    "Design" => "bg-design",
+    "Development" => "bg-development",
+    "Business" => "bg-business",
+    "Events Team" => "bg-EventsTeam"
+  }
+
   def user_role_color(%User{team_role: team_role}) do
-    case team_role do
-      "Glimesh Staff" ->
-        "bg-danger"
-
-      "Core Team" ->
-        "bg-primary"
-
-      "Community Champion" ->
-        "bg-success"
-
-      "Design Team" ->
-        "bg-info"
-
-      "Product Dev Team" ->
-        "bg-secondary"
-
-      "Events Team" ->
-        "bg-EventsTeam"
-
-      _ ->
-        ""
-    end
+    Map.get(@role_colors, team_role, "")
   end
 
   def list_pronouns do
