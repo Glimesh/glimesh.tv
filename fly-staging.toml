@@ -26,6 +26,7 @@ processes = []
   STRIPE_CONNECT_CLIENT_ID = ""
   STRIPE_WEBHOOK_SECRET = ""
   GLIMESH_SHOW_STAGING_WARNING = "true"
+  GLIMESH_DISABLE_STREAM_PRUNER = "true"
 
 [experimental]
   allowed_public_ports = []

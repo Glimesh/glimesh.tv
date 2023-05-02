@@ -257,16 +257,25 @@ if tenor_enabled = System.get_env("GLIMESH_TENOR_ENABLED") do
   config :glimesh, :tenor_config, allow_tenor: tenor_enabled == "true"
 end
 
+crons = [
+  {"* * * * *", Glimesh.Jobs.StreamMetricsCron},
+  {"*/10 * * * *", Glimesh.Jobs.AutoHostCron},
+  {"*/5 * * * *", Glimesh.Jobs.HomepageCron}
+]
+
+if is_nil(System.get_env("GLIMESH_DISABLE_STREAM_PRUNER")) do
+  crons = crons ++ [{"*/5 * * * *", Glimesh.Jobs.StreamPrunerCron}]
+end
+
 config :glimesh, Oban,
   plugins: [
-    {Oban.Plugins.Cron,
-     crontab: [
-       {"* * * * *", Glimesh.Jobs.StreamMetricsCron},
-       {"*/10 * * * *", Glimesh.Jobs.AutoHostCron},
-       {"*/5 * * * *", Glimesh.Jobs.HomepageCron},
-       {"*/5 * * * *", Glimesh.Jobs.StreamPrunerCron}
-     ]}
+    {Oban.Plugins.Cron, crontab: crons}
   ]
+
+if show_staging_warning = System.get_env("GLIMESH_SHOW_STAGING_WARNING") do
+  config :glimesh,
+    show_staging_warning: show_staging_warning
+end
 
 config :glimesh, rtrouter_url: "https://live.glimesh.tv/v1/whep/endpoint/"
 
