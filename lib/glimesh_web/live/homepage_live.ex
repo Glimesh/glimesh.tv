@@ -13,11 +13,62 @@ defmodule GlimeshWeb.HomepageLive do
   @impl true
   def render(assigns) do
     ~F"""
-    <div class="fancy-bg pt-4">
+    <div class="pride_bg">
+  <div class="mt-4 text-center" style="font-family: Roboto;">
+    <br />
+    <br />
+    <div class="container">
+      <a
+      onclick="boom()"
+      href="#"
+      class="image" style="display:inline-block">
+      <img src="/images/homepage/communitypridelogo.png" width="310">
+      </a>
+      <script type="text/javascript">function boom()
+      {confetti({
+        particleCount: 1500,
+        spread: 250,
+        origin: { y: 0.8 },
+        colors: ["FAF9F5", "FEAEC8", "74D7EE", "5F3713", "000000", "D40606", "EF9C00", "E5FE02", "07C002", "031A9A", "77018B"]
+      }); }</script>
+    <div class="text font-weight-bold pride_font" style="display:inline-block;vertical-align: middle;">
+    <div class="text font-weight-bold pride_font_sub"">
+      Raising funds and awareness <br />
+      for The Trevor Project this June
+  <br />
+  <p></p>
+    <a
+      href="https://donate.tiltify.com/@glimesh/communitypride"
+      target="_blank"
+      class="btn btn-lg font-weight-bold shadow-lg text-light bg-pride_donate"
+    >
+      Donate Here
+    </a>
+    <a
+      href="https://www.thetrevorproject.org/"
+      target="_blank"
+      class="btn btn-lg font-weight-bold shadow-lg text-light bg-TrevorProject"
+    >
+      The Trevor Project
+    </a>
+    <a
+      href="https://docs.google.com/forms/d/e/1FAIpQLSfCKGswVF8OptjwTz1DR0ithA3wwcARivMH9Dr3UOdfHdM70A/viewform"
+      target="_blank"
+      class="btn btn-lg font-weight-bold shadow-lg text-light bg-info"
+    >
+      Host An Event
+    </a>
+    </div>
+    </div>
+  </div>
+  </div>
       {#if @random_channel}
         <div class="container">
+        <div class="text-center font-weight-bold pride_font_raised my-4">
+              Amount Raised: format_price(@total_raised)
+              </div>
           {#if not is_nil(@live_featured_event_channel)}
-            <div class="card shadow rounded">
+            <div class="card shadow rounded" style="border: 3px solid #67EFD6">
               <div class="row">
                 <div class="col-md-7">
                   <VideoPlayer id="homepage-video-player" muted channel={@live_featured_event_channel} />
@@ -163,10 +214,10 @@ defmodule GlimeshWeb.HomepageLive do
         <div class="row mt-2 mb-4">
           {#for {name, link, icon} <- list_categories()}
             <div class="col">
-              <LiveRedirect to={link} class="btn btn-outline-primary btn-lg btn-block py-4">
+              <LiveRedirect to={link} class="btn btn-lg btn-block py-4 text-light bg-pride_button">
                 <i class={"fas fa-2x fa-fw", icon} />
                 <br>
-                <small class="text-color-link">{name}</small>
+                <small class="text-color-link text-light">{name}</small>
               </LiveRedirect>
             </div>
           {/for}
@@ -222,6 +273,7 @@ defmodule GlimeshWeb.HomepageLive do
      |> assign(:random_channel, random_channel)
      |> assign(:random_channel_thumbnail, get_stream_thumbnail(random_channel))
      |> assign(:user_count, user_count)
+     |> assign(:total_raised, get_tiltify_donation_total())
      |> assign(:current_user, maybe_user)}
   end
 
@@ -309,5 +361,30 @@ defmodule GlimeshWeb.HomepageLive do
   def handle_info({:debug, _, _}, socket) do
     # Ignore any debug messages from the video player
     {:noreply, socket}
+  end
+
+  def get_tiltify_donation_total do
+    access_token = Application.get_env(:glimesh, :tiltify_access_token)
+
+    QueryCache.get_and_store!(
+      "GlimeshWeb.HomepageLive.get_tiltify_donation_total()",
+      fn ->
+        with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
+               HTTPoison.get(
+                 "https://tiltify.com/api/v3/campaigns/171961",
+                 [
+                   {"Authorization", "Bearer #{access_token}"},
+                   {"Content-Type", "application/json"}
+                 ]
+               ),
+             {:ok, response} <- Jason.decode(body),
+             %{"data" => %{"totalAmountRaised" => amount_raised}} <- response do
+          {:ok, amount_raised}
+        else
+          _ ->
+            {:ok, 0}
+        end
+      end
+    )
   end
 end

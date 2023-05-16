@@ -270,6 +270,10 @@ config :glimesh, Oban,
 
 config :glimesh, rtrouter_url: "https://live.glimesh.tv/v1/whep/endpoint/"
 
+if tiltify_access_token = System.get_env("GLIMESH_TILTIFY_ACCESS_TOKEN") do
+  config :glimesh, tiltify_access_token: tiltify_access_token
+end
+
 # Default App Config
 config :glimesh, :stripe_config,
   platform_sub_supporter_product_id: "prod_I60rR8YatfJpEV",

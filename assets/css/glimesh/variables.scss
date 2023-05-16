@@ -161,3 +161,18 @@ $hr-border-color: var(--hr-bg-color);
         --navbar-bg-color: rgba(255, 255, 255, 0.96);
     }
 }
+
+//testing
+.flashit{
+    animation: flash infinite 5s;
+  }
+  @-webkit-keyframes flash {
+    0% { opacity: 1; }
+    50% { opacity: .1; }
+    100% { opacity: 1; }
+  }
+  @keyframes flash {
+  0% { opacity: 1; }
+  50% { opacity: .1; }
+  100% { opacity: 1; }
+}
