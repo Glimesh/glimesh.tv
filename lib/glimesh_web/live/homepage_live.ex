@@ -86,9 +86,6 @@ defmodule GlimeshWeb.HomepageLive do
       </div>
       {#if @random_channel}
         <div class="container">
-          <div class="text-center font-weight-bold pride_font_raised my-4">
-            Amount Raised: format_price(@total_raised)
-          </div>
           {#if not is_nil(@live_featured_event_channel)}
             <div class="card shadow rounded" style="border: 3px solid #67EFD6">
               <div class="row">
