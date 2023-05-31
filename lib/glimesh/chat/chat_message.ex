@@ -8,6 +8,8 @@ defmodule Glimesh.Chat.ChatMessage do
   alias Glimesh.Chat.ChatMessage.Metadata
   alias Glimesh.Streams.Channel
 
+  @derive {Jason.Encoder,
+           only: [:message, :is_visible, :is_followed_message, :is_subscription_message]}
   schema "chat_messages" do
     field :message, :string
     field :is_visible, :boolean, default: true

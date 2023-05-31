@@ -5,6 +5,27 @@ defmodule Glimesh.Streams.Channel do
 
   import Ecto.Changeset
 
+  @derive {Jason.Encoder,
+           only: [
+             :title,
+             :status,
+             :language,
+             :mature_content,
+             :show_on_homepage,
+             :thumbnail,
+             :disable_hyperlinks,
+             :block_links,
+             :require_confirmed_email,
+             :minimum_account_age,
+             :show_recent_chat_messages_only,
+             :chat_rules_md,
+             :chat_rules_html,
+             :allow_hosting,
+             :streamloots_url,
+             :show_subscribe_button,
+             :show_donate_button,
+             :show_streamloots_button
+           ]}
   schema "channels" do
     belongs_to :user, Glimesh.Accounts.User
     belongs_to :category, Glimesh.Streams.Category

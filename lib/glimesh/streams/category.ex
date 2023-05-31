@@ -5,6 +5,7 @@ defmodule Glimesh.Streams.Category do
   use Waffle.Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:name, :slug]}
   schema "categories" do
     field :name, :string
     field :slug, :string

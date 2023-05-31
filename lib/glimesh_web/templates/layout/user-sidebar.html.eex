@@ -2,6 +2,9 @@
     <div class="row mt-3">
         <div class="col-lg-2 user-sidebar">
             <div class="list-group list-group-flush">
+            <%= link class: "list-group-item list-group-item-action " <> active_user_takeout_path(@conn), to: ~p"/users/settings/takeout" do %>
+                <i class="fas fa-user fa-fw"></i> <%= gettext("Data Takeout") %>
+                <% end %>
                 <%= link class: "list-group-item list-group-item-action " <> active_user_profile_path(@conn), to: ~p"/users/settings/profile" do %>
                 <i class="fas fa-user fa-fw"></i> <%= gettext("Profile") %>
                 <% end %>

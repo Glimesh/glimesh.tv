@@ -5,6 +5,14 @@ defmodule Glimesh.Accounts.UserPreference do
   use Waffle.Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder,
+           only: [
+             :locale,
+             :site_theme,
+             :show_timestamps,
+             :show_mod_icons,
+             :show_mature_content
+           ]}
   schema "user_preferences" do
     belongs_to :user, Glimesh.Accounts.User
 

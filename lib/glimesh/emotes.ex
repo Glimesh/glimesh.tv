@@ -337,4 +337,10 @@ defmodule Glimesh.Emotes do
   def full_url(%Emote{} = emote) do
     Glimesh.Uploaders.StaticEmote.url({emote.static_file, emote}, :png)
   end
+
+  def file_type(%Emote{animated: true} = emote), do: :gif
+
+  def file_type(%Emote{svg: true} = emote), do: :svg
+
+  def file_type(%Emote{} = emote), do: :png
 end

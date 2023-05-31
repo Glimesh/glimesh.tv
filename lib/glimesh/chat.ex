@@ -206,7 +206,7 @@ defmodule Glimesh.Chat do
         order_by: [desc: :inserted_at],
         limit: ^limit
     )
-    |> Repo.preload([:user, :channel])
+    |> Repo.preload([:user, channel: [:streamer]])
     |> Enum.reverse()
   end
 
@@ -231,7 +231,7 @@ defmodule Glimesh.Chat do
         order_by: [desc: :inserted_at],
         limit: ^limit
     )
-    |> Repo.preload([:user, :channel])
+    |> Repo.preload([:user, channel: [:streamer]])
     |> Enum.reverse()
   end
 

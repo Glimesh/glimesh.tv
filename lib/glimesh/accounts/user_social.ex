@@ -5,6 +5,12 @@ defmodule Glimesh.Accounts.UserSocial do
   use Waffle.Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder,
+           only: [
+             :platform,
+             :identifier,
+             :username
+           ]}
   schema "user_socials" do
     belongs_to :user, Glimesh.Accounts.User
 

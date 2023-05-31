@@ -6,7 +6,27 @@ defmodule Glimesh.Accounts.User do
   import GlimeshWeb.Gettext
   import Ecto.Changeset
 
-  @derive {Inspect, except: [:password, :hashed_password, :tfa_token]}
+  @derive {Jason.Encoder,
+           only: [
+             :username,
+             :displayname,
+             :pronoun,
+             :show_pronoun_stream,
+             :show_pronoun_profile,
+             :email,
+             :confirmed_at,
+             :social_twitter,
+             :social_youtube,
+             :social_instagram,
+             :social_discord,
+             :social_guilded,
+             :is_stripe_setup,
+             :is_tax_verified,
+             :tax_withholding_percent,
+             :youtube_intro_url,
+             :profile_content_md,
+             :profile_content_html
+           ]}
   schema "users" do
     field :username, :string
     field :displayname, :string

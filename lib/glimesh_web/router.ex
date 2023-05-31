@@ -109,6 +109,9 @@ defmodule GlimeshWeb.Router do
   scope "/", GlimeshWeb do
     pipe_through [:browser, :require_authenticated_user]
 
+    get "/users/settings/takeout", TakeoutController, :index
+    post "/users/settings/takeout", TakeoutController, :download
+
     post "/about/privacy", AboutController, :accept_privacy
 
     live "/platform_subscriptions", PlatformSubscriptionLive.Index, :index

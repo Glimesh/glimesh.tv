@@ -60,6 +60,10 @@ defmodule GlimeshWeb.LayoutView do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :profile])
   end
 
+  def active_user_takeout_path(conn) do
+    truthy_active(controller_action(conn) == [GlimeshWeb.TakeoutController, :index])
+  end
+
   def active_user_stream_path(conn) do
     truthy_active(controller_action(conn) == [GlimeshWeb.UserSettingsController, :stream])
   end

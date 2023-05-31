@@ -1,0 +1,14 @@
+<div class="container mt-4">
+  <h1><%= gettext("Data Takeout") %></h1>
+
+  <div class="card">
+    <div class="card-body">
+      <.form method="POST" action="/users/settings/takeout">
+        <p>
+          Your data takeout will include most available information about yourself, and your channel (if you have one). For additional info or data, please contact support@glimesh.tv
+        </p>
+        <button class="btn btn-primary" type="submit">Download .zip</button>
+      </.form>
+    </div>
+  </div>
+</div>
