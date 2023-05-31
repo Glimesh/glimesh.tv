@@ -1,9 +1,11 @@
 defmodule Glimesh.Takeout do
+  @moduledoc false
+
   import Ecto.Query, warn: false
 
+  alias Glimesh.Accounts.User
   alias Glimesh.Chat.ChatMessage
   alias Glimesh.Repo
-  alias Glimesh.Accounts.User
   alias Glimesh.Streams.Channel
 
   def export_user(%User{} = user) do
@@ -26,7 +28,7 @@ defmodule Glimesh.Takeout do
     zip_folder = Path.join(dir, "#{user.username}-takeout")
     File.mkdir(zip_folder)
 
-    Enum.map(export_functions(), fn {name, func} ->
+    Enum.each(export_functions(), fn {name, func} ->
       out =
         func.(user)
         |> Jason.encode!()
@@ -41,7 +43,7 @@ defmodule Glimesh.Takeout do
     emote_folder = Path.join(zip_folder, "emotes")
     File.mkdir(emote_folder)
 
-    Enum.map(emotes, fn emote ->
+    Enum.each(emotes, fn emote ->
       full_url = Glimesh.Emotes.full_url(emote)
       file_type = Glimesh.Emotes.file_type(emote)
       body = local_or_remote_bytes(full_url)
@@ -68,7 +70,7 @@ defmodule Glimesh.Takeout do
   defp profile_info(%User{} = user) do
     full_user = Repo.preload(user, [:socials, :user_preference])
 
-    chat_messages = Glimesh.Repo.all(Glimesh.Chat.list_some_chat_messages_for_user(user, 10000))
+    chat_messages = Repo.all(Glimesh.Chat.list_some_chat_messages_for_user(user, 10_000))
 
     safe_messages = map_chat_messages(chat_messages)
 
@@ -86,7 +88,7 @@ defmodule Glimesh.Takeout do
     if is_nil(channel) do
       %{}
     else
-      chat_messages = Glimesh.Chat.list_chat_messages(channel, 10000)
+      chat_messages = Glimesh.Chat.list_chat_messages(channel, 10_000)
 
       safe_messages = map_chat_messages(chat_messages)
       safe_emotes = map_emotes(list_all_emotes_for_user(user))
@@ -101,7 +103,7 @@ defmodule Glimesh.Takeout do
 
   defp payments(%User{} = user) do
     payments =
-      Glimesh.Repo.all(
+      Repo.all(
         from p in Glimesh.Payments.Payable,
           where: p.user_id == ^user.id,
           order_by: [desc: p.streamer_payout_at],
@@ -135,7 +137,7 @@ defmodule Glimesh.Takeout do
 
   defp payouts(%User{} = user) do
     payouts =
-      Glimesh.Repo.all(
+      Repo.all(
         from p in Glimesh.Payments.Payable,
           where: p.streamer_id == ^user.id,
           order_by: [desc: p.streamer_payout_at],
@@ -211,7 +213,7 @@ defmodule Glimesh.Takeout do
     if is_nil(user.channel) do
       []
     else
-      Glimesh.Repo.all(
+      Repo.all(
         from(e in Glimesh.Emotes.Emote,
           left_join: c in Glimesh.Streams.Channel,
           on: c.id == e.channel_id,
