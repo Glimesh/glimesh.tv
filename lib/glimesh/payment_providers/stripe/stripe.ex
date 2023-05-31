@@ -209,7 +209,7 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
     streamer = Accounts.get_user!(streamer_id)
 
     # This is recalculated just in case our cut changes or the invoice is discounted.
-    glimesh_cut_percent = 0.40
+    glimesh_cut_percent = 0.10
     glimesh_cut = trunc(total_amount * glimesh_cut_percent)
     potential_payout_amount = total_amount - glimesh_cut
 
@@ -424,7 +424,7 @@ defmodule Glimesh.PaymentProviders.StripeProvider do
       end
 
     # This is recalculated just in case our cut changes or the invoice is discounted.
-    glimesh_cut_percent = 0.40
+    glimesh_cut_percent = 0.10
     glimesh_cut = trunc(total_amount * glimesh_cut_percent)
     potential_payout_amount = total_amount - glimesh_cut
 

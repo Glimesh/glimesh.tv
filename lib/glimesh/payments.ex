@@ -143,7 +143,7 @@ defmodule Glimesh.Payments do
       items: [%{price: price_id}]
     }
 
-    glimesh_cut_percent = 50
+    glimesh_cut_percent = 10
 
     sub_attrs = %{
       user: user,
