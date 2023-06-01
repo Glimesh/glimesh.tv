@@ -547,6 +547,8 @@ defmodule Glimesh.Payments do
       from s in Subscription,
         where: s.user_id == ^user.id and s.is_active == true and is_nil(s.streamer_id)
     )
+
+    true
   end
 
   def is_platform_supporter_subscriber?(user) do
@@ -569,6 +571,8 @@ defmodule Glimesh.Payments do
             is_nil(s.streamer_id) and
             s.stripe_product_id == ^get_platform_sub_founder_product_id()
     )
+
+    true
   end
 
   def get_channel_subscriptions(user) do

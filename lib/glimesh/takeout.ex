@@ -190,7 +190,7 @@ defmodule Glimesh.Takeout do
     Enum.map(chat_messages, fn message ->
       %{
         username: message.user.username,
-        channel: message.channel.streamer.username,
+        channel: safe_channel_username(message.channel),
         message: message.message,
         tokens:
           Enum.map(message.tokens, fn token ->
@@ -207,6 +207,16 @@ defmodule Glimesh.Takeout do
         inserted_at: message.inserted_at
       }
     end)
+  end
+
+  defp safe_channel_username(channel) do
+    case channel do
+      %Glimesh.Streams.Channel{streamer: %Glimesh.Accounts.User{username: username}} ->
+        username
+
+      _ ->
+        "unknown"
+    end
   end
 
   defp list_all_emotes_for_user(%User{} = user) do
