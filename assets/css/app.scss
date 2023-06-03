@@ -146,74 +146,6 @@ $fa-font-path: "/fa-fonts";
     }
 }
 
-#timer {
-    margin-top: 40px;
-    text-align: center;
-
-    color: #fff;
-
-    // text-shadow: 0px 0px 3px #000;
-
-    div {
-        display: inline-block;
-    }
-
-    .text {
-        display: block;
-        font-size: 20px;
-    }
-
-    .spacer {
-        font-weight: bold;
-        font-size: 4rem;
-    }
-
-    .count {
-        display: block;
-        font-size: 4rem;
-        font-weight: bold;
-        color: #FF4343;
-    }
-}
-
-// Medium devices (tablets, 768px and up)
-@media (min-width: 768px) {
-    #timer {
-        div {
-            margin-left: 5px;
-            margin-right: 5px;
-        }
-
-        .text {
-            font-size: 20px;
-        }
-
-        .spacer,
-        .count {
-            font-size: 80px;
-        }
-    }
-}
-
-@media (min-width: 1200px) {
-    #timer {
-        div {
-
-            margin-left: 15px;
-            margin-right: 15px;
-        }
-
-        .text {
-            font-size: 20px;
-        }
-
-        .spacer,
-        .count {
-            font-size: 130px;
-        }
-    }
-}
-
 // Remove some of the bloat from the card titles
 .card-header {
 
@@ -259,7 +191,7 @@ $fa-font-path: "/fa-fonts";
 }
 
 .bg-pride_button {
-    background:#0E1726;
+    background: #0E1726;
 }
 
 .bg-pride_donate {

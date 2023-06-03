@@ -367,7 +367,8 @@ defmodule GlimeshWeb.HomepageLive do
 
   defp get_cached_channels do
     QueryCache.get_and_store!("GlimeshWeb.HomepageLive.get_cached_channels()", fn ->
-      {:ok, Glimesh.Homepage.get_homepage()}
+      all_live_channels = Glimesh.ChannelLookups.search_live_channels(%{})
+      {:ok, all_live_channels}
     end)
   end
 

@@ -78,11 +78,45 @@ $color-teal: #48D1BD;
     --hr-bg-color: #000;
 }
 
+[data-theme="uwu"] {
+    --body-bg-color: pink;
+    --body-color: #000;
+
+    --navbar-bg-color: rgba(255, 129, 232, 0.9);
+    --navbar-border-color: #fff;
+    --navbar-color: #000;
+
+    --secondary-color: #0e1726;
+    --secondary-bg-color: #fce7f3;
+    --secondary-hover-bg-color: #e9ecef;
+
+    --footer-bg-color: #e9ecef;
+    --footer-main-bg-color: #e9ecef;
+    --footer-main-bg: url("/images/subtle-glims.png");
+
+    --input-bg-color: #fff;
+    --input-color: #495057;
+    --input-border-color: #ced4da;
+    --input-focus-border-color: #ced4da;
+
+    --input-group-addon-bg-color: #e9ecef;
+    --input-group-addon-color: #495057;
+    --input-group-addon-border-color: #ced4da;
+
+    --stream-card-streamer-background: rgba(255, 255, 255, 0.8);
+
+    --chat-bubble-background: #fce7f3;
+
+    --text-muted-color: #000;
+
+    --hr-bg-color: #000;
+}
+
 $font-family-base: 'Roboto',
-sans-serif;
+    sans-serif;
 $font-weight-normal: 300;
 $headings-font-family: 'Noto Sans',
-sans-serif;
+    sans-serif;
 $headings-font-weight: 700;
 
 $body-bg: var(--body-bg-color);

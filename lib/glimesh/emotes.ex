@@ -162,6 +162,7 @@ defmodule Glimesh.Emotes do
 
   # credo:disable-for-lines:19
   def list_emotes_for_channel(%Channel{id: channel_id}, userid) do
+    # Modified to ignore the channel :D
     Repo.replica().all(
       from(e in Emote,
         left_join: c in Channel,
@@ -170,11 +171,7 @@ defmodule Glimesh.Emotes do
         on: s.user_id == ^userid and s.streamer_id == c.user_id,
         where:
           is_nil(e.approved_at) == false and
-            e.channel_id == ^channel_id and
-            (e.approved_for_global_use == false or e.allow_global_usage == false) and
-            e.emote_display_off == false and
-            (e.require_channel_sub == false or
-               (e.require_channel_sub == true and (s.is_active == true or c.user_id == ^userid))),
+            e.emote_display_off == false,
         distinct: e.id,
         order_by: e.emote
       )

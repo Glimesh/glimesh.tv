@@ -127,7 +127,7 @@ defmodule GlimeshWeb.SupportModal do
                       href="#"
                       class={["mt-lg-2 nav-link text-color", if(@tab == "streamloots", do: "active")]}
                     >
-                      <%= if @site_theme == "light" do %>
+                      <%= if @site_theme == "light" or @site_theme == "uwu" do %>
                         <img
                           src="/images/support-modal/streamloots-logo-black.svg"
                           alt=""

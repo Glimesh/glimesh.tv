@@ -84,7 +84,7 @@ defmodule GlimeshWeb.About.GoLiveLive do
                     alt="aircast"
                   />
                   <img
-                    :if={@site_theme == "light"}
+                    :if={@site_theme == "light" or @site_theme == "uwu"}
                     height="40"
                     src={~p"/images/about/go-live/aircast-small-logo-light.png"}
                     alt="aircast"

@@ -53,6 +53,10 @@
                     <%= radio_button f, :site_theme, "light", [checked: input_value(f, :site_theme) == "light", class: "custom-control-input"] %>
                     <label class="custom-control-label" for="<%= input_id(f, :site_theme, "light") %>"><%= gettext("Light") %></label>
                 </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <%= radio_button f, :site_theme, "uwu", [checked: input_value(f, :site_theme) == "uwu", class: "custom-control-input"] %>
+                    <label class="custom-control-label" for="<%= input_id(f, :site_theme, "uwu") %>"><%= gettext("UwU") %></label>
+                </div>
                 <%= error_tag f, :site_theme %>
 
                 <small class="form-text text-muted"><%= gettext("Change your Glimesh experience to feel a little lighter, or a little darker.") %></small>

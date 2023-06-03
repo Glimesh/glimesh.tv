@@ -22,6 +22,7 @@ defmodule GlimeshWeb.LayoutView do
     case site_theme(conn) do
       "dark" -> "🌘"
       "light" -> "☀️"
+      "uwu" -> "😘"
     end
   end
 

@@ -199,6 +199,16 @@
                   <%= gettext("Light") %>
                 </label>
               </div>
+              <div class="custom-control custom-radio">
+                <%= radio_button(f, :site_theme, "uwu",
+                  checked: site_theme(@conn) == "uwu",
+                  id: "uwuMode",
+                  class: "custom-control-input"
+                ) %>
+                <label class="custom-control-label" for="uwuMode">
+                  <%= gettext("UwU") %>
+                </label>
+              </div>
             </div>
             <div class="form-group">
               <%= submit("Save", class: "btn btn-primary btn-block") %>
@@ -299,3 +309,13 @@
     </ul>
   </div>
 </nav>
+<div class="alert alert-warning rounded-0 text-center">
+  <strong>Announcement:</strong>
+  Glimesh has unfortunately reached the end of it's life, and will be shutting down in
+  <span id="timer">
+    <span class="days">--</span>d <span class="hours">--</span>hr <span class="min">--</span>m <span class="sec">--</span>s.
+  </span>
+  <a href="https://build.glimesh.tv/t/goodnight-glimesh/690" target="_blank">
+    Read the blog post <i class="fas fa-caret-right"></i>
+  </a>
+</div>
